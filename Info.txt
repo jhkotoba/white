@@ -1,0 +1,63 @@
+1.Spring framework 4.3.6.RELEASE
+
+
+
+
+
+
+jquery 추가할 때 before,after,append,prepend
+
+
+
+MYSQL 외래키(Foreign key) 지정 시 
+on delete rule(삭제 시), on update rule(변경 시) 옵션 지정
+RESTRICT, CASCADE, NO ACTION, SET NULL
+
+1. RESTRICT : 개체를 변경/삭제할 때 다른 개체가 변경/삭제할 개체를 참조하고 있을 경우 변경/삭제가 취소됩니다.(제한)
+2. CASCADE : 개체를 변경/삭제할 때 다른 개체가 변경/삭제할 개체를 참조하고 있을 경우 함께 변경/삭제됩니다.
+3. NO ACTION : 개체를 변경/삭제할 때 다른 개체가 변경/삭제할 개체를 참조하고 있을 경우 변경/삭제할 개체만 변경/삭제되고 참조하고 있는 개체는 변동이 없습니다.
+4. SET NULL : 개체를 변경/삭제할 때 다른 개체가 변경/삭제할 개체를 참조하고 있을 경우 참조하고 있는 값은 NULL로 세팅됩니다.
+
+
+톰캣 fileUpload 설정
+allowCasualMultipartParsing 설정 (context.xml)
+
+방법1 %TOMCAT%/conf/context.xml - Tomcat 전체 적용
+
+<Context allowCasualMultipartParsing="true">
+ 
+    <WatchedResource>WEB-INF/web.xml</WatchedResource>
+    <WatchedResource>${catalina.base}/conf/web.xml</WatchedResource>
+ 
+    <!-- Default set of monitored resources. If one of these changes, the -->
+    <!-- web application will be reloaded. -->
+    <WatchedResource>WEB-INF/web.xml</WatchedResource>
+    <WatchedResource>${catalina.base}/conf/web.xml</WatchedResource>
+ 
+    <!-- Uncomment this to disable session persistence across Tomcat restarts -->
+    <!-- <Manager pathname="" /> -->
+ 
+    <!-- 케시문제 해결 -->
+    <Resources cachingAllowed="true" cacheMaxSize="100000"></Resources>
+ 
+</Context>
+
+
+
+
+
+	<resultMap id="MoneyRecordVO" type="MoneyRecordVO">
+		<id property="recordSeq" column="RECORD_SEQ"/>
+		<result property="uesrSeq" column="USER_SEQ"/>
+		<result property="recordDate" column="RECORD_DATE"/>
+		<result property="content" column="CONTENT"/>
+		<result property="purpose" column="PURPOSE"/>
+		<result property="purposeSeq" column="PURPOSE_SEQ"/>
+		<result property="bankName" column="BANK_NAME"/>
+		<result property="bankAccount" column="BANK_ACCOUNT"/>
+		<result property="bankRecordUseYn" column="BANK_RECORD_USE_YN"/>
+		<result property="inExpMoney" column="IN_EXP_MONEY"/>
+		<result property="readyMoney" column="READY_MONEY"/>
+		<result property="resultBankMoney" column="RESULT_BANK_MONEY"/>	
+		<result property="regDate" column="REG_DATE"/>	
+	</resultMap>

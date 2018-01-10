@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration 
+PUBLIC "-//mybatis.org//DTD Config 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-config.dtd"> 
+
+<configuration> 
+
+	<typeAliases>
+		<typeAlias alias="whiteMap" type="com.ljh.white.common.collection.WhiteMap"/>
+		
+		<typeAlias alias="PurposeBean" type="com.ljh.white.common.bean.PurposeBean"/>						
+		<typeAlias alias="PurposeDetailBean" type="com.ljh.white.common.bean.PurposeDetailBean"/>
+		<typeAlias alias="UserBankBean" type="com.ljh.white.common.bean.UserBankBean"/>
+		<typeAlias alias="MoneyRecordBean" type="com.ljh.white.common.bean.MoneyRecordBean"/>
+		
+		
+		
+		<typeAlias alias="WhiteUesrVO" type="com.ljh.white.common.vo.WhiteUesrVO"/>	
+		<typeAlias alias="MoneyRecordVO" type="com.ljh.white.common.vo.MoneyRecordVO"/>		
+ 	</typeAliases>
+ 	
+</configuration>

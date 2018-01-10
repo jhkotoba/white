@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+
+<mapper namespace="com.ljh.white.login.service.LoginMapper">
+	
+	<!--  userCheck -->
+	<select id="userCheck" parameterType="WhiteUesrVO" resultType="String">
+		SELECT					
+			user_passwd userPasswd
+		FROM white_user
+		WHERE 1=1
+		AND user_id = #{userId}				
+	</select>		
+	
+	<!--  getUserAuthority -->
+	<select id="getUserAuthority" resultType="Map" parameterType="String" >
+		SELECT 
+		    a.authority AS authority,
+		    w.user_seq AS userSeq
+  		FROM 
+		    authority a, 
+		    white_user w
+		WHERE 1=1
+		AND a.authority_no = w.authority_no
+		AND user_id = #{userId}			
+	</select>
+	
+	<insert id="insertNewSignUp">
+		INSERT INTO white_user
+			(authority_no, user_id, user_name, user_passwd)
+		VALUES 
+			('1000', #{userId}, #{userName}, #{passwd})
+	</insert>
+</mapper>

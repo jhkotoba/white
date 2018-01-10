@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+
+<mapper namespace="whiteMapper">
+
+	<!-- 입력된 테이블, 컬럼, 데이터로 해당 데이터의 갯수를 구함 -->
+	<select id="selectIsCntColumn" resultType="int" parameterType="Map">
+		/* selectIsCntColumn */
+		SELECT COUNT(1) FROM ${table}
+		WHERE ${column} = #{data}
+	</select>
+	
+</mapper>
