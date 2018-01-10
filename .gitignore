@@ -1,6 +1,7 @@
 /target/
 
 dataSource.properties
+white_insert.sql
 
 *.class
 *.dll
