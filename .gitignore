@@ -1,5 +1,5 @@
 /target/
-/src/
+
 
 dataSource.properties
 white_insert.sql
