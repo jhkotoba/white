@@ -33,7 +33,7 @@
 		<section>
 			<jsp:include page="${requestScope.sidePage}" flush="false" />
 		</section>
-		</c:if>
+	</c:if>
 	<section>
 		<jsp:include page="${requestScope.sectionPage}" flush="false" />
 	</section>
