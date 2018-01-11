@@ -25,7 +25,11 @@ public class AuthBean implements Serializable {
 	
 	public void setAuthBean(List<String> auth) {	
 		
-		try {			
+		try {
+			
+			if(auth==null) {
+				throw new NullPointerException();
+			}
 			
 			this.developer = 0;    
 			this.administrator = 0;
