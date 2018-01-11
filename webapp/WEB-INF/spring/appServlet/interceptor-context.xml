@@ -22,8 +22,10 @@
 	     	<!-- 회원가입 -->			 
 			<mvc:exclude-mapping path="/newSignUp.do"/>
 			<mvc:exclude-mapping path="/ajax/userIdCheck.do"/>
-			 
-			<!-- 비동기 관련 -->
+			
+			<!-- 공개 -->
+			<mvc:exclude-mapping path="/mainInfo.do"/>
+			<mvc:exclude-mapping path="/source.do"/>
 			
 			 
 			<mvc:exclude-mapping path="/ledgerInquire.do"/> 
