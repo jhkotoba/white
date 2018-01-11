@@ -24,6 +24,7 @@
 		<a href="${contextPath}/source.do">소스코드</a>
 		<a href="${contextPath}/bookmark.do">북마크</a>
 		<a href=#>게시판</a>
+		<a href="${contextPath}/adminPage.do">관리자</a>
 		<c:if test="${sessionScope.authority == 'developer'}">
 			<a href="${contextPath}/testingPage.do">테스트 페이지</a>
 		</c:if>
