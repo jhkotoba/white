@@ -18,14 +18,20 @@ public class AuthBeanTest {
 	public static void main(String[] args){
 		
 		List<String> list = new ArrayList<String>();
-		list.add("developer");
 		
-		System.out.println("AuthBean TEST1");		
-		AuthBean auth = new AuthBean(list);
+		
+		//System.out.println("\nAuthBean TEST0");		
+		//AuthBean auth0 = new AuthBean(list);
+		
+		//list.add("developer");
+		//System.out.println("AuthBean TEST1");		
+		//AuthBean auth = new AuthBean(list);
 		
 		
 		System.out.println("\nAuthBean TEST2");		
 		AuthBean auth2 = new AuthBean(null);
+		
+		
 	}
 
 }

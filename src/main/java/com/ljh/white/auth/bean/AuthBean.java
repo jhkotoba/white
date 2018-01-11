@@ -6,7 +6,7 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.ljh.white.ledger.controller.LedgerController;
+import com.ljh.white.exception.NoDataException;
 
 public class AuthBean implements Serializable {
 	
@@ -29,6 +29,8 @@ public class AuthBean implements Serializable {
 			
 			if(auth==null) {
 				throw new NullPointerException();
+			}else if(auth.size() < 1){
+				throw new NoDataException(auth.size());
 			}
 			
 			this.developer = 0;    
@@ -55,7 +57,10 @@ public class AuthBean implements Serializable {
 			}
 			
 		}catch(NullPointerException e) {
-			logger.error("List<String> auth Is NULL");
+			logger.error("collection Is NULL");
+			e.printStackTrace();
+		}catch(NoDataException e) {
+			logger.error("collection Size:"+e.getCollectionSize());
 			e.printStackTrace();
 		}finally {
 			logger.debug("\ndeveloper:"+this.getDeveloper()+"\nadministrator:"+this.getAdministrator()+
