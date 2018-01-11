@@ -14,7 +14,7 @@ public class AdminController {
 
 	//메인페이지-info
 	@RequestMapping(value="/adminPage.do")
-	public String mainInfo(HttpServletRequest request, HttpServletResponse response){
+	public String adminPage(HttpServletRequest request, HttpServletResponse response){
 		
 		String sectionPage = request.getParameter("sideClick");		
 		String userSeq = request.getParameter("userSeq");
