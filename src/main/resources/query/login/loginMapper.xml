@@ -14,7 +14,7 @@
 	</select>		
 	
 	<!--  getUserAuthority -->
-	<select id="getUserAuthority" resultType="Map" parameterType="String" >
+	<!-- <select id="getUserAuthority" resultType="Map" parameterType="String" >
 		SELECT 
 		    a.authority AS authority,
 		    w.user_seq AS userSeq
@@ -24,7 +24,27 @@
 		WHERE 1=1
 		AND a.authority_no = w.authority_no
 		AND user_id = #{userId}			
+	</select> -->
+	
+	<select id="getUserSeq" resultType="int" parameterType="String" >
+		SELECT 
+	  		user_seq AS userSeq
+		FROM white_user
+		WHERE user_id = #{userId}
 	</select>
+	
+	<select id="getUserAuthority" resultType="String" parameterType="int" >
+		SELECT 
+	  		an.auth_nm
+		<!-- FROM authority a -->
+		FROM authority_test a
+		LEFT OUTER JOIN auth_name an
+	  		ON an.auth_nm_seq = a.auth_nm_seq
+		WHERE user_seq = #{userSeq}
+	</select>
+	
+
+	
 	
 	<insert id="insertNewSignUp">
 		INSERT INTO white_user

@@ -1,7 +1,7 @@
 package com.ljh.white.login.mapper;
 
 
-import java.util.Map;
+import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 import org.apache.logging.log4j.LogManager;
@@ -36,10 +36,14 @@ public class LoginMapper {
 		return userPasswd == null ? false : BCrypt.checkpw(whiteUesrVO.getUserPasswd(), userPasswd);		
 	}
 	
-	public Map<String, Object> getUserAuthority(String userId){		
-		logger.debug("userId: "+userId);		
+	public List<String> getUserAuthority(int userSeq){		
+		logger.debug("userSeq: "+userSeq);		
 		
-		return sqlSession.selectOne("com.ljh.white.login.service.LoginMapper.getUserAuthority", userId);			
+		return sqlSession.selectList("com.ljh.white.login.service.LoginMapper.getUserAuthority", userSeq);			
+	}
+	
+	public int getUserSeq(String userId){
+		return sqlSession.selectOne("com.ljh.white.login.service.LoginMapper.getUserSeq", userId);			
 	}
 	
 	public int insertNewSignUp(WhiteMap whiteMap){

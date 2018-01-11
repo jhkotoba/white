@@ -1,13 +1,12 @@
 package com.ljh.white.login.service;
 
-import java.util.Map;
-
 import javax.annotation.Resource;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
+import com.ljh.white.auth.bean.AuthBean;
 import com.ljh.white.common.collection.WhiteMap;
 import com.ljh.white.common.utility.cryptolect.BCrypt;
 import com.ljh.white.common.vo.WhiteUesrVO;
@@ -23,8 +22,7 @@ public class LoginServiceImpl implements LoginService {
 	private LoginMapper loginMapper;
 	
 	@Override
-	public boolean loginUserCheck(String userId, String passwd){
-		logger.info("");
+	public boolean loginUserCheck(String userId, String passwd){		
 		logger.debug("userId: "+userId + ", passwd:"+passwd);		
 		
 		WhiteUesrVO whiteUesrVO = new WhiteUesrVO();
@@ -39,11 +37,15 @@ public class LoginServiceImpl implements LoginService {
 	}
 
 	@Override
-	public Map<String, Object> getUserAuthority(String userId) {
-		logger.info("");
-		logger.debug("userId: "+userId);
+	public AuthBean getUserAuthority(int userSeq) {		
+		logger.debug("userSeq: "+userSeq);		
 		
-		return loginMapper.getUserAuthority(userId);
+		return new AuthBean(loginMapper.getUserAuthority(userSeq));
+	}
+	
+	@Override
+	public int getUserSeq(String userId) {
+		return loginMapper.getUserSeq(userId);
 	}
 
 	@Override
