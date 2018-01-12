@@ -2,8 +2,6 @@ package com.ljh.white.login.controller;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.ServletException;
@@ -18,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.ljh.white.auth.bean.AuthBean;
 import com.ljh.white.common.service.WhiteService;
+
 import com.ljh.white.login.service.LoginService;
 
 @Controller

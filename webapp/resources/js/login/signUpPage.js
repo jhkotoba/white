@@ -1,7 +1,9 @@
 /**
  * signUpPage.js
  */
+/*
 
+//사용안함 jsp로 옮김
 $(document).ready(function(){	
 	
 	
@@ -86,4 +88,4 @@ function userIdCheck(){
 	    	console.log(err);
 	    }
 	});
-}
+}*/
