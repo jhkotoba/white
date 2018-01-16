@@ -3,21 +3,51 @@
 <!DOCTYPE html PUBLIC>
 
 <head>
-	<meta charset=UTF-8>
-	<title>Insert title here</title>
-	<script type="text/javascript" src="resources/js/ledger/ledgerMain.js"></script>	
-	<script type="text/javascript" src="resources/js/ledger/selectRecode.js"></script>	
-	<script type="text/javascript">
-		selectRecode.userSeq = '${sessionScope.userSeq}';		
-	</script>
+<meta charset=UTF-8>
+<title>Insert title here</title>
+<script type="text/javascript" src="resources/js/ledger/ledgerMain.js"></script>	
+<script type="text/javascript" src="resources/js/ledger/selectRecode.js"></script>	
+<script type="text/javascript">
+
+selectRecode.userSeq = '${sessionScope.userSeq}';
+	
+$(document).ready(function(){
+	selectRecode.latestSelect();
+	
+	
+$("#memoAddBt").click(function(){	
+	ledgerMemo.list.push({bankAccount: "", userBankSeq: 0, bankNowUseYN: "Y",bankName: "", });
+	ledgerMemo.view();
+});	
+	
+	
+	
+	
+	
+	
+	
+});	
+	
+	
+	
+	
+	
+	
+	
+</script>
+
+ 
 	
 	
 </head>
 <body>
 	ledgerMain.jsp<br>
+	<button id="memoAddBt">메모 추가</button>
 	<div id="ledgerMemo">
+		<table id='ledgerMemoTb' border=1>
+		</table>
 	</div>
-	핸드폰요금 매월 23일<br>
+	<!-- 핸드폰요금 매월 23일<br>
 	우체국보험 매월 25일<br>
 	교보보험 매월 31일<br>
 	
@@ -28,7 +58,7 @@
 
 	3.2014 데이터 입력할 엑셀 업로드 완성시키기 <br>
 	5.코드 정리(최적화)<br>
-	6.javascript -> java 소스로직 옮기기 <br>
+	6.javascript -> java 소스로직 옮기기 <br> -->
 	
 	
 	
