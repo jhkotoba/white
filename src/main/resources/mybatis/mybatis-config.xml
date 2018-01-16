@@ -8,10 +8,10 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 	<typeAliases>
 		<typeAlias alias="whiteMap" type="com.ljh.white.common.collection.WhiteMap"/>
 		
-		<typeAlias alias="PurposeBean" type="com.ljh.white.common.bean.PurposeBean"/>						
-		<typeAlias alias="PurposeDetailBean" type="com.ljh.white.common.bean.PurposeDetailBean"/>
-		<typeAlias alias="UserBankBean" type="com.ljh.white.common.bean.UserBankBean"/>
-		<typeAlias alias="MoneyRecordBean" type="com.ljh.white.common.bean.MoneyRecordBean"/>
+		<typeAlias alias="PurposeBean" type="com.ljh.white.ledger.bean.PurposeBean"/>						
+		<typeAlias alias="PurposeDetailBean" type="com.ljh.white.ledger.bean.PurposeDetailBean"/>
+		<typeAlias alias="UserBankBean" type="com.ljh.white.ledger.bean.UserBankBean"/>
+		<typeAlias alias="MoneyRecordBean" type="com.ljh.white.ledger.bean.MoneyRecordBean"/>
 		
 		
 		
