@@ -1,4 +1,4 @@
-package com.ljh.white.common.bean;
+package com.ljh.white.ledger.bean;
 
 import java.io.Serializable;
 
