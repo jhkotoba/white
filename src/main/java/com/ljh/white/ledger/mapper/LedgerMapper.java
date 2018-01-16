@@ -12,11 +12,10 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.ljh.white.common.bean.MoneyRecordBean;
-import com.ljh.white.common.bean.PurposeBean;
-import com.ljh.white.common.bean.PurposeDetailBean;
-import com.ljh.white.common.bean.UserBankBean;
-import com.ljh.white.common.utility.WhiteDate;
+import com.ljh.white.ledger.bean.MoneyRecordBean;
+import com.ljh.white.ledger.bean.PurposeBean;
+import com.ljh.white.ledger.bean.PurposeDetailBean;
+import com.ljh.white.ledger.bean.UserBankBean;
 
 @Repository("LedgerMapper")
 public class LedgerMapper {
