@@ -11,6 +11,11 @@ public class MemoBean implements Serializable{
 	private String memoType;
 	private String memoContent;
 	private String regDate;
+	private String state;
+	
+	public MemoBean() {
+		
+	}
 	
 	public int getMemoSeq() {
 		return memoSeq;
@@ -42,11 +47,21 @@ public class MemoBean implements Serializable{
 	public void setRegDate(String regDate) {
 		this.regDate = regDate;
 	}
+	public String getState() {
+		return state;
+	}
+	public void setState(String state) {
+		this.state = state;
+	}
+
 	@Override
 	public String toString() {
 		return "MemoBean [memoSeq=" + memoSeq + ", userSeq=" + userSeq + ", memoType=" + memoType + ", memoContent="
-				+ memoContent + ", regDate=" + regDate + "]";
+				+ memoContent + ", regDate=" + regDate + ", state=" + state + "]";
 	}
+	
+	
+	
 	
 	
 	

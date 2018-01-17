@@ -23,12 +23,16 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import com.ljh.white.common.Constant;
 import com.ljh.white.common.collection.WhiteMap;
 import com.ljh.white.ledger.service.LedgerService;
+import com.ljh.white.memo.service.MemoService;
 
 @Controller
 public class LedgerController {
 	
 	@Resource(name = "LedgerService")
 	private LedgerService ledgerService;
+	
+	@Resource(name = "MemoService")
+	private MemoService memoService;
 	
 	private static Logger logger = LogManager.getLogger(LedgerController.class);
 	
@@ -40,7 +44,10 @@ public class LedgerController {
 		String sectionPage = request.getParameter("sideClick");		
 		String userSeq = request.getSession(false).getAttribute("userSeq").toString();
 		
-		if(sectionPage == null) sectionPage = "Main";		
+		if(sectionPage == null || "Main".equals(sectionPage)) {
+			sectionPage = "Main";
+			request.setAttribute("memoList", memoService.getMemoList(userSeq, "ledger"));
+		}
 		
 		switch(sectionPage){
 		case "Select" :			

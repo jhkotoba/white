@@ -37,7 +37,7 @@
 		SELECT 
 	  		an.auth_nm
 		<!-- FROM authority a -->
-		FROM authority a
+		FROM authority_test a
 		LEFT OUTER JOIN auth_name an
 	  		ON an.auth_nm_seq = a.auth_nm_seq
 		WHERE user_seq = #{userSeq}

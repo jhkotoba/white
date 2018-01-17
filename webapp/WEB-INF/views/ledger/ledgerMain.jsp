@@ -10,13 +10,25 @@
 <script type="text/javascript">
 
 selectRecode.userSeq = '${sessionScope.userSeq}';
-	
+var memoList = ${memoList};
+var memoType = "ledger";
+
+
 $(document).ready(function(){
-	selectRecode.latestSelect();	
+	selectRecode.latestSelect();
+	
+	ledgerMemo.list = common.clone(memoList);
+	ledgerMemo.view();
 	
 	//새로운 메모 추가
 	$("#memoAddBt").click(function(){	
-		ledgerMemo.list.push({memoType: "ledger", memoContent: "", state: "insert"});
+		ledgerMemo.list.push({memoType: memoType, memoContent: "", state: "insert"});
+		ledgerMemo.view();
+	});
+	
+	//취소
+	$("#memoCancelBt").click(function(){
+		ledgerMemo.list = common.clone(memoList);	
 		ledgerMemo.view();
 	});
 	
@@ -26,11 +38,12 @@ $(document).ready(function(){
 			type: 'POST',
 			url: common.path()+'/ajax/memoSave.do',
 			data: {
-						
+				jsonStr : JSON.stringify(ledgerMemo.list),
+				memoType : memoType
 			},
 			dataType: 'json',
 		    success : function(data, stat, xhr) {  
-		    	
+		    	console.log(data);
 		    },
 		    error : function(xhr, stat, err) {			    	
 		    	alert("setup error");
@@ -67,7 +80,7 @@ function memoEdit(idx){
 	
 </script>
 
- 
+
 	
 	
 </head>
@@ -75,6 +88,7 @@ function memoEdit(idx){
 	ledgerMain.jsp<br>
 	<button id="memoAddBt">메모 추가</button>
 	<button id="memoSaveBt">메모 저장</button>
+	<button id="memoCancelBt">취소</button>
 	<div id="ledgerMemo">
 		<table id='ledgerMemoTb' border=1>
 		</table>
