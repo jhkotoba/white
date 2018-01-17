@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+
+<mapper namespace="memoMapper">
+	
+	<select id="selectMemoList" resultType="Map" parameterType="Map">
+		SELECT 
+			memo_seq AS memoSeq,
+			memo_type AS memoType,
+			memo_content AS memoContent,
+			'select' AS state
+		FROM memo
+		WHERE user_seq = #{userSeq}
+		AND memo_type = #{memoType}
+	</select>
+	
+	<insert id="insertMemoList" parameterType="java.util.List">
+		INSERT INTO memo(		
+			user_seq,	
+			memo_type,	
+			memo_content,	
+			reg_date
+		)VALUES
+		<foreach collection="list" item="item" separator=",">
+			(#{item.userSeq}, #{item.memoType}, #{item.memoContent}, now())
+		</foreach>	
+	
+	</insert>
+</mapper>
