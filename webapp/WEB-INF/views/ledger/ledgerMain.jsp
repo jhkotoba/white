@@ -12,26 +12,57 @@
 selectRecode.userSeq = '${sessionScope.userSeq}';
 	
 $(document).ready(function(){
-	selectRecode.latestSelect();
+	selectRecode.latestSelect();	
 	
+	//새로운 메모 추가
+	$("#memoAddBt").click(function(){	
+		ledgerMemo.list.push({memoType: "ledger", memoContent: "", state: "insert"});
+		ledgerMemo.view();
+	});
 	
-$("#memoAddBt").click(function(){	
-	ledgerMemo.list.push({bankAccount: "", userBankSeq: 0, bankNowUseYN: "Y",bankName: "", });
+	//메모 저장
+	$("#memoSaveBt").click(function(){	
+		$.ajax({		
+			type: 'POST',
+			url: common.path()+'/ajax/memoSave.do',
+			data: {
+						
+			},
+			dataType: 'json',
+		    success : function(data, stat, xhr) {  
+		    	
+		    },
+		    error : function(xhr, stat, err) {			    	
+		    	alert("setup error");
+		    }
+		});
+	});
+	
+});
+
+//메모 삭제
+function memoDel(idx){	
+	
+	//새로운 메모 삭제
+	switch(ledgerMemo.list[idx].state){
+	
+	case "insert" :
+	case "update" :
+		ledgerMemo.list.splice(idx,1);
+		break;
+		
+	case "select" :
+		alert("나중에 할꺼야:select");
+		break;	
+	}	
 	ledgerMemo.view();
-});	
-	
-	
-	
-	
-	
-	
-	
-});	
-	
-	
-	
-	
-	
+}
+
+//메모수정
+function memoEdit(idx){	
+	ledgerMemo.list[idx].memoContent = $("#memoContent_"+idx).val();
+	ledgerMemo.list[idx].state = "update";	
+}
 	
 	
 </script>
@@ -43,6 +74,7 @@ $("#memoAddBt").click(function(){
 <body>
 	ledgerMain.jsp<br>
 	<button id="memoAddBt">메모 추가</button>
+	<button id="memoSaveBt">메모 저장</button>
 	<div id="ledgerMemo">
 		<table id='ledgerMemoTb' border=1>
 		</table>
