@@ -29,7 +29,7 @@ $(document).ready(function(){
 	
 	//새로운 메모 추가
 	$("#memoAddBt").click(function(){	
-		ledgerMemo.list.push({memoType: memoType, memoContent: "", state: "insert"});
+		ledgerMemo.list.push({memoContent: "", memoSeq:0, state: "insert", memoType: memoType});
 		ledgerMemo.view();
 	});
 	
