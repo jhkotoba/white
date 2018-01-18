@@ -5,6 +5,13 @@
 <head>
 <meta charset=UTF-8>
 <title>Insert title here</title>
+
+<style type="text/css">
+.cancleLine{
+	text-decoration-line: line-through;
+}
+</style>
+
 <script type="text/javascript" src="resources/js/ledger/ledgerMain.js"></script>	
 <script type="text/javascript" src="resources/js/ledger/selectRecode.js"></script>	
 <script type="text/javascript">
@@ -60,13 +67,12 @@ function memoDel(idx){
 	switch(ledgerMemo.list[idx].state){
 	
 	case "insert" :
-	case "update" :
-		ledgerMemo.list.splice(idx,1);
+		ledgerMemo.list.splice(idx,1);		
 		break;
-		
+	case "update" :		
 	case "select" :
-		alert("나중에 할꺼야:select");
-		break;	
+		ledgerMemo.list[idx].state = "delete";
+		break;
 	}	
 	ledgerMemo.view();
 }
@@ -74,7 +80,10 @@ function memoDel(idx){
 //메모수정
 function memoEdit(idx){	
 	ledgerMemo.list[idx].memoContent = $("#memoContent_"+idx).val();
-	ledgerMemo.list[idx].state = "update";	
+	if(ledgerMemo.list[idx].state === "select"){
+		ledgerMemo.list[idx].state = "update";	
+	}
+	
 }
 	
 	

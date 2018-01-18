@@ -38,7 +38,10 @@ public class MemoService{
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
 	public void memoSave(int userSeq, String memoType, String jsonStr) {
 		
-		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+		List<Map<String, Object>> insertList = new ArrayList<Map<String, Object>>();
+		List<Map<String, Object>> updateList = new ArrayList<Map<String, Object>>();
+		List<Map<String, Object>> deleteList = new ArrayList<Map<String, Object>>();
+		
 		JSONArray jsonArr = new JSONArray(jsonStr);
 		JSONObject jsonObj = null;	
 		
@@ -52,13 +55,27 @@ public class MemoService{
 			
 			memo.put("userSeq", userSeq);
 			memo.put("memoType", memoType);
-			memo.put("memoContent", jsonObj.get("memoContent").toString());
-			memo.put("state", jsonObj.get("state").toString());
+			memo.put("memoContent", jsonObj.get("memoContent").toString());			
 			
-			list.add(memo);
+			if("insert".equals(jsonObj.get("state").toString())) {
+				insertList.add(memo);
+			}else if("update".equals(jsonObj.get("state").toString())) {
+				updateList.add(memo);
+			}else if("delete".equals(jsonObj.get("state").toString())) {
+				deleteList.add(memo);
+			}
+			
+			
 		}
 		
-		memoMapper.insertMemoList(list);
+		if("insert".equals(jsonObj.get("state").toString()) && insertList.size() > 0) {
+			memoMapper.insertMemoList(insertList);
+		}else if("update".equals(jsonObj.get("state").toString())  && updateList.size() > 0) {
+			//memoMapper.updateMemoList(updateList);
+		}else if("delete".equals(jsonObj.get("state").toString())  && deleteList.size() > 0) {
+			//memoMapper.deleteMemoList(deleteList);
+		}
+		
 		
 	}
 }
