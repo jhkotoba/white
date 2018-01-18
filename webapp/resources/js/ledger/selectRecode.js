@@ -169,11 +169,13 @@ let selectRecode = {
 				"<td id='purpose_"+i+"'><p id='purposeP_"+i+"'>"+purpose+"</p></td>" +
 				
 				"<td id='purposeDtlSeq_"+i+"' style='display:none'>"+recordList[i]['purDetailSeq']+"</td>" +
-				"<td id='purposeDtl_"+i+"'><p id='purposeDtlP_"+i+"'>"+recordList[i]['purDetail']+"</p></td>" ;//+
+				"<td id='purposeDtl_"+i+"'><p id='purposeDtlP_"+i+"'>"+recordList[i]['purDetail']+"</p></td>" +
 				
 				///금액이동일때 AAA->BBB 형식으로 나오게 start
-				//원본//"<td id='bankName_"+i+"'>"+recordList[i]['bankName'];				
-				if(recordList[i]['groupSeq']!==0){
+				//원본//"<td id='bankName_"+i+"'>"+recordList[i]['bankName'];	
+				"<td id='bankName_"+i+"'>"+recordList[i]['bankName'];	
+				//버그있음
+				/*if(recordList[i]['groupSeq']!==0){
 					view+="<td id='bankName_"+i+"'>"+recordList[i+1]['bankName'];
 					
 					if(recordList[i+1]['bankAccount'] !== 'readyMoney'){					
@@ -183,7 +185,7 @@ let selectRecode = {
 					
 				}else{
 					view+="<td id='bankName_"+i+"'>"+recordList[i]['bankName']
-				}
+				}*/
 				///test 금액이동일때 AAA->BBB 형식으로 나오게 end 
 				
 				if(recordList[i]['bankAccount'] === 'readyMoney'){

@@ -42,9 +42,6 @@ public class UserBankBean implements Serializable{
 	public void setBankNowUseYN(String bankNowUseYN) {
 		this.bankNowUseYN = bankNowUseYN;
 	}
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
 	
 	@Override
 	public String toString() {
