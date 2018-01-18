@@ -26,4 +26,11 @@ public class TestingController {
 
 		return "testing.jsp";		
 	}
+	
+	@RequestMapping(value="/exitTime.do")
+	public String exitTime(HttpServletRequest request, HttpServletResponse response){
+		
+
+		return "test/exitTime.jsp";		
+	}
 }

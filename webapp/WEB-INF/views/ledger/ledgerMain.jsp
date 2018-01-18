@@ -50,7 +50,9 @@ $(document).ready(function(){
 			},
 			dataType: 'json',
 		    success : function(data, stat, xhr) {  
-		    	console.log(data);
+		    	memoList = data;
+		    	ledgerMemo.list = common.clone(memoList);
+		    	ledgerMemo.view();
 		    },
 		    error : function(xhr, stat, err) {			    	
 		    	alert("setup error");

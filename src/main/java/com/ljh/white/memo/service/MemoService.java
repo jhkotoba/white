@@ -23,20 +23,17 @@ public class MemoService{
 	private MemoMapper memoMapper;
 	
 	
-	public JSONArray getMemoList(String userSeq, String memoType){
+	public JSONArray selectMemoList(String userSeq, String memoType){
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("userSeq", userSeq);
-		map.put("memoType", memoType);
+		map.put("memoType", memoType);		
 		
-		//List<Map<String, Object>> memoList = memoMapper.selectMemoList(map);
-		return new JSONArray(memoMapper.selectMemoList(map));	
-		
-		//return memoList;
+		return new JSONArray(memoMapper.selectMemoList(map));
 	}	
 	
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
-	public void memoSave(int userSeq, String memoType, String jsonStr) {
+	public JSONArray memoSave(int userSeq, String memoType, String jsonStr) {
 		
 		List<Map<String, Object>> insertList = new ArrayList<Map<String, Object>>();
 		List<Map<String, Object>> updateList = new ArrayList<Map<String, Object>>();
@@ -45,17 +42,16 @@ public class MemoService{
 		JSONArray jsonArr = new JSONArray(jsonStr);
 		JSONObject jsonObj = null;	
 		
-		System.out.println(jsonArr);
-		System.out.println(jsonArr.length());
-		
 		for(int i=0; i<jsonArr.length(); i++) {
 			Map<String, Object> memo = new HashMap<String, Object>();
 			
 			jsonObj = new JSONObject(jsonArr.get(i).toString());
 			
-			memo.put("userSeq", userSeq);
+			memo.put("userSeq", userSeq);			
 			memo.put("memoType", memoType);
-			memo.put("memoContent", jsonObj.get("memoContent").toString());			
+			memo.put("memoSeq", jsonObj.get("memoSeq").toString());
+			memo.put("memoContent", jsonObj.get("memoContent").toString());	
+			memo.put("state", jsonObj.get("state").toString());	
 			
 			if("insert".equals(jsonObj.get("state").toString())) {
 				insertList.add(memo);
@@ -68,13 +64,21 @@ public class MemoService{
 			
 		}
 		
-		if("insert".equals(jsonObj.get("state").toString()) && insertList.size() > 0) {
+		if(!insertList.isEmpty()) {
 			memoMapper.insertMemoList(insertList);
-		}else if("update".equals(jsonObj.get("state").toString())  && updateList.size() > 0) {
-			//memoMapper.updateMemoList(updateList);
-		}else if("delete".equals(jsonObj.get("state").toString())  && deleteList.size() > 0) {
-			//memoMapper.deleteMemoList(deleteList);
 		}
+		if(!updateList.isEmpty()) {
+			memoMapper.updateMemoList(updateList);
+		}
+		if(!deleteList.isEmpty()) {
+			memoMapper.deleteMemoList(deleteList);
+		}
+				
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("userSeq", userSeq);
+		map.put("memoType", memoType);		
+		
+		return new JSONArray(memoMapper.selectMemoList(map));
 		
 		
 	}

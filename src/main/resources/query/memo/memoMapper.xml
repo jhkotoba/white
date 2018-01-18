@@ -25,6 +25,27 @@
 		<foreach collection="list" item="item" separator=",">
 			(#{item.userSeq}, #{item.memoType}, #{item.memoContent}, now())
 		</foreach>	
-	
 	</insert>
+	
+	<update id="updateMemoList" parameterType="java.util.List">	
+		UPDATE memo
+		SET memo_content = 
+		CASE		
+		<foreach collection="list" item="item">
+			WHEN memo_seq = #{item.memoSeq} THEN #{item.memoContent}
+		</foreach>		
+		END
+		WHERE memo_seq IN 
+		<foreach collection="list" item="item" separator="," open="(" close=")">
+			#{item.memoSeq}
+		</foreach>	
+	</update>
+	
+	<delete id="deleteMemoList">
+		DELETE FROM memo
+		WHERE memo_seq IN 
+		<foreach collection="list" item="item" separator="," open="(" close=")">
+			#{item.memoSeq}
+		</foreach>
+	</delete>
 </mapper>

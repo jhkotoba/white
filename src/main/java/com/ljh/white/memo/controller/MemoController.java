@@ -3,6 +3,7 @@ package com.ljh.white.memo.controller;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import org.json.JSONArray;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -14,6 +15,17 @@ public class MemoController {
 	@Resource(name = "MemoService")
 	private MemoService memoService;
 			
+	
+	@RequestMapping(value="/ajax/selectMemoList.do" )
+	public String selectMemoList(HttpServletRequest request){
+		
+		String userSeq = request.getSession(false).getAttribute("userSeq").toString();
+		String memoType = request.getParameter("memoType");		
+		
+		request.setAttribute("memoList", memoService.selectMemoList(userSeq, memoType));
+		return "result.jsp";
+	}
+	
 	@RequestMapping(value="/ajax/memoSave.do" )
 	public String memoSave(HttpServletRequest request){
 		
@@ -21,12 +33,10 @@ public class MemoController {
 		String memoType = request.getParameter("memoType");
 		String jsonStr = request.getParameter("jsonStr");		
 		
-		memoService.memoSave(userSeq, memoType, jsonStr);
+		JSONArray memoJsonList = memoService.memoSave(userSeq, memoType, jsonStr);
 		
-		///System.out.println("startDate:"+startDate);
-		
-		
-		return "result.jsp";		
+		request.setAttribute("result", memoJsonList);		
+		return "result.jsp";
 	}
 	
 }
