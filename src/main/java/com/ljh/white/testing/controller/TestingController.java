@@ -18,19 +18,18 @@ public class TestingController {
 	
 	@RequestMapping(value="/testingPage.do")
 	public String testingPage(HttpServletRequest request, HttpServletResponse response){
-		System.out.println("## TestingController.testingPage ##");
-		
-		//WhiteDate.dateCalculate TEST
-		System.out.println("2017-01-01 01:00:00");		
-		System.out.println(WhiteDate.dateCalculate("2017-01-01 01:00:00", 1000));
-
 		return "testing.jsp";		
 	}
 	
-	@RequestMapping(value="/exitTime.do")
+	@RequestMapping(value="/exitTimer.do")
 	public String exitTime(HttpServletRequest request, HttpServletResponse response){
-		
-
-		return "test/exitTime.jsp";		
+		return "test/exitTimer.jsp";		
 	}
 }
+
+
+/*System.out.println("## TestingController.testingPage ##");
+
+//WhiteDate.dateCalculate TEST
+System.out.println("2017-01-01 01:00:00");		
+System.out.println(WhiteDate.dateCalculate("2017-01-01 01:00:00", 1000));*/

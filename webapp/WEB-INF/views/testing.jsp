@@ -6,20 +6,9 @@
 <meta charset=UTF-8>
 <title>Insert title here</title>
 	
-<style type="text/css">
-	
-.box1 {
-   margin-top: 40px;
-   width: 20px;
-   height: 20px;
-   background-color: blue;
-   position: relative;
-}
-
-	
-	
-	
+<style type="text/css">		
 </style>
+
 <script type="text/javascript" src="resources/js/wcommon/jquery/jquery-3.2.0.js"></script>
 
 <script type="text/javascript">
@@ -51,48 +40,6 @@ $(document).ready(function(){
 	console.log("set.has('test100') : "+set.has("test100")); */
 	
 	
-	var left = 50;
-	
-	/* setInterval(function() {
-	    $('.box1')
-	        .animate({
-	            left: left,
-	            bottom: 300
-	        }, 1000);
-	        
-	    	left-=5;
-	    $('.box1').animate({
-	            left: 0,
-	            bottom: 0
-	            
-	        }, 1000);
-	    
-	}, 3000) */
-	
-	  
-
-		
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
-
 		
 });	
 </script>
@@ -101,24 +48,8 @@ $(document).ready(function(){
 	testing.jsp<br>
 	<a href="/white/mainInfo.do">메인화면</a><br>
 	
-	<div id="testList">		
-		<ul>
-			<li>test1</li>					
-		</ul>		
-	</div>
+	<h2>Test List</h2><br>
+	<a href="/white/exitTimer.do">exitTime</a><br>
 	
-	<br><br>	
-	<!-- <form id="reqeustTest" action="/white/requestTest.do" method="post" enctype="application/x-www-form-urlencoded">
-		<input type="hidden" name="test1" value="1111">
-		<input type="hidden" name="test2" value="2222">
-		<input type="hidden" name="test3" value="3333">		
-	</form> -->
-	<br><br><br><br><br><br><br><br><br><br><br><br><br>
-	
-	<div class="box1"></div>	
-	
-	
-	
-		
 </body>
 </html>

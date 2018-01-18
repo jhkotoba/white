@@ -15,6 +15,7 @@
 		AND memo_type = #{memoType}
 	</select>
 	
+	<!-- 메모리스트 추가 -->
 	<insert id="insertMemoList" parameterType="java.util.List">
 		INSERT INTO memo(		
 			user_seq,	
@@ -27,6 +28,7 @@
 		</foreach>	
 	</insert>
 	
+	<!-- 메모리스트 수정 -->
 	<update id="updateMemoList" parameterType="java.util.List">	
 		UPDATE memo
 		SET memo_content = 
@@ -41,7 +43,8 @@
 		</foreach>	
 	</update>
 	
-	<delete id="deleteMemoList">
+	<!-- 메모리스트 삭제 -->
+	<delete id="deleteMemoList" parameterType="java.util.List">
 		DELETE FROM memo
 		WHERE memo_seq IN 
 		<foreach collection="list" item="item" separator="," open="(" close=")">
