@@ -1,30 +1,26 @@
 package com.ljh.white.testing.controller;
 
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import com.ljh.white.common.utility.WhiteDate;
-
-
-
 
 @Controller
 public class TestingController {
 	
 	@RequestMapping(value="/testMain.do")
-	public String testingPage(HttpServletRequest request, HttpServletResponse response){
+	public String testingPage(){
 		return "test/testMain.jsp";		
 	}
 	
 	@RequestMapping(value="/exitTimer.do")
-	public String exitTime(HttpServletRequest request, HttpServletResponse response){
+	public String exitTime(){
 		return "test/exitTimer.jsp";		
 	}
+	
+	@RequestMapping(value="/cssDemo.do")
+	public String cssDemo(){
+		return "test/cssDemo.jsp";		
+	}
+	
 }
 
 

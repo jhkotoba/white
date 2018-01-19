@@ -49,6 +49,7 @@ $(document).ready(function(){
 	<a href="/white/mainInfo.do">메인화면</a><br>
 	
 	<h2>Test List</h2><br>
+	<a href="/white/cssDemo.do">cssDemo</a><br>
 	<a href="/white/exitTimer.do">exitTime</a><br>
 	
 </body>

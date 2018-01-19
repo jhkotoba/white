@@ -91,10 +91,14 @@ let ledgerSelect = {
 			this.checkedCnt = $('input:checkbox[name="checkbox"]:checked').length;
 			if(this.checkedCnt > 0){
 				$("#editBtn").prop("disabled",false);
-				$("#delBtn").prop("disabled",false);	
+				$("#editBtn").attr("class", "btn_azure03");
+				$("#delBtn").prop("disabled",false);
+				$("#delBtn").attr("class", "btn_azure03");
 			}else{
 				$("#editBtn").prop("disabled",true);
+				$("#editBtn").attr("class", "btn_disabled03");
 				$("#delBtn").prop("disabled",true);	
+				$("#delBtn").attr("class", "btn_disabled03");
 			}	
 		},
 		// 체크박스 한개 선택 or 취소
@@ -158,10 +162,14 @@ let ledgerSelect = {
 			this.checkedCnt = $('input:checkbox[name="checkbox"]:checked').length;
 			if(this.checkedCnt > 0){
 				$("#editBtn").prop("disabled",false);
-				$("#delBtn").prop("disabled",false);	
+				$("#editBtn").attr("class", "btn_azure03");
+				$("#delBtn").prop("disabled",false);
+				$("#delBtn").attr("class", "btn_azure03");	
 			}else{
 				$("#editBtn").prop("disabled",true);
+				$("#editBtn").attr("class", "btn_disabled03");
 				$("#delBtn").prop("disabled",true);	
+				$("#delBtn").attr("class", "btn_disabled03");
 			}	
 		},
 		//체크박스 선택시 타입 변환

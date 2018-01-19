@@ -15,10 +15,10 @@ let ledgerMemo = {
 			let tagIsDel = "";
 			if(ledgerMemo.list[i].state === "delete"){
 				cancleText = "cancleText";
-				tagIsDel = "<button onclick='ledgerMemo.delCan("+i+")'>취소</button></td></tr>";
+				tagIsDel = "<button class='btn_azure02' onclick='ledgerMemo.delCan("+i+")'>취소</button></td></tr>";
 			}else{
 				cancleText = "";
-				tagIsDel = "<button onclick='ledgerMemo.del("+i+")'>삭제</button></td></tr>";
+				tagIsDel = "<button class='btn_azure02' onclick='ledgerMemo.del("+i+")'>삭제</button></td></tr>";
 			}
 			
 			if(emptyCheck.isNotEmpty(this.list[i].memoContent)){

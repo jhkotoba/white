@@ -8,26 +8,20 @@
 <head>
 	<meta charset=UTF-8>
 	<title>whiteHome</title>
+	<link rel="stylesheet" href="resources/css/white.css" type="text/css" />
+	<link rel="stylesheet" href="resources/css/btn.css" type="text/css" />	
+	
 	<script type="text/javascript" src="resources/js/wcommon/jquery/jquery-3.2.0.js"></script>
 	<script type="text/javascript" src="resources/js/wcommon/common.js"></script>
-	<script type="text/javascript">
-	//test start
-	console.log("${sessionScope.authority.developer}");
-	console.log("${sessionScope.authority.administrator}");	
-	console.log("${sessionScope.authority.ledger}");
-	console.log("${sessionScope.authority.user}");
-	//test end
-	
-	</script>
 </head>
 <body>
-	<header>	
+	<header class='header'>	
 		<c:if test="${sessionScope.userId eq null}">			
-			<a href="${contextPath}/loginPage.do">login</a> <br>
+			<a class="btn_azure02" href="${contextPath}/loginPage.do">login</a> <br>
 		</c:if>	
 		<c:if test="${sessionScope.userId ne null}">		
 			${sessionScope.userId}
-			<a href="${contextPath}/logoutProcess.do">logout</a> <br>
+			<a class="btn_azure02" href="${contextPath}/logoutProcess.do">logout</a> <br>
 		</c:if>				
 	</header>
 	<nav>
@@ -64,8 +58,6 @@
 			</c:otherwise>
 		
 		</c:choose>
-				
-		
 	</nav>
 	
 	<c:if test="${requestScope.sidePage != 'NOPAGE'}"> 

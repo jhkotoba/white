@@ -6,8 +6,6 @@
 <meta charset=UTF-8>
 <title>Insert title here</title>
 
-<link rel="stylesheet" href="resources/css/white/white.css" type="text/css" />
-
 <script type="text/javascript" src="resources/js/ledger/ledgerMain.js"></script>	
 <script type="text/javascript" src="resources/js/ledger/selectRecode.js"></script>	
 <script type="text/javascript">
@@ -92,12 +90,11 @@ function memoEdit(idx){
 	
 </head>
 <body>
-	ledgerMain.jsp<br>
-	<button id="memoAddBt">메모 추가</button>
-	<button id="memoSaveBt">메모 저장</button>
-	<button id="memoCancelBt">취소</button>
+	<button class="btn_azure03" id="memoAddBt">메모 추가</button>
+	<button class="btn_azure03" id="memoSaveBt">메모 저장</button>
+	<button class="btn_azure03" id="memoCancelBt">취소</button>
 	<div id="ledgerMemo">
-		<table id='ledgerMemoTb' border=1>
+		<table id='ledgerMemoTb'>
 		</table>
 	</div>
 	<!-- 핸드폰요금 매월 23일<br>
