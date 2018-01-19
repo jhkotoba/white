@@ -27,6 +27,9 @@
 			<mvc:exclude-mapping path="/mainInfo.do"/>
 			<mvc:exclude-mapping path="/source.do"/>
 			
+			<!-- 테스트 -->
+			<mvc:exclude-mapping path="/testMain.do"/>
+			<mvc:exclude-mapping path="/exitTimer.do"/>
 			 
 			<mvc:exclude-mapping path="/ledgerInquire.do"/> 
 			

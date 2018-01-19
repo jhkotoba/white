@@ -121,6 +121,6 @@ function z(n, digits) {
 
  	</div>
 	
-	<h1 id="view">View</h1>
+	<h1>TimerView</h1>
 	<span id="timer">0</span> <span id="timerNm">millisecond</span>
 </body>

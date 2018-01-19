@@ -38,7 +38,7 @@
 				<a href="${contextPath}/source.do">소스코드</a>
 				<a href="${contextPath}/bookmark.do">북마크</a>
 				<a href="${contextPath}/adminPage.do">관리자</a>
-				<a href="${contextPath}/testMain.do">테스트 페이지</a>
+				<a href="${contextPath}/testMain.do">테스트</a>
 			</c:when>
 			
 			<c:when test="${sessionScope.authority.administrator eq 1}">
@@ -46,7 +46,8 @@
 				<a href="${contextPath}/ledgerPage.do">가계부</a>
 				<a href="${contextPath}/source.do">소스코드</a>
 				<a href="${contextPath}/bookmark.do">북마크</a>
-				<a href="${contextPath}/adminPage.do">관리자</a>		
+				<a href="${contextPath}/adminPage.do">관리자</a>
+				<a href="${contextPath}/testMain.do">테스트</a>	
 			</c:when>
 			
 			<c:otherwise>
@@ -59,6 +60,7 @@
 					<a href="${contextPath}/bookmark.do">북마크</a>
 				</c:if>
 				<a href=#>게시판</a>
+				<a href="${contextPath}/testMain.do">테스트</a>
 			</c:otherwise>
 		
 		</c:choose>
