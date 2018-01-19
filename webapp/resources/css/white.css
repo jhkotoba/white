@@ -1,0 +1,14 @@
+.cancleText{
+	text-decoration-line: line-through;
+	color : red;
+}
+
+.header{	
+	font-size: 12px;	
+}
+.header a{
+	text-decoration: none;	
+}
+
+
+
