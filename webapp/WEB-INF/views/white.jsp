@@ -38,7 +38,7 @@
 				<a href="${contextPath}/source.do">소스코드</a>
 				<a href="${contextPath}/bookmark.do">북마크</a>
 				<a href="${contextPath}/adminPage.do">관리자</a>
-				<a href="${contextPath}/testingPage.do">테스트 페이지</a>
+				<a href="${contextPath}/testMain.do">테스트 페이지</a>
 			</c:when>
 			
 			<c:when test="${sessionScope.authority.administrator eq 1}">

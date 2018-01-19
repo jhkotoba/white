@@ -26,7 +26,11 @@ $(document).ready(function(){
 	
 	$("input[name=timeType]").change(function() {		
 		timeType = $(":input:radio[name=timeType]:checked").val();
-		$("#timerNm").text(timeType);
+		if(timeType === "millisecond" || timeType === "second"){
+			$("#timerNm").text(timeType);
+		}else{
+			$("#timerNm").text("");
+		}		
 	});
 });
 
@@ -36,17 +40,10 @@ function startTime(){
 	var inputDate = $("#date").val();
 	var inputtime = $("#time").val();
 	
-	var nowDate = new Date();
-	
-	var gorlDate = new Date(inputDate+ " " + inputtime).getTime();	
+	var gorlDate = new Date(inputDate+ " " + inputtime).getTime();
+	var nowDate = new Date();	
+		
 	var viewSec = gorlDate - nowDate.getTime();
-	
-	if(viewSec < 0){
-		$("#timer").text(0);
-		timeState = false;
-	}else{
-		$("#timer").text(viewSec);
-	}		
 	
 	switch(timeType){
 	
@@ -72,16 +69,44 @@ function startTime(){
 		}
 			
 		break;
+	case "dd_hh:mm:ss.mmm":	
+		timeSpeed = 30;
+	
+		if(viewSec < 0){
+			$("#timer").text(0);
+			timeState = false;
+		}else{
+			
+		  	var day = Math.floor(viewSec / 86400000);
+		    var hour = Math.floor((viewSec/3600000) % 24);
+		    var min = Math.floor((viewSec/60000) % 60);
+		    var sec = Math.floor((viewSec/1000) % 60);
+		    var mil = String(viewSec).substr(String(viewSec).length-3, 3);
+		    
+		    $("#timer").text(day+" Day "+z(hour,2)+":"+z(min,2)+":"+z(sec,2)+"."+mil);
+		}
+		break;
 	}	
 	
 	if(timeState === true)
 		window.setTimeout('startTime()', timeSpeed);	
 }
 
+//숫자 앞 0 추가 함수 n원본 , digits 추가할 0의 개수
+function z(n, digits) {
+	var zero = '';
+	n = n.toString();
+
+	if (n.length < digits) {
+		for (var i = 0; i < digits - n.length; i++)
+		zero += '0';
+	}
+	return zero + n;
+}
 
 </script>
 <body>
-	<a href="/white/testingPage.do">테스트 메인</a><br>	
+	<a href="/white/testMain.do">테스트 메인</a><br>	
 	
 	<input id="date" type="date" value="">
 	<input id="time" type="time" value="18:30:00">
@@ -92,6 +117,8 @@ function startTime(){
 	<div>
 		<input type="radio" name="timeType" checked="checked" value="millisecond" />millisecond
 	 	<input type="radio" name="timeType" value="second" />second	 	
+	 	<input type="radio" name="timeType" value="dd_hh:mm:ss.mmm" />dd_hh:mm:ss.mmm 
+
  	</div>
 	
 	<h1 id="view">View</h1>

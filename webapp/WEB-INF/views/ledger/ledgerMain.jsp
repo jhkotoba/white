@@ -6,11 +6,7 @@
 <meta charset=UTF-8>
 <title>Insert title here</title>
 
-<style type="text/css">
-.cancleLine{
-	text-decoration-line: line-through;
-}
-</style>
+<link rel="stylesheet" href="resources/css/white/white.css" type="text/css" />
 
 <script type="text/javascript" src="resources/js/ledger/ledgerMain.js"></script>	
 <script type="text/javascript" src="resources/js/ledger/selectRecode.js"></script>	
@@ -55,7 +51,7 @@ $(document).ready(function(){
 		    	ledgerMemo.view();
 		    },
 		    error : function(xhr, stat, err) {			    	
-		    	alert("setup error");
+		    	alert("memoSave error");
 		    }
 		});
 	});
@@ -63,7 +59,7 @@ $(document).ready(function(){
 });
 
 //메모 삭제
-function memoDel(idx){	
+/* function memoDel(idx){	
 	
 	//새로운 메모 삭제
 	switch(ledgerMemo.list[idx].state){
@@ -86,7 +82,7 @@ function memoEdit(idx){
 		ledgerMemo.list[idx].state = "update";	
 	}
 	
-}
+} */
 	
 	
 </script>

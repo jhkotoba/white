@@ -16,9 +16,9 @@ import com.ljh.white.common.utility.WhiteDate;
 @Controller
 public class TestingController {
 	
-	@RequestMapping(value="/testingPage.do")
+	@RequestMapping(value="/testMain.do")
 	public String testingPage(HttpServletRequest request, HttpServletResponse response){
-		return "testing.jsp";		
+		return "test/testMain.jsp";		
 	}
 	
 	@RequestMapping(value="/exitTimer.do")
