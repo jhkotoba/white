@@ -28,7 +28,7 @@
 			pur.purpose	AS purpose,
 			IFNULL(purDtl.pur_detail,'') AS purDetail,
 			IFNULL(bank.bank_name, '현금')	AS bankName,
-      		IFNULL(bank.bank_account, 'cash')	AS bankAccount,
+			IFNULL(bank.bank_account, 'cash')	AS bankAccount,
 			IFNULL(bank.bank_now_use_yn,'X') AS bankNowUseYN
 		FROM money_record_re rec
 		LEFT OUTER JOIN purpose pur

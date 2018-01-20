@@ -56,22 +56,25 @@ public class LedgerReService {
 			}
 
 			//현금쪽 각 행마다 money 증감
-			if(recList.get(i).get("bankSeq")==null || 
-					"".equals(recList.get(i).getString("bankSeq")) || 
-					"0".equals(recList.get(i).getString("bankSeq"))) {
-				
+			if("0".equals(recList.get(i).getString("bankSeq"))) {				
 				int cash = moneyMap.getInt("0");
 				cash += recList.get(i).getInt("money");
-				moneyMap.put("0", cash);			
-			}else{
+				moneyMap.put("0", cash);				
 				
+			//각각은행 money 증감
+			}else{				
 				String bankSeq = recList.get(i).getString("bankSeq");
 				int bankMoney = moneyMap.getInt(bankSeq);
 				bankMoney += recList.get(i).getInt("money");
 				moneyMap.put(bankSeq, bankMoney);				
 			}
 			
-			
+			//현금이동시 받는쪽 추가
+			if(!("".equals(recList.get(i).getString("moveSeq")) || recList.get(i).getString("moveSeq")==null)){				
+				int addMoveMoney = moneyMap.getInt(recList.get(i).getString("moveSeq"));
+				addMoveMoney += Math.abs(recList.get(i).getInt("money"));
+				moneyMap.put(recList.get(i).getString("moveSeq"), addMoveMoney);
+			}
 			
 			//현금금액 증감 map추가
 			recList.get(i).put("cash", moneyMap.getInt("0"));
@@ -82,7 +85,6 @@ public class LedgerReService {
 			}
 						
 		}
-		
 		
 		return recList;
 	}
