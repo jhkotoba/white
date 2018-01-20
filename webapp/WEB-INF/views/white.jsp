@@ -29,6 +29,7 @@
 			<c:when test="${sessionScope.authority.developer eq 1}">
 				<a href="${contextPath}/mainInfo.do">메인화면</a>
 				<a href="${contextPath}/ledgerPage.do">가계부</a>
+				<a href="${contextPath}/ledgerReMain.do">가계부Re</a>
 				<a href="${contextPath}/source.do">소스코드</a>
 				<a href="${contextPath}/bookmark.do">북마크</a>
 				<a href="${contextPath}/adminPage.do">관리자</a>
@@ -38,6 +39,7 @@
 			<c:when test="${sessionScope.authority.administrator eq 1}">
 				<a href="${contextPath}/mainInfo.do">메인화면</a>
 				<a href="${contextPath}/ledgerPage.do">가계부</a>
+				<a href="${contextPath}/ledgerReMain.do">가계부Re</a>
 				<a href="${contextPath}/source.do">소스코드</a>
 				<a href="${contextPath}/bookmark.do">북마크</a>
 				<a href="${contextPath}/adminPage.do">관리자</a>

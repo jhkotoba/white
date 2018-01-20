@@ -80,7 +80,7 @@
 			rec.purpose_seq 		AS purposeSeq,
 		   	pur.purpose 			AS purpose,	
 		   	rec.pur_detail_seq 		AS purDetailSeq,
-      		IFNULL(purDtk.pur_detail,'') AS purDetail,						
+      		IFNULL(purDtl.pur_detail,'') AS purDetail,						
 			rec.user_bank_seq 		AS userBankSeq,			
 			rec.move_to_seq			AS moveToSeq,	
       		IFNULL(bank.bank_name, '현금')	AS bankName,
@@ -92,7 +92,7 @@
 		FROM money_record rec
 		LEFT OUTER JOIN purpose pur
 			ON rec.purpose_seq = pur.purpose_seq
-		LEFT OUTER JOIN purpose_detail purDtk
+		LEFT OUTER JOIN purpose_detail purDtl
 			ON rec.pur_detail_seq = purDtk.pur_detail_seq
 		LEFT OUTER JOIN user_bank bank
     		ON rec.user_bank_seq = bank.user_bank_seq 

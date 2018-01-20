@@ -25,7 +25,7 @@ public class WhiteMap extends HashMap<String, Object> {
 		
 		this.put("userId", userId);
 		this.put("userSeq", request.getSession(false).getAttribute("userSeq").toString());		
-		this.put("path", request.getSession().getServletContext().getRealPath("\\"));		
+		/*this.put("path", request.getSession().getServletContext().getRealPath("\\"));*/		
 		
 		Enumeration<String> enumeration = request.getParameterNames();
 		
