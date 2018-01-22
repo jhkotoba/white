@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -31,14 +32,17 @@ public class LedgerReController {
 		
 	}
 	
-	@RequestMapping(value="/selectRecordList.do" )
+	@RequestMapping(value="/ledgerRe/selectRecordList.do" )
 	public String selectRecordList(HttpServletRequest request){
 		
-		WhiteMap paramMap = new WhiteMap(request);		
-		List<WhiteMap> bankList = ledgerReService.selectBankList(paramMap);
+		WhiteMap param = new WhiteMap(request);		
+		List<WhiteMap> bankList = ledgerReService.selectBankList(param);
+
+		JSONObject result = new JSONObject();
+		result.put("bankList", new JSONArray(bankList));
+		result.put("recList", new JSONArray(ledgerReService.selectRecordList(param, bankList)));			
+		request.setAttribute("result", result);	
 		
-		request.setAttribute("bankList", new JSONArray(bankList));	
-		request.setAttribute("recList", new JSONArray(ledgerReService.selectRecordList(paramMap, bankList)));			
-		return "ledgerRe/ledgerReMain.jsp";
+		return "result.jsp";
 	}
 }

@@ -7,14 +7,41 @@
 <title>Insert title here</title>
 
 <script type="text/javascript" src="resources/js/wcommon/jquery/jquery-3.2.0.js"></script>
+<script type="text/javascript" src="resources/js/wcommon/common.js"></script>
+<script type="text/javascript" src="resources/js/ledgerRe/ledgerRe.js"></script>
 
 <script type="text/javascript">
 $(document).ready(function(){
 	
-	let recList = JSON.parse('${recList}');	
-	let bankList = JSON.parse('${bankList}');	
-	console.log(recList);
+	$("#startDate").val(isDate.firstDay());
+	$("#endDate").val(isDate.lastDay())	
+
+	$("#recShBt").click(function(){	
+		
+		let param = {};
+		param.startDate =  $("#startDate").val() + " 00:00:00";
+		param.endData = $("#endDate").val() + " 23:59:59";
+		
+		$.ajax({		
+			type: 'POST',
+			url: common.path()+'/ledgerRe/selectRecordList.do',	
+			data: param,
+			dataType: 'json',
+		    success : function(data) {	    	
+		    				   
+		    	console.log(data);
+		    	
+		    },
+		    error : function(request, status, error){
+		    	alert("error");
+		    }
+		});
+		
+	});
 	
+	/* let recList = JSON.parse('${recList}');	
+	let bankList = JSON.parse('${bankList}');	
+		
 	let tag = "<table border=1>"
 			+ "<tr>"
 			+ "<th>recordSeq</th>"
@@ -32,9 +59,7 @@ $(document).ready(function(){
 		tag += "<tr>";
 	
 	for(let i=recList.length-1; i>=0; i--){
-		
-		//amount += data[i].money;
-		
+			
 		tag += "<tr>";
 		tag += "<td>"+recList[i].recordSeq+"</td>";
 		tag += "<td>"+recList[i].recordDate+"</td>";
@@ -53,20 +78,23 @@ $(document).ready(function(){
 	}
 	
 	tag +="</table>";
-	$("#ledgerReList").append(tag);
+	$("#ledgerReList").append(tag); */
 	
 });
+
+
 </script>
 </head>
 <body>
 	<a href="/white/mainInfo.do">메인화면</a><br>
 	
-	record_money_re 전체조회<br>
-	<a href="/white/selectRecordList.do">selectRecordList(전체조회)</a><br><br>
+	<!-- record_money_re 전체조회<br>
+	<a href="/white/selectRecordList.do">selectRecordList(전체조회)</a><br><br> -->
 	
 	record_money_re 기간조회<br>
 	<input id="startDate" type="date" value="">
 	<input id="endDate" type="date" value="">
+	<button id="recShBt">조회</button>
 	
 	<div id="ledgerReList">		
 	</div>		

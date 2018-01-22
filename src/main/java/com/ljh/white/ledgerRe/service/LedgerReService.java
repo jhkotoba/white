@@ -1,7 +1,6 @@
 package com.ljh.white.ledgerRe.service;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -23,17 +22,17 @@ public class LedgerReService {
 	 * @param paramMap
 	 * @return
 	 */
-	public List<WhiteMap> selectBankList(WhiteMap paramMap){		
-		return ledgerReMapper.selectBankList(paramMap);	
+	public List<WhiteMap> selectBankList(WhiteMap param){		
+		return ledgerReMapper.selectBankList(param);	
 	}
 	/**
 	 * 개발중...
 	 * @param paramMap
 	 * @return
 	 */
-	public List<WhiteMap> selectRecordList(WhiteMap paramMap, List<WhiteMap> bankList) {		
+	public List<WhiteMap> selectRecordList(WhiteMap param, List<WhiteMap> bankList) {		
 						
-		List<WhiteMap> recList = ledgerReMapper.selectRecordList(paramMap);	
+		List<WhiteMap> recList = ledgerReMapper.selectRecordList(param);	
 		
 		//총계 변수에 금액 증감
 		int amount = 0;		

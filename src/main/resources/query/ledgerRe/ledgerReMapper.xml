@@ -18,7 +18,7 @@
 	<select id="selectRecordList" resultType="whiteMap" parameterType="Map">
 		SELECT 
 			rec.record_seq AS recordSeq,
-			rec.record_date AS recordDate,
+			DATE_FORMAT(rec.record_date,'%Y-%m-%d %H:%i:%s') AS recordDate,
 			rec.content,
 			rec.pur_seq AS purSeq,
 			rec.pur_dtl_seq AS purDtlSeq,
@@ -38,6 +38,8 @@
 		LEFT OUTER JOIN user_bank bank
     		ON rec.bank_seq = bank.user_bank_seq
 		WHERE rec.user_seq = #{userSeq}
+	<!-- 	AND rec.record_date <![CDATA[ >=  ]]> #{startDate}
+		AND rec.record_date <![CDATA[ <   ]]> #{endDate} -->
 		ORDER BY record_date ASC
 	</select>
 	

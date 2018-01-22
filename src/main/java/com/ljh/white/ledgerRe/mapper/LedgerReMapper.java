@@ -1,7 +1,6 @@
 package com.ljh.white.ledgerRe.mapper;
 
 import java.util.List;
-import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +19,8 @@ public class LedgerReMapper {
 	 * @param paramMap
 	 * @return
 	 */
-	public List<WhiteMap> selectBankList(Map<String, Object> paramMap) {
-		return sqlSession.selectList("ledgerReMapper.selectBankList", paramMap);
+	public List<WhiteMap> selectBankList(WhiteMap param) {
+		return sqlSession.selectList("ledgerReMapper.selectBankList", param);
 	}
 	
 	/**
@@ -29,7 +28,7 @@ public class LedgerReMapper {
 	 * @param paramMap
 	 * @return
 	 */
-	public List<WhiteMap> selectRecordList(Map<String, Object> paramMap) {
-		return sqlSession.selectList("ledgerReMapper.selectRecordList", paramMap);
+	public List<WhiteMap> selectRecordList(WhiteMap param) {
+		return sqlSession.selectList("ledgerReMapper.selectRecordList", param);
 	}
 }
