@@ -40,8 +40,8 @@ public class LedgerReService {
 		//현금,은행별금액  금액증감
 		WhiteMap moneyMap = new WhiteMap();
 		moneyMap.put("0", 0);
-		for(int k=0; k<bankList.size(); k++) {
-			moneyMap.put(bankList.get(k).getString("userBankSeq"), 0);
+		for(int i=0; i<bankList.size(); i++) {
+			moneyMap.put(bankList.get(i).getString("userBankSeq"), 0);
 		}
 		
 		for(int i=0; i<recList.size(); i++) {
@@ -87,5 +87,4 @@ public class LedgerReService {
 		
 		return recList;
 	}
-
 }

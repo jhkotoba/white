@@ -20,7 +20,7 @@ $(document).ready(function(){
 		
 		let param = {};
 		param.startDate =  $("#startDate").val() + " 00:00:00";
-		param.endData = $("#endDate").val() + " 23:59:59";
+		param.endDate = $("#endDate").val() + " 23:59:59";
 		
 		$.ajax({		
 			type: 'POST',
