@@ -19,11 +19,9 @@ public class WhiteMap extends HashMap<String, Object> {
 		super();
 	}	
 	
-	public WhiteMap(HttpServletRequest request){
-		
-		String userId = request.getSession(false).getAttribute("userId").toString();		
-		
-		this.put("userId", userId);
+	public WhiteMap(HttpServletRequest request){		
+				
+		this.put("userId", request.getSession(false).getAttribute("userId").toString());
 		this.put("userSeq", request.getSession(false).getAttribute("userSeq").toString());
 					
 		Enumeration<String> enumeration = request.getParameterNames();
@@ -41,7 +39,7 @@ public class WhiteMap extends HashMap<String, Object> {
 			}			
 		}
 		
-		logger.debug("WhiteMap: "+this);
+		logger.debug("new WhiteMap(request): "+this);
 	}
 	
 	public int getInt(String key){

@@ -31,4 +31,13 @@ public class LedgerReMapper {
 	public List<WhiteMap> selectRecordList(WhiteMap param) {
 		return sqlSession.selectList("ledgerReMapper.selectRecordList", param);
 	}
+	
+	/**
+	 * 금전기록 해당날짜 이전 각각 금액 합산 조회
+	 * @param pastRec
+	 * @return
+	 */
+	public WhiteMap selectCalPastRecord(List<WhiteMap> pastRecList) {
+		return sqlSession.selectOne("ledgerReMapper.selectCalPastRecord", pastRecList);
+	}
 }

@@ -1,5 +1,6 @@
 package com.ljh.white.ledgerRe.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -26,7 +27,7 @@ public class LedgerReService {
 		return ledgerReMapper.selectBankList(param);	
 	}
 	/**
-	 * 개발중...
+	 * 금전기록 조회
 	 * @param paramMap
 	 * @return
 	 */
@@ -34,14 +35,34 @@ public class LedgerReService {
 						
 		List<WhiteMap> recList = ledgerReMapper.selectRecordList(param);	
 		
+		//금전기록 기간 조회시 기간 이전  각각 금액 데이터 합산
+		List<WhiteMap> pastRecList = new ArrayList<WhiteMap>();
+		WhiteMap map = null;
+		for(int i=0; i<bankList.size()+1; i++) {
+			map = new WhiteMap();
+			if(i==0) {
+				map.put("bankName", "cash");
+				map.put("bankSeq", 0);				
+				map.put("userSeq", param.getInt("userSeq"));
+				map.put("startDate", param.getString("startDate"));
+			}else {
+				map.put("bankName", "bank"+(i-1));
+				map.put("bankSeq", bankList.get(i-1).getInt("userBankSeq")); //userBankSeq -> bankSeq 추후  컬럼명 수정 필요
+				map.put("userSeq", param.getInt("userSeq"));
+				map.put("startDate", param.getString("startDate"));
+			}
+			pastRecList.add(map);
+		}		
+		WhiteMap pastRec = ledgerReMapper.selectCalPastRecord(pastRecList);	
+		
 		//총계 변수에 금액 증감
 		int amount = 0;		
 		
 		//현금,은행별금액  금액증감
 		WhiteMap moneyMap = new WhiteMap();
-		moneyMap.put("0", 0);
+		moneyMap.put("0", pastRec == null ? 0 : pastRec.getInt("cash"));
 		for(int i=0; i<bankList.size(); i++) {
-			moneyMap.put(bankList.get(i).getString("userBankSeq"), 0);
+			moneyMap.put(bankList.get(i).getString("userBankSeq"), pastRec == null ? 0 : pastRec.getInt("bank"+i) );
 		}
 		
 		for(int i=0; i<recList.size(); i++) {

@@ -44,4 +44,22 @@
 		ORDER BY record_date ASC
 	</select>
 	
+	<select id="selectCalPastRecord" resultType="whiteMap" parameterType="java.util.List">
+		SELECT
+		<foreach collection="list" item="item" separator=",">
+			(
+			  SELECT 
+			    SUM( 
+			      CASE
+			      WHEN bank_seq = #{item.bankSeq} THEN money
+			      WHEN move_seq = #{item.bankSeq} THEN ABS(money)
+			      END
+			    )
+			  FROM money_record_re
+			  WHERE user_seq = #{item.userSeq} 
+			  AND record_date <![CDATA[ < ]]>  #{item.startDate}
+			)AS ${item.bankName}	
+		</foreach>
+	</select>
+	
 </mapper>
