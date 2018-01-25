@@ -28,9 +28,9 @@ $(document).ready(function(){
 			data: param,
 			dataType: 'json',
 		    success : function(data) {	    	
-		    				   
-		    	console.log(data);
-		    	
+		    	rec.recList = data.recList;
+		    	rec.bankList = data.bankList;
+		    	rec.view();		    	
 		    },
 		    error : function(request, status, error){
 		    	alert("error");

@@ -17,9 +17,9 @@ let rec = {
 				+ "<th>purpose</th>"
 				+ "<th>purDetail</th>"
 				+ "<th>bankName</th>"
-				+ "<th>money</th>"
-				+ "<th>cash</th>"
-				+ "<th>amount</th>";
+				+ "<th>money</th>"				
+				+ "<th>amount</th>"
+				+ "<th>cash</th>";
 				for(let i=0; i<this.bankList.length; i++){
 					tag += "<th>"+this.bankList[i].bankName+"("+(this.bankList[i].bankAccount==="cash" ? "":this.bankList[i].bankAccount) +")</th>";
 				}	
@@ -34,9 +34,9 @@ let rec = {
 			tag += "<td>"+this.recList[i].purpose+"</td>";
 			tag += "<td>"+this.recList[i].purDetail+"</td>";
 			tag += "<td>"+this.recList[i].bankName+"</td>";
-			tag += "<td>"+this.recList[i].money+"</td>";
-			tag += "<td>"+this.recList[i].cash+"</td>";
+			tag += "<td>"+this.recList[i].money+"</td>";			
 			tag += "<td>"+this.recList[i].amount+"</td>";
+			tag += "<td>"+this.recList[i].cash+"</td>";
 			
 			for(let j=0; j<this.bankList.length; j++){
 				tag += "<td>"+this.recList[i]["bank"+j]+"</td>";
