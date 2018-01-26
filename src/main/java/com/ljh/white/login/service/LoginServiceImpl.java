@@ -23,8 +23,6 @@ public class LoginServiceImpl implements LoginService {
 	
 	@Override
 	public boolean loginUserCheck(String userId, String passwd){		
-		logger.debug("userId: "+userId + ", passwd:"+passwd);		
-		
 		WhiteUesrVO whiteUesrVO = new WhiteUesrVO();
 		
 		if(userId.toUpperCase().contains("SELECT"))
@@ -37,9 +35,7 @@ public class LoginServiceImpl implements LoginService {
 	}
 
 	@Override
-	public AuthBean getUserAuthority(int userSeq) {		
-		logger.debug("userSeq: "+userSeq);		
-		
+	public AuthBean getUserAuthority(int userSeq) {				
 		return new AuthBean(loginMapper.getUserAuthority(userSeq));
 	}
 	
