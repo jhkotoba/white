@@ -23,17 +23,25 @@ public class LedgerReController {
 	@Resource(name = "LedgerReService")
 	private LedgerReService ledgerReService;
 	
-	@RequestMapping(value="/ledgerReMain.do" )
+	
+	
+	
+	
+	@RequestMapping(value="/ledgerRe/ledgerReMain.do" )
 	public String ledgerReMain(HttpServletRequest request){
 		logger.debug("ledgerReTest Start");
 		
-		return "ledgerRe/ledgerReMain.jsp";
 		
+		request.setAttribute("sidePage", "ledgerRe/ledgerReSide.jsp");		
+		request.setAttribute("sectionPage", "ledgerRe/ledgerReMain.jsp");	
 		
+		return "white.jsp";
+		//return "ledgerRe/ledgerReMain.jsp";		
 	}
 	
-	@RequestMapping(value="/ledgerRe/selectRecordList.do" )
+	@RequestMapping(value="/ledgerRe/ajax/selectRecordList.do" )
 	public String selectRecordList(HttpServletRequest request){
+		logger.debug("selectRecordList Start");
 		
 		WhiteMap param = new WhiteMap(request);		
 		List<WhiteMap> bankList = ledgerReService.selectBankList(param);

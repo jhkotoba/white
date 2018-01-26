@@ -1,3 +1,13 @@
+.sideMenu{
+	position: absolute;
+}
+.viewPage{
+    position: absolute;
+    left: 150px;
+    top: 70px;
+    float: left;
+}
+
 .cancleText{
 	text-decoration-line: line-through;
 	color : red;
