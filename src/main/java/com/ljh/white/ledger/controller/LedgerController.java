@@ -24,7 +24,11 @@ import com.ljh.white.common.Constant;
 import com.ljh.white.common.collection.WhiteMap;
 import com.ljh.white.ledger.service.LedgerService;
 import com.ljh.white.memo.service.MemoService;
-
+import java.io.Serializable;
+/**  리뉴얼로 대체
+ * @author lee
+ * @deprecated
+ */
 @Controller
 public class LedgerController {
 	

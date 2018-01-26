@@ -37,7 +37,11 @@ import com.ljh.white.ledger.mapper.LedgerMapper;
 import com.ljh.white.ledger.service.LedgerService;
 
 
-
+import java.io.Serializable;
+/**  리뉴얼로 대체
+ * @author lee
+ * @deprecated
+ */
 @Service("LedgerService")
 public class LedgerServiceImpl implements LedgerService{
 	

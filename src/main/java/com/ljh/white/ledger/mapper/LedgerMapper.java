@@ -16,7 +16,11 @@ import com.ljh.white.ledger.bean.MoneyRecordBean;
 import com.ljh.white.ledger.bean.PurposeBean;
 import com.ljh.white.ledger.bean.PurposeDetailBean;
 import com.ljh.white.ledger.bean.UserBankBean;
-
+import java.io.Serializable;
+/**  리뉴얼로 대체
+ * @author lee
+ * @deprecated
+ */
 @Repository("LedgerMapper")
 public class LedgerMapper {
 	

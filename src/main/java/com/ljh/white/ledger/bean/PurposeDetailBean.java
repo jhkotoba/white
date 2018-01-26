@@ -1,7 +1,11 @@
 package com.ljh.white.ledger.bean;
 
 import java.io.Serializable;
-
+import java.io.Serializable;
+/**  리뉴얼로 대체
+ * @author lee
+ * @deprecated
+ */
 public class PurposeDetailBean implements Serializable{
 	
 	private static final long serialVersionUID = 2521975016873285653L;
