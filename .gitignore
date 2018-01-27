@@ -3,6 +3,7 @@
 
 dataSource.properties
 white_insert.sql
+Constant.java
 
 *.class
 *.dll
