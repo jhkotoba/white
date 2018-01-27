@@ -82,6 +82,10 @@ let isDate = {
 	today : function(){
 		return this.dateProcess(0, "today");
 	},
+	//현재날짜 반환 yyyy-MM-(dd+day)
+	/*todayAddDay : function(isDay){
+		
+	},*/
 	//현재날짜 반환 yyyy-(MM+isMonth)-dd
 	addMonToday : function(isMonth){
 		return this.dateProcess(isMonth, "today");

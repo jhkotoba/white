@@ -42,14 +42,14 @@ function sideSubmit(id){
 	
 	<div id="sideMenu" class="sideMenu">		
 		<ul>
-			<li id="main">메인</li>
-			<li id="select">조회</li>
-			<li id="insert">입력</li>
-			<li id="stats">통계</li>
-			<li id="setup">설정</a>				
+			<li id="Main">메인</li>
+			<li id="Select">조회</li>
+			<li id="Insert">입력</li>
+			<li id="Stats">통계</li>
+			<li id="Setup">설정				
 				<ol style="display: none">			
-					<li id="purpose">목적설정</li>
-					<li id="bank">은행설정</li>										
+					<li id="Purpose">목적설정</li>
+					<li id="Bank">은행설정</li>										
 				</ol>
 			</li>					
 		</ul>		

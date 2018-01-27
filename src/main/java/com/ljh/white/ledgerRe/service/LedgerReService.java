@@ -33,8 +33,6 @@ public class LedgerReService {
 	 */
 	public List<WhiteMap> selectRecordList(WhiteMap param, List<WhiteMap> bankList) {		
 						
-		List<WhiteMap> recList = ledgerReMapper.selectRecordList(param);	
-		
 		//금전기록 기간 조회시 기간 이전  각각 금액 데이터 합산
 		List<WhiteMap> pastRecList = new ArrayList<WhiteMap>();
 		WhiteMap map = null;
@@ -53,7 +51,11 @@ public class LedgerReService {
 			}
 			pastRecList.add(map);
 		}		
-		WhiteMap pastRec = ledgerReMapper.selectCalPastRecord(pastRecList);	
+		WhiteMap pastRec = ledgerReMapper.selectCalPastRecord(pastRecList);		
+		
+		
+		//금전기록 조회
+		List<WhiteMap> recList = ledgerReMapper.selectRecordList(param);
 		
 		//총계 변수에 금액 증감
 		int amount = 0;		

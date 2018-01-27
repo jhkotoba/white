@@ -31,12 +31,32 @@ public class LedgerReController {
 	public String ledgerReMain(HttpServletRequest request){
 		logger.debug("ledgerReTest Start");
 		
+		String sectionPage = request.getParameter("move");
+		System.out.println(request.getParameter("move"));		
+		
+		switch(sectionPage){
+		case "Select" :
+			break;
+		case "Insert" :			
+			break;
+		case "Purpose" :
+			break;
+		case "Bank" :
+			break;
+		case "Main" :
+		default:
+			
+			break;
+		}
+			
+		//page	
+		//request.setAttribute("sidePage", "ledger/ledgerSide.jsp");		
+		//request.setAttribute("sectionPage", "ledgerRe/ledgerRe"+sectionPage+".jsp");
 		
 		request.setAttribute("sidePage", "ledgerRe/ledgerReSide.jsp");		
-		request.setAttribute("sectionPage", "ledgerRe/ledgerReMain.jsp");	
+		request.setAttribute("sectionPage", "ledgerRe/ledgerReMain.jsp");
 		
 		return "white.jsp";
-		//return "ledgerRe/ledgerReMain.jsp";		
 	}
 	
 	@RequestMapping(value="/ledgerRe/ajax/selectRecordList.do" )

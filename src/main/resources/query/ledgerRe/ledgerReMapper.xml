@@ -43,10 +43,11 @@
 		AND rec.record_date <![CDATA[ >= ]]> #{startDate}
 		AND rec.record_date <![CDATA[ <  ]]> #{endDate}
 		</if>	 	
-		ORDER BY record_date ASC
-		<!-- <if test="limit != '' and limit != null">
-		LIMIT ${limit}
-		</if> -->
+		ORDER BY record_date DESC
+		<if test="limit != '' and limit != null">
+		Limit ${limit}
+		</if>
+		
 	</select>
 	
 	<select id="selectCalPastRecord" resultType="whiteMap" parameterType="java.util.List">

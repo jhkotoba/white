@@ -25,7 +25,7 @@ let rec = {
 				}	
 			tag += "<tr>";
 		
-		for(let i=this.recList.length-1; i>=0; i--){
+		for(let i=0; i<this.recList.length; i++){
 				
 			tag += "<tr>";
 			tag += "<td>"+this.recList[i].recordSeq+"</td>";
@@ -43,6 +43,24 @@ let rec = {
 			}		
 			tag += "</tr>";		
 		}
+		/*for(let i=this.recList.length-1; i>=0; i--){
+			
+			tag += "<tr>";
+			tag += "<td>"+this.recList[i].recordSeq+"</td>";
+			tag += "<td>"+this.recList[i].recordDate+"</td>";
+			tag += "<td>"+this.recList[i].content+"</td>";
+			tag += "<td>"+this.recList[i].purpose+"</td>";
+			tag += "<td>"+this.recList[i].purDetail+"</td>";
+			tag += "<td>"+this.recList[i].bankName+"</td>";
+			tag += "<td>"+this.recList[i].money+"</td>";			
+			tag += "<td>"+this.recList[i].amount+"</td>";
+			tag += "<td>"+this.recList[i].cash+"</td>";
+			
+			for(let j=0; j<this.bankList.length; j++){
+				tag += "<td>"+this.recList[i]["bank"+j]+"</td>";
+			}		
+			tag += "</tr>";		
+		}*/
 		
 		tag +="</table>";
 		$("#ledgerReList").append(tag);
