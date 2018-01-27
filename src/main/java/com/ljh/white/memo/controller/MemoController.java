@@ -19,7 +19,7 @@ public class MemoController {
 	@RequestMapping(value="/ajax/selectMemoList.do" )
 	public String selectMemoList(HttpServletRequest request){
 		
-		String userSeq = request.getSession(false).getAttribute("userSeq").toString();
+		int userSeq = Integer.parseInt(request.getSession(false).getAttribute("userSeq").toString());
 		String memoType = request.getParameter("memoType");		
 		
 		request.setAttribute("memoList", memoService.selectMemoList(userSeq, memoType));

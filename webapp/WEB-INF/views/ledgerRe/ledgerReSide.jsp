@@ -10,7 +10,7 @@
 $(document).ready(function(){			
 	$("#sideMenu>ul>li").click(function(){
 		
-		if(this.id === "setup"){
+		if(this.id === "Setup"){
 			let taget = $("#"+this.id+">ol");
 			if(taget.css("display")==="none"){
 				taget.show();

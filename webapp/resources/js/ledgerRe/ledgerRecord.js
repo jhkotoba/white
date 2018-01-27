@@ -1,5 +1,5 @@
 /**
- * ledgerRe.js
+ * ledgerRecord.js
  */
 
 let rec = {
@@ -25,7 +25,7 @@ let rec = {
 				}	
 			tag += "<tr>";
 		
-		for(let i=0; i<this.recList.length; i++){
+		/*for(let i=0; i<this.recList.length; i++){
 				
 			tag += "<tr>";
 			tag += "<td>"+this.recList[i].recordSeq+"</td>";
@@ -42,8 +42,8 @@ let rec = {
 				tag += "<td>"+this.recList[i]["bank"+j]+"</td>";
 			}		
 			tag += "</tr>";		
-		}
-		/*for(let i=this.recList.length-1; i>=0; i--){
+		}*/
+		for(let i=this.recList.length-1; i>=0; i--){
 			
 			tag += "<tr>";
 			tag += "<td>"+this.recList[i].recordSeq+"</td>";
@@ -60,7 +60,7 @@ let rec = {
 				tag += "<td>"+this.recList[i]["bank"+j]+"</td>";
 			}		
 			tag += "</tr>";		
-		}*/
+		}
 		
 		tag +="</table>";
 		$("#ledgerReList").append(tag);

@@ -43,10 +43,10 @@
 		AND rec.record_date <![CDATA[ >= ]]> #{startDate}
 		AND rec.record_date <![CDATA[ <  ]]> #{endDate}
 		</if>	 	
-		ORDER BY record_date DESC
-		<if test="limit != '' and limit != null">
+		ORDER BY record_date ASC
+		<!-- <if test="limit != '' and limit != null">
 		Limit ${limit}
-		</if>
+		</if> -->
 		
 	</select>
 	

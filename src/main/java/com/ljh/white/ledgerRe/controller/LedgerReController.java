@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.ljh.white.common.collection.WhiteMap;
 import com.ljh.white.ledgerRe.service.LedgerReService;
+import com.ljh.white.memo.service.MemoService;
 
 @Controller
 public class LedgerReController {
@@ -23,8 +24,8 @@ public class LedgerReController {
 	@Resource(name = "LedgerReService")
 	private LedgerReService ledgerReService;
 	
-	
-	
+	@Resource(name = "MemoService")
+	private MemoService memoService;	
 	
 	
 	@RequestMapping(value="/ledgerRe/ledgerReMain.do" )
@@ -32,8 +33,9 @@ public class LedgerReController {
 		logger.debug("ledgerReTest Start");
 		
 		String sectionPage = request.getParameter("move");
-		System.out.println(request.getParameter("move"));		
+		int userSeq = Integer.parseInt(request.getSession(false).getAttribute("userSeq").toString());
 		
+		if(sectionPage == null) sectionPage = "Main";		
 		switch(sectionPage){
 		case "Select" :
 			break;
@@ -44,18 +46,12 @@ public class LedgerReController {
 		case "Bank" :
 			break;
 		case "Main" :
-		default:
-			
+			request.setAttribute("memoList", memoService.selectMemoList(userSeq, "ledger"));
 			break;
 		}
 			
-		//page	
-		//request.setAttribute("sidePage", "ledger/ledgerSide.jsp");		
-		//request.setAttribute("sectionPage", "ledgerRe/ledgerRe"+sectionPage+".jsp");
-		
 		request.setAttribute("sidePage", "ledgerRe/ledgerReSide.jsp");		
-		request.setAttribute("sectionPage", "ledgerRe/ledgerReMain.jsp");
-		
+		request.setAttribute("sectionPage", "ledgerRe/ledgerRe"+sectionPage+".jsp");
 		return "white.jsp";
 	}
 	

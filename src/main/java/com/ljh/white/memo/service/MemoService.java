@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ljh.white.memo.bean.MemoBean;
 import com.ljh.white.memo.mapper.MemoMapper;
 
 @Service("MemoService")
@@ -23,7 +22,7 @@ public class MemoService{
 	private MemoMapper memoMapper;
 	
 	
-	public JSONArray selectMemoList(String userSeq, String memoType){
+	public JSONArray selectMemoList(int userSeq, String memoType){
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("userSeq", userSeq);

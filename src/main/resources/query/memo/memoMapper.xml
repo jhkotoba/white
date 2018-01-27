@@ -13,6 +13,7 @@
 		FROM memo
 		WHERE user_seq = #{userSeq}
 		AND memo_type = #{memoType}
+		ORDER BY memo_seq ASC
 	</select>
 	
 	<!-- 메모리스트 추가 -->

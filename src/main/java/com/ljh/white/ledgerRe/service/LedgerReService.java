@@ -51,21 +51,24 @@ public class LedgerReService {
 			}
 			pastRecList.add(map);
 		}		
-		WhiteMap pastRec = ledgerReMapper.selectCalPastRecord(pastRecList);		
-		
+		WhiteMap pastRec = ledgerReMapper.selectCalPastRecord(pastRecList);
 		
 		//금전기록 조회
 		List<WhiteMap> recList = ledgerReMapper.selectRecordList(param);
-		
 		//총계 변수에 금액 증감
 		int amount = 0;		
 		
 		//현금,은행별금액  금액증감
+		int m = 0;
 		WhiteMap moneyMap = new WhiteMap();
-		moneyMap.put("0", pastRec == null ? 0 : pastRec.getInt("cash"));
+		m = pastRec == null ? 0 : pastRec.getInt("cash");
+		moneyMap.put("0", m);
+		amount += m;
 		for(int i=0; i<bankList.size(); i++) {
-			moneyMap.put(bankList.get(i).getString("userBankSeq"), pastRec == null ? 0 : pastRec.getInt("bank"+i) );
-		}
+			m = pastRec == null ? 0 : pastRec.getInt("bank"+i);
+			moneyMap.put(bankList.get(i).getString("userBankSeq"), m );			
+			amount += m;
+		}		
 		
 		for(int i=0; i<recList.size(); i++) {
 			
