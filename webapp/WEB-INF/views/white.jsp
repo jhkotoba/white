@@ -64,10 +64,10 @@
 	
 	<c:choose>
 		<c:when test="${requestScope.sidePage != 'NOPAGE'}">
-			<section class="sideMenu">
+			<section class="sideView">
 				<jsp:include page="${requestScope.sidePage}" flush="false" />
 			</section>
-			<section class="viewPage">
+			<section class="mainView">
 				<jsp:include page="${requestScope.sectionPage}" flush="false" />
 			</section>
 		</c:when>

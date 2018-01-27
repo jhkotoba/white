@@ -40,7 +40,7 @@ function sideSubmit(id){
 		<input id="move" name="move" type="hidden" value=""></input>
 	</form>	
 	
-	<div id="sideMenu">		
+	<div id="sideMenu" class="sideMenu">		
 		<ul>
 			<li id="main">메인</li>
 			<li id="select">조회</li>

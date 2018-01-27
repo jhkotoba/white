@@ -1,11 +1,18 @@
-.sideMenu{
+.sideView{
 	position: absolute;
 }
-.viewPage{
+.mainView{
     position: absolute;
     left: 150px;
     top: 70px;
     float: left;
+}
+
+.sideMenu{
+	
+}
+.sideMenu>ul>li>ol{
+	display: none;
 }
 
 .cancleText{

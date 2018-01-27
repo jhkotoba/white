@@ -39,9 +39,14 @@
 		LEFT OUTER JOIN user_bank bank
     		ON rec.bank_seq = bank.user_bank_seq
 		WHERE rec.user_seq = #{userSeq}
-	 	AND rec.record_date <![CDATA[ >= ]]> #{startDate}
+		<if test="startDate != '' and startDate != null">
+		AND rec.record_date <![CDATA[ >= ]]> #{startDate}
 		AND rec.record_date <![CDATA[ <  ]]> #{endDate}
+		</if>	 	
 		ORDER BY record_date ASC
+		<!-- <if test="limit != '' and limit != null">
+		LIMIT ${limit}
+		</if> -->
 	</select>
 	
 	<select id="selectCalPastRecord" resultType="whiteMap" parameterType="java.util.List">
