@@ -6,9 +6,9 @@
 <html>
 <head>
 <meta charset=UTF-8>
-<title>Insert title here</title>
+<title>WhiteHome</title>
 
-<script type="text/javascript" src="${contextPath}/resources/js/ledgerRe/ledgerRecord.js"></script>
+<script type="text/javascript" src="${contextPath}/resources/js/ledgerRe/ledgerReRecord.js"></script>
 <script type="text/javascript" src="${contextPath}/resources/js/memo/memo.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
@@ -47,10 +47,8 @@ function recListView(){
 		url: common.path()+'/ledgerRe/ajax/selectRecordList.do',	
 		data: param,
 		dataType: 'json',
-	    success : function(data) {	    	
-	    	rec.recList = data.recList;
-	    	rec.bankList = data.bankList;
-	    	rec.view();		    	
+	    success : function(data) {
+	    	rec.init(data.recList, data.bankList, "main").view();	    	
 	    },
 	    error : function(request, status, error){
 	    	alert("error");

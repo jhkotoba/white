@@ -8,12 +8,10 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.ljh.white.ledger.mapper.LedgerMapper;
-
 public class WhiteMap extends HashMap<String, Object> {
 
 	private static final long serialVersionUID = 1587273999625657424L;
-	private static Logger logger = LogManager.getLogger(LedgerMapper.class);
+	private static Logger logger = LogManager.getLogger(WhiteMap.class);
 	
 	public WhiteMap(){
 		super();

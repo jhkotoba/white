@@ -7,6 +7,7 @@ import org.json.JSONArray;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.ljh.white.common.collection.WhiteMap;
 import com.ljh.white.memo.service.MemoService;
 
 @Controller
@@ -17,12 +18,11 @@ public class MemoController {
 			
 	
 	@RequestMapping(value="/ajax/selectMemoList.do" )
-	public String selectMemoList(HttpServletRequest request){
+	public String selectMemoList(HttpServletRequest request){		
 		
-		int userSeq = Integer.parseInt(request.getSession(false).getAttribute("userSeq").toString());
-		String memoType = request.getParameter("memoType");		
+		WhiteMap param = new WhiteMap(request);
 		
-		request.setAttribute("memoList", memoService.selectMemoList(userSeq, memoType));
+		request.setAttribute("memoList", memoService.selectMemoList(param));
 		return "result.jsp";
 	}
 	

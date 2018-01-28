@@ -7,6 +7,8 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.ljh.white.common.collection.WhiteMap;
+
 @Repository("MemoMapper")
 public class MemoMapper {
 
@@ -14,22 +16,22 @@ public class MemoMapper {
 	private SqlSession sqlSession;
 	
 	//메모 리스트 조회
-	public List<Map<String, Object>> selectMemoList(Map<String, Object> map){
-		return sqlSession.selectList("memoMapper.selectMemoList", map);
+	public List<WhiteMap> selectMemoList(WhiteMap map){
+		return sqlSession.selectList("memoSelectMapper.selectMemoList", map);
 	}	
 	
 	//메모 리스트 추가
-	public int insertMemoList(List<Map<String, Object>> list ){			
-		return sqlSession.insert("memoMapper.insertMemoList", list);
+	public int insertMemoList(List<WhiteMap> list ){			
+		return sqlSession.insert("memoInsertMapper.insertMemoList", list);
 	}
 	
 	//메모 리스트 조회
-	public int updateMemoList(List<Map<String, Object>> list ){	
-		return sqlSession.update("memoMapper.updateMemoList", list);
+	public int updateMemoList(List<WhiteMap> list ){	
+		return sqlSession.update("memoUpdateMapper.updateMemoList", list);
 	}
 	
 	//메모 리스트 조회
-	public int deleteMemoList(List<Map<String, Object>> list ){	
-		return sqlSession.delete("memoMapper.deleteMemoList", list);
+	public int deleteMemoList(List<WhiteMap> list ){	
+		return sqlSession.delete("memoDeleteMapper.deleteMemoList", list);
 	}
 }

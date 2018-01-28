@@ -6,9 +6,9 @@
 <html>
 <head>
 <meta charset=UTF-8>
-<title>Insert title here</title>
+<title>WhiteHome</title>
 
-<script type="text/javascript" src="${contextPath}/resources/js/ledgerRe/ledgerRecord.js"></script>
+<script type="text/javascript" src="${contextPath}/resources/js/ledgerRe/ledgerReRecord.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
 	
@@ -34,9 +34,7 @@ function recListView(){
 			data: param,
 			dataType: 'json',
 		    success : function(data) {	    	
-		    	rec.recList = data.recList;
-		    	rec.bankList = data.bankList;
-		    	rec.view();		    	
+		    	rec.init(data.recList, data.bankList).view();	
 		    },
 		    error : function(request, status, error){
 		    	alert("error");

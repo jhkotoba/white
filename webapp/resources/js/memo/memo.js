@@ -13,6 +13,12 @@ let memo = {
 		this.type = type;
 		return this;		
 	},
+	destroy : function(){
+		this.list = new Array();
+		this.clone = new Array();
+		this.type = "";
+		$("#memoTb").empty();
+	},
 	//메모출력
 	view : function(){			
 		$("#memoTb").empty();

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ljh.white.common.collection.WhiteMap;
 import com.ljh.white.memo.mapper.MemoMapper;
 
 @Service("MemoService")
@@ -22,27 +23,22 @@ public class MemoService{
 	private MemoMapper memoMapper;
 	
 	
-	public JSONArray selectMemoList(int userSeq, String memoType){
-		
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("userSeq", userSeq);
-		map.put("memoType", memoType);		
-		
-		return new JSONArray(memoMapper.selectMemoList(map));
+	public List<WhiteMap> selectMemoList(WhiteMap param){//int userSeq, String memoType){		
+		return memoMapper.selectMemoList(param);
 	}	
 	
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
 	public JSONArray memoSave(int userSeq, String memoType, String jsonStr) {
 		
-		List<Map<String, Object>> insertList = new ArrayList<Map<String, Object>>();
-		List<Map<String, Object>> updateList = new ArrayList<Map<String, Object>>();
-		List<Map<String, Object>> deleteList = new ArrayList<Map<String, Object>>();
+		List<WhiteMap> insertList = new ArrayList<WhiteMap>();
+		List<WhiteMap> updateList = new ArrayList<WhiteMap>();
+		List<WhiteMap> deleteList = new ArrayList<WhiteMap>();
 		
 		JSONArray jsonArr = new JSONArray(jsonStr);
 		JSONObject jsonObj = null;	
 		
 		for(int i=0; i<jsonArr.length(); i++) {
-			Map<String, Object> memo = new HashMap<String, Object>();
+			WhiteMap memo = new WhiteMap();
 			
 			jsonObj = new JSONObject(jsonArr.get(i).toString());
 			
@@ -73,7 +69,7 @@ public class MemoService{
 			memoMapper.deleteMemoList(deleteList);
 		}
 				
-		Map<String, Object> map = new HashMap<String, Object>();
+		WhiteMap map = new WhiteMap();
 		map.put("userSeq", userSeq);
 		map.put("memoType", memoType);		
 		

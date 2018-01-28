@@ -32,21 +32,26 @@ public class LedgerReController {
 	public String ledgerReMain(HttpServletRequest request){
 		logger.debug("ledgerReTest Start");
 		
-		String sectionPage = request.getParameter("move");
-		int userSeq = Integer.parseInt(request.getSession(false).getAttribute("userSeq").toString());
+		WhiteMap param = new WhiteMap(request);
+		param.put("memoType", "ledger");
 		
-		if(sectionPage == null) sectionPage = "Main";		
+		String sectionPage = param.getString("move");		
+		if("".equals(sectionPage) || sectionPage == null) sectionPage = "Main";
+		
 		switch(sectionPage){
 		case "Select" :
 			break;
-		case "Insert" :			
+		case "Insert" :	
+			//request.setAttribute("purList", ledgerReService.getPurposeList(userSeq));	
+			//request.setAttribute("purDtlList", ledgerReService.getPurposeDtlList(userSeq));
+			request.setAttribute("bankList", new JSONArray(ledgerReService.selectBankList(param)));
 			break;
 		case "Purpose" :
 			break;
 		case "Bank" :
 			break;
 		case "Main" :
-			request.setAttribute("memoList", memoService.selectMemoList(userSeq, "ledger"));
+			request.setAttribute("memoList", new JSONArray(memoService.selectMemoList(param)));
 			break;
 		}
 			

@@ -20,7 +20,7 @@ public class LedgerReMapper {
 	 * @return
 	 */
 	public List<WhiteMap> selectBankList(WhiteMap param) {
-		return sqlSession.selectList("ledgerReMapper.selectBankList", param);
+		return sqlSession.selectList("ledgerReSelectMapper.selectBankList", param);
 	}
 	
 	/**
@@ -29,7 +29,7 @@ public class LedgerReMapper {
 	 * @return
 	 */
 	public List<WhiteMap> selectRecordList(WhiteMap param) {
-		return sqlSession.selectList("ledgerReMapper.selectRecordList", param);
+		return sqlSession.selectList("ledgerReSelectMapper.selectRecordList", param);
 	}
 	
 	/**
@@ -38,6 +38,6 @@ public class LedgerReMapper {
 	 * @return
 	 */
 	public WhiteMap selectCalPastRecord(List<WhiteMap> pastRecList) {
-		return sqlSession.selectOne("ledgerReMapper.selectCalPastRecord", pastRecList);
+		return sqlSession.selectOne("ledgerReSelectMapper.selectCalPastRecord", pastRecList);
 	}
 }

@@ -50,7 +50,7 @@ public class LedgerController {
 		
 		if(sectionPage == null || "Main".equals(sectionPage)) {
 			sectionPage = "Main";
-			request.setAttribute("memoList", memoService.selectMemoList(Integer.parseInt(userSeq), "ledger"));
+			//request.setAttribute("memoList", memoService.selectMemoList(Integer.parseInt(userSeq), "ledger"));
 		}
 		
 		switch(sectionPage){
