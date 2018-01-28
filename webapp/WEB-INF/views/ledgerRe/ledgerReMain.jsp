@@ -34,11 +34,13 @@ $(document).ready(function(){
 
 //메인조회 리스트
 function recListView(){
-	$("#startDate").val(isDate.firstDay());
-	$("#endDate").val(isDate.lastDay())	
+	$("#startDate").val(isDate.addMonToday(-1));
+	$("#endDate").val(isDate.today())	
 		
 	let param = {};	
-	param.limit = 100;
+	param.startDate = $("#startDate").val() + " 00:00:00";
+	param.endDate = $("#endDate").val() + " 23:59:59";
+	$("#mainTitle").text($("#startDate").val() +" ~ "+ $("#endDate").val());
 	
 	$.ajax({		
 		type: 'POST',
@@ -73,6 +75,7 @@ function recListView(){
 	<input id="startDate" type="hidden" value="">
 	<input id="endDate" type="hidden" value="">
 	
+	<h4 id="mainTitle"></h4>
 	<div id="ledgerReList">		
 	</div>		
 	
