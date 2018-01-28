@@ -14,11 +14,11 @@ let rec = {
     	if(mode === "main"){
     		this.recClone = null;    		
     	}else{
-    		this.recClone = common.clone(this.recList);
-    		this.purList = JSON.parse(purList);
-    		this.purDtlList = JSON.parse(purDtlList);
-    		this.bankList = JSON.parse(bankList);
+    		this.recClone = common.clone(this.recList);    		
     	}
+    	this.purList = JSON.parse(purList);
+		this.purDtlList = JSON.parse(purDtlList);
+		this.bankList = JSON.parse(bankList);
     	return this;
 	},
 	destroy : function(){

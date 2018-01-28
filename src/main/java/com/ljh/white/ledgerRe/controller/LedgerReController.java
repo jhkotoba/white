@@ -39,6 +39,8 @@ public class LedgerReController {
 		if("".equals(sectionPage) || sectionPage == null) sectionPage = "Main";
 		
 		switch(sectionPage){
+		case "Main" :
+			request.setAttribute("memoList", new JSONArray(memoService.selectMemoList(param)));
 		case "Select" :			
 		case "Insert" :	
 			request.setAttribute("purList", new JSONArray(ledgerReService.selectPurList(param)));	
@@ -48,9 +50,6 @@ public class LedgerReController {
 		case "Purpose" :
 			break;
 		case "Bank" :
-			break;
-		case "Main" :
-			request.setAttribute("memoList", new JSONArray(memoService.selectMemoList(param)));
 			break;
 		}
 			
