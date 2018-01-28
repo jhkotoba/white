@@ -34,7 +34,7 @@ function recListView(){
 			data: param,
 			dataType: 'json',
 		    success : function(data) {	    	
-		    	rec.init(data.recList, data.bankList).view();	
+		    	rec.init(data.recList, '${purList}', '${purDtlList}', '${bankList}').view();	
 		    },
 		    error : function(request, status, error){
 		    	alert("error");

@@ -5,20 +5,27 @@
 let rec = {
 	recList : new Array(),
 	recClone : new Array(),
+	purList : new Array(),
+	purDtlList : new Array(),
 	bankList : new Array(),
-	init : function(recList, bankList, mode){
+	
+	init : function(recList, purList, purDtlList, bankList, mode){
     	this.recList = recList;
-    	if(mode !== "main"){
-    		this.recClone = common.clone(this.recList);
+    	if(mode === "main"){
+    		this.recClone = null;    		
     	}else{
-    		this.recClone = null;
+    		this.recClone = common.clone(this.recList);
+    		this.purList = JSON.parse(purList);
+    		this.purDtlList = JSON.parse(purDtlList);
+    		this.bankList = JSON.parse(bankList);
     	}
-    	this.bankList = bankList;
     	return this;
 	},
 	destroy : function(){
 		this.recList = new Array();
 		this.recClone = new Array();
+		this.purList = new Array();
+		this.purDtlList = new Array();
 		this.bankList = new Array();
 		$("#ledgerReList").empty();
 	},

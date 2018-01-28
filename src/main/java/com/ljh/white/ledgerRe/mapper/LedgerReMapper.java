@@ -23,6 +23,14 @@ public class LedgerReMapper {
 		return sqlSession.selectList("ledgerReSelectMapper.selectBankList", param);
 	}
 	
+	public List<WhiteMap> selectPurList(WhiteMap param) {
+		return sqlSession.selectList("ledgerReSelectMapper.selectPurList", param);
+	}
+	
+	public List<WhiteMap> selectPurDtlList(WhiteMap param) {
+		return sqlSession.selectList("ledgerReSelectMapper.selectPurDtlList", param);
+	}
+	
 	/**
 	 * 해당 유저 금전기록 리스트 조회
 	 * @param paramMap

@@ -39,11 +39,10 @@ public class LedgerReController {
 		if("".equals(sectionPage) || sectionPage == null) sectionPage = "Main";
 		
 		switch(sectionPage){
-		case "Select" :
-			break;
+		case "Select" :			
 		case "Insert" :	
-			//request.setAttribute("purList", ledgerReService.getPurposeList(userSeq));	
-			//request.setAttribute("purDtlList", ledgerReService.getPurposeDtlList(userSeq));
+			request.setAttribute("purList", new JSONArray(ledgerReService.selectPurList(param)));	
+			request.setAttribute("purDtlList", new JSONArray(ledgerReService.selectPurDtlList(param)));
 			request.setAttribute("bankList", new JSONArray(ledgerReService.selectBankList(param)));
 			break;
 		case "Purpose" :
@@ -68,7 +67,7 @@ public class LedgerReController {
 		List<WhiteMap> bankList = ledgerReService.selectBankList(param);
 
 		JSONObject result = new JSONObject();
-		result.put("bankList", new JSONArray(bankList));
+		//result.put("bankList", new JSONArray(bankList));
 		result.put("recList", new JSONArray(ledgerReService.selectRecordList(param, bankList)));			
 		request.setAttribute("result", result);	
 		

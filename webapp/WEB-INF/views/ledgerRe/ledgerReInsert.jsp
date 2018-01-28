@@ -21,10 +21,11 @@ $(document).ready(function(){
 	$("#recDelBtn").click(function(){		
 		recIn.del();
 	});
-	
-	
-	
 });
+
+function recInSync(taget){
+	recIn.sync(taget);
+} 
 
 </script>
 </head>

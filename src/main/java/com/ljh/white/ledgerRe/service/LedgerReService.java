@@ -5,9 +5,12 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.json.JSONArray;
 import org.springframework.stereotype.Service;
 
 import com.ljh.white.common.collection.WhiteMap;
+import com.ljh.white.ledger.bean.PurposeBean;
+import com.ljh.white.ledger.bean.PurposeDetailBean;
 import com.ljh.white.ledgerRe.mapper.LedgerReMapper;
 
 
@@ -20,11 +23,30 @@ public class LedgerReService {
 	
 	/**
 	 * 해당 유저 은행리스트
-	 * @param paramMap
+	 * @param param
 	 * @return
 	 */
 	public List<WhiteMap> selectBankList(WhiteMap param){		
 		return ledgerReMapper.selectBankList(param);	
+	}
+	
+	/**
+	 * 
+	 * @param param
+	 * @return
+	 */
+	public List<WhiteMap> selectPurList(WhiteMap param) {		
+		return ledgerReMapper.selectPurList(param);		
+		
+	}	
+	/**
+	 * 
+	 * @param param
+	 * @return
+	 */
+	public List<WhiteMap> selectPurDtlList(WhiteMap param) {		
+		return ledgerReMapper.selectPurDtlList(param);		
+		
 	}
 	/**
 	 * 금전기록 조회
