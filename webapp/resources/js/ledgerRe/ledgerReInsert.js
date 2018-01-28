@@ -36,9 +36,6 @@ let recIn = {
 	sync : function(taget, isNum){		
 		let name = taget.id.split('_')[0];
 		let idx = taget.id.split('_')[1];
-		console.log(name);
-		console.log(idx);
-		console.log(taget.value);
 		this.inList[idx][name] = (isNum === 1 ? Number(taget.value) : String(taget.value));
 	},
 	
