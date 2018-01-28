@@ -23,9 +23,6 @@ $(document).ready(function(){
 	});
 });
 
-function recInSync(taget){
-	recIn.sync(taget);
-} 
 
 </script>
 </head>

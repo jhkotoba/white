@@ -7,7 +7,7 @@
 	<!-- 은행 조회 -->
 	<select id="selectBankList" resultType="whiteMap" parameterType="whiteMap">
 		SELECT
-		  user_bank_seq AS userBankSeq,
+		  user_bank_seq AS bankSeq,
 		  bank_name AS bankName,
 		  bank_account AS bankAccount,
 		  bank_now_use_yn AS bankNowUseYN
