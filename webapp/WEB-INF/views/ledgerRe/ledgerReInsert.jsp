@@ -21,6 +21,15 @@ $(document).ready(function(){
 	$("#recDelBtn").click(function(){		
 		recIn.del();
 	});
+	
+	$("#recInsertBtn").click(function(){
+		let rtn = recIn.check();
+		if(rtn.check === true){
+			recIn.insert();
+		}else{
+			alert(rtn.msg);
+		}
+	});
 });
 
 
@@ -32,6 +41,7 @@ $(document).ready(function(){
 	<div id="recIn">
 		<button id="recAddBtn">추가</button>
 		<button id="recDelBtn">삭제</button>
+		<button id="recInsertBtn">저장</button>
 	</div>
 	
 	<div id="ledgerReList">		
