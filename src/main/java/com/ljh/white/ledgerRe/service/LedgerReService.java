@@ -5,12 +5,9 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
-import org.json.JSONArray;
 import org.springframework.stereotype.Service;
 
 import com.ljh.white.common.collection.WhiteMap;
-import com.ljh.white.ledger.bean.PurposeBean;
-import com.ljh.white.ledger.bean.PurposeDetailBean;
 import com.ljh.white.ledgerRe.mapper.LedgerReMapper;
 
 

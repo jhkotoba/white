@@ -16,13 +16,15 @@ public class MainController {
 	//메인페이지
 	@RequestMapping(value="/")
 	public String white(HttpServletRequest request){		
+		logger.debug("white start");
 		return "redirect:mainInfo.do";		
 	}
 
 	//메인페이지-info
 	@RequestMapping(value="/mainInfo.do")
 	public String mainInfo(HttpServletRequest request, HttpServletResponse response){
-		//page	
+		logger.debug("mainInfo start");
+		
 		request.setAttribute("sidePage", "NOPAGE");	
 		request.setAttribute("sectionPage", "info/mainInfo.jsp");			
 		

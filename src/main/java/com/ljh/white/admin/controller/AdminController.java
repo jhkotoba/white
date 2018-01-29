@@ -16,15 +16,8 @@ public class AdminController {
 	@RequestMapping(value="/adminPage.do")
 	public String adminPage(HttpServletRequest request, HttpServletResponse response){
 		
-		String sectionPage = request.getParameter("sideClick");		
-		String userSeq = request.getParameter("userSeq");
+			
 		
-		if(sectionPage == null) sectionPage = "Main";
-		
-		//page	
-		request.setAttribute("sidePage", "admin/adminSide.jsp");		
-		request.setAttribute("sectionPage", "admin/admin"+sectionPage+".jsp");		
-		
-		return "white.jsp";
+		return null;
 	}
 }

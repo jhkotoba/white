@@ -2,8 +2,6 @@ package com.ljh.white.login.service;
 
 import javax.annotation.Resource;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import com.ljh.white.auth.bean.AuthBean;
@@ -14,9 +12,8 @@ import com.ljh.white.login.mapper.LoginMapper;
 import com.ljh.white.login.service.LoginService;
 
 @Service("LoginService")
-public class LoginServiceImpl implements LoginService {
+public class LoginServiceImpl implements LoginService {	
 	
-	private static Logger logger = LogManager.getLogger(LoginServiceImpl.class);
 
 	@Resource(name = "LoginMapper")
 	private LoginMapper loginMapper;
