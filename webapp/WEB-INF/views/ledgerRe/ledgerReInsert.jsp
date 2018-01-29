@@ -45,7 +45,7 @@ $(document).ready(function(){
 	</div>
 	
 	<div id="ledgerReList">		
-	</div>		
-	
+	</div>
+
 </body>
 </html>

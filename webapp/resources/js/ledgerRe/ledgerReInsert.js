@@ -33,10 +33,10 @@ let recIn = {
 		this.view();
 	},
 	
-	sync : function(taget, isNum){		
+	sync : function(taget){		
 		let name = taget.id.split('_')[0];
 		let idx = taget.id.split('_')[1];
-		this.inList[idx][name] = (isNum === 1 ? Number(taget.value) : String(taget.value));
+		this.inList[idx][name] = String(taget.value);
 	},
 	
 	check : function(){
@@ -74,9 +74,11 @@ let recIn = {
 				break;
 			}
 			
-			//비정상 값 체크
-			//money 
-			
+			//비정상 값 체크			
+			if(common.isNum(this.inList[i].money) === false){
+				check = {check : false, msg : (i+1) + "행의 금액이 잘못 입력하였습니다."};
+				break;
+			}
 		}
 		
 		return check;
@@ -84,6 +86,13 @@ let recIn = {
 	
 	insert : function(){
 		
+		//moveMoney 마이너스 수정
+		for(let i=0; i<this.inList.length; i++){
+			if(this.inList[i].purSeq === '0'){			
+				this.inList[i].money = "-"+String(Math.abs(Number(this.inList[i].money)));
+			}
+		}
+		//console.log(this.inList);
 	},
 	
 	view : function(){
@@ -108,9 +117,9 @@ let recIn = {
 			
 			tag += "<tr>";			
 			tag += "<td>"+(i+1)+"</td>";
-			tag += "<td><input id='date_"+i+"' type='date' value='"+this.inList[i].date+"' onkeyup='recIn.sync(this, 0)'></td>";
-			tag += "<td><input id='time_"+i+"' type='time' value='"+this.inList[i].time+"' onkeyup='recIn.sync(this, 0)'></td>";
-			tag += "<td><input id='content_"+i+"' type='text' value='"+this.inList[i].content+"' onkeyup='recIn.sync(this, 0)'></td>";			
+			tag += "<td><input id='date_"+i+"' type='date' value='"+this.inList[i].date+"' onkeyup='recIn.sync(this)'></td>";
+			tag += "<td><input id='time_"+i+"' type='time' value='"+this.inList[i].time+"' onkeyup='recIn.sync(this)'></td>";
+			tag += "<td><input id='content_"+i+"' type='text' value='"+this.inList[i].content+"' onkeyup='recIn.sync(this)'></td>";			
 			tag += "<td><select id='purSeq_"+i+"' onchange='recIn.sync(this, 1); recIn.appSel(this,"+i+");'>";
 			tag += "<option value=''>선택</option>";
 			tag += "<option value=0>금액이동</option>";			
@@ -128,17 +137,17 @@ let recIn = {
 				}
 			}	
 			tag += "</select></td>";
-			tag += "<td><select id='bankSeq_"+i+"' onchange='recIn.sync(this, 1);'>";
+			tag += "<td><select id='bankSeq_"+i+"' onchange='recIn.sync(this);'>";
 			tag += "<option value=''>선택</option>";
-			tag += "<option "+(this.inList[i].bankSeq === 0 ? "selected='selected'" : "")+" value=0>현금</option>";			
+			tag += "<option "+(this.inList[i].bankSeq === '0' ? "selected='selected'" : "")+" value=0>현금</option>";			
 			for(let j=0; j<this.bankList.length; j++){
 				this.inList[i].bankSeq === this.bankList[j].bankSeq ? selected = "selected='selected'" : selected = "";
 				tag += "<option "+selected+" value="+this.bankList[j].bankSeq+">"+this.bankList[j].bankName+"("+this.bankList[j].bankAccount+")</option>";
 			}				
 			tag += "</select></td>";
-			tag += "<td><select id='moveSeq_"+i+"' disabled='disabled' onchange='recIn.sync(this, 1);'>";
+			tag += "<td><select id='moveSeq_"+i+"' disabled='disabled' onchange='recIn.sync(this);'>";
 			tag += "<option value=''>선택</option>";
-			tag += "<option "+(this.inList[i].bankSeq === 0 ? "selected='selected'" : "")+" value=0>현금</option>";			
+			tag += "<option "+(this.inList[i].moveSeq === '0' ? "selected='selected'" : "")+" value=0>현금</option>";			
 			for(let j=0; j<this.bankList.length; j++){
 				this.inList[i].moveSeq === this.bankList[j].bankSeq ? selected = "selected='selected'" : selected = "";
 				tag += "<option "+selected+" value="+this.bankList[j].bankSeq+">"+this.bankList[j].bankName+"("+this.bankList[j].bankAccount+")</option>";
@@ -167,7 +176,6 @@ let recIn = {
 			$("#moveSeq_"+idx).removeAttr("disabled");
 		}else{
 			$("#moveSeq_"+idx).val('').prop("selected", true).attr("disabled","disabled");
-			//$("#moveSeq_"+idx).attr("disabled","disabled");
 		}
 	}
 }
