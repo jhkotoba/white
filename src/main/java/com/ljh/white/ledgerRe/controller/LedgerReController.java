@@ -78,7 +78,6 @@ public class LedgerReController {
 		logger.debug("insertRecordList Start");
 		
 		WhiteMap param = new WhiteMap(request);
-		param.test("inList");
 		
 		
 	}

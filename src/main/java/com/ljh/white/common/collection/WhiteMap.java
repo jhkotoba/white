@@ -7,7 +7,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.json.JSONArray;
 
 public class WhiteMap extends HashMap<String, Object> {
 
@@ -27,29 +26,22 @@ public class WhiteMap extends HashMap<String, Object> {
 		
 		while(enumeration.hasMoreElements()){
 			String key = enumeration.nextElement();
-			String values[] = request.getParameterValues(key);
-			
-			/*for(int i=0; i<values.length; i++) {
-				logger.debug("values: "+values[i]);
-			}*/
-			//test
-			
-			//System.out.println("TEST1:"+new JSONArray(values[0]));
-			
+			String values[] = request.getParameterValues(key);			
 			
 			if(values == null){
 				this.put(key, null);	
 			}else if(values.length <= 1){
+				/*if(values[0].startsWith("[{\"")==true && values[0].startsWith("\"}]", values[0].length()-3)==true){					
+					this.createWhiteMapList(values[0]);
+				}else if(values[0].startsWith("{\"")==true && values[0].startsWith("\"}", values[0].length()-2)==true) {					
+					this.createWhiteMap(values[0]);
+				}else {
+					this.put(key, values[0]);		
+				}*/
 				this.put(key, values[0]);
-				
-				//if(values[0].startsWith("[{\"")==true && values[0].startsWith("\"}]", values[0].length()-3)==true){
-				//	this.put(key, new JSONArray(values[0]));	
-				//}else {
-				//				
-				//}		
 			}else{
 				this.put(key, values);			
-			}			
+			}	
 		}
 		
 		logger.debug("new WhiteMap(request): "+this);
@@ -72,12 +64,12 @@ public class WhiteMap extends HashMap<String, Object> {
 		}		
 	}
 	
-	public void test(String key) {
-		Object obj = get(key);
-		
-		System.out.println(obj);
+	/*private WhiteMap createWhiteMap(String jsonStr) {
+		return null;
 	}
-	
+	private List<WhiteMap> createWhiteMapList(String jsonStr) {
+		return null;
+	}*/
 }
 
 
