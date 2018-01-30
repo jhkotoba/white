@@ -224,7 +224,7 @@ let common = {
 		for(let i=0; i<hideArr.length; i++)			
 			$("#"+hideArr[i]).show();
 	},
-	//문자열 체크해서 + - 0 1 2 3 4 5 6 7 8 9 체크 이외 값인경우 false
+	//문자열 체크해서 (+ - 첫자리 한정) 0 1 2 3 4 5 6 7 8 9 체크 이외 값인경우 false
 	isNum : function(number){
 		
 		number = String(number);

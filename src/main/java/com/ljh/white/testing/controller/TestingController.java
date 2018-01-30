@@ -24,6 +24,12 @@ public class TestingController {
 		return "test/cssDemo.jsp";		
 	}
 	
+	@RequestMapping(value="/roofTest.do")
+	public String roofTest(){
+		System.out.println("cssDemo");
+		return "test/roofTest.jsp";		
+	}
+	
 }
 
 

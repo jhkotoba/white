@@ -51,6 +51,7 @@ $(document).ready(function(){
 	<h2>Test List</h2><br>
 	<a href="/white/cssDemo.do">cssDemo</a><br>
 	<a href="/white/exitTimer.do">exitTime</a><br>
+	<a href="/white/roofTest.do">roofTest</a><br>
 	
 </body>
 </html>

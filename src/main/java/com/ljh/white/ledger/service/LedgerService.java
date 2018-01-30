@@ -11,7 +11,6 @@ import org.json.JSONObject;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ljh.white.common.collection.WhiteMap;
-import java.io.Serializable;
 /**  리뉴얼로 대체
  * @author lee
  * @deprecated

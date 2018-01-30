@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.json.JSONArray;
 
 public class WhiteMap extends HashMap<String, Object> {
 
@@ -28,12 +29,26 @@ public class WhiteMap extends HashMap<String, Object> {
 			String key = enumeration.nextElement();
 			String values[] = request.getParameterValues(key);
 			
+			/*for(int i=0; i<values.length; i++) {
+				logger.debug("values: "+values[i]);
+			}*/
+			//test
+			
+			//System.out.println("TEST1:"+new JSONArray(values[0]));
+			
+			
 			if(values == null){
 				this.put(key, null);	
 			}else if(values.length <= 1){
-				this.put(key, values[0]);	
+				this.put(key, values[0]);
+				
+				//if(values[0].startsWith("[{\"")==true && values[0].startsWith("\"}]", values[0].length()-3)==true){
+				//	this.put(key, new JSONArray(values[0]));	
+				//}else {
+				//				
+				//}		
 			}else{
-				this.put(key, values);
+				this.put(key, values);			
 			}			
 		}
 		
@@ -55,6 +70,12 @@ public class WhiteMap extends HashMap<String, Object> {
 		else{
 			return obj.toString();
 		}		
+	}
+	
+	public void test(String key) {
+		Object obj = get(key);
+		
+		System.out.println(obj);
 	}
 	
 }

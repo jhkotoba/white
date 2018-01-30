@@ -30,6 +30,8 @@
 			<!-- 테스트 -->
 			<mvc:exclude-mapping path="/testMain.do"/>
 			<mvc:exclude-mapping path="/exitTimer.do"/>
+			<mvc:exclude-mapping path="/cssDemo.do"/>
+			<mvc:exclude-mapping path="/roofTest.do"/>
 			 
 			<mvc:exclude-mapping path="/ledgerInquire.do"/> 
 			

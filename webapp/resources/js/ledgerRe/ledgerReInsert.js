@@ -92,7 +92,21 @@ let recIn = {
 				this.inList[i].money = "-"+String(Math.abs(Number(this.inList[i].money)));
 			}
 		}
-		//console.log(this.inList);
+		
+		$.ajax({		
+			type: 'POST',
+			url: common.path()+'/ledgerRe/ajax/insertRecordList.do',
+			data: {
+				inList : JSON.stringify(this.inList)
+			},
+			dataType: 'json',
+		    success : function(data, stat, xhr) {  
+		    	
+		    },
+		    error : function(xhr, stat, err) {
+		    	alert("insert error");
+		    }
+		});		
 	},
 	
 	view : function(){
