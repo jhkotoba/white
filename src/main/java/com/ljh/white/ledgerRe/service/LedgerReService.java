@@ -6,6 +6,8 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ljh.white.common.collection.WhiteMap;
 import com.ljh.white.ledgerRe.mapper.LedgerReMapper;
@@ -131,5 +133,22 @@ public class LedgerReService {
 		}
 		
 		return recList;
+	}
+	
+	/**
+	 * 금전기록List insert
+	 * @param list
+	 * @return
+	 */
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
+	public int insertRecordList(WhiteMap param) {
+		
+		List<WhiteMap> list = param.getListWhiteMap("inList");
+		
+		for(int i=0; i<list.size(); i++) {
+			list.get(i).put("userSeq", param.getInt("userSeq"));
+		}
+		
+		return ledgerReMapper.insertRecordList(list);	
 	}
 }

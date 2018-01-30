@@ -1,12 +1,17 @@
 package com.ljh.white.common.collection;
 
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 public class WhiteMap extends HashMap<String, Object> {
 
@@ -30,14 +35,7 @@ public class WhiteMap extends HashMap<String, Object> {
 			
 			if(values == null){
 				this.put(key, null);	
-			}else if(values.length <= 1){
-				/*if(values[0].startsWith("[{\"")==true && values[0].startsWith("\"}]", values[0].length()-3)==true){					
-					this.createWhiteMapList(values[0]);
-				}else if(values[0].startsWith("{\"")==true && values[0].startsWith("\"}", values[0].length()-2)==true) {					
-					this.createWhiteMap(values[0]);
-				}else {
-					this.put(key, values[0]);		
-				}*/
+			}else if(values.length <= 1){				
 				this.put(key, values[0]);
 			}else{
 				this.put(key, values);			
@@ -64,12 +62,46 @@ public class WhiteMap extends HashMap<String, Object> {
 		}		
 	}
 	
-	/*private WhiteMap createWhiteMap(String jsonStr) {
-		return null;
+	public WhiteMap getWhiteMap(String paramKey) {
+		if(this.getString(paramKey) == null) return null;
+		String jsonStr = this.getString(paramKey);
+		WhiteMap map = new WhiteMap();
+		
+		JSONObject jsonObj = new JSONObject(jsonStr);		
+		Iterator<String> ite = jsonObj.keys();
+		
+		while(ite.hasNext()) {				
+			String key = ite.next();				
+			map.put(key, jsonObj.get(key));
+		}
+		return map;
 	}
-	private List<WhiteMap> createWhiteMapList(String jsonStr) {
-		return null;
-	}*/
+	
+	public List<WhiteMap> getListWhiteMap(String paramKey) {		
+		if(this.getString(paramKey) == null) return null;
+		String jsonStr = this.getString(paramKey);
+		
+		List<WhiteMap> list = new ArrayList<WhiteMap>();
+		WhiteMap map = null;	
+		
+		JSONObject jsonObj = null;
+		Iterator<String> ite = null;
+		
+		JSONArray jsonArr = new JSONArray(jsonStr);
+		for(int i=0; i<jsonArr.length(); i++) {			
+			map = new WhiteMap();
+			
+			jsonObj = new JSONObject(jsonArr.get(i).toString());
+			ite = jsonObj.keys();
+			
+			while(ite.hasNext()) {				
+				String key = ite.next();				
+				map.put(key, jsonObj.get(key));
+			}
+			list.add(map);
+		}		
+		return list;
+	}
 }
 
 

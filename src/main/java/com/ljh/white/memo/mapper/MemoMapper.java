@@ -16,21 +16,21 @@ public class MemoMapper {
 	
 	//메모 리스트 조회
 	public List<WhiteMap> selectMemoList(WhiteMap map){
-		return sqlSession.selectList("memoSelectMapper.selectMemoList", map);
+		return sqlSession.selectList("memoMapper.selectMemoList", map);
 	}	
 	
 	//메모 리스트 추가
 	public int insertMemoList(List<WhiteMap> list ){			
-		return sqlSession.insert("memoInsertMapper.insertMemoList", list);
+		return sqlSession.insert("memoMapper.insertMemoList", list);
 	}
 	
 	//메모 리스트 조회
 	public int updateMemoList(List<WhiteMap> list ){	
-		return sqlSession.update("memoUpdateMapper.updateMemoList", list);
+		return sqlSession.update("memoMapper.updateMemoList", list);
 	}
 	
 	//메모 리스트 조회
 	public int deleteMemoList(List<WhiteMap> list ){	
-		return sqlSession.delete("memoDeleteMapper.deleteMemoList", list);
+		return sqlSession.delete("memoMapper.deleteMemoList", list);
 	}
 }

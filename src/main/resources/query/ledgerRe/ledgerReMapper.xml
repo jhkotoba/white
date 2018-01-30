@@ -2,7 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
 
-<mapper namespace="ledgerReSelectMapper">
+<mapper namespace="ledgerReMapper">
+
+	<!-- SELECT -->
 
 	<!-- 은행 조회 -->
 	<select id="selectBankList" resultType="whiteMap" parameterType="whiteMap">
@@ -71,6 +73,7 @@
 				
 	</select>
 	
+	<!--  -->
 	<select id="selectCalPastRecord" resultType="whiteMap" parameterType="java.util.List">
 		SELECT
 		<foreach collection="list" item="item" separator=",">
@@ -88,5 +91,51 @@
 			)AS ${item.bankName}	
 		</foreach>
 	</select>
+	
+	
+	
+	
+	
+	<!-- INSERT  -->
+	
+	<!--  -->
+	<insert id="insertRecordList" parameterType="java.util.List">
+		INSERT INTO money_record_re(		
+			user_seq,	
+			record_date,	
+			content,	
+			pur_seq,
+			pur_dtl_seq,
+			bank_seq,
+			move_seq,
+			money,
+			reg_date
+		)VALUES
+		<foreach collection="list" item="item" separator="),(" open="(" close=")">
+			#{item.userSeq}, 
+			CONCAT(CONCAT(#{item.date}, ' '), #{item.time}),
+			#{item.content}, 
+			#{item.purSeq},	
+			<choose>
+				<when test="item.purDtlSeq == ''">
+					NULL,
+				</when>
+				<otherwise>				
+					#{item.purDtlSeq},
+				</otherwise>
+			</choose>
+			#{item.bankSeq}, 
+			<choose>
+				<when test="item.moveSeq == ''">
+					NULL,
+				</when>
+				<otherwise>				
+					#{item.moveSeq},
+				</otherwise>
+			</choose>			 
+			#{item.money},		
+			now()
+		</foreach>	
+	</insert>
 	
 </mapper>

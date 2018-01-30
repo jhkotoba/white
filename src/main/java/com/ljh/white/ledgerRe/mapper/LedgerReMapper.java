@@ -20,15 +20,15 @@ public class LedgerReMapper {
 	 * @return
 	 */
 	public List<WhiteMap> selectBankList(WhiteMap param) {
-		return sqlSession.selectList("ledgerReSelectMapper.selectBankList", param);
+		return sqlSession.selectList("ledgerReMapper.selectBankList", param);
 	}
 	
 	public List<WhiteMap> selectPurList(WhiteMap param) {
-		return sqlSession.selectList("ledgerReSelectMapper.selectPurList", param);
+		return sqlSession.selectList("ledgerReMapper.selectPurList", param);
 	}
 	
 	public List<WhiteMap> selectPurDtlList(WhiteMap param) {
-		return sqlSession.selectList("ledgerReSelectMapper.selectPurDtlList", param);
+		return sqlSession.selectList("ledgerReMapper.selectPurDtlList", param);
 	}
 	
 	/**
@@ -37,7 +37,7 @@ public class LedgerReMapper {
 	 * @return
 	 */
 	public List<WhiteMap> selectRecordList(WhiteMap param) {
-		return sqlSession.selectList("ledgerReSelectMapper.selectRecordList", param);
+		return sqlSession.selectList("ledgerReMapper.selectRecordList", param);
 	}
 	
 	/**
@@ -45,7 +45,16 @@ public class LedgerReMapper {
 	 * @param pastRec
 	 * @return
 	 */
-	public WhiteMap selectCalPastRecord(List<WhiteMap> pastRecList) {
-		return sqlSession.selectOne("ledgerReSelectMapper.selectCalPastRecord", pastRecList);
+	public WhiteMap selectCalPastRecord(List<WhiteMap> list) {
+		return sqlSession.selectOne("ledgerReMapper.selectCalPastRecord", list);
+	}
+	
+	/**
+	 * 금전기록List insert
+	 * @param list
+	 * @return
+	 */
+	public int insertRecordList(List<WhiteMap> list) {
+		return sqlSession.insert("ledgerReMapper.insertRecordList", list);
 	}
 }

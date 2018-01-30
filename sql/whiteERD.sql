@@ -74,7 +74,7 @@ CREATE TABLE money_record_re
 	record_date datetime NOT NULL,
 	content varchar(50),
 	pur_seq int NOT NULL,
-	pur_dtl_seq int NOT NULL,
+	pur_dtl_seq int,
 	bank_seq int,
 	move_seq int,
 	money int NOT NULL,

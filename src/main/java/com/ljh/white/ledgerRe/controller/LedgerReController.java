@@ -65,8 +65,7 @@ public class LedgerReController {
 		WhiteMap param = new WhiteMap(request);		
 		List<WhiteMap> bankList = ledgerReService.selectBankList(param);
 
-		JSONObject result = new JSONObject();
-		//result.put("bankList", new JSONArray(bankList));
+		JSONObject result = new JSONObject();		
 		result.put("recList", new JSONArray(ledgerReService.selectRecordList(param, bankList)));			
 		request.setAttribute("result", result);	
 		
@@ -74,11 +73,14 @@ public class LedgerReController {
 	}
 	
 	@RequestMapping(value="/ledgerRe/ajax/insertRecordList.do" )
-	public void insertRecordList(HttpServletRequest request){
+	public String insertRecordList(HttpServletRequest request){
 		logger.debug("insertRecordList Start");
 		
-		WhiteMap param = new WhiteMap(request);
+		WhiteMap param = new WhiteMap(request);	
+	
+		int cnt = ledgerReService.insertRecordList(param);
+		request.setAttribute("result", cnt);
 		
-		
+		return "result.jsp";
 	}
 }

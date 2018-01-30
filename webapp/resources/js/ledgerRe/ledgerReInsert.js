@@ -33,10 +33,13 @@ let recIn = {
 		this.view();
 	},
 	
-	sync : function(taget){		
-		let name = taget.id.split('_')[0];
-		let idx = taget.id.split('_')[1];
-		this.inList[idx][name] = String(taget.value);
+	sync : function(target){		
+		let name = target.id.split('_')[0];
+		let idx = target.id.split('_')[1];
+		
+		this.inList[idx][name] = String(target.value);
+		
+		
 	},
 	
 	check : function(){
@@ -101,7 +104,7 @@ let recIn = {
 			},
 			dataType: 'json',
 		    success : function(data, stat, xhr) {  
-		    	
+		    	alert(data+" 개의 행이 저장되었습니다.");
 		    },
 		    error : function(xhr, stat, err) {
 		    	alert("insert error");
@@ -125,8 +128,9 @@ let recIn = {
 				+ "<th>bankName</th>"
 				+ "<th>moveName</th>"
 				+ "<th>money</th>";	
-			tag += "</tr>";		
+			tag += "</tr>";
 		
+		console.log(this.inList.length);
 		for(let i=0; i<this.inList.length; i++){
 			
 			tag += "<tr>";			
@@ -134,19 +138,19 @@ let recIn = {
 			tag += "<td><input id='date_"+i+"' type='date' value='"+this.inList[i].date+"' onkeyup='recIn.sync(this)'></td>";
 			tag += "<td><input id='time_"+i+"' type='time' value='"+this.inList[i].time+"' onkeyup='recIn.sync(this)'></td>";
 			tag += "<td><input id='content_"+i+"' type='text' value='"+this.inList[i].content+"' onkeyup='recIn.sync(this)'></td>";			
-			tag += "<td><select id='purSeq_"+i+"' onchange='recIn.sync(this, 1); recIn.appSel(this,"+i+");'>";
+			tag += "<td><select id='purSeq_"+i+"' onchange='recIn.sync(this); recIn.appSel(this,"+i+");'>";
 			tag += "<option value=''>선택</option>";
 			tag += "<option value=0>금액이동</option>";			
 			for(let j=0; j<this.purList.length; j++){
-				this.inList[i].purSeq === this.purList[j].purSeq ? selected = "selected='selected'" : selected = "";
+				this.inList[i].purSeq === String(this.purList[j].purSeq) ? selected = "selected='selected'" : selected = "";
 				tag += "<option "+selected+" value="+this.purList[j].purSeq+">"+this.purList[j].purpose+"</option>";
 			}				
 			tag += "</select></td>";
-			tag += "<td><select id='purDtlSeq_"+i+"' onchange='recIn.sync(this, 1);'>";
+			tag += "<td><select id='purDtlSeq_"+i+"' onchange='recIn.sync(this);'>";
 			tag += "<option value=''>선택</option>";
 			for(let j=0; j<this.purDtlList.length; j++){
 				if(this.inList[i].purSeq === this.purDtlList[j].purSeq){
-					this.inList[i].purDtlSeq === this.purDtlList[j].purDtlSeq ? selected = "selected='selected'" : selected = "";
+					this.inList[i].purDtlSeq === String(this.purDtlList[j].purDtlSeq) ? selected = "selected='selected'" : selected = "";
 					tag += "<option "+selected+" value="+this.purDtlList[j].purDtlSeq+">"+this.purDtlList[j].purDetail+"</option>";
 				}
 			}	
@@ -174,7 +178,7 @@ let recIn = {
 		tag +="</table>";
 		$("#ledgerReList").append(tag);
 	},
-	appSel : function(taget, idx){		
+	appSel : function(target, idx){		
 		$("#purDtlSeq_"+idx).empty();		
 		let tag = "<option value=''>선택</option>";
 		for(let j=0; j<this.purDtlList.length; j++){
@@ -186,7 +190,7 @@ let recIn = {
 		$("#purDtlSeq_"+idx).append(tag);
 		
 		//move 셀렉트박스 금액이동이외 disabled 처리
-		if('0' === String(taget.value)){			
+		if('0' === String(target.value)){			
 			$("#moveSeq_"+idx).removeAttr("disabled");
 		}else{
 			$("#moveSeq_"+idx).val('').prop("selected", true).attr("disabled","disabled");
