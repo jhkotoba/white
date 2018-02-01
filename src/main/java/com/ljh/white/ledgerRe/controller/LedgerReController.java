@@ -32,14 +32,14 @@ public class LedgerReController {
 	public String ledgerReMain(HttpServletRequest request){
 		logger.debug("ledgerReTest Start");
 		
-		WhiteMap param = new WhiteMap(request);
-		param.put("memoType", "ledger");
+		WhiteMap param = new WhiteMap(request);		
 		
 		String sectionPage = param.getString("move");		
 		if("".equals(sectionPage) || sectionPage == null) sectionPage = "Main";
 		
 		switch(sectionPage){
-		case "Main" :
+		case "Main" :			
+			param.put("memoType", "ledger");
 			request.setAttribute("memoList", new JSONArray(memoService.selectMemoList(param)));
 		case "Select" :			
 		case "Insert" :	

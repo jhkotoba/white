@@ -40,6 +40,7 @@ function recListView(){
 	let param = {};	
 	param.startDate = $("#startDate").val() + " 00:00:00";
 	param.endDate = $("#endDate").val() + " 23:59:59";
+	param.mode = "main";
 	$("#mainTitle").text($("#startDate").val() +" ~ "+ $("#endDate").val());
 	
 	$.ajax({		
@@ -48,7 +49,7 @@ function recListView(){
 		data: param,
 		dataType: 'json',
 	    success : function(data) {
-	    	rec.init(data.recList, '${purList}', '${purDtlList}', '${bankList}', "main").view();	    	
+	    	rec.init("main", data.recList, '${purList}', '${purDtlList}', '${bankList}').view();	    	
 	    },
 	    error : function(request, status, error){
 	    	alert("error");

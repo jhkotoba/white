@@ -8,10 +8,12 @@ let rec = {
 	purList : new Array(),
 	purDtlList : new Array(),
 	bankList : new Array(),
+	mode : "main",
 	
-	init : function(recList, purList, purDtlList, bankList, mode){
+	init : function(mode, recList, purList, purDtlList, bankList){
     	this.recList = recList;
-    	if(mode === "main"){
+    	this.mode = mode;
+    	if(this.mode === "main"){
     		this.recClone = null;    		
     	}else{
     		this.recClone = common.clone(this.recList);    		
@@ -29,21 +31,22 @@ let rec = {
 		this.bankList = new Array();
 		$("#ledgerReList").empty();
 	},
-	view : function(){
-		
+	view : function(){		
 		$("#ledgerReList").empty();
 		
-		let tag = "<table border=1>"
-				+ "<tr>"
-				+ "<th>recordSeq</th>"
-				+ "<th>recordDate</th>"
-				+ "<th>content</th>"
-				+ "<th>purpose</th>"
-				+ "<th>purDetail</th>"
-				+ "<th>bankName</th>"
-				+ "<th>money</th>"				
-				+ "<th>amount</th>"
-				+ "<th>cash</th>";
+		let tag = "<table border=1>";
+			tag	+= "<tr>";
+			if(this.mode === "select")
+				tag	+= "<th><input type='checkbox' onchange='rec.chkAll()'></th>";
+			tag	+= "<th>recordSeq</th>";
+			tag	+= "<th>recordDate</th>";
+			tag	+= "<th>content</th>";
+			tag	+= "<th>purpose</th>";
+			tag	+= "<th>purDetail</th>";
+			tag	+= "<th>bankName</th>";
+			tag	+= "<th>money</th>";			
+			tag	+= "<th>amount</th>";
+			tag	+= "<th>cash</th>";
 				for(let i=0; i<this.bankList.length; i++){
 					tag += "<th>"+this.bankList[i].bankName+"("+(this.bankList[i].bankAccount==="cash" ? "":this.bankList[i].bankAccount) +")</th>";
 				}	
@@ -52,6 +55,8 @@ let rec = {
 		for(let i=this.recList.length-1; i>=0; i--){
 			
 			tag += "<tr>";
+			if(this.mode === "select")
+				tag += "<td><input type='checkbox' onchange='rec.chk()'></td>";
 			tag += "<td>"+this.recList[i].recordSeq+"</td>";
 			tag += "<td>"+this.recList[i].recordDate+"</td>";
 			tag += "<td>"+this.recList[i].content+"</td>";
@@ -70,5 +75,11 @@ let rec = {
 		
 		tag +="</table>";
 		$("#ledgerReList").append(tag);
-	}	
+	},
+	chkAll : function(){
+		alert("chkAll");
+	},
+	chk : function(){
+		alert("chk");
+	}
 }

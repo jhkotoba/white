@@ -128,9 +128,8 @@ let recIn = {
 				+ "<th>bankName</th>"
 				+ "<th>moveName</th>"
 				+ "<th>money</th>";	
-			tag += "</tr>";
+			tag += "</tr>";		
 		
-		console.log(this.inList.length);
 		for(let i=0; i<this.inList.length; i++){
 			
 			tag += "<tr>";			

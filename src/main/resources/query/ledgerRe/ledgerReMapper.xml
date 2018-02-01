@@ -43,7 +43,10 @@
 
 	<!-- 금전기록 리스트 조회  -->
 	<select id="selectRecordList" resultType="whiteMap" parameterType="whiteMap">
-		SELECT 
+		SELECT
+			<if test="mode == 'select'">
+			'select' AS state,
+			</if>	
 			rec.record_seq AS recordSeq,
 			DATE_FORMAT(rec.record_date,'%Y-%m-%d %H:%i:%s') AS recordDate,
 			rec.content,
@@ -64,13 +67,10 @@
 			ON rec.pur_dtl_seq = purDtl.pur_detail_seq
 		LEFT OUTER JOIN user_bank bank
     		ON rec.bank_seq = bank.user_bank_seq
-		WHERE rec.user_seq = #{userSeq}
-		<if test="startDate != '' and startDate != null">
+		WHERE rec.user_seq = #{userSeq}		
 		AND rec.record_date <![CDATA[ >= ]]> #{startDate}
-		AND rec.record_date <![CDATA[ <  ]]> #{endDate}
-		</if>	 	
-		ORDER BY record_date ASC
-				
+		AND rec.record_date <![CDATA[ <  ]]> #{endDate}			 	
+		ORDER BY record_date ASC				
 	</select>
 	
 	<!--  -->
