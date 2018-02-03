@@ -100,7 +100,8 @@ let rec = {
 		let selected = "";
 		
 		let tag = "<table border=1>";
-			tag	+= "<tr>";			
+			tag	+= "<tr>";
+			tag += "<th>Del</th>"
 			tag	+= "<th>date</th>";
 			tag	+= "<th>time</th>";
 			tag	+= "<th>content</th>";
@@ -113,6 +114,7 @@ let rec = {
 		for(let i=this.recList.length-1; i>=0; i--){
 			
 			tag += "<tr>";			
+			tag += "<td><input type='checkbox'></td>";			
 			tag += "<td><input id='date_"+i+"' type='date'  value='"+this.recList[i].recordDate.split(' ')[0]+"' onkeyup='rec.sync(this, \"String\")'></td>";
 			tag += "<td><input id='time_"+i+"' type='time' value='"+this.recList[i].recordDate.split(' ')[1]+"' onkeyup='rec.sync(this, \"String\")'></td>";
 			tag += "<td><input id='content_"+i+"' type='text' value='"+this.recList[i].content+"' onkeyup='rec.sync(this, \"String\")'></td>";
@@ -142,6 +144,13 @@ let rec = {
 			tag += "</tr>";
 			
 			delete this.recList[i].bankAccount;
+			delete this.recList[i].amount;
+			delete this.recList[i].bankName;
+			delete this.recList[i].purDetail;
+			delete this.recList[i].purpose;
+			for(let j=0; j<this.bankList.length; j++){
+				delete this.recList[i]["bank"+j];
+			}	
 		}
 		
 		tag +="</table>";

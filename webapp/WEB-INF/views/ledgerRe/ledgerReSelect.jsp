@@ -16,13 +16,17 @@ $(document).ready(function(){
 	recListView();
 	
 	//수정 및 삭제
-	$("#recEditBt").click(function(){
+	$("#recEditBtn").click(function(){
 		rec.edit();
 	});
 	
 	//취소
-	$("#recCelBt").click(function(){
+	$("#recCelBtn").click(function(){
 		rec.cancel();
+		$("#recEditBtns > button")
+			.prop("disabled",true)
+			.attr("class", "btn_disabled03");
+    	
 	});
 });
 
@@ -32,7 +36,7 @@ function recListView(){
 	$("#startDate").val(isDate.firstDay());
 	$("#endDate").val(isDate.lastDay())	
 
-	$("#recShBt").click(function(){	
+	$("#recShBtn").click(function(){	
 		
 		let param = {};
 		param.startDate =  $("#startDate").val() + " 00:00:00";
@@ -45,7 +49,10 @@ function recListView(){
 			data: param,
 			dataType: 'json',
 		    success : function(data) {	    	
-		    	rec.init("select", data.recList, '${purList}', '${purDtlList}', '${bankList}').view();	
+		    	rec.init("select", data.recList, '${purList}', '${purDtlList}', '${bankList}').view();
+		    	$("#recEditBtns > button")
+		    		.prop("disabled",false)
+		    		.attr("class", "btn_azure03");		    	
 		    },
 		    error : function(request, status, error){
 		    	alert("error");
@@ -64,9 +71,12 @@ function recListView(){
 	<div>
 		<input id="startDate" type="date" value="">
 		<input id="endDate" type="date" value="">
-		<button class="btn_azure03" id="recShBt">조회</button>
-		<button class="btn_azure03" id="recEditBt">편집</button>
-		<button class="btn_azure03" id="recCelBt">취소</button>
+		<button id="recShBtn" class="btn_azure03">조회</button>
+		<span id="recEditBtns">
+			<button id="recEditBtn" class="btn_disabled03" disabled="disabled">편집</button>
+			<button id="recSaveBtn" class="btn_disabled03" disabled="disabled">저장</button>
+			<button id="recCelBtn" class="btn_disabled03" disabled="disabled">취소</button>
+		</span>
 	</div>
 	
 	
