@@ -32,7 +32,7 @@ import com.ljh.white.common.collection.WhiteMap;
 import com.ljh.white.ledger.bean.MoneyRecordBean;
 import com.ljh.white.ledger.bean.PurposeBean;
 import com.ljh.white.ledger.bean.PurposeDetailBean;
-import com.ljh.white.ledger.bean.UserBankBean;
+import com.ljh.white.ledger.bean.BankBean;
 import com.ljh.white.ledger.mapper.LedgerMapper;
 import com.ljh.white.ledger.service.LedgerService;
 
@@ -120,7 +120,7 @@ public class LedgerServiceImpl implements LedgerService{
 	// 사용자 은행 목록 받아오기
 	@Override
 	public JSONArray getBankList(String userSeq) {			
-		List<UserBankBean> getBankList = ledgerMapper.getBankList(userSeq);		
+		List<BankBean> getBankList = ledgerMapper.getBankList(userSeq);		
 		return new JSONArray(getBankList);
 	}
 	
@@ -148,7 +148,7 @@ public class LedgerServiceImpl implements LedgerService{
 			map.put("purposeSeq", jsonObj.get("purposeSeq"));
 			map.put("purposeDtlSeq", jsonObj.get("purposeDtlSeq"));
 			
-			map.put("userBankSeq", jsonObj.get("userBankSeq"));
+			map.put("bankSeq", jsonObj.get("bankSeq"));
 			
 			map.put("moveToSeq", jsonObj.get("moveToSeq"));
 			
@@ -183,7 +183,7 @@ public class LedgerServiceImpl implements LedgerService{
 			map.put("purposeSeq", jsonObj.get("purposeSeq"));
 			map.put("purposeDtlSeq", jsonObj.get("purposeDtlSeq"));
 			map.put("content", jsonObj.get("content"));
-			map.put("userBankSeq", jsonObj.get("userBankSeq"));			
+			map.put("bankSeq", jsonObj.get("bankSeq"));			
 			map.put("updateType", updateType);
 			
 			if(updateType.equals("delete")){
@@ -365,7 +365,7 @@ public class LedgerServiceImpl implements LedgerService{
 				map.put("bankAccount", jsonObj.get("bankAccount"));
 				map.put("bankName", jsonObj.get("bankName"));
 				map.put("bankNowUseYN", jsonObj.get("bankNowUseYN"));
-				map.put("userBankSeq", jsonObj.get("userBankSeq"));
+				map.put("bankSeq", jsonObj.get("bankSeq"));
 				list.add(map);	
 			}
 			ledgerMapper.updateBank(list);
@@ -380,7 +380,7 @@ public class LedgerServiceImpl implements LedgerService{
 				Map<String, Object> map = new HashMap<String, Object>();		
 				
 				map.put("userSeq", userSeq);
-				map.put("userBankSeq", jsonObj.get("userBankSeq"));
+				map.put("bankSeq", jsonObj.get("bankSeq"));
 				list.add(map);	
 			}
 			ledgerMapper.deleteBank(list);
@@ -551,7 +551,7 @@ public class LedgerServiceImpl implements LedgerService{
 			List<Integer> bankOldSeqList = new ArrayList<Integer>();
 			//백업한 시퀀스
 			for(int i=0; i<bankOldList.size(); i++){
-				bankOldSeqList.add(bankOldList.get(i).getUserBankSeq());
+				bankOldSeqList.add(bankOldList.get(i).getbankSeq());
 			}
 			//새로 insert 한 시퀀스
 			List<Integer> bankNewSeqList = ledgerMapper.insertBackupBankList(bankOldList, userSeq);
@@ -579,11 +579,11 @@ public class LedgerServiceImpl implements LedgerService{
 				recordBackupList.get(i).setPurposeSeq(purCheckMap.get(purOldSeq));
 			}
 			
-			bankOldSeq = recordBackupList.get(i).getUserBankSeq(); // 0 현금 (디비에서 NULL이 MoneyRecordBean에서 userBankSeq 자료형이 int 라 0으로 옴)
+			bankOldSeq = recordBackupList.get(i).getbankSeq(); // 0 현금 (디비에서 NULL이 MoneyRecordBean에서 bankSeq 자료형이 int 라 0으로 옴)
 			if(bankOldSeq == 0){
-				recordBackupList.get(i).setUserBankSeq(0);
+				recordBackupList.get(i).setbankSeq(0);
 			}else{
-				recordBackupList.get(i).setUserBankSeq(bankCheckMap.get(bankOldSeq));
+				recordBackupList.get(i).setbankSeq(bankCheckMap.get(bankOldSeq));
 			}
 			
 		}

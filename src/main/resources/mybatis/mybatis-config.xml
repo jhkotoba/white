@@ -11,7 +11,7 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 		<!-- ledger -->
 		<typeAlias alias="PurposeBean" type="com.ljh.white.ledger.bean.PurposeBean"/>						
 		<typeAlias alias="PurposeDetailBean" type="com.ljh.white.ledger.bean.PurposeDetailBean"/>
-		<typeAlias alias="UserBankBean" type="com.ljh.white.ledger.bean.UserBankBean"/>
+		<typeAlias alias="BankBean" type="com.ljh.white.ledger.bean.BankBean"/>
 		<typeAlias alias="MoneyRecordBean" type="com.ljh.white.ledger.bean.MoneyRecordBean"/>
 		<typeAlias alias="MemoBean" type="com.ljh.white.memo.bean.MemoBean"/>
 		

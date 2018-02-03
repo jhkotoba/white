@@ -146,7 +146,7 @@ public class LedgerController {
 		map.put("userSeq", request.getSession(false).getAttribute("userSeq").toString());
 		/*map.put("recordSeq", request.getParameter("recordSeq")); 사용안하는거 같음*/
 		map.put("bankAccount", request.getParameter("bankAccount"));
-		map.put("userBankSeq", request.getParameter("userBankSeq"));
+		map.put("bankSeq", request.getParameter("bankSeq"));
 		map.put("recordDate", request.getParameter("recordDate"));		
 		
 		Integer result = ledgerService.serachLastRow(map);		

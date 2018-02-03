@@ -66,7 +66,7 @@ public class LedgerReService {
 				map.put("startDate", param.getString("startDate"));
 			}else {
 				map.put("bankName", "bank"+(i-1));
-				map.put("bankSeq", bankList.get(i-1).getInt("userBankSeq")); //userBankSeq -> bankSeq 추후  컬럼명 수정 필요
+				map.put("bankSeq", bankList.get(i-1).getInt("bankSeq"));
 				map.put("userSeq", param.getInt("userSeq"));
 				map.put("startDate", param.getString("startDate"));
 			}
@@ -87,7 +87,7 @@ public class LedgerReService {
 		amount += m;
 		for(int i=0; i<bankList.size(); i++) {
 			m = pastRec == null ? 0 : pastRec.getInt("bank"+i);
-			moneyMap.put(bankList.get(i).getString("userBankSeq"), m );			
+			moneyMap.put(bankList.get(i).getString("bankSeq"), m );			
 			amount += m;
 		}		
 		
@@ -127,7 +127,7 @@ public class LedgerReService {
 			//은행별 추가 map추가
 			recList.get(i).put("bankIdxLen", bankList.size()-1);
 			for(int j=0; j<bankList.size(); j++) {
-				recList.get(i).put("bank"+j, moneyMap.getInt(bankList.get(j).getString("userBankSeq")));
+				recList.get(i).put("bank"+j, moneyMap.getInt(bankList.get(j).getString("bankSeq")));
 			}
 						
 		}

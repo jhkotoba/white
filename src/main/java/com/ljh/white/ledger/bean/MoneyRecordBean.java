@@ -16,7 +16,7 @@ public class MoneyRecordBean implements Serializable{
 	private String recordDate;
 	private String content;
 	private int purposeSeq;
-	private int userBankSeq;
+	private int bankSeq;
 	private int moveToSeq;
 	private int inExpMoney;
 	private int readyMoney;
@@ -58,11 +58,11 @@ public class MoneyRecordBean implements Serializable{
 	public void setPurposeSeq(int purposeSeq) {
 		this.purposeSeq = purposeSeq;
 	}
-	public int getUserBankSeq() {
-		return userBankSeq;
+	public int getBankSeq() {
+		return bankSeq;
 	}
-	public void setUserBankSeq(int userBankSeq) {
-		this.userBankSeq = userBankSeq;
+	public void setBankSeq(int bankSeq) {
+		this.bankSeq = bankSeq;
 	}
 	public int getMoveToSeq() {
 		return moveToSeq;
@@ -98,7 +98,7 @@ public class MoneyRecordBean implements Serializable{
 	public String toString() {
 		return "MoneyRecordBean [recordSeq=" + recordSeq + ", groupSeq=" + groupSeq + ", userSeq=" + userSeq
 				+ ", recordDate=" + recordDate + ", content=" + content + ", purposeSeq=" + purposeSeq
-				+ ", userBankSeq=" + userBankSeq + ", moveToSeq=" + moveToSeq + ", inExpMoney=" + inExpMoney
+				+ ", bankSeq=" + bankSeq + ", moveToSeq=" + moveToSeq + ", inExpMoney=" + inExpMoney
 				+ ", readyMoney=" + readyMoney + ", resultBankMoney=" + resultBankMoney + ", regDate=" + regDate + "]";
 	}
 	 	

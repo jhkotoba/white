@@ -1,6 +1,6 @@
 package com.ljh.white.login.service;
 
-import com.ljh.white.auth.bean.AuthBean;
+import com.ljh.white.common.bean.AuthBean;
 
 public interface LoginService {
 	

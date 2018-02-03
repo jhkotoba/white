@@ -4,7 +4,7 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import com.ljh.white.auth.bean.AuthBean;
+import com.ljh.white.common.bean.AuthBean;
 import com.ljh.white.common.collection.WhiteMap;
 import com.ljh.white.common.utility.cryptolect.BCrypt;
 import com.ljh.white.common.vo.WhiteUesrVO;

@@ -238,10 +238,10 @@ let ledgerSelect = {
 					
 					for(let i=0; i<this.bankList.length; i++){
 						if(this.bankList[i]["bankNowUseYN"] === "Y" && this.bankList[i]['bankAccount'] === value ){
-							tag += "<option selected='selected' value='"+this.bankList[i]['userBankSeq']
+							tag += "<option selected='selected' value='"+this.bankList[i]['bankSeq']
 									+"'>"+this.bankList[i]['bankName']+"("+this.bankList[i]["bankAccount"]+")</option>";
 						}else{
-							tag += "<option value='"+this.bankList[i]['userBankSeq']
+							tag += "<option value='"+this.bankList[i]['bankSeq']
 							+"'>"+this.bankList[i]['bankName']+"("+this.bankList[i]["bankAccount"]+")</option>";
 						}	
 					}	
@@ -301,7 +301,7 @@ let ledgerSelect = {
 					editData.content = $("#contentT_"+i).val();
 					editData.purposeSeq = Number($("#purposeS_"+i).val());
 					editData.purposeDtlSeq = Number($("#purposeDtlS_"+i).val());
-					editData.userBankSeq = Number($("#userBankSeq_"+i).val());					
+					editData.bankSeq = Number($("#bankSeq_"+i).val());					
 					
 					checkIdxList.push(i);					
 					if(updateType == "update"){	

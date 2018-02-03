@@ -7,7 +7,7 @@ $(document).ready(function(){
 	bankSetup.view();
 	
 	$("#bankAdd").click(function(){	
-		bankSetup.list.push({bankAccount: "", userBankSeq: 0, bankNowUseYN: "Y",bankName: "", });
+		bankSetup.list.push({bankAccount: "", bankSeq: 0, bankNowUseYN: "Y",bankName: "", });
 		bankSetup.view();
 	});
 	
@@ -37,10 +37,10 @@ $(document).ready(function(){
 			}
 			
 			
-			if(bankSetup.list[i]["userBankSeq"] === 0){
+			if(bankSetup.list[i]["bankSeq"] === 0){
 				insertList.push(bankSetup.list[i]);
-			}else if(bankSetup.list[i]["userBankSeq"] < 0){
-				bankSetup.list[i]["userBankSeq"] = Math.abs(bankSetup.list[i]["userBankSeq"]);
+			}else if(bankSetup.list[i]["bankSeq"] < 0){
+				bankSetup.list[i]["bankSeq"] = Math.abs(bankSetup.list[i]["bankSeq"]);
 				updateList.push(bankSetup.list[i]);
 			}
 			
@@ -102,7 +102,7 @@ let bankSetup = {
 			let tag = "<table id='bankTb' border=1><tr><th>순번</th><th>은행명</th><th>계좌번호</th><th>수정/삭제</th></tr>";	
 			for(let i=0; i<this.list.length; i++){				
 				tag += "<td id='bankNo_"+i+"'>"+(i+1)
-					+ "<input type='hidden' id='bankSeq_"+i+"' value='"+this.list[i]["userBankSeq"]+"'></td>"
+					+ "<input type='hidden' id='bankSeq_"+i+"' value='"+this.list[i]["bankSeq"]+"'></td>"
 					+ "<td><input id='bankNm_"+i+"' type='text' value='"+this.list[i]["bankName"]
 					+ "' onkeyup='bankSetup.change("+i+",0)'></td>"
 					+ "<td><input id='bankAcc_"+i+"' type='text' value='"+this.list[i]["bankAccount"]
@@ -113,8 +113,8 @@ let bankSetup = {
 		},
 		change : function(idx, type){
 			
-			let seq = this.list[idx]["userBankSeq"];	
-			if(seq > 0)	this.list[idx]["userBankSeq"] = seq*-1;
+			let seq = this.list[idx]["bankSeq"];	
+			if(seq > 0)	this.list[idx]["bankSeq"] = seq*-1;
 			
 			//bankName
 			if(type===0){
@@ -132,9 +132,9 @@ let bankSetup = {
 			
 		},
 		del : function(idx){
-			this.list[idx]["userBankSeq"] = Math.abs(this.list[idx]["userBankSeq"]);
+			this.list[idx]["bankSeq"] = Math.abs(this.list[idx]["bankSeq"]);
 			
-			if(this.list[idx]["userBankSeq"] !== 0){
+			if(this.list[idx]["bankSeq"] !== 0){
 				this.delList.push(this.list[idx]);
 			}			
 			

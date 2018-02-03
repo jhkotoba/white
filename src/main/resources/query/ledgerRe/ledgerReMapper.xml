@@ -9,13 +9,13 @@
 	<!-- 은행 조회 -->
 	<select id="selectBankList" resultType="whiteMap" parameterType="whiteMap">
 		SELECT
-		  user_bank_seq AS userBankSeq,
+		  bank_seq AS bankSeq,
 		  bank_name AS bankName,
 		  bank_account AS bankAccount,
 		  bank_now_use_yn AS bankNowUseYN
 		FROM user_bank
 		WHERE user_seq = #{userSeq}
-		ORDER BY user_bank_seq ASC
+		ORDER BY bank_seq ASC
 	</select>
 	
 	<!--  -->
@@ -66,7 +66,7 @@
 		LEFT OUTER JOIN purpose_detail purDtl
 			ON rec.pur_dtl_seq = purDtl.pur_detail_seq
 		LEFT OUTER JOIN user_bank bank
-    		ON rec.bank_seq = bank.user_bank_seq
+    		ON rec.bank_seq = bank.bank_seq
 		WHERE rec.user_seq = #{userSeq}		
 		AND rec.record_date <![CDATA[ >= ]]> #{startDate}
 		AND rec.record_date <![CDATA[ <  ]]> #{endDate}			 	

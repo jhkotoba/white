@@ -51,9 +51,13 @@ function recListView(){
 <body>
 	
 	<h4>금전기록 기간조회</h4>
-	<input id="startDate" type="date" value="">
-	<input id="endDate" type="date" value="">
-	<button id="recShBt">조회</button>
+	<div>
+		<input id="startDate" type="date" value="">
+		<input id="endDate" type="date" value="">
+		<button id="recShBt">조회</button>
+		<button id="recEditBt">편집</button>
+	</div>
+	
 	
 	<div id="ledgerReList">		
 	</div>		

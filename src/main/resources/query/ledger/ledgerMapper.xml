@@ -22,7 +22,7 @@
 		   	pur.purpose 			AS purpose,
 		   	rec.pur_detail_seq 		AS purDetailSeq,
       		IFNULL(purDtk.pur_detail,'') AS purDetail,				
-			rec.user_bank_seq 		AS userBankSeq,	
+			rec.bank_seq 		AS bankSeq,	
 			rec.move_to_seq			AS moveToSeq,	
       		IFNULL(bank.bank_name, '현금')	AS bankName,
       		IFNULL(bank.bank_account, 'readyMoney')	AS bankAccount,
@@ -36,7 +36,7 @@
 		LEFT OUTER JOIN purpose_detail purDtk
 			ON rec.pur_detail_seq = purDtk.pur_detail_seq
 		LEFT OUTER JOIN user_bank bank
-    		ON rec.user_bank_seq = bank.user_bank_seq 
+    		ON rec.bank_seq = bank.bank_seq 
 		WHERE 1=1
 		AND rec.user_seq = #{userSeq} 
 		AND rec.record_date >= #{startDate}
@@ -81,7 +81,7 @@
 		   	pur.purpose 			AS purpose,	
 		   	rec.pur_detail_seq 		AS purDetailSeq,
       		IFNULL(purDtk.pur_detail,'') AS purDetail,						
-			rec.user_bank_seq 		AS userBankSeq,			
+			rec.bank_seq 		AS bankSeq,			
 			rec.move_to_seq			AS moveToSeq,	
       		IFNULL(bank.bank_name, '현금')	AS bankName,
       		IFNULL(bank.bank_account, 'readyMoney')	AS bankAccount,
@@ -95,7 +95,7 @@
 		LEFT OUTER JOIN purpose_detail purDtk
 			ON rec.pur_detail_seq = purDtk.pur_detail_seq
 		LEFT OUTER JOIN user_bank bank
-    		ON rec.user_bank_seq = bank.user_bank_seq 
+    		ON rec.bank_seq = bank.bank_seq 
 		WHERE 1=1
 		AND rec.user_seq = #{userSeq}		
 		ORDER BY rec.record_date desc, rec.record_seq desc
@@ -134,7 +134,7 @@
 		   	pur.purpose 			AS purpose,	
 		   	rec.pur_detail_seq 		AS purDetailSeq,
       		IFNULL(purDtk.pur_detail,'') AS purDetail,				
-			rec.user_bank_seq 		AS userBankSeq,			
+			rec.bank_seq 		AS bankSeq,			
 			rec.move_to_seq			AS moveToSeq,
       		IFNULL(bank.bank_name, '현금')	AS bankName,
       		IFNULL(bank.bank_account, 'readyMoney')	AS bankAccount,
@@ -148,10 +148,10 @@
 		LEFT OUTER JOIN purpose_detail purDtk
 			ON rec.pur_detail_seq = purDtk.pur_detail_seq
 		LEFT OUTER JOIN user_bank bank
-    		ON rec.user_bank_seq = bank.user_bank_seq    		
+    		ON rec.bank_seq = bank.bank_seq    		
 		WHERE 1=1
 		AND rec.user_seq = #{userSeq}
-		AND rec.user_bank_seq = #{userBankSeq}
+		AND rec.bank_seq = #{bankSeq}
 		AND rec.record_date &lt; #{recordDate} 	
 		ORDER BY rec.record_date desc, rec.record_seq desc
 		Limit 1	
@@ -164,7 +164,7 @@
 			rec.content 			AS content,
 			rec.purpose_seq 		AS purposeSeq,
 		   	pur.purpose 			AS purpose,					
-			rec.user_bank_seq 		AS userBankSeq,			
+			rec.bank_seq 		AS bankSeq,			
 			rec.move_to_seq			AS moveToSeq,
       		IFNULL(bank.bank_name, '현금')	AS bankName,
       		IFNULL(bank.bank_account, 'readyMoney')	AS bankAccount,
@@ -176,7 +176,7 @@
 		LEFT OUTER JOIN purpose pur
 			ON rec.purpose_seq = pur.purpose_seq
 		LEFT OUTER JOIN user_bank bank
-    		ON rec.user_bank_seq = bank.user_bank_seq
+    		ON rec.bank_seq = bank.bank_seq
     		AND bank.bank_account = #{bankAccoun}
 		WHERE 1=1
 		AND rec.user_seq = #{userSeq}
@@ -215,7 +215,7 @@
 			record_date AS recordDate								
 			,content AS content						
 			,purpose_seq AS purposeSeq
-			,user_bank_seq	AS userBankSeq			
+			,bank_seq	AS bankSeq			
 			,move_to_seq AS moveToSeq
 			,in_exp_money AS inExpMoney		
 			,ready_money AS readyMoney			
@@ -270,9 +270,9 @@
 	ORDER BY purpose_seq
 	</select>	
 	
-	<select id="getBankList" resultType="UserBankBean" parameterType="String">	
+	<select id="getBankList" resultType="BankBean" parameterType="String">	
 		SELECT
-		  user_bank_seq AS userBankSeq,
+		  bank_seq AS bankSeq,
 		  bank_name AS bankName,
 		  bank_account AS bankAccount,
 		  bank_now_use_yn AS bankNowUseYN
@@ -282,7 +282,7 @@
 	
 	<select id="getUseBankList" resultType="Map" parameterType="String">	
 		SELECT
-		  user_bank_seq AS userBankSeq,
+		  bank_seq AS bankSeq,
 		  bank_name AS bankName,
 		  bank_account AS bankAccount,
 		  bank_now_use_yn AS bankNowUseYN
@@ -303,7 +303,7 @@
 			pur_detail_seq,
 			
 					
-			user_bank_seq,	
+			bank_seq,	
 			move_to_seq,	
 			<!-- bank_name, 
 			bank_account, 
@@ -333,7 +333,7 @@
 			
 						
 			<choose>
-				<when test="userBankSeq == 0">
+				<when test="bankSeq == 0">
 					null,
 						<choose>
 							<when test="purposeSeq == 0 and moveToSeq != 0">
@@ -351,7 +351,7 @@
 								FROM money_record
 								WHERE user_seq = #{userSeq}
 								AND record_date &lt; #{recordDate}
-	         					AND user_bank_seq IS NULL
+	         					AND bank_seq IS NULL
 	          					ORDER BY record_date DESC, record_seq DESC
 	          					LIMIT 1
 	          				) AS ready_money
@@ -359,8 +359,8 @@
 					0,
 					now()
 				</when>
-				<when test="userBankSeq != 0">
-					#{userBankSeq},
+				<when test="bankSeq != 0">
+					#{bankSeq},
 						<choose>
 							<when test="purposeSeq == 0 and moveToSeq != 0">
 								#{moveToSeq},
@@ -377,7 +377,7 @@
 								FROM money_record
 								WHERE user_seq = #{userSeq}
 								AND record_date &lt; #{recordDate}
-	         					AND user_bank_seq = #{userBankSeq}							
+	         					AND bank_seq = #{bankSeq}							
 	          					ORDER BY record_date DESC, record_seq DESC
 	          					LIMIT 1
 	          				) AS result_bank_money
@@ -393,7 +393,7 @@
 		UPDATE money_record
 		<choose>
 			<!-- <when test="bankAccount == 'readyMoney'"> -->
-			<when test="userBankSeq == 0">
+			<when test="bankSeq == 0">
 				<if test="updateType == 'insert'">
 					SET ready_money = ready_money + #{inExpMoney}
 				</if>
@@ -414,11 +414,11 @@
 		WHERE user_seq = #{userSeq}
 		AND record_date > #{recordDate}		
 		<choose>
-			<when test="userBankSeq == 0">
-				AND user_bank_seq IS NULL				
+			<when test="bankSeq == 0">
+				AND bank_seq IS NULL				
 			</when>
 			<otherwise>
-	            AND user_bank_seq = #{userBankSeq}
+	            AND bank_seq = #{bankSeq}
 	        </otherwise>
 		</choose>
 		
@@ -560,14 +560,14 @@
 			bank_account = #{bankAccount},
 			bank_now_use_yn = #{bankNowUseYN}
 		WHERE user_seq = #{userSeq}
-		AND user_bank_seq = #{userBankSeq}
+		AND bank_seq = #{bankSeq}
 	</update>	
 	
 	<update id="deleteBank" parameterType="Map">		
 		UPDATE user_bank SET
 			bank_now_use_yn = 'N'
 		WHERE user_seq = #{userSeq}
-		AND user_bank_seq = #{userBankSeq}		
+		AND bank_seq = #{bankSeq}		
 	</update>
 	
 	
@@ -600,7 +600,7 @@
 	
 	<!-- 미사용 -->
 	<!-- <insert id="insertBackupBankList" parameterType="UserBankBean" 
-		useGeneratedKeys="true" keyProperty="userBankSeq" keyColumn="user_bank_seq">
+		useGeneratedKeys="true" keyProperty="bankSeq" keyColumn="bank_seq">
 		/* insertBackupBankList */
 		
 		INSERT INTO user_bank(			
@@ -625,7 +625,7 @@
 			,record_date								
 			,content								
 			,purpose_seq								
-			,user_bank_seq								
+			,bank_seq								
 			,in_exp_money								
 			,ready_money								
 			,result_bank_money								
@@ -639,11 +639,11 @@
 			,#{item.purposeSeq}
 			
 			<choose>
-				<when test="item.userBankSeq == 0">
+				<when test="item.bankSeq == 0">
 					,NULL				
 				</when>
 				<otherwise>
-		            ,#{item.userBankSeq}
+		            ,#{item.bankSeq}
 		        </otherwise>
 			</choose>
 			

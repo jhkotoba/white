@@ -140,7 +140,7 @@ let selectRecode = {
 				
 			
 			
-				view += "<input type='hidden' id='userBankSeq_"+i+"' value="+(recordList[i]['userBankSeq']==undefined ? 0 : recordList[i]['userBankSeq'])+">"
+				view += "<input type='hidden' id='bankSeq_"+i+"' value="+(recordList[i]['bankSeq']==undefined ? 0 : recordList[i]['bankSeq'])+">"
 						+"<tr "+ viewTd +">";
 				if(this.viewType === 'select'){
 					view += "<th><input id='checkbox_"+i+"' name='checkbox' type='checkbox' value="+recordList[i]['recordSeq']
@@ -236,7 +236,7 @@ let selectRecode = {
 				empTagIdList.push("resultBankMoney_"+bankList[i]['bankAccount']);
 				empList.push(
 						$("#resultBankMoney_"+bankList[i]['bankAccount']+"_"+String(recordList.length-1)).text());
-				empBankSeq.push(bankList[i]['userBankSeq']);
+				empBankSeq.push(bankList[i]['bankSeq']);
 			}
 
 			for(let i=0; i<empTagIdList.length; i++){
@@ -252,7 +252,7 @@ let selectRecode = {
 						data: {
 							userSeq : this.userSeq,							
 							bankAccount : (empTagIdList[i] === "readyMoney") ? "readyMoney" : empTagIdList[i].split('_')[1],
-							userBankSeq : empBankSeq[i],
+							bankSeq : empBankSeq[i],
 							recordDate : $("#recordDate_"+String(recordList.length-1)).text()			
 						},			
 						dataType: 'text',

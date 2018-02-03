@@ -15,7 +15,7 @@ import org.springframework.stereotype.Repository;
 import com.ljh.white.ledger.bean.MoneyRecordBean;
 import com.ljh.white.ledger.bean.PurposeBean;
 import com.ljh.white.ledger.bean.PurposeDetailBean;
-import com.ljh.white.ledger.bean.UserBankBean;
+import com.ljh.white.ledger.bean.BankBean;
 import java.io.Serializable;
 /**  리뉴얼로 대체
  * @author lee
@@ -72,7 +72,7 @@ public class LedgerMapper {
 	}
 	
 	/** 해당 유저 은행List 조회 (String 유저 시퀀스) Bean */
-	public List<UserBankBean> getBankList(String userSeq){
+	public List<BankBean> getBankList(String userSeq){
 		return sqlSession.selectList("ledgerMapper.getBankList", userSeq);
 	}
 	
@@ -103,7 +103,7 @@ public class LedgerMapper {
 			//purposeSeq 가 0이면 현금이동
 			if(list.get(i).get("purposeSeq").toString().equals("0")){
 				
-				list.get(i).put("userBankSeq", list.get(i).get("moveToSeq"));
+				list.get(i).put("bankSeq", list.get(i).get("moveToSeq"));
 				list.get(i).put("moveToSeq", 0);
 				list.get(i).put("groupSeq", recordSeq);
 				list.get(i).put("inExpMoney", Math.abs(Integer.parseInt(list.get(i).get("inExpMoney").toString())));
@@ -268,14 +268,14 @@ public class LedgerMapper {
 	}
 	
 	//purpose, userBank, moneyRocord init insert
-	public List<Integer> insertBackupBankList(List<UserBankBean> bankList, int userSeq){
+	public List<Integer> insertBackupBankList(List<BankBean> bankList, int userSeq){
 		
 		List<Integer> bankNewSeqList = new ArrayList<Integer>();
 		
 		for(int i=0; i<bankList.size(); i++){			
 			bankList.get(i).setUserSeq(userSeq);
 			sqlSession.insert("ledgerMapper.insertBackupBankList", bankList.get(i));
-			bankNewSeqList.add(bankList.get(i).getUserBankSeq());
+			bankNewSeqList.add(bankList.get(i).getBankSeq());
 		}		
 		return bankNewSeqList;
 	}

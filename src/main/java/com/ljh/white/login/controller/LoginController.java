@@ -14,7 +14,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.ljh.white.auth.bean.AuthBean;
+import com.ljh.white.common.bean.AuthBean;
 import com.ljh.white.common.service.WhiteService;
 
 import com.ljh.white.login.service.LoginService;

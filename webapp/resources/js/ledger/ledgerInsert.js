@@ -18,7 +18,7 @@ $(document).ready(function(){
 	$("#moveFrom_0").append("<option value=''>from 선택</option>").append("<option value=0>현금</option>");
 	for(let i=0; i<ledgerInsert.userBankList.length; i++){
 		if(ledgerInsert.userBankList[i]["bankNowUseYN"] === "Y"){
-			$("#moveFrom_0").append("<option value='"+ ledgerInsert.userBankList[i]["userBankSeq"] +"'>"+ledgerInsert.userBankList[i]["bankName"]+
+			$("#moveFrom_0").append("<option value='"+ ledgerInsert.userBankList[i]["bankSeq"] +"'>"+ledgerInsert.userBankList[i]["bankName"]+
 			"("+ledgerInsert.userBankList[i]["bankAccount"]+")</option>");
 		}
 	}*/
@@ -26,7 +26,7 @@ $(document).ready(function(){
 	$("#moveTo_0").append("<option value=''>to 선택</option>").append("<option value=0>현금</option>");
 	for(let i=0; i<ledgerInsert.userBankList.length; i++){
 		if(ledgerInsert.userBankList[i]["bankNowUseYN"] === "Y"){
-			$("#moveTo_0").append("<option value='"+ ledgerInsert.userBankList[i]["userBankSeq"] +"'>"+ledgerInsert.userBankList[i]["bankName"]+
+			$("#moveTo_0").append("<option value='"+ ledgerInsert.userBankList[i]["bankSeq"] +"'>"+ledgerInsert.userBankList[i]["bankName"]+
 			"("+ledgerInsert.userBankList[i]["bankAccount"]+")</option>");
 		}
 	}
@@ -35,7 +35,7 @@ $(document).ready(function(){
 	$("#bankName_0").append("<option value=''>현금/은행 선택</option>").append("<option value=0>현금</option>");
 	for(let i=0; i<ledgerInsert.userBankList.length; i++){
 		if(ledgerInsert.userBankList[i]["bankNowUseYN"] === "Y"){
-			$("#bankName_0").append("<option value='"+ ledgerInsert.userBankList[i]["userBankSeq"] +"'>"+ledgerInsert.userBankList[i]["bankName"]+
+			$("#bankName_0").append("<option value='"+ ledgerInsert.userBankList[i]["bankSeq"] +"'>"+ledgerInsert.userBankList[i]["bankName"]+
 			"("+ledgerInsert.userBankList[i]["bankAccount"]+")</option>");
 		}
 	}
@@ -96,9 +96,9 @@ let ledgerInsert = {
 			
 			for(let i=0; i<ledgerInsert.idx; i++){
 				
-				let userBankSeq = Number($("#bankName_"+i+" option:selected").val());
+				let bankSeq = Number($("#bankName_"+i+" option:selected").val());
 				let bankAcc = "";
-				if(userBankSeq === 0){
+				if(bankSeq === 0){
 					bankAcc = "readyMoney";
 				}else{
 					bankAcc = $("#bankName_"+i+" option:selected").text().split("(")[1].replace(")", "");					
@@ -114,7 +114,7 @@ let ledgerInsert = {
 						content : $("#content_"+i).val(),						
 						purposeSeq : purposeSeq,					
 						purposeDtlSeq : purposeDtlSeq,					
-						userBankSeq : userBankSeq,
+						bankSeq : bankSeq,
 						moveToSeq : Number($("#moveTo_"+i+" option:selected").val()),
 						bankAccount : bankAcc,
 						inExpMoney : purposeSeq == 0 ? (Number($("#inExpMoney_"+i).val())*-1) : Number($("#inExpMoney_"+i).val())
@@ -201,7 +201,7 @@ let ledgerInsert = {
 			$("#moveFrom_"+idx).append("<option value=''>from 선택</option>").append("<option value=0>현금</option>");		
 			for(let i=0; i<ledgerInsert.userBankList.length; i++){
 				if(ledgerInsert.userBankList[i]["bankNowUseYN"] === "Y"){
-					$("#moveFrom_"+idx).append("<option value='"+ ledgerInsert.userBankList[i]["userBankSeq"] +"'>"+ledgerInsert.userBankList[i]["bankName"]+
+					$("#moveFrom_"+idx).append("<option value='"+ ledgerInsert.userBankList[i]["bankSeq"] +"'>"+ledgerInsert.userBankList[i]["bankName"]+
 					"("+ledgerInsert.userBankList[i]["bankAccount"]+")</option>");
 				}
 			}
@@ -209,7 +209,7 @@ let ledgerInsert = {
 			$("#moveTo_"+idx).append("<option value=''>to 선택</option>").append("<option value=0>현금</option>");		
 			for(let i=0; i<ledgerInsert.userBankList.length; i++){
 				if(ledgerInsert.userBankList[i]["bankNowUseYN"] === "Y"){
-					$("#moveTo_"+idx).append("<option value='"+ ledgerInsert.userBankList[i]["userBankSeq"] +"'>"+ledgerInsert.userBankList[i]["bankName"]+
+					$("#moveTo_"+idx).append("<option value='"+ ledgerInsert.userBankList[i]["bankSeq"] +"'>"+ledgerInsert.userBankList[i]["bankName"]+
 					"("+ledgerInsert.userBankList[i]["bankAccount"]+")</option>");
 				}
 			}
@@ -223,7 +223,7 @@ let ledgerInsert = {
 			$("#bankName_"+idx).append("<option value=''>현금/은행 선택</option>").append("<option value=0>현금</option>");		
 			for(let i=0; i<ledgerInsert.userBankList.length; i++){
 				if(ledgerInsert.userBankList[i]["bankNowUseYN"] === "Y"){
-					$("#bankName_"+idx).append("<option value='"+ ledgerInsert.userBankList[i]["userBankSeq"] +"'>"+ledgerInsert.userBankList[i]["bankName"]+
+					$("#bankName_"+idx).append("<option value='"+ ledgerInsert.userBankList[i]["bankSeq"] +"'>"+ledgerInsert.userBankList[i]["bankName"]+
 					"("+ledgerInsert.userBankList[i]["bankAccount"]+")</option>");
 				}
 			}

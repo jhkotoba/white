@@ -6,21 +6,21 @@ import java.io.Serializable;
  * @author lee
  * @deprecated
  */
-public class UserBankBean implements Serializable{
+public class BankBean implements Serializable{
 
 	
 	private static final long serialVersionUID = 1775481562298901988L;	
 
-	private int userBankSeq;
+	private int bankSeq;
 	private int userSeq;
 	private String bankName;
 	private String bankAccount;
 	private String bankNowUseYN;
-	public int getUserBankSeq() {
-		return userBankSeq;
+	public int getBankSeq() {
+		return bankSeq;
 	}
-	public void setUserBankSeq(int userBankSeq) {
-		this.userBankSeq = userBankSeq;
+	public void setBankSeq(int bankSeq) {
+		this.bankSeq = bankSeq;
 	}
 	public int getUserSeq() {
 		return userSeq;
@@ -49,7 +49,7 @@ public class UserBankBean implements Serializable{
 	
 	@Override
 	public String toString() {
-		return "UserBankBean [userBankSeq=" + userBankSeq + ", userSeq=" + userSeq + ", bankName=" + bankName
+		return "BankBean [bankSeq=" + bankSeq + ", userSeq=" + userSeq + ", bankName=" + bankName
 				+ ", bankAccount=" + bankAccount + ", bankNowUseYN=" + bankNowUseYN + "]";
 	}	
 
