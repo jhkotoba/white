@@ -13,7 +13,17 @@
 $(document).ready(function(){
 	
 	//메인조회 리스트
-	recListView();	
+	recListView();
+	
+	//수정 및 삭제
+	$("#recEditBt").click(function(){
+		rec.edit();
+	});
+	
+	//취소
+	$("#recCelBt").click(function(){
+		rec.cancel();
+	});
 });
 
 //메인조회 리스트
@@ -54,8 +64,9 @@ function recListView(){
 	<div>
 		<input id="startDate" type="date" value="">
 		<input id="endDate" type="date" value="">
-		<button id="recShBt">조회</button>
-		<button id="recEditBt">편집</button>
+		<button class="btn_azure03" id="recShBt">조회</button>
+		<button class="btn_azure03" id="recEditBt">편집</button>
+		<button class="btn_azure03" id="recCelBt">취소</button>
 	</div>
 	
 	

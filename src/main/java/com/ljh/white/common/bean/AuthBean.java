@@ -1,4 +1,4 @@
-package com.ljh.white.auth.bean;
+package com.ljh.white.common.bean;
 
 import java.io.Serializable;
 import java.util.List;
