@@ -75,24 +75,24 @@ let rec = {
 		let name = target.id.split('_')[0];
 		let idx = target.id.split('_')[1];
 		
-		this.recList[idx][name] = String(target.value);
-		if(type === "Number"){
-			if(target.value === ''){
-				this.recList[idx][name] = String(target.value);		
-			}else{
-				this.recList[idx][name] = Number(target.value);		
-			}
-			
-		}else if( type === "String"){
-			if(name === "date"){
-				this.recList[idx].recordDate = String(target.value) + " " + this.recList[idx].recordDate.split(' ')[1];
-			}else if( name === "time"){
-				this.recList[idx].recordDate = this.recList[idx].recordDate.split(' ')[0] + " " + String(target.value);
-			}else{
-				this.recList[idx][name] = String(target.value);
-			}		
-		}
+		switch(name){
 		
+		case "date" :
+			this.recList[idx].recordDate = String(target.value) + " " + this.recList[idx].recordDate.split(' ')[1];
+			break;
+		case "time" :
+			this.recList[idx].recordDate = this.recList[idx].recordDate.split(' ')[0] + " " + String(target.value);
+			break;
+		case "money" :
+		case "moveSeq" :
+		case "purSeq" :
+		case "bankSeq" :
+			this.recList[idx][name] = Number(target.value);
+			break;
+		default :
+			this.recList[idx][name] = String(target.value);
+			break;		
+		}
 	},
 	
 	edit : function(){
@@ -115,17 +115,17 @@ let rec = {
 			
 			tag += "<tr>";			
 			tag += "<td><input type='checkbox'></td>";			
-			tag += "<td><input id='date_"+i+"' type='date'  value='"+this.recList[i].recordDate.split(' ')[0]+"' onkeyup='rec.sync(this, \"String\")'></td>";
-			tag += "<td><input id='time_"+i+"' type='time' value='"+this.recList[i].recordDate.split(' ')[1]+"' onkeyup='rec.sync(this, \"String\")'></td>";
-			tag += "<td><input id='content_"+i+"' type='text' value='"+this.recList[i].content+"' onkeyup='rec.sync(this, \"String\")'></td>";
-			tag += "<td><select id='purSeq_"+i+"' onchange='rec.sync(this, \"Number\")'; rec.appSel(this,"+i+");'>";			
+			tag += "<td><input id='date_"+i+"' type='date'  value='"+this.recList[i].recordDate.split(' ')[0]+"' onkeyup='rec.sync(this);'></td>";
+			tag += "<td><input id='time_"+i+"' type='time' value='"+this.recList[i].recordDate.split(' ')[1]+"' onkeyup='rec.sync(this);'></td>";
+			tag += "<td><input id='content_"+i+"' type='text' value='"+this.recList[i].content+"' onkeyup='rec.sync(this)'></td>";
+			tag += "<td><select id='purSeq_"+i+"' onchange='rec.sync(this);' rec.appSel(this,"+i+");'>";			
 			tag += "<option value=0>금액이동</option>";			
 			for(let j=0; j<this.purList.length; j++){
 				this.recList[i].purSeq === this.purList[j].purSeq ? selected = "selected='selected'" : selected = "";
 				tag += "<option "+selected+" value="+this.purList[j].purSeq+">"+this.purList[j].purpose+"</option>";
 			}	
 			tag += "</select></td>";
-			tag += "<td><select id='purDtlSeq_"+i+"' onchange='rec.sync(this, \'Number\');'>";
+			tag += "<td><select id='purDtlSeq_"+i+"' onchange='rec.sync(this);'>";
 			tag += "<option value=''>선택</option>";
 			for(let j=0; j<this.purDtlList.length; j++){
 				if(this.recList[i].purSeq === this.purDtlList[j].purSeq){
@@ -134,13 +134,13 @@ let rec = {
 				}
 			}	
 			tag += "</select></td>";
-			tag += "<td><select id='bankSeq_"+i+"' onchange='rec.sync(this, \"Number\");'>";
+			tag += "<td><select id='bankSeq_"+i+"' onchange='rec.sync(this);'>";
 			tag += "<option "+(this.recList[i].bankSeq === '0' ? "selected='selected'" : "")+" value=0>현금</option>";			
 			for(let j=0; j<this.bankList.length; j++){
 				this.recList[i].bankSeq === this.bankList[j].bankSeq ? selected = "selected='selected'" : selected = "";
 				tag += "<option "+selected+" value="+this.bankList[j].bankSeq+">"+this.bankList[j].bankName+"("+this.bankList[j].bankAccount+")</option>";
 			}	
-			tag += "<td><input type='text' value='"+this.recList[i].money+"' onkeyup='rec.sync(this, \"String\")'></td>";			
+			tag += "<td><input id='money_"+i+"' type='text' value='"+this.recList[i].money+"' onkeyup='rec.sync(this);'></td>";			
 			tag += "</tr>";
 			
 			delete this.recList[i].bankAccount;
@@ -148,6 +148,7 @@ let rec = {
 			delete this.recList[i].bankName;
 			delete this.recList[i].purDetail;
 			delete this.recList[i].purpose;
+			delete this.recList[i].cash;
 			for(let j=0; j<this.bankList.length; j++){
 				delete this.recList[i]["bank"+j];
 			}	
@@ -156,6 +157,16 @@ let rec = {
 		tag +="</table>";
 		$("#ledgerReList").append(tag);
 	},
+	
+	check : function(){
+		
+		
+	},
+	
+	update : function(){
+		
+	},
+	
 	cancel : function(){		
 		this.recList = common.clone(this.recClone);
 		this.view();

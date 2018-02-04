@@ -28,6 +28,15 @@ $(document).ready(function(){
 			.attr("class", "btn_disabled03");
     	
 	});
+	
+	$("#recSaveBtn").click(function(){
+		let rtn = rec.check();
+		if(rtn.check === true){
+			rec.update();
+		}else{
+			alert(rtn.msg);
+		}
+	});	
 });
 
 //메인조회 리스트
