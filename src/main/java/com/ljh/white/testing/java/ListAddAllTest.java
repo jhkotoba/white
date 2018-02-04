@@ -18,6 +18,7 @@ public class ListAddAllTest {
 			System.out.println(list.get(i).getTest());
 		}
 		System.out.println("");
+		//default
 		
 		//addAll TEST
 		System.out.println("listCopy");
@@ -27,6 +28,7 @@ public class ListAddAllTest {
 			System.out.println(listCopy.get(i).getTest());
 		}
 		System.out.println("");
+		//result:addAll() OK
 		
 		//empty ?
 		System.out.println("listCopyEmpty");
@@ -36,6 +38,7 @@ public class ListAddAllTest {
 			System.out.println(listCopyEmpty.get(i).getTest());
 		}
 		System.out.println("");
+		//result:addAll() OK
 		
 		//NULL ?
 		System.out.println("listCopyNull");
@@ -45,6 +48,7 @@ public class ListAddAllTest {
 			System.out.println(listCopyNull.get(i).getTest());
 		}
 		System.out.println("");
+		//result:addAll Error java.lang.NullPointerException
 		
 	}
 

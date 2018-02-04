@@ -39,9 +39,9 @@ $(document).ready(function(){
 	
 	<h4>금전기록 등록</h4>
 	<div id="recIn">
-		<button id="recAddBtn">추가</button>
-		<button id="recDelBtn">삭제</button>
-		<button id="recInsertBtn">저장</button>
+		<button id="recAddBtn" class="btn_azure03">추가</button>
+		<button id="recDelBtn" class="btn_azure03">삭제</button>
+		<button id="recInsertBtn" class="btn_azure03">저장</button>
 	</div>
 	
 	<div id="ledgerReList">		

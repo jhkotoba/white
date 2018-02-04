@@ -27,20 +27,20 @@ let memo = {
 		for(let i=0; i<this.list.length; i++){
 			
 			//삭제선 체크
-			let cancelText = "";
+			let redLine = "";
 			let tagIsDel = "";
 			if(memo.list[i].state === "delete"){
-				cancelText = "cancelText";
+				redLine = "redLine";
 				tagIsDel = "<button class='btn_azure02' onclick='memo.delCan("+i+")'>취소</button></td></tr>";
 			}else{
-				cancelText = "";
+				redLine = "";
 				tagIsDel = "<button class='btn_azure02' onclick='memo.del("+i+")'>삭제</button></td></tr>";
 			}
 			
 			if(emptyCheck.isNotEmpty(this.list[i].memoContent)){
-				tag += "<tr><td><input id='memoContent_"+i+"' class='"+cancelText+"' type='text' onkeyup='memo.edit("+i+")' value='"+this.list[i].memoContent+"'>";
+				tag += "<tr><td><input id='memoContent_"+i+"' class='"+redLine+"' type='text' onkeyup='memo.edit("+i+")' value='"+this.list[i].memoContent+"'>";
 			}else{
-				tag += "<tr><td><input id='memoContent_"+i+"' class='"+cancelText+"' type='text' onkeyup='memo.edit("+i+")' value=''>";
+				tag += "<tr><td><input id='memoContent_"+i+"' class='"+redLine+"' type='text' onkeyup='memo.edit("+i+")' value=''>";
 			}			
 			tag += tagIsDel;
 		}			

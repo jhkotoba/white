@@ -18,15 +18,21 @@ $(document).ready(function(){
 	//수정 및 삭제
 	$("#recEditBtn").click(function(){
 		rec.edit();
+		
+		$("#recSaveBtn").prop("disabled",false)
+			.attr("class", "btn_azure03");	
+		$("#recCelBtn").prop("disabled",false)
+			.attr("class", "btn_azure03");	
 	});
 	
 	//취소
 	$("#recCelBtn").click(function(){
 		rec.cancel();
-		$("#recEditBtns > button")
-			.prop("disabled",true)
+				
+		$("#recSaveBtn").prop("disabled", true)
+			.attr("class", "btn_disabled03");    	
+		$("#recCelBtn").prop("disabled", true)
 			.attr("class", "btn_disabled03");
-    	
 	});
 	
 	$("#recSaveBtn").click(function(){
@@ -59,8 +65,7 @@ function recListView(){
 			dataType: 'json',
 		    success : function(data) {	    	
 		    	rec.init("select", data.recList, '${purList}', '${purDtlList}', '${bankList}').view();
-		    	$("#recEditBtns > button")
-		    		.prop("disabled",false)
+		    	$("#recEditBtn").prop("disabled",false)
 		    		.attr("class", "btn_azure03");		    	
 		    },
 		    error : function(request, status, error){
@@ -80,12 +85,10 @@ function recListView(){
 	<div>
 		<input id="startDate" type="date" value="">
 		<input id="endDate" type="date" value="">
-		<button id="recShBtn" class="btn_azure03">조회</button>
-		<span id="recEditBtns">
-			<button id="recEditBtn" class="btn_disabled03" disabled="disabled">편집</button>
-			<button id="recSaveBtn" class="btn_disabled03" disabled="disabled">저장</button>
-			<button id="recCelBtn" class="btn_disabled03" disabled="disabled">취소</button>
-		</span>
+		<button id="recShBtn" class="btn_azure03">조회</button>		
+		<button id="recEditBtn" class="btn_disabled03" disabled="disabled">편집</button>
+		<button id="recSaveBtn" class="btn_disabled03" disabled="disabled">저장</button>
+		<button id="recCelBtn" class="btn_disabled03" disabled="disabled">취소</button>		
 	</div>
 	
 	

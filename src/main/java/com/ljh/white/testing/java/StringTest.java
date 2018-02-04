@@ -7,13 +7,16 @@ public class StringTest {
 
 		String test1 = "___<___>___&___,___";
 		test1 = test1.replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll(",","&quot;");
-		System.out.println(test1);
-		
+		System.out.println(test1);		
+		//before: ___<___>___&___,___
+		//after:___&lt;___&gt;___&amp;___&quot;___
 		
 		String test2 = "---\"----";
 		System.out.println(test2);
 		test2 = test2.replaceAll("\"","");
-		System.out.println(test2);
+		System.out.println(test2);		
+		//before:---"----
+		//after:-------
 		
 		
 		

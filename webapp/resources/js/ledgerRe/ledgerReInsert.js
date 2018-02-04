@@ -105,6 +105,7 @@ let recIn = {
 			dataType: 'json',
 		    success : function(data, stat, xhr) {  
 		    	alert(data+" 개의 행이 저장되었습니다.");
+		    	sideSubmit("Insert");
 		    },
 		    error : function(xhr, stat, err) {
 		    	alert("insert error");
@@ -148,7 +149,7 @@ let recIn = {
 			tag += "<td><select id='purDtlSeq_"+i+"' onchange='recIn.sync(this);'>";
 			tag += "<option value=''>선택</option>";
 			for(let j=0; j<this.purDtlList.length; j++){
-				if(this.inList[i].purSeq === this.purDtlList[j].purSeq){
+				if(this.inList[i].purSeq === String(this.purDtlList[j].purSeq)){
 					this.inList[i].purDtlSeq === String(this.purDtlList[j].purDtlSeq) ? selected = "selected='selected'" : selected = "";
 					tag += "<option "+selected+" value="+this.purDtlList[j].purDtlSeq+">"+this.purDtlList[j].purDetail+"</option>";
 				}
@@ -177,12 +178,14 @@ let recIn = {
 		tag +="</table>";
 		$("#ledgerReList").append(tag);
 	},
-	appSel : function(target, idx){		
-		$("#purDtlSeq_"+idx).empty();		
+	appSel : function(target, idx){	
+		$("#purDtlSeq_"+idx).empty();	
+
+		let selected = "";
 		let tag = "<option value=''>선택</option>";
 		for(let j=0; j<this.purDtlList.length; j++){
-			if(this.inList[idx].purSeq === this.purDtlList[j].purSeq){
-				this.inList[idx].purDtlSeq === this.purDtlList[j].purDtlSeq ? selected = "selected='selected'" : selected = "";
+			if(this.inList[idx].purSeq === String(this.purDtlList[j].purSeq)){
+				this.inList[idx].purDtlSeq === String(this.purDtlList[j].purDtlSeq) ? selected = "selected='selected'" : selected = "";
 				tag += "<option "+selected+"value="+this.purDtlList[j].purDtlSeq+">"+this.purDtlList[j].purDetail+"</option>";
 			}
 		}	

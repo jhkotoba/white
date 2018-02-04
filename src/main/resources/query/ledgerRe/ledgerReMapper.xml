@@ -51,13 +51,13 @@
 			DATE_FORMAT(rec.record_date,'%Y-%m-%d %H:%i:%s') AS recordDate,
 			rec.content,
 			rec.pur_seq AS purSeq,
-			rec.pur_dtl_seq AS purDtlSeq,
+			IFNULL(rec.pur_dtl_seq, '') AS purDtlSeq,
 			rec.bank_seq AS bankSeq,
-			rec.move_seq AS moveSeq,
+			IFNULL(rec.move_seq, '') AS moveSeq,
 			rec.money,
-			pur.purpose	AS purpose,
+			IFNULL(pur.purpose, 'move')	AS purpose,
 			IFNULL(purDtl.pur_detail,'') AS purDetail,
-			IFNULL(bank.bank_name, '현금')	AS bankName,
+			IFNULL(bank.bank_name, '')	AS bankName,
 			IFNULL(bank.bank_account, 'cash')	AS bankAccount,
 			IFNULL(bank.bank_now_use_yn,'X') AS bankNowUseYN
 		FROM money_record_re rec

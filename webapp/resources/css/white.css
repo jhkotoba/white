@@ -15,9 +15,13 @@
 	display: none;
 }
 
-.cancelText{
+.redLine{
 	text-decoration-line: line-through;
 	color : red;
+}
+
+.edit{
+	color : blue;
 }
 
 .header{	
