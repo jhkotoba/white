@@ -147,8 +147,24 @@ public class LedgerReService {
 		
 		for(int i=0; i<list.size(); i++) {
 			list.get(i).put("userSeq", param.getInt("userSeq"));
-		}
-		
+		}		
 		return ledgerReMapper.insertRecordList(list);	
+	}
+	
+	/**
+	 * 금전기록List update, delete
+	 * @param list
+	 * @return
+	 */
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
+	public WhiteMap updateRecordList(WhiteMap param) {
+		
+		List<WhiteMap> list = param.getListWhiteMap("upList");
+		
+		for(int i=0; i<list.size(); i++) {
+			list.get(i).put("userSeq", param.getInt("userSeq"));
+		}		
+		return ledgerReMapper.updateRecordList(list);		
+		
 	}
 }

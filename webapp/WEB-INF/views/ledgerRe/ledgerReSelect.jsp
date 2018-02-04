@@ -35,6 +35,7 @@ $(document).ready(function(){
 			.attr("class", "btn_disabled03");
 	});
 	
+	//저장
 	$("#recSaveBtn").click(function(){
 		let rtn = rec.check();
 		if(rtn.check === true){

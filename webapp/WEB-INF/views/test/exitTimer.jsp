@@ -109,7 +109,7 @@ function z(n, digits) {
 	<a href="/white/testMain.do">테스트 메인</a><br>	
 	
 	<input id="date" type="date" value="">
-	<input id="time" type="time" value="18:30:00">
+	<input id="time" type="time" value="08:00:00">
 	<button id="startTime">시작</button>
 	<button id="stopTime">종료</button>
 	

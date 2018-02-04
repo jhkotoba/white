@@ -138,4 +138,18 @@
 		</foreach>	
 	</insert>
 	
+	
+	<!-- UPDATE -->
+	
+	<update id="updateRecordList">
+	
+	</update>
+	
+	
+	<!-- DELETE -->
+	
+	<delete id="deleteRecordList">
+	
+	</delete>
+	
 </mapper>

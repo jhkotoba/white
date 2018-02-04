@@ -111,7 +111,7 @@ let rec = {
 		
 		
 		if($(target).is(":checked") === false && this.equals(idx) === false){
-			this.recList[idx].state = "edit";
+			this.recList[idx].state = "update";
 			this.addClass(idx, "edit");
 		}else{
 			this.recList[idx].state = "select";
@@ -232,37 +232,38 @@ let rec = {
 	check : function(){
 		let check = {check : true, msg : ""};
 		
-		for(let i=0; i<this.recList.length; i++){
+		let j = 1;
+		for(let i=this.recList.length-1; i>=0; i--){
 			
 			// 빈값, null 체크
 			if(this.recList[i].date === '' || this.recList[i].date === null){
-				check = {check : false, msg : (i+1) + "행의 날짜 데이터가 입력되지 않았습니다."};
+				check = {check : false, msg : j + "행의 날짜 데이터가 입력되지 않았습니다."};
 				break;
 			}else if(this.recList[i].time === '' || this.recList[i].time === null){
-				check = {check : false, msg : (i+1) + "행의 시간 데이터가 입력되지 않았습니다."};
+				check = {check : false, msg : j + "행의 시간 데이터가 입력되지 않았습니다."};
 				break;
 			}else if(this.recList[i].content === '' || this.recList[i].content === null){
-				check = {check : false, msg : (i+1) + "행의 내용이 입력되지 않았습니다."};
+				check = {check : false, msg : j + "행의 내용이 입력되지 않았습니다."};
 				break;
 			}else if(this.recList[i].money === 0 || this.recList[i].money === null){
-				check = {check : false, msg : (i+1) + "행의  금액이 입력되지 않았습니다."};
+				check = {check : false, msg : j + "행의  금액이 입력되지 않았습니다."};
 				break;
 			}
 			
 			//금액이동시 체크
 			if(this.recList[i].purSeq === 0 && (this.recList[i].moveSeq === '' || this.recList[i].moveSeq === null)){
-				check = {check : false, msg : (i+1) + "행의 금액이동할 대상이 선택되지 않았습니다."};
+				check = {check : false, msg : j + "행의 금액이동할 대상이 선택되지 않았습니다."};
 				break;
 			}else if(this.recList[i].bankSeq === this.recList[i].moveSeq){
-				check = {check : false, msg : (i+1) + "행의 금액이 이동할 곳이 같습니다."};
+				check = {check : false, msg : j + "행의 금액이 이동할 곳이 같습니다."};
 				break;
 			}
 			
 			//비정상 값 체크			
 			if(common.isNum(this.recList[i].money) === false){
-				check = {check : false, msg : (i+1) + "행의 금액이 잘못 입력하였습니다."};
+				check = {check : false, msg : j + "행의 금액이 잘못 입력하였습니다."};
 				break;
-			}
+			}j++;
 		}
 		
 		return check;
@@ -271,6 +272,47 @@ let rec = {
 	
 	update : function(){
 		
+		//moveMoney 마이너스 수정
+		for(let i=0; i<this.recList.length; i++){
+			if(this.recList[i].purSeq === '0'){			
+				this.recList[i].money = "-"+String(Math.abs(Number(this.recList[i].money)));
+			}
+		}
+		
+		let upList = new Array();
+		
+		for(let i=0; this.recList.length; i++){
+			if(this.recList[i].state === "update" || this.recList[i].state === "delete")
+			upList.push(this.recList[i]);
+		}		
+		
+		$.ajax({		
+			type: 'POST',
+			url: common.path()+'/ledgerRe/ajax/updateRecordList.do',
+			data: {
+				upList : JSON.stringify(this.upList)
+			},
+			dataType: 'json',
+		    success : function(data, stat, xhr) { 
+		    	let msg = "";
+		    	if(data.upCnt > 0){
+		    		msg += data.upCnt+" 개의 행이 수정";
+		    	}
+		    	
+		    	if(data.upCnt > 0 && data.delCnt > 0){
+		    		msg += ", ";
+		    	}
+		    	
+		    	if(data.delCnt > 0){
+		    		msg += data.delCnt+ "개의 행이 삭제";
+		    	}
+		    	msg += " 되었습니다.";
+		    	alert(msg);
+		    },
+		    error : function(xhr, stat, err) {
+		    	alert("update, delete error");
+		    }
+		});	
 	},	
 	
 	cancel : function(){		
@@ -282,7 +324,7 @@ let rec = {
 		
 		let bind = "";
 		classNm === "redLine" ? bind = true : bind = false;		
-		
+
 		$("#date_"+idx).addClass(classNm).prop("readOnly", bind);
 		$("#time_"+idx).addClass(classNm).prop("readOnly", bind);
 		$("#content_"+idx).addClass(classNm).prop("readOnly", bind);
@@ -294,15 +336,29 @@ let rec = {
 	},
 	
 	removeClass : function(idx, classNm){		
+		
+		
+		$("#date_"+idx).removeClass(classNm);
+		$("#time_"+idx).removeClass(classNm);
+		$("#content_"+idx).removeClass(classNm);
+		$("#purSeq_"+idx).removeClass(classNm);
+		$("#purDtlSeq_"+idx).removeClass(classNm);
+		$("#bankSeq_"+idx).removeClass(classNm);
+		$("#moveSeq_"+idx).removeClass(classNm);
+		$("#money_"+idx).removeClass(classNm);
+		
+		if(classNm === "redLine"){
 			
-		$("#date_"+idx).removeClass(classNm).prop("readOnly", false);;
-		$("#time_"+idx).removeClass(classNm).prop("readOnly", false);;
-		$("#content_"+idx).removeClass(classNm).prop("readOnly", false);;
-		$("#purSeq_"+idx).removeClass(classNm).prop("disabled", false);;
-		$("#purDtlSeq_"+idx).removeClass(classNm).prop("disabled", false);;
-		$("#bankSeq_"+idx).removeClass(classNm).prop("disabled", false);;
-		$("#moveSeq_"+idx).removeClass(classNm).prop("disabled", false);;
-		$("#money_"+idx).removeClass(classNm).prop("readOnly", false);;
+			$("#date_"+idx).prop("readOnly", false);
+			$("#time_"+idx).prop("readOnly", false);
+			$("#content_"+idx).prop("readOnly", false);
+			$("#purSeq_"+idx).prop("disabled", false);
+			$("#purDtlSeq_"+idx).prop("disabled", false);
+			$("#bankSeq_"+idx).prop("disabled", false);
+			$("#moveSeq_"+idx).prop("disabled", false);
+			$("#money_"+idx).prop("readOnly", false);
+		}
+		
 		
 	},
 	
