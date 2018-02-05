@@ -59,14 +59,20 @@ public class LedgerReMapper {
 	}
 	
 	/**
-	 * 금전기록List update, delete
+	 * 금전기록List update
 	 * @param list
 	 * @return
 	 */
-	public WhiteMap updateRecordList(List<WhiteMap> list) {
-		WhiteMap resultMap = new WhiteMap();
-		resultMap.put("upCnt", sqlSession.update("ledgerReMapper.updateRecordList", list));
-		resultMap.put("delCnt", sqlSession.update("ledgerReMapper.deleteRecordList", list));
-		return resultMap;
+	public int updateRecordList(List<WhiteMap> list) {		
+		return sqlSession.update("ledgerReMapper.updateRecordList", list);		
+	}
+	
+	/**
+	 * 금전기록List delete
+	 * @param list
+	 * @return
+	 */
+	public int deleteRecordList(List<WhiteMap> list) {		
+		return sqlSession.delete("ledgerReMapper.deleteRecordList", list);		 
 	}
 }

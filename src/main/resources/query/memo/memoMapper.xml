@@ -19,9 +19,6 @@
 	</select>
 	
 	
-	
-	
-	
 	<!-- INSERT -->
 	
 	<insert id="insertMemoList" parameterType="java.util.List">
@@ -34,12 +31,7 @@
 		<foreach collection="list" item="item" separator=",">
 			(#{item.userSeq}, #{item.memoType}, #{item.memoContent}, now())
 		</foreach>	
-	</insert>
-	
-	
-	
-	
-	
+	</insert>	
 	
 	
 	<!-- UPDETE -->

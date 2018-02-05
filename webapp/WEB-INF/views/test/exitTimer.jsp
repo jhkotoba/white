@@ -34,7 +34,7 @@ $(document).ready(function(){
 	});
 });
 
-
+var bool = true;
 function startTime(){
 	
 	var inputDate = $("#date").val();
@@ -83,7 +83,17 @@ function startTime(){
 		    var sec = Math.floor((viewSec/1000) % 60);
 		    var mil = String(viewSec).substr(String(viewSec).length-3, 3);
 		    
+		   
+		    
 		    $("#timer").text(day+" Day "+z(hour,2)+":"+z(min,2)+":"+z(sec,2)+"."+mil);
+		    /* if(bool === true){
+		    	$("#timer").css("font-size", "1ypx");
+		    	bool = false;
+		    }else{
+		    	$("#timer").css("font-size", "15px");
+		    	bool = true;
+		    } */
+		    
 		}
 		break;
 	}	

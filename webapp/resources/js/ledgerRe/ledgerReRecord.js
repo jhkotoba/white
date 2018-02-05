@@ -92,19 +92,20 @@ let rec = {
 				this.removeClass(idx, "redLine");
 			}
 			break;
-		case "money" :
-		case "moveSeq" :
 		case "purSeq" :
-		case "bankSeq" :
-			this.recList[idx][name] = Number(target.value);
+			if(String(target.value) === '0'){				
+				this.recList[idx].purDtlSeq = '';
+			}			
+			if(String(target.value) !== '0' && this.recList[idx].moveSeq !== ''){
+				this.recList[idx].moveSeq = '';
+			}			
+			this.recList[idx][name] = String(target.value);
 			break;
 		case "purDtlSeq" :
-			if(target.value === ""){
-				this.recList[idx][name] = target.value;
-			}else{
-				this.recList[idx][name] = Number(target.value);
-			}
+		case "bankSeq" :		
+		case "moveSeq" :
 		case "content" :
+		case "money" :	
 			this.recList[idx][name] = String(target.value);
 			break;		
 		}
@@ -113,11 +114,10 @@ let rec = {
 		if($(target).is(":checked") === false && this.equals(idx) === false){
 			this.recList[idx].state = "update";
 			this.addClass(idx, "edit");
-		}else{
-			this.recList[idx].state = "select";
+		}else{			
+			$(target).is(":checked") === true ? this.recList[idx].state = "delete" : this.recList[idx].state = "select";
 			this.removeClass(idx, "edit");			
-		}		
-		
+		}
 	},
 	
 	equals : function(idx){
@@ -171,32 +171,32 @@ let rec = {
 			tag += "<td><select id='purSeq_"+i+"' onchange='rec.sync(this); rec.appSel(this,"+i+");'>";			
 			tag += "<option value=0>금액이동</option>";			
 			for(let j=0; j<this.purList.length; j++){
-				this.recList[i].purSeq === this.purList[j].purSeq ? selected = "selected='selected'" : selected = "";
-				tag += "<option "+selected+" value="+this.purList[j].purSeq+">"+this.purList[j].purpose+"</option>";
+				String(this.recList[i].purSeq) === String(this.purList[j].purSeq) ? selected = "selected='selected'" : selected = "";
+				tag += "<option "+selected+" value='"+this.purList[j].purSeq+"'>"+this.purList[j].purpose+"</option>";
 			}	
 			tag += "</select></td>";
 			tag += "<td><select id='purDtlSeq_"+i+"' onchange='rec.sync(this);'>";
-			tag += "<option value=''>선택</option>";
-			for(let j=0; j<this.purDtlList.length; j++){
-				if(this.recList[i].purSeq === this.purDtlList[j].purSeq){
-					this.recList[i].purDtlSeq === this.purDtlList[j].purDtlSeq ? selected = "selected='selected'" : selected = "";
-					tag += "<option "+selected+" value="+this.purDtlList[j].purDtlSeq+">"+this.purDtlList[j].purDetail+"</option>";
+			tag += "<option value=''>선택</option>";			
+			for(let j=0; j<this.purDtlList.length; j++){				
+				if(String(this.recList[i].purSeq) === String(this.purDtlList[j].purSeq)){
+					String(this.recList[i].purDtlSeq) === String(this.purDtlList[j].purDtlSeq)	 ? selected = "selected='selected'" : selected = "";
+					tag += "<option "+selected+" value='"+this.purDtlList[j].purDtlSeq+"'>"+this.purDtlList[j].purDetail+"</option>";
 				}
 			}	
 			tag += "</select></td>";
 			tag += "<td><select id='bankSeq_"+i+"' onchange='rec.sync(this);'>";
 			tag += "<option "+(this.recList[i].bankSeq === '0' ? "selected='selected'" : "")+" value=0>현금</option>";			
 			for(let j=0; j<this.bankList.length; j++){
-				this.recList[i].bankSeq === this.bankList[j].bankSeq ? selected = "selected='selected'" : selected = "";
-				tag += "<option "+selected+" value="+this.bankList[j].bankSeq+">"+this.bankList[j].bankName+"("+this.bankList[j].bankAccount+")</option>";
+				String(this.recList[i].bankSeq) === String(this.bankList[j].bankSeq) ? selected = "selected='selected'" : selected = "";
+				tag += "<option "+selected+" value='"+this.bankList[j].bankSeq+"'>"+this.bankList[j].bankName+"("+this.bankList[j].bankAccount+")</option>";
 			}
 			tag += "</select></td>";
 			tag += "<td><select id='moveSeq_"+i+"' "+disabled+" onchange='rec.sync(this);'>";
 			tag += "<option value=''>선택</option>";
 			tag += "<option "+(this.recList[i].moveSeq === '0' ? "selected='selected'" : "")+" value=0>현금</option>";		
 			for(let j=0; j<this.bankList.length; j++){
-				this.recList[i].moveSeq === this.bankList[j].bankSeq ? selected = "selected='selected'" : selected = "";
-				tag += "<option "+selected+" value="+this.bankList[j].bankSeq+">"+this.bankList[j].bankName+"("+this.bankList[j].bankAccount+")</option>";
+				String(this.recList[i].moveSeq) === String(this.bankList[j].bankSeq) ? selected = "selected='selected'" : selected = "";
+				tag += "<option "+selected+" value='"+this.bankList[j].bankSeq+"'>"+this.bankList[j].bankName+"("+this.bankList[j].bankAccount+")</option>";
 			}	
 			tag += "<td><input id='money_"+i+"' type='text' value='"+this.recList[i].money+"' onkeyup='rec.sync(this);'></td>";			
 			tag += "</tr>";
@@ -214,9 +214,9 @@ let rec = {
 		let selected = "";
 		let tag = "<option value=''>선택</option>";
 		for(let j=0; j<this.purDtlList.length; j++){
-			if(this.recList[idx].purSeq === this.purDtlList[j].purSeq){
-				this.recList[idx].purDtlSeq === this.purDtlList[j].purDtlSeq ? selected = "selected='selected'" : selected = "";
-				tag += "<option "+selected+"value="+this.purDtlList[j].purDtlSeq+">"+this.purDtlList[j].purDetail+"</option>";
+			if(String(this.recList[idx].purSeq) === String(this.purDtlList[j].purSeq)){
+				String(this.recList[idx].purDtlSeq) === String(this.purDtlList[j].purDtlSeq) ? selected = "selected='selected'" : selected = "";
+				tag += "<option "+selected+"value='"+this.purDtlList[j].purDtlSeq+"'>"+this.purDtlList[j].purDetail+"</option>";
 			}
 		}	
 		$("#purDtlSeq_"+idx).append(tag);
@@ -270,27 +270,49 @@ let rec = {
 		
 	},
 	
-	update : function(){
+	upDelete : function(){
 		
-		//moveMoney 마이너스 수정
+		let upList = new Array();
+		let delList = new Array();
+		
 		for(let i=0; i<this.recList.length; i++){
 			if(this.recList[i].purSeq === '0'){			
 				this.recList[i].money = "-"+String(Math.abs(Number(this.recList[i].money)));
 			}
+			
+			if(this.recList[i].state === "update"){
+				upList.push(this.recList[i]);
+			}else if(this.recList[i].state === "delete"){
+				delList.push(this.recList[i]);
+			}
 		}
 		
-		let upList = new Array();
-		
-		for(let i=0; this.recList.length; i++){
-			if(this.recList[i].state === "update" || this.recList[i].state === "delete")
-			upList.push(this.recList[i]);
-		}		
+		if(upList.length === 0 && delList.length === 0){
+			alert("수정, 삭제할 대상이 없습니다.");
+			return;
+		}else{
+			
+			if(upList.length > 0 && delList.length > 0){
+				if(!confirm("수정, 삭제 하시겠습니까?")){
+					return;
+				}
+			}else if(upList.length > 0 && delList.length === 0){
+				if(!confirm("수정 하시겠습니까?")){
+					return;
+				}
+			}else if(delList.length > 0){
+				if(!confirm("삭제할 대상이 있습니다. 삭제 하시겠습니까?")){
+					return;
+				}
+			}
+		}
 		
 		$.ajax({		
 			type: 'POST',
-			url: common.path()+'/ledgerRe/ajax/updateRecordList.do',
+			url: common.path()+'/ledgerRe/ajax/updateDeleteRecordList.do',
 			data: {
-				upList : JSON.stringify(this.upList)
+				upList : JSON.stringify(upList),
+				delList : JSON.stringify(delList)
 			},
 			dataType: 'json',
 		    success : function(data, stat, xhr) { 

@@ -157,14 +157,24 @@ public class LedgerReService {
 	 * @return
 	 */
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
-	public WhiteMap updateRecordList(WhiteMap param) {
+	public WhiteMap updateDeleteRecordList(WhiteMap param) {
 		
-		List<WhiteMap> list = param.getListWhiteMap("upList");
+		List<WhiteMap> upList = param.getListWhiteMap("upList");
+		List<WhiteMap> delList = param.getListWhiteMap("delList");
 		
-		for(int i=0; i<list.size(); i++) {
-			list.get(i).put("userSeq", param.getInt("userSeq"));
-		}		
-		return ledgerReMapper.updateRecordList(list);		
+		WhiteMap resultMap = new WhiteMap();
+		if(upList.size() > 0 ) {			
+			resultMap.put("upCnt", ledgerReMapper.updateRecordList(upList));	
+		}else {
+			resultMap.put("upCnt", 0);	
+		}
 		
+		if(delList.size() > 0) {			
+			resultMap.put("delCnt", ledgerReMapper.deleteRecordList(delList));
+		}else {
+			resultMap.put("delCnt", 0);	
+		}
+		
+		return resultMap;		
 	}
 }

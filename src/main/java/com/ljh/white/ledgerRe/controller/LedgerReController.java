@@ -84,14 +84,14 @@ public class LedgerReController {
 		return "result.jsp";
 	}
 	
-	@RequestMapping(value="/ledgerRe/ajax/updateRecordList.do" )
-	public String updateRecordList(HttpServletRequest request){
-		logger.debug("insertRecordList Start");
+	@RequestMapping(value="/ledgerRe/ajax/updateDeleteRecordList.do" )
+	public String updateDeleteRecordList(HttpServletRequest request){
+		logger.debug("updateDeleteRecordList Start");
 		
 		WhiteMap param = new WhiteMap(request);	
 	
-		WhiteMap resultMap = ledgerReService.updateRecordList(param);
-		request.setAttribute("result", resultMap);
+		WhiteMap resultMap = ledgerReService.updateDeleteRecordList(param);
+		request.setAttribute("result", new JSONObject(resultMap));
 		
 		return "result.jsp";
 	}
