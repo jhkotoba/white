@@ -12,7 +12,7 @@ function purDtlChange(idx){
 	
 	if(emptyCheck.isNotEmpty(value)){
 		for(let i=0; i<ledgerSelect.purposeDtlList.length; i++){			
-			if(Number(value) === ledgerSelect.purposeDtlList[i]["purposeSeq"]){				
+			if(Number(value) === ledgerSelect.purposeDtlList[i]["purSeq"]){				
 				tag += "<option value='"+ledgerSelect.purposeDtlList[i]['purDetailSeq']
 				+"'>"+ledgerSelect.purposeDtlList[i]['purDetail']+"</option>";
 			}				
@@ -65,8 +65,8 @@ let ledgerSelect = {
 					value = $("#contentP_"+idx).text();
 					ledgerSelect.typeChange(true, idx, value, "content" );
 					
-					let purposeSeq = Number($("#purposeSeq_"+idx).text());
-					if(purposeSeq !==0){
+					let purSeq = Number($("#purSeq_"+idx).text());
+					if(purSeq !==0){
 						value = $("#purposeP_"+idx).text();							
 						ledgerSelect.typeChange(true, idx, value, "purpose");
 						value = $("#purposeS_"+idx).val();
@@ -113,8 +113,8 @@ let ledgerSelect = {
 			
 			value = $("#purposeP_"+idx).text();			
 			//금액이동 때문에 행이 2개됨, 보이기에는 1행으로 해야 하기때문에 윗칸을 체크하면 아래칸도 같이 체크되야됨(삭제때문에) 수정은 숨기는거라 안함
-			let purposeSeq = Number($("#purposeSeq_"+idx).text());			
-			if(purposeSeq !==0){
+			let purSeq = Number($("#purSeq_"+idx).text());			
+			if(purSeq !==0){
 				ledgerSelect.typeChange(bool, idx, value, "purpose");	
 				
 				value = $("#purposeS_"+idx).val();				
@@ -194,10 +194,10 @@ let ledgerSelect = {
 					}
 					for(let i=0; i<this.purposeList.length; i++){						
 						if(value===this.purposeList[i]['purpose']){
-							tag += "<option selected='selected' value="+this.purposeList[i]['purposeSeq']
+							tag += "<option selected='selected' value="+this.purposeList[i]['purSeq']
 									+">"+this.purposeList[i]['purpose']+"</option>";
 						}else{
-							tag += "<option value='"+this.purposeList[i]['purposeSeq']
+							tag += "<option value='"+this.purposeList[i]['purSeq']
 							+"'>"+this.purposeList[i]['purpose']+"</option>";
 						}						
 					}	
@@ -212,7 +212,7 @@ let ledgerSelect = {
 					if(emptyCheck.isNotEmpty(value)){
 						for(let i=0; i<this.purposeDtlList.length; i++){
 							
-							if(Number(value) === this.purposeDtlList[i]["purposeSeq"]){
+							if(Number(value) === this.purposeDtlList[i]["purSeq"]){
 								if(purDtlText===this.purposeDtlList[i]['purDetail']){
 									tag += "<option selected='selected' value="+this.purposeDtlList[i]['purDetailSeq']
 									+">"+this.purposeDtlList[i]['purDetail']+"</option>";
@@ -299,7 +299,7 @@ let ledgerSelect = {
 					editData.recordSeq = Number($("#checkbox_"+i).val());
 					editData.recordDate = $("#recordDateD_"+i).val() + " " + $("#recordDateT_"+i).val();					
 					editData.content = $("#contentT_"+i).val();
-					editData.purposeSeq = Number($("#purposeS_"+i).val());
+					editData.purSeq = Number($("#purposeS_"+i).val());
 					editData.purposeDtlSeq = Number($("#purposeDtlS_"+i).val());
 					editData.bankSeq = Number($("#bankSeq_"+i).val());					
 					
@@ -308,30 +308,30 @@ let ledgerSelect = {
 						//checkSet.add(checkDate);						
 						if(	editData.recordDate != $("#recordDateP_"+i).text() ||
 								editData.content != $("#contentP_"+i).text() ||	
-								editData.purposeSeq != $("#purposeSeq_"+i).text() ||
+								editData.purSeq != $("#purSeq_"+i).text() ||
 								editData.purposeDtlSeq != $("#purposeDtlSeq_"+i).text() ){
 							
 							if(editData.recordDate == $("#recordDateP_"+i).text()) 
 								editData.recordDate = "";
 							if(editData.content == $("#contentP_"+i).text())
 								editData.content = "";
-							if(editData.purposeSeq == $("#purposeSeq_"+i).text())
-								editData.purposeSeq = "";						
+							if(editData.purSeq == $("#purSeq_"+i).text())
+								editData.purSeq = "";						
 							if(editData.purposeDtlSeq == $("#purposeDtlSeq_"+i).text())
 								editData.purposeDtlSeq = "";
 							
 														
 							
 							//현금이동일떄는 목적,상세목적은 강제로 "" 날짜는 잘 안되서 그냥 다되도록.. 
-							if(Number($("#purposeSeq_"+i).text())===0){
-								editData.purposeSeq = "";
+							if(Number($("#purSeq_"+i).text())===0){
+								editData.purSeq = "";
 								editData.purposeDtlSeq = "";
 								$("#recordDateD_"+(i+1)).val($("#recordDateD_"+i).val());
 								$("#recordDateT_"+(i+1)).val($("#recordDateT_"+i).val());
 							}
 							
 							//현금이동 수정시 2행째 것도 수정이 필요하므로..							
-							if(Number($("#purposeSeq_"+i).text())===0
+							if(Number($("#purSeq_"+i).text())===0
 									&& $("#recordDateD_"+i).val() + " " + $("#recordDateT_"+i).val() === $("#recordDateD_"+(i+1)).val() + " " + $("#recordDateT_"+(i+1)).val()){							
 								
 								if(editData.content != $("#contentP_"+i).text()){

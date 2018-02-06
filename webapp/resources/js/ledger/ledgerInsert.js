@@ -9,7 +9,7 @@ $(document).ready(function(){
 	
 	$("#purpose_0").append("<option value=''>사용목적 선택</option>").append("<option value='0'>금액이동</option>");
 	for(let i=0; i<ledgerInsert.purposeList.length; i++){
-		$("#purpose_0").append("<option value='"+ ledgerInsert.purposeList[i]["purposeSeq"] +"'>"+ledgerInsert.purposeList[i]["purpose"]+"</option>");		
+		$("#purpose_0").append("<option value='"+ ledgerInsert.purposeList[i]["purSeq"] +"'>"+ledgerInsert.purposeList[i]["purpose"]+"</option>");		
 	}
 	
 	$("#purposeDtl_0").append("<option value=''>상세사용목적 선택</option>");	
@@ -68,7 +68,7 @@ function purposeChanged(data, idx){
 			
 			//상세목적 기능 추가   목적에 따라서 상세목적 셀렉트 박스 생성.		
 			for(let i=0; i<ledgerInsert.purposeDtlList.length; i++){			
-				if(purSeq === Number(ledgerInsert.purposeDtlList[i]["purposeSeq"])){
+				if(purSeq === Number(ledgerInsert.purposeDtlList[i]["purSeq"])){
 					$("#purposeDtl_"+idx).append("<option value='"+ ledgerInsert.purposeDtlList[i]["purDetailSeq"] +"'>"+ledgerInsert.purposeDtlList[i]["purDetail"]+"</option>");
 				}					
 			}
@@ -104,7 +104,7 @@ let ledgerInsert = {
 					bankAcc = $("#bankName_"+i+" option:selected").text().split("(")[1].replace(")", "");					
 				}
 				
-				let purposeSeq = Number($("#purpose_"+i+" option:selected").val());
+				let purSeq = Number($("#purpose_"+i+" option:selected").val());
 				let purposeDtlSeq = Number($("#purposeDtl_"+i+" option:selected").val());
 				
 				let insertData = {
@@ -112,12 +112,12 @@ let ledgerInsert = {
 						userSeq : $("#userSeq").val(),
 						recordDate : $("#date_"+i).val() + " " +$("#time_"+i).val(),
 						content : $("#content_"+i).val(),						
-						purposeSeq : purposeSeq,					
+						purSeq : purSeq,					
 						purposeDtlSeq : purposeDtlSeq,					
 						bankSeq : bankSeq,
 						moveToSeq : Number($("#moveTo_"+i+" option:selected").val()),
 						bankAccount : bankAcc,
-						inExpMoney : purposeSeq == 0 ? (Number($("#inExpMoney_"+i).val())*-1) : Number($("#inExpMoney_"+i).val())
+						inExpMoney : purSeq == 0 ? (Number($("#inExpMoney_"+i).val())*-1) : Number($("#inExpMoney_"+i).val())
 				}
 				checkSet.add(insertData.recordDate);
 				list.push(insertData);
@@ -180,7 +180,7 @@ let ledgerInsert = {
 			
 			$("#purpose_"+idx).append("<option value=''>사용목적 선택</option>").append("<option value='0'>금액이동</option>");			
 			for(let i=0; i<ledgerInsert.purposeList.length; i++){
-				$("#purpose_"+idx).append("<option value='"+ ledgerInsert.purposeList[i]["purposeSeq"] +"'>"+ledgerInsert.purposeList[i]["purpose"]+"</option>");		
+				$("#purpose_"+idx).append("<option value='"+ ledgerInsert.purposeList[i]["purSeq"] +"'>"+ledgerInsert.purposeList[i]["purpose"]+"</option>");		
 			}
 			
 			$("#ledgerInsert_"+idx).append("<select id='purposeDtl_"+idx+"' name='purposeDtl_"+idx+"'></select>");

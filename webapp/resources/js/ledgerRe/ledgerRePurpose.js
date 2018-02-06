@@ -7,6 +7,7 @@ let pur = {
 	purClone : new Array(),
 	purDtlList : new Array(),
 	purDtlClone : new Array(),
+	selectPur : "",
 	
 	init : function(purList, purDtlList){		
     	this.purList = purList;
@@ -25,11 +26,15 @@ let pur = {
 			tag	+= "<th>mod/del</th>";			
 			tag += "</tr>";
 			
+		for(let i=0; i<this.purList.length; i++){
+			
+		}
+			
 		tag +="</table>";
-		$("#purView").append(tag);
+		$("#purList").append(tag);
 		
 		tag = "";
-		$("#purDtlView").empty();
+		$("#purDtlList").empty();
 		
 		tag += "<table border=1>";
 		tag	+= "<tr>";			
@@ -39,7 +44,7 @@ let pur = {
 		tag += "</tr>";
 		
 		tag +="</table>";
-		$("#purDtlView").append(tag);
+		$("#purDtlList").append(tag);
 	}
 		
 }

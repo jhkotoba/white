@@ -92,7 +92,7 @@ public class LedgerReController {
 	}
 	
 	@RequestMapping(value="/ledgerRe/ajax/selectPurAndDtlList.do" )
-	public String selectPurposeList(HttpServletRequest request){
+	public String selectPurAndDtlList(HttpServletRequest request){
 		logger.debug("selectPurposeList Start");
 		
 		WhiteMap param = new WhiteMap(request);	

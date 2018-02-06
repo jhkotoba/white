@@ -10,16 +10,16 @@ public class PurposeBean implements Serializable{
 	
 	private static final long serialVersionUID = 2521975016873285653L;
 	
-	private int purposeSeq;
+	private int purSeq;
 	private int userSeq;
 	private int purOrder;
 	private String purpose;	
 
-	public int getPurposeSeq() {
-		return purposeSeq;
+	public int getPurSeq() {
+		return purSeq;
 	}
-	public void setPurposeSeq(int purposeSeq) {
-		this.purposeSeq = purposeSeq;
+	public void setPurSeq(int purSeq) {
+		this.purSeq = purSeq;
 	}
 	public int getUserSeq() {
 		return userSeq;
@@ -41,7 +41,7 @@ public class PurposeBean implements Serializable{
 	}
 	@Override
 	public String toString() {
-		return "PurposeBean [purposeSeq=" + purposeSeq + ", userSeq=" + userSeq + ", purOrder=" + purOrder
+		return "PurposeBean [purSeq=" + purSeq + ", userSeq=" + userSeq + ", purOrder=" + purOrder
 				+ ", purpose=" + purpose + "]";
 	}
 

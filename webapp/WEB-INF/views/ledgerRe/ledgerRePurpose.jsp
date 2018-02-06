@@ -12,11 +12,6 @@
 <script type="text/javascript">
 $(document).ready(function(){
 	
-	purListView();
-});
-
-function purListView(){
-
 	$.ajax({		
 		type: 'POST',
 		url: common.path()+'/ledgerRe/ajax/selectPurAndDtlList.do',
@@ -28,12 +23,13 @@ function purListView(){
 	    	alert("error");
 	    }
 	});	
-}
+});
+
 </script>
 </head>
 <body>	
-	<div id="purView" class="left"></div>
-	<div id="purDtlView" class="left"></div>
+	<div id="purList" class="left"></div>
+	<div id="purDtlList" class="left"></div>
 </body>
 
 

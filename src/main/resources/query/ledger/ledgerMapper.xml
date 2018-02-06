@@ -18,7 +18,7 @@
 			rec.user_seq			AS userSeq,
 			DATE_FORMAT(rec.record_date,'%Y-%m-%d %H:%i:%s') AS recordDate,
 			rec.content 			AS content,
-			rec.purpose_seq 		AS purposeSeq,
+			rec.pur_seq 		AS purSeq,
 		   	pur.purpose 			AS purpose,
 		   	rec.pur_detail_seq 		AS purDetailSeq,
       		IFNULL(purDtk.pur_detail,'') AS purDetail,				
@@ -32,7 +32,7 @@
 			rec.result_bank_money	AS resultBankMoney
 		FROM money_record rec
 		LEFT OUTER JOIN purpose pur
-			ON rec.purpose_seq = pur.purpose_seq
+			ON rec.pur_seq = pur.purSeq
 		LEFT OUTER JOIN purpose_detail purDtk
 			ON rec.pur_detail_seq = purDtk.pur_detail_seq
 		LEFT OUTER JOIN user_bank bank
@@ -42,7 +42,7 @@
 		AND rec.record_date >= #{startDate}
 		AND rec.record_date &lt; #{endDate}
 		<if test="purSeqSearch != ''">
-			AND rec.purpose_seq = #{purSeqSearch}
+			AND rec.pur_seq = #{purSeqSearch}
 		</if>		
 		ORDER BY rec.record_date desc, rec.record_seq desc
 	</select>
@@ -77,7 +77,7 @@
 			rec.group_seq			AS groupSeq,
 			DATE_FORMAT(rec.record_date,'%Y-%m-%d %H:%i:%s') AS recordDate,
 			rec.content 			AS content,
-			rec.purpose_seq 		AS purposeSeq,
+			rec.pur_seq 		AS purSeq,
 		   	pur.purpose 			AS purpose,	
 		   	rec.pur_detail_seq 		AS purDetailSeq,
       		IFNULL(purDtk.pur_detail,'') AS purDetail,						
@@ -91,7 +91,7 @@
 			rec.result_bank_money	AS resultBankMoney
 		FROM money_record rec
 		LEFT OUTER JOIN purpose pur
-			ON rec.purpose_seq = pur.purpose_seq
+			ON rec.pur_seq = pur.purSeq
 		LEFT OUTER JOIN purpose_detail purDtk
 			ON rec.pur_detail_seq = purDtk.pur_detail_seq
 		LEFT OUTER JOIN user_bank bank
@@ -130,7 +130,7 @@
 			rec.user_seq			AS userSeq,
 			DATE_FORMAT(rec.record_date,'%Y-%m-%d %H:%i:%s') AS recordDate,
 			rec.content 			AS content,
-			rec.purpose_seq 		AS purposeSeq,
+			rec.pur_seq 		AS purSeq,
 		   	pur.purpose 			AS purpose,	
 		   	rec.pur_detail_seq 		AS purDetailSeq,
       		IFNULL(purDtk.pur_detail,'') AS purDetail,				
@@ -144,7 +144,7 @@
 			rec.result_bank_money	AS resultBankMoney
 		FROM money_record rec
 		LEFT OUTER JOIN purpose pur
-			ON rec.purpose_seq = pur.purpose_seq
+			ON rec.pur_seq = pur.pur_seq
 		LEFT OUTER JOIN purpose_detail purDtk
 			ON rec.pur_detail_seq = purDtk.pur_detail_seq
 		LEFT OUTER JOIN user_bank bank
@@ -162,7 +162,7 @@
 			rec.user_seq			AS userSeq,
 			DATE_FORMAT(rec.record_date,'%Y-%m-%d %H:%i:%s') AS recordDate,
 			rec.content 			AS content,
-			rec.purpose_seq 		AS purposeSeq,
+			rec.purpose_seq 		AS purSeq,
 		   	pur.purpose 			AS purpose,					
 			rec.bank_seq 		AS bankSeq,			
 			rec.move_to_seq			AS moveToSeq,
@@ -214,7 +214,7 @@
 			rec.group_seq AS groupSeq,	
 			record_date AS recordDate								
 			,content AS content						
-			,purpose_seq AS purposeSeq
+			,pur_seq AS purSeq
 			,bank_seq	AS bankSeq			
 			,move_to_seq AS moveToSeq
 			,in_exp_money AS inExpMoney		
@@ -233,7 +233,7 @@
 		
 	<select id="getPurposeList" resultType="PurposeBean" parameterType="String">	
 		SELECT 
-			purpose_seq AS purposeSeq,
+			pur_seq AS purSeq,
 	  		<!-- user_seq AS userSeq, -->
 	  		pur_order AS purOrder,
 	 		purpose AS purpose
@@ -247,7 +247,7 @@
 	<select id="getPurposeDtlList" resultType="PurposeDetailBean" parameterType="String">
 		SELECT
 			pur_detail_seq AS purDetailSeq,
-			purpose_seq AS purposeSeq,
+			pur_seq AS purSeq,
 			<!-- user_seq AS userSeq, -->
 			pur_dtl_order AS purDtlOrder,
 			pur_detail AS purDetail			
@@ -260,14 +260,14 @@
 	<!-- 추후 getPurposeList 동적쿼리 이용해서 합칠것-->
 	<select id="getPurposeList_backup" resultType="PurposeBean" parameterType="String">	
 	SELECT 
-		purpose_seq AS purposeSeq,
+		pur_seq AS purSeq,
   		user_seq AS userSeq,
   		pur_order AS purOrder,
  		purpose AS purpose
 	FROM purpose
 	WHERE 1=1
 	AND user_seq = #{userSeq}
-	ORDER BY purpose_seq
+	ORDER BY purSeq
 	</select>	
 	
 	<select id="getBankList" resultType="BankBean" parameterType="String">	
@@ -299,7 +299,7 @@
 			user_seq, 
 			record_date, 
 			content, 
-			purpose_seq,
+			purSeq,
 			pur_detail_seq,
 			
 					
@@ -327,7 +327,7 @@
 			#{userSeq},
 			#{recordDate},		
 			#{content},
-			#{purposeSeq},
+			#{purSeq},
 			#{purposeDtlSeq}, <!-- 테스트중 --><!-- #{pur_detail_seq}, -->
 			
 			
@@ -336,7 +336,7 @@
 				<when test="bankSeq == 0">
 					null,
 						<choose>
-							<when test="purposeSeq == 0 and moveToSeq != 0">
+							<when test="purSeq == 0 and moveToSeq != 0">
 								#{moveToSeq},
 							</when>
 							<otherwise>
@@ -362,7 +362,7 @@
 				<when test="bankSeq != 0">
 					#{bankSeq},
 						<choose>
-							<when test="purposeSeq == 0 and moveToSeq != 0">
+							<when test="purSeq == 0 and moveToSeq != 0">
 								#{moveToSeq},
 							</when>
 							<otherwise>
@@ -456,8 +456,8 @@
 			<if test="content != '' and content != null">
 				content = #{content},		
 			</if>
-			<if test="purposeSeq != '' and purposeSeq != null">
-				purpose_seq = #{purposeSeq},	
+			<if test="purSeq != '' and purSeq != null">
+				purSeq = #{purSeq},	
 			</if>
 			<if test="purposeDtlSeq != '' and purposeDtlSeq != null">
 				pur_detail_seq = #{purposeDtlSeq}			
@@ -485,33 +485,33 @@
 			pur_order = #{purOrder},
 			purpose = #{purpose}
 		WHERE user_seq = #{userSeq}
-		AND purpose_seq = #{purposeSeq}
+		AND purSeq = #{purSeq}
 	</update>
 	
 	<delete id="deletePurpose" parameterType="java.util.List">
 		DELETE FROM purpose		
-		WHERE purpose_seq IN (
+		WHERE pur_seq IN (
 			<foreach collection="list" item="item" separator=",">
-				#{item.purposeSeq}
+				#{item.purSeq}
 			</foreach>)
 	</delete>
 	
 	<!-- PURPOSE 삭제로 인핸 RECORD update -->
 	<update id="updateRecordPurEdit" parameterType="Map">
 		UPDATE money_record
-		SET purpose_seq = -1
+		SET pur_seq = -1
 		WHERE user_seq = #{userSeq}
-		AND purpose_seq = #{purposeSeq}
+		AND pur_seq = #{purSeq}
 	</update>
 	
 	
 	<!-- detailPurpose -->
 	<insert id="insertDtlPurpose" parameterType="java.util.List">
 		 INSERT INTO purpose_detail
-		 	(purpose_seq, user_seq, pur_dtl_order, pur_detail)
+		 	(pur_seq, user_seq, pur_dtl_order, pur_detail)
 		 VALUES
 			<foreach collection="list" item="item" separator=",">
-				(#{item.purposeSeq}, #{item.userSeq}, #{item.purDtlOrder}, #{item.purDetail})
+				(#{item.purSeq}, #{item.userSeq}, #{item.purDtlOrder}, #{item.purDetail})
 			</foreach>
 	</insert>
 	
@@ -519,7 +519,7 @@
 		UPDATE purpose_detail SET
 			pur_dtl_order = #{purDtlOrder},
 			pur_detail = #{purDetail},
-			purpose_seq = #{purposeSeq}
+			pur_seq = #{purSeq}
 		WHERE user_seq = #{userSeq}
 		AND pur_detail_seq = #{purDetailSeq}
 	</update>
@@ -584,7 +584,7 @@
 	</delete>
 	
 	<insert id="insertBackupPurList" parameterType="PurposeBean" 
-		useGeneratedKeys="true" keyProperty="purposeSeq" keyColumn="purpose_seq">
+		useGeneratedKeys="true" keyProperty="purSeq" keyColumn="pur_seq">
 		/* insertBackupPurList */
 		
 		INSERT INTO purpose(			
@@ -636,7 +636,7 @@
 			,#{item.userSeq}
 			,#{item.recordDate}
 			,#{item.content}
-			,#{item.purposeSeq}
+			,#{item.purSeq}
 			
 			<choose>
 				<when test="item.bankSeq == 0">

@@ -21,7 +21,7 @@
 	<!--  -->
 	<select id="selectPurList" resultType="whiteMap" parameterType="whiteMap">
 		SELECT 
-			purpose_seq AS purSeq,
+			pur_seq AS purSeq,
 	  		pur_order AS purOrder,
 	 		purpose AS purpose
 		FROM purpose
@@ -33,7 +33,7 @@
 	<select id="selectPurDtlList" resultType="whiteMap" parameterType="whiteMap">
 		SELECT
 			pur_detail_seq AS purDtlSeq,
-			purpose_seq AS purSeq,
+			pur_seq AS purSeq,
 			pur_dtl_order AS purDtlOrder,
 			pur_detail AS purDetail			
 		FROM purpose_detail
@@ -63,7 +63,7 @@
 			IFNULL(bank.bank_now_use_yn,'X') AS bankNowUseYN
 		FROM money_record_re rec
 		LEFT OUTER JOIN purpose pur
-			ON rec.pur_seq = pur.purpose_seq
+			ON rec.pur_seq = pur.pur_seq
 		LEFT OUTER JOIN purpose_detail purDtl
 			ON rec.pur_dtl_seq = purDtl.pur_detail_seq
 		LEFT OUTER JOIN user_bank bank

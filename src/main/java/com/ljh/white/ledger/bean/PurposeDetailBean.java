@@ -11,7 +11,7 @@ public class PurposeDetailBean implements Serializable{
 	private static final long serialVersionUID = 2521975016873285653L;
 	
 	private int purDetailSeq;
-	private int purposeSeq;
+	private int purSeq;
 	private int userSeq;
 	private int purDtlOrder;
 	private String purDetail;
@@ -22,11 +22,11 @@ public class PurposeDetailBean implements Serializable{
 	public void setPurDetailSeq(int purDetailSeq) {
 		this.purDetailSeq = purDetailSeq;
 	}
-	public int getPurposeSeq() {
-		return purposeSeq;
+	public int getPurSeq() {
+		return purSeq;
 	}
-	public void setPurposeSeq(int purposeSeq) {
-		this.purposeSeq = purposeSeq;
+	public void setPurSeq(int purSeq) {
+		this.purSeq = purSeq;
 	}
 	public int getUserSeq() {
 		return userSeq;
@@ -48,7 +48,7 @@ public class PurposeDetailBean implements Serializable{
 	}	
 	@Override
 	public String toString() {
-		return "PurposeDetailBean [purDetailSeq=" + purDetailSeq + ", purposeSeq=" + purposeSeq + ", userSeq=" + userSeq
+		return "PurposeDetailBean [purDetailSeq=" + purDetailSeq + ", purSeq=" + purSeq + ", userSeq=" + userSeq
 				+ ", purDtlOrder=" + purDtlOrder + ", purDetail=" + purDetail + "]";
 	}
 	

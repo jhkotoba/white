@@ -28,7 +28,7 @@
 		$("#purSelect").append("<option value='' selected='selected'>목적선택</option>");
 		$("#purSelect").append("<option value='0'>현금이동</option>");
 		for(let i=0; i<ledgerSelect.purposeList.length; i++){
-			$("#purSelect").append("<option value='"+ ledgerSelect.purposeList[i]["purposeSeq"] +"'>"+ledgerSelect.purposeList[i]["purpose"]+"</option>");		
+			$("#purSelect").append("<option value='"+ ledgerSelect.purposeList[i]["purSeq"] +"'>"+ledgerSelect.purposeList[i]["purpose"]+"</option>");		
 		}
 
 	});

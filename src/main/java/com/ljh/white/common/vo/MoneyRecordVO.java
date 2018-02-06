@@ -6,7 +6,7 @@ public class MoneyRecordVO {
 	private int uesrSeq;
 	private String recordDate;
 	private String content;
-	private int purposeSeq;
+	private int purSeq;
 	private String purpose;
 	private String bankName;
 	private String bankAccount;
@@ -39,11 +39,11 @@ public class MoneyRecordVO {
 	public void setContent(String content) {
 		this.content = content;
 	}
-	public int getPurposeSeq() {
-		return purposeSeq;
+	public int getPurSeq() {
+		return purSeq;
 	}
-	public void setPurposeSeq(int purposeSeq) {
-		this.purposeSeq = purposeSeq;
+	public void setPurSeq(int purSeq) {
+		this.purSeq = purSeq;
 	}
 	public String getPurpose() {
 		return purpose;

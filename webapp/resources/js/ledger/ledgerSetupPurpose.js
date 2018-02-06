@@ -13,7 +13,7 @@ $(document).ready(function(){
 	
 	$("#purAdd").click(function(){
 		let length = Number(purSetup.list.length+1);		
-		purSetup.list.push({purOrder: length, purposeSeq: 0, purpose: ""});
+		purSetup.list.push({purOrder: length, purSeq: 0, purpose: ""});
 		purSetup.view();
 	});
 	
@@ -29,7 +29,7 @@ $(document).ready(function(){
 	
 	$("#purDtlAdd").click(function(){
 		let length = Number(purDtlSetup.list.length+1);		
-		purDtlSetup.list.push({purDetail: "", purposeSeq: purDtlSetup.nowPurSeq, purDtlOrder: length, purDetailSeq:0});
+		purDtlSetup.list.push({purDetail: "", purSeq: purDtlSetup.nowPurSeq, purDtlOrder: length, purDetailSeq:0});
 		purDtlSetup.view(purDtlSetup.nowPurSeq);
 	});
 	
@@ -52,10 +52,10 @@ $(document).ready(function(){
 				$("#purIdx_"+i).focus();
 				return;
 			}
-			if(purSetup.list[i]["purposeSeq"] === 0){
+			if(purSetup.list[i]["purSeq"] === 0){
 				insertList.push(purSetup.list[i]);
-			}else if(purSetup.list[i]["purposeSeq"] < 0){
-				purSetup.list[i]["purposeSeq"] = Math.abs(purSetup.list[i]["purposeSeq"]);
+			}else if(purSetup.list[i]["purSeq"] < 0){
+				purSetup.list[i]["purSeq"] = Math.abs(purSetup.list[i]["purSeq"]);
 				updateList.push(purSetup.list[i]);
 			}
 			
@@ -183,9 +183,9 @@ let purSetup = {
 		up : function(i){		
 			if(i < 1) return;
 			else{				
-				let temp = this.list[i-1]["purposeSeq"];
-				this.list[i-1]["purposeSeq"] = this.list[i]["purposeSeq"];
-				this.list[i]["purposeSeq"] = temp;
+				let temp = this.list[i-1]["purSeq"];
+				this.list[i-1]["purSeq"] = this.list[i]["purSeq"];
+				this.list[i]["purSeq"] = temp;
 				
 				temp = this.list[i-1]["purpose"];
 				this.list[i-1]["purpose"] = this.list[i]["purpose"];
@@ -195,10 +195,10 @@ let purSetup = {
 				this.list[i]["purOrder"] = Number($("#tbNo_"+i).text());
 				
 				
-				let seq = this.list[i-1]["purposeSeq"];			
-				if(seq > 0)	this.list[i-1]["purposeSeq"] = seq*-1;
-				seq = this.list[i]["purposeSeq"];			
-				if(seq > 0)	this.list[i]["purposeSeq"] = seq*-1;
+				let seq = this.list[i-1]["purSeq"];			
+				if(seq > 0)	this.list[i-1]["purSeq"] = seq*-1;
+				seq = this.list[i]["purSeq"];			
+				if(seq > 0)	this.list[i]["purSeq"] = seq*-1;
 			}
 			this.view();	
 		},
@@ -206,9 +206,9 @@ let purSetup = {
 			if((this.list.length-1) <= i){				
 				return;
 			}else{
-				let temp = this.list[i+1]["purposeSeq"];
-				this.list[i+1]["purposeSeq"] = this.list[i]["purposeSeq"];
-				this.list[i]["purposeSeq"] = temp;
+				let temp = this.list[i+1]["purSeq"];
+				this.list[i+1]["purSeq"] = this.list[i]["purSeq"];
+				this.list[i]["purSeq"] = temp;
 				
 				temp = this.list[i+1]["purpose"];
 				this.list[i+1]["purpose"] = this.list[i]["purpose"];
@@ -217,10 +217,10 @@ let purSetup = {
 				this.list[i+1]["purOrder"] = Number($("#tbNo_"+(i+1)).text());
 				this.list[i]["purOrder"] = Number($("#tbNo_"+i).text());
 				
-				let seq = this.list[i+1]["purposeSeq"];			
-				if(seq > 0)	this.list[i+1]["purposeSeq"] = seq*-1;
-				seq = this.list[i]["purposeSeq"];			
-				if(seq > 0)	this.list[i]["purposeSeq"] = seq*-1;
+				let seq = this.list[i+1]["purSeq"];			
+				if(seq > 0)	this.list[i+1]["purSeq"] = seq*-1;
+				seq = this.list[i]["purSeq"];			
+				if(seq > 0)	this.list[i]["purSeq"] = seq*-1;
 			}
 			this.view();
 		},		
@@ -230,10 +230,10 @@ let purSetup = {
 			let tag = "<table id='purTb' border=1><tr><th>순번</th><th>목적</th><th>수정/삭제</th></tr>";			
 			for(let i=0; i<this.list.length; i++){				
 				tag += "<tr><td id='tbNo_"+i+"'>"+(i+1)+"</td>"
-					+ "<td id='purSeqIdx_"+i+"' style='display: none'>"+this.list[i]["purposeSeq"]+"</td>"
+					+ "<td id='purSeqIdx_"+i+"' style='display: none'>"+this.list[i]["purSeq"]+"</td>"
 					+ "<td><input id='purIdx_"+i+"' type='text' value='"+this.list[i]["purpose"]
 					+ "' onkeyup='purSetup.change("+i+", \"#purIdx_"+i+"\")'></td>"				
-					+ this.btnAppend(i, this.list[i]["purposeSeq"]);				
+					+ this.btnAppend(i, this.list[i]["purSeq"]);				
 			}	
 			$("#purposeInfo").append(tag+"</table>");
 			
@@ -250,9 +250,9 @@ let purSetup = {
 			purDtlSetup.view(purSeq);
 		},
 		del : function(idx){
-			this.list[idx]["purposeSeq"] = Math.abs(this.list[idx]["purposeSeq"]);
+			this.list[idx]["purSeq"] = Math.abs(this.list[idx]["purSeq"]);
 			
-			if(this.list[idx]["purposeSeq"] !== 0){
+			if(this.list[idx]["purSeq"] !== 0){
 				this.delList.push(this.list[idx]);
 			}			
 			
@@ -264,8 +264,8 @@ let purSetup = {
 			
 		},
 		change : function(i, purIdx){
-			let seq = this.list[i]["purposeSeq"];			
-			if(seq > 0)	this.list[i]["purposeSeq"] = seq*-1;			
+			let seq = this.list[i]["purSeq"];			
+			if(seq > 0)	this.list[i]["purSeq"] = seq*-1;			
 			
 			this.list[i]["purpose"] = str.trim($(purIdx).val());
 		}
@@ -292,7 +292,7 @@ let purDtlSetup = {
 			
 			let tag = "<table id='purDtlTb' border=1><tr><th>순번</th><th>상세목적</th><th>수정/삭제</th></tr>";		
 			for(let i=0; i<this.list.length; i++){	
-				if(purSeq===this.list[i]["purposeSeq"]){
+				if(purSeq===this.list[i]["purSeq"]){
 					tag += "<tr><td id='tbDtlNo_"+i+"'>"+(i+1)+"</td>"
 						+ "<td id='purDtlSeqIdx_"+i+"' style='display: none'>"+this.list[i]["purDetailSeq"]+"</td>"
 						+ "<td><input id='purDtlIdx_"+i+"' type='text' value='"+this.list[i]["purDetail"]

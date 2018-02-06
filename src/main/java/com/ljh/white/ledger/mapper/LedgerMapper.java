@@ -100,8 +100,8 @@ public class LedgerMapper {
 			int recordSeq = Integer.parseInt(list.get(i).get("recordSeq").toString());			
 			updateCnt += sqlSession.update("ledgerMapper.updateNextModify", list.get(i));			
 			
-			//purposeSeq 가 0이면 현금이동
-			if(list.get(i).get("purposeSeq").toString().equals("0")){
+			//purSeq 가 0이면 현금이동
+			if(list.get(i).get("purSeq").toString().equals("0")){
 				
 				list.get(i).put("bankSeq", list.get(i).get("moveToSeq"));
 				list.get(i).put("moveToSeq", 0);
@@ -262,7 +262,7 @@ public class LedgerMapper {
 		for(int i=0; i<purposeList.size(); i++){			
 			purposeList.get(i).setUserSeq(userSeq);
 			sqlSession.insert("ledgerMapper.insertBackupPurList", purposeList.get(i));
-			purNewSeqList.add(purposeList.get(i).getPurposeSeq());
+			purNewSeqList.add(purposeList.get(i).getPurSeq());
 		}		
 		return purNewSeqList;
 	}

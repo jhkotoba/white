@@ -13,7 +13,7 @@
 	</select>
 	
 	<insert id="insertBackupPurList" parameterType="PurposeBean" 
-		useGeneratedKeys="true" keyProperty="purposeSeq" keyColumn="purpose_seq">
+		useGeneratedKeys="true" keyProperty="purSeq" keyColumn="pur_seq">
 		/* insertBackupPurList */
 		
 		INSERT INTO purpose(			

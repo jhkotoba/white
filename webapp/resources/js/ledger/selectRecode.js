@@ -154,9 +154,9 @@ let selectRecode = {
 					purpose = recordList[i]['purpose'];
 				}*/
 				let purpose = "";
-				if(recordList[i]['purposeSeq'] === -1){				
+				if(recordList[i]['purSeq'] === -1){				
 					purpose = "deleted"; //목적정보 없을때 표시  //-1은 목적정보를 삭제했을때 seq값, //추가 엑셀업로드시 해당정보 없을때 -1로 insert
-				}else if(recordList[i]['purposeSeq'] === 0){
+				}else if(recordList[i]['purSeq'] === 0){
 					purpose = "금액이동";		
 				}else{
 					purpose = recordList[i]['purpose'];
@@ -165,7 +165,7 @@ let selectRecode = {
 				view += "<td>"+(i+1)+"</td>"+
 				"<td id='recordDate_"+i+"'><p id='recordDateP_"+i+"'>"+recordList[i]['recordDate']+"</p></td>"+
 				"<td id='content_"+i+"'><p id='contentP_"+i+"'>"+recordList[i]['content']+"</p></td>" +
-				"<td id='purposeSeq_"+i+"' style='display:none'>"+recordList[i]['purposeSeq']+"</td>" +
+				"<td id='purSeq_"+i+"' style='display:none'>"+recordList[i]['purSeq']+"</td>" +
 				"<td id='purpose_"+i+"'><p id='purposeP_"+i+"'>"+purpose+"</p></td>" +
 				
 				"<td id='purposeDtlSeq_"+i+"' style='display:none'>"+recordList[i]['purDetailSeq']+"</td>" +

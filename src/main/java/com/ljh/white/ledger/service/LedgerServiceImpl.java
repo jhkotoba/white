@@ -145,7 +145,7 @@ public class LedgerServiceImpl implements LedgerService{
 			
 			map.put("userSeq", jsonObj.get("userSeq"));			
 			map.put("recordDate", jsonObj.get("recordDate"));
-			map.put("purposeSeq", jsonObj.get("purposeSeq"));
+			map.put("purSeq", jsonObj.get("purSeq"));
 			map.put("purposeDtlSeq", jsonObj.get("purposeDtlSeq"));
 			
 			map.put("bankSeq", jsonObj.get("bankSeq"));
@@ -180,7 +180,7 @@ public class LedgerServiceImpl implements LedgerService{
 			map.put("userSeq", jsonObj.get("userSeq"));
 			map.put("recordSeq", jsonObj.get("recordSeq"));
 			map.put("recordDate", jsonObj.get("recordDate"));
-			map.put("purposeSeq", jsonObj.get("purposeSeq"));
+			map.put("purSeq", jsonObj.get("purSeq"));
 			map.put("purposeDtlSeq", jsonObj.get("purposeDtlSeq"));
 			map.put("content", jsonObj.get("content"));
 			map.put("bankSeq", jsonObj.get("bankSeq"));			
@@ -239,7 +239,7 @@ public class LedgerServiceImpl implements LedgerService{
 				map.put("userSeq", userSeq);
 				map.put("purOrder", jsonObj.get("purOrder"));
 				map.put("purpose", jsonObj.get("purpose"));
-				map.put("purposeSeq", jsonObj.get("purposeSeq"));
+				map.put("purSeq", jsonObj.get("purSeq"));
 				list.add(map);	
 			}
 			ledgerMapper.updetePurpose(list);
@@ -254,7 +254,7 @@ public class LedgerServiceImpl implements LedgerService{
 				Map<String, Object> map = new HashMap<String, Object>();
 				
 				map.put("userSeq", userSeq);
-				map.put("purposeSeq", jsonObj.get("purposeSeq"));
+				map.put("purSeq", jsonObj.get("purSeq"));
 				list.add(map);	
 			}
 			ledgerMapper.deletePurpose(list);
@@ -283,7 +283,7 @@ public class LedgerServiceImpl implements LedgerService{
 				
 				map.put("userSeq", userSeq);				
 				map.put("purDtlOrder", 0);/*map.put("purDtlOrder", jsonObj.get("purDtlOrder"));*/ //사용안함 만들기 귀찮고 복잡해				
-				map.put("purposeSeq", jsonObj.get("purposeSeq"));
+				map.put("purSeq", jsonObj.get("purSeq"));
 				map.put("purDetail", jsonObj.get("purDetail"));
 				list.add(map);	
 			}			
@@ -300,7 +300,7 @@ public class LedgerServiceImpl implements LedgerService{
 				
 				map.put("userSeq", userSeq);				
 				map.put("purDtlOrder", 0);/*map.put("purDtlOrder", jsonObj.get("purDtlOrder"));*/ //사용안함 만들기 귀찮고 복잡해				
-				map.put("purposeSeq", jsonObj.get("purposeSeq"));
+				map.put("purSeq", jsonObj.get("purSeq"));
 				map.put("purDetail", jsonObj.get("purDetail"));
 				map.put("purDetailSeq", jsonObj.get("purDetailSeq"));
 				list.add(map);	
