@@ -31,5 +31,9 @@
 	text-decoration: none;	
 }
 
+.left{
+	float: left; margin-left: 5px;
+}
+
 
 

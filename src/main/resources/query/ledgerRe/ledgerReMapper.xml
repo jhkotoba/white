@@ -57,7 +57,7 @@
 			rec.money,
 			IFNULL(pur.purpose, 'move')	AS purpose,
 			IFNULL(purDtl.pur_detail,'') AS purDetail,
-			IFNULL(bank.bank_name, '')	AS bankName,
+			IFNULL(bank.bank_name, 'cash')	AS bankName,
 			IFNULL(bank.bank_account, 'cash')	AS bankAccount,
 			IFNULL(bank.bank_now_use_yn,'X') AS bankNowUseYN
 		FROM money_record_re rec

@@ -75,4 +75,5 @@ public class LedgerReMapper {
 	public int deleteRecordList(List<WhiteMap> list) {		
 		return sqlSession.delete("ledgerReMapper.deleteRecordList", list);		 
 	}
+	
 }

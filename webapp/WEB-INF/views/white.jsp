@@ -63,7 +63,7 @@
 	</nav>
 	
 	<c:choose>
-		<c:when test="${requestScope.sidePage != 'NOPAGE'}">
+		<c:when test="${requestScope.sidePage != null}">
 			<section class="sideView">
 				<jsp:include page="${requestScope.sidePage}" flush="false" />
 			</section>
@@ -71,10 +71,7 @@
 				<jsp:include page="${requestScope.sectionPage}" flush="false" />
 			</section>
 		</c:when>
-		<c:otherwise>
-			<section class="sideMenu">
-				<jsp:include page="${requestScope.sidePage}" flush="false" />
-			</section>
+		<c:otherwise>			
 			<section>
 				<jsp:include page="${requestScope.sectionPage}" flush="false" />
 			</section>

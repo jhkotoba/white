@@ -47,7 +47,7 @@ let rec = {
 				for(let i=0; i<this.bankList.length; i++){
 					tag += "<th>"+this.bankList[i].bankName+"("+(this.bankList[i].bankAccount==="cash" ? "":this.bankList[i].bankAccount) +")</th>";
 				}	
-			tag += "<tr>";		
+			tag += "</tr>";		
 		
 		for(let i=this.recList.length-1; i>=0; i--){
 			
@@ -56,7 +56,7 @@ let rec = {
 			tag += "<td>"+this.recList[i].content+"</td>";
 			tag += "<td>"+(this.recList[i].purpose === 'move' ? "금액이동" : this.recList[i].purpose)+"</td>";
 			tag += "<td>"+this.recList[i].purDetail+"</td>";
-			tag += "<td>"+(this.recList[i].bankName === 'cash' ? "현금" : this.recList[i].bankName)+"</td>";
+			tag += "<td>"+(this.recList[i].bankName === 'cash' ? "현금" : this.recList[i].bankName +"("+this.recList[i].bankAccount+")")+"</td>";
 			tag += "<td>"+this.recList[i].money+"</td>";			
 			tag += "<td>"+this.recList[i].amount+"</td>";
 			tag += "<td>"+this.recList[i].cash+"</td>";
@@ -330,6 +330,7 @@ let rec = {
 		    	}
 		    	msg += " 되었습니다.";
 		    	alert(msg);
+		    	sideSubmit("Select");
 		    },
 		    error : function(xhr, stat, err) {
 		    	alert("update, delete error");

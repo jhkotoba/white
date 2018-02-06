@@ -27,7 +27,6 @@ public class LedgerReController {
 	@Resource(name = "MemoService")
 	private MemoService memoService;	
 	
-	
 	@RequestMapping(value="/ledgerRe/ledgerReMain.do" )
 	public String ledgerReMain(HttpServletRequest request){
 		logger.debug("ledgerReTest Start");
@@ -46,10 +45,6 @@ public class LedgerReController {
 			request.setAttribute("purList", new JSONArray(ledgerReService.selectPurList(param)));	
 			request.setAttribute("purDtlList", new JSONArray(ledgerReService.selectPurDtlList(param)));
 			request.setAttribute("bankList", new JSONArray(ledgerReService.selectBankList(param)));
-			break;
-		case "Purpose" :
-			break;
-		case "Bank" :
 			break;
 		}
 			
@@ -92,6 +87,20 @@ public class LedgerReController {
 	
 		WhiteMap resultMap = ledgerReService.updateDeleteRecordList(param);
 		request.setAttribute("result", new JSONObject(resultMap));
+		
+		return "result.jsp";
+	}
+	
+	@RequestMapping(value="/ledgerRe/ajax/selectPurAndDtlList.do" )
+	public String selectPurposeList(HttpServletRequest request){
+		logger.debug("selectPurposeList Start");
+		
+		WhiteMap param = new WhiteMap(request);	
+		
+		JSONObject result = new JSONObject();		
+		result.put("purList", new JSONArray(ledgerReService.selectPurList(param)));			
+		result.put("purDtlList", new JSONArray(ledgerReService.selectPurDtlList(param)));			
+		request.setAttribute("result", result);	
 		
 		return "result.jsp";
 	}

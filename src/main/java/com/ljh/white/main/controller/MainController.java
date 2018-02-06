@@ -25,7 +25,7 @@ public class MainController {
 	public String mainInfo(HttpServletRequest request, HttpServletResponse response){
 		logger.debug("mainInfo start");
 		
-		request.setAttribute("sidePage", "NOPAGE");	
+		request.setAttribute("sidePage", null);	
 		request.setAttribute("sectionPage", "info/mainInfo.jsp");			
 		
 		return "white.jsp";

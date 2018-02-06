@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset=UTF-8>
-<title>WhiteHome</title>
+<title>whiteHome</title>
 
 <script type="text/javascript" src="${contextPath}/resources/js/ledgerRe/ledgerReRecord.js"></script>
 <script type="text/javascript">

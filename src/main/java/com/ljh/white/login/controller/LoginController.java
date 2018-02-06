@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.ljh.white.common.bean.AuthBean;
 import com.ljh.white.common.service.WhiteService;
-
+import com.ljh.white.common.utility.cryptolect.BCrypt;
 import com.ljh.white.login.service.LoginService;
 
 @Controller
@@ -40,8 +40,8 @@ public class LoginController {
 	@RequestMapping(value = "/loginProcess.do")
 	public String loginProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{		
 		String userId = request.getParameter("userId");
-		String passwd = request.getParameter("passwd");		
-		logger.debug("userId: "+userId + ", passwd:"+passwd);				
+		String passwd = request.getParameter("passwd");
+		logger.debug("userId: "+userId + ", passwd:"+BCrypt.hashpw(passwd, BCrypt.gensalt()));				
 		
 		boolean userCheck = loginService.loginUserCheck(userId, passwd);
 		logger.debug("userCheck:"+userCheck);
@@ -65,7 +65,7 @@ public class LoginController {
 			session.setAttribute("authority", authBean);
 			
 			//page
-			request.setAttribute("sidePage", "NOPAGE");
+			request.setAttribute("sidePage", null);
 			request.setAttribute("sectionPage", "info/mainInfo.jsp");
 			
 			return "redirect:mainInfo.do";
