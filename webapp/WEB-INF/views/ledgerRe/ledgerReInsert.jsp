@@ -12,7 +12,11 @@
 <script type="text/javascript">
 $(document).ready(function(){
 	
-	recIn.init('${purList}','${purDtlList}','${bankList}').add();	
+	let purList = JSON.parse('${purList}');
+	let purDtlList = JSON.parse('${purDtlList}');
+	let bankList = JSON.parse('${bankList}');
+	
+	recIn.init(purList, purDtlList, bankList).add();	
 	
 	$("#recAddBtn").click(function(){		
 		recIn.add();

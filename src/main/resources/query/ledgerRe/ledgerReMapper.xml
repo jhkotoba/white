@@ -49,6 +49,7 @@
 			</if>	
 			rec.record_seq AS recordSeq,
 			DATE_FORMAT(rec.record_date,'%Y-%m-%d %H:%i:%s') AS recordDate,
+			IFNULL(rec.position, '') AS position,
 			rec.content,
 			rec.pur_seq AS purSeq,
 			IFNULL(rec.pur_dtl_seq, '') AS purDtlSeq,
@@ -102,7 +103,8 @@
 	<insert id="insertRecordList" parameterType="java.util.List">
 		INSERT INTO money_record_re(		
 			user_seq,	
-			record_date,	
+			record_date,
+			position,	
 			content,	
 			pur_seq,
 			pur_dtl_seq,
@@ -114,6 +116,7 @@
 		<foreach collection="list" item="item" separator="),(" open="(" close=")">
 			#{item.userSeq}, 
 			CONCAT(CONCAT(#{item.date}, ' '), #{item.time}),
+			#{item.position},
 			#{item.content}, 
 			#{item.purSeq},	
 			<choose>
@@ -149,11 +152,17 @@
 		<foreach collection="list" item="item">
 			WHEN record_seq = #{item.recordSeq} THEN #{item.recordDate}
 		</foreach>		
-		END,		
+		END,	
 		content = 
 		CASE		
 		<foreach collection="list" item="item">
 			WHEN record_seq = #{item.recordSeq} THEN #{item.content}
+		</foreach>		
+		END,	
+		position = 
+		CASE		
+		<foreach collection="list" item="item">
+			WHEN record_seq = #{item.recordSeq} THEN #{item.position}
 		</foreach>		
 		END,		
 		pur_seq = 

@@ -9,9 +9,9 @@ let recIn = {
 	bankList : new Array(),
 	
 	init : function(purList, purDtlList, bankList){
-		this.purList = JSON.parse(purList);
-		this.purDtlList = JSON.parse(purDtlList);
-		this.bankList = JSON.parse(bankList);		
+		this.purList = purList;
+		this.purDtlList = purDtlList;
+		this.bankList = bankList;		
 		return this;
 	},
 	
@@ -24,7 +24,7 @@ let recIn = {
 	},
 	
 	add : function(){
-		this.inList.push({date: isDate.today(), time: isTime.curTime(), content:'', purSeq: '', purDtlSeq: '', bankSeq: '', moveSeq: '', money: ''});
+		this.inList.push({date: isDate.today(), time: isTime.curTime(), position:'', content:'', purSeq: '', purDtlSeq: '', bankSeq: '', moveSeq: '', money: ''});
 		this.view();
 	},
 	
@@ -118,11 +118,12 @@ let recIn = {
 		$("#ledgerReList").empty();
 		let selected = "";
 		
-		let tag = "<table border=1>"
+		let tag = "<table border=1 class='font10'>"
 				+ "<tr>"				
 				+ "<th>No</th>"
 				+ "<th>Date</th>"
 				+ "<th>Time</th>"
+				+ "<th>position</th>"
 				+ "<th>content</th>"
 				+ "<th>purpose</th>"
 				+ "<th>purDetail</th>"
@@ -135,10 +136,11 @@ let recIn = {
 			
 			tag += "<tr>";			
 			tag += "<td>"+(i+1)+"</td>";
-			tag += "<td><input id='date_"+i+"' type='date' value='"+this.inList[i].date+"' onkeyup='recIn.sync(this)'></td>";
-			tag += "<td><input id='time_"+i+"' type='time' value='"+this.inList[i].time+"' onkeyup='recIn.sync(this)'></td>";
-			tag += "<td><input id='content_"+i+"' type='text' value='"+this.inList[i].content+"' onkeyup='recIn.sync(this)'></td>";			
-			tag += "<td><select id='purSeq_"+i+"' onchange='recIn.sync(this); recIn.appSel(this,"+i+");'>";
+			tag += "<td><input id='date_"+i+"' type='date' class='font10' value='"+this.inList[i].date+"' onkeyup='recIn.sync(this)'></td>";
+			tag += "<td><input id='time_"+i+"' type='time' class='font10' value='"+this.inList[i].time+"' onkeyup='recIn.sync(this)'></td>";
+			tag += "<td><input id='position_"+i+"' type='text' class='font10' value='"+this.inList[i].position+"' onkeyup='recIn.sync(this)'></td>";			
+			tag += "<td><input id='content_"+i+"' type='text' class='font10' value='"+this.inList[i].content+"' onkeyup='recIn.sync(this)'></td>";			
+			tag += "<td><select id='purSeq_"+i+"' class='font10' onchange='recIn.sync(this); recIn.appSel(this,"+i+");'>";
 			tag += "<option value=''>선택</option>";
 			tag += "<option value=0>금액이동</option>";			
 			for(let j=0; j<this.purList.length; j++){
@@ -146,7 +148,7 @@ let recIn = {
 				tag += "<option "+selected+" value="+this.purList[j].purSeq+">"+this.purList[j].purpose+"</option>";
 			}				
 			tag += "</select></td>";
-			tag += "<td><select id='purDtlSeq_"+i+"' onchange='recIn.sync(this);'>";
+			tag += "<td><select id='purDtlSeq_"+i+"' class='font10' onchange='recIn.sync(this);'>";
 			tag += "<option value=''>선택</option>";
 			for(let j=0; j<this.purDtlList.length; j++){
 				if(this.inList[i].purSeq === String(this.purDtlList[j].purSeq)){
@@ -155,7 +157,7 @@ let recIn = {
 				}
 			}	
 			tag += "</select></td>";
-			tag += "<td><select id='bankSeq_"+i+"' onchange='recIn.sync(this);'>";
+			tag += "<td><select id='bankSeq_"+i+"' class='font10' onchange='recIn.sync(this);'>";
 			tag += "<option value=''>선택</option>";
 			tag += "<option "+(this.inList[i].bankSeq === '0' ? "selected='selected'" : "")+" value=0>현금</option>";			
 			for(let j=0; j<this.bankList.length; j++){
@@ -163,7 +165,7 @@ let recIn = {
 				tag += "<option "+selected+" value="+this.bankList[j].bankSeq+">"+this.bankList[j].bankName+"("+this.bankList[j].bankAccount+")</option>";
 			}				
 			tag += "</select></td>";
-			tag += "<td><select id='moveSeq_"+i+"' disabled='disabled' onchange='recIn.sync(this);'>";
+			tag += "<td><select id='moveSeq_"+i+"' class='font10' disabled='disabled' onchange='recIn.sync(this);'>";
 			tag += "<option value=''>선택</option>";
 			tag += "<option "+(this.inList[i].moveSeq === '0' ? "selected='selected'" : "")+" value=0>현금</option>";			
 			for(let j=0; j<this.bankList.length; j++){
@@ -171,7 +173,7 @@ let recIn = {
 				tag += "<option "+selected+" value="+this.bankList[j].bankSeq+">"+this.bankList[j].bankName+"("+this.bankList[j].bankAccount+")</option>";
 			}				
 			tag += "</select></td>";
-			tag += "<td><input id='money_"+i+"' type='text' value='"+this.inList[i].money+"' onkeyup='recIn.sync(this)'></td>";			
+			tag += "<td><input id='money_"+i+"' type='text' class='font10' value='"+this.inList[i].money+"' onkeyup='recIn.sync(this)'></td>";			
 			tag += "</tr>";		
 		}
 		

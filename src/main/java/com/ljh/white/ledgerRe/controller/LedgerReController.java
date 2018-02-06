@@ -61,7 +61,7 @@ public class LedgerReController {
 		List<WhiteMap> bankList = ledgerReService.selectBankList(param);
 
 		JSONObject result = new JSONObject();		
-		result.put("recList", new JSONArray(ledgerReService.selectRecordList(param, bankList)));			
+		result.put("recList", new JSONArray(ledgerReService.selectRecordList(param, bankList)));		
 		request.setAttribute("result", result);	
 		
 		return "result.jsp";

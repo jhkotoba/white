@@ -13,27 +13,14 @@
 <script type="text/javascript">
 $(document).ready(function(){
 	
+	//ledger 메모 리스트 조회
 	memo.init('${memoList}', "ledger").view();
 	
-	//메인조회 리스트
-	recListView();
+	let purList = JSON.parse('${purList}');
+	let purDtlList = JSON.parse('${purDtlList}');
+	let bankList = JSON.parse('${bankList}');
 	
-	//새로운 메모 추가
-	$("#memoAddBt").click(function(){		
-		memo.add();
-	});	
-	//취소
-	$("#memoCancelBt").click(function(){
-		memo.cancel();
-	});	
-	//메모 저장
-	$("#memoSaveBt").click(function(){	
-		memo.insert();
-	});
-});
-
-//메인조회 리스트
-function recListView(){
+	//메인조회 리스트
 	$("#startDate").val(isDate.addMonToday(-1));
 	$("#endDate").val(isDate.today())	
 		
@@ -49,13 +36,26 @@ function recListView(){
 		data: param,
 		dataType: 'json',
 	    success : function(data) {
-	    	rec.init("main", data.recList, '${purList}', '${purDtlList}', '${bankList}').view();	    	
+	    	rec.init("main", data.recList, purList, purDtlList, bankList).view();	    	
 	    },
 	    error : function(request, status, error){
 	    	alert("error");
 	    }
 	});	
-}
+	
+	//새로운 메모 추가
+	$("#memoAddBt").click(function(){		
+		memo.add();
+	});	
+	//취소
+	$("#memoCancelBt").click(function(){
+		memo.cancel();
+	});	
+	//메모 저장
+	$("#memoSaveBt").click(function(){	
+		memo.insert();
+	});
+});
 
 </script>
 </head>

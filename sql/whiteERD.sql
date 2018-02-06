@@ -72,6 +72,7 @@ CREATE TABLE money_record_re
 	record_seq int NOT NULL AUTO_INCREMENT,
 	user_seq int NOT NULL,
 	record_date datetime NOT NULL,
+	position varchar(20),
 	content varchar(50),
 	pur_seq int NOT NULL,
 	pur_dtl_seq int,
