@@ -9,12 +9,12 @@ public class TableColumns {
 	
 	//컬럼 배열
 	private final static String[] authority = 	{"authority_no","authority"};
-	private final static String[] money_record = {"record_seq","group_seq","user_seq","record_date","content","pur_seq","pur_detail_seq","bank_seq","move_to_seq","in_exp_money",
+	private final static String[] money_record = {"record_seq","group_seq","user_seq","record_date","content","pur_seq","pur_dtl_seq","bank_seq","move_to_seq","in_exp_money",
 											"ready_money","bank_money","reg_date"};	
 	private final static String[] purpose = {"pur_seq","user_seq","pur_order","upper_pur_seq","purpose"};
 	private final static String[] user_bank = {"bank_seq","user_seq","bank_name","bank_account","bank_now_use_yn"};
 	private final static String[] white_user = {"user_seq","authority_no","user_id","user_name","user_passwd"};
-	private final static String[] purpose_detail = {"pur_detail_seq","pur_seq","user_seq", "pur_dtl_order","pur_detail"};
+	private final static String[] purpose_detail = {"pur_dtl_seq","pur_seq","user_seq", "pur_dtl_order","pur_detail"};
 	
 	public static String[] getTables() {
 		return tables;

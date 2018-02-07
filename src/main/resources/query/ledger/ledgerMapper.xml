@@ -20,7 +20,7 @@
 			rec.content 			AS content,
 			rec.pur_seq 		AS purSeq,
 		   	pur.purpose 			AS purpose,
-		   	rec.pur_detail_seq 		AS purDetailSeq,
+		   	rec.pur_dtl_seq 		AS purDtlSeq,
       		IFNULL(purDtk.pur_detail,'') AS purDetail,				
 			rec.bank_seq 		AS bankSeq,	
 			rec.move_to_seq			AS moveToSeq,	
@@ -34,7 +34,7 @@
 		LEFT OUTER JOIN purpose pur
 			ON rec.pur_seq = pur.purSeq
 		LEFT OUTER JOIN purpose_detail purDtk
-			ON rec.pur_detail_seq = purDtk.pur_detail_seq
+			ON rec.pur_dtl_seq = purDtk.pur_dtl_seq
 		LEFT OUTER JOIN user_bank bank
     		ON rec.bank_seq = bank.bank_seq 
 		WHERE 1=1
@@ -79,7 +79,7 @@
 			rec.content 			AS content,
 			rec.pur_seq 		AS purSeq,
 		   	pur.purpose 			AS purpose,	
-		   	rec.pur_detail_seq 		AS purDetailSeq,
+		   	rec.pur_dtl_seq 		AS purDetailSeq,
       		IFNULL(purDtk.pur_detail,'') AS purDetail,						
 			rec.bank_seq 		AS bankSeq,			
 			rec.move_to_seq			AS moveToSeq,	
@@ -93,7 +93,7 @@
 		LEFT OUTER JOIN purpose pur
 			ON rec.pur_seq = pur.purSeq
 		LEFT OUTER JOIN purpose_detail purDtk
-			ON rec.pur_detail_seq = purDtk.pur_detail_seq
+			ON rec.pur_dtl_seq = purDtk.pur_dtl_seq
 		LEFT OUTER JOIN user_bank bank
     		ON rec.bank_seq = bank.bank_seq 
 		WHERE 1=1
@@ -132,7 +132,7 @@
 			rec.content 			AS content,
 			rec.pur_seq 		AS purSeq,
 		   	pur.purpose 			AS purpose,	
-		   	rec.pur_detail_seq 		AS purDetailSeq,
+		   	rec.pur_dtl_seq 		AS purDetailSeq,
       		IFNULL(purDtk.pur_detail,'') AS purDetail,				
 			rec.bank_seq 		AS bankSeq,			
 			rec.move_to_seq			AS moveToSeq,
@@ -146,7 +146,7 @@
 		LEFT OUTER JOIN purpose pur
 			ON rec.pur_seq = pur.pur_seq
 		LEFT OUTER JOIN purpose_detail purDtk
-			ON rec.pur_detail_seq = purDtk.pur_detail_seq
+			ON rec.pur_dtl_seq = purDtk.pur_dtl_seq
 		LEFT OUTER JOIN user_bank bank
     		ON rec.bank_seq = bank.bank_seq    		
 		WHERE 1=1
@@ -246,7 +246,7 @@
 											   
 	<select id="getPurposeDtlList" resultType="PurposeDetailBean" parameterType="String">
 		SELECT
-			pur_detail_seq AS purDetailSeq,
+			pur_dtl_seq AS purDetailSeq,
 			pur_seq AS purSeq,
 			<!-- user_seq AS userSeq, -->
 			pur_dtl_order AS purDtlOrder,
@@ -300,7 +300,7 @@
 			record_date, 
 			content, 
 			purSeq,
-			pur_detail_seq,
+			pur_dtl_seq,
 			
 					
 			bank_seq,	
@@ -328,7 +328,7 @@
 			#{recordDate},		
 			#{content},
 			#{purSeq},
-			#{purposeDtlSeq}, <!-- 테스트중 --><!-- #{pur_detail_seq}, -->
+			#{purposeDtlSeq}, <!-- 테스트중 --><!-- #{pur_dtl_seq}, -->
 			
 			
 						
@@ -460,7 +460,7 @@
 				purSeq = #{purSeq},	
 			</if>
 			<if test="purposeDtlSeq != '' and purposeDtlSeq != null">
-				pur_detail_seq = #{purposeDtlSeq}			
+				pur_dtl_seq = #{purposeDtlSeq}			
 			</if>
 		</set>
 		WHERE record_seq = #{recordSeq}		
@@ -521,12 +521,12 @@
 			pur_detail = #{purDetail},
 			pur_seq = #{purSeq}
 		WHERE user_seq = #{userSeq}
-		AND pur_detail_seq = #{purDetailSeq}
+		AND pur_dtl_seq = #{purDetailSeq}
 	</update>
 	
 	<delete id="deleteDtlPurpose" parameterType="java.util.List">
 		DELETE FROM purpose_detail	
-		WHERE pur_detail_seq IN (
+		WHERE pur_dtl_seq IN (
 			<foreach collection="list" item="item" separator=",">
 				#{item.purDetailSeq}
 			</foreach>)
@@ -535,9 +535,9 @@
 	<!-- dtl PURPOSE 삭제로 인핸 RECORD update -->
 	<update id="updateRecordDtlPurEdit" parameterType="Map">
 		UPDATE money_record
-		SET pur_detail_seq = -1
+		SET pur_dtl_seq = -1
 		WHERE user_seq = #{userSeq}
-		AND pur_detail_seq = #{purDetailSeq}
+		AND pur_dtl_seq = #{purDetailSeq}
 	</update>
 	
 	

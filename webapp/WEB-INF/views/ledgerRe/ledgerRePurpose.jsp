@@ -17,7 +17,7 @@ $(document).ready(function(){
 		url: common.path()+'/ledgerRe/ajax/selectPurAndDtlList.do',
 		dataType: 'json',
 	    success : function(data) {	    	
-	    	pur.init(data.purList, data.purDtlList).view();	    	
+	    	pur.init(data.purList, data.purDtlList).purView().purDtlView();	    	
 	    },
 	    error : function(request, status, error){
 	    	alert("error");
@@ -27,9 +27,19 @@ $(document).ready(function(){
 
 </script>
 </head>
-<body>	
-	<div id="purList" class="left"></div>
-	<div id="purDtlList" class="left"></div>
+<body>
+	
+	<div class="left">
+		<button id="purSaveBtn" class="btn_azure03" disabled="disabled">목적 저장</button>
+		<button id="purCelBtn" class="btn_azure03" disabled="disabled">취소</button>
+		<div id="purList" class="scroll"></div>	
+	</div>
+	
+	<div class="left">
+		<button id="purSaveBtn" class="btn_azure03" disabled="disabled">상세목적 저장</button>
+		<button id="purCelBtn" class="btn_azure03" disabled="disabled">취소</button>
+		<div id="purDtlList" class="scroll"></div>
+	</div>
 </body>
 
 

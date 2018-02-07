@@ -32,7 +32,7 @@
 	<!--  -->
 	<select id="selectPurDtlList" resultType="whiteMap" parameterType="whiteMap">
 		SELECT
-			pur_detail_seq AS purDtlSeq,
+			pur_dtl_seq AS purDtlSeq,
 			pur_seq AS purSeq,
 			pur_dtl_order AS purDtlOrder,
 			pur_detail AS purDetail			
@@ -65,7 +65,7 @@
 		LEFT OUTER JOIN purpose pur
 			ON rec.pur_seq = pur.pur_seq
 		LEFT OUTER JOIN purpose_detail purDtl
-			ON rec.pur_dtl_seq = purDtl.pur_detail_seq
+			ON rec.pur_dtl_seq = purDtl.pur_dtl_seq
 		LEFT OUTER JOIN user_bank bank
     		ON rec.bank_seq = bank.bank_seq
 		WHERE rec.user_seq = #{userSeq}		
