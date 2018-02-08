@@ -25,12 +25,12 @@ let recIn = {
 	
 	add : function(){
 		this.inList.push({date: isDate.today(), time: isTime.curTime(), position:'', content:'', purSeq: '', purDtlSeq: '', bankSeq: '', moveSeq: '', money: ''});
-		this.view();
+		return this;
 	},
 	
 	del : function(){		
 		this.inList.splice(this.inList.length-1,1);
-		this.view();
+		return this;
 	},
 	
 	sync : function(target){		

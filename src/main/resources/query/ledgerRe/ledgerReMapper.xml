@@ -20,7 +20,10 @@
 	
 	<!--  -->
 	<select id="selectPurList" resultType="whiteMap" parameterType="whiteMap">
-		SELECT 
+		SELECT
+			<if test="mode == 'select'">
+			'select' AS state,
+			</if>
 			pur_seq AS purSeq,
 	  		pur_order AS purOrder,
 	 		purpose AS purpose
@@ -32,6 +35,9 @@
 	<!--  -->
 	<select id="selectPurDtlList" resultType="whiteMap" parameterType="whiteMap">
 		SELECT
+			<if test="mode == 'select'">
+			'select' AS state,
+			</if>
 			pur_dtl_seq AS purDtlSeq,
 			pur_seq AS purSeq,
 			pur_dtl_order AS purDtlOrder,
@@ -46,7 +52,7 @@
 		SELECT
 			<if test="mode == 'select'">
 			'select' AS state,
-			</if>	
+			</if>
 			rec.record_seq AS recordSeq,
 			DATE_FORMAT(rec.record_date,'%Y-%m-%d %H:%i:%s') AS recordDate,
 			IFNULL(rec.position, '') AS position,

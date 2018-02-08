@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset=UTF-8>
-<title>WhiteHome</title>
+<title>whiteHome</title>
 
 <script type="text/javascript" src="${contextPath}/resources/js/ledgerRe/ledgerReInsert.js"></script>
 <script type="text/javascript">
@@ -19,11 +19,11 @@ $(document).ready(function(){
 	recIn.init(purList, purDtlList, bankList).add();	
 	
 	$("#recAddBtn").click(function(){		
-		recIn.add();
+		recIn.add().view();
 	});
 	
 	$("#recDelBtn").click(function(){		
-		recIn.del();
+		recIn.del().view();
 	});
 	
 	$("#recInsertBtn").click(function(){
