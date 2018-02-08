@@ -16,7 +16,7 @@ $(document).ready(function(){
 	let purDtlList = JSON.parse('${purDtlList}');
 	let bankList = JSON.parse('${bankList}');
 	
-	recIn.init(purList, purDtlList, bankList).add();	
+	recIn.init(purList, purDtlList, bankList).add().view();	
 	
 	$("#recAddBtn").click(function(){		
 		recIn.add().view();
