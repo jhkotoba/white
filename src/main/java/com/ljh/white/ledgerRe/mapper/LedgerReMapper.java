@@ -23,10 +23,20 @@ public class LedgerReMapper {
 		return sqlSession.selectList("ledgerReMapper.selectBankList", param);
 	}
 	
+	/**
+	 * 해당 유저 목적 리스트 조회
+	 * @param param
+	 * @return
+	 */
 	public List<WhiteMap> selectPurList(WhiteMap param) {
 		return sqlSession.selectList("ledgerReMapper.selectPurList", param);
 	}
 	
+	/**
+	 * 해당 유저 상세목적 리스트 조회
+	 * @param param
+	 * @return
+	 */
 	public List<WhiteMap> selectPurDtlList(WhiteMap param) {
 		return sqlSession.selectList("ledgerReMapper.selectPurDtlList", param);
 	}
@@ -74,6 +84,33 @@ public class LedgerReMapper {
 	 */
 	public int deleteRecordList(List<WhiteMap> list) {		
 		return sqlSession.delete("ledgerReMapper.deleteRecordList", list);		 
+	}
+	
+	/**
+	 * 목적 리스트 insert
+	 * @param list
+	 * @return
+	 */
+	public int insertPurList(List<WhiteMap> list) {		
+		return sqlSession.insert("ledgerReMapper.insertPurList", list);		 
+	}
+	
+	/**
+	 * 목적 리스트 update
+	 * @param list
+	 * @return
+	 */
+	public int updatePurList(List<WhiteMap> list) {		
+		return sqlSession.update("ledgerReMapper.updatePurList", list);		 
+	}
+	
+	/**
+	 * 목적 리스트 delete
+	 * @param list
+	 * @return
+	 */
+	public int deletePurList(List<WhiteMap> list) {		
+		return sqlSession.delete("ledgerReMapper.deletePurList", list);		 
 	}
 	
 }

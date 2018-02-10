@@ -45,6 +45,11 @@ let recIn = {
 	check : function(){
 		let check = {check : true, msg : ""};
 		
+		if(this.inList.length < 1){
+			check = {check : false, msg : "입력된 데이터가 없습니다."};
+			return check;
+		}
+		
 		for(let i=0; i<this.inList.length; i++){
 			
 			// 빈값, null 체크

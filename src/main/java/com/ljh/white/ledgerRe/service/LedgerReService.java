@@ -177,4 +177,42 @@ public class LedgerReService {
 		
 		return resultMap;		
 	}
+	
+	/**
+	 * 목적 insert, update, delete
+	 * @param list
+	 * @return
+	 */
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
+	public WhiteMap inUpDelPurList(WhiteMap param) {
+		
+		List<WhiteMap> inList = param.getListWhiteMap("inList");
+		List<WhiteMap> upList = param.getListWhiteMap("upList");
+		List<WhiteMap> delList = param.getListWhiteMap("delList");
+		
+		WhiteMap resultMap = new WhiteMap();
+		if(inList.size() > 0 ) {
+			
+			for(int i=0; i<inList.size(); i++) {
+				inList.get(i).put("userSeq", param.getInt("userSeq"));
+			}			
+			resultMap.put("inCnt", ledgerReMapper.insertPurList(inList));	
+		}else {
+			resultMap.put("inCnt", 0);	
+		}
+		
+		if(upList.size() > 0 ) {			
+			resultMap.put("upCnt", ledgerReMapper.updatePurList(upList));	
+		}else {
+			resultMap.put("upCnt", 0);	
+		}
+		
+		if(delList.size() > 0) {			
+			resultMap.put("delCnt", ledgerReMapper.deletePurList(delList));
+		}else {
+			resultMap.put("delCnt", 0);	
+		}
+		
+		return resultMap;		
+	}
 }

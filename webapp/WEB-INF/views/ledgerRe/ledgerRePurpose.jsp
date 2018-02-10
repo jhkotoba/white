@@ -49,6 +49,24 @@ $(document).ready(function(){
 	$("#purDtlCelBtn").click(function(){		
 		purDtl.cancel().view();
 	});
+	
+	$("#purSaveBtn").click(function(){
+		let rtn = pur.check();
+		if(rtn.check === true){
+			pur.save();
+		}else{
+			alert(rtn.msg);
+		}
+	});
+	
+	$("#purDtlSaveBtn").click(function(){
+		let rtn = purDtl.check();
+		if(rtn.check === true){
+			purDtl.save();
+		}else{
+			alert(rtn.msg);
+		}
+	});
 });
 
 </script>
