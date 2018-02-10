@@ -109,11 +109,9 @@ public class LedgerReController {
 	public String inUpDelPurList(HttpServletRequest request){
 		logger.debug("inUpDelPurList Start");
 		
-		WhiteMap param = new WhiteMap(request);	
-	
+		WhiteMap param = new WhiteMap(request);		
 		WhiteMap resultMap = ledgerReService.inUpDelPurList(param);
-		request.setAttribute("result", new JSONObject(resultMap));
-		
+		request.setAttribute("result", new JSONObject(resultMap));		
 		return "result.jsp";
 	}
 }

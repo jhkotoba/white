@@ -84,7 +84,11 @@ let rec = {
 		let selected = "";
 		let disabled = "";
 		
-		let tag = "<table border=1>";
+		let tag =  "<div>";
+			tag += "<span class='font10 edit'>■수정</span>";
+			tag += "<span class='font10 redLine'>■삭제</span>";
+			tag += "</div>";
+			tag += "<table border=1>";
 			tag	+= "<tr>";
 			tag += "<th>No</th>"
 			tag += "<th>Del</th>"

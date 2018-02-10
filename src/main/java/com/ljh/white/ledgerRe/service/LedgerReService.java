@@ -191,6 +191,18 @@ public class LedgerReService {
 		List<WhiteMap> delList = param.getListWhiteMap("delList");
 		
 		WhiteMap resultMap = new WhiteMap();
+		
+		if(delList.size() > 0) {
+			if(ledgerReMapper.selectIsUsedPurpose(delList)>0) {
+				resultMap.put("msg", "purUsed");
+				return resultMap;				
+			}else {
+				resultMap.put("delCnt", ledgerReMapper.deletePurList(delList));
+			}
+		}else {
+			resultMap.put("delCnt", 0);	
+		}
+		
 		if(inList.size() > 0 ) {
 			
 			for(int i=0; i<inList.size(); i++) {
@@ -205,14 +217,23 @@ public class LedgerReService {
 			resultMap.put("upCnt", ledgerReMapper.updatePurList(upList));	
 		}else {
 			resultMap.put("upCnt", 0);	
-		}
+		}		
 		
-		if(delList.size() > 0) {			
-			resultMap.put("delCnt", ledgerReMapper.deletePurList(delList));
-		}else {
-			resultMap.put("delCnt", 0);	
-		}
-		
-		return resultMap;		
+		return resultMap;
 	}
+	
+	/**
+	 * 목적이 사용되어지지 확인
+	 * @param param
+	 * @return
+	 */
+	/*public boolean selectIsUsedPurpose(WhiteMap param) {		
+		List<WhiteMap> delList = param.getListWhiteMap("delList");		
+		if(ledgerReMapper.selectIsUsedPurpose(delList) > 0) {
+			return true;
+		}else {
+			return false;
+		}
+	}*/
+	
 }

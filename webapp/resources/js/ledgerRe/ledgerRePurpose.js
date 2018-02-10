@@ -13,7 +13,7 @@ let pur = {
 	},
 	
 	add : function(){
-		this.purList.push({purOrder: (this.purList.length+1), purpose: '', state: 'insert'});
+		this.purList.push({purOrder: (this.purList.length+1), purpose: '', state: 'insert'});		
 		return this;
 	},
 	
@@ -38,11 +38,27 @@ let pur = {
 			tag	+= "<th>purpose</th>";
 			tag += "</tr>";
 			
-		for(let i=0; i<this.purList.length; i++){
+		let addCls = "";
+		let delChk = "";
+		let readonly = "";
+		
+		let addAttr = {chked:"", cls:"", read:""};
+		for(let i=0; i<this.purList.length; i++){			
+			
+			if(this.purList[i].state === "insert"){
+				addAttr = {chked:"", cls:"add", read:""};			
+			}else if(this.purList[i].state === "delete"){				
+				addAttr = {chked:"checked='checked'", cls:"redLine", read:"readonly='readonly'"};
+			}else if(this.purList[i].state === "update"){
+				addAttr = {chked:"", cls:"edit", read:""};
+			}else{
+				addAttr = {chked:"", cls:"", read:""};
+			}
+						
 			tag += "<tr>";			
-			tag += "<td><input id='purDel_"+i+"' type='checkbox' onchange='pur.sync(this)' title='삭제 체크박스'></td>";
+			tag += "<td><input id='purDel_"+i+"' type='checkbox' "+addAttr.chked+" onchange='pur.sync(this)' title='삭제 체크박스'></td>";
 			tag += "<td>"+this.purList[i].purOrder+"</td>";
-			tag += "<td><input id='purpose_"+i+"' type='text' class='font10' value='"+this.purList[i].purpose
+			tag += "<td><input id='purpose_"+i+"' type='text' class='font10 "+addAttr.cls+"' "+addAttr.read+" value='"+this.purList[i].purpose
 				+"' onkeyup='pur.sync(this)' onclick='purDtl.view("+this.purList[i].purSeq+",\""+this.purList[i].purpose+"\")'></td>";
 			tag += "</tr>";	
 		}			
@@ -67,19 +83,23 @@ let pur = {
 				this.purList[idx].state = "delete";				
 				$("#purpose_"+idx).addClass("redLine").prop("readOnly", true);
 			}else{
-				this.purList[idx].state = "select";				;
+				this.purList[idx].state = "select";
 				$("#purpose_"+idx).removeClass("redLine").prop("readOnly", false);
 			}
 		}else{			
 			this.purList[idx][name] = String(target.value);
 		}
 		
-		if($(target).is(":checked") === false && this.equals(idx) === false){
-			this.purList[idx].state = "update";			
-			$("#purpose_"+idx).addClass("edit").prop("readOnly", false);
-		}else{			
-			$(target).is(":checked") === true ? this.purList[idx].state = "delete" : this.purList[idx].state = "select";			
-			$("#purpose_"+idx).removeClass("edit");
+		if(this.purList[idx].state !== "insert"){
+			if($(target).is(":checked") === false && this.equals(idx) === false){
+				this.purList[idx].state = "update";			
+				$("#purpose_"+idx).addClass("edit").prop("readOnly", false);
+			}else{
+				if(this.purList[idx].state !== "insert"){
+					$(target).is(":checked") === true ? this.purList[idx].state = "delete" : this.purList[idx].state = "select";			
+					$("#purpose_"+idx).removeClass("edit");
+				}
+			}
 		}
 	},
 	
@@ -133,8 +153,10 @@ let pur = {
 				delList : JSON.stringify(delList)
 			},
 			dataType: 'json',
-		    success : function(data, stat, xhr) { 
-		    	
+		    success : function(data, stat, xhr) {
+		    	if(data.msg==="purUsed"){
+		    		alert("삭제-사용되는 purpose가 존재하여 실패.");
+		    	}
 		    	sideSubmit("Purpose");
 		    },
 		    error : function(xhr, stat, err) {
@@ -185,7 +207,7 @@ let purDtl = {
 		if(emptyCheck.isNotEmpty(purSeq)){
 			this.purSeq = purSeq;
 			this.purpose = purpose;
-		}console.log(this.purpose);
+		}
 	
 		$("#purDtlList").empty();
 	
@@ -234,12 +256,16 @@ let purDtl = {
 			this.purDtlList[idx][name] = String(target.value);
 		}
 		
-		if($(target).is(":checked") === false && this.equals(idx) === false){
-			this.purDtlList[idx].state = "update";			
-			$("#purDetail_"+idx).addClass("edit").prop("readOnly", false);
-		}else{			
-			$(target).is(":checked") === true ? this.purDtlList[idx].state = "delete" : this.purDtlList[idx].state = "select";			
-			$("#purDetail_"+idx).removeClass("edit");
+		if(this.purList[idx].state !== "insert"){
+			if($(target).is(":checked") === false && this.equals(idx) === false){
+				this.purDtlList[idx].state = "update";			
+				$("#purDetail_"+idx).addClass("edit").prop("readOnly", false);
+			}else{
+				
+				$(target).is(":checked") === true ? this.purDtlList[idx].state = "delete" : this.purDtlList[idx].state = "select";			
+				$("#purDetail_"+idx).removeClass("edit");
+				
+			}
 		}
 	},
 	

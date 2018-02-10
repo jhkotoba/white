@@ -99,6 +99,16 @@
 		</foreach>
 	</select>
 	
+	<!-- 목적 사용되는지 확인 -->
+	<select id="selectIsUsedPurpose" resultType="int" parameterType="java.util.List">
+		SELECT COUNT(1) FROM money_record_re
+		WHERE pur_seq IN
+		<foreach collection="list" item="item" separator="," open="(" close=")">
+			#{item.purSeq}
+		</foreach>
+	</select>
+	
+	
 	
 	
 	
@@ -165,7 +175,7 @@
 	
 	<!-- UPDATE -->
 	
-	<!-- 금전기록 수정 -->
+	<!-- 금전기록 list 수정 -->
 	<update id="updateRecordList" parameterType="java.util.List">		
 		UPDATE money_record_re
 		SET record_date = 
@@ -236,15 +246,45 @@
 		</foreach>
 	</update>
 	
+	<!-- 목적 list 수정 -->
+	<update id="updatePurList" parameterType="java.util.List">		
+		UPDATE purpose
+		SET pur_order = 
+		CASE		
+		<foreach collection="list" item="item">
+			WHEN pur_seq = #{item.purSeq} THEN #{item.purOrder}
+		</foreach>		
+		END,	
+		purpose = 
+		CASE		
+		<foreach collection="list" item="item">
+			WHEN pur_seq = #{item.purSeq} THEN #{item.purpose}
+		</foreach>		
+		END
+		WHERE pur_seq IN 
+		<foreach collection="list" item="item" separator="," open="(" close=")">
+			#{item.purSeq}
+		</foreach>
+	</update>
+	
 	
 	<!-- DELETE -->
 	
-	<!-- 금전기록 삭제 -->
+	<!-- 금전기록 list 삭제 -->
 	<delete id="deleteRecordList" parameterType="java.util.List">
-		DELETE FROM money_record_re
+		DELETE FROM purpose
 		WHERE record_seq IN 
 		<foreach collection="list" item="item" separator="," open="(" close=")">
 			#{item.recordSeq}
+		</foreach>
+	</delete>
+	
+	<!-- 목적 list 삭제 -->
+	<delete id="deletePurList" parameterType="java.util.List">
+		DELETE FROM purpose
+		WHERE pur_seq IN 
+		<foreach collection="list" item="item" separator="," open="(" close=")">
+			#{item.purSeq}
 		</foreach>
 	</delete>
 	

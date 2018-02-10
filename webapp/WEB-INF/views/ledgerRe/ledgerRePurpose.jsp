@@ -73,6 +73,13 @@ $(document).ready(function(){
 </head>
 <body>
 	
+	<div>
+		<span class='add'>■추가</span>
+		<span class='edit'>■수정</span>
+		<span class='redLine'>■삭제</span>
+	</div>
+	<br>
+	
 	<div class="left">
 		<button id="purAddBtn" class="btn_azure03">추가</button>
 		<button id="purSaveBtn" class="btn_azure03">목적 저장</button>
@@ -87,5 +94,3 @@ $(document).ready(function(){
 		<div id="purDtlList" class="scroll"></div>
 	</div>
 </body>
-
-
