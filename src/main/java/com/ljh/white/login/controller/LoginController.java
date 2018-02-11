@@ -50,8 +50,7 @@ public class LoginController {
 			
 			int userSeq = loginService.getUserSeq(userId);
 			
-			//권한 조회
-						
+			//권한 조회						
 			AuthBean authBean = loginService.getUserAuthority(userSeq);
 			logger.debug("authBean:"+authBean.toString());
 			
@@ -66,9 +65,9 @@ public class LoginController {
 			
 			//page
 			request.setAttribute("sidePage", null);
-			request.setAttribute("sectionPage", "info/mainInfo.jsp");
+			request.setAttribute("sectionPage", "main/main.jsp");
 			
-			return "redirect:mainInfo.do";
+			return "redirect:main.do";
 			//return "white.jsp";
 		}else{
 			return "login/loginPage.jsp";	

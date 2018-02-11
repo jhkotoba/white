@@ -6,13 +6,19 @@
 <!DOCTYPE html PUBLIC>
 <html>
 <head>
-	<meta charset=UTF-8>
-	<title>whiteHome</title>
-	<link rel="stylesheet" href="${contextPath}/resources/css/white.css" type="text/css" />
-	<link rel="stylesheet" href="${contextPath}/resources/css/btn.css" type="text/css" />	
+<meta charset=UTF-8>
+<title>whiteHome</title>
+<link rel="stylesheet" href="${contextPath}/resources/css/white.css" type="text/css" />
+<link rel="stylesheet" href="${contextPath}/resources/css/btn.css" type="text/css" />	
+
+<script type="text/javascript" src="${contextPath}/resources/js/wcommon/jquery/jquery-3.2.0.js"></script>
+<script type="text/javascript" src="${contextPath}/resources/js/wcommon/common.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
 	
-	<script type="text/javascript" src="${contextPath}/resources/js/wcommon/jquery/jquery-3.2.0.js"></script>
-	<script type="text/javascript" src="${contextPath}/resources/js/wcommon/common.js"></script>
+	
+});
+</script>
 </head>
 <body>
 	<header class='header'>	
@@ -20,41 +26,39 @@
 			<a class="btn_azure02" href="${contextPath}/loginPage.do">login</a> <br>
 		</c:if>	
 		<c:if test="${sessionScope.userId ne null}">		
-			${sessionScope.userId}
+			${sessionScope.userId} |<span id="viewTime"></span>|
 			<a class="btn_azure02" href="${contextPath}/logoutProcess.do">logout</a> <br>
 		</c:if>				
 	</header>
 	<nav>
 		<c:choose>
 			<c:when test="${sessionScope.authority.developer eq 1}">
-				<a href="${contextPath}/mainInfo.do">메인화면</a>				
+				<a href="${contextPath}/main.do">메인화면</a>				
 				<a href="${contextPath}/ledgerRe/ledgerReMain.do">가계부</a>
-				<a href="${contextPath}/source.do">소스코드</a>
-				<a href="${contextPath}/bookmark.do">북마크</a>
-				<a href="${contextPath}/adminPage.do">관리자</a>
-				<a href="${contextPath}/testMain.do">테스트</a>
+				<a href="${contextPath}/source/sourceMain.do">소스코드</a>
+				<a>북마크</a>
+				<a href="${contextPath}/admin/adminMain.do">관리자</a>
+				<a href="${contextPath}/experiment/experimentMain.do">실험실</a>
 			</c:when>
 			
 			<c:when test="${sessionScope.authority.administrator eq 1}">
-				<a href="${contextPath}/mainInfo.do">메인화면</a>				
+				<a href="${contextPath}/main.do">메인화면</a>			
 				<a href="${contextPath}/ledgerRe/ledgerReMain.do">가계부</a>
-				<a href="${contextPath}/source.do">소스코드</a>
-				<a href="${contextPath}/bookmark.do">북마크</a>
-				<a href="${contextPath}/adminPage.do">관리자</a>
-				<a href="${contextPath}/testMain.do">테스트</a>	
+				<a href="${contextPath}/source/sourceMain.do">소스코드</a>
+				<a>북마크</a>
+				<a href="${contextPath}/admin/adminMain.do">관리자</a>	
 			</c:when>
 			
 			<c:otherwise>
-				<a href="${contextPath}/mainInfo.do">메인화면</a>
+				<a href="${contextPath}/main.do">메인화면</a>	
 				<c:if test="${sessionScope.authority.ledger eq 1}">			
 					<a href="${contextPath}/ledgerRe/ledgerReMain.do">가계부</a>
 				</c:if>
-				<a href="${contextPath}/source.do">소스코드</a>
+				<a href="${contextPath}/source/sourceMain.do">소스코드</a>
 				<c:if test="${sessionScope.userId ne null}">					
-					<a href="${contextPath}/bookmark.do">북마크</a>
+					<a>북마크</a>
 				</c:if>
-				<a href=#>게시판</a>
-				<a href="${contextPath}/testMain.do">테스트</a>
+				<a href=#>게시판</a>				
 			</c:otherwise>
 		
 		</c:choose>

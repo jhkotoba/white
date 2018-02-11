@@ -116,7 +116,6 @@ function z(n, digits) {
 
 </script>
 <body>
-	<a href="/white/testMain.do">테스트 메인</a><br>	
 	
 	<input id="date" type="date" value="">
 	<input id="time" type="time" value="08:00:00">

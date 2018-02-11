@@ -1,23 +1,24 @@
 package com.ljh.white.admin.controller;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+
 
 @Controller
 public class AdminController {
 	
-	
-	
+	private static Logger logger = LogManager.getLogger(AdminController.class);
 
-	//메인페이지-info
-	@RequestMapping(value="/adminPage.do")
-	public String adminPage(HttpServletRequest request, HttpServletResponse response){
-		
+	@RequestMapping(value="/admin/adminMain.do")
+	public String adminMain(HttpServletRequest request){
+		logger.debug("adminMain Start");
 			
-		
-		return null;
+		request.setAttribute("sidePage", "admin/adminSide.jsp");		
+		request.setAttribute("sectionPage", "admin/adminMain.jsp");
+		return "white.jsp";
 	}
 }

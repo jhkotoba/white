@@ -7,6 +7,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-	mainInfo.jsp<br>
+	main.jsp<br>
 </body>
 </html>

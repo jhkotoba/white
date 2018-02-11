@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:set var="contextPath" value="<%=request.getContextPath()%>"></c:set>
+
 <!DOCTYPE html PUBLIC>
 <html>
 <head>
@@ -8,8 +11,6 @@
 	
 <style type="text/css">		
 </style>
-
-<script type="text/javascript" src="resources/js/wcommon/jquery/jquery-3.2.0.js"></script>
 
 <script type="text/javascript">
 $(document).ready(function(){
@@ -45,11 +46,10 @@ $(document).ready(function(){
 </script>
 </head>
 <body>
-	testing.jsp<br>
-	<a href="/white/mainInfo.do">메인화면</a><br>
-	
 	<h2>Test List</h2><br>
-	<a href="/white/exitTimer.do">exitTime</a><br>
+	<a href="${contextPath}/experiment/cssDemo.do">cssDemo</a><br>
+	<a href="${contextPath}/experiment/exitTimer.do">exitTime</a><br>
+	<a href="${contextPath}/experiment/roofTest.do">roofTest</a><br>
 	
 </body>
 </html>

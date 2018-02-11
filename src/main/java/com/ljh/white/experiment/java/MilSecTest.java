@@ -1,4 +1,4 @@
-package com.ljh.white.testing.java;
+package com.ljh.white.experiment.java;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

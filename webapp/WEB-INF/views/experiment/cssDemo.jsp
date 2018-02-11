@@ -8,7 +8,6 @@
 	<link rel="stylesheet" href="resources/css/btn.css" type="text/css" />	
 </head>
 <body>
-<a href="/white/testMain.do">테스트 메인</a><br><br>
 
 <button class="btn_azure01">btn_azure01</button>
 <button class="btn_azure02">btn_azure02</button>

@@ -29,7 +29,7 @@ public class LedgerReController {
 	
 	@RequestMapping(value="/ledgerRe/ledgerReMain.do" )
 	public String ledgerReMain(HttpServletRequest request){
-		logger.debug("ledgerReTest Start");
+		logger.debug("ledgerReMain Start");
 		
 		WhiteMap param = new WhiteMap(request);		
 		

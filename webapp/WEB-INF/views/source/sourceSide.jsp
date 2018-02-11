@@ -12,9 +12,8 @@
 </head>
 <body>
 	sourceSide.jsp<br>
-	<form id="sideClickForm" action="">
-		<input id="sideClick" name="sideClick" type="hidden" value=""></input>
-		<input id="userSeq" name="userSeq" type="hidden" value="${userSeq}"></input>
+	<form id="moveForm" action="">
+		<input id="move" name="move" type="hidden" value=""></input>
 	</form>	
 	
 	<div id="ledgerSideList">		
