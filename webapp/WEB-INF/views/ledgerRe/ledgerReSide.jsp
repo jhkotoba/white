@@ -27,7 +27,13 @@ $(document).ready(function(){
 	});
 });
 
-function sideSubmit(id){	
+function sideSubmit(id){
+	
+	if(id==="Stats"){
+		alert("미구현!");
+		return;
+	}
+	
 	$("#moveForm #move").attr("value", id);	
 	$("#moveForm").attr("method", "post");
 	$("#moveForm").attr("action", common.path()+"/ledgerRe/ledgerReMain.do").submit();

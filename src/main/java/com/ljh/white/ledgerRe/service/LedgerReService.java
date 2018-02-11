@@ -247,21 +247,66 @@ public class LedgerReService {
 			resultMap.put("delCnt", 0);	
 		}
 		
-		/*if(inList.size() > 0 ) {
+		if(inList.size() > 0 ) {
 			
 			for(int i=0; i<inList.size(); i++) {
 				inList.get(i).put("userSeq", param.getInt("userSeq"));
 			}			
-			resultMap.put("inCnt", ledgerReMapper.insertPurList(inList));	
+			resultMap.put("inCnt", ledgerReMapper.insertPurDtlList(inList));	
 		}else {
 			resultMap.put("inCnt", 0);	
 		}
 		
 		if(upList.size() > 0 ) {			
-			resultMap.put("upCnt", ledgerReMapper.updatePurList(upList));	
+			resultMap.put("upCnt", ledgerReMapper.updatePurDtlList(upList));	
 		}else {
 			resultMap.put("upCnt", 0);	
-		}	*/	
+		}
+		
+		return resultMap;
+	}
+	
+	
+	/**
+	 * 은행 insert, update, delete
+	 * @param list
+	 * @return
+	 */
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
+	public WhiteMap inUpDelBankList(WhiteMap param) {
+		
+		List<WhiteMap> inList = param.getListWhiteMap("inList");
+		List<WhiteMap> upList = param.getListWhiteMap("upList");
+		List<WhiteMap> delList = param.getListWhiteMap("delList");
+		
+		WhiteMap resultMap = new WhiteMap();
+		
+		if(delList.size() > 0) {
+			if(ledgerReMapper.selectIsUsedBank(delList)>0) {
+				resultMap.put("msg", "bankUsed");
+				return resultMap;				
+			}else {
+				resultMap.put("delCnt", ledgerReMapper.deleteBankList(delList));
+			}
+		}else {
+			resultMap.put("delCnt", 0);	
+		}
+		
+		if(inList.size() > 0 ) {
+			
+			for(int i=0; i<inList.size(); i++) {
+				inList.get(i).put("userSeq", param.getInt("userSeq"));
+			}			
+			resultMap.put("inCnt", ledgerReMapper.insertBankList(inList));	
+		}else {
+			resultMap.put("inCnt", 0);	
+		}
+		
+		if(upList.size() > 0 ) {			
+			resultMap.put("upCnt", ledgerReMapper.updateBankList(upList));	
+		}else {
+			resultMap.put("upCnt", 0);	
+		}
 		
 		return resultMap;
 	}

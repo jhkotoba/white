@@ -27,9 +27,8 @@
 	<nav>
 		<c:choose>
 			<c:when test="${sessionScope.authority.developer eq 1}">
-				<a href="${contextPath}/mainInfo.do">메인화면</a>
-				<a href="${contextPath}/ledgerPage.do">가계부</a>
-				<a href="${contextPath}/ledgerRe/ledgerReMain.do">가계부Re</a>
+				<a href="${contextPath}/mainInfo.do">메인화면</a>				
+				<a href="${contextPath}/ledgerRe/ledgerReMain.do">가계부</a>
 				<a href="${contextPath}/source.do">소스코드</a>
 				<a href="${contextPath}/bookmark.do">북마크</a>
 				<a href="${contextPath}/adminPage.do">관리자</a>
@@ -37,9 +36,8 @@
 			</c:when>
 			
 			<c:when test="${sessionScope.authority.administrator eq 1}">
-				<a href="${contextPath}/mainInfo.do">메인화면</a>
-				<a href="${contextPath}/ledgerPage.do">가계부</a>
-				<a href="${contextPath}/ledgerRe/ledgerReMain.do">가계부Re</a>
+				<a href="${contextPath}/mainInfo.do">메인화면</a>				
+				<a href="${contextPath}/ledgerRe/ledgerReMain.do">가계부</a>
 				<a href="${contextPath}/source.do">소스코드</a>
 				<a href="${contextPath}/bookmark.do">북마크</a>
 				<a href="${contextPath}/adminPage.do">관리자</a>
@@ -49,7 +47,7 @@
 			<c:otherwise>
 				<a href="${contextPath}/mainInfo.do">메인화면</a>
 				<c:if test="${sessionScope.authority.ledger eq 1}">			
-					<a href="${contextPath}/ledgerPage.do">가계부</a>
+					<a href="${contextPath}/ledgerRe/ledgerReMain.do">가계부</a>
 				</c:if>
 				<a href="${contextPath}/source.do">소스코드</a>
 				<c:if test="${sessionScope.userId ne null}">					

@@ -124,4 +124,26 @@ public class LedgerReController {
 		request.setAttribute("result", new JSONObject(resultMap));		
 		return "result.jsp";
 	}
+	
+	@RequestMapping(value="/ledgerRe/ajax/selectBankList.do" )
+	public String selectBankList(HttpServletRequest request){
+		logger.debug("selectBankList Start");
+		
+		WhiteMap param = new WhiteMap(request);
+		JSONObject result = new JSONObject();
+		result.put("bankList", new JSONArray(ledgerReService.selectBankList(param)));				
+		request.setAttribute("result", result);			
+		return "result.jsp";
+		
+	}
+	
+	@RequestMapping(value="/ledgerRe/ajax/inUpDelBankList.do" )
+	public String inUpDelBankList(HttpServletRequest request){
+		logger.debug("inUpDelBankList Start");
+		
+		WhiteMap param = new WhiteMap(request);		
+		WhiteMap resultMap = ledgerReService.inUpDelBankList(param);
+		request.setAttribute("result", new JSONObject(resultMap));		
+		return "result.jsp";
+	}
 }

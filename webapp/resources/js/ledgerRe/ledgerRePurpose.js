@@ -37,10 +37,6 @@ let pur = {
 			tag	+= "<th>No</th>";
 			tag	+= "<th>purpose</th>";
 			tag += "</tr>";
-			
-		let addCls = "";
-		let delChk = "";
-		let readonly = "";
 		
 		let addAttr = {chked:"", cls:"", read:""};
 		for(let i=0; i<this.purList.length; i++){			
@@ -272,7 +268,7 @@ let purDtl = {
 			this.purDtlList[idx][name] = String(target.value);
 		}
 		
-		if(this.purList[idx].state !== "insert"){
+		if(this.purDtlList[idx].state !== "insert"){
 			if($(target).is(":checked") === false && this.equals(idx) === false){
 				this.purDtlList[idx].state = "update";			
 				$("#purDetail_"+idx).addClass("edit").prop("readOnly", false);
@@ -287,19 +283,22 @@ let purDtl = {
 	
 	check : function(){
 		let check = {check : true, msg : ""};
+		let saveChk = 0;
 		
 		for(let i=0; i<this.purDtlList.length; i++){
 			
 			// 빈값, null 체크
-			if(this.purDtlList[i].purpose === '' || this.purDtlList[i].purpose === null){
+			if(this.purDtlList[i].purDetail === '' || this.purDtlList[i].purDetail === null){
 				check = {check : false, msg : (i+1) + "행의 상세목적이 입력되지 않았습니다."};
 				break;
 			}
 			
+			if(this.purDtlList[i].state === "select") saveChk++;
+			
 		}
 		
-		if(saveChk === false){
-			check = {check : false, msg : (i+1) + "추가, 수정, 삭제할 대상이 없습니다."};
+		if(this.purDtlList.length === saveChk){
+			check = {check : false, msg : "추가, 수정, 삭제할 대상이 없습니다."};
 		}
 		return check;
 	},
@@ -312,11 +311,11 @@ let purDtl = {
 		for(let i=0; i<this.purDtlList.length; i++){		
 			
 			if(this.purDtlList[i].state === "insert"){
-				inList.push(this.purList[i]);
+				inList.push(this.purDtlList[i]);
 			}else if(this.purDtlList[i].state === "update"){
-				upList.push(this.purList[i]);
+				upList.push(this.purDtlList[i]);
 			}else if(this.purDtlList[i].state === "delete"){
-				delList.push(this.purList[i]);
+				delList.push(this.purDtlList[i]);
 			}
 		}
 		

@@ -53,6 +53,66 @@
     cursor:pointer; font-size:25px; 
 }
 
+
+
+.btn_pink01{  
+	border-color:#FFB2D9; border-width:1px; border-style:solid; border-radius:5px;
+    background-color:#FFFFFF; color:#D9418C;
+    cursor:pointer; font-size:5px;    
+}
+.btn_pink01:hover{   
+	border-color:#FFB2D9; border-width:1px; border-style:solid; border-radius:5px;
+    background-color:#D9418C; color:#FFFFFF;
+    cursor:pointer; font-size:5px; 
+}
+
+.btn_pink02{  
+	border-color:#FFB2D9; border-width:1px; border-style:solid; border-radius:5px;
+    background-color:#FFFFFF; color:#D9418C;
+    cursor:pointer; font-size:10px;    
+}
+.btn_pink02:hover{   
+	border-color:#FFB2D9; border-width:1px; border-style:solid; border-radius:5px;
+    background-color:#D9418C; color:#FFFFFF;
+    cursor:pointer; font-size:10px; 
+}
+
+.btn_pink03{  
+	border-color:#FFB2D9; border-width:1px; border-style:solid; border-radius:5px;
+    background-color:#FFFFFF; color:#D9418C;
+    cursor:pointer; font-size:15px;    
+}
+.btn_pink03:hover{   
+	border-color:#FFB2D9; border-width:1px; border-style:solid; border-radius:5px;
+    background-color:#D9418C; color:#FFFFFF;
+    cursor:pointer; font-size:15px; 
+}
+
+.btn_pink04{  
+	border-color:#FFB2D9; border-width:1px; border-style:solid; border-radius:5px;
+    background-color:#FFFFFF; color:#D9418C;
+    cursor:pointer; font-size:20px;    
+}
+.btn_pink04:hover{   
+	border-color:#FFB2D9; border-width:1px; border-style:solid; border-radius:5px;
+    background-color:#D9418C; color:#FFFFFF;
+    cursor:pointer; font-size:20px; 
+}
+
+.btn_pink05{  
+	border-color:#FFB2D9; border-width:1px; border-style:solid; border-radius:5px;
+    background-color:#FFFFFF; color:#D9418C;
+    cursor:pointer; font-size:25px;    
+}
+.btn_pink05:hover{   
+	border-color:#FFB2D9; border-width:1px; border-style:solid; border-radius:5px;
+    background-color:#D9418C; color:#FFFFFF;
+    cursor:pointer; font-size:25px; 
+}
+
+
+
+
 .btn_disabled01{   
 	border-color:#BDBDBD; border-width:1px; border-style:solid; border-radius:5px;
     background-color:#D5D5D5; color:#FFFFFF;

@@ -96,12 +96,30 @@ public class LedgerReMapper {
 	}
 	
 	/**
+	 * 상세목적 리스트 insert
+	 * @param list
+	 * @return
+	 */
+	public int insertPurDtlList(List<WhiteMap> list) {		
+		return sqlSession.insert("ledgerReMapper.insertPurDtlList", list);		 
+	}
+	
+	/**
 	 * 목적 리스트 update
 	 * @param list
 	 * @return
 	 */
 	public int updatePurList(List<WhiteMap> list) {		
 		return sqlSession.update("ledgerReMapper.updatePurList", list);		 
+	}
+	
+	/**
+	 * 상세목적 리스트 update
+	 * @param list
+	 * @return
+	 */
+	public int updatePurDtlList(List<WhiteMap> list) {		
+		return sqlSession.update("ledgerReMapper.updatePurDtlList", list);		 
 	}
 	
 	/**
@@ -140,6 +158,42 @@ public class LedgerReMapper {
 		return sqlSession.selectOne("ledgerReMapper.selectIsUsedPurDtl", list);		 
 	}
 	
+	
+	/**
+	 * 은행 List insert
+	 * @param list
+	 * @return
+	 */
+	public int insertBankList(List<WhiteMap> list) {
+		return sqlSession.insert("ledgerReMapper.insertBankList", list);
+	}
+	
+	/**
+	 * 은행 List update
+	 * @param list
+	 * @return
+	 */
+	public int updateBankList(List<WhiteMap> list) {		
+		return sqlSession.update("ledgerReMapper.updateBankList", list);		
+	}
+	
+	/**
+	 * 은행 List delete
+	 * @param list
+	 * @return
+	 */
+	public int deleteBankList(List<WhiteMap> list) {		
+		return sqlSession.delete("ledgerReMapper.deleteBankList", list);		 
+	}	
+	
+	/**
+	 * 은행 사용되는지 확인
+	 * @param list
+	 * @return
+	 */
+	public int selectIsUsedBank(List<WhiteMap> list) {		
+		return sqlSession.selectOne("ledgerReMapper.selectIsUsedBank", list);		 
+	}
 	
 	
 }

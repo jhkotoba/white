@@ -9,10 +9,13 @@
 	<!-- 은행 조회 -->
 	<select id="selectBankList" resultType="whiteMap" parameterType="whiteMap">
 		SELECT
-		  bank_seq AS bankSeq,
-		  bank_name AS bankName,
-		  bank_account AS bankAccount,
-		  bank_now_use_yn AS bankNowUseYN
+			<if test="mode == 'select'">
+			'select' AS state,
+			</if>
+			bank_seq AS bankSeq,
+			bank_name AS bankName,
+			bank_account AS bankAccount,
+			bank_now_use_yn AS bankNowUseYN
 		FROM user_bank
 		WHERE user_seq = #{userSeq}
 		ORDER BY bank_seq ASC
@@ -109,11 +112,20 @@
 	</select>
 	
 	<!-- 상세목적 사용되는지 확인 -->
-	<select id="selectIsUsedPurpose" resultType="int" parameterType="java.util.List">
+	<select id="selectIsUsedPurDtl" resultType="int" parameterType="java.util.List">
 		SELECT COUNT(1) FROM money_record_re
 		WHERE pur_dtl_seq IN
 		<foreach collection="list" item="item" separator="," open="(" close=")">
 			#{item.purDtlSeq}
+		</foreach>
+	</select>
+	
+	<!-- 은행 사용되는지 확인 -->
+	<select id="selectIsUsedBank" resultType="int" parameterType="java.util.List">
+		SELECT COUNT(1) FROM money_record_re
+		WHERE bank_seq IN
+		<foreach collection="list" item="item" separator="," open="(" close=")">
+			#{item.bankSeq}
 		</foreach>
 	</select>
 	
@@ -178,6 +190,38 @@
 			#{item.userSeq}, 
 			#{item.purOrder},
 			#{item.purpose}			
+		</foreach>	
+	</insert>
+	
+	<!-- 상세목적 리스트 insert -->
+	<insert id="insertPurDtlList" parameterType="java.util.List">
+		INSERT INTO purpose_detail(		
+			pur_seq,	
+			user_seq,	
+			pur_dtl_order,
+			pur_detail
+		)VALUES
+		<foreach collection="list" item="item" separator="),(" open="(" close=")">
+			#{item.purSeq}, 
+			#{item.userSeq}, 
+			#{item.purDtlOrder},
+			#{item.purDetail}			
+		</foreach>	
+	</insert>
+	
+	<!-- 은행 리스트 insert -->
+	<insert id="insertBankList" parameterType="java.util.List">
+		INSERT INTO user_bank(		
+			user_seq,	
+			bank_name,
+			bank_account,
+			bank_now_use_yn			
+		)VALUES
+		<foreach collection="list" item="item" separator="),(" open="(" close=")">
+			#{item.userSeq}, 
+			#{item.bankName},
+			#{item.bankAccount},		
+			#{item.bankNowUseYN}	
 		</foreach>	
 	</insert>
 	
@@ -276,6 +320,61 @@
 		</foreach>
 	</update>
 	
+	<!-- 상세목적 list 수정 -->
+	<update id="updatePurDtlList" parameterType="java.util.List">		
+		UPDATE purpose_detail
+		SET pur_seq = 
+		CASE		
+		<foreach collection="list" item="item">
+			WHEN pur_dtl_seq = #{item.purDtlSeq} THEN #{item.purSeq}
+		</foreach>		
+		END,
+		pur_dtl_order = 
+		CASE		
+		<foreach collection="list" item="item">
+			WHEN pur_dtl_seq = #{item.purDtlSeq} THEN #{item.purDtlOrder}
+		</foreach>		
+		END,	
+		pur_detail = 
+		CASE		
+		<foreach collection="list" item="item">
+			WHEN pur_dtl_seq = #{item.purDtlSeq} THEN #{item.purDetail}
+		</foreach>		
+		END
+		WHERE pur_dtl_seq IN 
+		<foreach collection="list" item="item" separator="," open="(" close=")">
+			#{item.purDtlSeq}
+		</foreach>
+	</update>
+	
+	
+	<!-- 은행 list 수정 -->
+	<update id="updateBankList" parameterType="java.util.List">		
+		UPDATE user_bank		
+		SET bank_name = 
+		CASE		
+		<foreach collection="list" item="item">
+			WHEN bank_seq = #{item.bankSeq} THEN #{item.bankName}
+		</foreach>		
+		END,	
+		bank_account = 
+		CASE		
+		<foreach collection="list" item="item">
+			WHEN bank_seq = #{item.bankSeq} THEN #{item.bankAccount}
+		</foreach>		
+		END,
+		bank_now_use_yn = 
+		CASE		
+		<foreach collection="list" item="item">
+			WHEN bank_seq = #{item.bankSeq} THEN #{item.bankNowUseYN}
+		</foreach>		
+		END
+		WHERE bank_seq IN 
+		<foreach collection="list" item="item" separator="," open="(" close=")">
+			#{item.bankSeq}
+		</foreach>
+	</update>
+	
 	
 	<!-- DELETE -->
 	
@@ -298,11 +397,20 @@
 	</delete>
 	
 	<!-- 상세목적 list 삭제 -->
-	<delete id="deletePurList" parameterType="java.util.List">
+	<delete id="deletePurDtlList" parameterType="java.util.List">
 		DELETE FROM purpose_detail
 		WHERE pur_dtl_seq IN 
 		<foreach collection="list" item="item" separator="," open="(" close=")">
 			#{item.purDtlSeq}
+		</foreach>
+	</delete>
+	
+	<!-- 은행 list 삭제 -->
+	<delete id="deleteBankList" parameterType="java.util.List">
+		DELETE FROM user_bank
+		WHERE bank_seq IN 
+		<foreach collection="list" item="item" separator="," open="(" close=")">
+			#{item.bankSeq}
 		</foreach>
 	</delete>
 	
