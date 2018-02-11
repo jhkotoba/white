@@ -223,17 +223,47 @@ public class LedgerReService {
 	}
 	
 	/**
-	 * 목적이 사용되어지지 확인
-	 * @param param
+	 * 상세목적 insert, update, delete
+	 * @param list
 	 * @return
 	 */
-	/*public boolean selectIsUsedPurpose(WhiteMap param) {		
-		List<WhiteMap> delList = param.getListWhiteMap("delList");		
-		if(ledgerReMapper.selectIsUsedPurpose(delList) > 0) {
-			return true;
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
+	public WhiteMap inUpDelPurDtlList(WhiteMap param) {
+		
+		List<WhiteMap> inList = param.getListWhiteMap("inList");
+		List<WhiteMap> upList = param.getListWhiteMap("upList");
+		List<WhiteMap> delList = param.getListWhiteMap("delList");
+		
+		WhiteMap resultMap = new WhiteMap();
+		
+		if(delList.size() > 0) {
+			if(ledgerReMapper.selectIsUsedPurDtl(delList)>0) {
+				resultMap.put("msg", "purDtlUsed");
+				return resultMap;				
+			}else {
+				resultMap.put("delCnt", ledgerReMapper.deletePurDtlList(delList));
+			}
 		}else {
-			return false;
+			resultMap.put("delCnt", 0);	
 		}
-	}*/
+		
+		/*if(inList.size() > 0 ) {
+			
+			for(int i=0; i<inList.size(); i++) {
+				inList.get(i).put("userSeq", param.getInt("userSeq"));
+			}			
+			resultMap.put("inCnt", ledgerReMapper.insertPurList(inList));	
+		}else {
+			resultMap.put("inCnt", 0);	
+		}
+		
+		if(upList.size() > 0 ) {			
+			resultMap.put("upCnt", ledgerReMapper.updatePurList(upList));	
+		}else {
+			resultMap.put("upCnt", 0);	
+		}	*/	
+		
+		return resultMap;
+	}
 	
 }

@@ -114,4 +114,14 @@ public class LedgerReController {
 		request.setAttribute("result", new JSONObject(resultMap));		
 		return "result.jsp";
 	}
+	
+	@RequestMapping(value="/ledgerRe/ajax/inUpDelPurDtlList.do" )
+	public String inUpDelPurDtlList(HttpServletRequest request){
+		logger.debug("inUpDelPurDtlList Start");
+		
+		WhiteMap param = new WhiteMap(request);		
+		WhiteMap resultMap = ledgerReService.inUpDelPurDtlList(param);
+		request.setAttribute("result", new JSONObject(resultMap));		
+		return "result.jsp";
+	}
 }

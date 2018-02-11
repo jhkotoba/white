@@ -189,8 +189,12 @@ let purDtl = {
 	},
 	
 	add : function(){
-		this.purDtlList.push({purSeq: this.purSeq, purDtlOrder: (this.purDtlList.length+1), purDetail: '', state: 'insert'});
-		return this;
+		if(this.purSeq === ""){
+			return this;
+		}else{
+			this.purDtlList.push({purSeq: this.purSeq, purDtlOrder: (this.purDtlList.length+1), purDetail: '', state: 'insert'});
+			return this;
+		}		
 	},
 	
 	del : function(idx){		
@@ -218,12 +222,24 @@ let purDtl = {
 			tag	+= "<th>"+ (emptyCheck.isEmpty(this.purpose)===true?"":this.purpose) +" Detailed Purpose</th>";
 			tag += "</tr>";
 		
-		for(let i=0; i<this.purDtlList.length; i++){
+		let addAttr = {chked:"", cls:"", read:""};
+		for(let i=0; i<this.purDtlList.length; i++){			
 			if(this.purDtlList[i].purSeq === this.purSeq){
+				
+				if(this.purDtlList[i].state === "insert"){
+					addAttr = {chked:"", cls:"add", read:""};			
+				}else if(this.purDtlList[i].state === "delete"){				
+					addAttr = {chked:"checked='checked'", cls:"redLine", read:"readonly='readonly'"};
+				}else if(this.purDtlList[i].state === "update"){
+					addAttr = {chked:"", cls:"edit", read:""};
+				}else{
+					addAttr = {chked:"", cls:"", read:""};
+				}				
+				
 				tag += "<tr>";		
-				tag += "<td><input id='purDtlDel_"+i+"' type='checkbox' onchange='purDtl.sync(this)' title='삭제 체크박스'></td>";
+				tag += "<td><input id='purDtlDel_"+i+"' type='checkbox' "+addAttr.chked+" onchange='purDtl.sync(this)' title='삭제 체크박스'></td>";
 				tag += "<td>"+this.purDtlList[i].purDtlOrder+"</td>";
-				tag += "<td><input id='purDetail_"+i+"' type='text' class='font10' value='"+this.purDtlList[i].purDetail+"' onkeyup='purDtl.sync(this)'></td>";
+				tag += "<td><input id='purDetail_"+i+"' type='text' class='font10 "+addAttr.cls+"' value='"+this.purDtlList[i].purDetail+"' "+addAttr.read+" onkeyup='purDtl.sync(this)'></td>";
 				tag += "</tr>";
 			}
 		}	
@@ -289,7 +305,45 @@ let purDtl = {
 	},
 	
 	save : function(){
+		let inList = new Array();
+		let upList = new Array();
+		let delList = new Array();
 		
+		for(let i=0; i<this.purDtlList.length; i++){		
+			
+			if(this.purDtlList[i].state === "insert"){
+				inList.push(this.purList[i]);
+			}else if(this.purDtlList[i].state === "update"){
+				upList.push(this.purList[i]);
+			}else if(this.purDtlList[i].state === "delete"){
+				delList.push(this.purList[i]);
+			}
+		}
+		
+		if(inList.length === 0 && upList.length === 0 && delList.length === 0){
+			alert("추가, 수정, 삭제할 대상이 없습니다.");
+			return;
+		}
+		
+		$.ajax({		
+			type: 'POST',
+			url: common.path()+'/ledgerRe/ajax/inUpDelPurDtlList.do',
+			data: {
+				inList : JSON.stringify(inList),
+				upList : JSON.stringify(upList),
+				delList : JSON.stringify(delList)
+			},
+			dataType: 'json',
+		    success : function(data, stat, xhr) {
+		    	if(data.msg==="purDtlUsed"){
+		    		alert("삭제-사용되는 상세목적이 존재하여 실패.");
+		    	}
+		    	sideSubmit("Purpose");
+		    },
+		    error : function(xhr, stat, err) {
+		    	alert("insert, update, delete error");
+		    }
+		});	
 	},
 	
 	equals : function(idx){

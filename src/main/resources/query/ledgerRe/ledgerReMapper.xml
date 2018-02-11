@@ -108,6 +108,15 @@
 		</foreach>
 	</select>
 	
+	<!-- 상세목적 사용되는지 확인 -->
+	<select id="selectIsUsedPurpose" resultType="int" parameterType="java.util.List">
+		SELECT COUNT(1) FROM money_record_re
+		WHERE pur_dtl_seq IN
+		<foreach collection="list" item="item" separator="," open="(" close=")">
+			#{item.purDtlSeq}
+		</foreach>
+	</select>
+	
 	
 	
 	
@@ -285,6 +294,15 @@
 		WHERE pur_seq IN 
 		<foreach collection="list" item="item" separator="," open="(" close=")">
 			#{item.purSeq}
+		</foreach>
+	</delete>
+	
+	<!-- 상세목적 list 삭제 -->
+	<delete id="deletePurList" parameterType="java.util.List">
+		DELETE FROM purpose_detail
+		WHERE pur_dtl_seq IN 
+		<foreach collection="list" item="item" separator="," open="(" close=")">
+			#{item.purDtlSeq}
 		</foreach>
 	</delete>
 	

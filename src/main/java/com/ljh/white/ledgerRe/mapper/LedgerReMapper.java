@@ -114,12 +114,30 @@ public class LedgerReMapper {
 	}
 	
 	/**
+	 * 상세목적 리스트 delete
+	 * @param list
+	 * @return
+	 */
+	public int deletePurDtlList(List<WhiteMap> list) {		
+		return sqlSession.delete("ledgerReMapper.deletePurDtlList", list);		 
+	}
+	
+	/**
 	 * 목적 사용되는지 확인
 	 * @param list
 	 * @return
 	 */
 	public int selectIsUsedPurpose(List<WhiteMap> list) {		
 		return sqlSession.selectOne("ledgerReMapper.selectIsUsedPurpose", list);		 
+	}
+	
+	/**
+	 * 상세목적 사용되는지 확인
+	 * @param list
+	 * @return
+	 */
+	public int selectIsUsedPurDtl(List<WhiteMap> list) {		
+		return sqlSession.selectOne("ledgerReMapper.selectIsUsedPurDtl", list);		 
 	}
 	
 	
