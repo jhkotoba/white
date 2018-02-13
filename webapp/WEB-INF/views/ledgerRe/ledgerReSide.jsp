@@ -18,26 +18,14 @@ $(document).ready(function(){
 				taget.hide();
 			}
 		}else{
-			sideSubmit(this.id);
+			white.sideSubmit(this.id, "ledgerRe");
 		}		
 	});
 	
 	$("#sideMenu>ul>li>ol>li").click(function(){
-		sideSubmit(this.id);
+		white.sideSubmit(this.id, "ledgerRe");
 	});
 });
-
-function sideSubmit(id){
-	
-	if(id==="Stats"){
-		alert("미구현!");
-		return;
-	}
-	
-	$("#moveForm #move").attr("value", id);	
-	$("#moveForm").attr("method", "post");
-	$("#moveForm").attr("action", common.path()+"/ledgerRe/ledgerReMain.do").submit();
-}
 
 </script>
 </head>

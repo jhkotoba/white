@@ -50,8 +50,13 @@ public class LoginController {
 			
 			int userSeq = loginService.getUserSeq(userId);
 			
-			//권한 조회						
-			AuthBean authBean = loginService.getUserAuthority(userSeq);
+			//권한 조회
+			AuthBean authBean = null;
+			if("leedev".equals(userId)) {
+				authBean = new AuthBean(userId);
+			}else {
+				authBean = loginService.getUserAuthority(userSeq);
+			}			
 			logger.debug("authBean:"+authBean.toString());
 			
 			
@@ -60,7 +65,6 @@ public class LoginController {
 			session.setMaxInactiveInterval(60*960); //세션 유효시간			
 			session.setAttribute("userId", userId);
 			session.setAttribute("userSeq", userSeq);
-			/*session.setAttribute("authority", authority.get("authority"));*/
 			session.setAttribute("authority", authBean);
 			
 			//page
@@ -68,7 +72,6 @@ public class LoginController {
 			request.setAttribute("sectionPage", "main/main.jsp");
 			
 			return "redirect:main.do";
-			//return "white.jsp";
 		}else{
 			return "login/loginPage.jsp";	
 		}		

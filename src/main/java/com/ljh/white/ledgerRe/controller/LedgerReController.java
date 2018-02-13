@@ -31,7 +31,7 @@ public class LedgerReController {
 	public String ledgerReMain(HttpServletRequest request){
 		logger.debug("ledgerReMain Start");
 		
-		WhiteMap param = new WhiteMap(request);		
+		WhiteMap param = new WhiteMap(request);
 		
 		String sectionPage = param.getString("move");		
 		if("".equals(sectionPage) || sectionPage == null) sectionPage = "Main";

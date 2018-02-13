@@ -283,3 +283,20 @@ function getContextPath(){
 	}
 	return zero + n;
 }*/
+
+
+let white = {		
+	 sideSubmit : function(id, menu){
+		
+		if(menu==="ledgerRe"){
+			if(id==="Stats"){
+				alert("미구현!");
+				return;
+			}	
+		}
+		
+		$("#moveForm #move").attr("value", id);	
+		$("#moveForm").attr("method", "post");
+		$("#moveForm").attr("action", common.path()+"/"+menu+"/"+menu+"Main.do").submit();
+	}
+}

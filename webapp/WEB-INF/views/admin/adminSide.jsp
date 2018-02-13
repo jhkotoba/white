@@ -7,17 +7,25 @@
 
 <head>
 <meta charset=UTF-8>
-<title>Insert title here</title>
+<title>whiteHome</title>
+<script type="text/javascript">
+
+$(document).ready(function(){			
+	$("#sideMenu>ul>li").click(function(){
+		white.sideSubmit(this.id, "admin");
+	});	
+});
+
+</script>
 </head>
 <body>
-	adminSide.jsp<br>
 	<form id="moveForm" action="">
 		<input id="move" name="move" type="hidden" value=""></input>
 	</form>		
 	
-	<div id="ledgerSideList">		
+	<div id="sideMenu">		
 		<ul>
-			<li><a href=#>li-1</a></li>					
+			<li id="Lookup">사용자 조회</a></li>					
 		</ul>		
 	</div>
 	
