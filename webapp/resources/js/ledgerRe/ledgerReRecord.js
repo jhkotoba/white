@@ -62,7 +62,8 @@ let rec = {
 			tag += "<td>"+this.recList[i].recordDate+"</td>";
 			tag += "<td>"+this.recList[i].position+"</td>";
 			tag += "<td>"+this.recList[i].content+"</td>";
-			tag += "<td>"+(this.recList[i].purpose === 'move' ? "금액이동" : this.recList[i].purpose)+"</td>";
+			/*tag += "<td>"+(this.recList[i].purpose === 'move' ? "금액이동" : this.recList[i].purpose)+"</td>";*/
+			tag += "<td>"+(this.recList[i].purpose === 'move' ? (Number(this.recList[i].purSeq) === -1 ? "excel" : "금액이동") : this.recList[i].purpose)+"</td>";
 			tag += "<td>"+this.recList[i].purDetail+"</td>";
 			tag += "<td>"+(this.recList[i].bankName === 'cash' ? "현금" : this.recList[i].bankName +"("+this.recList[i].bankAccount+")")+"</td>";
 			tag += "<td>"+this.recList[i].money+"</td>";			
@@ -123,7 +124,10 @@ let rec = {
 			tag += "<td><input id='position_"+i+"' type='text' class='font10' value='"+this.recList[i].position+"' onkeyup='rec.sync(this)'></td>";
 			tag += "<td><input id='content_"+i+"' type='text' class='font10' value='"+this.recList[i].content+"' onkeyup='rec.sync(this)'></td>";
 			tag += "<td><select id='purSeq_"+i+"' class='font10' onchange='rec.sync(this); rec.appSel(this,"+i+");'>";			
-			tag += "<option value=0>금액이동</option>";			
+			if(Number(this.recList[i].purSeq) === -1){
+				tag += "<option value=-1>excel</option>";
+			}					
+			tag += "<option value=0>금액이동</option>";		
 			for(let j=0; j<this.purList.length; j++){
 				String(this.recList[i].purSeq) === String(this.purList[j].purSeq) ? selected = "selected='selected'" : selected = "";
 				tag += "<option "+selected+" value='"+this.purList[j].purSeq+"'>"+this.purList[j].purpose+"</option>";
@@ -213,6 +217,7 @@ let rec = {
 				this.recList[idx].moveSeq = '';
 			}			
 			this.recList[idx][name] = String(target.value);
+			this.recList[idx]["purDtlSeq"] = "";
 			break;
 		case "purDtlSeq" :
 		case "bankSeq" :		
@@ -236,21 +241,21 @@ let rec = {
 	
 	equals : function(idx){
 		
-		if(this.recList[idx].recordDate !== this.recClone[idx].recordDate){
+		if(String(this.recList[idx].recordDate) !== String(this.recClone[idx].recordDate)){
 			return false;
-		}else if(this.recList[idx].content !== this.recClone[idx].content){
+		}else if(String(this.recList[idx].content) !== String(this.recClone[idx].content)){
 			return false;
-		}else if(this.recList[idx].position !== this.recClone[idx].position){
+		}else if(String(this.recList[idx].position) !== String(this.recClone[idx].position)){
 			return false;
-		}else if(this.recList[idx].purSeq !== this.recClone[idx].purSeq){
+		}else if(String(this.recList[idx].purSeq) !== String(this.recClone[idx].purSeq)){
 			return false;
-		}else if(this.recList[idx].purDtlSeq !== this.recClone[idx].purDtlSeq){
+		}else if(String(this.recList[idx].purDtlSeq) !== String(this.recClone[idx].purDtlSeq)){
 			return false;
-		}else if(this.recList[idx].bankSeq !== this.recClone[idx].bankSeq){
+		}else if(String(this.recList[idx].bankSeq) !== String(this.recClone[idx].bankSeq)){
 			return false;
-		}else if(this.recList[idx].moveSeq !== this.recClone[idx].moveSeq){
+		}else if(String(this.recList[idx].moveSeq) !== String(this.recClone[idx].moveSeq)){
 			return false;
-		}else if(this.recList[idx].money !== this.recClone[idx].money){
+		}else if(String(this.recList[idx].money) !== String(this.recClone[idx].money)){
 			return false;
 		}
 		

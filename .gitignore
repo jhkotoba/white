@@ -14,8 +14,6 @@ white_insert.sql
 *.docx
 *.ppt
 *.pptx
-*.xls
-*.xlsx
 *.pdf
 
 *.7z

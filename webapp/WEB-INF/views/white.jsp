@@ -14,10 +14,6 @@
 <script type="text/javascript" src="${contextPath}/resources/js/wcommon/jquery/jquery-3.2.0.js"></script>
 <script type="text/javascript" src="${contextPath}/resources/js/wcommon/common.js"></script>
 <script type="text/javascript">
-$(document).ready(function(){
-	
-	
-});
 </script>
 </head>
 <body>
@@ -26,7 +22,7 @@ $(document).ready(function(){
 			<a class="btn_azure02" href="${contextPath}/loginPage.do">login</a> <br>
 		</c:if>	
 		<c:if test="${sessionScope.userId ne null}">		
-			${sessionScope.userId} |<span id="viewTime"></span>|
+			${sessionScope.userId}
 			<a class="btn_azure02" href="${contextPath}/logoutProcess.do">logout</a> <br>
 		</c:if>				
 	</header>

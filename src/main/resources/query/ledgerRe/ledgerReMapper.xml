@@ -80,7 +80,7 @@
 		WHERE rec.user_seq = #{userSeq}		
 		AND rec.record_date <![CDATA[ >= ]]> #{startDate}
 		AND rec.record_date <![CDATA[ <  ]]> #{endDate}			 	
-		ORDER BY record_date ASC				
+		ORDER BY rec.record_date ASC,  rec.record_seq ASC				
 	</select>
 	
 	<!--  -->
@@ -380,7 +380,7 @@
 	
 	<!-- 금전기록 list 삭제 -->
 	<delete id="deleteRecordList" parameterType="java.util.List">
-		DELETE FROM purpose
+		DELETE FROM money_record_re
 		WHERE record_seq IN 
 		<foreach collection="list" item="item" separator="," open="(" close=")">
 			#{item.recordSeq}
