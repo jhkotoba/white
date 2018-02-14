@@ -2,6 +2,12 @@
  * ledgerReRecord.js
  */
 
+$(document).ready(function(){
+	$('#ledgerReList').on("change keyup input", function(event) {
+		rec.sync(event.target);
+	});	
+});
+
 let rec = {
 	recList : new Array(),
 	recClone : new Array(),
@@ -119,6 +125,92 @@ let rec = {
 			tag += "<tr>";			
 			tag += "<td>"+n+"</td>";			
 			tag += "<td><input id='delete_"+i+"' type='checkbox' onchange='rec.sync(this)' title='삭제 체크박스'></td>";			
+			tag += "<td><input id='date_"+i+"' type='date' class='font10' value='"+this.recList[i].recordDate.split(' ')[0]+"'></td>";
+			tag += "<td><input id='time_"+i+"' type='time' class='font10'  value='"+this.recList[i].recordDate.split(' ')[1]+"'></td>";
+			tag += "<td><input id='position_"+i+"' type='text' class='font10' value='"+this.recList[i].position+"'></td>";
+			tag += "<td><input id='content_"+i+"' type='text' class='font10' value='"+this.recList[i].content+"'></td>";
+			tag += "<td><select id='purSeq_"+i+"' class='font10'>";			
+			if(Number(this.recList[i].purSeq) === -1){
+				tag += "<option value=-1>excel</option>";
+			}					
+			tag += "<option value=0>금액이동</option>";		
+			for(let j=0; j<this.purList.length; j++){
+				String(this.recList[i].purSeq) === String(this.purList[j].purSeq) ? selected = "selected='selected'" : selected = "";
+				tag += "<option "+selected+" value='"+this.purList[j].purSeq+"'>"+this.purList[j].purpose+"</option>";
+			}	
+			tag += "</select></td>";
+			tag += "<td><select id='purDtlSeq_"+i+"' class='font10'>";
+			tag += "<option value=''>선택</option>";			
+			for(let j=0; j<this.purDtlList.length; j++){				
+				if(String(this.recList[i].purSeq) === String(this.purDtlList[j].purSeq)){
+					String(this.recList[i].purDtlSeq) === String(this.purDtlList[j].purDtlSeq)	 ? selected = "selected='selected'" : selected = "";
+					tag += "<option "+selected+" value='"+this.purDtlList[j].purDtlSeq+"'>"+this.purDtlList[j].purDetail+"</option>";
+				}
+			}	
+			tag += "</select></td>";
+			tag += "<td><select id='bankSeq_"+i+"' class='font10'>";
+			tag += "<option "+(this.recList[i].bankSeq === '0' ? "selected='selected'" : "")+" value=0>현금</option>";			
+			for(let j=0; j<this.bankList.length; j++){
+				String(this.recList[i].bankSeq) === String(this.bankList[j].bankSeq) ? selected = "selected='selected'" : selected = "";
+				tag += "<option "+selected+" value='"+this.bankList[j].bankSeq+"'>"+this.bankList[j].bankName+"("+this.bankList[j].bankAccount+")</option>";
+			}
+			tag += "</select></td>";
+			tag += "<td><select id='moveSeq_"+i+"' class='font10' "+disabled+">";
+			tag += "<option value=''>선택</option>";
+			tag += "<option "+(this.recList[i].moveSeq === '0' ? "selected='selected'" : "")+" value=0>현금</option>";		
+			for(let j=0; j<this.bankList.length; j++){
+				String(this.recList[i].moveSeq) === String(this.bankList[j].bankSeq) ? selected = "selected='selected'" : selected = "";
+				tag += "<option "+selected+" value='"+this.bankList[j].bankSeq+"'>"+this.bankList[j].bankName+"("+this.bankList[j].bankAccount+")</option>";
+			}	
+			tag += "<td><input id='money_"+i+"' type='text' class='font10' value='"+this.recList[i].money+"'></td>";			
+			tag += "</tr>";
+			
+			this.deleteRow(i);
+			n++;
+		}
+		
+		tag +="</table>";
+		$("#ledgerReList").append(tag);
+	},
+	/*edit : function(){
+		$("#ledgerReList").empty();
+		let selected = "";
+		let disabled = "";
+		
+		let tag =  "<div>";
+			tag += "<span class='font10 edit'>■수정</span>";
+			tag += "<span class='font10 redLine'>■삭제</span>";
+			tag += "</div>";
+			tag += "<table border=1>";
+			tag	+= "<tr>";
+			tag += "<th>No</th>"
+			tag += "<th>Del</th>"
+			tag	+= "<th>date</th>";
+			tag	+= "<th>time</th>";
+			tag	+= "<th>position</th>";
+			tag	+= "<th>content</th>";
+			tag	+= "<th>purpose</th>";
+			tag	+= "<th>purDetail</th>";
+			tag	+= "<th>bankName</th>";
+			tag	+= "<th>moveName</th>";
+			tag	+= "<th>money</th>";
+			tag += "</tr>";		
+		
+		let n = 1;
+		for(let i=this.recList.length-1; i>=0; i--){
+			
+			if(this.search.purSeq !== "" && this.search.purSeq  !== String(this.recList[i].purSeq)){
+				continue;				
+			}
+			if(this.search.bankSeq !== "" && this.search.bankSeq  !== String(this.recList[i].bankSeq)){
+				continue;				
+			}
+			
+			disabled = this.recList[i].purSeq === 0 ? disabled = "" : disabled = "disabled='disabled'";
+			
+			tag += "<tr>";			
+			tag += "<td>"+n+"</td>";			
+			tag += "<td><input id='delete_"+i+"' type='checkbox' onchange='rec.sync(this)' title='삭제 체크박스'></td>";			
 			tag += "<td><input id='date_"+i+"' type='date' class='font10' value='"+this.recList[i].recordDate.split(' ')[0]+"' onkeyup='rec.sync(this);'></td>";
 			tag += "<td><input id='time_"+i+"' type='time' class='font10'  value='"+this.recList[i].recordDate.split(' ')[1]+"' onkeyup='rec.sync(this);'></td>";
 			tag += "<td><input id='position_"+i+"' type='text' class='font10' value='"+this.recList[i].position+"' onkeyup='rec.sync(this)'></td>";
@@ -165,7 +257,7 @@ let rec = {
 		
 		tag +="</table>";
 		$("#ledgerReList").append(tag);
-	},
+	},*/
 	
 	appSel : function(target, idx){
 		$("#purDtlSeq_"+idx).empty();	
