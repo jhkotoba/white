@@ -18,12 +18,12 @@ $(document).ready(function(){
 				taget.hide();
 			}
 		}else{
-			white.sideSubmit(this.id, "ledgerRe");
+			white.sideSubmit("ledgerRe", this.id);
 		}		
 	});
 	
 	$("#sideMenu>ul>li>ol>li").click(function(){
-		white.sideSubmit(this.id, "ledgerRe");
+		white.sideSubmit("ledgerRe", this.id);
 	});
 });
 

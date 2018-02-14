@@ -286,7 +286,7 @@ function getContextPath(){
 
 
 let white = {		
-	 sideSubmit : function(id, menu){
+	 sideSubmit : function(menu, id){
 		
 		if(menu==="ledgerRe"){
 			if(id==="Stats"){

@@ -153,7 +153,7 @@ let pur = {
 		    	if(data.msg==="purUsed"){
 		    		alert("삭제-사용되는 purpose가 존재하여 실패.");
 		    	}
-		    	sideSubmit("Purpose");
+		    	white.sideSubmit("ledgerRe", "Purpose");
 		    },
 		    error : function(xhr, stat, err) {
 		    	alert("insert, update, delete error");
@@ -337,7 +337,7 @@ let purDtl = {
 		    	if(data.msg==="purDtlUsed"){
 		    		alert("삭제-사용되는 상세목적이 존재하여 실패.");
 		    	}
-		    	sideSubmit("Purpose");
+		    	white.sideSubmit("ledgerRe", "Purpose");
 		    },
 		    error : function(xhr, stat, err) {
 		    	alert("insert, update, delete error");

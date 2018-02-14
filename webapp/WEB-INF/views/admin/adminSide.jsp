@@ -12,7 +12,7 @@
 
 $(document).ready(function(){			
 	$("#sideMenu>ul>li").click(function(){
-		white.sideSubmit(this.id, "admin");
+		white.sideSubmit("admin", this.id);
 	});	
 });
 

@@ -183,7 +183,7 @@ let bank = {
 		    	if(data.msg==="bankUsed"){
 		    		alert("삭제-사용되는 은행이 존재하여 실패.");
 		    	}
-		    	sideSubmit("Bank");
+		    	white.sideSubmit("ledgerRe", "Bank");
 		    },
 		    error : function(xhr, stat, err) {
 		    	alert("insert, update, delete error");

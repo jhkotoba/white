@@ -110,7 +110,7 @@ let recIn = {
 			dataType: 'json',
 		    success : function(data, stat, xhr) {  
 		    	alert(data+" 개의 행이 저장되었습니다.");
-		    	sideSubmit("Insert");
+		    	white.sideSubmit( "ledgerRe", "Insert");
 		    },
 		    error : function(xhr, stat, err) {
 		    	alert("insert error");

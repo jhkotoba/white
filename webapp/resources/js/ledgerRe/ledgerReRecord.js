@@ -370,7 +370,7 @@ let rec = {
 		    	}
 		    	msg += " 되었습니다.";
 		    	alert(msg);
-		    	sideSubmit("Select");
+		    	white.sideSubmit("ledgerRe", "Select");
 		    },
 		    error : function(xhr, stat, err) {
 		    	alert("update, delete error");
