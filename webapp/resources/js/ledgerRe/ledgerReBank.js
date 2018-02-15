@@ -2,6 +2,16 @@
  * ledgerReBank.js
  */
 
+$(document).ready(function(){
+	$('#bankList').on("change keyup input", function(event) {
+		bank.sync(event.target);
+	});
+	
+	$('#bankList').on("click", function(event) {
+		bank.sync(event.target);
+	});
+});
+
 let bank = {
 	bankList : new Array(),
 	bankClone : new Array(),		
@@ -58,14 +68,11 @@ let bank = {
 			this.bankList[i].bankNowUseYN === "Y" ? useCls = "btn_azure01" : useCls = "btn_pink01";
 						
 			tag += "<tr>";			
-			tag += "<td><input id='delete_"+i+"' type='checkbox' "+addAttr.chked+" onchange='bank.sync(this)' title='삭제 체크박스'></td>";
+			tag += "<td><input id='delete_"+i+"' type='checkbox' "+addAttr.chked+" title='삭제 체크박스'></td>";
 			tag += "<td>"+(i+1)+"</td>";
-			tag += "<td><input id='bankName_"+i+"' type='text' class='font10 "+addAttr.cls+"' "+addAttr.read+" value='"+this.bankList[i].bankName
-				+"' onkeyup='bank.sync(this)'></td>";
-			tag += "<td><input id='bankAccount_"+i+"' type='text' class='font10 "+addAttr.cls+"' "+addAttr.read+" value='"+this.bankList[i].bankAccount
-				+"' onkeyup='bank.sync(this)'></td>";
-			tag += "<td><input id='bankNowUseYN_"+i+"' type='button' class='font10 "+addAttr.cls+" "+useCls+"' "+addAttr.read+" value='"+this.bankList[i].bankNowUseYN
-				+"' onclick='bank.sync(this)'></td>";
+			tag += "<td><input id='bankName_"+i+"' type='text' class='font10 "+addAttr.cls+"' "+addAttr.read+" value='"+this.bankList[i].bankName+"' ></td>";
+			tag += "<td><input id='bankAccount_"+i+"' type='text' class='font10 "+addAttr.cls+"' "+addAttr.read+" value='"+this.bankList[i].bankAccount+"'></td>";
+			tag += "<td><input id='bankNowUseYN_"+i+"' type='button' class='font10 "+addAttr.cls+" "+useCls+"' "+addAttr.read+" value='"+this.bankList[i].bankNowUseYN+"'></td>";
 			tag += "</tr>";	
 		}			
 		tag +="</table>";

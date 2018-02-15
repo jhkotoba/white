@@ -25,7 +25,7 @@ $(document).ready(function(){
 	
 	<div id="sideMenu">		
 		<ul>
-			<li id="Lookup">사용자 조회</a></li>					
+			<li id="Lookup">사용자 조회</li>					
 		</ul>		
 	</div>
 	

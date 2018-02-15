@@ -2,6 +2,18 @@
  * ledgerReInsert.js
  */
 
+$(document).ready(function(){
+	$('#ledgerReList').on("change keyup input", function(event) {
+		switch(event.target.id.split('_')[0]){		
+		case "purSeq" :			
+			recIn.appSel(event.target, event.target.id.split('_')[1]);
+		default :
+			recIn.sync(event.target);
+			break;
+		}
+	});	
+});
+
 let recIn = {
 	inList : new Array(),
 	purList : new Array(),
@@ -141,10 +153,10 @@ let recIn = {
 			
 			tag += "<tr>";			
 			tag += "<td>"+(i+1)+"</td>";
-			tag += "<td><input id='date_"+i+"' type='date' class='font10' value='"+this.inList[i].date+"' onkeyup='recIn.sync(this)'></td>";
-			tag += "<td><input id='time_"+i+"' type='time' class='font10' value='"+this.inList[i].time+"' onkeyup='recIn.sync(this)'></td>";
-			tag += "<td><input id='position_"+i+"' type='text' class='font10' value='"+this.inList[i].position+"' onkeyup='recIn.sync(this)'></td>";			
-			tag += "<td><input id='content_"+i+"' type='text' class='font10' value='"+this.inList[i].content+"' onkeyup='recIn.sync(this)'></td>";			
+			tag += "<td><input id='date_"+i+"' type='date' class='font10' value='"+this.inList[i].date+"'></td>";
+			tag += "<td><input id='time_"+i+"' type='time' class='font10' value='"+this.inList[i].time+"'></td>";
+			tag += "<td><input id='position_"+i+"' type='text' class='font10' value='"+this.inList[i].position+"'></td>";			
+			tag += "<td><input id='content_"+i+"' type='text' class='font10' value='"+this.inList[i].content+"'></td>";			
 			tag += "<td><select id='purSeq_"+i+"' class='font10' onchange='recIn.sync(this); recIn.appSel(this,"+i+");'>";
 			tag += "<option value=''>선택</option>";
 			tag += "<option value=0>금액이동</option>";			
@@ -153,7 +165,7 @@ let recIn = {
 				tag += "<option "+selected+" value="+this.purList[j].purSeq+">"+this.purList[j].purpose+"</option>";
 			}				
 			tag += "</select></td>";
-			tag += "<td><select id='purDtlSeq_"+i+"' class='font10' onchange='recIn.sync(this);'>";
+			tag += "<td><select id='purDtlSeq_"+i+"' class='font10'>";
 			tag += "<option value=''>선택</option>";
 			for(let j=0; j<this.purDtlList.length; j++){
 				if(this.inList[i].purSeq === String(this.purDtlList[j].purSeq)){
@@ -162,7 +174,7 @@ let recIn = {
 				}
 			}	
 			tag += "</select></td>";
-			tag += "<td><select id='bankSeq_"+i+"' class='font10' onchange='recIn.sync(this);'>";
+			tag += "<td><select id='bankSeq_"+i+"' class='font10''>";
 			tag += "<option value=''>선택</option>";
 			tag += "<option "+(this.inList[i].bankSeq === '0' ? "selected='selected'" : "")+" value=0>현금</option>";			
 			for(let j=0; j<this.bankList.length; j++){
@@ -170,7 +182,7 @@ let recIn = {
 				tag += "<option "+selected+" value="+this.bankList[j].bankSeq+">"+this.bankList[j].bankName+"("+this.bankList[j].bankAccount+")</option>";
 			}				
 			tag += "</select></td>";
-			tag += "<td><select id='moveSeq_"+i+"' class='font10' disabled='disabled' onchange='recIn.sync(this);'>";
+			tag += "<td><select id='moveSeq_"+i+"' class='font10' disabled='disabled'>";
 			tag += "<option value=''>선택</option>";
 			tag += "<option "+(this.inList[i].moveSeq === '0' ? "selected='selected'" : "")+" value=0>현금</option>";			
 			for(let j=0; j<this.bankList.length; j++){
@@ -178,7 +190,7 @@ let recIn = {
 				tag += "<option "+selected+" value="+this.bankList[j].bankSeq+">"+this.bankList[j].bankName+"("+this.bankList[j].bankAccount+")</option>";
 			}				
 			tag += "</select></td>";
-			tag += "<td><input id='money_"+i+"' type='text' class='font10' value='"+this.inList[i].money+"' onkeyup='recIn.sync(this)'></td>";			
+			tag += "<td><input id='money_"+i+"' type='text' class='font10' value='"+this.inList[i].money+"'></td>";			
 			tag += "</tr>";		
 		}
 		

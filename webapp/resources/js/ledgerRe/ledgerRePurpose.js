@@ -2,6 +2,20 @@
  * ledgerRePurpose.js
  */
 
+$(document).ready(function(){
+	$('#purList').on("change keyup input", function(event) {
+		pur.sync(event.target);
+	});
+	
+	$('#purList').on("click", function(event) {
+		pur.sync(event.target);
+	});
+	
+	$('#purDtlList').on("change keyup input", function(event) {
+		purDtl.sync(event.target);
+	});	
+});
+
 let pur = {
 	purList : new Array(),
 	purClone : new Array(),		
@@ -50,13 +64,13 @@ let pur = {
 			}else{
 				addAttr = {chked:"", cls:"", read:""};
 			}
-						
+			
 			tag += "<tr>";			
-			tag += "<td><input id='purDel_"+i+"' type='checkbox' "+addAttr.chked+" onchange='pur.sync(this)' title='삭제 체크박스'></td>";
+			tag += "<td><input id='purDel_"+i+"' type='checkbox' "+addAttr.chked+" title='삭제 체크박스'></td>";
 			tag += "<td>"+this.purList[i].purOrder+"</td>";
 			tag += "<td><input id='purpose_"+i+"' type='text' class='font10 "+addAttr.cls+"' "+addAttr.read+" value='"+this.purList[i].purpose
-				+"' onkeyup='pur.sync(this)' onclick='purDtl.view("+this.purList[i].purSeq+",\""+this.purList[i].purpose+"\")'></td>";
-			tag += "</tr>";	
+				+"' onclick='purDtl.view("+this.purList[i].purSeq+",\""+this.purList[i].purpose+"\")'></td>";
+			tag += "</tr>";			
 		}			
 		tag +="</table>";
 		$("#purList").append(tag);
@@ -233,9 +247,9 @@ let purDtl = {
 				}				
 				
 				tag += "<tr>";		
-				tag += "<td><input id='purDtlDel_"+i+"' type='checkbox' "+addAttr.chked+" onchange='purDtl.sync(this)' title='삭제 체크박스'></td>";
+				tag += "<td><input id='purDtlDel_"+i+"' type='checkbox' "+addAttr.chked+" title='삭제 체크박스'></td>";
 				tag += "<td>"+this.purDtlList[i].purDtlOrder+"</td>";
-				tag += "<td><input id='purDetail_"+i+"' type='text' class='font10 "+addAttr.cls+"' value='"+this.purDtlList[i].purDetail+"' "+addAttr.read+" onkeyup='purDtl.sync(this)'></td>";
+				tag += "<td><input id='purDetail_"+i+"' type='text' class='font10 "+addAttr.cls+"' value='"+this.purDtlList[i].purDetail+"' "+addAttr.read+"></td>";
 				tag += "</tr>";
 			}
 		}	
