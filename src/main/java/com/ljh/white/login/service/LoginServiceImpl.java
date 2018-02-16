@@ -3,6 +3,8 @@ package com.ljh.white.login.service;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ljh.white.common.bean.AuthBean;
 import com.ljh.white.common.collection.WhiteMap;
@@ -42,12 +44,12 @@ public class LoginServiceImpl implements LoginService {
 	}
 
 	@Override
-	public int newSignUp(String userId, String userName,String passwd) {
-		WhiteMap whiteMap = new WhiteMap();
-		whiteMap.put("userId", userId);
-		whiteMap.put("userName", userName);
-		whiteMap.put("passwd", BCrypt.hashpw(passwd, BCrypt.gensalt()));
-		return loginMapper.insertNewSignUp(whiteMap);		
-	}
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
+	public int insertSignUp(String userId, String userName,String passwd) {
+		WhiteMap param = new WhiteMap();
+		param.put("userId", userId);
+		param.put("userName", userName);
+		param.put("passwd", BCrypt.hashpw(passwd, BCrypt.gensalt()));		
+		return loginMapper.insertSignUp(param);	}
 
 }

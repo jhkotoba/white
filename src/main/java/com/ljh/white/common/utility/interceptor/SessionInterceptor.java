@@ -19,7 +19,7 @@ public class SessionInterceptor extends HandlerInterceptorAdapter {
 		
 		//세션 검사
 		if(userSeq == null || userId == null){			
-			response.sendRedirect(path+"/loginPage.do");
+			response.sendRedirect(path+"/login/login.do");
 			return false;
 		}else{				
 			

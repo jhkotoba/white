@@ -52,4 +52,18 @@ tr:hover{
 	background: #E6FFFF;
 }
 
+.paging > button{
+	border-color:#5CD1E5; border-width:1px; border-style:solid; border-radius:5px;
+    background-color:#FFFFFF; color:#24A6BD;
+    cursor:pointer; font-size:15px;
+    width: 30px;
+}
+
+.paging > button:hover{   
+	border-color:#5CD1E5; border-width:1px; border-style:solid; border-radius:5px;
+    background-color:#24A6BD; color:#FFFFFF;
+    cursor:pointer; font-size:15px;
+    width: 30px;
+}
+
 

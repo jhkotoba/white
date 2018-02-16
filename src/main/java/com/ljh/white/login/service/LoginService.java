@@ -14,5 +14,5 @@ public interface LoginService {
 	public int getUserSeq(String userId);
 	
 	//회원가입
-	public int newSignUp(String userId, String userName, String passwd);
+	public int insertSignUp(String userId, String userName, String passwd);
 }

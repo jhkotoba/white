@@ -31,7 +31,7 @@ public class LoginMapper {
 			return false;
 		}
 		
-		String userPasswd = sqlSession.selectOne("com.ljh.white.login.service.LoginMapper.userCheck", whiteUesrVO);		
+		String userPasswd = sqlSession.selectOne("LoginMapper.userCheck", whiteUesrVO);		
 		
 		return userPasswd == null ? false : BCrypt.checkpw(whiteUesrVO.getUserPasswd(), userPasswd);		
 	}
@@ -39,15 +39,29 @@ public class LoginMapper {
 	public List<String> getUserAuthority(int userSeq){		
 		logger.debug("userSeq: "+userSeq);		
 		
-		return sqlSession.selectList("com.ljh.white.login.service.LoginMapper.getUserAuthority", userSeq);			
+		return sqlSession.selectList("LoginMapper.getUserAuthority", userSeq);			
 	}
 	
 	public int getUserSeq(String userId){
-		return sqlSession.selectOne("com.ljh.white.login.service.LoginMapper.getUserSeq", userId);			
+		return sqlSession.selectOne("LoginMapper.getUserSeq", userId);			
 	}
 	
-	public int insertNewSignUp(WhiteMap whiteMap){
-		logger.debug("whiteMap: "+whiteMap);	
-		return sqlSession.insert("com.ljh.white.login.service.LoginMapper.insertNewSignUp", whiteMap);		
+	public int insertSignUp(WhiteMap param){
+		logger.debug("whiteMap: "+param);	
+		
+		int rtn = sqlSession.insert("LoginMapper.insertSignUp", param);
+		sqlSession.insert("LoginMapper.insertUserAuth", param.getString("user_seq"));	
+		
+		return rtn;
+		
+		//test user Insert
+		/*String id = param.getString("userId");
+		for(int i=0; i<100; i++) {
+			param.put("userId",id+i);
+			int rtn = sqlSession.insert("LoginMapper.insertSignUp", param);
+			sqlSession.insert("LoginMapper.insertUserAuth", param.getString("user_seq"));
+			param.remove("user_seq");
+		}		
+		return 0;*/
 	}
 }

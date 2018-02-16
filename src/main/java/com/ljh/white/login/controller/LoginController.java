@@ -30,14 +30,14 @@ public class LoginController {
 	@Resource(name = "WhiteService")
 	private WhiteService whiteService;
 
-	//loginPage
-	@RequestMapping(value = "/loginPage.do")
-	public String loginPage(){		
-		return "login/loginPage.jsp";
+	//login
+	@RequestMapping(value = "/login/login.do")
+	public String login(){		
+		return "login/login.jsp";
 	}
 	
 	//loginProcess
-	@RequestMapping(value = "/loginProcess.do")
+	@RequestMapping(value = "/login/loginProcess.do")
 	public String loginProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{		
 		String userId = request.getParameter("userId");
 		String passwd = request.getParameter("passwd");
@@ -71,14 +71,14 @@ public class LoginController {
 			request.setAttribute("sidePage", null);
 			request.setAttribute("sectionPage", "main/main.jsp");
 			
-			return "redirect:main.do";
+			return "redirect:/main.do";
 		}else{
-			return "login/loginPage.jsp";	
+			return "login/login.jsp";	
 		}		
 	}
 	
 	//logoutProcess
-	@RequestMapping(value = "/logoutProcess.do")
+	@RequestMapping(value = "/login/logoutProcess.do")
 	public String logoutProcess(HttpServletRequest request){
 		//세션정보 삭제
 		HttpSession session = request.getSession();
@@ -90,30 +90,30 @@ public class LoginController {
 		//모든 세션 정보삭제하고 현재 세션 무효화
 		session.invalidate();
 		
-		return "redirect:loginPage.do";
+		return "redirect:/main.do";
 	}
 	
 	//유저등록 페이지
-	@RequestMapping(value="/signUpPage.do")
-	public String signUpProcess(HttpServletRequest request){
-		return "login/signUpPage.jsp";
+	@RequestMapping(value="/login/signUp.do")
+	public String signUp(HttpServletRequest request){
+		return "login/signUp.jsp";
 	}
 	
 	//유저 등록
-	@RequestMapping(value="/newSignUp.do")
-	public String newUserInsert(HttpServletRequest request) throws UnsupportedEncodingException{
+	@RequestMapping(value="/login/insertSignUp.do")
+	public String insertUser(HttpServletRequest request) throws UnsupportedEncodingException{
 		request.setCharacterEncoding("UTF-8");
 		String userId = request.getParameter("userId");
 		String userName = request.getParameter("userName");
 		String passwd = request.getParameter("passwd");
 		
-		loginService.newSignUp(userId, userName, passwd);	
+		loginService.insertSignUp(userId, userName, passwd);	
 		
-		return "redirect:loginPage.do";
+		return "redirect:/login/login.do";
 	}
 	
 	//유저 중복 id체크
-	@RequestMapping(value="/ajax/userIdCheck.do")
+	@RequestMapping(value="/login/ajax/userIdCheck.do")
 	public String signUpTEST(HttpServletRequest request){		
 		int isCnt = whiteService.isCntColumn("white_user", "user_id", request.getParameter("userId"));
 		request.setAttribute("result", isCnt);

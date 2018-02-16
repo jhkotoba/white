@@ -16,7 +16,7 @@ let selectRecode = {
 			if(emptyCheck.isEmpty(this.userSeq)){
 				console.log("userSeq IS NULL");
 				alert("로그인을 다시 하세요.");
-				location.href = getContextPath()+"/loginPage.do";
+				location.href = getContextPath()+"/login/login.do";
 				return;
 			}				
 			if(this.viweType === "select"){

@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
 
-<mapper namespace="com.ljh.white.login.service.LoginMapper">
+<mapper namespace="LoginMapper">
 	
 	<!--  userCheck -->
 	<select id="userCheck" parameterType="WhiteUesrVO" resultType="String">
@@ -41,15 +41,21 @@
 		LEFT OUTER JOIN auth_name an
 	  		ON an.auth_nm_seq = a.auth_nm_seq
 		WHERE user_seq = #{userSeq}
-	</select>
+	</select>	
 	
-
-	
-	
-	<insert id="insertNewSignUp" >
+	<!-- 사용자 등록 -->
+	<insert id="insertSignUp" parameterType="WhiteMap" useGeneratedKeys="true" keyProperty="user_seq">
 		INSERT INTO white_user
-			(authority_no, user_id, user_name, user_passwd)
+			(user_id, user_name, user_passwd)
 		VALUES 
-			('1000', #{userId}, #{userName}, #{passwd})
+			(#{userId}, #{userName}, #{passwd})
+	</insert>
+	
+	<!-- 사용자 초기 권한 등록 -->
+	<insert id="insertUserAuth" parameterType="String">
+		INSERT INTO authority
+			(user_seq, auth_nm_seq)
+		VALUES 
+			(#{user_seq}, (SELECT auth_nm_seq FROM auth_name WHERE auth_nm = 'user'))
 	</insert>
 </mapper>

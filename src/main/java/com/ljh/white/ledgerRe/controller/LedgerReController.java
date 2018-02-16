@@ -57,7 +57,7 @@ public class LedgerReController {
 	public String selectRecordList(HttpServletRequest request){
 		logger.debug("selectRecordList Start");
 		
-		WhiteMap param = new WhiteMap(request);		
+		WhiteMap param = new WhiteMap(request);
 		List<WhiteMap> bankList = ledgerReService.selectBankList(param);
 
 		JSONObject result = new JSONObject();		

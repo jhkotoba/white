@@ -1,12 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:set var="contextPath" value="<%=request.getContextPath()%>"></c:set>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset=UTF-8>
 <title>signUp</title>
-<script type="text/javascript" src="resources/js/wcommon/jquery/jquery-3.2.0.js"></script>
-<script type="text/javascript" src="resources/js/wcommon/common.js"></script>	
+<script type="text/javascript" src="${contextPath}/resources/js/wcommon/jquery/jquery-3.2.0.js"></script>
+<script type="text/javascript" src="${contextPath}/resources/js/wcommon/common.js"></script>	
 <script type="text/javascript">
 $(document).ready(function(){
 	
@@ -16,45 +18,43 @@ $(document).ready(function(){
 		//한글막기
 		if (!(e.keyCode >=37 && e.keyCode<=40)) {
 			var v = $(this).val();
-			$(this).val(v.replace(/[^a-z0-9]/gi,''));			
+			$(this).val(v.replace(/[^a-z0-9]/gi,''));		
 		}
-	
+		
 		$("#userIdCheck").val("N");
 		$("#checkState").text("");
 	});
 	
 	//passwdCheck
-	$("#passwd").keyup(function(){		
+	$("#passwd").keyup(function(){
 		$("#passwdCheck").val("N");
 		$("#passwdState").text("");
 		$("#rePasswd").val("");
-	});	
+	});
 	$("#rePasswd").keyup(function(){
 		var passwd = $("#passwd").val();
 		var rePasswd = $("#rePasswd").val();
 		if(passwd === rePasswd){
 			$("#passwdCheck").val("Y");
-			$("#passwdState").text("일치");			
+			$("#passwdState").text("일치");
 		}else{
 			$("#passwdCheck").val("N");
-			$("#passwdState").text("불일치");	
+			$("#passwdState").text("불일치");
 		}
-		
-	});	
+	});
 	
 	//submit
-	$("#submitBtn").click(function(){	
+	$("#submitBtn").click(function(){
 		if($("#userIdCheck").val()==="N"){
 			alert("유저ID 체크필요 합니다.");
 			return;
 		}else if($("#passwdCheck").val()==="N"){
 			alert("비밀번호가 동일하지 않습니다.");
 			return;
-		}else{		
-			console.log("YYY");
+		}else{
 			//submit 로직			
 			$("#signUpForm").attr("method", "post");
-			$("#signUpForm").attr("action", "/white/newSignUp.do").submit();
+			$("#signUpForm").attr("action", "${contextPath}/login/insertSignUp.do").submit();
 		}
 	});	
 });
@@ -71,7 +71,7 @@ function userIdCheck(){
 		
 	$.ajax({		
 		type: 'POST',
-		url: common.path()+'/ajax/userIdCheck.do',
+		url: common.path()+'/login/ajax/userIdCheck.do',
 		data: {
 			userId : userId
 		},
@@ -95,11 +95,10 @@ function userIdCheck(){
 </script>
 </head>
 <body>
-signUpPage.jsp
 
 <input id="userIdCheck" type="hidden" value="N">
 <input id="passwdCheck" type="hidden" value="N"> 
-<a href="/white/loginPage.do">loginPage</a>
+<a href="${contextPath}/login/login.do">login</a>
 
 <form id="signUpForm">
 	<table>

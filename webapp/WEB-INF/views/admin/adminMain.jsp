@@ -11,7 +11,7 @@
 	
 </head>
 <body>
-	adminMain.jsp<br>
+
 	
 
 </body>

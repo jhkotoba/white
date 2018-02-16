@@ -22,7 +22,7 @@ $(document).ready(function(){
 	//메인조회 리스트
 	$("#recShBtn").click(function(){
 		
-		$("#searchBox").hide();		
+		$("#srhBox").hide();		
 		
 		let param = {};
 		param.startDate =  $("#startDate").val() + " 00:00:00";
@@ -44,8 +44,8 @@ $(document).ready(function(){
 				$("#recCelBtn").prop("disabled",true)
 				.attr("class", "btn_disabled03");
 				
-				$("#purSearch").val("").prop("selected", true);
-				$("#bankSearch").val("").prop("selected", true);
+				$("#srhPur").val("").prop("selected", true);
+				$("#srhBank").val("").prop("selected", true);
 				
 		    },
 		    error : function(request, status, error){
@@ -64,7 +64,7 @@ $(document).ready(function(){
 		$("#recCelBtn").prop("disabled",false)
 			.attr("class", "btn_azure03");
 		
-		$("#searchBox").show();
+		$("#srhBox").show();
 	});
 	
 	//취소
@@ -76,10 +76,10 @@ $(document).ready(function(){
 		$("#recCelBtn").prop("disabled", true)
 			.attr("class", "btn_disabled03");		
 		
-		$("#purSearch").val("").prop("selected", true);
-		$("#bankSearch").val("").prop("selected", true);
+		$("#srhPur").val("").prop("selected", true);
+		$("#srhBank").val("").prop("selected", true);
 		
-		$("#searchBox").hide();
+		$("#srhBox").hide();
 	});
 	
 	//저장
@@ -97,32 +97,32 @@ $(document).ready(function(){
 	for(let i=0; i<purList.length; i++){		
 		tag += "<option value='"+purList[i].purSeq+"'>"+purList[i].purpose+"</option>";
 	}
-	$("#purSearch").append(tag);	
+	$("#srhPur").append(tag);	
 	
 	tag = "";
 	for(let i=0; i<bankList.length; i++){		
 		tag += "<option value='"+bankList[i].bankSeq+"'>"+bankList[i].bankName+"("+bankList[i].bankAccount+")</option>";
 	}
-	$("#bankSearch").append(tag);	
+	$("#srhBank").append(tag);	
 	
 	//검색 텍스트  purSeq sync
-	$("#purSearch").change(function(){
+	$("#srhPur").change(function(){
 		rec.search.purSeq = this.value;
 	});	
 	//검색 텍스트  bankSeq sync
-	$("#bankSearch").change(function(){
+	$("#srhBank").change(function(){
 		rec.search.bankSeq = this.value;
 	});
 	
 	//검색 텍스트  초기화
 	$("#reset").click(function(){
 		rec.searchReset().cancel().edit();
-		$("#purSearch").val("").prop("selected", true);
-		$("#bankSearch").val("").prop("selected", true);
+		$("#srhPur").val("").prop("selected", true);
+		$("#srhBank").val("").prop("selected", true);
 	});
 	
 	//검맥
-	$("#searchBtn").click(function(){	
+	$("#srhBtn").click(function(){	
 		rec.cancel("search").edit();		
 	});
 	
@@ -143,15 +143,15 @@ $(document).ready(function(){
 		<button id="recCelBtn" class="btn_disabled03" disabled="disabled">취소</button>		
 	</div>
 	
-	<div id="searchBox" style="display: none">		
-		<select id="purSearch">
+	<div id="srhBox" style="display: none">		
+		<select id="srhPur">
 			<option value=''>목적 검색</option>			
 		</select>
-		<select id="bankSearch">
+		<select id="srhBank">
 			<option value=''>은행 검색</option>			
 			<option value='0'>현금</option>			
 		</select>
-		<button id="searchBtn" class="btn_azure03">검색</button>
+		<button id="srhBtn" class="btn_azure03">검색</button>
 		<button id="reset" class="btn_azure03">초기화</button>
 	</div>
 	

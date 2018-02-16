@@ -6,8 +6,6 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.ljh.white.exception.NoDataException;
-
 public class AuthBean implements Serializable {
 	
 	private static final long serialVersionUID = -2972452399043868833L;
@@ -39,8 +37,6 @@ public class AuthBean implements Serializable {
 			
 			if(auth==null) {
 				throw new NullPointerException();
-			}else if(auth.size() < 1){
-				throw new NoDataException(auth.size());
 			}
 			
 			this.developer = 0;    
@@ -68,9 +64,6 @@ public class AuthBean implements Serializable {
 			
 		}catch(NullPointerException e) {
 			logger.error("collection Is NULL");
-			e.printStackTrace();
-		}catch(NoDataException e) {
-			logger.error("collection Size:"+e.getCollectionSize());
 			e.printStackTrace();
 		}finally {
 			logger.debug("\ndeveloper:"+this.getDeveloper()+"\nadministrator:"+this.getAdministrator()+

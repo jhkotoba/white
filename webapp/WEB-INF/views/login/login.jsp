@@ -1,14 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:set var="contextPath" value="<%=request.getContextPath()%>"></c:set>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset=UTF-8>
-<title>LoginPage</title>
+<title>whiteHome</title>
 </head>
 <body>
 
-<form method="post" action="/white/loginProcess.do">
+<form method="post" action="${contextPath}/login/loginProcess.do">
 	<table>
 		<thead>		
 		</thead>
@@ -36,7 +38,7 @@
 	</table>
 </form>
 
-<form method="post" action="/white/signUpPage.do">
+<form method="post" action="${contextPath}/login/signUp.do">
 	<button id="signUp">SignUp</button>
 </form>
 

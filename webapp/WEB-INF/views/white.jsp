@@ -19,11 +19,11 @@
 <body>
 	<header class='header'>	
 		<c:if test="${sessionScope.userId eq null}">			
-			<a class="btn_azure02" href="${contextPath}/loginPage.do">login</a> <br>
+			<a class="btn_azure02" href="${contextPath}/login/login.do">login</a> <br>
 		</c:if>	
 		<c:if test="${sessionScope.userId ne null}">		
 			${sessionScope.userId}
-			<a class="btn_azure02" href="${contextPath}/logoutProcess.do">logout</a> <br>
+			<a class="btn_azure02" href="${contextPath}/login/logoutProcess.do">logout</a> <br>
 		</c:if>				
 	</header>
 	<nav>
@@ -33,16 +33,9 @@
 				<a href="${contextPath}/ledgerRe/ledgerReMain.do">가계부</a>
 				<a href="${contextPath}/source/sourceMain.do">소스코드</a>
 				<a>북마크</a>
+				<a>게시판</a>	
 				<a href="${contextPath}/admin/adminMain.do">관리자</a>
 				<a href="${contextPath}/experiment/experimentMain.do">실험실</a>
-			</c:when>
-			
-			<c:when test="${sessionScope.authority.administrator eq 1}">
-				<a href="${contextPath}/main.do">메인화면</a>			
-				<a href="${contextPath}/ledgerRe/ledgerReMain.do">가계부</a>
-				<a href="${contextPath}/source/sourceMain.do">소스코드</a>
-				<a>북마크</a>
-				<a href="${contextPath}/admin/adminMain.do">관리자</a>	
 			</c:when>
 			
 			<c:otherwise>
@@ -51,10 +44,13 @@
 					<a href="${contextPath}/ledgerRe/ledgerReMain.do">가계부</a>
 				</c:if>
 				<a href="${contextPath}/source/sourceMain.do">소스코드</a>
-				<c:if test="${sessionScope.userId ne null}">					
+				<c:if test="${sessionScope.authority.user eq 1}">								
 					<a>북마크</a>
+					<a>게시판</a>	
 				</c:if>
-				<a href=#>게시판</a>				
+				<c:if test="${sessionScope.authority.administrator eq 1}">
+					<a href="${contextPath}/admin/adminMain.do">관리자</a>
+				</c:if>							
 			</c:otherwise>
 		
 		</c:choose>

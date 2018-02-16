@@ -20,13 +20,13 @@
 			<mvc:exclude-mapping path="/source/**"/>
 	      
 			<!-- 로그인  -->
-			<mvc:exclude-mapping path="/loginPage.do"/>
-			<mvc:exclude-mapping path="/loginProcess.do"/>
-			<mvc:exclude-mapping path="/signUpPage.do"/>
+			<mvc:exclude-mapping path="/login/login.do"/>
+			<mvc:exclude-mapping path="/login/loginProcess.do"/>
+			<mvc:exclude-mapping path="/login/signUp.do"/>
 	               
 	     	<!-- 회원가입 -->			 
-			<mvc:exclude-mapping path="/newSignUp.do"/>
-			<mvc:exclude-mapping path="/ajax/userIdCheck.do"/>
+			<mvc:exclude-mapping path="/login/insertSignUp.do"/>
+			<mvc:exclude-mapping path="/login/ajax/userIdCheck.do"/>
 				
 			<beans:bean id="sessionInterceptor"
 			  class="com.ljh.white.common.utility.interceptor.SessionInterceptor"></beans:bean>
