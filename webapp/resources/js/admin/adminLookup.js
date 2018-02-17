@@ -12,8 +12,7 @@ let ad = {
 	
 	init : function(pageCnt, pageNum, count, userList){
 		this.pageCnt = Number(pageCnt);
-		//this.pageNum = Number(pageNum);
-		this.pageNum = 11;//test
+		this.pageNum = Number(pageNum);		
 		this.count = Number(count);
 		this.userList = userList;
 		this.userClone = common.clone(this.userList);
@@ -30,23 +29,20 @@ let ad = {
 		
 		$("#paging").empty();
 		
-		let pagingCnt = Math.ceil(this.count/this.pageCnt);
-		let blockNum = Math.ceil(pagingCnt/this.blockCnt);
 		let tag = "<div class='paging'>";
-		for(let i=0; i<pagingCnt; i++){
-			
-			
-			
-				if(this.pageNum===(i+1)){
-					tag += "<button style='font-weight:bold;'>"+(i+1)+"</button>";
-				}else{
-					tag += "<button>"+(i+1)+"</button>";
-				}
-			
-			
-		}		
-		$("#paging").append(tag);
+		let blockNum = Math.floor(this.pageNum/this.blockCnt)*10;		
+		for(let i=blockNum; i<blockNum+this.blockCnt; i++){
+			if(i === 0) continue;
+						
+			if(this.pageNum === i){
+				tag += "<button style='font-weight:bold;'>"+i+"</button>";
+			}else{
+				tag += "<button>"+i+"</button>";
+			}			
+		}
 		tag += "</div>";
+		$("#paging").append(tag);
+		
 		return this;
 	}
 		

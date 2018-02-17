@@ -44,7 +44,8 @@ $(document).ready(function(){
 <div>
 	<input id="srhId" type="text" value="" placeholder="사용자 아이디">
 	<input id="srhNm" type="text" value="" placeholder="사용자 이름">
-	<input id="pageNum" type="hidden" value="1">
+	<!-- <input id="pageNum" type="hidden" value="1"> -->
+	<input id="pageNum" type="text" value="1" placeholder="pageNum">
 	
 	<select id="pageCnt">
 		<option value="5">5개</option>
