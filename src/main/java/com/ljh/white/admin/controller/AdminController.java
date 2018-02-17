@@ -53,7 +53,7 @@ public class AdminController {
 		
 		JSONObject result = new JSONObject();		
 		result.put("count", count);
-		result.put("uesrList", new JSONArray(list));
+		result.put("userList", new JSONArray(list));
 		request.setAttribute("result", result);
 		
 		return "result.jsp";

@@ -56,7 +56,7 @@ public class LoginMapper {
 		
 		//test user Insert
 		/*String id = param.getString("userId");
-		for(int i=0; i<100; i++) {
+		for(int i=0; i<300; i++) {
 			param.put("userId",id+i);
 			int rtn = sqlSession.insert("LoginMapper.insertSignUp", param);
 			sqlSession.insert("LoginMapper.insertUserAuth", param.getString("user_seq"));

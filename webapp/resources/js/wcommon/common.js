@@ -207,7 +207,7 @@ let common = {
 	    return ctxPath;
 	},
 	//콤마 자리수 추가
-	numSetComma : function(x){
+	comma : function(x){
 	    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 	},
 	//String("data1,data2,data3") 이나 배열(["data1","data2","data3"])로 받아서 일괄 show
@@ -225,13 +225,10 @@ let common = {
 			$("#"+hideArr[i]).show();
 	},
 	//문자열 체크해서 (+ - 첫자리 한정) 0 1 2 3 4 5 6 7 8 9 체크 이외 값인경우 false
-	isNum : function(number){
-		
-		number = String(number);
-		
+	isNum : function(number){		
+		number = String(number);		
 		for(let i=0; i<number.length; i++){
-			let ask = number.charCodeAt(i);
-			
+			let ask = number.charCodeAt(i);			
 			switch(ask){
 			case 48 : case 49 : case 50 : case 51 : case 52 : case 53 : case 54 : case 55 : case 56 : case 57 : 
 				break;
@@ -241,6 +238,21 @@ let common = {
 					return false;
 				}
 				break;	
+			default : 
+				return false;
+			}
+		}
+		return true;		
+	},
+	
+	//문자열 체크해서 0 1 2 3 4 5 6 7 8 9 체크 이외 값인경우 false
+	isOnlyNum : function(number){		
+		number = String(number);		
+		for(let i=0; i<number.length; i++){
+			let ask = number.charCodeAt(i);			
+			switch(ask){
+			case 48 : case 49 : case 50 : case 51 : case 52 : case 53 : case 54 : case 55 : case 56 : case 57 : 
+				break;			
 			default : 
 				return false;
 			}
