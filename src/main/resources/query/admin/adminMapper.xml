@@ -31,4 +31,26 @@
  		Limit ${pagePre}, ${pageCnt}
 	</select>
 	
+	<select id="selectAuthList" resultType="WhiteMap">
+		SELECT 
+			auth_nm_seq AS authNmSeq,
+			auth_nm AS authNm
+ 		FROM auth_name
+ 		WHERE auth_nm <![CDATA[ <> ]]> 'developer'
+	</select>
+	
+	<select id="selectUserAuth" resultType="WhiteMap" parameterType="WhiteMap">
+		SELECT
+			auth.auth_nm_seq AS authNmSeq,
+			name.auth_nm AS authNm
+		FROM authority auth
+		LEFT OUTER JOIN (SELECT 
+	    		auth_nm_seq,
+				auth_nm AS,
+     		FROM auth_name
+     		WHERE auth_nm <![CDATA[ <> ]]> 'developer') name
+		ON name.auth_nm_seq = auth.auth_nm_seq
+		WHERE user_seq = #{userNo}
+	</select>
+	
 </mapper>

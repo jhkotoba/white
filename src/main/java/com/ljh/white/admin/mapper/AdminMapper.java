@@ -28,4 +28,13 @@ public class AdminMapper {
 		logger.debug(param);		
 		return sqlSession.selectList("adminMapper.selectUserList", param);
 	}
+	
+	public List<WhiteMap> selectAuthList() {	
+		return sqlSession.selectList("adminMapper.selectAuthList");
+	}
+	
+	public List<WhiteMap> selectUserAuth(WhiteMap param) {
+		logger.debug(param);		
+		return sqlSession.selectList("adminMapper.selectUserAuth", param);
+	}
 }

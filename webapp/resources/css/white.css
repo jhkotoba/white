@@ -66,12 +66,16 @@ tr:hover{
     width: 30px;
 }
 
-.userDetail{
+.divPop{
 	display: none;
 	position: absolute;
 	background: white;
 	width: 100%;
 	height: 100%;
+	z-index: 1;
 }
 
-
+.maxLeft{
+	margin-left: 100%;
+	z-index: -1;
+}

@@ -15,18 +15,42 @@ $(document).ready(function(){
 		$("#pageNum").val("1");
 	});
 	
-	$('#userList').on("click button", function(event) {
+	$('#userList').on("click button", function(event) {		
+	
+		let name = event.target.id.split('_')[0];
+		let idx = event.target.id.split('_')[1];
 		
-		switch(event.target.name){
+		switch(name){
 		
 		case "viewBtn" :
-			$("#detail").show();
+			$("#userInfo").show();
+			
+			$("#userNo").text(ad.userList[idx].userSeq);
+			$("#userId").text(ad.userList[idx].userId);
+			$("#userNm").text(ad.userList[idx].userName);			
+			
+			$.ajax({		
+				type: 'POST',
+				url: common.path()+'/admin/ajax/selectUserAuth.do',
+				data: {
+					userNo : Number(event.target.value)
+				},
+				dataType: 'json',
+			    success : function(data, stat, xhr) { 
+			    	console.log(data);
+			    	for(let i=0; i<data.length; i++){
+			    		$("#auth_"+data[i].authNmSeq).prop("checked", true);
+			    	}
+			    },
+			    error : function(xhr, stat, err) {
+			    	alert("error");
+			    }
+			});
+			
+			$("body").scrollTop(0);
+			
 		break;
 		}
-		
-		
-		
-			
 	});
 });
 
@@ -36,7 +60,6 @@ let ad = {
 	pageCnt : 10,
 	blockCnt : 10,
 	userList : new Array(),
-	userClone : new Array(),
 	
 	init : function(pageCnt, pageNum, count, userList){
 		this.pageCnt = Number(pageCnt);
@@ -86,7 +109,7 @@ let ad = {
 			tag += "<td>"+this.userList[i].userSeq+"</td>";
 			tag += "<td>"+this.userList[i].userId+"</td>";
 			tag += "<td>"+this.userList[i].userName+"</td>";		
-			tag += "<td><button name='viewBtn' value='"+this.userList[i].userSeq+"'>보기</button></td>";		
+			tag += "<td><button id='viewBtn_"+i+"' class='viewIcon' value='"+this.userList[i].userSeq+"' title='사용자 정보 보기'></button></td>";		
 			tag += "</tr>";		
 		}
 		

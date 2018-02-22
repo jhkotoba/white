@@ -138,15 +138,15 @@ let recIn = {
 		let tag = "<table border=1 class='font10'>"
 				+ "<tr>"				
 				+ "<th>No</th>"
-				+ "<th>Date</th>"
-				+ "<th>Time</th>"
+				+ "<th>Date*</th>"
+				+ "<th>Time*</th>"
 				+ "<th>position</th>"
-				+ "<th>content</th>"
-				+ "<th>purpose</th>"
+				+ "<th>content*</th>"
+				+ "<th>purpose*</th>"
 				+ "<th>purDetail</th>"
-				+ "<th>bankName</th>"
+				+ "<th>bankName*</th>"
 				+ "<th>moveName</th>"
-				+ "<th>money</th>";	
+				+ "<th>money*</th>";	
 			tag += "</tr>";		
 		
 		for(let i=0; i<this.inList.length; i++){

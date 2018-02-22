@@ -11,9 +11,17 @@
 <script type="text/javascript" src="${contextPath}/resources/js/admin/adminLookup.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
-	
+
 	$("#srcBtn").on("click", function(){
 		ad.select();
+	});
+	
+	$("#closeInfo").on("click", function(){
+		$("input:checkbox[name='authChk']").prop("checked", false);
+		$("#userNo").text("");
+		$("#userId").text("");
+		$("#userNm").text("");		
+		$("#userInfo").hide();		
 	});
 	
 });
@@ -22,7 +30,9 @@ $(document).ready(function(){
 </head>
 <body>
 
-<div id="detail" class="userDetail">
+<div id="userInfo" class="divPop">
+	
+	<div id='closeInfo' class='closeIcon maxLeft' title='닫기'></div>
 	<table>
 		<thead>
 			<tr>
@@ -33,13 +43,17 @@ $(document).ready(function(){
 		</thead>
 		<tbody>
 			<tr>
-				<td>userNo</td>
-				<td>userId</td>
-				<td>userName</td>
+				<td><span id="userNo"></span></td>
+				<td><span id="userId"></span></td>
+				<td><span id="userNm"></span></td>
 			</tr>			
-		</tbody>
-	
+		</tbody>	
 	</table>
+	<div id="authList">
+		<c:forEach items="${authList}" var="item">
+			<input id="auth_${item.authNmSeq}" name="authChk" type="checkbox" value="${item.authNmSeq}">${item.authNm}
+		</c:forEach>
+	</div>
 </div>
 
 <div>

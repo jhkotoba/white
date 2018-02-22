@@ -33,10 +33,11 @@ public class AdminController {
 		String sectionPage = param.getString("move");		
 		if("".equals(sectionPage) || sectionPage == null) sectionPage = "Main";
 		
-		/*switch(sectionPage){
-		case "Main" :
+		switch(sectionPage){
+		case "Lookup" :
+			request.setAttribute("authList", adminService.selectAuthList());
 			break;
-		}*/
+		}
 		
 		request.setAttribute("sidePage", "admin/adminSide.jsp");
 		request.setAttribute("sectionPage", "admin/admin"+sectionPage+".jsp");
@@ -58,4 +59,13 @@ public class AdminController {
 		
 		return "result.jsp";
 	}
+	
+	@RequestMapping(value="/admin/ajax/selectUserAuth.do")
+	public String selectUserAuth(HttpServletRequest request) {		
+		WhiteMap param = new WhiteMap(request);		
+		request.setAttribute("result", new JSONArray(adminService.selectUserAuth(param)));		
+		return "result.jsp";
+	}
+	
+	
 }

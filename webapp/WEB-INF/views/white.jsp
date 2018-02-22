@@ -9,7 +9,8 @@
 <meta charset=UTF-8>
 <title>whiteHome</title>
 <link rel="stylesheet" href="${contextPath}/resources/css/white.css" type="text/css" />
-<link rel="stylesheet" href="${contextPath}/resources/css/btn.css" type="text/css" />	
+<link rel="stylesheet" href="${contextPath}/resources/css/btn.css" type="text/css" />
+<link rel="stylesheet" href="${contextPath}/resources/css/icon.css" type="text/css" />
 
 <script type="text/javascript" src="${contextPath}/resources/js/wcommon/jquery/jquery-3.2.0.js"></script>
 <script type="text/javascript" src="${contextPath}/resources/js/wcommon/common.js"></script>

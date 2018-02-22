@@ -20,16 +20,18 @@ public class AdminService {
 	}
 	
 	public List<WhiteMap> selectUserList(WhiteMap param) {			
-		param.put("pagePre", (param.getInt("pageNum")-1)*param.getInt("pageCnt"));
-		
-		List<WhiteMap> list = adminMapper.selectUserList(param);
-		for(int i=0; i<list.size(); i++) {
-			System.out.println(list.get(i));
-			
-		}
-		
-		return list;
+		param.put("pagePre", (param.getInt("pageNum")-1)*param.getInt("pageCnt"));		
+		return adminMapper.selectUserList(param);
 	}
+	
+	public List<WhiteMap> selectAuthList() {			
+		return adminMapper.selectAuthList();
+	}
+	
+	public List<WhiteMap> selectUserAuth(WhiteMap param) {			
+		return adminMapper.selectUserAuth(param);
+	}
+	
 	
 	
 	
