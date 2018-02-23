@@ -14,7 +14,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.ljh.white.common.bean.AuthBean;
+import com.ljh.white.common.collection.WhiteMap;
 import com.ljh.white.common.service.WhiteService;
 import com.ljh.white.common.utility.cryptolect.BCrypt;
 import com.ljh.white.login.service.LoginService;
@@ -49,23 +49,14 @@ public class LoginController {
 		if(userCheck){
 			
 			int userSeq = loginService.getUserSeq(userId);
-			
-			//권한 조회
-			AuthBean authBean = null;
-			if("leedev".equals(userId)) {
-				authBean = new AuthBean(userId);
-			}else {
-				authBean = loginService.getUserAuthority(userSeq);
-			}			
-			logger.debug("authBean:"+authBean.toString());
-			
+			WhiteMap auth = loginService.selectUserAuthority(userSeq, userId);			
 			
 			//세션 등록 
 			HttpSession session = request.getSession();		
 			session.setMaxInactiveInterval(60*960); //세션 유효시간			
 			session.setAttribute("userId", userId);
 			session.setAttribute("userSeq", userSeq);
-			session.setAttribute("authority", authBean);
+			session.setAttribute("authority", auth);
 			
 			//page
 			request.setAttribute("sidePage", null);

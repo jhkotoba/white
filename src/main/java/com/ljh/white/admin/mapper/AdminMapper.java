@@ -37,4 +37,14 @@ public class AdminMapper {
 		logger.debug(param);		
 		return sqlSession.selectList("adminMapper.selectUserAuth", param);
 	}
+	
+	public int insertAuthList(List<WhiteMap> param) {
+		logger.debug(param);
+		return sqlSession.insert("adminMapper.insertAuthList", param);
+	}
+	
+	public int deleteAuthList(List<WhiteMap> param) {
+		logger.debug(param);
+		return sqlSession.delete("adminMapper.deleteAuthList", param);
+	}
 }

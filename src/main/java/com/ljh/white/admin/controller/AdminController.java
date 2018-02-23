@@ -67,5 +67,14 @@ public class AdminController {
 		return "result.jsp";
 	}
 	
+	@RequestMapping(value="/admin/ajax/inDelAuthList.do")
+	public String inDelAuthList(HttpServletRequest request) {		
+		WhiteMap param = new WhiteMap(request);
+		WhiteMap resultMap = adminService.inDelAuthList(param);
+		request.setAttribute("result", new JSONObject(resultMap));
+		return "result.jsp";
+	}
+	
+	
 	
 }

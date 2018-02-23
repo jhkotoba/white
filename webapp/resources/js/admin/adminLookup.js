@@ -25,9 +25,10 @@ $(document).ready(function(){
 		case "viewBtn" :
 			$("#userInfo").show();
 			
-			$("#userNo").text(ad.userList[idx].userSeq);
+			$("#userNum").text(ad.userList[idx].userSeq);
+			$("#userNo").val(ad.userList[idx].userSeq);
 			$("#userId").text(ad.userList[idx].userId);
-			$("#userNm").text(ad.userList[idx].userName);			
+			$("#userNm").text(ad.userList[idx].userName);		
 			
 			$.ajax({		
 				type: 'POST',
@@ -37,9 +38,8 @@ $(document).ready(function(){
 				},
 				dataType: 'json',
 			    success : function(data, stat, xhr) { 
-			    	console.log(data);
 			    	for(let i=0; i<data.length; i++){
-			    		$("#auth_"+data[i].authNmSeq).prop("checked", true);
+			    		$("#auth_"+data[i].authNmSeq).prop("checked", true).val("select_"+data[i].authSeq);
 			    	}
 			    },
 			    error : function(xhr, stat, err) {

@@ -41,16 +41,35 @@
 	
 	<select id="selectUserAuth" resultType="WhiteMap" parameterType="WhiteMap">
 		SELECT
+			auth.auth_seq AS authSeq,
 			auth.auth_nm_seq AS authNmSeq,
 			name.auth_nm AS authNm
 		FROM authority auth
-		LEFT OUTER JOIN (SELECT 
-	    		auth_nm_seq,
-				auth_nm
-     		FROM auth_name
-     		WHERE auth_nm <![CDATA[ <> ]]> 'developer') name
+		LEFT OUTER JOIN auth_name name
 		ON name.auth_nm_seq = auth.auth_nm_seq
-		WHERE user_seq = #{userNo}
+		WHERE auth.user_seq = #{userNo}
+   		AND name.auth_nm <![CDATA[ <> ]]> 'developer'
 	</select>
+	
+	
+	<insert id="insertAuthList" parameterType="java.util.List">
+		INSERT INTO authority(		
+			user_seq,	
+			auth_nm_seq
+		)VALUES
+		<foreach collection="list" item="item" separator="),(" open="(" close=")">
+			#{item.userNo}, 
+			#{item.authNmSeq}	
+		</foreach>	
+	</insert>
+	
+	
+	<delete id="deleteAuthList" parameterType="java.util.List">
+		DELETE FROM authority
+		WHERE auth_seq IN 
+		<foreach collection="list" item="item" separator="," open="(" close=")">
+			#{item.authSeq}
+		</foreach>
+	</delete>
 	
 </mapper>

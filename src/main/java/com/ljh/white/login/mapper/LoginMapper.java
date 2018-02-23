@@ -34,12 +34,11 @@ public class LoginMapper {
 		String userPasswd = sqlSession.selectOne("LoginMapper.userCheck", whiteUesrVO);		
 		
 		return userPasswd == null ? false : BCrypt.checkpw(whiteUesrVO.getUserPasswd(), userPasswd);		
-	}
+	}	 
 	
-	public List<String> getUserAuthority(int userSeq){		
-		logger.debug("userSeq: "+userSeq);		
-		
-		return sqlSession.selectList("LoginMapper.getUserAuthority", userSeq);			
+	public List<WhiteMap> selectUserAuthority(int userSeq){		
+		logger.debug("userSeq: "+userSeq);
+		return sqlSession.selectList("LoginMapper.selectUserAuthority", userSeq);			
 	}
 	
 	public int getUserSeq(String userId){

@@ -4,9 +4,9 @@
 <html>
 <head>
 <meta charset=UTF-8>
-<title>Insert title here</title>
+<title>whiteHome</title>
 </head>
 <body>
-	main.jsp<br>
+	<p style='font-size: 10px;'>크롬에 최적화 되어 있습니다.</p>
 </body>
 </html>
