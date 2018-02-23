@@ -46,7 +46,7 @@
 		FROM authority auth
 		LEFT OUTER JOIN (SELECT 
 	    		auth_nm_seq,
-				auth_nm AS,
+				auth_nm
      		FROM auth_name
      		WHERE auth_nm <![CDATA[ <> ]]> 'developer') name
 		ON name.auth_nm_seq = auth.auth_nm_seq

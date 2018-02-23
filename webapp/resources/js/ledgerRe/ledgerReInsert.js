@@ -49,8 +49,23 @@ let recIn = {
 		let name = target.id.split('_')[0];
 		let idx = target.id.split('_')[1];
 		
-		this.inList[idx][name] = String(target.value);
+		switch(name){
 		
+		case "purSeq" :
+			if(String(target.value) === '0'){				
+				this.inList[idx].purDtlSeq = '';
+			}			
+			if(String(target.value) !== '0' && String(this.inList[idx].moveSeq) !== ''){
+				this.inList[idx].moveSeq = '';
+			}			
+			this.inList[idx][name] = String(target.value);
+			this.inList[idx]["purDtlSeq"] = "";
+			break;
+			
+		default :
+			this.inList[idx][name] = String(target.value);
+			break;
+		}
 		
 	},
 	
@@ -86,10 +101,10 @@ let recIn = {
 			}
 			
 			//금액이동시 체크
-			if(this.inList[i].purSeq === 0 && (this.inList[i].moveSeq === '' || this.inList[i].moveSeq === null)){
+			if(Number(this.inList[i].purSeq) === 0 && String(this.inList[i].moveSeq) === ''){
 				check = {check : false, msg : (i+1) + "행의 금액이동할 대상이 선택되지 않았습니다."};
 				break;
-			}else if(this.inList[i].bankSeq === this.inList[i].moveSeq){
+			}else if(String(this.inList[i].bankSeq) === String(this.inList[i].moveSeq)){
 				check = {check : false, msg : (i+1) + "행의 금액이 이동할 곳이 같습니다."};
 				break;
 			}
