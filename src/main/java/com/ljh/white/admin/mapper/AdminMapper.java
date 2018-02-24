@@ -47,4 +47,22 @@ public class AdminMapper {
 		logger.debug(param);
 		return sqlSession.delete("adminMapper.deleteAuthList", param);
 	}
+	
+	/**
+	 * 헤드 메뉴 리스트 조회
+	 * @param param
+	 * @return
+	 */
+	public List<WhiteMap> selectHeadMenuList(WhiteMap param) {
+		return sqlSession.selectList("adminMapper.selectHeadMenuList", param);
+	}
+	
+	/**
+	 * 사이드 메뉴 리스트 조회
+	 * @param param
+	 * @return
+	 */
+	public List<WhiteMap> selectSideMenuList(WhiteMap param) {
+		return sqlSession.selectList("adminMapper.selectSideMenuList", param);
+	}
 }

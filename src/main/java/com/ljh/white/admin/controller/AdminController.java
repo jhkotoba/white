@@ -75,6 +75,19 @@ public class AdminController {
 		return "result.jsp";
 	}
 	
+	@RequestMapping(value="/admin/ajax/selectHaedSideMenuList.do")
+	public String selectHaedSideMenuList(HttpServletRequest request) {		
+		logger.debug("selectHaedSideMenuList Start");
+		
+		WhiteMap param = new WhiteMap(request);	
+		
+		JSONObject result = new JSONObject();		
+		result.put("headList", new JSONArray(adminService.selectHeadMenuList(param)));			
+		result.put("sideList", new JSONArray(adminService.selectSideMenuList(param)));			
+		result.put("authList", new JSONArray(adminService.selectAuthList()));			
+		request.setAttribute("result", result);	
+		return "result.jsp";
+	}
 	
 	
 }

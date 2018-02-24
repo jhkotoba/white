@@ -3,9 +3,10 @@ SET SESSION FOREIGN_KEY_CHECKS=0;
 /* Drop Tables */
 
 DROP TABLE IF EXISTS authority;
+DROP TABLE IF EXISTS side_menu;
+DROP TABLE IF EXISTS head_menu;
 DROP TABLE IF EXISTS auth_name;
 DROP TABLE IF EXISTS memo;
-DROP TABLE IF EXISTS money_record;
 DROP TABLE IF EXISTS money_record_re;
 DROP TABLE IF EXISTS purpose_detail;
 DROP TABLE IF EXISTS purpose;
@@ -36,6 +37,17 @@ CREATE TABLE auth_name
 );
 
 
+CREATE TABLE head_menu
+(
+	head_seq int NOT NULL AUTO_INCREMENT,
+	head_nm varchar(20) NOT NULL,
+	head_url varchar(40) NOT NULL,
+	auth_nm_seq int NOT NULL,
+	head_order int NOT NULL,
+	PRIMARY KEY (head_seq)
+);
+
+
 CREATE TABLE memo
 (
 	memo_seq int NOT NULL AUTO_INCREMENT,
@@ -44,26 +56,6 @@ CREATE TABLE memo
 	memo_content varchar(50) NOT NULL,
 	reg_date datetime NOT NULL,
 	PRIMARY KEY (memo_seq)
-);
-
-
-CREATE TABLE money_record
-(
-	record_seq int NOT NULL AUTO_INCREMENT,
-	group_seq int NOT NULL,
-	user_seq int NOT NULL,
-	record_date datetime NOT NULL,
-	content varchar(50),
-	pur_seq int NOT NULL,
-	pur_dtl_seq int NOT NULL,
-	bank_seq int,
-	move_seq int,
-	money int NOT NULL,
-	ready_money int NOT NULL,
-	result_bank_money int NOT NULL,
-	reg_date datetime NOT NULL,
-	PRIMARY KEY (record_seq),
-	UNIQUE (record_seq)
 );
 
 
@@ -104,6 +96,18 @@ CREATE TABLE purpose_detail
 	pur_dtl_order int NOT NULL,
 	pur_detail varchar(20) NOT NULL,
 	PRIMARY KEY (pur_detail_seq)
+);
+
+
+CREATE TABLE side_menu
+(
+	side_seq int NOT NULL AUTO_INCREMENT,
+	head_seq int NOT NULL,
+	side_nm varchar(20) NOT NULL,
+	side_url varchar(40) NOT NULL,
+	auth_nm_seq int NOT NULL,
+	side_order int NOT NULL,
+	PRIMARY KEY (side_seq)
 );
 
 
@@ -153,6 +157,30 @@ ALTER TABLE authority
 ;
 
 
+ALTER TABLE head_menu
+	ADD FOREIGN KEY (auth_nm_seq)
+	REFERENCES auth_name (auth_nm_seq)
+	ON UPDATE RESTRICT
+	ON DELETE RESTRICT
+;
+
+
+ALTER TABLE side_menu
+	ADD FOREIGN KEY (auth_nm_seq)
+	REFERENCES auth_name (auth_nm_seq)
+	ON UPDATE RESTRICT
+	ON DELETE RESTRICT
+;
+
+
+ALTER TABLE side_menu
+	ADD FOREIGN KEY (head_seq)
+	REFERENCES head_menu (head_seq)
+	ON UPDATE RESTRICT
+	ON DELETE RESTRICT
+;
+
+
 ALTER TABLE purpose_detail
 	ADD FOREIGN KEY (pur_seq)
 	REFERENCES purpose (pur_seq)
@@ -170,14 +198,6 @@ ALTER TABLE authority
 
 
 ALTER TABLE memo
-	ADD FOREIGN KEY (user_seq)
-	REFERENCES white_user (user_seq)
-	ON UPDATE RESTRICT
-	ON DELETE RESTRICT
-;
-
-
-ALTER TABLE money_record
 	ADD FOREIGN KEY (user_seq)
 	REFERENCES white_user (user_seq)
 	ON UPDATE RESTRICT

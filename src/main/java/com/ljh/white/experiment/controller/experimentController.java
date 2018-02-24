@@ -43,10 +43,3 @@ public class experimentController {
 	}
 	
 }
-
-
-/*System.out.println("## TestingController.testingPage ##");
-
-//WhiteDate.dateCalculate TEST
-System.out.println("2017-01-01 01:00:00");		
-System.out.println(WhiteDate.dateCalculate("2017-01-01 01:00:00", 1000));*/

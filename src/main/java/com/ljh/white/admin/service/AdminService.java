@@ -17,23 +17,48 @@ public class AdminService {
 	@Resource(name = "AdminMapper")
 	private AdminMapper adminMapper;
 	
+	
+	/**
+	 * 
+	 * @param param
+	 * @return
+	 */
 	public int selectUserCount(WhiteMap param) {
 		return adminMapper.selectUserCount(param);	
 	}
 	
+	/**
+	 * 
+	 * @param param
+	 * @return
+	 */
 	public List<WhiteMap> selectUserList(WhiteMap param) {			
 		param.put("pagePre", (param.getInt("pageNum")-1)*param.getInt("pageCnt"));		
 		return adminMapper.selectUserList(param);
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public List<WhiteMap> selectAuthList() {			
 		return adminMapper.selectAuthList();
 	}
 	
+	/**
+	 * 
+	 * @param param
+	 * @return
+	 */
 	public List<WhiteMap> selectUserAuth(WhiteMap param) {			
 		return adminMapper.selectUserAuth(param);
 	}
 	
+	/**
+	 * 
+	 * @param param
+	 * @return
+	 */
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
 	public WhiteMap inDelAuthList(WhiteMap param) {
 		
@@ -54,6 +79,25 @@ public class AdminService {
 		}
 		
 		return resultMap;		
+	}
+	
+	/**
+	 * 
+	 * @param param
+	 * @return
+	 */
+	public List<WhiteMap> selectHeadMenuList(WhiteMap param) {		
+		return adminMapper.selectHeadMenuList(param);		
+		
+	}	
+	/**
+	 * 
+	 * @param param
+	 * @return
+	 */
+	public List<WhiteMap> selectSideMenuList(WhiteMap param) {		
+		return adminMapper.selectSideMenuList(param);		
+		
 	}
 	
 }

@@ -3,7 +3,7 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
 
 <mapper namespace="adminMapper">
-
+	
 	<select id="selectUserCount" resultType="int" parameterType="WhiteMap">
 		SELECT COUNT(1) FROM white_user
 		WHERE 1=1
@@ -50,6 +50,47 @@
 		WHERE auth.user_seq = #{userNo}
    		AND name.auth_nm <![CDATA[ <> ]]> 'developer'
 	</select>
+	
+	
+	<!--  -->
+	<select id="selectHeadMenuList" resultType="whiteMap" parameterType="whiteMap">		
+		SELECT
+			<if test="mode == 'select'">
+			'select' AS state,
+			</if>
+			hm.head_seq AS headSeq,
+	  		hm.head_nm AS headNm,
+	 		hm.head_url AS headUrl,
+	 		hm.head_order AS headOrder,
+			hm.auth_nm_seq AS authNmSeq
+			<if test="mode == 'menu'">
+			,IF(
+				(
+					SELECT a.auth_seq FROM authority a
+					WHERE a.auth_nm_seq = hm.auth_nm_seq
+					AND a.user_seq = #{userSeq}
+					LIMIT 1
+				) IS NULL, 0, 1
+			) AS auth
+			</if>
+		FROM head_menu hm
+		ORDER BY hm.head_order
+	</select>
+	
+	<!--  -->
+	<select id="selectSideMenuList" resultType="whiteMap" parameterType="whiteMap">
+		SELECT
+			<if test="mode == 'select'">
+			'select' AS state,
+			</if>
+			side_seq AS sideSeq,
+			head_seq AS headSeq,
+			side_nm AS sideNm,
+			side_url AS sideUrl,		
+			side_order AS sideOrder		
+		FROM side_menu
+		ORDER BY side_order	
+	</select>	
 	
 	
 	<insert id="insertAuthList" parameterType="java.util.List">

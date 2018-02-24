@@ -20,7 +20,7 @@ public class MainController {
 		return "redirect:main.do";		
 	}
 
-	//메인페이지-info
+	//메인페이지
 	@RequestMapping(value="/main.do")
 	public String main(HttpServletRequest request, HttpServletResponse response){
 		logger.debug("main start");
@@ -29,5 +29,16 @@ public class MainController {
 		request.setAttribute("sectionPage", "main/main.jsp");			
 		
 		return "white.jsp";
+	}
+	
+	//white.jsp TEST
+	@RequestMapping(value="/test.do")
+	public String test(HttpServletRequest request, HttpServletResponse response){
+		logger.debug("test start");
+		
+		request.setAttribute("sidePage", null);	
+		request.setAttribute("sectionPage", "main/main.jsp");			
+		
+		return "white_test.jsp";
 	}
 }
