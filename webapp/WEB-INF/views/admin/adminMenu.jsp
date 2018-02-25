@@ -21,7 +21,7 @@ $(document).ready(function(){
 		},
 	    success : function(data) {	
 	    	console.log(data);
-	    	head.init(data.headList).view();
+	    	nav.init(data.headList, data.authList).view();
 	    	//side.init(data.sideList).view();
 	    },
 	    error : function(request, status, error){

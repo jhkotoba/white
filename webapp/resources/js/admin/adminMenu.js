@@ -1,118 +1,144 @@
 /**
- * ledgerRePurpose.js
+ * adminMenu.js
  */
 
 $(document).ready(function(){
-	$('#headList').on("change keyup input", function(event) {
-		head.sync(event.target);
+	$('#navList').on("change keyup input", function(event) {
+		nav.sync(event.target);
 	});
 	
-	$('#headList').on("click", function(event) {
-		head.sync(event.target);
-	});
+	/*$('#navList').on("click", function(event) {
+		nav.sync(event.target);
+	});*/	
 	
 	$('#sideList').on("change keyup input", function(event) {
 		side.sync(event.target);
 	});	
 });
 
-let head = {
-	headList : new Array(),
-	headClone : new Array(),		
+let nav = {
+	navList : new Array(),
+	navClone : new Array(),
+	authList : new Array(),
 	
-	init : function(headList){		
-    	this.headList = headList;
-    	this.headClone = common.clone(this.headList);
+	init : function(navList, authList){		
+    	this.navList = navList;
+    	this.authList = authList;
+    	this.navClone = common.clone(this.navList);
     	return this;
 	},
 	
 	add : function(){
-		this.headList.push({headOrder: (this.headList.length+1), purpose: '', state: 'insert'});		
+		this.navList.push({navUrl : '', authNmSeq : '', navNm : '', navOrder : (this.navList.length+1), state: 'insert'});		
 		return this;
 	},
 	
 	del : function(idx){		
-		this.headList.splice(idx,1);
+		this.navList.splice(idx,1);
 		return this;
 	},
 	
 	cancel : function(){
-		this.headList = common.clone(this.headClone);		
+		this.navList = common.clone(this.navClone);		
 		return this;
 	},
 	
 	view : function(){
 		
-		$("#headList").empty();
+		$("#navList").empty();
 		
 		let tag = "<table border=1>";
 			tag	+= "<tr>";			
 			tag += "<th>Del</th>";
 			tag	+= "<th>No</th>";			
-			tag	+= "<th>headMenuName</th>";
-			tag	+= "<th>headMenuUrl</th>";
+			tag	+= "<th>navMenuName</th>";
+			tag	+= "<th>navMenuUrl</th>";
 			tag	+= "<th>auth</th>";
+			tag	+= "<th>move</th>";
 			tag += "</tr>";
 		
 		let addAttr = {chked:"", cls:"", read:""};
-		for(let i=0; i<this.headList.length; i++){			
+		for(let i=0; i<this.navList.length; i++){			
 			
-			if(this.headList[i].state === "insert"){
+			if(this.navList[i].state === "insert"){
 				addAttr = {chked:"", cls:"add", read:""};			
-			}else if(this.headList[i].state === "delete"){				
+			}else if(this.navList[i].state === "delete"){				
 				addAttr = {chked:"checked='checked'", cls:"redLine", read:"readonly='readonly'"};
-			}else if(this.headList[i].state === "update"){
+			}else if(this.navList[i].state === "update"){
 				addAttr = {chked:"", cls:"edit", read:""};
 			}else{
 				addAttr = {chked:"", cls:"", read:""};
 			}
 			
 			tag += "<tr>";			
-			tag += "<td><input id='headDel_"+i+"' type='checkbox' "+addAttr.chked+" title='삭제 체크박스'></td>";
-			tag += "<td>"+this.headList[i].headOrder+"</td>";
-			tag += "<td><input id='headNm_"+i+"' type='text' class='font10 "+addAttr.cls+"' "+addAttr.read+" value='"+this.headList[i].headNm
-				+"' onclick='side.view("+this.headList[i].headSeq+",\""+this.headList[i].headNm+"\")'></td>";
-			tag += "<td><input id='headUrl_"+i+"' type='text' class='font10 "+addAttr.cls+"' "+addAttr.read+" value='"+this.headList[i].headUrl
-				+"' onclick='side.view("+this.headList[i].headSeq+",\""+this.headList[i].headNm+"\")'></td>";
-			tag += "<td>"+this.headList[i].authNmSeq+"</td>";
+			tag += "<td><input id='navDel_"+i+"' type='checkbox' "+addAttr.chked+" title='삭제 체크박스'></td>";
+			tag += "<td>"+this.navList[i].navOrder+"</td>";
+			tag += "<td><input id='navNm_"+i+"' type='text' class='font10 "+addAttr.cls+"' "+addAttr.read+" value='"+this.navList[i].navNm
+				+"' onclick='side.view("+this.navList[i].navSeq+",\""+this.navList[i].navNm+"\")'></td>";
+			tag += "<td><input id='navUrl_"+i+"' type='text' class='font10 "+addAttr.cls+"' "+addAttr.read+" value='"+this.navList[i].navUrl
+				+"' onclick='side.view("+this.navList[i].navSeq+",\""+this.navList[i].navNm+"\")'></td>";
+			tag += "<td><select id='authNmSeq_"+i+"' class='"+addAttr.cls+"'>";
+			tag += "<option value=''>선택</option>";			
+			for(let j=0; j<this.authList.length; j++){
+				String(this.navList[i].authNmSeq) === String(this.authList[j].authNmSeq) ? selected = "selected='selected'" : selected = "";
+				tag += "<option "+selected+" value='"+this.authList[j].authNmSeq+"'>"+this.authList[j].authNm+"</option>";
+			}	
+			tag += "</select></td>";
+			tag += "<td><button id='navUp_"+i+"' class='btn_azure02' onclick='nav.change();'>위로</button><button id='headDown_"+i+"' class='btn_azure02'>아래</button></td>";
 			tag += "</tr>";			
 		}			
 		tag +="</table>";
-		$("#headList").append(tag);
+		$("#navList").append(tag);
 		
 		return this;
+	},
+	
+	change : function(){
+		console.log("aaa");
 	},
 	
 	sync : function(target){
 		let name = target.id.split('_')[0];
 		let idx = target.id.split('_')[1];		
 		
-		if(name === "headDel"){
+		if(name === "navDel"){
 			
-			if(this.headList[idx].state === "insert" && $(target).is(":checked") === true){
+			if(this.navList[idx].state === "insert" && $(target).is(":checked") === true){
 				this.del(idx).view();
 				return;
 			}			
 			
 			if( $(target).is(":checked") === true ){				
-				this.headList[idx].state = "delete";				
-				$("#purpose_"+idx).addClass("redLine").prop("readOnly", true);
+				this.navList[idx].state = "delete";				
+				$("#navNm_"+idx).addClass("redLine").prop("readOnly", true);
+				$("#navUrl_"+idx).addClass("redLine").prop("readOnly", true);
+				$("#authNmSeq_"+idx).addClass("redLine").prop("disabled", true);
+				$("#navUp_"+idx).removeClass("btn_azure02").addClass("btn_disabled02").prop("disabled", true);
+				$("#navDown_"+idx).removeClass("btn_azure02").addClass("btn_disabled02").prop("disabled", true);
 			}else{
-				this.headList[idx].state = "select";
-				$("#purpose_"+idx).removeClass("redLine").prop("readOnly", false);
+				this.navList[idx].state = "select";
+				$("#navNm_"+idx).removeClass("redLine").prop("readOnly", false);
+				$("#navUrl_"+idx).removeClass("redLine").prop("readOnly", false);
+				$("#authNmSeq_"+idx).removeClass("redLine").prop("disabled", false);
+				$("#navUp_"+idx).removeClass("btn_disabled02").addClass("btn_azure02").prop("disabled", false);
+				$("#navDown_"+idx).removeClass("btn_disabled02").addClass("btn_azure02").prop("disabled", false);
 			}
 		}else{			
-			this.headList[idx][name] = String(target.value);
+			this.navList[idx][name] = String(target.value);
 		}
 		
-		if(this.headList[idx].state !== "insert"){
+		if(this.navList[idx].state !== "insert"){
 			if($(target).is(":checked") === false && this.equals(idx) === false){
-				this.headList[idx].state = "update";			
-				$("#purpose_"+idx).addClass("edit").prop("readOnly", false);
+				this.navList[idx].state = "update";			
+				$("#navNm_"+idx).addClass("edit").prop("readOnly", false);
+				$("#navUrl_"+idx).addClass("edit").prop("readOnly", false);
+				$("#authNmSeq_"+idx).addClass("edit").prop("readOnly", false);
 			}else{
-				if(this.headList[idx].state !== "insert"){
-					$(target).is(":checked") === true ? this.headList[idx].state = "delete" : this.headList[idx].state = "select";			
-					$("#purpose_"+idx).removeClass("edit");
+				if(this.navList[idx].state !== "insert"){
+					$(target).is(":checked") === true ? this.navList[idx].state = "delete" : this.navList[idx].state = "select";			
+					$("#navNm_"+idx).removeClass("edit");
+					$("#navUrl_"+idx).removeClass("edit");
+					$("#authNmSeq_"+idx).removeClass("edit");
 				}
 			}
 		}
@@ -121,18 +147,25 @@ let head = {
 	check : function(){
 		let check = {check : true, msg : ""};
 		let saveChk = 0;
-		for(let i=0; i<this.headList.length; i++){
+		for(let i=0; i<this.navList.length; i++){
 			
 			// 빈값, null 체크
-			if(this.headList[i].purpose === '' || this.headList[i].purpose === null){
-				check = {check : false, msg : (i+1) + "행의 목적이 입력되지 않았습니다."};
+			if(this.navList[i].navNm === '' || this.navList[i].navNm === null){
+				check = {check : false, msg : (i+1) + "행의 메뉴이름이 입력되지 않았습니다."};
+				break;
+			}else if(this.navList[i].navUrl === '' || this.navList[i].navUrl === null){
+				check = {check : false, msg : (i+1) + "행의 URL이 입력되지 않았습니다."};
+				break;
+				
+			}else if(this.navList[i].authNmSeq === '' || this.navList[i].authNmSeq === null){
+				check = {check : false, msg : (i+1) + "행의 권한이 선택되지 않았습니다"};
 				break;
 			}
 			
-			if(this.headList[i].state === "select") saveChk++;
+			if(this.navList[i].state === "select") saveChk++;
 		}
 
-		if(this.headList.length === saveChk){
+		if(this.navList.length === saveChk){
 			check = {check : false, msg : "추가, 수정, 삭제할 대상이 없습니다."};
 		}
 		return check;
@@ -143,21 +176,21 @@ let head = {
 		let upList = new Array();
 		let delList = new Array();
 		
-		for(let i=0; i<this.headList.length; i++){		
+		for(let i=0; i<this.navList.length; i++){		
 			
-			if(this.headList[i].state === "insert"){
-				inList.push(this.headList[i]);
-			}else if(this.headList[i].state === "update"){
-				upList.push(this.headList[i]);
-			}else if(this.headList[i].state === "delete"){
-				delList.push(this.headList[i]);
+			if(this.navList[i].state === "insert"){
+				inList.push(this.navList[i]);
+			}else if(this.navList[i].state === "update"){
+				upList.push(this.navList[i]);
+			}else if(this.navList[i].state === "delete"){
+				delList.push(this.navList[i]);
 			}
 		}
 		
 		if(inList.length === 0 && upList.length === 0 && delList.length === 0){
 			alert("추가, 수정, 삭제할 대상이 없습니다.");
 			return;
-		}
+		}return;
 		
 		$.ajax({		
 			type: 'POST',
@@ -182,7 +215,11 @@ let head = {
 	
 	equals : function(idx){
 		
-		if(this.headList[idx].purpose !== this.headClone[idx].purpose){
+		if(this.navList[idx].navNm !== this.navClone[idx].navNm){
+			return false;
+		}else if(this.navList[idx].navUrl !== this.navClone[idx].navUrl){
+			return false;
+		}else if(String(this.navList[idx].authNmSeq) !== String(this.navClone[idx].authNmSeq)){
 			return false;
 		}else{
 			return true;	
@@ -192,10 +229,10 @@ let head = {
 }
 
 let side = {
-		sideList : new Array(),
-		sideClone : new Array(),
-		headSeq : "",
-	purpose : "",
+	sideList : new Array(),
+	sideClone : new Array(),
+	navSeq : "",
+	navNm : "",
 	
 	init : function(sideList){		
 		this.sideList = sideList;
@@ -204,7 +241,7 @@ let side = {
 	},
 	
 	add : function(){
-		if(this.headSeq === ""){
+		if(this.navSeq === ""){
 			return this;
 		}else{
 			this.sideList.push({purSeq: this.purSeq, sideOrder: (this.sideList.length+1), purDetail: '', state: 'insert'});
@@ -222,9 +259,9 @@ let side = {
 		return this;
 	},
 	
-	view : function(headSeq, purpose){
-		if(emptyCheck.isNotEmpty(headSeq)){
-			this.headSeq = headSeq;
+	view : function(navSeq, purpose){
+		if(emptyCheck.isNotEmpty(navSeq)){
+			this.navSeq = navSeq;
 			this.purpose = purpose;
 		}
 	
@@ -239,7 +276,7 @@ let side = {
 		
 		let addAttr = {chked:"", cls:"", read:""};
 		for(let i=0; i<this.sideList.length; i++){			
-			if(this.sideList[i].headSeq === this.headSeq){
+			if(this.sideList[i].navSeq === this.navSeq){
 				
 				if(this.sideList[i].state === "insert"){
 					addAttr = {chked:"", cls:"add", read:""};			

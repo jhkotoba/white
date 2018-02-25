@@ -12,7 +12,7 @@
 	<category_index>0</category_index>
 	<zoom>1.0</zoom>
 	<x>569</x>
-	<y>270</y>
+	<y>197</y>
 	<default_color>
 		<r>128</r>
 		<g>128</g>
@@ -135,7 +135,7 @@
 			</connections>
 			<display>false</display>
 			<creation_date>2017-03-08 23:30:08</creation_date>
-			<updated_date>2018-02-25 07:49:09</updated_date>
+			<updated_date>2018-02-25 10:43:01</updated_date>
 			<model_property>
 				<name>프로젝트명</name>
 				<value></value>
@@ -318,70 +318,6 @@
 		</word>
 		<word>
 			<id>9</id>
-			<length>20</length>
-			<decimal>null</decimal>
-			<array>false</array>
-			<array_dimension>null</array_dimension>
-			<unsigned>false</unsigned>
-			<zerofill>false</zerofill>
-			<binary>false</binary>
-			<args></args>
-			<char_semantics>false</char_semantics>
-			<description></description>
-			<logical_name>헤드메뉴 이름</logical_name>
-			<physical_name>head_nm</physical_name>
-			<type>varchar(n)</type>
-		</word>
-		<word>
-			<id>10</id>
-			<length>null</length>
-			<decimal>null</decimal>
-			<array>false</array>
-			<array_dimension>null</array_dimension>
-			<unsigned>false</unsigned>
-			<zerofill>false</zerofill>
-			<binary>false</binary>
-			<args></args>
-			<char_semantics>false</char_semantics>
-			<description></description>
-			<logical_name>헤드메뉴 순서</logical_name>
-			<physical_name>head_order</physical_name>
-			<type>integer</type>
-		</word>
-		<word>
-			<id>11</id>
-			<length>null</length>
-			<decimal>null</decimal>
-			<array>false</array>
-			<array_dimension>null</array_dimension>
-			<unsigned>false</unsigned>
-			<zerofill>false</zerofill>
-			<binary>false</binary>
-			<args></args>
-			<char_semantics>false</char_semantics>
-			<description></description>
-			<logical_name>헤드메뉴 시퀀스</logical_name>
-			<physical_name>head_seq</physical_name>
-			<type>integer</type>
-		</word>
-		<word>
-			<id>12</id>
-			<length>40</length>
-			<decimal>null</decimal>
-			<array>false</array>
-			<array_dimension>null</array_dimension>
-			<unsigned>false</unsigned>
-			<zerofill>false</zerofill>
-			<binary>false</binary>
-			<args></args>
-			<char_semantics>false</char_semantics>
-			<description></description>
-			<logical_name>헤드메뉴 URL</logical_name>
-			<physical_name>head_url</physical_name>
-			<type>varchar(n)</type>
-		</word>
-		<word>
-			<id>13</id>
 			<length>50</length>
 			<decimal>null</decimal>
 			<array>false</array>
@@ -397,7 +333,7 @@
 			<type>varchar(n)</type>
 		</word>
 		<word>
-			<id>14</id>
+			<id>10</id>
 			<length>null</length>
 			<decimal>null</decimal>
 			<array>false</array>
@@ -413,7 +349,7 @@
 			<type>integer</type>
 		</word>
 		<word>
-			<id>15</id>
+			<id>11</id>
 			<length>10</length>
 			<decimal>null</decimal>
 			<array>false</array>
@@ -429,7 +365,7 @@
 			<type>varchar(n)</type>
 		</word>
 		<word>
-			<id>16</id>
+			<id>12</id>
 			<length>null</length>
 			<decimal>null</decimal>
 			<array>false</array>
@@ -445,7 +381,7 @@
 			<type>integer</type>
 		</word>
 		<word>
-			<id>17</id>
+			<id>13</id>
 			<length>null</length>
 			<decimal>null</decimal>
 			<array>false</array>
@@ -459,6 +395,70 @@
 			<logical_name>금액이동 받은쪽</logical_name>
 			<physical_name>move_seq</physical_name>
 			<type>integer</type>
+		</word>
+		<word>
+			<id>14</id>
+			<length>20</length>
+			<decimal>null</decimal>
+			<array>false</array>
+			<array_dimension>null</array_dimension>
+			<unsigned>false</unsigned>
+			<zerofill>false</zerofill>
+			<binary>false</binary>
+			<args></args>
+			<char_semantics>false</char_semantics>
+			<description></description>
+			<logical_name>네비메뉴 이름</logical_name>
+			<physical_name>nav_nm</physical_name>
+			<type>varchar(n)</type>
+		</word>
+		<word>
+			<id>15</id>
+			<length>null</length>
+			<decimal>null</decimal>
+			<array>false</array>
+			<array_dimension>null</array_dimension>
+			<unsigned>false</unsigned>
+			<zerofill>false</zerofill>
+			<binary>false</binary>
+			<args></args>
+			<char_semantics>false</char_semantics>
+			<description></description>
+			<logical_name>네비메뉴 순서</logical_name>
+			<physical_name>nav_order</physical_name>
+			<type>integer</type>
+		</word>
+		<word>
+			<id>16</id>
+			<length>null</length>
+			<decimal>null</decimal>
+			<array>false</array>
+			<array_dimension>null</array_dimension>
+			<unsigned>false</unsigned>
+			<zerofill>false</zerofill>
+			<binary>false</binary>
+			<args></args>
+			<char_semantics>false</char_semantics>
+			<description></description>
+			<logical_name>네비메뉴 시퀀스</logical_name>
+			<physical_name>nav_seq</physical_name>
+			<type>integer</type>
+		</word>
+		<word>
+			<id>17</id>
+			<length>40</length>
+			<decimal>null</decimal>
+			<array>false</array>
+			<array_dimension>null</array_dimension>
+			<unsigned>false</unsigned>
+			<zerofill>false</zerofill>
+			<binary>false</binary>
+			<args></args>
+			<char_semantics>false</char_semantics>
+			<description></description>
+			<logical_name>네비메뉴 URL</logical_name>
+			<physical_name>nav_url</physical_name>
+			<type>varchar(n)</type>
 		</word>
 		<word>
 			<id>18</id>
@@ -1100,7 +1100,7 @@
 			<option></option>
 			<columns>
 				<normal_column>
-					<word_id>14</word_id>
+					<word_id>10</word_id>
 					<id>5</id>
 					<description></description>
 					<unique_key_name></unique_key_name>
@@ -1167,7 +1167,7 @@
 					</sequence>
 				</normal_column>
 				<normal_column>
-					<word_id>15</word_id>
+					<word_id>11</word_id>
 					<id>7</id>
 					<description></description>
 					<unique_key_name></unique_key_name>
@@ -1200,7 +1200,7 @@
 					</sequence>
 				</normal_column>
 				<normal_column>
-					<word_id>13</word_id>
+					<word_id>9</word_id>
 					<id>8</id>
 					<description></description>
 					<unique_key_name></unique_key_name>
@@ -1588,7 +1588,7 @@
 					</sequence>
 				</normal_column>
 				<normal_column>
-					<word_id>17</word_id>
+					<word_id>13</word_id>
 					<id>18</id>
 					<description></description>
 					<unique_key_name></unique_key_name>
@@ -1621,7 +1621,7 @@
 					</sequence>
 				</normal_column>
 				<normal_column>
-					<word_id>16</word_id>
+					<word_id>12</word_id>
 					<id>19</id>
 					<description></description>
 					<unique_key_name></unique_key_name>
@@ -2856,7 +2856,7 @@
 					<description></description>
 					<unique_key_name></unique_key_name>
 					<logical_name></logical_name>
-					<physical_name>head_seq</physical_name>
+					<physical_name></physical_name>
 					<type>integer</type>
 					<constraint></constraint>
 					<default_value></default_value>
@@ -3066,7 +3066,7 @@
 					<referenced_complex_unique_key>null</referenced_complex_unique_key>
 				</relation>
 			</connections>
-			<physical_name>head_menu</physical_name>
+			<physical_name>nav_menu</physical_name>
 			<logical_name>새 테이블</logical_name>
 			<description></description>
 			<constraint></constraint>
@@ -3074,7 +3074,7 @@
 			<option></option>
 			<columns>
 				<normal_column>
-					<word_id>11</word_id>
+					<word_id>16</word_id>
 					<id>49</id>
 					<description></description>
 					<unique_key_name></unique_key_name>
@@ -3107,7 +3107,7 @@
 					</sequence>
 				</normal_column>
 				<normal_column>
-					<word_id>9</word_id>
+					<word_id>14</word_id>
 					<id>50</id>
 					<description></description>
 					<unique_key_name></unique_key_name>
@@ -3140,7 +3140,7 @@
 					</sequence>
 				</normal_column>
 				<normal_column>
-					<word_id>12</word_id>
+					<word_id>17</word_id>
 					<id>51</id>
 					<description></description>
 					<unique_key_name></unique_key_name>
@@ -3207,7 +3207,7 @@
 					</sequence>
 				</normal_column>
 				<normal_column>
-					<word_id>10</word_id>
+					<word_id>15</word_id>
 					<id>53</id>
 					<description></description>
 					<unique_key_name></unique_key_name>

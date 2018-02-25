@@ -3,8 +3,6 @@
 
 dataSource.properties
 white_insert.sql
-whiteERD.sql
-whiteERD.erm
 
 *.class
 *.dll

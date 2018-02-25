@@ -63,9 +63,9 @@ let rec = {
 			tag	+= "<th>money</th>";			
 			tag	+= "<th>amount</th>";
 			tag	+= "<th>cash</th>";
-				for(let i=0; i<this.bankList.length; i++){
-					tag += "<th>"+this.bankList[i].bankName+"("+(this.bankList[i].bankAccount==="cash" ? "":this.bankList[i].bankAccount) +")</th>";
-				}	
+			for(let i=0; i<this.bankList.length; i++){
+				tag += "<th>"+this.bankList[i].bankName+"("+(this.bankList[i].bankAccount==="cash" ? "":this.bankList[i].bankAccount) +")</th>";
+			}	
 			tag += "</tr>";		
 		
 		for(let i=this.recList.length-1; i>=0; i--){

@@ -7,9 +7,9 @@ $(document).ready(function(){
 		pur.sync(event.target);
 	});
 	
-	$('#purList').on("click", function(event) {
+	/*$('#purList').on("click", function(event) {
 		pur.sync(event.target);
-	});
+	});*/
 	
 	$('#purDtlList').on("change keyup input", function(event) {
 		purDtl.sync(event.target);

@@ -4,7 +4,7 @@ SET SESSION FOREIGN_KEY_CHECKS=0;
 
 DROP TABLE IF EXISTS authority;
 DROP TABLE IF EXISTS side_menu;
-DROP TABLE IF EXISTS head_menu;
+DROP TABLE IF EXISTS nav_menu;
 DROP TABLE IF EXISTS auth_name;
 DROP TABLE IF EXISTS memo;
 DROP TABLE IF EXISTS money_record_re;
@@ -37,17 +37,6 @@ CREATE TABLE auth_name
 );
 
 
-CREATE TABLE head_menu
-(
-	head_seq int NOT NULL AUTO_INCREMENT,
-	head_nm varchar(20) NOT NULL,
-	head_url varchar(40) NOT NULL,
-	auth_nm_seq int NOT NULL,
-	head_order int NOT NULL,
-	PRIMARY KEY (head_seq)
-);
-
-
 CREATE TABLE memo
 (
 	memo_seq int NOT NULL AUTO_INCREMENT,
@@ -77,6 +66,17 @@ CREATE TABLE money_record_re
 );
 
 
+CREATE TABLE nav_menu
+(
+	nav_seq int NOT NULL AUTO_INCREMENT,
+	nav_nm varchar(20) NOT NULL,
+	nav_url varchar(40) NOT NULL,
+	auth_nm_seq int NOT NULL,
+	nav_order int NOT NULL,
+	PRIMARY KEY (nav_seq)
+);
+
+
 CREATE TABLE purpose
 (
 	pur_seq int NOT NULL AUTO_INCREMENT,
@@ -102,7 +102,7 @@ CREATE TABLE purpose_detail
 CREATE TABLE side_menu
 (
 	side_seq int NOT NULL AUTO_INCREMENT,
-	head_seq int NOT NULL,
+	nav_seq int NOT NULL,
 	side_nm varchar(20) NOT NULL,
 	side_url varchar(40) NOT NULL,
 	auth_nm_seq int NOT NULL,
@@ -157,7 +157,7 @@ ALTER TABLE authority
 ;
 
 
-ALTER TABLE head_menu
+ALTER TABLE nav_menu
 	ADD FOREIGN KEY (auth_nm_seq)
 	REFERENCES auth_name (auth_nm_seq)
 	ON UPDATE RESTRICT
@@ -174,8 +174,8 @@ ALTER TABLE side_menu
 
 
 ALTER TABLE side_menu
-	ADD FOREIGN KEY (head_seq)
-	REFERENCES head_menu (head_seq)
+	ADD FOREIGN KEY (nav_seq)
+	REFERENCES nav_menu (nav_seq)
 	ON UPDATE RESTRICT
 	ON DELETE RESTRICT
 ;
