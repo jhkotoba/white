@@ -72,7 +72,7 @@ let bank = {
 			tag += "<td>"+(i+1)+"</td>";
 			tag += "<td><input id='bankName_"+i+"' type='text' class='font10 "+addAttr.cls+"' "+addAttr.read+" value='"+this.bankList[i].bankName+"' ></td>";
 			tag += "<td><input id='bankAccount_"+i+"' type='text' class='font10 "+addAttr.cls+"' "+addAttr.read+" value='"+this.bankList[i].bankAccount+"'></td>";
-			tag += "<td><input id='bankNowUseYN_"+i+"' type='button' class='font10 "+addAttr.cls+" "+useCls+"' "+addAttr.read+" value='"+this.bankList[i].bankNowUseYN+"'></td>";
+			tag += "<td><input id='bankNowUseYN_"+i+"' type='button' class='"+addAttr.cls+" "+useCls+"' "+addAttr.read+" value='"+this.bankList[i].bankNowUseYN+"'></td>";
 			tag += "</tr>";	
 		}			
 		tag +="</table>";
@@ -95,13 +95,13 @@ let bank = {
 			if( $(target).is(":checked") === true ){				
 				this.bankList[idx].state = "delete";				
 				$("#bankName_"+idx).addClass("redLine").prop("readOnly", true);
-				$("#bankAccount_"+idx).addClass("redLine").prop("readOnly", true);
-				$("#bankNowUseYN_"+idx).addClass("redLine").prop("disabled", true);
+				$("#bankAccount_"+idx).addClass("redLine").prop("readOnly", true);				
+				$("#bankNowUseYN_"+idx).removeClass("btn_azure01").addClass("btn_disabled01").prop("disabled", true);
 			}else{
 				this.bankList[idx].state = "select";
 				$("#bankName_"+idx).removeClass("redLine").prop("readOnly", false);
 				$("#bankAccount_"+idx).removeClass("redLine").prop("readOnly", false);
-				$("#bankNowUseYN_"+idx).removeClass("redLine").prop("disabled", false);
+				$("#bankNowUseYN_"+idx).removeClass("btn_disabled01").addClass("btn_azure01").prop("disabled", false);
 			}
 		}else if(name === "bankNowUseYN"){
 			if(target.value === "Y"){

@@ -84,7 +84,7 @@ let nav = {
 				tag += "<option "+selected+" value='"+this.authList[j].authNmSeq+"'>"+this.authList[j].authNm+"</option>";
 			}	
 			tag += "</select></td>";
-			tag += "<td><button id='navUp_"+i+"' class='btn_azure02' onclick='nav.change();'>위로</button><button id='headDown_"+i+"' class='btn_azure02'>아래</button></td>";
+			tag += "<td><button id='navUp_"+i+"' class='btn_azure02' onclick='nav.change();'>위로</button><button id='navDown_"+i+"' class='btn_azure02'>아래</button></td>";
 			tag += "</tr>";			
 		}			
 		tag +="</table>";

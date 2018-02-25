@@ -14,14 +14,14 @@ $(document).ready(function(){
 	
 	$.ajax({		
 		type: 'POST',
-		url: common.path()+'/admin/ajax/selectHaedSideMenuList.do',
+		url: common.path()+'/admin/ajax/selectNavSideMenuList.do',
 		dataType: 'json',
 		data : {
 			mode : "select"
 		},
 	    success : function(data) {	
 	    	console.log(data);
-	    	nav.init(data.headList, data.authList).view();
+	    	nav.init(data.navList, data.authList).view();
 	    	//side.init(data.sideList).view();
 	    },
 	    error : function(request, status, error){
@@ -30,13 +30,13 @@ $(document).ready(function(){
 	});
 	
 	//헤더메뉴 추가
-	$("#headAddBtn").click(function(){		
-		head.add().view();
+	$("#navAddBtn").click(function(){		
+		nav.add().view();
 	});
 	
 	//목적 취소
-	$("#haedCelBtn").click(function(){		
-		head.cancel().view();
+	$("#navCelBtn").click(function(){		
+		nav.cancel().view();
 	});
 	
 	
@@ -51,7 +51,7 @@ $(document).ready(function(){
 		side.cancel().view();
 	});
 	
-	$("#haedSaveBtn").click(function(){
+	$("#navSaveBtn").click(function(){
 		let rtn = head.check();
 		if(rtn.check === true){
 			head.save();
@@ -82,10 +82,10 @@ $(document).ready(function(){
 	<br>
 	
 	<div class="left">
-		<button id="headAddBtn" class="btn_azure03">추가</button>
-		<button id="haedSaveBtn" class="btn_azure03">헤드메뉴 저장</button>
-		<button id="haedCelBtn" class="btn_azure03">취소</button>
-		<div id="headList" class="scroll"></div>	
+		<button id="navAddBtn" class="btn_azure03">추가</button>
+		<button id="navSaveBtn" class="btn_azure03">네비메뉴 저장</button>
+		<button id="navCelBtn" class="btn_azure03">취소</button>
+		<div id="navList" class="scroll"></div>	
 	</div>
 	
 	<div class="left">

@@ -86,8 +86,8 @@ public class AdminService {
 	 * @param param
 	 * @return
 	 */
-	public List<WhiteMap> selectHeadMenuList(WhiteMap param) {		
-		return adminMapper.selectHeadMenuList(param);		
+	public List<WhiteMap> selectNavMenuList(WhiteMap param) {		
+		return adminMapper.selectNavMenuList(param);		
 		
 	}	
 	/**

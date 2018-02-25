@@ -53,7 +53,7 @@
 	
 	
 	<!--  -->
-	<select id="selectHeadMenuList" resultType="whiteMap" parameterType="whiteMap">		
+	<select id="selectNavMenuList" resultType="whiteMap" parameterType="whiteMap">		
 		SELECT
 			<if test="mode == 'select'">
 			'select' AS state,
@@ -84,7 +84,7 @@
 			'select' AS state,
 			</if>
 			side_seq AS sideSeq,
-			head_seq AS headSeq,
+			nav_seq AS navSeq,
 			side_nm AS sideNm,
 			side_url AS sideUrl,		
 			side_order AS sideOrder		

@@ -20,7 +20,6 @@ $(document).ready(function(){
 			mode : "select"
 		},
 	    success : function(data) {
-	    	console.log(data);
 	    	bank.init(data.bankList).view();	    	
 	    },
 	    error : function(request, status, error){

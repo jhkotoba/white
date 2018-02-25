@@ -49,12 +49,12 @@ public class AdminMapper {
 	}
 	
 	/**
-	 * 헤드 메뉴 리스트 조회
+	 * 네비 메뉴 리스트 조회
 	 * @param param
 	 * @return
 	 */
-	public List<WhiteMap> selectHeadMenuList(WhiteMap param) {
-		return sqlSession.selectList("adminMapper.selectHeadMenuList", param);
+	public List<WhiteMap> selectNavMenuList(WhiteMap param) {
+		return sqlSession.selectList("adminMapper.selectNavMenuList", param);
 	}
 	
 	/**
