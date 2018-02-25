@@ -104,12 +104,71 @@
 		</foreach>	
 	</insert>
 	
+	<!-- 네비메뉴 insert -->
+	<insert id="insertNavMenuList" parameterType="java.util.List">
+		INSERT INTO nav_menu(		
+			nav_nm,	
+			nav_url,
+			auth_nm_seq,
+			nav_order
+		)VALUES
+		<foreach collection="list" item="item" separator="),(" open="(" close=")">
+			#{item.navNm}, 
+			#{item.navUrl},
+			#{item.authNmSeq},
+			#{item.navOrder}			
+		</foreach>	
+	</insert>
+	
+	
+	<!-- 네비메뉴 수정 -->
+	<update id="updateNavMenuList" parameterType="java.util.List">		
+		UPDATE nav_menu
+		SET nav_nm = 
+		CASE		
+		<foreach collection="list" item="item">
+			WHEN nav_seq = #{item.navSeq} THEN #{item.navNm}
+		</foreach>		
+		END,	
+		nav_url = 
+		CASE		
+		<foreach collection="list" item="item">
+			WHEN nav_seq = #{item.navSeq} THEN #{item.navUrl}
+		</foreach>		
+		END,
+		auth_nm_seq = 
+		CASE		
+		<foreach collection="list" item="item">
+			WHEN nav_seq = #{item.navSeq} THEN #{item.authNmSeq}
+		</foreach>		
+		END,
+		nav_order = 
+		CASE		
+		<foreach collection="list" item="item">
+			WHEN nav_seq = #{item.navSeq} THEN #{item.navOrder}
+		</foreach>		
+		END
+		WHERE nav_seq IN 
+		<foreach collection="list" item="item" separator="," open="(" close=")">
+			#{item.navSeq}
+		</foreach>
+	</update>
+	
 	
 	<delete id="deleteAuthList" parameterType="java.util.List">
 		DELETE FROM authority
 		WHERE auth_seq IN 
 		<foreach collection="list" item="item" separator="," open="(" close=")">
 			#{item.authSeq}
+		</foreach>
+	</delete>
+	
+	<!-- 네비메뉴 삭제 -->
+	<delete id="deleteNavMenuList" parameterType="java.util.List">
+		DELETE FROM nav_menu
+		WHERE nav_seq IN 
+		<foreach collection="list" item="item" separator="," open="(" close=")">
+			#{item.navSeq}
 		</foreach>
 	</delete>
 	

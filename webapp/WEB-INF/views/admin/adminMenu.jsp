@@ -34,9 +34,19 @@ $(document).ready(function(){
 		nav.add().view();
 	});
 	
-	//목적 취소
+	//취소
 	$("#navCelBtn").click(function(){		
 		nav.cancel().view();
+	});
+	
+	//네비메뉴 저장, 수정, 삭제
+	$("#navSaveBtn").click(function(){
+		let rtn = nav.check();
+		if(rtn.check === true){
+			nav.save();
+		}else{
+			alert(rtn.msg);
+		}
 	});
 	
 	
@@ -51,14 +61,7 @@ $(document).ready(function(){
 		side.cancel().view();
 	});
 	
-	$("#navSaveBtn").click(function(){
-		let rtn = head.check();
-		if(rtn.check === true){
-			head.save();
-		}else{
-			alert(rtn.msg);
-		}
-	});
+	
 	
 	$("#sideSaveBtn").click(function(){
 		let rtn = side.check();

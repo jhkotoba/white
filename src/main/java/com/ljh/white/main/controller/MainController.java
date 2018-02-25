@@ -17,11 +17,11 @@ public class MainController {
 	@RequestMapping(value="/")
 	public String white(HttpServletRequest request){		
 		logger.debug("white start");
-		return "redirect:main.do";		
+		return "redirect:main";		
 	}
 
 	//메인페이지
-	@RequestMapping(value="/main.do")
+	@RequestMapping(value="/main")
 	public String main(HttpServletRequest request, HttpServletResponse response){
 		logger.debug("main start");
 		

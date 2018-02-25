@@ -62,7 +62,7 @@ public class LoginController {
 			request.setAttribute("sidePage", null);
 			request.setAttribute("sectionPage", "main/main.jsp");
 			
-			return "redirect:/main.do";
+			return "redirect:/main";
 		}else{
 			return "login/login.jsp";	
 		}		
@@ -81,7 +81,7 @@ public class LoginController {
 		//모든 세션 정보삭제하고 현재 세션 무효화
 		session.invalidate();
 		
-		return "redirect:/main.do";
+		return "redirect:/main";
 	}
 	
 	//유저등록 페이지

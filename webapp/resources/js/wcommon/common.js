@@ -2,24 +2,6 @@
  *  common.js
  */
 
-$(document).ready(function(){
-	
-	//뒤로가기 방지
-	history.pushState(null, null, location.href);
-	window.onpopstate = function(event) {
-		history.go(1);
-	};
-});
-
-//삭제
-/*let typeCode = {
-	LEDGER_BACKUP_UPLOAD : "8001",
-	LEDGER_BACKUP_DOWNLOAD : "8002",
-		
-		
-		
-}*/
-
 //비어있는지 체크
 let emptyCheck = {
 	//데이터가 있으면 true 데이터가 없으면 false

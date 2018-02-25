@@ -33,7 +33,7 @@ public class SessionInterceptor extends HandlerInterceptorAdapter {
 				if(auth.getInt("administrator")==1) {
 					return true;
 				}else {					
-					response.sendRedirect(path+"/main.do");
+					response.sendRedirect(path+"/main");
 					return false;
 				}
 			//가계부 페이지 권한 체크
@@ -41,7 +41,7 @@ public class SessionInterceptor extends HandlerInterceptorAdapter {
 				if(auth.getInt("ledger")==1) {
 					return true;
 				}else {
-					response.sendRedirect(path+"/main.do");
+					response.sendRedirect(path+"/main");
 					return false;					
 				}
 			//데모 페이지 권한 체크
@@ -49,7 +49,7 @@ public class SessionInterceptor extends HandlerInterceptorAdapter {
 				if(auth.getInt("developer")==1) {
 					return true;
 				}else {
-					response.sendRedirect(path+"/main.do");
+					response.sendRedirect(path+"/main");
 					return false;					
 				}
 			}else {

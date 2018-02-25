@@ -65,4 +65,31 @@ public class AdminMapper {
 	public List<WhiteMap> selectSideMenuList(WhiteMap param) {
 		return sqlSession.selectList("adminMapper.selectSideMenuList", param);
 	}
+	
+	/**
+	 * 네비메뉴 insert
+	 * @param list
+	 * @return
+	 */
+	public int insertNavMenuList(List<WhiteMap> list) {		
+		return sqlSession.insert("adminMapper.insertNavMenuList", list);		 
+	}	
+	
+	/**
+	 * 네비메뉴 update
+	 * @param list
+	 * @return
+	 */
+	public int updateNavMenuList(List<WhiteMap> list) {		
+		return sqlSession.update("adminMapper.updateNavMenuList", list);		 
+	}	
+	
+	/**
+	 * 네비메뉴  delete
+	 * @param list
+	 * @return
+	 */
+	public int deleteNavMenuList(List<WhiteMap> list) {		
+		return sqlSession.delete("adminMapper.deleteNavMenuList", list);		 
+	}
 }

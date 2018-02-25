@@ -30,7 +30,7 @@
 	<nav>
 		<c:choose>
 			<c:when test="${sessionScope.authority.developer eq 1}">
-				<a href="${contextPath}/main.do">메인화면</a>				
+				<a href="${contextPath}/main">메인화면</a>				
 				<a href="${contextPath}/ledgerRe/ledgerReMain.do">가계부</a>
 				<a href="${contextPath}/source/sourceMain.do">소스코드</a>
 				<a>북마크</a>
@@ -40,7 +40,7 @@
 			</c:when>
 			
 			<c:otherwise>
-				<a href="${contextPath}/main.do">메인화면</a>	
+				<a href="${contextPath}/main">메인화면</a>	
 				<c:if test="${sessionScope.authority.ledger eq 1}">			
 					<a href="${contextPath}/ledgerRe/ledgerReMain.do">가계부</a>
 				</c:if>

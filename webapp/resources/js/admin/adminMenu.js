@@ -7,9 +7,18 @@ $(document).ready(function(){
 		nav.sync(event.target);
 	});
 	
-	/*$('#navList').on("click", function(event) {
-		nav.sync(event.target);
-	});*/	
+	$('#navList').on("click button", function(event) {
+		let idx = event.target.id.split('_')[1];
+		let name = event.target.id.split('_')[0];
+		switch(name){		
+		case "navUp" :
+			nav.change(Number(idx), "up").sync(event.target).view();
+			break;
+		case "navDown" :
+			nav.change(Number(idx), "down").sync(event.target).view();
+			break;
+		}
+	});	
 	
 	$('#sideList').on("change keyup input", function(event) {
 		side.sync(event.target);
@@ -20,6 +29,7 @@ let nav = {
 	navList : new Array(),
 	navClone : new Array(),
 	authList : new Array(),
+	lastIdx : 0,
 	
 	init : function(navList, authList){		
     	this.navList = navList;
@@ -57,6 +67,7 @@ let nav = {
 			tag	+= "<th>move</th>";
 			tag += "</tr>";
 		
+		this.lastIdx = 0;
 		let addAttr = {chked:"", cls:"", read:""};
 		for(let i=0; i<this.navList.length; i++){			
 			
@@ -84,17 +95,57 @@ let nav = {
 				tag += "<option "+selected+" value='"+this.authList[j].authNmSeq+"'>"+this.authList[j].authNm+"</option>";
 			}	
 			tag += "</select></td>";
-			tag += "<td><button id='navUp_"+i+"' class='btn_azure02' onclick='nav.change();'>위로</button><button id='navDown_"+i+"' class='btn_azure02'>아래</button></td>";
-			tag += "</tr>";			
+			if(this.navList[i].state !== "insert"){
+				tag += "<td><button id='navUp_"+i+"' class='btn_azure02'>위로</button><button id='navDown_"+i+"' class='btn_azure02'>아래</button></td>";
+				this.lastIdx++;
+			}else{
+				tag += "<td><button id='navUp_"+i+"' class='btn_disabled02' disabled'>위로</button><button id='navDown_"+i+"' class='btn_disabled02' disabled>아래</button></td>";
+			}
+			
+			tag += "</tr>";	
+			
+			
 		}			
 		tag +="</table>";
 		$("#navList").append(tag);
+		$("#navList #navUp_0").removeClass("btn_azure02").addClass("btn_disabled02").prop("disabled", true);
+		$("#navList #navDown_"+String(this.lastIdx-1)).removeClass("btn_azure02").addClass("btn_disabled02").prop("disabled", true);
+		
 		
 		return this;
 	},
 	
-	change : function(){
-		console.log("aaa");
+	change : function(idx, isUpDown){
+		let temp = null;
+		switch(isUpDown){
+		case "up" :
+			if(idx <= 0){				
+				return this;
+			}else{
+				temp = this.navList[idx].navOrder;
+				this.navList[idx].navOrder = this.navList[idx-1].navOrder;
+				this.navList[idx-1].navOrder = temp;
+				
+				temp = this.navList[idx];
+				this.navList[idx] = this.navList[idx-1];
+				this.navList[idx-1] = temp;
+			}
+			break;
+		case "down" :
+			if(idx >= (this.navList.length-1)){
+				return this;
+			}else{
+				temp = this.navList[idx].navOrder;
+				this.navList[idx].navOrder = this.navList[idx+1].navOrder;
+				this.navList[idx+1].navOrder = temp;
+				
+				temp = this.navList[idx];
+				this.navList[idx] = this.navList[idx+1];
+				this.navList[idx+1] = temp;
+			}
+			break;
+		}
+		return this;
 	},
 	
 	sync : function(target){
@@ -120,28 +171,39 @@ let nav = {
 				$("#navNm_"+idx).removeClass("redLine").prop("readOnly", false);
 				$("#navUrl_"+idx).removeClass("redLine").prop("readOnly", false);
 				$("#authNmSeq_"+idx).removeClass("redLine").prop("disabled", false);
-				$("#navUp_"+idx).removeClass("btn_disabled02").addClass("btn_azure02").prop("disabled", false);
-				$("#navDown_"+idx).removeClass("btn_disabled02").addClass("btn_azure02").prop("disabled", false);
+				if(idx !== "0") $("#navUp_"+idx).removeClass("btn_disabled02").addClass("btn_azure02").prop("disabled", false);				
+				if(idx !== String(this.lastIdx-1)) $("#navDown_"+idx).removeClass("btn_disabled02").addClass("btn_azure02").prop("disabled", false);				
 			}
 		}else{			
 			this.navList[idx][name] = String(target.value);
-		}
+		}	
 		
-		if(this.navList[idx].state !== "insert"){
-			if($(target).is(":checked") === false && this.equals(idx) === false){
-				this.navList[idx].state = "update";			
-				$("#navNm_"+idx).addClass("edit").prop("readOnly", false);
-				$("#navUrl_"+idx).addClass("edit").prop("readOnly", false);
-				$("#authNmSeq_"+idx).addClass("edit").prop("readOnly", false);
-			}else{
-				if(this.navList[idx].state !== "insert"){
-					$(target).is(":checked") === true ? this.navList[idx].state = "delete" : this.navList[idx].state = "select";			
-					$("#navNm_"+idx).removeClass("edit");
-					$("#navUrl_"+idx).removeClass("edit");
-					$("#authNmSeq_"+idx).removeClass("edit");
+		
+		if(name === "navUp" && idx > 0){			
+			syncFunc(this, Number(idx)-1);
+		}else if(name === "navDown" && idx < (this.navList.length-1)){
+			syncFunc(this, Number(idx)+1);
+		}
+		syncFunc(this, Number(idx));	
+		
+		function syncFunc(obj, idx){			
+			if(obj.navList[idx].state !== "insert"){
+				if($(target).is(":checked") === false && obj.equals(idx) === false){
+					obj.navList[idx].state = "update";			
+					$("#navNm_"+idx).addClass("edit").prop("readOnly", false);
+					$("#navUrl_"+idx).addClass("edit").prop("readOnly", false);
+					$("#authNmSeq_"+idx).addClass("edit").prop("readOnly", false);
+				}else{
+					if(obj.navList[idx].state !== "insert"){
+						$(target).is(":checked") === true ? obj.navList[idx].state = "delete" : obj.navList[idx].state = "select";			
+						$("#navNm_"+idx).removeClass("edit");
+						$("#navUrl_"+idx).removeClass("edit");
+						$("#authNmSeq_"+idx).removeClass("edit");
+					}
 				}
 			}
-		}
+		}		
+		return this;
 	},
 	
 	check : function(){
@@ -155,8 +217,7 @@ let nav = {
 				break;
 			}else if(this.navList[i].navUrl === '' || this.navList[i].navUrl === null){
 				check = {check : false, msg : (i+1) + "행의 URL이 입력되지 않았습니다."};
-				break;
-				
+				break;				
 			}else if(this.navList[i].authNmSeq === '' || this.navList[i].authNmSeq === null){
 				check = {check : false, msg : (i+1) + "행의 권한이 선택되지 않았습니다"};
 				break;
@@ -190,11 +251,11 @@ let nav = {
 		if(inList.length === 0 && upList.length === 0 && delList.length === 0){
 			alert("추가, 수정, 삭제할 대상이 없습니다.");
 			return;
-		}return;
+		}
 		
 		$.ajax({		
 			type: 'POST',
-			url: common.path()+'/ledgerRe/ajax/inUpDelPurList.do',
+			url: common.path()+'/admin/ajax/inUpDelNavMenuList.do',
 			data: {
 				inList : JSON.stringify(inList),
 				upList : JSON.stringify(upList),
@@ -202,15 +263,13 @@ let nav = {
 			},
 			dataType: 'json',
 		    success : function(data, stat, xhr) {
-		    	if(data.msg==="purUsed"){
-		    		alert("삭제-사용되는 purpose가 존재하여 실패.");
-		    	}
-		    	white.sideSubmit("ledgerRe", "Purpose");
+		    	alert(data.inCnt+" 개의 메뉴가 입력, "+data.upCnt+" 개의 메뉴가 수정, "+ data.delCnt+" 개의 메뉴가 삭제되었습니다");
+		    	white.sideSubmit("admin", "Menu");
 		    },
 		    error : function(xhr, stat, err) {
 		    	alert("insert, update, delete error");
 		    }
-		});	
+		});
 	},
 	
 	equals : function(idx){
@@ -259,10 +318,10 @@ let side = {
 		return this;
 	},
 	
-	view : function(navSeq, purpose){
+	view : function(navSeq, navNm){
 		if(emptyCheck.isNotEmpty(navSeq)){
 			this.navSeq = navSeq;
-			this.purpose = purpose;
+			this.navNm = navNm;
 		}
 	
 		$("#sideList").empty();
@@ -335,6 +394,7 @@ let side = {
 				
 			}
 		}
+		return this;
 	},
 	
 	check : function(){
@@ -380,7 +440,7 @@ let side = {
 			return;
 		}
 		
-		$.ajax({		
+		/*$.ajax({		
 			type: 'POST',
 			url: common.path()+'/ledgerRe/ajax/inUpDelPurDtlList.do',
 			data: {
@@ -398,7 +458,7 @@ let side = {
 		    error : function(xhr, stat, err) {
 		    	alert("insert, update, delete error");
 		    }
-		});	
+		});	*/
 	},
 	
 	equals : function(idx){
