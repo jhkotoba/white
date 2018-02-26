@@ -150,7 +150,7 @@ let nav = {
 	
 	sync : function(target){
 		let name = target.id.split('_')[0];
-		let idx = target.id.split('_')[1];		
+		let idx = Number(target.id.split('_')[1]);		
 		
 		if(name === "navDel"){
 			
@@ -165,14 +165,14 @@ let nav = {
 				$("#navUrl_"+idx).addClass("redLine").prop("readOnly", true);
 				$("#authNmSeq_"+idx).addClass("redLine").prop("disabled", true);
 				$("#navUp_"+idx).removeClass("btn_azure02").addClass("btn_disabled02").prop("disabled", true);
-				$("#navDown_"+idx).removeClass("btn_azure02").addClass("btn_disabled02").prop("disabled", true);
+				$("#navDown_"+idx).removeClass("btn_azure02").addClass("btn_disabled02").prop("disabled", true);							
 			}else{
 				this.navList[idx].state = "select";
 				$("#navNm_"+idx).removeClass("redLine").prop("readOnly", false);
 				$("#navUrl_"+idx).removeClass("redLine").prop("readOnly", false);
 				$("#authNmSeq_"+idx).removeClass("redLine").prop("disabled", false);
-				if(idx !== "0") $("#navUp_"+idx).removeClass("btn_disabled02").addClass("btn_azure02").prop("disabled", false);				
-				if(idx !== String(this.lastIdx-1)) $("#navDown_"+idx).removeClass("btn_disabled02").addClass("btn_azure02").prop("disabled", false);				
+				if(idx !== 0) $("#navUp_"+idx).removeClass("btn_disabled02").addClass("btn_azure02").prop("disabled", false);				
+				if(idx !== (this.lastIdx-1)) $("#navDown_"+idx).removeClass("btn_disabled02").addClass("btn_azure02").prop("disabled", false);				
 			}
 		}else{			
 			this.navList[idx][name] = String(target.value);
