@@ -39,7 +39,7 @@ let nav = {
 	},
 	
 	add : function(){
-		this.navList.push({navUrl : '', authNmSeq : '', navNm : '', navOrder : (this.navList.length+1), state: 'insert'});		
+		this.navList.push({navUrl : '', authNmSeq : '', navNm : '', navOrder : (this.navList[this.navList.length-1].navOrder+1), state: 'insert'});		
 		return this;
 	},
 	
@@ -83,10 +83,10 @@ let nav = {
 			
 			tag += "<tr>";			
 			tag += "<td><input id='navDel_"+i+"' type='checkbox' "+addAttr.chked+" title='삭제 체크박스'></td>";
-			tag += "<td>"+this.navList[i].navOrder+"</td>";
-			tag += "<td><input id='navNm_"+i+"' type='text' class='font10 "+addAttr.cls+"' "+addAttr.read+" value='"+this.navList[i].navNm
+			tag += "<td>"+(i+1)+"</td>";
+			tag += "<td><input id='navNm_"+i+"' type='text' class='"+addAttr.cls+"' "+addAttr.read+" value='"+this.navList[i].navNm
 				+"' onclick='side.view("+this.navList[i].navSeq+",\""+this.navList[i].navNm+"\")'></td>";
-			tag += "<td><input id='navUrl_"+i+"' type='text' class='font10 "+addAttr.cls+"' "+addAttr.read+" value='"+this.navList[i].navUrl
+			tag += "<td><input id='navUrl_"+i+"' type='text' class=' "+addAttr.cls+"' "+addAttr.read+" value='"+this.navList[i].navUrl
 				+"' onclick='side.view("+this.navList[i].navSeq+",\""+this.navList[i].navNm+"\")'></td>";
 			tag += "<td><select id='authNmSeq_"+i+"' class='"+addAttr.cls+"'>";
 			tag += "<option value=''>선택</option>";			
@@ -108,8 +108,8 @@ let nav = {
 		}			
 		tag +="</table>";
 		$("#navList").append(tag);
-		$("#navList #navUp_0").removeClass("btn_azure02").addClass("btn_disabled02").prop("disabled", true);
-		$("#navList #navDown_"+String(this.lastIdx-1)).removeClass("btn_azure02").addClass("btn_disabled02").prop("disabled", true);
+		$("#navList #navUp_0").removeClass().addClass("btn_disabled02").prop("disabled", true);
+		$("#navList #navDown_"+String(this.lastIdx-1)).removeClass().addClass("btn_disabled02").prop("disabled", true);
 		
 		
 		return this;
@@ -121,13 +121,13 @@ let nav = {
 		case "up" :
 			if(idx <= 0){				
 				return this;
-			}else{
+			}else{								
 				temp = this.navList[idx].navOrder;
 				this.navList[idx].navOrder = this.navList[idx-1].navOrder;
 				this.navList[idx-1].navOrder = temp;
 				
-				temp = this.navList[idx];
-				this.navList[idx] = this.navList[idx-1];
+				temp = common.clone(this.navList[idx]);				
+				this.navList[idx] = common.clone(this.navList[idx-1]);
 				this.navList[idx-1] = temp;
 			}
 			break;
@@ -150,59 +150,61 @@ let nav = {
 	
 	sync : function(target){
 		let name = target.id.split('_')[0];
-		let idx = Number(target.id.split('_')[1]);		
+		let idx = Number(target.id.split('_')[1]);
 		
-		if(name === "navDel"){
-			
+		switch(name){
+		
+		case "navDel":
 			if(this.navList[idx].state === "insert" && $(target).is(":checked") === true){
 				this.del(idx).view();
 				return;
 			}			
 			
-			if( $(target).is(":checked") === true ){				
-				this.navList[idx].state = "delete";				
-				$("#navNm_"+idx).addClass("redLine").prop("readOnly", true);
-				$("#navUrl_"+idx).addClass("redLine").prop("readOnly", true);
-				$("#authNmSeq_"+idx).addClass("redLine").prop("disabled", true);
-				$("#navUp_"+idx).removeClass("btn_azure02").addClass("btn_disabled02").prop("disabled", true);
-				$("#navDown_"+idx).removeClass("btn_azure02").addClass("btn_disabled02").prop("disabled", true);							
-			}else{
+			if( $(target).is(":checked") === true ){							
+				$("#navNm_"+idx).removeClass().addClass("redLine").prop("readOnly", true);
+				$("#navUrl_"+idx).removeClass().addClass("redLine").prop("readOnly", true);
+				$("#authNmSeq_"+idx).removeClass().addClass("redLine").prop("disabled", true);	
+				this.navList[idx].state = "delete";
+			}else{				
+				$("#navNm_"+idx).removeClass().prop("readOnly", false);
+				$("#navUrl_"+idx).removeClass().prop("readOnly", false);
+				$("#authNmSeq_"+idx).removeClass().prop("disabled", false);
+				if(idx !== "0") $("#navUp_"+idx).removeClass().addClass("btn_azure02").prop("disabled", false);				
+				if(idx !== this.lastIdx-1) $("#navDown_"+idx).removeClass().addClass("btn_azure02").prop("disabled", false);
 				this.navList[idx].state = "select";
-				$("#navNm_"+idx).removeClass("redLine").prop("readOnly", false);
-				$("#navUrl_"+idx).removeClass("redLine").prop("readOnly", false);
-				$("#authNmSeq_"+idx).removeClass("redLine").prop("disabled", false);
-				if(idx !== 0) $("#navUp_"+idx).removeClass("btn_disabled02").addClass("btn_azure02").prop("disabled", false);				
-				if(idx !== (this.lastIdx-1)) $("#navDown_"+idx).removeClass("btn_disabled02").addClass("btn_azure02").prop("disabled", false);				
 			}
-		}else{			
+			break;
+		case "navUp" :
+			syncFunc(this, idx-1);
+			break;
+		case "navDown" :
+			syncFunc(this, idx+1);			
+			break;
+		default :
 			this.navList[idx][name] = String(target.value);
-		}	
-		
-		
-		if(name === "navUp" && idx > 0){			
-			syncFunc(this, Number(idx)-1);
-		}else if(name === "navDown" && idx < (this.navList.length-1)){
-			syncFunc(this, Number(idx)+1);
+			break;		
 		}
-		syncFunc(this, Number(idx));	
+		syncFunc(this, idx);
+		
 		
 		function syncFunc(obj, idx){			
-			if(obj.navList[idx].state !== "insert"){
+			switch(obj.navList[idx].state){
+			case "select" :
+			case "update" :
 				if($(target).is(":checked") === false && obj.equals(idx) === false){
 					obj.navList[idx].state = "update";			
 					$("#navNm_"+idx).addClass("edit").prop("readOnly", false);
 					$("#navUrl_"+idx).addClass("edit").prop("readOnly", false);
 					$("#authNmSeq_"+idx).addClass("edit").prop("readOnly", false);
 				}else{
-					if(obj.navList[idx].state !== "insert"){
-						$(target).is(":checked") === true ? obj.navList[idx].state = "delete" : obj.navList[idx].state = "select";			
-						$("#navNm_"+idx).removeClass("edit");
-						$("#navUrl_"+idx).removeClass("edit");
-						$("#authNmSeq_"+idx).removeClass("edit");
-					}
+					$(target).is(":checked") === true ? obj.navList[idx].state = "delete" : obj.navList[idx].state = "select";					
+					$("#navNm_"+idx).removeClass();
+					$("#navUrl_"+idx).removeClass();
+					$("#authNmSeq_"+idx).removeClass();					
 				}
+				break;
 			}
-		}		
+		}
 		return this;
 	},
 	
@@ -350,7 +352,7 @@ let side = {
 				tag += "<tr>";		
 				tag += "<td><input id='sideDel_"+i+"' type='checkbox' "+addAttr.chked+" title='삭제 체크박스'></td>";
 				tag += "<td>"+this.sideList[i].sideOrder+"</td>";
-				tag += "<td><input id='purDetail_"+i+"' type='text' class='font10 "+addAttr.cls+"' value='"+this.sideList[i].purDetail+"' "+addAttr.read+"></td>";
+				tag += "<td><input id='purDetail_"+i+"' type='text' class='"+addAttr.cls+"' value='"+this.sideList[i].purDetail+"' "+addAttr.read+"></td>";
 				tag += "</tr>";
 			}
 		}	
@@ -396,7 +398,7 @@ let side = {
 		}
 		return this;
 	},
-	
+
 	check : function(){
 		let check = {check : true, msg : ""};
 		let saveChk = 0;
