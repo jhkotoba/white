@@ -291,6 +291,6 @@ let white = {
 		
 		$("#moveForm #move").attr("value", id);	
 		$("#moveForm").attr("method", "post");
-		$("#moveForm").attr("action", common.path()+"/"+menu+"/"+menu+"Main.do").submit();
+		$("#moveForm").attr("action", common.path()+"/"+menu).submit();
 	}
 }

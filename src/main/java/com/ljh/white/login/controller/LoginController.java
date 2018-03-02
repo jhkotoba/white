@@ -2,6 +2,7 @@ package com.ljh.white.login.controller;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 
 import javax.annotation.Resource;
 import javax.servlet.ServletException;
@@ -49,7 +50,9 @@ public class LoginController {
 		if(userCheck){
 			
 			int userSeq = loginService.getUserSeq(userId);
-			WhiteMap auth = loginService.selectUserAuthority(userSeq, userId);			
+			WhiteMap auth = loginService.selectUserAuthority(userSeq, userId);
+			List<WhiteMap> navList = loginService.selectNavMenuList(userSeq);
+			
 			
 			//세션 등록 
 			HttpSession session = request.getSession();		
@@ -57,6 +60,7 @@ public class LoginController {
 			session.setAttribute("userId", userId);
 			session.setAttribute("userSeq", userSeq);
 			session.setAttribute("authority", auth);
+			session.setAttribute("navList", navList);
 			
 			//page
 			request.setAttribute("sidePage", null);

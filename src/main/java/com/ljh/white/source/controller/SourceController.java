@@ -13,12 +13,12 @@ public class SourceController {
 			
 	private static Logger logger = LogManager.getLogger(SourceController.class);
 	
-	@RequestMapping(value="/source/sourceMain.do")
+	@RequestMapping(value="/source/source")
 	public String sourceMain(HttpServletRequest request){
 		logger.debug("sourceMain Start");
 		
 		request.setAttribute("sidePage", null);		
-		request.setAttribute("sectionPage", "source/sourceMain.jsp");
+		request.setAttribute("sectionPage", "source/source.jsp");
 		return "white.jsp";
 	}
 }

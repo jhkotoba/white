@@ -27,17 +27,17 @@ public class LedgerReController {
 	@Resource(name = "MemoService")
 	private MemoService memoService;	
 	
-	@RequestMapping(value="/ledgerRe/ledgerReMain.do" )
+	@RequestMapping(value="/ledgerRe" )
 	public String ledgerReMain(HttpServletRequest request){
-		logger.debug("ledgerReMain Start");
+		logger.debug("ledgerRe Start");
 		
 		WhiteMap param = new WhiteMap(request);
 		
 		String sectionPage = param.getString("move");		
-		if("".equals(sectionPage) || sectionPage == null) sectionPage = "Main";
+		if("".equals(sectionPage) || sectionPage == null) sectionPage = "";
 		
 		switch(sectionPage){
-		case "Main" :			
+		case "" :			
 			param.put("memoType", "ledger");
 			request.setAttribute("memoList", new JSONArray(memoService.selectMemoList(param)));
 		case "Select" :			

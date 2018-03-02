@@ -36,7 +36,7 @@ $(document).ready(function(){
 	
 	<div id="sideMenu" class="sideMenu">		
 		<ul>
-			<li id="Main">메인</li>
+			<li>메인</li>
 			<li id="Select">조회</li>
 			<li id="Insert">입력</li>
 			<li id="Stats">통계</li>

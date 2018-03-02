@@ -1,5 +1,6 @@
 package com.ljh.white.main.controller;
 
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -32,9 +33,9 @@ public class MainController {
 	}
 	
 	//white.jsp TEST
-	@RequestMapping(value="/test.do")
+	@RequestMapping(value="/test")
 	public String test(HttpServletRequest request, HttpServletResponse response){
-		logger.debug("test start");
+		logger.debug("test start");		
 		
 		request.setAttribute("sidePage", null);	
 		request.setAttribute("sectionPage", "main/main.jsp");			

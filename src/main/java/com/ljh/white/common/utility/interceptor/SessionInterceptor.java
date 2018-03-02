@@ -13,15 +13,13 @@ public class SessionInterceptor extends HandlerInterceptorAdapter {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
 		
-		Object userId = request.getSession(false).getAttribute("userId");	
-		Object userSeq = request.getSession(false).getAttribute("userSeq");	
-		String path = request.getContextPath();		
+		String path = request.getContextPath();	
 		
 		//세션 검사
-		if(userSeq == null || userId == null){			
+		if(request.getSession(false).getAttribute("userSeq") == null) {
 			response.sendRedirect(path+"/login/login.do");
-			return false;
-		}else{				
+			return false;		
+		}else{
 			
 			//권한 검사
 			String uri = request.getRequestURI();			

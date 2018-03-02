@@ -15,6 +15,9 @@
 <script type="text/javascript" src="${contextPath}/resources/js/wcommon/jquery/jquery-3.2.0.js"></script>
 <script type="text/javascript" src="${contextPath}/resources/js/wcommon/common.js"></script>
 <script type="text/javascript">
+$(document).ready(function(){
+	
+}
 </script>
 </head>
 <body>
@@ -28,8 +31,14 @@
 		</c:if>				
 	</header>
 	<nav>
-		
-	</nav>
+		<a href="${contextPath}/main">메인화면</a>
+		<a href="${contextPath}/test">테스트</a>	 
+		<c:forEach items="${sessionScope.navList}" var="item">			
+			<c:if test="${item.auth eq 1 }">
+				<a href="${contextPath}${item.navUrl}">${item.navNm}</a>
+			</c:if>
+		</c:forEach>		
+	</nav>	
 	
 	<c:choose>
 		<c:when test="${requestScope.sidePage != null}">

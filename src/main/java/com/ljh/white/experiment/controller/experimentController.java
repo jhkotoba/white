@@ -8,12 +8,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class experimentController {
 	
-	@RequestMapping(value="/experiment/experimentMain.do")
+	@RequestMapping(value="/experiment")
 	public String experimentMain(HttpServletRequest request){
 		System.out.println("experimentMain");
 		
 		request.setAttribute("sidePage", null);		
-		request.setAttribute("sectionPage", "experiment/experimentMain.jsp");
+		request.setAttribute("sectionPage", "experiment/experiment.jsp");
 		return "white.jsp";
 	}
 	

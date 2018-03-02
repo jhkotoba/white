@@ -25,6 +25,7 @@ $(document).ready(function(){
 	
 	<div id="sideMenu">		
 		<ul>
+			<li>메인</li>
 			<li id="Lookup">사용자 조회</li>
 			<li id="Menu">메뉴 설정</li>
 			<li id="Authority">권한 설정</li>

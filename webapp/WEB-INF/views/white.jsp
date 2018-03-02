@@ -27,8 +27,16 @@
 			<a class="btn_azure02" href="${contextPath}/login/logoutProcess.do">logout</a> <br>
 		</c:if>				
 	</header>
-	<nav>
-		<c:choose>
+	<nav>	
+		<a href="${contextPath}/main">메인화면</a>	
+		<c:forEach items="${sessionScope.navList}" var="item">			
+			<c:if test="${item.auth eq 1 }">
+				<a href="${contextPath}${item.navUrl}">${item.navNm}</a>
+			</c:if>
+		</c:forEach>
+		
+		
+		<%-- <c:choose>
 			<c:when test="${sessionScope.authority.developer eq 1}">
 				<a href="${contextPath}/main">메인화면</a>				
 				<a href="${contextPath}/ledgerRe/ledgerReMain.do">가계부</a>
@@ -52,9 +60,8 @@
 				<c:if test="${sessionScope.authority.administrator eq 1}">
 					<a href="${contextPath}/admin/adminMain.do">관리자</a>
 				</c:if>							
-			</c:otherwise>
-		
-		</c:choose>
+			</c:otherwise>		
+		</c:choose> --%>
 	</nav>
 	
 	<c:choose>

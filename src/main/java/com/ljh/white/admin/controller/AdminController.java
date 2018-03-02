@@ -22,16 +22,16 @@ public class AdminController {
 	private static Logger logger = LogManager.getLogger(AdminController.class);
 	
 	@Resource(name = "AdminService")
-	private AdminService adminService;
-
-	@RequestMapping(value="/admin/adminMain.do")
+	private AdminService adminService;	
+	
+	@RequestMapping(value="/admin")
 	public String adminMain(HttpServletRequest request){
 		logger.debug("adminMain Start");
 		
 		WhiteMap param = new WhiteMap(request);
 		
 		String sectionPage = param.getString("move");		
-		if("".equals(sectionPage) || sectionPage == null) sectionPage = "Main";
+		if("".equals(sectionPage) || sectionPage == null) sectionPage = "";
 		
 		switch(sectionPage){
 		case "Lookup" :
