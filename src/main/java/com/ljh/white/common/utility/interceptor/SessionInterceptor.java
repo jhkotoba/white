@@ -22,7 +22,7 @@ public class SessionInterceptor extends HandlerInterceptorAdapter {
 		}else{
 			
 			//권한 검사
-			String uri = request.getRequestURI();			
+			/*String uri = request.getRequestURI();			
 			WhiteMap auth = (WhiteMap)request.getSession(false).getAttribute("authority");
 			//System.out.println("size:"+auth.size());
 			
@@ -52,9 +52,9 @@ public class SessionInterceptor extends HandlerInterceptorAdapter {
 				}
 			}else {
 				return true;
-			}
+			}*/
 			
-			
+			return true;
 			
 		}		
 	}
