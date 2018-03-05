@@ -77,12 +77,12 @@ let rec = {
 			tag += "<td>"+(this.recList[i].purpose === 'move' ? (Number(this.recList[i].purSeq) === -1 ? "excel" : "금액이동") : this.recList[i].purpose)+"</td>";
 			tag += "<td>"+this.recList[i].purDetail+"</td>";
 			tag += "<td>"+(this.recList[i].bankName === 'cash' ? "현금" : this.recList[i].bankName +"("+this.recList[i].bankAccount+")")+"</td>";
-			tag += "<td>"+this.recList[i].money+"</td>";			
-			tag += "<td>"+this.recList[i].amount+"</td>";
-			tag += "<td>"+this.recList[i].cash+"</td>";
+			tag += "<td>"+common.comma(this.recList[i].money)+"</td>";			
+			tag += "<td>"+common.comma(this.recList[i].amount)+"</td>";
+			tag += "<td>"+common.comma(this.recList[i].cash)+"</td>";
 			
 			for(let j=0; j<this.bankList.length; j++){
-				tag += "<td>"+this.recList[i]["bank"+j]+"</td>";
+				tag += "<td>"+common.comma(this.recList[i]["bank"+j])+"</td>";
 			}		
 			tag += "</tr>";		
 		}
