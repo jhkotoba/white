@@ -37,7 +37,7 @@
 		
 		
 		<%-- <c:choose>
-			<c:when test="${sessionScope.authority.developer eq 1}">
+			<c:when test="${sessionScope.authority.dev eq 1}">
 				<a href="${contextPath}/main">메인화면</a>				
 				<a href="${contextPath}/ledgerRe/ledgerReMain.do">가계부</a>
 				<a href="${contextPath}/source/sourceMain.do">소스코드</a>
@@ -57,7 +57,7 @@
 					<a>북마크</a>
 					<a>게시판</a>	
 				</c:if>
-				<c:if test="${sessionScope.authority.administrator eq 1}">
+				<c:if test="${sessionScope.authority.admin eq 1}">
 					<a href="${contextPath}/admin/adminMain.do">관리자</a>
 				</c:if>							
 			</c:otherwise>		

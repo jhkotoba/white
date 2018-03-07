@@ -84,14 +84,14 @@ $(document).ready(function(){
 	</div>
 	<br>
 	
-	<div class="left" style="position: absolute;">
+	<div class="left">
 		<button id="navAddBtn" class="btn_azure03">추가</button>
 		<button id="navSaveBtn" class="btn_azure03">네비메뉴 저장</button>
 		<button id="navCelBtn" class="btn_azure03">취소</button>
 		<div id="navList" class="scroll"></div>	
 	</div>
 	
-	<div class="left" style="position: absolute; left: 500px;">
+	<div class="left">
 		<button id="sideAddBtn" class="btn_azure03">추가</button>
 		<button id="sideSaveBtn" class="btn_azure03">사이드메뉴 저장</button>
 		<button id="sideCelBtn" class="btn_azure03">취소</button>

@@ -28,7 +28,7 @@ public class SessionInterceptor extends HandlerInterceptorAdapter {
 			
 			//관리자 페이지 권한 체크
 			if(uri.startsWith(path+"/admin")) {
-				if(auth.getInt("administrator")==1) {
+				if(auth.getInt("admin")==1) {
 					return true;
 				}else {					
 					response.sendRedirect(path+"/main");
@@ -44,7 +44,7 @@ public class SessionInterceptor extends HandlerInterceptorAdapter {
 				}
 			//데모 페이지 권한 체크
 			}else if(uri.startsWith(path+"/experiment")) {
-				if(auth.getInt("developer")==1) {
+				if(auth.getInt("dev")==1) {
 					return true;
 				}else {
 					response.sendRedirect(path+"/main");

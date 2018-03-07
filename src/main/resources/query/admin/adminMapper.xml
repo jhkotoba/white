@@ -36,7 +36,7 @@
 			auth_nm_seq AS authNmSeq,
 			auth_nm AS authNm
  		FROM auth_name
- 		WHERE auth_nm <![CDATA[ <> ]]> 'developer'
+ 		WHERE auth_nm <![CDATA[ <> ]]> 'dev'
 	</select>
 	
 	<select id="selectUserAuth" resultType="WhiteMap" parameterType="WhiteMap">
@@ -48,7 +48,7 @@
 		LEFT OUTER JOIN auth_name name
 		ON name.auth_nm_seq = auth.auth_nm_seq
 		WHERE auth.user_seq = #{userNo}
-   		AND name.auth_nm <![CDATA[ <> ]]> 'developer'
+   		AND name.auth_nm <![CDATA[ <> ]]> 'dev'
 	</select>
 	
 	

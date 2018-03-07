@@ -39,7 +39,11 @@ let nav = {
 	},
 	
 	add : function(){
-		this.navList.push({navUrl : '', authNmSeq : '', navNm : '', navOrder : (this.navList[this.navList.length-1].navOrder+1), state: 'insert'});		
+		if(this.navList.length === 0){
+			this.navList.push({navUrl : '', authNmSeq : '', navNm : '', navOrder : 1, state: 'insert'});
+		}else{
+			this.navList.push({navUrl : '', authNmSeq : '', navNm : '', navOrder : (this.navList[this.navList.length-1].navOrder+1), state: 'insert'});
+		}				
 		return this;
 	},
 	
@@ -85,9 +89,9 @@ let nav = {
 			tag += "<td><input id='navDel_"+i+"' type='checkbox' "+addAttr.chked+" title='삭제 체크박스'></td>";
 			tag += "<td>"+(i+1)+"</td>";
 			tag += "<td><input id='navNm_"+i+"' type='text' class='"+addAttr.cls+"' "+addAttr.read+" value='"+this.navList[i].navNm
-				+"' onclick='side.view("+this.navList[i].navSeq+",\""+this.navList[i].navUrl+"\")'></td>";
+				+"' onclick='side.cancel().view("+this.navList[i].navSeq+",\""+this.navList[i].navUrl+"\")'></td>";
 			tag += "<td><input id='navUrl_"+i+"' type='text' class=' "+addAttr.cls+"' "+addAttr.read+" value='"+this.navList[i].navUrl
-				+"' onclick='side.view("+this.navList[i].navSeq+",\""+this.navList[i].navUrl+"\")'></td>";
+				+"' onclick='side.cancel().view("+this.navList[i].navSeq+",\""+this.navList[i].navUrl+"\")'></td>";
 			tag += "<td><select id='authNmSeq_"+i+"' class='"+addAttr.cls+"'>";
 			tag += "<option value=''>선택</option>";			
 			for(let j=0; j<this.authList.length; j++){
@@ -303,7 +307,13 @@ let side = {
 	},
 	
 	add : function(){
-		this.sideList.push({navSeq : '', sideUrl : '', sideAuthNmSeq : '', navNm : '', sideOrder : (this.sideList[this.sideList.length-1].sideOrder+1), state: 'insert'});		
+		if(emptyCheck.isNotEmpty(this.navSeq)){
+			if(this.sideList.length === 0){
+				this.sideList.push({navSeq : '', sideUrl : '', sideAuthNmSeq : '', navNm : '', sideOrder : 1, state: 'insert'});
+			}else{
+				this.sideList.push({navSeq : '', sideUrl : '', sideAuthNmSeq : '', navNm : '', sideOrder : (this.sideList[this.sideList.length-1].sideOrder+1), state: 'insert'});	
+			}
+		}					
 		return this;
 	},
 	
@@ -317,7 +327,9 @@ let side = {
 		return this;
 	},
 	
-	view : function(navSeq, navNm){
+	view : function(navSeq, navUrl){
+		console.log(navSeq);
+		console.log(navUrl);
 		if(emptyCheck.isNotEmpty(navSeq)){
 			this.navSeq = navSeq;
 			this.navUrl = navUrl;

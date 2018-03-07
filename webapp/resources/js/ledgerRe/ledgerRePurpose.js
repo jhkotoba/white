@@ -69,7 +69,7 @@ let pur = {
 			tag += "<td><input id='purDel_"+i+"' type='checkbox' "+addAttr.chked+" title='삭제 체크박스'></td>";
 			tag += "<td>"+this.purList[i].purOrder+"</td>";
 			tag += "<td><input id='purpose_"+i+"' type='text' class='font10 "+addAttr.cls+"' "+addAttr.read+" value='"+this.purList[i].purpose
-				+"' onclick='purDtl.view("+this.purList[i].purSeq+",\""+this.purList[i].purpose+"\")'></td>";
+				+"' onclick='purDtl.cancel().view("+this.purList[i].purSeq+",\""+this.purList[i].purpose+"\")'></td>";
 			tag += "</tr>";			
 		}			
 		tag +="</table>";
