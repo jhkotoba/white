@@ -73,48 +73,52 @@ let nav = {
 		
 		this.lastIdx = 0;
 		let addAttr = {chked:"", cls:"", read:""};
-		for(let i=0; i<this.navList.length; i++){			
-			
-			if(this.navList[i].state === "insert"){
-				addAttr = {chked:"", cls:"add", read:""};			
-			}else if(this.navList[i].state === "delete"){				
-				addAttr = {chked:"checked='checked'", cls:"redLine", read:"readonly='readonly'"};
-			}else if(this.navList[i].state === "update"){
-				addAttr = {chked:"", cls:"edit", read:""};
-			}else{
-				addAttr = {chked:"", cls:"", read:""};
-			}
-			
-			tag += "<tr>";			
-			tag += "<td><input id='navDel_"+i+"' type='checkbox' "+addAttr.chked+" title='삭제 체크박스'></td>";
-			tag += "<td>"+(i+1)+"</td>";
-			tag += "<td><input id='navNm_"+i+"' type='text' class='"+addAttr.cls+"' "+addAttr.read+" value='"+this.navList[i].navNm
-				+"' onclick='side.cancel().view("+this.navList[i].navSeq+",\""+this.navList[i].navUrl+"\")'></td>";
-			tag += "<td><input id='navUrl_"+i+"' type='text' class=' "+addAttr.cls+"' "+addAttr.read+" value='"+this.navList[i].navUrl
-				+"' onclick='side.cancel().view("+this.navList[i].navSeq+",\""+this.navList[i].navUrl+"\")'></td>";
-			tag += "<td><select id='authNmSeq_"+i+"' class='"+addAttr.cls+"'>";
-			tag += "<option value=''>선택</option>";			
-			for(let j=0; j<this.authList.length; j++){
-				String(this.navList[i].authNmSeq) === String(this.authList[j].authNmSeq) ? selected = "selected='selected'" : selected = "";
-				tag += "<option "+selected+" value='"+this.authList[j].authNmSeq+"'>"+this.authList[j].authNm+"</option>";
-			}	
-			tag += "</select></td>";
-			if(this.navList[i].state !== "insert"){
-				tag += "<td><button id='navUp_"+i+"' class='btn_azure02'>위로</button><button id='navDown_"+i+"' class='btn_azure02'>아래</button></td>";
-				this.lastIdx++;
-			}else{
-				tag += "<td><button id='navUp_"+i+"' class='btn_disabled02' disabled'>위로</button><button id='navDown_"+i+"' class='btn_disabled02' disabled>아래</button></td>";
-			}
-			
-			tag += "</tr>";	
-			
-			
-		}			
-		tag +="</table>";
-		$("#navList").append(tag);
-		$("#navList #navUp_0").removeClass().addClass("btn_disabled02").prop("disabled", true);
-		$("#navList #navDown_"+String(this.lastIdx-1)).removeClass().addClass("btn_disabled02").prop("disabled", true);
 		
+		if(this.navList.length === 0){
+			tag += "<tr><td colspan='6'>no data</td></tr>";
+			tag +="</table>";
+			$("#navList").append(tag);
+		}else{
+			for(let i=0; i<this.navList.length; i++){			
+				
+				if(this.navList[i].state === "insert"){
+					addAttr = {chked:"", cls:"add", read:""};			
+				}else if(this.navList[i].state === "delete"){				
+					addAttr = {chked:"checked='checked'", cls:"redLine", read:"readonly='readonly'"};
+				}else if(this.navList[i].state === "update"){
+					addAttr = {chked:"", cls:"edit", read:""};
+				}else{
+					addAttr = {chked:"", cls:"", read:""};
+				}
+				
+				tag += "<tr>";			
+				tag += "<td><input id='navDel_"+i+"' type='checkbox' "+addAttr.chked+" title='삭제 체크박스'></td>";
+				tag += "<td>"+(i+1)+"</td>";
+				tag += "<td><input id='navNm_"+i+"' type='text' class='"+addAttr.cls+"' "+addAttr.read+" value='"+this.navList[i].navNm
+					+"' onclick='side.cancel().view("+this.navList[i].navSeq+",\""+this.navList[i].navUrl+"\")'></td>";
+				tag += "<td><input id='navUrl_"+i+"' type='text' class=' "+addAttr.cls+"' "+addAttr.read+" value='"+this.navList[i].navUrl
+					+"' onclick='side.cancel().view("+this.navList[i].navSeq+",\""+this.navList[i].navUrl+"\")'></td>";
+				tag += "<td><select id='authNmSeq_"+i+"' class='"+addAttr.cls+"'>";
+				tag += "<option value=''>선택</option>";			
+				for(let j=0; j<this.authList.length; j++){
+					String(this.navList[i].authNmSeq) === String(this.authList[j].authNmSeq) ? selected = "selected='selected'" : selected = "";
+					tag += "<option "+selected+" value='"+this.authList[j].authNmSeq+"'>"+this.authList[j].authNm+"</option>";
+				}	
+				tag += "</select></td>";
+				if(this.navList[i].state !== "insert"){
+					tag += "<td><button id='navUp_"+i+"' class='btn_azure02'>위로</button><button id='navDown_"+i+"' class='btn_azure02'>아래</button></td>";
+					this.lastIdx++;
+				}else{
+					tag += "<td><button id='navUp_"+i+"' class='btn_disabled02' disabled'>위로</button><button id='navDown_"+i+"' class='btn_disabled02' disabled>아래</button></td>";
+				}
+				
+				tag += "</tr>";	
+			}			
+			tag +="</table>";
+			$("#navList").append(tag);
+			$("#navList #navUp_0").removeClass().addClass("btn_disabled02").prop("disabled", true);
+			$("#navList #navDown_"+String(this.lastIdx-1)).removeClass().addClass("btn_disabled02").prop("disabled", true);
+		}
 		
 		return this;
 	},
@@ -309,9 +313,9 @@ let side = {
 	add : function(){
 		if(emptyCheck.isNotEmpty(this.navSeq)){
 			if(this.sideList.length === 0){
-				this.sideList.push({navSeq : '', sideUrl : '', sideAuthNmSeq : '', navNm : '', sideOrder : 1, state: 'insert'});
+				this.sideList.push({navSeq : '', sideUrl : '', sideAuthNmSeq : '', sideNm : '', sideOrder : 1, state: 'insert'});
 			}else{
-				this.sideList.push({navSeq : '', sideUrl : '', sideAuthNmSeq : '', navNm : '', sideOrder : (this.sideList[this.sideList.length-1].sideOrder+1), state: 'insert'});	
+				this.sideList.push({navSeq : '', sideUrl : '', sideAuthNmSeq : '', sideNm : '', sideOrder : (this.sideList[this.sideList.length-1].sideOrder+1), state: 'insert'});	
 			}
 		}					
 		return this;
@@ -348,8 +352,14 @@ let side = {
 			tag	+= "<th>move</th>";
 			tag += "</tr>";
 		
-			this.lastIdx = 0;
-			let addAttr = {chked:"", cls:"", read:""};
+		this.lastIdx = 0;
+		let addAttr = {chked:"", cls:"", read:""};
+		
+		if(this.sideList.length === 0){
+			tag += "<tr><td colspan='7'>no data</td></tr>";
+			tag +="</table>";
+			$("#sideList").append(tag);
+		}else{
 			for(let i=0; i<this.sideList.length; i++){			
 				
 				if(this.sideList[i].state === "insert"){
@@ -366,7 +376,7 @@ let side = {
 				tag += "<td><input id='sideDel_"+i+"' type='checkbox' "+addAttr.chked+" title='삭제 체크박스'></td>";
 				tag += "<td>"+(i+1)+"</td>";
 				tag += "<td><input id='sideNm_"+i+"' type='text' class='"+addAttr.cls+"' "+addAttr.read+" value='"+this.sideList[i].sideNm+"'></td>";
-				tag += "<td><input id='sideNavUrl_"+i+"' type='text' value='"+this.navUrl+"' ></td>";
+				tag += "<td><input id='sideNavUrl_"+i+"' type='text' value='"+this.navUrl+"' readOnly></td>";
 				tag += "<td><input id='sideUrl_"+i+"' type='text' class=' "+addAttr.cls+"' "+addAttr.read+" value='"+this.sideList[i].sideUrl+"'></td>";
 				tag += "<td><select id='sideAuthNmSeq_"+i+"' class='"+addAttr.cls+"'>";
 				tag += "<option value=''>선택</option>";			
@@ -391,9 +401,7 @@ let side = {
 			$("#sideList #navUp_0").removeClass().addClass("btn_disabled02").prop("disabled", true);
 			$("#sideList #navDown_"+String(this.lastIdx-1)).removeClass().addClass("btn_disabled02").prop("disabled", true);
 			
-			
-			return this;
-		
+		}
 		return this;
 	}
 }
