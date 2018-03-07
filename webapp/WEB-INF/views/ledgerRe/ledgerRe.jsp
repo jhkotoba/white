@@ -16,6 +16,20 @@ $(document).ready(function(){
 	//ledger 메모 리스트 조회
 	memo.init('${memoList}', "ledger").view();
 	
+	//새로운 메모 추가
+	$("#memoAddBt").click(function(){		
+		memo.add();
+	});	
+	//취소
+	$("#memoCancelBt").click(function(){
+		memo.cancel();
+	});	
+	//메모 저장
+	$("#memoSaveBt").click(function(){	
+		memo.insert();
+	});
+	
+	
 	let purList = JSON.parse('${purList}');
 	let purDtlList = JSON.parse('${purDtlList}');
 	let bankList = JSON.parse('${bankList}');
@@ -42,19 +56,6 @@ $(document).ready(function(){
 	    	alert("error");
 	    }
 	});	
-	
-	//새로운 메모 추가
-	$("#memoAddBt").click(function(){		
-		memo.add();
-	});	
-	//취소
-	$("#memoCancelBt").click(function(){
-		memo.cancel();
-	});	
-	//메모 저장
-	$("#memoSaveBt").click(function(){	
-		memo.insert();
-	});
 });
 
 </script>

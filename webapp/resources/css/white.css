@@ -1,4 +1,6 @@
+/* input text */
 input[type=text] {width: 90px;}
+#memoTb input[type=text] {width: 500px;}
 
 .sideView{
 	position: absolute;
