@@ -20,7 +20,6 @@ $(document).ready(function(){
 			mode : "select"
 		},
 	    success : function(data) {	
-	    	console.log(data);
 	    	nav.init(data.navList, data.authList).view();
 	    	side.init(data.sideList, data.authList).view();
 	    },
@@ -62,7 +61,7 @@ $(document).ready(function(){
 	});
 	
 	
-	
+	//사이드메뉴 저장
 	$("#sideSaveBtn").click(function(){
 		let rtn = side.check();
 		if(rtn.check === true){

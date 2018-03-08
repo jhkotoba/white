@@ -268,6 +268,10 @@ let nav = {
 			return;
 		}
 		
+		if(!confirm("추가, 수정, 삭제한 네비URL을 적용하시겠습니까?")){
+			return;
+		}
+		
 		$.ajax({		
 			type: 'POST',
 			url: common.path()+'/admin/ajax/inUpDelNavMenuList.do',
@@ -349,7 +353,6 @@ let side = {
 			tag += "<th>Del</th>";
 			tag	+= "<th>No</th>";			
 			tag	+= "<th>name</th>";
-			tag	+= "<th>navUrl</th>";
 			tag	+= "<th>sideUrl</th>";
 			tag	+= "<th>auth</th>";
 			tag	+= "<th>move</th>";
@@ -382,9 +385,8 @@ let side = {
 					tag += "<tr>";			
 					tag += "<td><input id='sideDel_"+i+"' type='checkbox' "+addAttr.chked+" title='삭제 체크박스'></td>";
 					tag += "<td>"+(i+1)+"</td>";
-					tag += "<td><input id='sideNm_"+i+"' type='text' class='"+addAttr.cls+"' "+addAttr.read+" value='"+this.sideList[i].sideNm+"'></td>";
-					tag += "<td><input id='sideNavUrl_"+i+"' type='text' value='"+this.navUrl+"' disabled></td>";
-					tag += "<td><input id='sideUrl_"+i+"' type='text' class=' "+addAttr.cls+"' "+addAttr.read+" value='"+this.sideList[i].sideUrl+"'></td>";
+					tag += "<td><input id='sideNm_"+i+"' type='text' class='"+addAttr.cls+"' "+addAttr.read+" value='"+this.sideList[i].sideNm+"'></td>";					
+					tag += "<td>"+this.navUrl+"<input id='sideUrl_"+i+"' type='text' class=' "+addAttr.cls+"' "+addAttr.read+" value='"+this.sideList[i].sideUrl+"'></td>";
 					tag += "<td><select id='sideAuthNmSeq_"+i+"' class='"+addAttr.cls+"'>";
 					tag += "<option value=''>선택</option>";			
 					for(let j=0; j<this.authList.length; j++){
@@ -470,6 +472,83 @@ let side = {
 			}
 		}
 		return this;
+	},
+	
+	check : function(){
+		let check = {check : true, msg : ""};
+		let saveChk = 0;
+		
+		for(let i=0; i<this.sideList.length; i++){
+			
+			// 빈값, null 체크
+			if(this.sideList[i].sideNm === '' || this.sideList[i].sideNm === null){
+				check = {check : false, msg : (i+1) + "행의 사이드URL이름이 입력되지 않았습니다."};
+				break;
+			}else if(this.sideList[i].sideUrl === '' || this.sideList[i].sideUrl === null){
+				check = {check : false, msg : (i+1) + "행의 사이드URL이 입력되지 않았습니다."};
+				break;
+			}else if(String(this.sideList[i].sideAuthNmSeq) === '' || String(this.sideList[i].sideAuthNmSeq) === null){
+				check = {check : false, msg : (i+1) + "행의 사이드URL 권한이 선택되지 않았습니다."};
+				break;
+			}
+			
+			if(this.sideList[i].state === "select") saveChk++;
+			
+		}
+		
+		if(this.sideList.length === saveChk){
+			check = {check : false, msg : "추가, 수정, 삭제할 대상이 없습니다."};
+		}
+		return check;
+	},
+	
+	save : function(){
+		let inList = new Array();
+		let upList = new Array();
+		let delList = new Array();
+		
+		for(let i=0; i<this.sideList.length; i++){		
+			
+			if(this.sideList[i].state === "insert"){
+				inList.push(this.sideList[i]);
+			}else if(this.sideList[i].state === "update"){
+				upList.push(this.sideList[i]);
+			}else if(this.sideList[i].state === "delete"){
+				delList.push(this.sideList[i]);
+			}
+		}
+		
+		if(inList.length === 0 && upList.length === 0 && delList.length === 0){
+			alert("추가, 수정, 삭제할 대상이 없습니다.");
+			return;
+		}
+		
+		if(!confirm("변경한 사이드URL을 적용하시겠습니까?")){
+			return;
+		}
+		
+		alert("TEST중");
+		return; 
+		
+		$.ajax({		
+			type: 'POST',
+			//url: common.path()+'/ledgerRe/ajax/inUpDelPurDtlList.do',
+			data: {
+				inList : JSON.stringify(inList),
+				upList : JSON.stringify(upList),
+				delList : JSON.stringify(delList)
+			},
+			dataType: 'json',
+		    success : function(data, stat, xhr) {
+		    	if(data.msg==="purDtlUsed"){
+		    		alert("삭제-사용되는 상세목적이 존재하여 실패.");
+		    	}
+		    	white.sideSubmit("ledgerRe", "Purpose");
+		    },
+		    error : function(xhr, stat, err) {
+		    	alert("insert, update, delete error");
+		    }
+		});	
 	},
 	
 	equals : function(idx){
