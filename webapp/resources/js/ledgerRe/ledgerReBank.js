@@ -23,7 +23,7 @@ let bank = {
 	},
 	
 	add : function(){
-		this.bankList.push({bankName: '', bankAccount: '', bankNowUseYN: 'Y', state: 'insert'});		
+		this.bankList.push({bankName: '', bankAccount: '', bankNowUseYn: 'Y', state: 'insert'});		
 		return this;
 	},
 	
@@ -65,14 +65,14 @@ let bank = {
 				addAttr = {chked:"", cls:"", read:""};
 			}
 			
-			this.bankList[i].bankNowUseYN === "Y" ? useCls = "btn_azure01" : useCls = "btn_pink01";
+			this.bankList[i].bankNowUseYn === "Y" ? useCls = "btn_azure01" : useCls = "btn_pink01";
 						
 			tag += "<tr>";			
 			tag += "<td><input id='delete_"+i+"' type='checkbox' "+addAttr.chked+" title='삭제 체크박스'></td>";
 			tag += "<td>"+(i+1)+"</td>";
 			tag += "<td><input id='bankName_"+i+"' type='text' class='font10 "+addAttr.cls+"' "+addAttr.read+" value='"+this.bankList[i].bankName+"' ></td>";
 			tag += "<td><input id='bankAccount_"+i+"' type='text' class='font10 "+addAttr.cls+"' "+addAttr.read+" value='"+this.bankList[i].bankAccount+"'></td>";
-			tag += "<td><input id='bankNowUseYN_"+i+"' type='button' class='"+addAttr.cls+" "+useCls+"' "+addAttr.read+" value='"+this.bankList[i].bankNowUseYN+"'></td>";
+			tag += "<td><input id='bankNowUseYn_"+i+"' type='button' class='"+addAttr.cls+" "+useCls+"' "+addAttr.read+" value='"+this.bankList[i].bankNowUseYN+"'></td>";
 			tag += "</tr>";	
 		}			
 		tag +="</table>";
@@ -96,14 +96,14 @@ let bank = {
 				this.bankList[idx].state = "delete";				
 				$("#bankName_"+idx).addClass("redLine").prop("readOnly", true);
 				$("#bankAccount_"+idx).addClass("redLine").prop("readOnly", true);				
-				$("#bankNowUseYN_"+idx).removeClass("btn_azure01").addClass("btn_disabled01").prop("disabled", true);
+				$("#bankNowUseYn_"+idx).removeClass("btn_azure01").addClass("btn_disabled01").prop("disabled", true);
 			}else{
 				this.bankList[idx].state = "select";
 				$("#bankName_"+idx).removeClass("redLine").prop("readOnly", false);
 				$("#bankAccount_"+idx).removeClass("redLine").prop("readOnly", false);
-				$("#bankNowUseYN_"+idx).removeClass("btn_disabled01").addClass("btn_azure01").prop("disabled", false);
+				$("#bankNowUseYn_"+idx).removeClass("btn_disabled01").addClass("btn_azure01").prop("disabled", false);
 			}
-		}else if(name === "bankNowUseYN"){
+		}else if(name === "bankNowUseYn"){
 			if(target.value === "Y"){
 				this.bankList[idx][name] = "N";
 				$(target).val("N").removeClass("btn_azure01").addClass("btn_pink01");
@@ -121,13 +121,13 @@ let bank = {
 				this.bankList[idx].state = "update";			
 				$("#bankName_"+idx).addClass("edit").prop("readOnly", false);
 				$("#bankAccount_"+idx).addClass("edit").prop("readOnly", false);
-				$("#bankNowUseYN_"+idx).addClass("edit").prop("disabled", false);
+				$("#bankNowUseYn_"+idx).addClass("edit").prop("disabled", false);
 			}else{
 				if(this.bankList[idx].state !== "insert"){
 					$(target).is(":checked") === true ? this.bankList[idx].state = "delete" : this.bankList[idx].state = "select";			
 					$("#bankName_"+idx).removeClass("edit");
 					$("#bankAccount_"+idx).removeClass("edit");
-					$("#bankNowUseYN_"+idx).removeClass("edit");
+					$("#bankNowUseYn_"+idx).removeClass("edit");
 				}
 			}
 		}
@@ -204,7 +204,7 @@ let bank = {
 			return false;
 		}else if(this.bankList[idx].bankAccount !== this.bankClone[idx].bankAccount){
 			return false;
-		}else if(this.bankList[idx].bankNowUseYN !== this.bankClone[idx].bankNowUseYN){
+		}else if(this.bankList[idx].bankNowUseYn !== this.bankClone[idx].bankNowUseYn){
 			return false;
 		}else{
 			return true;	

@@ -51,12 +51,12 @@ $(document).ready(function(){
 	
 	
 	
-	//상세목적 추가
+	//사이드메뉴 추가
 	$("#sideAddBtn").click(function(){		
 		side.add().view();
 	});
 	
-	//상세목적 취소
+	//사이드메뉴 취소
 	$("#sideCelBtn").click(function(){		
 		side.cancel().view();
 	});

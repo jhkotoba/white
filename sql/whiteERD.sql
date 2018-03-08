@@ -71,7 +71,7 @@ CREATE TABLE nav_menu
 	nav_seq int NOT NULL AUTO_INCREMENT,
 	nav_nm varchar(20) NOT NULL,
 	nav_url varchar(40) NOT NULL,
-	auth_nm_seq int NOT NULL,
+	nav_auth_nm_seq int NOT NULL,
 	nav_order int NOT NULL,
 	PRIMARY KEY (nav_seq)
 );
@@ -105,7 +105,7 @@ CREATE TABLE side_menu
 	nav_seq int NOT NULL,
 	side_nm varchar(20) NOT NULL,
 	side_url varchar(40) NOT NULL,
-	auth_nm_seq int NOT NULL,
+	side_auth_nm_seq int NOT NULL,
 	side_order int NOT NULL,
 	PRIMARY KEY (side_seq)
 );
@@ -158,7 +158,7 @@ ALTER TABLE authority
 
 
 ALTER TABLE nav_menu
-	ADD FOREIGN KEY (auth_nm_seq)
+	ADD FOREIGN KEY (nav_auth_nm_seq)
 	REFERENCES auth_name (auth_nm_seq)
 	ON UPDATE RESTRICT
 	ON DELETE RESTRICT
@@ -166,7 +166,7 @@ ALTER TABLE nav_menu
 
 
 ALTER TABLE side_menu
-	ADD FOREIGN KEY (auth_nm_seq)
+	ADD FOREIGN KEY (side_auth_nm_seq)
 	REFERENCES auth_name (auth_nm_seq)
 	ON UPDATE RESTRICT
 	ON DELETE RESTRICT

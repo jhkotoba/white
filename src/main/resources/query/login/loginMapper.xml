@@ -53,11 +53,11 @@
 	  		nm.nav_nm AS navNm,
 	 		nm.nav_url AS navUrl,
 	 		nm.nav_order AS navOrder,
-			nm.auth_nm_seq AS authNmSeq			
+			nm.nav_auth_nm_seq AS navAuthNmSeq
 			,IF(
 				(
 					SELECT a.auth_seq FROM authority a
-					WHERE a.auth_nm_seq = nm.auth_nm_seq
+					WHERE a.auth_nm_seq = nm.nav_auth_nm_seq
 					AND a.user_seq = #{userSeq}
 					LIMIT 1
 				) IS NULL, 0, 1

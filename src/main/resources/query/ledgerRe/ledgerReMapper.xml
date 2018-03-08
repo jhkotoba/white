@@ -15,7 +15,7 @@
 			bank_seq AS bankSeq,
 			bank_name AS bankName,
 			bank_account AS bankAccount,
-			bank_now_use_yn AS bankNowUseYN
+			bank_now_use_yn AS bankNowUseYn
 		FROM user_bank
 		WHERE user_seq = #{userSeq}
 		ORDER BY bank_seq ASC
@@ -69,7 +69,7 @@
 			IFNULL(purDtl.pur_detail,'') AS purDetail,
 			IFNULL(bank.bank_name, 'cash')	AS bankName,
 			IFNULL(bank.bank_account, 'cash')	AS bankAccount,
-			IFNULL(bank.bank_now_use_yn,'X') AS bankNowUseYN
+			IFNULL(bank.bank_now_use_yn,'X') AS bankNowUseYn
 		FROM money_record_re rec
 		LEFT OUTER JOIN purpose pur
 			ON rec.pur_seq = pur.pur_seq
@@ -221,7 +221,7 @@
 			#{item.userSeq}, 
 			#{item.bankName},
 			#{item.bankAccount},		
-			#{item.bankNowUseYN}	
+			#{item.bankNowUseYn}	
 		</foreach>	
 	</insert>
 	
@@ -366,7 +366,7 @@
 		bank_now_use_yn = 
 		CASE		
 		<foreach collection="list" item="item">
-			WHEN bank_seq = #{item.bankSeq} THEN #{item.bankNowUseYN}
+			WHEN bank_seq = #{item.bankSeq} THEN #{item.bankNowUseYn}
 		</foreach>		
 		END
 		WHERE bank_seq IN 

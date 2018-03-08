@@ -62,7 +62,7 @@
 	  		nm.nav_nm AS navNm,
 	 		nm.nav_url AS navUrl,
 	 		nm.nav_order AS navOrder,
-			nm.auth_nm_seq AS authNmSeq			
+			nm.nav_auth_nm_seq AS navAuthNmSeq			
 		FROM nav_menu nm
 		ORDER BY nm.nav_order
 	</select>
@@ -73,12 +73,13 @@
 			<if test="mode == 'select'">
 			'select' AS state,
 			</if>
-			side_seq AS sideSeq,
-			nav_seq AS navSeq,
-			side_nm AS sideNm,
-			side_url AS sideUrl,		
-			side_order AS sideOrder		
-		FROM side_menu
+			sm.side_seq AS sideSeq,
+			sm.nav_seq AS navSeq,
+			sm.side_nm AS sideNm,
+			sm.side_url AS sideUrl,		
+			sm.side_order AS sideOrder,
+			sm.side_auth_nm_seq AS sideAuthNmSeq		
+		FROM side_menu AS sm
 		ORDER BY side_order	
 	</select>	
 	
