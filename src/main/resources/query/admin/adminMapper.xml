@@ -95,18 +95,26 @@
 		</foreach>	
 	</insert>
 	
+	<delete id="deleteAuthList" parameterType="java.util.List">
+		DELETE FROM authority
+		WHERE auth_seq IN 
+		<foreach collection="list" item="item" separator="," open="(" close=")">
+			#{item.authSeq}
+		</foreach>
+	</delete>
+	
 	<!-- 네비메뉴 insert -->
 	<insert id="insertNavMenuList" parameterType="java.util.List">
 		INSERT INTO nav_menu(		
 			nav_nm,	
 			nav_url,
-			auth_nm_seq,
+			nav_auth_nm_seq,
 			nav_order
 		)VALUES
 		<foreach collection="list" item="item" separator="),(" open="(" close=")">
 			#{item.navNm}, 
 			#{item.navUrl},
-			#{item.authNmSeq},
+			#{item.navAuthNmSeq},
 			#{item.navOrder}			
 		</foreach>	
 	</insert>
@@ -127,10 +135,10 @@
 			WHEN nav_seq = #{item.navSeq} THEN #{item.navUrl}
 		</foreach>		
 		END,
-		auth_nm_seq = 
+		nav_auth_nm_seq = 
 		CASE		
 		<foreach collection="list" item="item">
-			WHEN nav_seq = #{item.navSeq} THEN #{item.authNmSeq}
+			WHEN nav_seq = #{item.navSeq} THEN #{item.navAuthNmSeq}
 		</foreach>		
 		END,
 		nav_order = 
@@ -143,16 +151,7 @@
 		<foreach collection="list" item="item" separator="," open="(" close=")">
 			#{item.navSeq}
 		</foreach>
-	</update>
-	
-	
-	<delete id="deleteAuthList" parameterType="java.util.List">
-		DELETE FROM authority
-		WHERE auth_seq IN 
-		<foreach collection="list" item="item" separator="," open="(" close=")">
-			#{item.authSeq}
-		</foreach>
-	</delete>
+	</update>	
 	
 	<!-- 네비메뉴 삭제 -->
 	<delete id="deleteNavMenuList" parameterType="java.util.List">
@@ -163,4 +162,73 @@
 		</foreach>
 	</delete>
 	
+	
+	<!-- 사이드메뉴 insert -->
+	<insert id="insertSideMenuList" parameterType="java.util.List">
+		INSERT INTO side_menu(
+			nav_seq,
+			side_nm,	
+			side_url,
+			side_auth_nm_seq,
+			side_order
+		)VALUES
+		<foreach collection="list" item="item" separator="),(" open="(" close=")">
+			#{item.navSeq}, 
+			#{item.sideNm}, 
+			#{item.sideUrl},
+			#{item.sideAuthNmSeq},
+			#{item.sideOrder}			
+		</foreach>	
+	</insert>
+	
+	
+	<!-- 사이드메뉴 수정 -->
+	<update id="updateSideMenuList" parameterType="java.util.List">		
+		UPDATE side_menu
+		SET nav_seq = 
+		CASE		
+		<foreach collection="list" item="item">
+			WHEN side_seq = #{item.sideSeq} THEN #{item.navSeq}
+		</foreach>		
+		END,
+		side_nm = 
+		CASE		
+		<foreach collection="list" item="item">
+			WHEN side_seq = #{item.sideSeq} THEN #{item.sideNm}
+		</foreach>		
+		END,	
+		side_url = 
+		CASE		
+		<foreach collection="list" item="item">
+			WHEN side_seq = #{item.sideSeq} THEN #{item.sideUrl}
+		</foreach>		
+		END,
+		side_auth_nm_seq = 
+		CASE		
+		<foreach collection="list" item="item">
+			WHEN side_seq = #{item.sideSeq} THEN #{item.sideAuthNmSeq}
+		</foreach>		
+		END,
+		side_order = 
+		CASE		
+		<foreach collection="list" item="item">
+			WHEN side_seq = #{item.sideSeq} THEN #{item.sideOrder}
+		</foreach>		
+		END
+		WHERE side_seq IN 
+		<foreach collection="list" item="item" separator="," open="(" close=")">
+			#{item.sideSeq}
+		</foreach>
+	</update>	
+	
+	<!-- 사이드메뉴 삭제 -->
+	<delete id="deleteSideMenuList" parameterType="java.util.List">
+		DELETE FROM side_menu
+		WHERE side_seq IN 
+		<foreach collection="list" item="item" separator="," open="(" close=")">
+			#{item.sideSeq}
+		</foreach>
+	</delete>
+	
 </mapper>
+

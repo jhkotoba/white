@@ -92,4 +92,31 @@ public class AdminMapper {
 	public int deleteNavMenuList(List<WhiteMap> list) {		
 		return sqlSession.delete("adminMapper.deleteNavMenuList", list);		 
 	}
+	
+	/**
+	 * 사이드메뉴 insert
+	 * @param list
+	 * @return
+	 */
+	public int insertSideMenuList(List<WhiteMap> list) {		
+		return sqlSession.insert("adminMapper.insertSideMenuList", list);		 
+	}	
+	
+	/**
+	 * 사이드메뉴 update
+	 * @param list
+	 * @return
+	 */
+	public int updateSideMenuList(List<WhiteMap> list) {		
+		return sqlSession.update("adminMapper.updateSideMenuList", list);		 
+	}	
+	
+	/**
+	 * 사이드메뉴  delete
+	 * @param list
+	 * @return
+	 */
+	public int deleteSideMenuList(List<WhiteMap> list) {		
+		return sqlSession.delete("adminMapper.deleteSideMenuList", list);		 
+	}
 }

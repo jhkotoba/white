@@ -90,11 +90,21 @@ public class AdminController {
 	}
 	
 	@RequestMapping(value="/admin/ajax/inUpDelNavMenuList.do" )
-	public String inUpDelPurList(HttpServletRequest request){
+	public String inUpDelNavMenuList(HttpServletRequest request){
 		logger.debug("inUpDelNavMenuList Start");
 		
 		WhiteMap param = new WhiteMap(request);		
 		WhiteMap resultMap = adminService.inUpDelNavMenuList(param);
+		request.setAttribute("result", new JSONObject(resultMap));		
+		return "result.jsp";
+	}
+	
+	@RequestMapping(value="/admin/ajax/inUpDelSideMenuList.do" )
+	public String inUpDelSideMenuList(HttpServletRequest request){
+		logger.debug("inUpDelSideMenuList Start");
+		
+		WhiteMap param = new WhiteMap(request);		
+		WhiteMap resultMap = adminService.inUpDelSideMenuList(param);
 		request.setAttribute("result", new JSONObject(resultMap));		
 		return "result.jsp";
 	}

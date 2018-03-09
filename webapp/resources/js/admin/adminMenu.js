@@ -22,7 +22,20 @@ $(document).ready(function(){
 	
 	$('#sideList').on("change keyup input", function(event) {
 		side.sync(event.target);
-	});	
+	});
+	
+	$('#sideList').on("click button", function(event) {
+		let idx = event.target.id.split('_')[1];
+		let name = event.target.id.split('_')[0];
+		switch(name){		
+		case "sideUp" :
+			side.change(Number(idx), "up").sync(event.target).view();
+			break;
+		case "sideDown" :
+			side.change(Number(idx), "down").sync(event.target).view();
+			break;
+		}
+	});
 });
 
 let nav = {
@@ -297,7 +310,7 @@ let nav = {
 			return false;
 		}else if(this.navList[idx].navUrl !== this.navClone[idx].navUrl){
 			return false;
-		}else if(String(this.navList[idx].authNmSeq) !== String(this.navClone[idx].authNmSeq)){
+		}else if(String(this.navList[idx].navAuthNmSeq) !== String(this.navClone[idx].navAuthNmSeq)){
 			return false;
 		}else{
 			return true;	
@@ -426,8 +439,41 @@ let side = {
 		return this;
 	},
 	
+	change : function(idx, isUpDown){
+		let temp = null;
+		switch(isUpDown){
+		case "up" :
+			if(idx <= 0){				
+				return this;
+			}else{								
+				temp = this.sideList[idx].sideOrder;
+				this.sideList[idx].sideOrder = this.sideList[idx-1].sideOrder;
+				this.sideList[idx-1].sideOrder = temp;
+				
+				temp = common.clone(this.sideList[idx]);				
+				this.sideList[idx] = common.clone(this.sideList[idx-1]);
+				this.sideList[idx-1] = temp;
+			}
+			break;
+		case "down" :
+			if(idx >= (this.sideList.length-1)){
+				return this;
+			}else{
+				temp = this.sideList[idx].sideOrder;
+				this.sideList[idx].sideOrder = this.sideList[idx+1].sideOrder;
+				this.sideList[idx+1].sideOrder = temp;
+				
+				temp = this.sideList[idx];
+				this.sideList[idx] = this.sideList[idx+1];
+				this.sideList[idx+1] = temp;
+			}
+			break;
+		}
+		return this;
+	},
+	
 	sync : function(target){
-		let name = target.id.split('_')[0];
+		/*let name = target.id.split('_')[0];
 		let idx = target.id.split('_')[1];
 			
 		if(name === "sideDel"){
@@ -450,8 +496,11 @@ let side = {
 				$("#sideUrl_"+idx).removeClass("redLine").prop("readOnly", false);
 				$("#sideAuthNmSeq_"+idx).removeClass("redLine").prop("readOnly", false);
 			}
-		}else{			
-			this.sideList[idx][name] = String(target.value);
+		}else{
+			if(name !== "sideUp" && name !== "sideDown"){
+				this.sideList[idx][name] = String(target.value);
+			}
+			
 		}
 		
 		if(this.sideList[idx].state !== "insert"){
@@ -469,6 +518,69 @@ let side = {
 				$("#sideUrl_"+idx).removeClass("edit");
 				$("#sideAuthNmSeq_"+idx).removeClass("edit");
 				
+			}
+		}
+		return this;*/
+		
+		
+		let name = target.id.split('_')[0];
+		let idx = Number(target.id.split('_')[1]);
+		
+		switch(name){
+		
+		case "sideDel":
+			if(this.sideList[idx].state === "insert" && $(target).is(":checked") === true){
+				this.del(idx).view();
+				return;
+			}			
+			
+			if( $(target).is(":checked") === true ){							
+				$("#sideNm_"+idx).removeClass().addClass("redLine").prop("readOnly", true);
+				$("#sideNavUrl_"+idx).removeClass().addClass("redLine").prop("readOnly", true);
+				$("#sideUrl_"+idx).removeClass().addClass("redLine").prop("readOnly", true);
+				$("#sideAuthNmSeq_"+idx).removeClass().addClass("redLine").prop("disabled", true);	
+				this.sideList[idx].state = "delete";
+			}else{				
+				$("#sideNm_"+idx).removeClass().prop("readOnly", false);
+				$("#sideNavUrl_"+idx).removeClass().prop("readOnly", false);
+				$("#sideUrl_"+idx).removeClass().prop("readOnly", false);
+				$("#sideAuthNmSeq_"+idx).removeClass().prop("disabled", false);
+				if(idx !== "0") $("#sideUp_"+idx).removeClass().addClass("btn_azure02").prop("disabled", false);				
+				if(idx !== this.lastIdx-1) $("#sideDown_"+idx).removeClass().addClass("btn_azure02").prop("disabled", false);
+				this.sideList[idx].state = "select";
+			}
+			break;
+		case "sideUp" :
+			syncFunc(this, idx-1);
+			break;
+		case "sideDown" :
+			syncFunc(this, idx+1);			
+			break;
+		default :
+			this.sideList[idx][name] = String(target.value);
+			break;		
+		}
+		syncFunc(this, idx);
+		
+		
+		function syncFunc(obj, idx){			
+			switch(obj.sideList[idx].state){
+			case "select" :
+			case "update" :
+				if($(target).is(":checked") === false && obj.equals(idx) === false){
+					obj.sideList[idx].state = "update";			
+					$("#sideNm_"+idx).addClass("edit").prop("readOnly", false);
+					$("#sideNavUrl_"+idx).addClass("edit").prop("readOnly", false);
+					$("#sideUrl_"+idx).addClass("edit").prop("readOnly", false);
+					$("#sideAuthNmSeq_"+idx).addClass("edit").prop("readOnly", false);
+				}else{
+					$(target).is(":checked") === true ? obj.sideList[idx].state = "delete" : obj.sideList[idx].state = "select";					
+					$("#sideNm_"+idx).removeClass();
+					$("#sideNavUrl_"+idx).removeClass();
+					$("#sideUrl_"+idx).removeClass();
+					$("#sideAuthNmSeq_"+idx).removeClass();					
+				}
+				break;
 			}
 		}
 		return this;
@@ -527,12 +639,9 @@ let side = {
 			return;
 		}
 		
-		alert("TEST중");
-		return; 
-		
 		$.ajax({		
 			type: 'POST',
-			//url: common.path()+'/ledgerRe/ajax/inUpDelPurDtlList.do',
+			url: common.path()+'/admin/ajax/inUpDelSideMenuList.do',
 			data: {
 				inList : JSON.stringify(inList),
 				upList : JSON.stringify(upList),
@@ -540,10 +649,8 @@ let side = {
 			},
 			dataType: 'json',
 		    success : function(data, stat, xhr) {
-		    	if(data.msg==="purDtlUsed"){
-		    		alert("삭제-사용되는 상세목적이 존재하여 실패.");
-		    	}
-		    	white.sideSubmit("ledgerRe", "Purpose");
+		    	alert(data.inCnt+" 개의 메뉴가 입력, "+data.upCnt+" 개의 메뉴가 수정, "+ data.delCnt+" 개의 메뉴가 삭제되었습니다");
+		    	white.sideSubmit("admin", "Menu");
 		    },
 		    error : function(xhr, stat, err) {
 		    	alert("insert, update, delete error");

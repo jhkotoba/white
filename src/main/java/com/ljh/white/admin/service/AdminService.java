@@ -135,4 +135,39 @@ public class AdminService {
 		return resultMap;
 	}
 	
+	/**
+	 * 사이드메뉴 insert, update, delete
+	 * @param list
+	 * @return
+	 */
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
+	public WhiteMap inUpDelSideMenuList(WhiteMap param) {
+		
+		List<WhiteMap> inList = param.getListWhiteMap("inList");
+		List<WhiteMap> upList = param.getListWhiteMap("upList");
+		List<WhiteMap> delList = param.getListWhiteMap("delList");
+		
+		WhiteMap resultMap = new WhiteMap();
+		
+		if(inList.size() > 0 ) {
+			resultMap.put("inCnt", adminMapper.insertSideMenuList(inList));	
+		}else {
+			resultMap.put("inCnt", 0);	
+		}
+		
+		if(upList.size() > 0 ) {			
+			resultMap.put("upCnt", adminMapper.updateSideMenuList(upList));	
+		}else {
+			resultMap.put("upCnt", 0);	
+		}
+		
+		if(delList.size() > 0) {
+			resultMap.put("delCnt", adminMapper.deleteSideMenuList(delList));			
+		}else {
+			resultMap.put("delCnt", 0);	
+		}
+		
+		return resultMap;
+	}
+	
 }
