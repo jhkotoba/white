@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.ljh.white.common.collection.WhiteMap;
+import com.ljh.white.common.service.WhiteService;
 import com.ljh.white.ledgerRe.service.LedgerReService;
 import com.ljh.white.memo.service.MemoService;
 
@@ -25,31 +26,36 @@ public class LedgerReController {
 	private LedgerReService ledgerReService;
 	
 	@Resource(name = "MemoService")
-	private MemoService memoService;	
+	private MemoService memoService;
+	
+	@Resource(name = "WhiteService")
+	private WhiteService whiteService;
 	
 	@RequestMapping(value="/ledgerRe" )
 	public String ledgerReMain(HttpServletRequest request){
 		logger.debug("ledgerRe Start");
 		
 		WhiteMap param = new WhiteMap(request);
+		List<WhiteMap> sideList = whiteService.selectSideMenuList(param);
 		
 		String sectionPage = param.getString("move");		
-		if("".equals(sectionPage) || sectionPage == null) sectionPage = "";
+		if("".equals(sectionPage) || sectionPage == null) sectionPage = "/ledgerRe";
 		
 		switch(sectionPage){
-		case "" :			
+		case "/ledgerRe" :			
 			param.put("memoType", "ledger");
 			request.setAttribute("memoList", new JSONArray(memoService.selectMemoList(param)));
-		case "Select" :			
-		case "Insert" :	
+		case "/select" :			
+		case "/insert" :	
 			request.setAttribute("purList", new JSONArray(ledgerReService.selectPurList(param)));	
 			request.setAttribute("purDtlList", new JSONArray(ledgerReService.selectPurDtlList(param)));
 			request.setAttribute("bankList", new JSONArray(ledgerReService.selectBankList(param)));
 			break;
-		}
-			
-		request.setAttribute("sidePage", "ledgerRe/ledgerReSide.jsp");		
-		request.setAttribute("sectionPage", "ledgerRe/ledgerRe"+sectionPage+".jsp");
+		}			
+		
+		request.setAttribute("sideList", sideList);
+		request.setAttribute("navUrl", param.getString("navUrl"));
+		request.setAttribute("sectionPage", "ledgerRe"+sectionPage+".jsp");
 		return "white.jsp";
 	}
 	

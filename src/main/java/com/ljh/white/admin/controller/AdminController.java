@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.ljh.white.admin.service.AdminService;
 import com.ljh.white.common.collection.WhiteMap;
+import com.ljh.white.common.service.WhiteService;
 
 
 @Controller
@@ -22,26 +23,31 @@ public class AdminController {
 	private static Logger logger = LogManager.getLogger(AdminController.class);
 	
 	@Resource(name = "AdminService")
-	private AdminService adminService;	
+	private AdminService adminService;
+	
+	@Resource(name = "WhiteService")
+	private WhiteService whiteService;	
 	
 	@RequestMapping(value="/admin")
 	public String adminMain(HttpServletRequest request){
-		logger.debug("adminMain Start");
+		logger.debug("admin Start");
 		
 		WhiteMap param = new WhiteMap(request);
+		List<WhiteMap> sideList = whiteService.selectSideMenuList(param);	
 		
 		String sectionPage = param.getString("move");		
-		if("".equals(sectionPage) || sectionPage == null) sectionPage = "";
+		if("".equals(sectionPage) || sectionPage == null) sectionPage = "/admin";
 		
 		switch(sectionPage){
-		case "Lookup" :
+		case "/lookup" :
 			request.setAttribute("authList", adminService.selectAuthList());
 			break;
 		}
 		
-		request.setAttribute("sidePage", "admin/adminSide.jsp");
-		request.setAttribute("sectionPage", "admin/admin"+sectionPage+".jsp");
-		return "white.jsp";
+		request.setAttribute("sideList", sideList);
+		request.setAttribute("navUrl", param.getString("navUrl"));
+		request.setAttribute("sectionPage", "admin"+sectionPage+".jsp");
+		return "white_test.jsp";
 	}
 	
 	@RequestMapping(value="/admin/ajax/selectUserList.do")

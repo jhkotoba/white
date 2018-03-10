@@ -32,7 +32,7 @@ public class LoginController {
 	private WhiteService whiteService;
 
 	//login
-	@RequestMapping(value = "/login/login.do")
+	@RequestMapping(value = "/login/login")
 	public String login(){		
 		return "login/login.jsp";
 	}
@@ -51,8 +51,7 @@ public class LoginController {
 			
 			int userSeq = loginService.getUserSeq(userId);
 			WhiteMap auth = loginService.selectUserAuthority(userSeq, userId);
-			List<WhiteMap> navList = loginService.selectNavMenuList(userSeq);
-			
+			List<WhiteMap> navList = loginService.selectNavMenuList(userSeq);			
 			
 			//세션 등록 
 			HttpSession session = request.getSession();		
@@ -60,7 +59,7 @@ public class LoginController {
 			session.setAttribute("userId", userId);
 			session.setAttribute("userSeq", userSeq);
 			session.setAttribute("authority", auth);
-			session.setAttribute("navList", navList);
+			session.setAttribute("navList", navList);	
 			
 			//page
 			request.setAttribute("sidePage", null);

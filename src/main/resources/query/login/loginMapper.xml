@@ -64,7 +64,7 @@
 			) AS auth
 		FROM nav_menu nm
 		ORDER BY nm.nav_order
-	</select>	
+	</select>
 	
 	<!-- 사용자 등록 -->
 	<insert id="insertSignUp" parameterType="WhiteMap" useGeneratedKeys="true" keyProperty="user_seq">

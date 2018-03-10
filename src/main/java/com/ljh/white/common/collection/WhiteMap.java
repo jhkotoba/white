@@ -26,6 +26,7 @@ public class WhiteMap extends HashMap<String, Object> {
 				
 		this.put("userId", request.getSession(false).getAttribute("userId").toString() == null ? null : request.getSession(false).getAttribute("userId").toString());
 		this.put("userSeq", request.getSession(false).getAttribute("userSeq").toString() == null ? null : request.getSession(false).getAttribute("userSeq").toString());		
+		this.put("navUrl", "/"+(request.getRequestURI().replaceAll(request.getContextPath(), "")).split("/")[1]);		
 					
 		Enumeration<String> enumeration = request.getParameterNames();
 		

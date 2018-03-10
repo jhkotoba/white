@@ -1,5 +1,7 @@
 package com.ljh.white.common.service;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
@@ -15,7 +17,9 @@ public class WhiteService{
 	private WhiteMapper whiteMapper;
 	
 	/**
+	 * 나중에 관련로직 삭제할 것
 	 * 입력된 테이블, 컬럼, 데이터로 해당 데이터의 갯수를 구함
+	 * @deprecated
 	 * @param table, column, data	
 	 * @return count
 	 * @date 2017.10.24
@@ -35,5 +39,9 @@ public class WhiteService{
 		
 		return whiteMapper.selectIsCntColumn(whiteMap);
 		
+	}
+	
+	public List<WhiteMap> selectSideMenuList(WhiteMap param) {		
+		return whiteMapper.selectSideMenuList(param);		
 	}
 }

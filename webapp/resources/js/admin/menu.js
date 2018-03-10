@@ -373,7 +373,7 @@ let side = {
 			tag += "</tr>";
 		
 		this.lastIdx = 0;
-		let sideView = {cnt:0, idx:0, idxWrite : ""};
+		let sideView = {cnt:0, idxList : new Array()};
 		let addAttr = {chked:"", cls:"", read:""};
 		
 		if(this.sideList.length === 0){
@@ -417,9 +417,8 @@ let side = {
 					
 					tag += "</tr>";	
 					sideView.cnt ++;
-					sideView.idxWrite += String(i);
+					sideView.idxList.push(i);
 				}
-				sideView.idx = i;
 			}
 			
 			//해당 게시물이 0개일경우 NoData
@@ -428,45 +427,61 @@ let side = {
 			}
 			tag +="</table>";
 			$("#sideList").append(tag);
-			//해당 게시물이 1개일경우 순서버튼 막기
-			if(sideView.cnt === 1){
-				$("#sideList #sideUp_"+sideView.idx).removeClass().addClass("btn_disabled02").prop("disabled", true);
-				$("#sideList #sideDown_"+sideView.idx).removeClass().addClass("btn_disabled02").prop("disabled", true);
-			}else if(sideView.cnt !== 0){
-				$("#sideList #sideUp_"+sideView.idxWrite.substr(0,1)).removeClass().addClass("btn_disabled02").prop("disabled", true);
-				$("#sideList #sideDown_"+sideView.idxWrite.substr(sideView.idxWrite.length-1,1)).removeClass().addClass("btn_disabled02").prop("disabled", true);
-			}
+			$("#sideList #sideUp_"+sideView.idxList[0]).removeClass().addClass("btn_disabled02").prop("disabled", true);
+			$("#sideList #sideDown_"+sideView.idxList[sideView.idxList.length-1]).removeClass().addClass("btn_disabled02").prop("disabled", true);
 		}
 		return this;
 	},
 	
 	change : function(idx, isUpDown){
 		let temp = null;
+		let navSeq = this.sideList[idx].navSeq;
+		
 		switch(isUpDown){
 		case "up" :
 			if(idx <= 0){				
 				return this;
-			}else{								
+			}else{
+				
+				let upIdx = 1;				
+				while(true){					
+					if(navSeq !== this.sideList[idx-upIdx].navSeq){
+						upIdx++;
+					}else{
+						break;
+					}
+				}
+				
 				temp = this.sideList[idx].sideOrder;
-				this.sideList[idx].sideOrder = this.sideList[idx-1].sideOrder;
-				this.sideList[idx-1].sideOrder = temp;
+				this.sideList[idx].sideOrder = this.sideList[idx-upIdx].sideOrder;
+				this.sideList[idx-upIdx].sideOrder = temp;
 				
 				temp = common.clone(this.sideList[idx]);				
-				this.sideList[idx] = common.clone(this.sideList[idx-1]);
-				this.sideList[idx-1] = temp;
+				this.sideList[idx] = common.clone(this.sideList[idx-upIdx]);
+				this.sideList[idx-upIdx] = temp;
 			}
 			break;
 		case "down" :
 			if(idx >= (this.sideList.length-1)){
 				return this;
 			}else{
+				
+				let downIdx = 1;				
+				while(true){					
+					if(navSeq !== this.sideList[idx+downIdx].navSeq){
+						downIdx++;
+					}else{
+						break;
+					}
+				}
+				
 				temp = this.sideList[idx].sideOrder;
-				this.sideList[idx].sideOrder = this.sideList[idx+1].sideOrder;
-				this.sideList[idx+1].sideOrder = temp;
+				this.sideList[idx].sideOrder = this.sideList[idx+downIdx].sideOrder;
+				this.sideList[idx+downIdx].sideOrder = temp;
 				
 				temp = this.sideList[idx];
-				this.sideList[idx] = this.sideList[idx+1];
-				this.sideList[idx+1] = temp;
+				this.sideList[idx] = this.sideList[idx+downIdx];
+				this.sideList[idx+downIdx] = temp;
 			}
 			break;
 		}
@@ -477,6 +492,7 @@ let side = {
 		
 		let name = target.id.split('_')[0];
 		let idx = Number(target.id.split('_')[1]);
+		let navSeq = this.sideList[idx].navSeq;
 		
 		switch(name){
 		
@@ -502,11 +518,27 @@ let side = {
 				this.sideList[idx].state = "select";
 			}
 			break;
-		case "sideUp" :
-			syncFunc(this, idx-1);
+		case "sideUp" :			
+			let upIdx = 1;				
+			while(true){					
+				if(navSeq !== this.sideList[idx-upIdx].navSeq){
+					upIdx++;
+				}else{
+					break;
+				}
+			}			
+			syncFunc(this, idx-upIdx);
 			break;
 		case "sideDown" :
-			syncFunc(this, idx+1);			
+			let downIdx = 1;				
+			while(true){					
+				if(navSeq !== this.sideList[idx+downIdx].navSeq){
+					downIdx++;
+				}else{
+					break;
+				}
+			}
+			syncFunc(this, idx+downIdx);			
 			break;
 		default :
 			this.sideList[idx][name] = String(target.value);

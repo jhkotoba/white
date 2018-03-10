@@ -8,7 +8,7 @@
 <meta charset=UTF-8>
 <title>WhiteHome</title>
 
-<script type="text/javascript" src="${contextPath}/resources/js/ledgerRe/ledgerReRecord.js"></script>
+<script type="text/javascript" src="${contextPath}/resources/js/ledgerRe/record.js"></script>
 <script type="text/javascript" src="${contextPath}/resources/js/memo/memo.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){

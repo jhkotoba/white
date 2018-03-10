@@ -26,20 +26,9 @@ public class MainController {
 	public String main(HttpServletRequest request, HttpServletResponse response){
 		logger.debug("main start");
 		
-		request.setAttribute("sidePage", null);	
+		request.setAttribute("sidePage", null);
 		request.setAttribute("sectionPage", "main/main.jsp");			
 		
 		return "white.jsp";
-	}
-	
-	//white.jsp TEST
-	@RequestMapping(value="/test")
-	public String test(HttpServletRequest request, HttpServletResponse response){
-		logger.debug("test start");		
-		
-		request.setAttribute("sidePage", null);	
-		request.setAttribute("sectionPage", "main/main.jsp");			
-		
-		return "white_test.jsp";
 	}
 }
