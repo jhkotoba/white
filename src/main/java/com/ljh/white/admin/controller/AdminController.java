@@ -47,7 +47,7 @@ public class AdminController {
 		request.setAttribute("sideList", sideList);
 		request.setAttribute("navUrl", param.getString("navUrl"));
 		request.setAttribute("sectionPage", "admin"+sectionPage+".jsp");
-		return "white_test.jsp";
+		return "white.jsp";
 	}
 	
 	@RequestMapping(value="/admin/ajax/selectUserList.do")

@@ -32,7 +32,7 @@ public class LoginController {
 	private WhiteService whiteService;
 
 	//login
-	@RequestMapping(value = "/login/login")
+	@RequestMapping(value = "/login/login.do")
 	public String login(){		
 		return "login/login.jsp";
 	}
@@ -103,7 +103,7 @@ public class LoginController {
 		
 		loginService.insertSignUp(userId, userName, passwd);	
 		
-		return "redirect:/login/login.do";
+		return "redirect:/login/login";
 	}
 	
 	//유저 중복 id체크
