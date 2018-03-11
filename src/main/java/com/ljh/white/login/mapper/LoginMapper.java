@@ -50,6 +50,10 @@ public class LoginMapper {
 		return sqlSession.selectOne("LoginMapper.getUserSeq", userId);			
 	}
 	
+	public int userIdCheck(String userId){
+		return sqlSession.selectOne("LoginMapper.userIdCheck", userId);	
+	}
+	
 	public int insertSignUp(WhiteMap param){
 		logger.debug("whiteMap: "+param);	
 		

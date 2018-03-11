@@ -280,17 +280,9 @@ function getContextPath(){
 
 
 let white = {		
-	 sideSubmit : function(menu, id){
-		
-		if(menu==="ledgerRe"){
-			if(id==="Stats"){
-				alert("미구현!");
-				return;
-			}	
-		}
-		
-		$("#moveForm #move").attr("value", id);	
+	 sideSubmit : function(navUrl, sideUrl){
+		$("#moveForm #move").attr("value", sideUrl);	
 		$("#moveForm").attr("method", "post");
-		$("#moveForm").attr("action", common.path()+"/"+menu).submit();
+		$("#moveForm").attr("action", common.path()+navUrl).submit();
 	}
 }

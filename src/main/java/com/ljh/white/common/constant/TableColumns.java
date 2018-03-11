@@ -2,6 +2,11 @@ package com.ljh.white.common.constant;
 
 import com.ljh.white.common.collection.WhiteSet;
 
+/**
+ * @deprecated
+ * @author jehoon.lee
+ *
+ */
 public class TableColumns {
 
 	//테이블 배열

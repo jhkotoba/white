@@ -17,10 +17,11 @@
 <script type="text/javascript">
 
 $(document).ready(function(){
-	$("#sideMenu>ul>li").click(function(){		
-		$("#moveForm #move").attr("value", this.id);	
-		$("#moveForm").attr("method", "post");
-		$("#moveForm").attr("action", common.path()+"${navUrl}").submit();
+	$("#sideMenu>ul>li").click(function(){
+		white.sideSubmit("${navUrl}", this.id);
+		//$("#moveForm #move").attr("value", this.id);	
+		//$("#moveForm").attr("method", "post");
+		//$("#moveForm").attr("action", common.path()+"${navUrl}").submit();
 	});	
 });
 

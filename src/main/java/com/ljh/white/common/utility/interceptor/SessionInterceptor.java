@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
+import com.ljh.white.common.StaticValue;
 import com.ljh.white.common.collection.WhiteMap;
 
 public class SessionInterceptor extends HandlerInterceptorAdapter {
@@ -21,41 +22,16 @@ public class SessionInterceptor extends HandlerInterceptorAdapter {
 			return false;		
 		}else{
 			
-			//권한 검사
-			/*String uri = request.getRequestURI();			
+			//nav 권한 검사
+			String url = "/"+(request.getRequestURI().replaceAll(path, "")).split("/")[1];			
 			WhiteMap auth = (WhiteMap)request.getSession(false).getAttribute("authority");
-			//System.out.println("size:"+auth.size());
 			
-			//관리자 페이지 권한 체크
-			if(uri.startsWith(path+"/admin")) {
-				if(auth.getInt("admin")==1) {
-					return true;
-				}else {					
-					response.sendRedirect(path+"/main");
-					return false;
-				}
-			//가계부 페이지 권한 체크
-			}else if(uri.startsWith(path+"/ledgerRe")) {
-				if(auth.getInt("ledger")==1) {
-					return true;
-				}else {
-					response.sendRedirect(path+"/main");
-					return false;					
-				}
-			//데모 페이지 권한 체크
-			}else if(uri.startsWith(path+"/experiment")) {
-				if(auth.getInt("dev")==1) {
-					return true;
-				}else {
-					response.sendRedirect(path+"/main");
-					return false;					
-				}
-			}else {
+			if(auth.getInt(StaticValue.getNavAuthList().getString(url))==1) {
 				return true;
-			}*/
-			
-			return true;
-			
+			}else {
+				response.sendRedirect(path+"/main");
+				return false;
+			}
 		}		
 	}
 	

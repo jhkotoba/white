@@ -27,9 +27,6 @@ public class LoginController {
 	
 	@Resource(name = "LoginService")
 	private LoginService loginService;
-	
-	@Resource(name = "WhiteService")
-	private WhiteService whiteService;
 
 	//login
 	@RequestMapping(value = "/login/login.do")
@@ -108,8 +105,9 @@ public class LoginController {
 	
 	//유저 중복 id체크
 	@RequestMapping(value="/login/ajax/userIdCheck.do")
-	public String signUpTEST(HttpServletRequest request){		
-		int isCnt = whiteService.isCntColumn("white_user", "user_id", request.getParameter("userId"));
+	public String userIdCheck(HttpServletRequest request){		
+		int isCnt = loginService.userIdCheck(request.getParameter("userId"));
+		
 		request.setAttribute("result", isCnt);
 		return "result.jsp";		
 	}

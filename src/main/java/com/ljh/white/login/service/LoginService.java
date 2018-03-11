@@ -57,6 +57,10 @@ public class LoginService{
 		return loginMapper.getUserSeq(userId);
 	}
 	
+	public int userIdCheck(String userId) {
+		return loginMapper.userIdCheck(userId);
+	}
+	
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
 	public int insertSignUp(String userId, String userName,String passwd) {
 		WhiteMap param = new WhiteMap();

@@ -101,7 +101,16 @@ public class AdminController {
 		
 		WhiteMap param = new WhiteMap(request);		
 		WhiteMap resultMap = adminService.inUpDelNavMenuList(param);
-		request.setAttribute("result", new JSONObject(resultMap));		
+
+		
+		System.out.println(param.getString("navUrl"));
+		System.out.println(param.getString("sideUrl"));
+		
+		resultMap.put("navUrl", param.getString("navUrl"));
+		resultMap.put("sideUrl", param.getString("sideUrl"));
+		request.setAttribute("result", new JSONObject(resultMap));
+		
+		whiteService.setNavAuth();
 		return "result.jsp";
 	}
 	

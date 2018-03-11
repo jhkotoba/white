@@ -53,9 +53,9 @@ let nav = {
 	
 	add : function(){
 		if(this.navList.length === 0){
-			this.navList.push({navUrl : '', authNmSeq : '', navNm : '', navOrder : 1, state: 'insert'});
+			this.navList.push({navUrl : '', navAuthNmSeq : '', navNm : '', navOrder : 1, state: 'insert'});
 		}else{
-			this.navList.push({navUrl : '', authNmSeq : '', navNm : '', navOrder : (this.navList[this.navList.length-1].navOrder+1), state: 'insert'});
+			this.navList.push({navUrl : '', navAuthNmSeq : '', navNm : '', navOrder : (this.navList[this.navList.length-1].navOrder+1), state: 'insert'});
 		}				
 		return this;
 	},
@@ -111,7 +111,7 @@ let nav = {
 					+"' onclick='side.cancel().view("+this.navList[i].navSeq+",\""+this.navList[i].navUrl+"\")'></td>";
 				tag += "<td><input id='navUrl_"+i+"' type='text' class=' "+addAttr.cls+"' "+addAttr.read+" value='"+this.navList[i].navUrl
 					+"' onclick='side.cancel().view("+this.navList[i].navSeq+",\""+this.navList[i].navUrl+"\")'></td>";
-				tag += "<td><select id='authNmSeq_"+i+"' class='"+addAttr.cls+"'>";
+				tag += "<td><select id='navAuthNmSeq_"+i+"' class='"+addAttr.cls+"'>";
 				tag += "<option value=''>선택</option>";			
 				for(let j=0; j<this.authList.length; j++){
 					String(this.navList[i].navAuthNmSeq) === String(this.authList[j].authNmSeq) ? selected = "selected='selected'" : selected = "";
@@ -189,12 +189,12 @@ let nav = {
 			if( $(target).is(":checked") === true ){							
 				$("#navNm_"+idx).removeClass().addClass("redLine").prop("readOnly", true);
 				$("#navUrl_"+idx).removeClass().addClass("redLine").prop("readOnly", true);
-				$("#authNmSeq_"+idx).removeClass().addClass("redLine").prop("disabled", true);	
+				$("#navAuthNmSeq_"+idx).removeClass().addClass("redLine").prop("disabled", true);	
 				this.navList[idx].state = "delete";
 			}else{				
 				$("#navNm_"+idx).removeClass().prop("readOnly", false);
 				$("#navUrl_"+idx).removeClass().prop("readOnly", false);
-				$("#authNmSeq_"+idx).removeClass().prop("disabled", false);
+				$("#navAuthNmSeq_"+idx).removeClass().prop("disabled", false);
 				if(idx !== "0") $("#navUp_"+idx).removeClass().addClass("btn_azure02").prop("disabled", false);				
 				if(idx !== this.lastIdx-1) $("#navDown_"+idx).removeClass().addClass("btn_azure02").prop("disabled", false);
 				this.navList[idx].state = "select";
@@ -221,12 +221,12 @@ let nav = {
 					obj.navList[idx].state = "update";			
 					$("#navNm_"+idx).addClass("edit").prop("readOnly", false);
 					$("#navUrl_"+idx).addClass("edit").prop("readOnly", false);
-					$("#authNmSeq_"+idx).addClass("edit").prop("readOnly", false);
+					$("#navAuthNmSeq_"+idx).addClass("edit").prop("readOnly", false);
 				}else{
 					$(target).is(":checked") === true ? obj.navList[idx].state = "delete" : obj.navList[idx].state = "select";					
 					$("#navNm_"+idx).removeClass();
 					$("#navUrl_"+idx).removeClass();
-					$("#authNmSeq_"+idx).removeClass();					
+					$("#navAuthNmSeq_"+idx).removeClass();					
 				}
 				break;
 			}
@@ -246,7 +246,7 @@ let nav = {
 			}else if(this.navList[i].navUrl === '' || this.navList[i].navUrl === null){
 				check = {check : false, msg : (i+1) + "행의 URL이 입력되지 않았습니다."};
 				break;				
-			}else if(this.navList[i].authNmSeq === '' || this.navList[i].authNmSeq === null){
+			}else if(this.navList[i].navAuthNmSeq === '' || this.navList[i].navAuthNmSeq === null){
 				check = {check : false, msg : (i+1) + "행의 권한이 선택되지 않았습니다"};
 				break;
 			}
@@ -296,7 +296,8 @@ let nav = {
 			dataType: 'json',
 		    success : function(data, stat, xhr) {
 		    	alert(data.inCnt+" 개의 메뉴가 입력, "+data.upCnt+" 개의 메뉴가 수정, "+ data.delCnt+" 개의 메뉴가 삭제되었습니다");
-		    	white.sideSubmit("admin", "Menu");
+		    	//white.sideSubmit("admin", "Menu");
+		    	//white.sideSubmit(data.navUrl, data.sideUrl);
 		    },
 		    error : function(xhr, stat, err) {
 		    	alert("insert, update, delete error");

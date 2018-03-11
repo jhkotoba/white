@@ -32,6 +32,12 @@
 		FROM white_user
 		WHERE user_id = #{userId}
 	</select>
+	
+	<select id="userIdCheck" resultType="int" parameterType="String" >
+		SELECT COUNT(1)
+		FROM white_user
+		WHERE user_id = #{userId}
+	</select>
 		
 	<select id="selectUserAuthority" resultType="WhiteMap" parameterType="int" >
 		SELECT 
