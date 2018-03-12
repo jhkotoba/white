@@ -321,7 +321,7 @@ let rec = {
 		
 	},
 	
-	upDelete : function(){
+	save : function(){
 		
 		let upList = new Array();
 		let delList = new Array();
@@ -381,7 +381,7 @@ let rec = {
 		    	}
 		    	msg += " 되었습니다.";
 		    	alert(msg);
-		    	white.sideSubmit("ledgerRe", "Select");
+		    	white.submit($("#moveForm #navUrl").val(), $("#moveForm #sideUrl").val());
 		    },
 		    error : function(xhr, stat, err) {
 		    	alert("update, delete error");

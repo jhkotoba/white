@@ -17,7 +17,7 @@ $(document).ready(function(){
 	memo.init('${memoList}', "ledger").view();
 	
 	//새로운 메모 추가
-	$("#memoAddBt").click(function(){		
+	$("#memoAddBt").click(function(){
 		memo.add();
 	});	
 	//취소

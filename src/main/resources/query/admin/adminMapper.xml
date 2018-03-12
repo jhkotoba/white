@@ -61,6 +61,7 @@
 			nm.nav_seq AS navSeq,
 	  		nm.nav_nm AS navNm,
 	 		nm.nav_url AS navUrl,
+	 		nm.nav_show_yn AS navShowYn,
 	 		nm.nav_order AS navOrder,
 			nm.nav_auth_nm_seq AS navAuthNmSeq			
 		FROM nav_menu nm
@@ -76,9 +77,10 @@
 			sm.side_seq AS sideSeq,
 			sm.nav_seq AS navSeq,
 			sm.side_nm AS sideNm,
-			sm.side_url AS sideUrl,		
-			sm.side_order AS sideOrder,
-			sm.side_auth_nm_seq AS sideAuthNmSeq		
+			sm.side_url AS sideUrl,
+			sm.side_auth_nm_seq AS sideAuthNmSeq,
+			sm.side_show_yn AS sideShowYn,
+			sm.side_order AS sideOrder
 		FROM side_menu AS sm
 		ORDER BY side_order	
 	</select>	
@@ -109,12 +111,14 @@
 			nav_nm,	
 			nav_url,
 			nav_auth_nm_seq,
+			nm.nav_show_yn,
 			nav_order
 		)VALUES
 		<foreach collection="list" item="item" separator="),(" open="(" close=")">
 			#{item.navNm}, 
 			#{item.navUrl},
 			#{item.navAuthNmSeq},
+			#{item.navShowYn},
 			#{item.navOrder}			
 		</foreach>	
 	</insert>
@@ -139,6 +143,12 @@
 		CASE		
 		<foreach collection="list" item="item">
 			WHEN nav_seq = #{item.navSeq} THEN #{item.navAuthNmSeq}
+		</foreach>		
+		END,
+		nav_show_yn = 
+		CASE		
+		<foreach collection="list" item="item">
+			WHEN nav_seq = #{item.navSeq} THEN #{item.navShowYn}
 		</foreach>		
 		END,
 		nav_order = 
@@ -170,6 +180,7 @@
 			side_nm,	
 			side_url,
 			side_auth_nm_seq,
+			side_show_yn,
 			side_order
 		)VALUES
 		<foreach collection="list" item="item" separator="),(" open="(" close=")">
@@ -177,6 +188,7 @@
 			#{item.sideNm}, 
 			#{item.sideUrl},
 			#{item.sideAuthNmSeq},
+			#{item.sideShowYn},
 			#{item.sideOrder}			
 		</foreach>	
 	</insert>
@@ -207,6 +219,12 @@
 		CASE		
 		<foreach collection="list" item="item">
 			WHEN side_seq = #{item.sideSeq} THEN #{item.sideAuthNmSeq}
+		</foreach>		
+		END,
+		side_show_yn = 
+		CASE		
+		<foreach collection="list" item="item">
+			WHEN side_seq = #{item.sideSeq} THEN #{item.sideShowYn}
 		</foreach>		
 		END,
 		side_order = 

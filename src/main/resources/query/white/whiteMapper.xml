@@ -22,6 +22,7 @@
 			) AS auth
 		FROM side_menu sm
 		WHERE sm.nav_seq = (SELECT nav_seq FROM nav_menu WHERE nav_url = #{navUrl})
+		AND sm.side_show_yn = 'Y'
 		ORDER BY sm.side_order
 	</select>
 	

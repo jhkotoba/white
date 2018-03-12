@@ -86,7 +86,7 @@ $(document).ready(function(){
 	$("#recSaveBtn").click(function(){
 		let rtn = rec.check();
 		if(rtn.check === true){
-			rec.upDelete();
+			rec.save();
 		}else{
 			alert(rtn.msg);
 		}

@@ -17,6 +17,9 @@ $(document).ready(function(){
 		case "navDown" :
 			nav.change(Number(idx), "down").sync(event.target).view();
 			break;
+		case "navShowYn" :
+			nav.sync(event.target);
+			break;
 		}
 	});	
 	
@@ -33,6 +36,9 @@ $(document).ready(function(){
 			break;
 		case "sideDown" :
 			side.change(Number(idx), "down").sync(event.target).view();
+			break;
+		case "sideShowYn" :
+			side.sync(event.target);
 			break;
 		}
 	});
@@ -53,9 +59,9 @@ let nav = {
 	
 	add : function(){
 		if(this.navList.length === 0){
-			this.navList.push({navUrl : '', navAuthNmSeq : '', navNm : '', navOrder : 1, state: 'insert'});
+			this.navList.push({navUrl : '', navAuthNmSeq : '', navNm : '', navShow : 'Y', navOrder : 1, state: 'insert'});
 		}else{
-			this.navList.push({navUrl : '', navAuthNmSeq : '', navNm : '', navOrder : (this.navList[this.navList.length-1].navOrder+1), state: 'insert'});
+			this.navList.push({navUrl : '', navAuthNmSeq : '', navNm : '', navShow : 'Y', navOrder : (this.navList[this.navList.length-1].navOrder+1), state: 'insert'});
 		}				
 		return this;
 	},
@@ -81,6 +87,7 @@ let nav = {
 			tag	+= "<th>name</th>";
 			tag	+= "<th>navUrl</th>";
 			tag	+= "<th>auth</th>";
+			tag += "<th>show</th>";
 			tag	+= "<th>move</th>";
 			tag += "</tr>";
 		
@@ -104,6 +111,8 @@ let nav = {
 					addAttr = {chked:"", cls:"", read:""};
 				}
 				
+				this.navList[i].navShowYn === "Y" ? useCls = "btn_azure01" : useCls = "btn_pink01";
+				
 				tag += "<tr>";			
 				tag += "<td><input id='navDel_"+i+"' type='checkbox' "+addAttr.chked+" title='삭제 체크박스'></td>";
 				tag += "<td>"+(i+1)+"</td>";
@@ -111,12 +120,13 @@ let nav = {
 					+"' onclick='side.cancel().view("+this.navList[i].navSeq+",\""+this.navList[i].navUrl+"\")'></td>";
 				tag += "<td><input id='navUrl_"+i+"' type='text' class=' "+addAttr.cls+"' "+addAttr.read+" value='"+this.navList[i].navUrl
 					+"' onclick='side.cancel().view("+this.navList[i].navSeq+",\""+this.navList[i].navUrl+"\")'></td>";
-				tag += "<td><select id='navAuthNmSeq_"+i+"' class='"+addAttr.cls+"'>";
+				tag += "<td><select id='navAuthNmSeq_"+i+"' class='"+addAttr.cls+"'>";				
 				tag += "<option value=''>선택</option>";			
 				for(let j=0; j<this.authList.length; j++){
 					String(this.navList[i].navAuthNmSeq) === String(this.authList[j].authNmSeq) ? selected = "selected='selected'" : selected = "";
 					tag += "<option "+selected+" value='"+this.authList[j].authNmSeq+"'>"+this.authList[j].authNm+"</option>";
-				}	
+				}
+				tag += "<td><input id='navShowYn_"+i+"' type='button' class='"+addAttr.cls+" "+useCls+"' "+addAttr.read+" value='"+this.navList[i].navShowYn+"'></td>";
 				tag += "</select></td>";
 				if(this.navList[i].state !== "insert"){
 					tag += "<td><button id='navUp_"+i+"' class='btn_azure02'>위로</button><button id='navDown_"+i+"' class='btn_azure02'>아래</button></td>";
@@ -177,7 +187,7 @@ let nav = {
 	sync : function(target){
 		let name = target.id.split('_')[0];
 		let idx = Number(target.id.split('_')[1]);
-		
+		//alert(name);
 		switch(name){
 		
 		case "navDel":
@@ -189,17 +199,26 @@ let nav = {
 			if( $(target).is(":checked") === true ){							
 				$("#navNm_"+idx).removeClass().addClass("redLine").prop("readOnly", true);
 				$("#navUrl_"+idx).removeClass().addClass("redLine").prop("readOnly", true);
-				$("#navAuthNmSeq_"+idx).removeClass().addClass("redLine").prop("disabled", true);	
+				$("#navAuthNmSeq_"+idx).removeClass().addClass("redLine").prop("disabled", true);
 				this.navList[idx].state = "delete";
 			}else{				
 				$("#navNm_"+idx).removeClass().prop("readOnly", false);
 				$("#navUrl_"+idx).removeClass().prop("readOnly", false);
 				$("#navAuthNmSeq_"+idx).removeClass().prop("disabled", false);
-				if(idx !== "0") $("#navUp_"+idx).removeClass().addClass("btn_azure02").prop("disabled", false);				
+				if(idx !== "0") $("#navUp_"+idx).removeClass().addClass("btn_azure02").prop("disabled", false);			
 				if(idx !== this.lastIdx-1) $("#navDown_"+idx).removeClass().addClass("btn_azure02").prop("disabled", false);
 				this.navList[idx].state = "select";
 			}
 			break;
+		case "navShowYn" :
+			if(target.value === "Y"){
+				this.navList[idx][name] = "N";
+				$(target).val("N").removeClass().addClass("btn_pink01");
+			}else if(target.value === "N"){
+				this.navList[idx][name] = "Y";
+				$(target).val("Y").removeClass().addClass("btn_azure01");
+			}
+			break;			
 		case "navUp" :
 			syncFunc(this, idx-1);
 			break;
@@ -312,6 +331,8 @@ let nav = {
 			return false;
 		}else if(String(this.navList[idx].navAuthNmSeq) !== String(this.navClone[idx].navAuthNmSeq)){
 			return false;
+		}else if(this.navList[idx].navShowYn !== this.navClone[idx].navShowYn){
+			return false;
 		}else{
 			return true;	
 		}
@@ -336,9 +357,9 @@ let side = {
 	add : function(){console.log(this.navSeq);
 		if(emptyCheck.isNotEmpty(this.navSeq)){
 			if(this.sideList.length === 0){
-				this.sideList.push({navSeq : this.navSeq, sideUrl : '', sideAuthNmSeq : '', sideNm : '', sideOrder : 1, state: 'insert'});
+				this.sideList.push({navSeq : this.navSeq, sideUrl : '', sideAuthNmSeq : '', sideNm : '', sideShowYn : 'Y', sideOrder : 1, state: 'insert'});
 			}else{
-				this.sideList.push({navSeq : this.navSeq, sideUrl : '', sideAuthNmSeq : '', sideNm : '', sideOrder : (this.sideList[this.sideList.length-1].sideOrder+1), state: 'insert'});	
+				this.sideList.push({navSeq : this.navSeq, sideUrl : '', sideAuthNmSeq : '', sideNm : '', sideShowYn : 'Y', sideOrder : (this.sideList[this.sideList.length-1].sideOrder+1), state: 'insert'});	
 			}
 		}				
 		return this;
@@ -369,6 +390,7 @@ let side = {
 			tag	+= "<th>name</th>";
 			tag	+= "<th>sideUrl</th>";
 			tag	+= "<th>auth</th>";
+			tag	+= "<th>show</th>";
 			tag	+= "<th>move</th>";
 			tag += "</tr>";
 		
@@ -396,6 +418,8 @@ let side = {
 						addAttr = {chked:"", cls:"", read:""};
 					}
 					
+					this.sideList[i].sideShowYn === "Y" ? useCls = "btn_azure01" : useCls = "btn_pink01";
+					
 					tag += "<tr>";			
 					tag += "<td><input id='sideDel_"+i+"' type='checkbox' "+addAttr.chked+" title='삭제 체크박스'></td>";
 					tag += "<td>"+(i+1)+"</td>";
@@ -408,6 +432,7 @@ let side = {
 						tag += "<option "+selected+" value='"+this.authList[j].authNmSeq+"'>"+this.authList[j].authNm+"</option>";
 					}	
 					tag += "</select></td>";
+					tag += "<td><input id='sideShowYn_"+i+"' type='button' class='"+addAttr.cls+" "+useCls+"' "+addAttr.read+" value='"+this.sideList[i].sideShowYn+"'></td>";
 					if(this.sideList[i].state !== "insert"){
 						tag += "<td><button id='sideUp_"+i+"' class='btn_azure02'>위로</button><button id='sideDown_"+i+"' class='btn_azure02'>아래</button></td>";
 						this.lastIdx++;
@@ -540,6 +565,15 @@ let side = {
 			}
 			syncFunc(this, idx+downIdx);			
 			break;
+		case "sideShowYn" :
+			if(target.value === "Y"){
+				this.sideList[idx][name] = "N";
+				$(target).val("N").removeClass().addClass("btn_pink01");
+			}else if(target.value === "N"){
+				this.sideList[idx][name] = "Y";
+				$(target).val("Y").removeClass().addClass("btn_azure01");
+			}
+			break;	
 		default :
 			this.sideList[idx][name] = String(target.value);
 			break;		
@@ -639,7 +673,7 @@ let side = {
 		    error : function(xhr, stat, err) {
 		    	alert("insert, update, delete error");
 		    }
-		});	
+		});
 	},
 	
 	equals : function(idx){
@@ -649,9 +683,11 @@ let side = {
 		}else if(this.sideList[idx].sideUrl !== this.sideClone[idx].sideUrl){
 			return false;
 		}else if(this.sideList[idx].sideAuthNmSeq !== this.sideClone[idx].sideAuthNmSeq){
-			return false;		
+			return false;
+		}else if(this.sideList[idx].sideShowYn !== this.sideClone[idx].sideShowYn){
+			return false;
 		}else{
-			return true;	
+			return true;
 		}
 	}
 }

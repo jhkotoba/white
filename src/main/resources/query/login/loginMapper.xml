@@ -69,6 +69,7 @@
 				) IS NULL, 0, 1
 			) AS auth
 		FROM nav_menu nm
+		WHERE nm.nav_show_yn = 'Y'
 		ORDER BY nm.nav_order
 	</select>
 	

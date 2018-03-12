@@ -72,6 +72,7 @@ CREATE TABLE nav_menu
 	nav_nm varchar(20) NOT NULL,
 	nav_url varchar(40) NOT NULL,
 	nav_auth_nm_seq int NOT NULL,
+	nav_show_yn varchar(1) NOT NULL,
 	nav_order int NOT NULL,
 	PRIMARY KEY (nav_seq)
 );
@@ -106,6 +107,7 @@ CREATE TABLE side_menu
 	side_nm varchar(20) NOT NULL,
 	side_url varchar(40) NOT NULL,
 	side_auth_nm_seq int NOT NULL,
+	side_show_yn varbinary(1) NOT NULL,
 	side_order int NOT NULL,
 	PRIMARY KEY (side_seq)
 );
