@@ -137,7 +137,7 @@ let recIn = {
 			dataType: 'json',
 		    success : function(data, stat, xhr) {  
 		    	alert(data+" 개의 행이 저장되었습니다.");
-		    	white.sideSubmit( "ledgerRe", "Insert");
+		    	white.submit($("#moveForm #navUrl").val(), $("#moveForm #sideUrl").val());
 		    },
 		    error : function(xhr, stat, err) {
 		    	alert("insert error");

@@ -409,12 +409,11 @@ let rec = {
 		$("#purSeq_"+idx).addClass(classNm).prop("disabled", bind);
 		$("#purDtlSeq_"+idx).addClass(classNm).prop("disabled", bind);
 		$("#bankSeq_"+idx).addClass(classNm).prop("disabled", bind);
-		$("#moveSeq_"+idx).addClass(classNm).prop("disabled", bind);
+		$("#moveSeq_"+idx).addClass(classNm);
 		$("#money_"+idx).addClass(classNm).prop("readOnly", bind);
 	},
 	
 	removeClass : function(idx, classNm){		
-		
 		
 		$("#date_"+idx).removeClass(classNm);
 		$("#time_"+idx).removeClass(classNm);
@@ -434,12 +433,9 @@ let rec = {
 			$("#position_"+idx).prop("readOnly", false);
 			$("#purSeq_"+idx).prop("disabled", false);
 			$("#purDtlSeq_"+idx).prop("disabled", false);
-			$("#bankSeq_"+idx).prop("disabled", false);
-			$("#moveSeq_"+idx).prop("disabled", false);
+			$("#bankSeq_"+idx).prop("disabled", false);			
 			$("#money_"+idx).prop("readOnly", false);
-		}
-		
-		
+		}		
 	},
 	
 	deleteRow : function(idx){
