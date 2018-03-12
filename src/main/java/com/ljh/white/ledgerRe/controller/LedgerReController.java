@@ -38,11 +38,11 @@ public class LedgerReController {
 		WhiteMap param = new WhiteMap(request);
 		List<WhiteMap> sideList = whiteService.selectSideMenuList(param);
 		
-		String sectionPage = param.getString("move");		
-		if("".equals(sectionPage) || sectionPage == null) sectionPage = "/ledgerRe";
+		String navUrl = param.getString("navUrl");
+		String sideUrl = param.getString("sideUrl");
 		
-		switch(sectionPage){
-		case "/ledgerRe" :			
+		switch(sideUrl){
+		case "/index" :			
 			param.put("memoType", "ledger");
 			request.setAttribute("memoList", new JSONArray(memoService.selectMemoList(param)));
 		case "/select" :			
@@ -51,11 +51,12 @@ public class LedgerReController {
 			request.setAttribute("purDtlList", new JSONArray(ledgerReService.selectPurDtlList(param)));
 			request.setAttribute("bankList", new JSONArray(ledgerReService.selectBankList(param)));
 			break;
-		}			
+		}	
 		
+		request.setAttribute("navUrl", navUrl);
+		request.setAttribute("sideUrl", sideUrl);
 		request.setAttribute("sideList", sideList);
-		request.setAttribute("navUrl", param.getString("navUrl"));
-		request.setAttribute("sectionPage", "ledgerRe"+sectionPage+".jsp");
+		request.setAttribute("sectionPage", navUrl.replace("/", "")+sideUrl+".jsp");
 		return "white.jsp";
 	}
 	

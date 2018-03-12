@@ -17,11 +17,13 @@
 <script type="text/javascript">
 
 $(document).ready(function(){
-	$("#sideMenu>ul>li").click(function(){
-		white.sideSubmit("${navUrl}", this.id);
-		//$("#moveForm #move").attr("value", this.id);	
-		//$("#moveForm").attr("method", "post");
-		//$("#moveForm").attr("action", common.path()+"${navUrl}").submit();
+	
+	$("#navMenu>ul>li").click(function(){
+		white.submit(this.id, "/index");
+	});
+	
+	$("#sideMenu>ul>li").click(function(){		
+		white.submit("${navUrl}", this.id);
 	});	
 });
 
@@ -37,24 +39,27 @@ $(document).ready(function(){
 			<a class="btn_azure02" href="${contextPath}/login/logoutProcess.do">logout</a> <br>
 		</c:if>				
 	</header>
-	<nav>	
-		<a href="${contextPath}/main">메인화면</a>	
-		<c:forEach items="${sessionScope.navList}" var="item">			
-			<c:if test="${item.auth eq 1 }">
-				<a href="${contextPath}${item.navUrl}">${item.navNm}</a>
-			</c:if>
-		</c:forEach>
+	<nav id="navMenu">
+		<ul>
+			<li id="/main">메인화면</li>	
+			<c:forEach items="${sessionScope.navList}" var="item">			
+				<c:if test="${item.auth eq 1 }">
+					<li id="${item.navUrl}">${item.navNm}</li>
+				</c:if>
+			</c:forEach>
+		</ul>
 	</nav>
 	
 	<form id="moveForm" action="">
-		<input id="move" name="move" type="hidden" value=""></input>
+		<input id="navUrl" name="navUrl" type="hidden" value="${navUrl}"></input>
+		<input id="sideUrl" name="sideUrl" type="hidden" value="${sideUrl}"></input>
 	</form>
 		
 	<c:if test="${requestScope.sideList ne null}">
 		<section class="sideView">
 			<div id="sideMenu">
 				<ul>
-					<li>메인</li>
+					<li id="/index">메인</li>
 					<c:forEach items="${requestScope.sideList}" var="item">			
 						<c:if test="${item.auth eq 1 }">
 							<li id="${item.sideUrl}">${item.sideNm}</li>

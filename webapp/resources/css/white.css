@@ -2,6 +2,9 @@
 input[type=text] {width: 90px;}
 #memoTb input[type=text] {width: 500px;}
 
+#navMenu ul {list-style:none; margin:0; padding:0;}
+#navMenu li {margin: 0 15 0 0; padding: 0 0 0 0; border : 0; float: left;}
+
 .sideView{
 	position: absolute;
 }

@@ -190,7 +190,7 @@ let bank = {
 		    	if(data.msg==="bankUsed"){
 		    		alert("삭제-사용되는 은행이 존재하여 실패.");
 		    	}
-		    	white.sideSubmit("ledgerRe", "Bank");
+		    	white.submit($("#moveForm #navUrl").val(), $("#moveForm #sideUrl").val());
 		    },
 		    error : function(xhr, stat, err) {
 		    	alert("insert, update, delete error");

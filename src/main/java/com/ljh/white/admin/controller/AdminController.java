@@ -33,20 +33,21 @@ public class AdminController {
 		logger.debug("admin Start");
 		
 		WhiteMap param = new WhiteMap(request);
-		List<WhiteMap> sideList = whiteService.selectSideMenuList(param);	
+		List<WhiteMap> sideList = whiteService.selectSideMenuList(param);		
+			
+		String navUrl = param.getString("navUrl");
+		String sideUrl = param.getString("sideUrl");	
 		
-		String sectionPage = param.getString("move");		
-		if("".equals(sectionPage) || sectionPage == null) sectionPage = "/admin";
-		
-		switch(sectionPage){
+		switch(sideUrl){
 		case "/lookup" :
 			request.setAttribute("authList", adminService.selectAuthList());
 			break;
-		}
+		}	
 		
+		request.setAttribute("navUrl", navUrl);
+		request.setAttribute("sideUrl", sideUrl);
 		request.setAttribute("sideList", sideList);
-		request.setAttribute("navUrl", param.getString("navUrl"));
-		request.setAttribute("sectionPage", "admin"+sectionPage+".jsp");
+		request.setAttribute("sectionPage", navUrl.replace("/", "")+sideUrl+".jsp");
 		return "white.jsp";
 	}
 	
@@ -100,14 +101,8 @@ public class AdminController {
 		logger.debug("inUpDelNavMenuList Start");
 		
 		WhiteMap param = new WhiteMap(request);		
-		WhiteMap resultMap = adminService.inUpDelNavMenuList(param);
-
+		WhiteMap resultMap = adminService.inUpDelNavMenuList(param);		
 		
-		System.out.println(param.getString("navUrl"));
-		System.out.println(param.getString("sideUrl"));
-		
-		resultMap.put("navUrl", param.getString("navUrl"));
-		resultMap.put("sideUrl", param.getString("sideUrl"));
 		request.setAttribute("result", new JSONObject(resultMap));
 		
 		whiteService.setNavAuth();
