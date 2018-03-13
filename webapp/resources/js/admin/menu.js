@@ -59,9 +59,9 @@ let nav = {
 	
 	add : function(){
 		if(this.navList.length === 0){
-			this.navList.push({navUrl : '', navAuthNmSeq : '', navNm : '', navShow : 'Y', navOrder : 1, state: 'insert'});
+			this.navList.push({navUrl : '', navAuthNmSeq : '', navNm : '', navShowYn : 'Y', navOrder : 1, state: 'insert'});
 		}else{
-			this.navList.push({navUrl : '', navAuthNmSeq : '', navNm : '', navShow : 'Y', navOrder : (this.navList[this.navList.length-1].navOrder+1), state: 'insert'});
+			this.navList.push({navUrl : '', navAuthNmSeq : '', navNm : '', navShowYn : 'Y', navOrder : (this.navList[this.navList.length-1].navOrder+1), state: 'insert'});
 		}				
 		return this;
 	},
@@ -306,7 +306,7 @@ let nav = {
 		
 		$.ajax({		
 			type: 'POST',
-			url: common.path()+'/admin/ajax/inUpDelNavMenuList.do',
+			url: common.path()+'/admin/inUpDelNavMenuList.ajax',
 			data: {
 				inList : JSON.stringify(inList),
 				upList : JSON.stringify(upList),
@@ -314,7 +314,11 @@ let nav = {
 			},
 			dataType: 'json',
 		    success : function(data, stat, xhr) {
-		    	alert(data.inCnt+" 개의 메뉴가 입력, "+data.upCnt+" 개의 메뉴가 수정, "+ data.delCnt+" 개의 메뉴가 삭제되었습니다");		    	
+		    	if(data.msg==="used"){
+		    		alert("삭제하려는 navUrl의 하위 sideUrl이 존재하여 삭제 불가.");
+		    	}else{
+		    		alert(data.inCnt+" 개의 메뉴가 입력, "+data.upCnt+" 개의 메뉴가 수정, "+ data.delCnt+" 개의 메뉴가 삭제되었습니다");
+		    	}		    	
 		    	white.submit($("#moveForm #navUrl").val(), $("#moveForm #sideUrl").val());
 		    },
 		    error : function(xhr, stat, err) {
@@ -659,7 +663,7 @@ let side = {
 		
 		$.ajax({		
 			type: 'POST',
-			url: common.path()+'/admin/ajax/inUpDelSideMenuList.do',
+			url: common.path()+'/admin/inUpDelSideMenuList.ajax',
 			data: {
 				inList : JSON.stringify(inList),
 				upList : JSON.stringify(upList),

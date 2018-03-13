@@ -32,7 +32,7 @@ $(document).ready(function(){
 			
 			$.ajax({		
 				type: 'POST',
-				url: common.path()+'/admin/ajax/selectUserAuth.do',
+				url: common.path()+'/admin/selectUserAuth.ajax',
 				data: {
 					userNo : Number(event.target.value)
 				},
@@ -80,7 +80,7 @@ let ad = {
 		
 		$.ajax({		
 			type: 'POST',
-			url: common.path()+'/admin/ajax/selectUserList.do',	
+			url: common.path()+'/admin/selectUserList.ajax',	
 			data: param,
 			dataType: 'json',
 		    success : function(data) {		    

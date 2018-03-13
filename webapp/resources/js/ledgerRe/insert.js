@@ -130,7 +130,7 @@ let recIn = {
 		
 		$.ajax({		
 			type: 'POST',
-			url: common.path()+'/ledgerRe/ajax/insertRecordList.do',
+			url: common.path()+'/ledgerRe/insertRecordList.ajax',
 			data: {
 				inList : JSON.stringify(this.inList)
 			},

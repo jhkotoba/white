@@ -15,7 +15,7 @@ $(document).ready(function(){
 </script>
 </head>
 <body>
-adminAuthority.jsp
+
 
 </body>
 </html>

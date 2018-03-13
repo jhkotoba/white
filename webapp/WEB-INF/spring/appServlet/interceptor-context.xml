@@ -30,7 +30,7 @@
 	               
 	     	<!-- 회원가입 -->			 
 			<mvc:exclude-mapping path="/login/insertSignUp.do"/>
-			<mvc:exclude-mapping path="/login/ajax/userIdCheck.do"/>
+			<mvc:exclude-mapping path="/login/userIdCheck.ajax"/>
 				
 			<beans:bean id="sessionInterceptor"
 			  class="com.ljh.white.common.utility.interceptor.SessionInterceptor"></beans:bean>

@@ -111,7 +111,7 @@
 			nav_nm,	
 			nav_url,
 			nav_auth_nm_seq,
-			nm.nav_show_yn,
+			nav_show_yn,
 			nav_order
 		)VALUES
 		<foreach collection="list" item="item" separator="),(" open="(" close=")">
@@ -162,6 +162,16 @@
 			#{item.navSeq}
 		</foreach>
 	</update>	
+	
+		
+	<!-- 목적 삭제시 상세목적에 부모로써 사용되는지 확인 -->
+	<select id="selectIsUsedSideUrl" resultType="int" parameterType="java.util.List">
+		SELECT COUNT(1) FROM side_menu
+		WHERE nav_seq IN
+		<foreach collection="list" item="item" separator="," open="(" close=")">
+			#{item.navSeq}
+		</foreach>
+	</select>
 	
 	<!-- 네비메뉴 삭제 -->
 	<delete id="deleteNavMenuList" parameterType="java.util.List">

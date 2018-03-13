@@ -360,7 +360,7 @@ let rec = {
 		
 		$.ajax({		
 			type: 'POST',
-			url: common.path()+'/ledgerRe/ajax/updateDeleteRecordList.do',
+			url: common.path()+'/ledgerRe/updateDeleteRecordList.ajax',
 			data: {
 				upList : JSON.stringify(upList),
 				delList : JSON.stringify(delList)

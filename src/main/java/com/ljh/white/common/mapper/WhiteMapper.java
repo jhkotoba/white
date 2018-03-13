@@ -28,4 +28,8 @@ public class WhiteMapper {
 	public List<WhiteMap> selectNavAuthList() {	
 		return sqlSession.selectList("whiteMapper.selectNavAuthList");
 	}
+	
+	public List<WhiteMap> selectSideAuthList() {	
+		return sqlSession.selectList("whiteMapper.selectSideAuthList");
+	}
 }

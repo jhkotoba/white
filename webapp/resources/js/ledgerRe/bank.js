@@ -179,7 +179,7 @@ let bank = {
 		
 		$.ajax({		
 			type: 'POST',
-			url: common.path()+'/ledgerRe/ajax/inUpDelBankList.do',
+			url: common.path()+'/ledgerRe/inUpDelBankList.ajax',
 			data: {
 				inList : JSON.stringify(inList),
 				upList : JSON.stringify(upList),

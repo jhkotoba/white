@@ -85,6 +85,15 @@ public class AdminMapper {
 	}	
 	
 	/**
+	 * 네비메뉴  delete 하기전 하위 사이드메뉴 체크
+	 * @param list
+	 * @return
+	 */
+	public int selectIsUsedSideUrl(List<WhiteMap> list) {		
+		return sqlSession.selectOne("adminMapper.selectIsUsedSideUrl", list);		 
+	}
+	
+	/**
 	 * 네비메뉴  delete
 	 * @param list
 	 * @return

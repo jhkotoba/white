@@ -23,6 +23,7 @@ public class WhiteService{
 	@PostConstruct
 	public void postConstruct() {
 		this.setNavAuth();
+		this.setSideAuth();
 	}
 	
 	/**
@@ -30,6 +31,13 @@ public class WhiteService{
 	 */
 	public void setNavAuth() {
 		StaticValue.setNavAuth(whiteMapper.selectNavAuthList());
+	}
+	
+	/**
+	 *  사이드메뉴 권한 메모리 저장
+	 */
+	public void setSideAuth() {
+		StaticValue.setSideAuth(whiteMapper.selectSideAuthList());
 	}
 	
 	/**

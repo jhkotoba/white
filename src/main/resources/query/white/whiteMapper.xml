@@ -44,4 +44,13 @@
     	ON an.auth_nm_seq = nm.nav_auth_nm_seq	
 	</select>
 	
+	<select id="selectSideAuthList" resultType="WhiteMap">
+		SELECT		
+	 		sm.side_url AS sideUrl,
+      		an.auth_nm AS authNm	
+		FROM side_menu sm
+    	LEFT OUTER JOIN auth_name an
+    	ON an.auth_nm_seq = sm.side_auth_nm_seq	
+	</select>
+	
 </mapper>

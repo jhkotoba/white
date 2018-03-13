@@ -98,7 +98,7 @@ let memo = {
 	insert : function(){
 		$.ajax({		
 			type: 'POST',
-			url: common.path()+'/ajax/memoSave.do',
+			url: common.path()+'/memo/memoSave.ajax',
 			data: {
 				jsonStr : JSON.stringify(this.list),
 				memoType : this.type

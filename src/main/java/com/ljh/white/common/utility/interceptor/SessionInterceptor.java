@@ -22,12 +22,28 @@ public class SessionInterceptor extends HandlerInterceptorAdapter {
 			return false;		
 		}else{
 			
+			//ajax일 경우 권한검사 통과
+			if(request.getRequestURI().endsWith(".ajax")) {
+				return true;
+			}
+			
 			//nav 권한 검사
-			String url = "/"+(request.getRequestURI().replaceAll(path, "")).split("/")[1];			
+			String navUrl = "/"+(request.getRequestURI().replaceAll(path, "")).split("/")[1];
+			String sideUrl = request.getParameter("sideUrl");
 			WhiteMap auth = (WhiteMap)request.getSession(false).getAttribute("authority");
 			
-			if(auth.getInt(StaticValue.getNavAuthList().getString(url))==1) {
-				return true;
+			//nav메뉴 권한 체크
+			if(auth.getInt(StaticValue.getNavAuthList().getString(navUrl))==1) {
+				
+				//side메뉴 권한 체크
+				if("/index".equals(sideUrl)){
+					return true;
+				}else if(auth.getInt(StaticValue.getSideAuthList().getString(sideUrl))!=1) {
+					response.sendRedirect(path+"/main");
+					return false;
+				}else {
+					return true;
+				}				
 			}else {
 				response.sendRedirect(path+"/main");
 				return false;

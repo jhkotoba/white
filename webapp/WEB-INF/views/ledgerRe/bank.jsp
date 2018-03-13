@@ -14,13 +14,13 @@ $(document).ready(function(){
 	
 	$.ajax({		
 		type: 'POST',
-		url: common.path()+'/ledgerRe/ajax/selectBankList.do',
+		url: common.path()+'/ledgerRe/selectBankList.ajax',
 		dataType: 'json',
 		data : {
 			mode : "select"
 		},
 	    success : function(data) {
-	    	bank.init(data.bankList).view();	    	
+	    	bank.init(data.bankList).view();
 	    },
 	    error : function(request, status, error){
 	    	alert("bank error");
@@ -28,12 +28,12 @@ $(document).ready(function(){
 	});
 	
 	//은행 추가
-	$("#bankAddBtn").click(function(){		
+	$("#bankAddBtn").click(function(){
 		bank.add().view();
 	});
 	
 	//은행 취소
-	$("#bankCelBtn").click(function(){		
+	$("#bankCelBtn").click(function(){
 		bank.cancel().view();
 	});
 	
@@ -62,6 +62,6 @@ $(document).ready(function(){
 		<button id="bankAddBtn" class="btn_azure03">추가</button>
 		<button id="bankSaveBtn" class="btn_azure03">저장</button>
 		<button id="bankCelBtn" class="btn_azure03">취소</button>
-		<div id="bankList" class="scroll"></div>	
-	</div>	
+		<div id="bankList" class="scroll"></div>
+	</div>
 </body>

@@ -14,7 +14,7 @@ $(document).ready(function(){
 	
 	$.ajax({		
 		type: 'POST',
-		url: common.path()+'/ledgerRe/ajax/selectPurAndDtlList.do',
+		url: common.path()+'/ledgerRe/selectPurAndDtlList.ajax',
 		dataType: 'json',
 		data : {
 			mode : "select"

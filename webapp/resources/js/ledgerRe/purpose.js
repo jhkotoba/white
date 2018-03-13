@@ -261,7 +261,7 @@ let pur = {
 		
 		$.ajax({		
 			type: 'POST',
-			url: common.path()+'/ledgerRe/ajax/inUpDelPurList.do',
+			url: common.path()+'/ledgerRe/inUpDelPurList.ajax',
 			data: {
 				inList : JSON.stringify(inList),
 				upList : JSON.stringify(upList),
@@ -269,8 +269,10 @@ let pur = {
 			},
 			dataType: 'json',
 		    success : function(data, stat, xhr) {
-		    	if(data.msg==="purUsed"){
-		    		alert("삭제-사용되는 purpose가 존재하여 실패.");
+		    	if(data.msg==="recodePurUsed"){
+		    		alert("record에 사용되는 purpose가 존재하여 실패.");
+		    	}else if(data.msg==="purDtlPurUsed"){
+		    		alert("상세목적에 사용되는 purpose가 존재하여 실패.");
 		    	}else{
 		    		alert("추가:"+data.inCnt+"개, 수정:"+data.upCnt+"개, 삭제:"+data.delCnt+"개가 저장되었습니다.");
 		    	}		    	
@@ -569,7 +571,7 @@ let purDtl = {
 		
 		$.ajax({		
 			type: 'POST',
-			url: common.path()+'/ledgerRe/ajax/inUpDelPurDtlList.do',
+			url: common.path()+'/ledgerRe/inUpDelPurDtlList.ajax',
 			data: {
 				inList : JSON.stringify(inList),
 				upList : JSON.stringify(upList),

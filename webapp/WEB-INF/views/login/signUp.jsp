@@ -71,7 +71,7 @@ function userIdCheck(){
 		
 	$.ajax({		
 		type: 'POST',
-		url: common.path()+'/login/ajax/userIdCheck.do',
+		url: common.path()+'/login/userIdCheck.ajax',
 		data: {
 			userId : userId
 		},

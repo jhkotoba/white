@@ -60,7 +60,7 @@ public class LedgerReController {
 		return "white.jsp";
 	}
 	
-	@RequestMapping(value="/ledgerRe/ajax/selectRecordList.do" )
+	@RequestMapping(value="/ledgerRe/selectRecordList.ajax" )
 	public String selectRecordList(HttpServletRequest request){
 		logger.debug("selectRecordList Start");
 		
@@ -74,7 +74,7 @@ public class LedgerReController {
 		return "result.jsp";
 	}
 	
-	@RequestMapping(value="/ledgerRe/ajax/insertRecordList.do" )
+	@RequestMapping(value="/ledgerRe/insertRecordList.ajax" )
 	public String insertRecordList(HttpServletRequest request){
 		logger.debug("insertRecordList Start");
 		
@@ -86,7 +86,7 @@ public class LedgerReController {
 		return "result.jsp";
 	}
 	
-	@RequestMapping(value="/ledgerRe/ajax/updateDeleteRecordList.do" )
+	@RequestMapping(value="/ledgerRe/updateDeleteRecordList.ajax" )
 	public String updateDeleteRecordList(HttpServletRequest request){
 		logger.debug("updateDeleteRecordList Start");
 		
@@ -98,7 +98,7 @@ public class LedgerReController {
 		return "result.jsp";
 	}
 	
-	@RequestMapping(value="/ledgerRe/ajax/selectPurAndDtlList.do" )
+	@RequestMapping(value="/ledgerRe/selectPurAndDtlList.ajax" )
 	public String selectPurAndDtlList(HttpServletRequest request){
 		logger.debug("selectPurposeList Start");
 		
@@ -112,7 +112,7 @@ public class LedgerReController {
 		return "result.jsp";
 	}
 	
-	@RequestMapping(value="/ledgerRe/ajax/inUpDelPurList.do" )
+	@RequestMapping(value="/ledgerRe/inUpDelPurList.ajax" )
 	public String inUpDelPurList(HttpServletRequest request){
 		logger.debug("inUpDelPurList Start");
 		
@@ -122,7 +122,7 @@ public class LedgerReController {
 		return "result.jsp";
 	}
 	
-	@RequestMapping(value="/ledgerRe/ajax/inUpDelPurDtlList.do" )
+	@RequestMapping(value="/ledgerRe/inUpDelPurDtlList.ajax" )
 	public String inUpDelPurDtlList(HttpServletRequest request){
 		logger.debug("inUpDelPurDtlList Start");
 		
@@ -132,7 +132,7 @@ public class LedgerReController {
 		return "result.jsp";
 	}
 	
-	@RequestMapping(value="/ledgerRe/ajax/selectBankList.do" )
+	@RequestMapping(value="/ledgerRe/selectBankList.ajax" )
 	public String selectBankList(HttpServletRequest request){
 		logger.debug("selectBankList Start");
 		
@@ -144,7 +144,7 @@ public class LedgerReController {
 		
 	}
 	
-	@RequestMapping(value="/ledgerRe/ajax/inUpDelBankList.do" )
+	@RequestMapping(value="/ledgerRe/inUpDelBankList.ajax" )
 	public String inUpDelBankList(HttpServletRequest request){
 		logger.debug("inUpDelBankList Start");
 		

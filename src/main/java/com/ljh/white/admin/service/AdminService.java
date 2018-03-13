@@ -114,6 +114,17 @@ public class AdminService {
 		
 		WhiteMap resultMap = new WhiteMap();
 		
+		if(delList.size() > 0) {
+			if(adminMapper.selectIsUsedSideUrl(delList)>0) {
+				resultMap.put("msg", "used");
+				return resultMap;			
+			}else {
+				resultMap.put("delCnt", adminMapper.deleteNavMenuList(delList));
+			}					
+		}else {
+			resultMap.put("delCnt", 0);	
+		}
+		
 		if(inList.size() > 0 ) {
 			resultMap.put("inCnt", adminMapper.insertNavMenuList(inList));	
 		}else {
@@ -126,11 +137,7 @@ public class AdminService {
 			resultMap.put("upCnt", 0);	
 		}
 		
-		if(delList.size() > 0) {
-			resultMap.put("delCnt", adminMapper.deleteNavMenuList(delList));			
-		}else {
-			resultMap.put("delCnt", 0);	
-		}
+		
 		
 		return resultMap;
 	}

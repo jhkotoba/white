@@ -31,7 +31,7 @@ $(document).ready(function(){
 		
 		$.ajax({		
 			type: 'POST',
-			url: common.path()+'/ledgerRe/ajax/selectRecordList.do',	
+			url: common.path()+'/ledgerRe/selectRecordList.ajax',	
 			data: param,
 			dataType: 'json',
 		    success : function(data) {	    	

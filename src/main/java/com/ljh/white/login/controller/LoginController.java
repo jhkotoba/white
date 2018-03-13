@@ -16,7 +16,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.ljh.white.common.collection.WhiteMap;
-import com.ljh.white.common.service.WhiteService;
 import com.ljh.white.common.utility.cryptolect.BCrypt;
 import com.ljh.white.login.service.LoginService;
 
@@ -108,7 +107,7 @@ public class LoginController {
 	}
 	
 	//유저 중복 id체크
-	@RequestMapping(value="/login/ajax/userIdCheck.do")
+	@RequestMapping(value="/login/userIdCheck.ajax")
 	public String userIdCheck(HttpServletRequest request){		
 		int isCnt = loginService.userIdCheck(request.getParameter("userId"));
 		

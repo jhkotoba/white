@@ -145,8 +145,17 @@ public class LedgerReMapper {
 	 * @param list
 	 * @return
 	 */
-	public int selectIsUsedPurpose(List<WhiteMap> list) {		
-		return sqlSession.selectOne("ledgerReMapper.selectIsUsedPurpose", list);		 
+	public int selectIsUsedPurposeRec(List<WhiteMap> list) {		
+		return sqlSession.selectOne("ledgerReMapper.selectIsUsedPurRec", list);		 
+	}
+	
+	/**
+	 * 목적 삭제시 상세목적에 부모로써 사용되는지 확인 
+	 * @param list
+	 * @return
+	 */
+	public int selectIsUsedPurposePurDtl(List<WhiteMap> list) {		
+		return sqlSession.selectOne("ledgerReMapper.selectIsUsedPurposePurDtl", list);		 
 	}
 	
 	/**

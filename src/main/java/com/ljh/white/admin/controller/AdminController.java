@@ -51,7 +51,7 @@ public class AdminController {
 		return "white.jsp";
 	}
 	
-	@RequestMapping(value="/admin/ajax/selectUserList.do")
+	@RequestMapping(value="/admin/selectUserList.ajax")
 	public String selectUserList(HttpServletRequest request) {
 		
 		WhiteMap param = new WhiteMap(request);
@@ -67,14 +67,14 @@ public class AdminController {
 		return "result.jsp";
 	}
 	
-	@RequestMapping(value="/admin/ajax/selectUserAuth.do")
+	@RequestMapping(value="/admin/selectUserAuth.ajax")
 	public String selectUserAuth(HttpServletRequest request) {		
 		WhiteMap param = new WhiteMap(request);		
 		request.setAttribute("result", new JSONArray(adminService.selectUserAuth(param)));		
 		return "result.jsp";
 	}
 	
-	@RequestMapping(value="/admin/ajax/inDelAuthList.do")
+	@RequestMapping(value="/admin/inDelAuthList.ajax")
 	public String inDelAuthList(HttpServletRequest request) {		
 		WhiteMap param = new WhiteMap(request);
 		WhiteMap resultMap = adminService.inDelAuthList(param);
@@ -82,7 +82,7 @@ public class AdminController {
 		return "result.jsp";
 	}
 	
-	@RequestMapping(value="/admin/ajax/selectNavSideMenuList.do")
+	@RequestMapping(value="/admin/selectNavSideMenuList.ajax")
 	public String selectNavSideMenuList(HttpServletRequest request) {		
 		logger.debug("selectHaedSideMenuList Start");
 		
@@ -96,7 +96,7 @@ public class AdminController {
 		return "result.jsp";
 	}
 	
-	@RequestMapping(value="/admin/ajax/inUpDelNavMenuList.do" )
+	@RequestMapping(value="/admin/inUpDelNavMenuList.ajax" )
 	public String inUpDelNavMenuList(HttpServletRequest request){
 		logger.debug("inUpDelNavMenuList Start");
 		
@@ -109,13 +109,15 @@ public class AdminController {
 		return "result.jsp";
 	}
 	
-	@RequestMapping(value="/admin/ajax/inUpDelSideMenuList.do" )
+	@RequestMapping(value="/admin/inUpDelSideMenuList.ajax" )
 	public String inUpDelSideMenuList(HttpServletRequest request){
 		logger.debug("inUpDelSideMenuList Start");
 		
 		WhiteMap param = new WhiteMap(request);		
 		WhiteMap resultMap = adminService.inUpDelSideMenuList(param);
-		request.setAttribute("result", new JSONObject(resultMap));		
+		request.setAttribute("result", new JSONObject(resultMap));
+		
+		whiteService.setSideAuth();
 		return "result.jsp";
 	}
 	

@@ -17,7 +17,7 @@ public class MemoController {
 	private MemoService memoService;
 			
 	
-	@RequestMapping(value="/ajax/selectMemoList.do" )
+	@RequestMapping(value="/memo/selectMemoList.ajax" )
 	public String selectMemoList(HttpServletRequest request){		
 		
 		WhiteMap param = new WhiteMap(request);
@@ -26,7 +26,7 @@ public class MemoController {
 		return "result.jsp";
 	}
 	
-	@RequestMapping(value="/ajax/memoSave.do" )
+	@RequestMapping(value="/memo/memoSave.ajax" )
 	public String memoSave(HttpServletRequest request){
 		
 		int userSeq = Integer.parseInt(request.getSession(false).getAttribute("userSeq").toString());

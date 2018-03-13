@@ -14,7 +14,7 @@ $(document).ready(function(){
 	
 	$.ajax({		
 		type: 'POST',
-		url: common.path()+'/admin/ajax/selectNavSideMenuList.do',
+		url: common.path()+'/admin/selectNavSideMenuList.ajax',
 		dataType: 'json',
 		data : {
 			mode : "select"

@@ -78,7 +78,7 @@ $(document).ready(function(){
 		
 		$.ajax({		
 			type: 'POST',
-			url: common.path()+'/admin/ajax/inDelAuthList.do',
+			url: common.path()+'/admin/inDelAuthList.ajax',
 			data: {
 				inList : JSON.stringify(inList),
 				delList : JSON.stringify(delList)

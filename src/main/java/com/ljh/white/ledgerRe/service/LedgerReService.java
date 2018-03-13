@@ -193,9 +193,12 @@ public class LedgerReService {
 		WhiteMap resultMap = new WhiteMap();
 		
 		if(delList.size() > 0) {
-			if(ledgerReMapper.selectIsUsedPurpose(delList)>0) {
-				resultMap.put("msg", "purUsed");
-				return resultMap;				
+			if(ledgerReMapper.selectIsUsedPurposeRec(delList)>0) {
+				resultMap.put("msg", "recodePurUsed");
+				return resultMap;
+			}else if(ledgerReMapper.selectIsUsedPurposePurDtl(delList)>0) {
+				resultMap.put("msg", "purDtlPurUsed");
+				return resultMap;
 			}else {
 				resultMap.put("delCnt", ledgerReMapper.deletePurList(delList));
 			}
