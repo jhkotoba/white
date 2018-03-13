@@ -38,11 +38,11 @@ public class SessionInterceptor extends HandlerInterceptorAdapter {
 				//side메뉴 권한 체크
 				if("/index".equals(sideUrl)){
 					return true;
-				}else if(auth.getInt(StaticValue.getSideAuthList().getString(sideUrl))!=1) {
+				}else if(auth.getInt(StaticValue.getSideAuthList().getString(sideUrl))==1) {					
+					return true;
+				}else {
 					response.sendRedirect(path+"/main");
 					return false;
-				}else {
-					return true;
 				}				
 			}else {
 				response.sendRedirect(path+"/main");
