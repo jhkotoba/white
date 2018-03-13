@@ -60,16 +60,25 @@
 	 		nm.nav_url AS navUrl,
 	 		nm.nav_order AS navOrder,
 			nm.nav_auth_nm_seq AS navAuthNmSeq
-			,IF(
-				(
-					SELECT a.auth_seq FROM authority a
-					WHERE a.auth_nm_seq = nm.nav_auth_nm_seq
-					AND a.user_seq = #{userSeq}
-					LIMIT 1
-				) IS NULL, 0, 1
-			) AS auth
+			<choose>
+				<when test="userId == 'leedev'">
+				,1 AS auth
+				</when>
+				<otherwise>
+				,IF(
+					(
+						SELECT a.auth_seq FROM authority a
+						WHERE a.auth_nm_seq = nm.nav_auth_nm_seq
+						AND a.user_seq = #{userSeq}
+						LIMIT 1
+					) IS NULL, 0, 1
+				) AS auth
+				</otherwise>
+			</choose>			
 		FROM nav_menu nm
-		WHERE nm.nav_show_yn = 'Y'
+		<if test="userId != 'leedev'">
+			WHERE nm.nav_show_yn = 'Y'
+		</if>		
 		ORDER BY nm.nav_order
 	</select>
 	

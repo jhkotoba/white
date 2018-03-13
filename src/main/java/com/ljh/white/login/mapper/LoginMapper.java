@@ -41,9 +41,9 @@ public class LoginMapper {
 		return sqlSession.selectList("LoginMapper.selectUserAuthority", userSeq);			
 	}
 	
-	public List<WhiteMap> selectNavMenuList(int userSeq){		
-		logger.debug("userSeq: "+userSeq);
-		return sqlSession.selectList("LoginMapper.selectNavMenuList", userSeq);			
+	public List<WhiteMap> selectNavMenuList(WhiteMap param){		
+		logger.debug("param: "+param);
+		return sqlSession.selectList("LoginMapper.selectNavMenuList", param);			
 	}	
 	
 	public int getUserSeq(String userId){

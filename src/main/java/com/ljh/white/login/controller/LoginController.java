@@ -48,7 +48,11 @@ public class LoginController {
 			
 			int userSeq = loginService.getUserSeq(userId);
 			WhiteMap auth = loginService.selectUserAuthority(userSeq, userId);
-			List<WhiteMap> navList = loginService.selectNavMenuList(userSeq);			
+			
+			WhiteMap param = new WhiteMap();
+			param.put("userSeq", userSeq);
+			param.put("userId", userId);
+			List<WhiteMap> navList = loginService.selectNavMenuList(param);			
 			
 			//세션 등록 
 			HttpSession session = request.getSession();		
