@@ -29,8 +29,8 @@ public class AdminMapper {
 		return sqlSession.selectList("adminMapper.selectUserList", param);
 	}
 	
-	public List<WhiteMap> selectAuthList() {	
-		return sqlSession.selectList("adminMapper.selectAuthList");
+	public List<WhiteMap> selectAuthList(WhiteMap param) {	
+		return sqlSession.selectList("adminMapper.selectAuthList", param);
 	}
 	
 	public List<WhiteMap> selectUserAuth(WhiteMap param) {

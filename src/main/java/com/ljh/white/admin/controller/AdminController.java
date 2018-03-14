@@ -40,7 +40,7 @@ public class AdminController {
 		
 		switch(sideUrl){
 		case "/lookup" :
-			request.setAttribute("authList", adminService.selectAuthList());
+			request.setAttribute("authList", adminService.selectAuthList(param));
 			break;
 		}	
 		
@@ -91,7 +91,7 @@ public class AdminController {
 		JSONObject result = new JSONObject();		
 		result.put("navList", new JSONArray(adminService.selectNavMenuList(param)));			
 		result.put("sideList", new JSONArray(adminService.selectSideMenuList(param)));			
-		result.put("authList", new JSONArray(adminService.selectAuthList()));			
+		result.put("authList", new JSONArray(adminService.selectAuthList(param)));			
 		request.setAttribute("result", result);	
 		return "result.jsp";
 	}
@@ -121,5 +121,12 @@ public class AdminController {
 		return "result.jsp";
 	}
 	
-	
+	@RequestMapping(value="/admin/selectAuthList.ajax" )
+	public String selectAuthList(HttpServletRequest request){
+		logger.debug("selectAuthList Start");
+		
+		WhiteMap param = new WhiteMap(request);
+		request.setAttribute("result", new JSONArray(adminService.selectAuthList(param)));
+		return "result.jsp";
+	}
 }

@@ -1,5 +1,5 @@
 /**
- * adminMenu.js
+ * menu.js
  */
 
 $(document).ready(function(){

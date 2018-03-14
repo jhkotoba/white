@@ -41,8 +41,8 @@ public class AdminService {
 	 * 
 	 * @return
 	 */
-	public List<WhiteMap> selectAuthList() {			
-		return adminMapper.selectAuthList();
+	public List<WhiteMap> selectAuthList(WhiteMap param) {			
+		return adminMapper.selectAuthList(param);
 	}
 	
 	/**
