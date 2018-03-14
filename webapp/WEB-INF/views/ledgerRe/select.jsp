@@ -11,11 +11,7 @@
 <script type="text/javascript" src="${contextPath}/resources/js/ledgerRe/record.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
-	
-	let purList = JSON.parse('${purList}');
-	let purDtlList = JSON.parse('${purDtlList}');
-	let bankList = JSON.parse('${bankList}');
-	
+
 	$("#startDate").val(isDate.firstDay());
 	$("#endDate").val(isDate.lastDay());
 	
@@ -35,7 +31,7 @@ $(document).ready(function(){
 			data: param,
 			dataType: 'json',
 		    success : function(data) {	    	
-		    	rec.init("select", data.recList, purList, purDtlList, bankList).view();
+		    	rec.init("select", data.recList, data.purList, data.purDtlList, data.bankList).view();
 		    	$("#recEditBtn").prop("disabled",false)
 		    		.attr("class", "btn_azure03");
 		    	

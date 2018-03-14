@@ -39,19 +39,7 @@ public class LedgerReController {
 		List<WhiteMap> sideList = whiteService.selectSideMenuList(param);
 		
 		String navUrl = param.getString("navUrl");
-		String sideUrl = param.getString("sideUrl");
-		
-		switch(sideUrl){
-		case "/index" :			
-			param.put("memoType", "ledger");
-			request.setAttribute("memoList", new JSONArray(memoService.selectMemoList(param)));
-		case "/select" :			
-		case "/insert" :	
-			request.setAttribute("purList", new JSONArray(ledgerReService.selectPurList(param)));	
-			request.setAttribute("purDtlList", new JSONArray(ledgerReService.selectPurDtlList(param)));
-			request.setAttribute("bankList", new JSONArray(ledgerReService.selectBankList(param)));
-			break;
-		}	
+		String sideUrl = param.getString("sideUrl");		
 		
 		request.setAttribute("navUrl", navUrl);
 		request.setAttribute("sideUrl", sideUrl);
@@ -68,7 +56,10 @@ public class LedgerReController {
 		List<WhiteMap> bankList = ledgerReService.selectBankList(param);
 
 		JSONObject result = new JSONObject();		
-		result.put("recList", new JSONArray(ledgerReService.selectRecordList(param, bankList)));		
+		result.put("recList", new JSONArray(ledgerReService.selectRecordList(param, bankList)));
+		result.put("purList", new JSONArray(ledgerReService.selectPurList(param)));
+		result.put("purDtlList", new JSONArray(ledgerReService.selectPurDtlList(param)));
+		result.put("bankList", new JSONArray(bankList));
 		request.setAttribute("result", result);	
 		
 		return "result.jsp";

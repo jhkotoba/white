@@ -14,7 +14,7 @@
 $(document).ready(function(){
 	
 	//ledger 메모 리스트 조회
-	memo.init('${memoList}', "ledger").view();
+	memo.select("ledger");
 	
 	//새로운 메모 추가
 	$("#memoAddBt").click(function(){
@@ -30,9 +30,9 @@ $(document).ready(function(){
 	});
 	
 	
-	let purList = JSON.parse('${purList}');
-	let purDtlList = JSON.parse('${purDtlList}');
-	let bankList = JSON.parse('${bankList}');
+	//let purList = JSON.parse('${purList}');
+	//let purDtlList = JSON.parse('${purDtlList}');
+	//let bankList = JSON.parse('${bankList}');
 	
 	//메인조회 리스트
 	$("#startDate").val(isDate.addMonToday(-1));
@@ -50,7 +50,7 @@ $(document).ready(function(){
 		data: param,
 		dataType: 'json',
 	    success : function(data) {
-	    	rec.init("main", data.recList, purList, purDtlList, bankList).view();	    	
+	    	rec.init("main", data.recList, data.purList, data.purDtlList, data.bankList).view();	    	
 	    },
 	    error : function(request, status, error){
 	    	alert("error");

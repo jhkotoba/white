@@ -22,7 +22,7 @@ public class MemoController {
 		
 		WhiteMap param = new WhiteMap(request);
 		
-		request.setAttribute("memoList", memoService.selectMemoList(param));
+		request.setAttribute("result", new JSONArray(memoService.selectMemoList(param)));
 		return "result.jsp";
 	}
 	

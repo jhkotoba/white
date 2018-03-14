@@ -7,8 +7,29 @@ let memo = {
 	clone : new Array(),
 	type : "",
 	
+	select : function(memoType){
+		
+		if(emptyCheck.isNotEmpty(memoType)){		
+			$.ajax({		
+				type: 'POST',
+				url: common.path()+'/memo/selectMemoList.ajax',
+				data: {
+					memoType : memoType
+				},
+				dataType: 'json',
+			    success : function(data) {
+			    	memo.init(data, memoType).view();
+			    },
+			    error : function(request, status, error){
+			    	alert("error");
+			    }
+			});
+		}
+		return this;
+	},
+	
 	init : function(list, type){		
-		this.list = JSON.parse(list);
+		this.list = list;
 		this.clone = common.clone(this.list);
 		this.type = type;
 		return this;		
