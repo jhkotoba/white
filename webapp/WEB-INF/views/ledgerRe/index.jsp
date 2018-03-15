@@ -29,11 +29,6 @@ $(document).ready(function(){
 		memo.insert();
 	});
 	
-	
-	//let purList = JSON.parse('${purList}');
-	//let purDtlList = JSON.parse('${purDtlList}');
-	//let bankList = JSON.parse('${bankList}');
-	
 	//메인조회 리스트
 	$("#startDate").val(isDate.addMonToday(-1));
 	$("#endDate").val(isDate.today())	

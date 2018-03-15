@@ -12,11 +12,21 @@
 <script type="text/javascript">
 $(document).ready(function(){
 	
-	let purList = JSON.parse('${purList}');
+	/* let purList = JSON.parse('${purList}');
 	let purDtlList = JSON.parse('${purDtlList}');
-	let bankList = JSON.parse('${bankList}');
+	let bankList = JSON.parse('${bankList}'); */
 	
-	recIn.init(purList, purDtlList, bankList).add().view();	
+	$.ajax({		
+		type: 'POST',
+		url: common.path()+'/ledgerRe/selectPurBankList.ajax',
+		dataType: 'json',
+	    success : function(data) {
+	    	recIn.init(data.purList, data.purDtlList, data.bankList).add().view();    	
+	    },
+	    error : function(request, status, error){
+	    	alert("error");
+	    }
+	});
 	
 	$("#recAddBtn").click(function(){		
 		recIn.add().view();

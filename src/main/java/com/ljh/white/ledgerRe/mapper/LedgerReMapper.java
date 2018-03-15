@@ -146,7 +146,7 @@ public class LedgerReMapper {
 	 * @return
 	 */
 	public int selectIsUsedPurposeRec(List<WhiteMap> list) {		
-		return sqlSession.selectOne("ledgerReMapper.selectIsUsedPurRec", list);		 
+		return sqlSession.selectOne("ledgerReMapper.selectIsUsedPurposeRec", list);		 
 	}
 	
 	/**

@@ -128,4 +128,41 @@ public class AdminMapper {
 	public int deleteSideMenuList(List<WhiteMap> list) {		
 		return sqlSession.delete("adminMapper.deleteSideMenuList", list);		 
 	}
+	
+	
+	/**
+	 * 권한 insert
+	 * @param list
+	 * @return
+	 */
+	public int insertAuthNmList(List<WhiteMap> list) {		
+		return sqlSession.insert("adminMapper.insertAuthNmList", list);		 
+	}	
+	
+	/**
+	 * 권한 update
+	 * @param list
+	 * @return
+	 */
+	public int updateAuthNmList(List<WhiteMap> list) {		
+		return sqlSession.update("adminMapper.updateAuthNmList", list);		 
+	}	
+	
+	/**
+	 * 권한  delete 하기전 사용되는지 체크
+	 * @param list
+	 * @return
+	 */
+	public int selectIsUsedAuthNm(List<WhiteMap> list) {		
+		return sqlSession.selectOne("adminMapper.selectIsUsedAuthNm", list);		 
+	}
+	
+	/**
+	 * 권한  delete
+	 * @param list
+	 * @return
+	 */
+	public int deleteAuthNmList(List<WhiteMap> list) {		
+		return sqlSession.delete("adminMapper.deleteAuthNmList", list);		 
+	}
 }

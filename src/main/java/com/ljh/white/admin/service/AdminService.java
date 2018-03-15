@@ -135,10 +135,7 @@ public class AdminService {
 			resultMap.put("upCnt", adminMapper.updateNavMenuList(upList));	
 		}else {
 			resultMap.put("upCnt", 0);	
-		}
-		
-		
-		
+		}		
 		return resultMap;
 	}
 	
@@ -174,6 +171,46 @@ public class AdminService {
 			resultMap.put("delCnt", 0);	
 		}
 		
+		return resultMap;
+	}
+	
+	
+	/**
+	 * 권한 insert, update, delete
+	 * @param list
+	 * @return
+	 */
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
+	public WhiteMap inUpDelAuthNmList(WhiteMap param) {
+		
+		List<WhiteMap> inList = param.getListWhiteMap("inList");
+		List<WhiteMap> upList = param.getListWhiteMap("upList");
+		List<WhiteMap> delList = param.getListWhiteMap("delList");
+		
+		WhiteMap resultMap = new WhiteMap();
+		
+		if(delList.size() > 0) {
+			if(adminMapper.selectIsUsedAuthNm(delList)>0) {
+				resultMap.put("msg", "used");
+				return resultMap;			
+			}else {
+				resultMap.put("delCnt", adminMapper.deleteAuthNmList(delList));
+			}					
+		}else {
+			resultMap.put("delCnt", 0);	
+		}
+		
+		if(inList.size() > 0 ) {
+			resultMap.put("inCnt", adminMapper.insertAuthNmList(inList));	
+		}else {
+			resultMap.put("inCnt", 0);	
+		}
+		
+		if(upList.size() > 0 ) {			
+			resultMap.put("upCnt", adminMapper.updateAuthNmList(upList));	
+		}else {
+			resultMap.put("upCnt", 0);	
+		}		
 		return resultMap;
 	}
 	

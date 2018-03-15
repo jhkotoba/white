@@ -129,4 +129,16 @@ public class AdminController {
 		request.setAttribute("result", new JSONArray(adminService.selectAuthList(param)));
 		return "result.jsp";
 	}
+	
+	@RequestMapping(value="/admin/inUpDelAuthNmList.ajax" )
+	public String inUpDelauthList(HttpServletRequest request){
+		logger.debug("inUpDelAuthNmList Start");
+		
+		WhiteMap param = new WhiteMap(request);		
+		WhiteMap resultMap = adminService.inUpDelAuthNmList(param);
+		request.setAttribute("result", new JSONObject(resultMap));
+		
+		return "result.jsp";
+	}
+	
 }

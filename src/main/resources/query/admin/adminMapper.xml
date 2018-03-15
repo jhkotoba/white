@@ -37,9 +37,11 @@
 			'select' AS state,
 			</if>
 			auth_nm_seq AS authNmSeq,
-			auth_nm AS authNm
+			auth_nm AS authNm,
+			auth_order AS authOrder
  		FROM auth_name
  		WHERE auth_nm <![CDATA[ <> ]]> 'dev'
+ 		ORDER BY auth_order ASC
 	</select>
 	
 	<select id="selectUserAuth" resultType="WhiteMap" parameterType="WhiteMap">
@@ -167,7 +169,7 @@
 	</update>	
 	
 		
-	<!-- 목적 삭제시 상세목적에 부모로써 사용되는지 확인 -->
+	<!-- 네비메뉴 삭제시 사이드메뉴의 상위목적인지 확인 -->
 	<select id="selectIsUsedSideUrl" resultType="int" parameterType="java.util.List">
 		SELECT COUNT(1) FROM side_menu
 		WHERE nav_seq IN
@@ -258,6 +260,77 @@
 		WHERE side_seq IN 
 		<foreach collection="list" item="item" separator="," open="(" close=")">
 			#{item.sideSeq}
+		</foreach>
+	</delete>
+	
+	
+	<!-- 권한 insert -->
+	<insert id="insertAuthNmList" parameterType="java.util.List">
+		INSERT INTO auth_name(		
+			auth_nm,	
+			auth_order
+		)VALUES
+		<foreach collection="list" item="item" separator="),(" open="(" close=")">
+			#{item.authNm}, 
+			#{item.authOrder}		
+		</foreach>	
+	</insert>
+	
+	
+	<!-- 권한 수정 -->
+	<update id="updateAuthNmList" parameterType="java.util.List">		
+		UPDATE auth_name
+		SET auth_nm = 
+		CASE		
+		<foreach collection="list" item="item">
+			WHEN auth_nm_seq = #{item.authNmSeq} THEN #{item.authNm}
+		</foreach>		
+		END,	
+		auth_order = 
+		CASE		
+		<foreach collection="list" item="item">
+			WHEN auth_nm_seq = #{item.authNmSeq} THEN #{item.authOrder}
+		</foreach>		
+		END
+		WHERE auth_nm_seq IN 
+		<foreach collection="list" item="item" separator="," open="(" close=")">
+			#{item.authNmSeq}
+		</foreach>
+	</update>	
+	
+		
+	<!-- 권한 삭제시 사용되는지 확인 -->
+	<select id="selectIsUsedAuthNm" resultType="int" parameterType="java.util.List">
+		SELECT
+		(
+			SELECT COUNT(1) FROM authority
+			WHERE auth_nm_seq IN
+			<foreach collection="list" item="item" separator="," open="(" close=")">
+				#{item.authNmSeq}
+			</foreach>		
+		)+
+		(
+			SELECT COUNT(1) FROM nav_menu
+			WHERE nav_auth_nm_seq IN
+			<foreach collection="list" item="item" separator="," open="(" close=")">
+				#{item.authNmSeq}
+			</foreach>		
+		)+
+		(
+			SELECT COUNT(1) FROM side_menu
+			WHERE side_auth_nm_seq IN
+			<foreach collection="list" item="item" separator="," open="(" close=")">
+				#{item.authNmSeq}
+			</foreach>		
+		) AS count		
+	</select>
+	
+	<!--권한 삭제 -->
+	<delete id="deleteAuthNmList" parameterType="java.util.List">
+		DELETE FROM auth_name
+		WHERE auth_nm_seq IN 
+		<foreach collection="list" item="item" separator="," open="(" close=")">
+			#{item.authNmSeq}
 		</foreach>
 	</delete>
 	

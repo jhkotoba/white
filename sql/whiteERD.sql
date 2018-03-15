@@ -32,6 +32,7 @@ CREATE TABLE auth_name
 (
 	auth_nm_seq int NOT NULL AUTO_INCREMENT,
 	auth_nm varchar(20) NOT NULL,
+	auth_order int NOT NULL,
 	PRIMARY KEY (auth_nm_seq),
 	UNIQUE (auth_nm)
 );

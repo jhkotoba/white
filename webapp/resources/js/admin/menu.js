@@ -187,7 +187,7 @@ let nav = {
 	sync : function(target){
 		let name = target.id.split('_')[0];
 		let idx = Number(target.id.split('_')[1]);
-		//alert(name);
+		
 		switch(name){
 		
 		case "navDel":
@@ -205,7 +205,7 @@ let nav = {
 				$("#navNm_"+idx).removeClass().prop("readOnly", false);
 				$("#navUrl_"+idx).removeClass().prop("readOnly", false);
 				$("#navAuthNmSeq_"+idx).removeClass().prop("disabled", false);
-				if(idx !== "0") $("#navUp_"+idx).removeClass().addClass("btn_azure02").prop("disabled", false);			
+				if(idx !== 0) $("#navUp_"+idx).removeClass().addClass("btn_azure02").prop("disabled", false);			
 				if(idx !== this.lastIdx-1) $("#navDown_"+idx).removeClass().addClass("btn_azure02").prop("disabled", false);
 				this.navList[idx].state = "select";
 			}
@@ -349,6 +349,7 @@ let side = {
 	sideClone : new Array(),
 	navSeq : "",
 	navUrl : "",
+	firstIdx : 0,
 	lastIdx : 0,
 	
 	init : function(sideList, authList){		
@@ -458,6 +459,7 @@ let side = {
 			$("#sideList").append(tag);
 			$("#sideList #sideUp_"+sideView.idxList[0]).removeClass().addClass("btn_disabled02").prop("disabled", true);
 			$("#sideList #sideDown_"+sideView.idxList[sideView.idxList.length-1]).removeClass().addClass("btn_disabled02").prop("disabled", true);
+			this.firstIdx = sideView.idxList[0];
 		}
 		return this;
 	},
@@ -542,7 +544,7 @@ let side = {
 				$("#sideNavUrl_"+idx).removeClass().prop("readOnly", false);
 				$("#sideUrl_"+idx).removeClass().prop("readOnly", false);
 				$("#sideAuthNmSeq_"+idx).removeClass().prop("disabled", false);
-				if(idx !== "0") $("#sideUp_"+idx).removeClass().addClass("btn_azure02").prop("disabled", false);				
+				if(idx !== this.firstIdx) $("#sideUp_"+idx).removeClass().addClass("btn_azure02").prop("disabled", false);				
 				if(idx !== this.lastIdx-1) $("#sideDown_"+idx).removeClass().addClass("btn_azure02").prop("disabled", false);
 				this.sideList[idx].state = "select";
 			}

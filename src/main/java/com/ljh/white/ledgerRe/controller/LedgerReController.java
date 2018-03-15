@@ -48,6 +48,21 @@ public class LedgerReController {
 		return "white.jsp";
 	}
 	
+	@RequestMapping(value="/ledgerRe/selectPurBankList.ajax" )
+	public String selectPurBankList(HttpServletRequest request){
+		logger.debug("selectPurBankList Start");
+		
+		WhiteMap param = new WhiteMap(request);
+
+		JSONObject result = new JSONObject();		
+		result.put("purList", new JSONArray(ledgerReService.selectPurList(param)));
+		result.put("purDtlList", new JSONArray(ledgerReService.selectPurDtlList(param)));
+		result.put("bankList", new JSONArray(ledgerReService.selectBankList(param)));
+		request.setAttribute("result", result);	
+		
+		return "result.jsp";
+	}
+	
 	@RequestMapping(value="/ledgerRe/selectRecordList.ajax" )
 	public String selectRecordList(HttpServletRequest request){
 		logger.debug("selectRecordList Start");

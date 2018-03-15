@@ -179,7 +179,7 @@ let pur = {
 				this.purList[idx].state = "delete";
 			}else{				
 				$("#purpose_"+idx).removeClass().prop("readOnly", false);				
-				if(idx !== "0") $("#navUp_"+idx).removeClass().addClass("btn_azure02").prop("disabled", false);				
+				if(idx !== 0) $("#navUp_"+idx).removeClass().addClass("btn_azure02").prop("disabled", false);				
 				if(idx !== this.lastIdx-1) $("#navDown_"+idx).removeClass().addClass("btn_azure02").prop("disabled", false);
 				this.purList[idx].state = "select";
 			}
@@ -300,6 +300,7 @@ let purDtl = {
 	purDtlClone : new Array(),
 	purSeq : "",
 	purpose : "",
+	firstIdx : 0,
 	lastIdx : 0,
 	
 	init : function(purDtlList){		
@@ -391,7 +392,8 @@ let purDtl = {
 			tag +="</table>";
 			$("#purDtlList").append(tag);
 			$("#purDtlList #purDtlUp_"+purDtlView.idxList[0]).removeClass().addClass("btn_disabled02").prop("disabled", true);
-			$("#purDtlList #purDtlDown_"+purDtlView.idxList[purDtlView.idxList.length-1]).removeClass().addClass("btn_disabled02").prop("disabled", true);			
+			$("#purDtlList #purDtlDown_"+purDtlView.idxList[purDtlView.idxList.length-1]).removeClass().addClass("btn_disabled02").prop("disabled", true);
+			this.firstIdx = purDtlView.idxList[0];
 		}
 		
 		return this;
@@ -471,7 +473,7 @@ let purDtl = {
 				this.purDtlList[idx].state = "delete";
 			}else{				
 				$("#purDetail_"+idx).removeClass().prop("readOnly", false);
-				if(idx !== "0") $("#purDtlUp_"+idx).removeClass().addClass("btn_azure02").prop("disabled", false);				
+				if(idx !== this.firstIdx) $("#purDtlUp_"+idx).removeClass().addClass("btn_azure02").prop("disabled", false);				
 				if(idx !== this.lastIdx-1) $("#purDtlDown_"+idx).removeClass().addClass("btn_azure02").prop("disabled", false);
 				this.purDtlList[idx].state = "select";
 			}
