@@ -3,15 +3,15 @@
 <!DOCTYPE html PUBLIC>
 
 <head>
-	<meta charset=UTF-8>
-	<title>Insert title here</title>	
-	<script type="text/javascript">			
-	</script>
+<meta charset=UTF-8>
+<title>whiteHome</title>	
+<script type="text/javascript">			
+</script>
 	
 	
 </head>
 <body>
-	sourceMain.jsp<br>
+mysql.jsp<br>
 	
 
 </body>

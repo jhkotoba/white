@@ -20,7 +20,7 @@ $(document).ready(function(){
 			mode : "select"
 		},
 	    success : function(data) {	
-	    	console.log(data);
+	    	auth.init(data).view();
 	    },
 	    error : function(request, status, error){
 	    	alert("error");
