@@ -12,6 +12,26 @@
 <script type="text/javascript">
 $(document).ready(function(){
 
+	$.ajax({		
+		type: 'POST',
+		url: common.path()+'/admin/selectAuthList.ajax',
+		dataType: 'json',		
+	    success : function(data) {
+	    	
+			$("#authList").empty();
+			
+			let tag = "<div>";
+			for(let i=0; i<data.length; i++){
+				tag += "<input id='auth_"+data[i].authNmSeq+"' name='authChk' type='checkbox' value='none'>"+data[i].authNm;
+			}
+			tag += "</div>";			
+			$("#authList").append(tag);
+	    },
+	    error : function(request, status, error){
+	    	alert("error");
+	    }
+	});
+	
 	$("#srcBtn").on("click", function(){
 		ad.select();
 	});
@@ -135,10 +155,7 @@ $(document).ready(function(){
 	
 	<br><span>사용자 권한 설정</span>
 	<button id="authSave">저장</button>
-	<div id="authList">
-		<c:forEach items="${authList}" var="item">
-			<input id="auth_${item.authNmSeq}" name="authChk" type="checkbox" value="none">${item.authNm}
-		</c:forEach>
+	<div id="authList">		
 	</div>
 </div>
 

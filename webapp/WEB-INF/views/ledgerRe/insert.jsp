@@ -10,12 +10,8 @@
 
 <script type="text/javascript" src="${contextPath}/resources/js/ledgerRe/insert.js"></script>
 <script type="text/javascript">
-$(document).ready(function(){
-	
-	/* let purList = JSON.parse('${purList}');
-	let purDtlList = JSON.parse('${purDtlList}');
-	let bankList = JSON.parse('${bankList}'); */
-	
+$(document).ready(function(){6	
+
 	$.ajax({		
 		type: 'POST',
 		url: common.path()+'/ledgerRe/selectPurBankList.ajax',
