@@ -27,7 +27,7 @@ $(document).ready(function(){
 	//메모 저장
 	$("#memoSaveBt").click(function(){	
 		memo.insert();
-	});
+	});	
 	
 	//메인조회 리스트
 	$("#startDate").val(isDate.addMonToday(-1));

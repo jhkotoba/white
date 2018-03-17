@@ -11,7 +11,7 @@
 <script type="text/javascript" src="${contextPath}/resources/js/ledgerRe/record.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
-
+	
 	$("#startDate").val(isDate.firstDay());
 	$("#endDate").val(isDate.lastDay());
 	
