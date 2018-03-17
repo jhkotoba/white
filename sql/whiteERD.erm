@@ -11,8 +11,8 @@
 	</page_setting>
 	<category_index>0</category_index>
 	<zoom>1.0</zoom>
-	<x>569</x>
-	<y>207</y>
+	<x>685</x>
+	<y>269</y>
 	<default_color>
 		<r>128</r>
 		<g>128</g>
@@ -135,7 +135,7 @@
 			</connections>
 			<display>false</display>
 			<creation_date>2017-03-08 23:30:08</creation_date>
-			<updated_date>2018-03-15 21:55:23</updated_date>
+			<updated_date>2018-03-17 09:49:45</updated_date>
 			<model_property>
 				<name>프로젝트명</name>
 				<value></value>
@@ -746,7 +746,7 @@
 			<description></description>
 			<logical_name>side_show_yn</logical_name>
 			<physical_name>side_show_yn</physical_name>
-			<type>varbinary(n)</type>
+			<type>varchar(n)</type>
 		</word>
 		<word>
 			<id>36</id>
@@ -3327,7 +3327,7 @@
 					<unique_key_name></unique_key_name>
 					<logical_name></logical_name>
 					<physical_name></physical_name>
-					<type>varbinary(n)</type>
+					<type>varchar(n)</type>
 					<constraint></constraint>
 					<default_value></default_value>
 					<auto_increment>false</auto_increment>
