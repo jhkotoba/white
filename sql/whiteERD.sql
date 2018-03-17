@@ -92,12 +92,12 @@ CREATE TABLE purpose
 
 CREATE TABLE purpose_detail
 (
-	pur_detail_seq int NOT NULL AUTO_INCREMENT,
+	pur_dtl_seq int NOT NULL AUTO_INCREMENT,
 	pur_seq int NOT NULL,
 	user_seq int NOT NULL,
 	pur_dtl_order int NOT NULL,
 	pur_detail varchar(20) NOT NULL,
-	PRIMARY KEY (pur_detail_seq)
+	PRIMARY KEY (pur_dtl_seq)
 );
 
 

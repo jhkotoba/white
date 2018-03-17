@@ -11,8 +11,8 @@
 	</page_setting>
 	<category_index>0</category_index>
 	<zoom>1.0</zoom>
-	<x>685</x>
-	<y>269</y>
+	<x>284</x>
+	<y>0</y>
 	<default_color>
 		<r>128</r>
 		<g>128</g>
@@ -135,7 +135,7 @@
 			</connections>
 			<display>false</display>
 			<creation_date>2017-03-08 23:30:08</creation_date>
-			<updated_date>2018-03-17 09:49:45</updated_date>
+			<updated_date>2018-03-17 10:10:03</updated_date>
 			<model_property>
 				<name>프로젝트명</name>
 				<value></value>
@@ -552,8 +552,8 @@
 			<args></args>
 			<char_semantics>false</char_semantics>
 			<description></description>
-			<logical_name>세부목적 시퀀스</logical_name>
-			<physical_name>pur_detail_seq</physical_name>
+			<logical_name>세부목적 순서</logical_name>
+			<physical_name>pur_dtl_order</physical_name>
 			<type>integer</type>
 		</word>
 		<word>
@@ -568,8 +568,8 @@
 			<args></args>
 			<char_semantics>false</char_semantics>
 			<description></description>
-			<logical_name>세부목적 순서</logical_name>
-			<physical_name>pur_dtl_order</physical_name>
+			<logical_name>상세목적 Seq</logical_name>
+			<physical_name>pur_dtl_seq</physical_name>
 			<type>integer</type>
 		</word>
 		<word>
@@ -584,7 +584,7 @@
 			<args></args>
 			<char_semantics>false</char_semantics>
 			<description></description>
-			<logical_name>상세목적 Seq</logical_name>
+			<logical_name>세부목적 시퀀스</logical_name>
 			<physical_name>pur_dtl_seq</physical_name>
 			<type>integer</type>
 		</word>
@@ -925,7 +925,7 @@
 			<option></option>
 			<columns>
 				<normal_column>
-					<word_id>23</word_id>
+					<word_id>25</word_id>
 					<id>0</id>
 					<description></description>
 					<unique_key_name></unique_key_name>
@@ -1025,7 +1025,7 @@
 					</sequence>
 				</normal_column>
 				<normal_column>
-					<word_id>24</word_id>
+					<word_id>23</word_id>
 					<id>3</id>
 					<description></description>
 					<unique_key_name></unique_key_name>
@@ -1570,7 +1570,7 @@
 					</sequence>
 				</normal_column>
 				<normal_column>
-					<word_id>25</word_id>
+					<word_id>24</word_id>
 					<id>16</id>
 					<description></description>
 					<unique_key_name></unique_key_name>
