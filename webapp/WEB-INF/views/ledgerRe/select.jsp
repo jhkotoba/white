@@ -43,6 +43,19 @@ $(document).ready(function(){
 				$("#srhPur").val("").prop("selected", true);
 				$("#srhBank").val("").prop("selected", true);
 				
+				//검색 목적리스트, 은행리스트	
+				let tag = "";
+				for(let i=0; i<data.purList.length; i++){		
+					tag += "<option value='"+data.purList[i].purSeq+"'>"+data.purList[i].purpose+"</option>";
+				}
+				$("#srhPur").append(tag);	
+				
+				tag = "";
+				for(let i=0; i<data.bankList.length; i++){		
+					tag += "<option value='"+data.bankList[i].bankSeq+"'>"+data.bankList[i].bankName+"("+data.bankList[i].bankAccount+")</option>";
+				}
+				$("#srhBank").append(tag);	
+				
 		    },
 		    error : function(request, status, error){
 		    	alert("error");
@@ -87,19 +100,6 @@ $(document).ready(function(){
 			alert(rtn.msg);
 		}
 	});
-	
-	//검색 목적리스트, 은행리스트	
-	let tag = "";
-	for(let i=0; i<purList.length; i++){		
-		tag += "<option value='"+purList[i].purSeq+"'>"+purList[i].purpose+"</option>";
-	}
-	$("#srhPur").append(tag);	
-	
-	tag = "";
-	for(let i=0; i<bankList.length; i++){		
-		tag += "<option value='"+bankList[i].bankSeq+"'>"+bankList[i].bankName+"("+bankList[i].bankAccount+")</option>";
-	}
-	$("#srhBank").append(tag);	
 	
 	//검색 텍스트  purSeq sync
 	$("#srhPur").change(function(){
