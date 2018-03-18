@@ -117,23 +117,25 @@ let memo = {
 	
 	//메모저장
 	insert : function(){
-		$.ajax({		
-			type: 'POST',
-			url: common.path()+'/memo/memoSave.ajax',
-			data: {
-				jsonStr : JSON.stringify(this.list),
-				memoType : this.type
-			},
-			dataType: 'json',
-		    success : function(data, stat, xhr) {  
-		    	memo.clone = data;
-		    	memo.list = common.clone(memo.clone);
-		    	memo.view();
-		    },
-		    error : function(xhr, stat, err) {			    	
-		    	alert("memoSave error");
-		    }
-		});
+		if(confirm("메모을 저장 하시겠습니까?")){
+			$.ajax({		
+				type: 'POST',
+				url: common.path()+'/memo/memoSave.ajax',
+				data: {
+					jsonStr : JSON.stringify(this.list),
+					memoType : this.type
+				},
+				dataType: 'json',
+			    success : function(data, stat, xhr) {  
+			    	memo.clone = data;
+			    	memo.list = common.clone(memo.clone);
+			    	memo.view();
+			    },
+			    error : function(xhr, stat, err) {			    	
+			    	alert("memoSave error");
+			    }
+			});
+		}
 	}
 	
 }

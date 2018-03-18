@@ -127,22 +127,23 @@ let recIn = {
 				this.inList[i].money = "-"+String(Math.abs(Number(this.inList[i].money)));
 			}
 		}
-		
-		$.ajax({		
-			type: 'POST',
-			url: common.path()+'/ledgerRe/insertRecordList.ajax',
-			data: {
-				inList : JSON.stringify(this.inList)
-			},
-			dataType: 'json',
-		    success : function(data, stat, xhr) {  
-		    	alert(data+" 개의 행이 저장되었습니다.");
-		    	white.submit($("#moveForm #navUrl").val(), $("#moveForm #sideUrl").val());
-		    },
-		    error : function(xhr, stat, err) {
-		    	alert("insert error");
-		    }
-		});		
+		if(confirm("입력한 내용을 저장 하시겠습니까?")){
+			$.ajax({		
+				type: 'POST',
+				url: common.path()+'/ledgerRe/insertRecordList.ajax',
+				data: {
+					inList : JSON.stringify(this.inList)
+				},
+				dataType: 'json',
+			    success : function(data, stat, xhr) {  
+			    	alert(data+" 개의 행이 저장되었습니다.");
+			    	white.submit($("#moveForm #navUrl").val(), $("#moveForm #sideUrl").val());
+			    },
+			    error : function(xhr, stat, err) {
+			    	alert("insert error");
+			    }
+			});
+		}			
 	},
 	
 	view : function(){
