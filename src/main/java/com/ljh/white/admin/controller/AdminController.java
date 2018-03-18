@@ -36,14 +36,8 @@ public class AdminController {
 		List<WhiteMap> sideList = whiteService.selectSideMenuList(param);		
 			
 		String navUrl = param.getString("navUrl");
-		String sideUrl = param.getString("sideUrl");	
-		
-		switch(sideUrl){
-		case "/lookup" :
-			request.setAttribute("authList", adminService.selectAuthList(param));
-			break;
-		}	
-		
+		String sideUrl = param.getString("sideUrl");		
+	
 		request.setAttribute("navUrl", navUrl);
 		request.setAttribute("sideUrl", sideUrl);
 		request.setAttribute("sideList", sideList);

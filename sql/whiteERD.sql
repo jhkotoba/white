@@ -120,6 +120,7 @@ CREATE TABLE source_board
 	source_type varchar(20) NOT NULL,
 	user_seq int NOT NULL,
 	content varchar(4000) NOT NULL,
+	reg_date datetime NOT NULL,
 	PRIMARY KEY (source_seq),
 	UNIQUE (user_seq)
 );
