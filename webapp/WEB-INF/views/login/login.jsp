@@ -7,6 +7,8 @@
 <head>
 <meta charset=UTF-8>
 <title>whiteHome</title>
+<link rel="stylesheet" href="${contextPath}/resources/bootstrap/css/bootstrap.css" type="text/css" />
+<script type="text/javascript" src="${contextPath}/resources/js/wcommon/jquery/jquery-3.2.1.min.js"></script>
 </head>
 <body>
 

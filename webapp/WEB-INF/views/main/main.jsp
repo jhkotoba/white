@@ -7,6 +7,6 @@
 <title>whiteHome</title>
 </head>
 <body>
-	<p style='font-size: 10px;'>크롬에 최적화 되어 있습니다.</p>
+
 </body>
 </html>

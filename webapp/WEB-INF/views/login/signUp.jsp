@@ -7,7 +7,9 @@
 <head>
 <meta charset=UTF-8>
 <title>signUp</title>
-<script type="text/javascript" src="${contextPath}/resources/js/wcommon/jquery/jquery-3.2.0.js"></script>
+<link rel="stylesheet" href="${contextPath}/resources/bootstrap/css/bootstrap.css" type="text/css" />
+
+<script type="text/javascript" src="${contextPath}/resources/js/wcommon/jquery/jquery-3.2.1.min.js"></script>
 <script type="text/javascript" src="${contextPath}/resources/js/wcommon/common.js"></script>	
 <script type="text/javascript">
 $(document).ready(function(){
