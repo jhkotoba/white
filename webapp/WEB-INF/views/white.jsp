@@ -39,18 +39,14 @@
 
 $(document).ready(function(){
 	
-	$("#navbarNav>ul>li").click(function(){
+	/* $("#navbarNav>ul>li").click(function(){
 		white.submit(this.id, "/index");
-	});
+	}); */
 	
-	$("#sideMenu>ul>li").click(function(){		
+	/* $("#sideMenu>ul>li").click(function(){		
 		white.submit("${navUrl}", this.id);
-	});
+	}); */
 	
-	$("#sideMenu>div>a").click(function(){		
-		//white.submit("${navUrl}", this.id);
-		console.log(this.id);
-	});	
 });
 
 </script>
@@ -66,7 +62,7 @@ $(document).ready(function(){
 		</c:if>				
 	</header>
 	
-	<nav id="navMenu" class="navbar navbar-expand-lg navbar-dark bg-dark hanna-20">
+	<%-- <nav id="navMenu" class="navbar navbar-expand-lg navbar-dark bg-dark hanna-20">
 		<a class="navbar-brand" href="${contextPath}/main">white</a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
 		    <span class="navbar-toggler-icon"></span>
@@ -82,9 +78,56 @@ $(document).ready(function(){
 				</c:forEach>
 			</ul>			
 		</div>
+	</nav> --%>
+	
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark hanna-20">
+		<a class="navbar-brand" href="${contextPath}/main">white</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarNavDropdown">
+			<ul class="navbar-nav">
+				<c:forEach items="${sessionScope.navList}" var="nav">			
+					<c:if test="${nav.auth eq 1 }">
+						<li id="${nav.navUrl}" class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="cursor:pointer;">${nav.navNm}</a>
+							<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+								<a class="dropdown-item" href="javascript:white.submit('${nav.navUrl}', '/index')">${nav.navNm}</a>
+								<c:forEach items="${sessionScope.sideList}" var="side">									
+									<c:if test="${nav.navSeq eq side.navSeq }">
+										<c:if test="${side.auth eq 1 }">
+											<a class="dropdown-item" href="javascript:white.submit('${nav.navUrl}', '${side.sideUrl}')">${side.sideNm}</a>
+										</c:if>
+									</c:if>
+								</c:forEach>
+							</div>
+						</li>
+					</c:if>
+				</c:forEach>
+			</ul>
+		</div>
 	</nav>
+	
+	<%-- <nav id="navMenu" class="navbar navbar-expand-lg navbar-dark bg-dark hanna-20">
+		<a class="navbar-brand" href="${contextPath}/main">white</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+		    <span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarNav">			
+			<ul class="navbar-nav">	
+				<c:forEach items="${sessionScope.navList}" var="item">			
+					<c:if test="${item.auth eq 1 }">
+						<li id="${item.navUrl}" class="nav-item">
+							<a class="nav-link" style="cursor:pointer;">${item.navNm}</a>
+						</li>
+					</c:if>
+				</c:forEach>
+			</ul>			
+		</div>
+	</nav> --%>
 
-	<c:if test="${requestScope.sideList ne null}">
+	
+	<%-- <c:if test="${requestScope.sideList ne null}">
 		<section class="d-flex hanna-15">
 			<div id="sideMenu">
 				<ul class="nav flex-column text-white bg-dark" style="height: 100%;">
@@ -101,9 +144,9 @@ $(document).ready(function(){
 				</ul>
 			</div>
 		</section>
-	</c:if>	
+	</c:if>	 --%>
 	
-	<section class="mainView">
+	<section>
 		<jsp:include page="${requestScope.sectionPage}" flush="false" />
 	</section>
 	<footer>

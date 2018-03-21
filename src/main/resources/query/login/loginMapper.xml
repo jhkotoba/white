@@ -82,6 +82,36 @@
 		ORDER BY nm.nav_order
 	</select>
 	
+	<select id="selectSideMenuList" resultType="whiteMap" parameterType="whiteMap">		
+		SELECT					
+			sm.side_seq AS sideSeq,
+			sm.nav_seq AS navSeq,
+	  		sm.side_nm AS sideNm,
+	 		sm.side_url AS sideUrl,
+	 		sm.side_order AS sideOrder,
+			sm.side_auth_nm_seq AS sideAuthNmSeq
+			<choose>
+				<when test="userId == 'leedev'">
+				,1 AS auth
+				</when>
+					<otherwise>
+					,IF(
+						(
+							SELECT a.auth_seq FROM authority a
+							WHERE a.auth_nm_seq = sm.side_auth_nm_seq
+							AND a.user_seq = #{userSeq}
+							LIMIT 1
+						) IS NULL, 0, 1
+					) AS auth
+				</otherwise>
+			</choose>	
+		FROM side_menu sm
+		<if test="userId != 'leedev'">
+			WHERE sm.side_show_yn = 'Y'
+		</if>
+		ORDER BY sm.side_order
+	</select>
+	
 	<!-- 사용자 등록 -->
 	<insert id="insertSignUp" parameterType="WhiteMap" useGeneratedKeys="true" keyProperty="user_seq">
 		INSERT INTO white_user

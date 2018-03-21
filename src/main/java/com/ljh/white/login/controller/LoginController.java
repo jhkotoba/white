@@ -51,7 +51,8 @@ public class LoginController {
 			WhiteMap param = new WhiteMap();
 			param.put("userSeq", userSeq);
 			param.put("userId", userId);
-			List<WhiteMap> navList = loginService.selectNavMenuList(param);			
+			List<WhiteMap> navList = loginService.selectNavMenuList(param);		
+			List<WhiteMap> sideList = loginService.selectSideMenuList(param);		
 			
 			//세션 등록 
 			HttpSession session = request.getSession();		
@@ -60,6 +61,8 @@ public class LoginController {
 			session.setAttribute("userSeq", userSeq);
 			session.setAttribute("authority", auth);
 			session.setAttribute("navList", navList);	
+			session.setAttribute("sideList", sideList);
+			
 			
 			//page
 			request.setAttribute("sidePage", null);

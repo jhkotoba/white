@@ -41,9 +41,10 @@ public class WhiteService{
 	}
 	
 	/**
-	 * 해당 유저 사이드메뉴 권한별 조회
+	 * 해당 유저 사이드메뉴 권한별 조회	/// 세션으로 옮김
 	 * @param param
 	 * @return
+	 * @deprecated
 	 */
 	public List<WhiteMap> selectSideMenuList(WhiteMap param) {		
 		return whiteMapper.selectSideMenuList(param);		

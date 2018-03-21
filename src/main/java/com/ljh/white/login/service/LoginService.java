@@ -51,7 +51,11 @@ public class LoginService{
 	
 	public List<WhiteMap> selectNavMenuList(WhiteMap param) {		
 		return loginMapper.selectNavMenuList(param);		
-	}	
+	}
+	
+	public List<WhiteMap> selectSideMenuList(WhiteMap param) {		
+		return loginMapper.selectSideMenuList(param);		
+	}
 	
 	public int getUserSeq(String userId) {
 		return loginMapper.getUserSeq(userId);
