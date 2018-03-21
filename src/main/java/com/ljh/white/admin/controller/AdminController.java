@@ -33,14 +33,14 @@ public class AdminController {
 		logger.debug("admin Start");
 		
 		WhiteMap param = new WhiteMap(request);
-		List<WhiteMap> sideList = whiteService.selectSideMenuList(param);		
+		//List<WhiteMap> sideList = whiteService.selectSideMenuList(param);		
 			
 		String navUrl = param.getString("navUrl");
 		String sideUrl = param.getString("sideUrl");		
 	
-		request.setAttribute("navUrl", navUrl);
-		request.setAttribute("sideUrl", sideUrl);
-		request.setAttribute("sideList", sideList);
+		//request.setAttribute("navUrl", navUrl);
+		//request.setAttribute("sideUrl", sideUrl);
+		//request.setAttribute("sideList", sideList);
 		request.setAttribute("sectionPage", navUrl.replace("/", "")+sideUrl+".jsp");
 		return "white.jsp";
 	}

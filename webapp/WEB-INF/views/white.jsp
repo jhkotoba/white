@@ -35,21 +35,6 @@
 
 
 <script type="text/javascript" src="${contextPath}/resources/js/wcommon/common.js"></script>
-<script type="text/javascript">
-
-$(document).ready(function(){
-	
-	/* $("#navbarNav>ul>li").click(function(){
-		white.submit(this.id, "/index");
-	}); */
-	
-	/* $("#sideMenu>ul>li").click(function(){		
-		white.submit("${navUrl}", this.id);
-	}); */
-	
-});
-
-</script>
 </head>
 <body>
 	<header class='header'>	
@@ -61,24 +46,6 @@ $(document).ready(function(){
 			<a href="${contextPath}/login/logoutProcess.do" class="badge badge-light">logout</a>
 		</c:if>				
 	</header>
-	
-	<%-- <nav id="navMenu" class="navbar navbar-expand-lg navbar-dark bg-dark hanna-20">
-		<a class="navbar-brand" href="${contextPath}/main">white</a>
-		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-		    <span class="navbar-toggler-icon"></span>
-		</button>
-		<div class="collapse navbar-collapse" id="navbarNav">			
-			<ul class="navbar-nav">	
-				<c:forEach items="${sessionScope.navList}" var="item">			
-					<c:if test="${item.auth eq 1 }">
-						<li id="${item.navUrl}" class="nav-item">
-							<a class="nav-link" style="cursor:pointer;">${item.navNm}</a>
-						</li>
-					</c:if>
-				</c:forEach>
-			</ul>			
-		</div>
-	</nav> --%>
 	
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark hanna-20">
 		<a class="navbar-brand" href="${contextPath}/main">white</a>
@@ -107,50 +74,14 @@ $(document).ready(function(){
 			</ul>
 		</div>
 	</nav>
-	
-	<%-- <nav id="navMenu" class="navbar navbar-expand-lg navbar-dark bg-dark hanna-20">
-		<a class="navbar-brand" href="${contextPath}/main">white</a>
-		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-		    <span class="navbar-toggler-icon"></span>
-		</button>
-		<div class="collapse navbar-collapse" id="navbarNav">			
-			<ul class="navbar-nav">	
-				<c:forEach items="${sessionScope.navList}" var="item">			
-					<c:if test="${item.auth eq 1 }">
-						<li id="${item.navUrl}" class="nav-item">
-							<a class="nav-link" style="cursor:pointer;">${item.navNm}</a>
-						</li>
-					</c:if>
-				</c:forEach>
-			</ul>			
-		</div>
-	</nav> --%>
-
-	
-	<%-- <c:if test="${requestScope.sideList ne null}">
-		<section class="d-flex hanna-15">
-			<div id="sideMenu">
-				<ul class="nav flex-column text-white bg-dark" style="height: 100%;">
-					<li class="nav-item" id="/index">
-						<a class="nav-link" style="cursor:pointer; width:150px;">메인</a>
-					</li>
-					<c:forEach items="${requestScope.sideList}" var="item">			
-						<c:if test="${item.auth eq 1 }">
-							<li id="${item.sideUrl}">
-								<a class="nav-link" style="cursor:pointer; width:150px;">${item.sideNm}</a>
-							</li>
-						</c:if>
-					</c:forEach>
-				</ul>
-			</div>
-		</section>
-	</c:if>	 --%>
-	
+		
 	<section>
 		<jsp:include page="${requestScope.sectionPage}" flush="false" />
 	</section>
+	
 	<footer>
 	</footer>
+	
 	<form id="moveForm" action="">
 		<input id="navUrl" name="navUrl" type="hidden" value="${navUrl}"></input>
 		<input id="sideUrl" name="sideUrl" type="hidden" value="${sideUrl}"></input>

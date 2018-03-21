@@ -32,6 +32,8 @@ public class SessionInterceptor extends HandlerInterceptorAdapter {
 			String sideUrl = request.getParameter("sideUrl");
 			WhiteMap auth = (WhiteMap)request.getSession(false).getAttribute("authority");
 			
+			
+			
 			//nav메뉴 권한 체크
 			if(auth.getInt(StaticValue.getNavAuthList().getString(navUrl))==1) {
 				
