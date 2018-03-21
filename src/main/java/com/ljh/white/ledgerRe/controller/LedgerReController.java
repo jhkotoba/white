@@ -13,7 +13,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.ljh.white.common.collection.WhiteMap;
-import com.ljh.white.common.service.WhiteService;
 import com.ljh.white.ledgerRe.service.LedgerReService;
 import com.ljh.white.memo.service.MemoService;
 
@@ -28,22 +27,15 @@ public class LedgerReController {
 	@Resource(name = "MemoService")
 	private MemoService memoService;
 	
-	@Resource(name = "WhiteService")
-	private WhiteService whiteService;
-	
 	@RequestMapping(value="/ledgerRe" )
 	public String ledgerReMain(HttpServletRequest request){
 		logger.debug("ledgerRe Start");
 		
 		WhiteMap param = new WhiteMap(request);
-		List<WhiteMap> sideList = whiteService.selectSideMenuList(param);
 		
 		String navUrl = param.getString("navUrl");
-		String sideUrl = param.getString("sideUrl");		
+		String sideUrl = param.getString("sideUrl");
 		
-		request.setAttribute("navUrl", navUrl);
-		request.setAttribute("sideUrl", sideUrl);
-		request.setAttribute("sideList", sideList);
 		request.setAttribute("sectionPage", navUrl.replace("/", "")+sideUrl+".jsp");
 		return "white.jsp";
 	}

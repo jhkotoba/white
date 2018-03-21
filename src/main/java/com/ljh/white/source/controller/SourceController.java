@@ -1,7 +1,5 @@
 package com.ljh.white.source.controller;
 
-import java.util.List;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
@@ -26,15 +24,11 @@ public class SourceController {
 	public String source(HttpServletRequest request){
 		logger.debug("source Start");
 		
-		WhiteMap param = new WhiteMap(request);
-		List<WhiteMap> sideList = whiteService.selectSideMenuList(param);		
+		WhiteMap param = new WhiteMap(request);		
 			
 		String navUrl = param.getString("navUrl");
 		String sideUrl = param.getString("sideUrl");
 		
-		request.setAttribute("navUrl", navUrl);
-		request.setAttribute("sideUrl", sideUrl);
-		request.setAttribute("sideList", sideList);
 		request.setAttribute("sectionPage", navUrl.replace("/", "")+sideUrl+".jsp");
 		return "white.jsp";
 	}

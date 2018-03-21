@@ -4,37 +4,6 @@
 
 <mapper namespace="whiteMapper">
 	
-	<select id="selectSideMenuList" resultType="whiteMap" parameterType="whiteMap">		
-		SELECT					
-			sm.side_seq AS sideSeq,
-			sm.nav_seq AS navSeq,
-	  		sm.side_nm AS sideNm,
-	 		sm.side_url AS sideUrl,
-	 		sm.side_order AS sideOrder,
-			sm.side_auth_nm_seq AS sideAuthNmSeq
-			<choose>
-				<when test="userId == 'leedev'">
-				,1 AS auth
-				</when>
-					<otherwise>
-					,IF(
-						(
-							SELECT a.auth_seq FROM authority a
-							WHERE a.auth_nm_seq = sm.side_auth_nm_seq
-							AND a.user_seq = #{userSeq}
-							LIMIT 1
-						) IS NULL, 0, 1
-					) AS auth
-				</otherwise>
-			</choose>	
-		FROM side_menu sm
-		WHERE sm.nav_seq = (SELECT nav_seq FROM nav_menu WHERE nav_url = #{navUrl})
-		<if test="userId != 'leedev'">
-			AND sm.side_show_yn = 'Y'
-		</if>
-		ORDER BY sm.side_order
-	</select>
-	
 	<select id="selectNavAuthList" resultType="WhiteMap">
 		SELECT		
 	 		nm.nav_url AS navUrl,
