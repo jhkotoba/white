@@ -135,8 +135,10 @@ $(document).ready(function(){
 
 <div id="userInfo" class="divPop">
 	<input id="userNo" type="hidden" value="">
-	
-	<div id='closeInfo' class='closeIcon maxLeft' title='닫기'></div>
+
+	<button id="closeInfo" type="button" class="close" aria-label="Close">
+		<span aria-hidden="true">&times;</span>
+	</button>
 	<table border="1">
 		<thead>
 			<tr>

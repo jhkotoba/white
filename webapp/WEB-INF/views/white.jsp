@@ -13,6 +13,18 @@
 <link rel="stylesheet" href="${contextPath}/resources/css/btn.css" type="text/css" />
 <link rel="stylesheet" href="${contextPath}/resources/css/icon.css" type="text/css" />
 <link rel="stylesheet" href="${contextPath}/resources/bootstrap/css/bootstrap.css" type="text/css" />
+
+<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/earlyaccess/hanna.css">
+<style>
+.hanna-20{
+  font-family: 'Hanna', serif;
+  font-size: 20px;
+}
+.hanna-15{
+  font-family: 'Hanna', serif;
+  font-size: 15px;
+}
+</style>
 <%-- <link rel="stylesheet" href="${contextPath}/resources/bootstrap/css/bootstrap-reboot.css" type="text/css" />
 <link rel="stylesheet" href="${contextPath}/resources/bootstrap/css/bootstrap-grid.css" type="text/css" /> --%>
 
@@ -33,6 +45,11 @@ $(document).ready(function(){
 	
 	$("#sideMenu>ul>li").click(function(){		
 		white.submit("${navUrl}", this.id);
+	});
+	
+	$("#sideMenu>div>a").click(function(){		
+		//white.submit("${navUrl}", this.id);
+		console.log(this.id);
 	});	
 });
 
@@ -49,7 +66,7 @@ $(document).ready(function(){
 		</c:if>				
 	</header>
 	
-	<nav id="navMenu" class="navbar navbar-expand-lg navbar-dark bg-dark">
+	<nav id="navMenu" class="navbar navbar-expand-lg navbar-dark bg-dark hanna-20">
 		<a class="navbar-brand" href="${contextPath}/main">white</a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
 		    <span class="navbar-toggler-icon"></span>
@@ -66,43 +83,34 @@ $(document).ready(function(){
 			</ul>			
 		</div>
 	</nav>
-	
-	<%-- 안정되면 삭제 --%>
-	<%-- <nav id="navMenu">
-		<ul>
-			<li id="/main">메인화면</li>	
-			<c:forEach items="${sessionScope.navList}" var="item">			
-				<c:if test="${item.auth eq 1 }">
-					<li id="${item.navUrl}">${item.navNm}</li>
-				</c:if>
-			</c:forEach>
-		</ul>
-	</nav> --%>
-	
-	<form id="moveForm" action="">
-		<input id="navUrl" name="navUrl" type="hidden" value="${navUrl}"></input>
-		<input id="sideUrl" name="sideUrl" type="hidden" value="${sideUrl}"></input>
-	</form>
-	
+
 	<c:if test="${requestScope.sideList ne null}">
-		<section class="sideView">
+		<section class="d-flex hanna-15">
 			<div id="sideMenu">
-				<ul>
-					<li id="/index">메인</li>
+				<ul class="nav flex-column text-white bg-dark" style="height: 100%;">
+					<li class="nav-item" id="/index">
+						<a class="nav-link" style="cursor:pointer; width:150px;">메인</a>
+					</li>
 					<c:forEach items="${requestScope.sideList}" var="item">			
 						<c:if test="${item.auth eq 1 }">
-							<li id="${item.sideUrl}">${item.sideNm}</li>
+							<li id="${item.sideUrl}">
+								<a class="nav-link" style="cursor:pointer; width:150px;">${item.sideNm}</a>
+							</li>
 						</c:if>
 					</c:forEach>
 				</ul>
 			</div>
 		</section>
-	</c:if>
+	</c:if>	
 	
 	<section class="mainView">
 		<jsp:include page="${requestScope.sectionPage}" flush="false" />
 	</section>
 	<footer>
 	</footer>
+	<form id="moveForm" action="">
+		<input id="navUrl" name="navUrl" type="hidden" value="${navUrl}"></input>
+		<input id="sideUrl" name="sideUrl" type="hidden" value="${sideUrl}"></input>
+	</form>
 </body>
 </html>
