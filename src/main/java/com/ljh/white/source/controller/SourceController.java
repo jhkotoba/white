@@ -29,6 +29,9 @@ public class SourceController {
 		String navUrl = param.getString("navUrl");
 		String sideUrl = param.getString("sideUrl");
 		
+		request.setAttribute("navUrl", navUrl);
+		request.setAttribute("sideUrl", sideUrl);
+		
 		request.setAttribute("sectionPage", navUrl.replace("/", "")+sideUrl+".jsp");
 		return "white.jsp";
 	}
