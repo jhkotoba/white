@@ -1,7 +1,7 @@
 
 span{font-size: 10px;}
 table{font-size: 10px;}
-td{height:38px; vertical-align: middle !important;;}
+td, th{height:38px; vertical-align: middle !important;}
 input[type=text] {font-size: 10px;}
 
 #navMenu ul {list-style:none; margin:0; padding:0;}

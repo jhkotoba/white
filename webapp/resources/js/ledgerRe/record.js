@@ -55,18 +55,18 @@ let rec = {
 		let tag = "";
 		tag += "<table class='table table-hover table-bordered table-sm'>";
 		tag	+= "<tr>";			
-		tag	+= "<th>recordDate</th>";
-		tag	+= "<th>position</th>";
-		tag	+= "<th>content</th>";
-		tag	+= "<th>purpose</th>";
-		tag	+= "<th>purDetail</th>";
-		tag	+= "<th>bankName</th>";
-		tag	+= "<th>money</th>";			
-		tag	+= "<th>amount</th>";
+		tag	+= "<th>날짜</th>";
+		tag	+= "<th>위치</th>";
+		tag	+= "<th>내용</th>";
+		tag	+= "<th>목적</th>";
+		tag	+= "<th>상세목적</th>";
+		tag	+= "<th>사용구분</th>";
+		tag	+= "<th>사용금액</th>";			
+		tag	+= "<th>소지금액</th>";
 		
 		//index화면일 경우 간략화(금액은 +-금액과 총액만 출력)
 		if(this.mode === "select"){
-			tag	+= "<th>cash</th>";
+			tag	+= "<th>현금</th>";
 			for(let i=0; i<this.bankList.length; i++){
 				tag += "<th>"+this.bankList[i].bankName+"("+(this.bankList[i].bankAccount==="cash" ? "":this.bankList[i].bankAccount) +")</th>";
 			}
