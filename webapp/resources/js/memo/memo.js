@@ -65,37 +65,10 @@ let memo = {
 			if(this.list[i].state === "select" || this.list[i].state === "delete" || this.list[i].state === "update"){
 				tag += 				"<button type='button' class='btn btn-secondary' style='font-size:10px;' onclick='memo.delCan("+i+")'>취소</button>";	
 			}			
-			tag +=				"</div>";
-			tag +=			"</span>";
-			tag +=		"</div>";
-			tag +=	"</div>";
-		}
-		
-		/*
-		for(let i=0; i<this.list.length; i++){
-			
-			//삭제선 체크
-			/*let redLine = "";
-			let tagIsDel = "";
-			if(memo.list[i].state === "delete"){
-				redLine = "redLine";
-				tagIsDel = "<button class='btn_azure02' onclick='memo.delCan("+i+")'>취소</button></span><br>";
-			}else{
-				redLine = "";
-				tagIsDel = "<button class='btn_azure02' onclick='memo.del("+i+")'>삭제</button></span><br>";
-			}
-			
-			if(emptyCheck.isNotEmpty(this.list[i].memoContent)){
-				tag += "<span>"+(i+1)+"<input id='memoContent_"+i+"' class='"+redLine+"' type='text' onkeyup='memo.edit("+i+")' value='"+this.list[i].memoContent+"'>";
-			}else{
-				tag += "<span>"+(i+1)+"<input id='memoContent_"+i+"' class='"+redLine+"' type='text' onkeyup='memo.edit("+i+")' value=''>";
-			}			
-			tag += tagIsDel;			
-		}*/
-		$("#memoTb").append(tag);	
-		
-	},
-	
+			tag +=	"</div></span></div></div>";
+		}		
+		$("#memoTb").append(tag);		
+	},	
 	
 	//메모 추가
 	add : function(){

@@ -20,7 +20,7 @@ let rec = {
 	purList : new Array(),
 	purDtlList : new Array(),
 	bankList : new Array(),
-	mode : "main",
+	mode : "index",
 	search : {		
 		purSeq : "",
 		bankSeq : ""
@@ -29,7 +29,7 @@ let rec = {
 	init : function(mode, recList, purList, purDtlList, bankList){
     	this.recList = recList;
     	this.mode = mode;
-    	if(this.mode === "main"){
+    	if(this.mode === "index"){
     		this.recClone = null;    		
     	}else{
     		this.recClone = common.clone(this.recList);    		
@@ -63,9 +63,13 @@ let rec = {
 		tag	+= "<th>bankName</th>";
 		tag	+= "<th>money</th>";			
 		tag	+= "<th>amount</th>";
-		tag	+= "<th>cash</th>";
-		for(let i=0; i<this.bankList.length; i++){
-			tag += "<th>"+this.bankList[i].bankName+"("+(this.bankList[i].bankAccount==="cash" ? "":this.bankList[i].bankAccount) +")</th>";
+		
+		//index화면일 경우 간략화(금액은 +-금액과 총액만 출력)
+		if(this.mode === "select"){
+			tag	+= "<th>cash</th>";
+			for(let i=0; i<this.bankList.length; i++){
+				tag += "<th>"+this.bankList[i].bankName+"("+(this.bankList[i].bankAccount==="cash" ? "":this.bankList[i].bankAccount) +")</th>";
+			}
 		}	
 		tag += "</tr>";		
 		
@@ -77,14 +81,23 @@ let rec = {
 			tag += "<td>"+this.recList[i].content+"</td>";			
 			tag += "<td>"+(this.recList[i].purpose === 'move' ? (Number(this.recList[i].purSeq) === -1 ? "excel" : "금액이동") : this.recList[i].purpose)+"</td>";
 			tag += "<td>"+this.recList[i].purDetail+"</td>";
-			tag += "<td>"+(this.recList[i].bankName === 'cash' ? "현금" : this.recList[i].bankName +"("+this.recList[i].bankAccount+")")+"</td>";
-			tag += "<td>"+common.comma(this.recList[i].money)+"</td>";			
+			tag += "<td>"+(this.recList[i].bankName === 'cash' ? "현금" : this.recList[i].bankName +"<br>("+this.recList[i].bankAccount+")")+"</td>";
+			//tag += "<td>"+common.comma(this.recList[i].money)+"</td>";
+			if(this.recList[i].purpose === 'move'){
+				tag += "<td>("+common.comma(Math.abs(this.recList[i].money))+")</td>";
+			}else{
+				tag += "<td>"+common.comma(this.recList[i].money)+"</td>";
+			}
 			tag += "<td>"+common.comma(this.recList[i].amount)+"</td>";
-			tag += "<td>"+common.comma(this.recList[i].cash)+"</td>";
 			
-			for(let j=0; j<this.bankList.length; j++){
-				tag += "<td>"+common.comma(this.recList[i]["bank"+j])+"</td>";
-			}		
+			//index화면일 경우 간략화(금액은 +-금액과 총액만 출력)
+			if(this.mode === "select"){
+				tag += "<td>"+common.comma(this.recList[i].cash)+"</td>";
+				
+				for(let j=0; j<this.bankList.length; j++){
+					tag += "<td>"+common.comma(this.recList[i]["bank"+j])+"</td>";
+				}
+			}
 			tag += "</tr>";		
 		}
 		

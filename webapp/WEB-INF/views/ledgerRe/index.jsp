@@ -30,13 +30,13 @@ $(document).ready(function(){
 	});	
 	
 	//메인조회 리스트
-	$("#startDate").val(isDate.today());
+	$("#startDate").val(isDate.addMonToday(-1));
 	$("#endDate").val(isDate.today())	
 		
 	let param = {};	
 	param.startDate = $("#startDate").val() + " 00:00:00";
 	param.endDate = $("#endDate").val() + " 23:59:59";
-	param.mode = "main";
+	param.mode = "index";
 	
 	$.ajax({		
 		type: 'POST',
@@ -44,7 +44,7 @@ $(document).ready(function(){
 		data: param,
 		dataType: 'json',
 	    success : function(data) {
-	    	rec.init("main", data.recList, data.purList, data.purDtlList, data.bankList).view();	    	
+	    	rec.init("index", data.recList, data.purList, data.purDtlList, data.bankList).view();	    	
 	    },
 	    error : function(request, status, error){
 	    	alert("error");
@@ -57,17 +57,19 @@ $(document).ready(function(){
 <body>
 	<div class="article">
 		<div class="left width-vmin">
-			<div class="form-control " style="height: 300px;">
-				form-control1
+			<div class="form-control height-half">
+				stats form1
 			</div>
 		</div>
 		
 		<div class="left width-vmin">
-			<div class="form-control" style="height: 300px;">
-				form-control2
+			<div class="form-control height-half">
+				stats form2
 			</div>
 		</div>		
 	</div>
+	
+	<div class="space left"></div>
 	
 	<div id="ledgerMemo" class="article">
 		<div class="btn-group btn-group-sm width-full" role="group">
@@ -84,7 +86,9 @@ $(document).ready(function(){
 	<input id="startDate" type="hidden" value="">
 	<input id="endDate" type="hidden" value="">
 	
-	<span class="article">Today Record</span>
+	<div class="space left"></div>
+	
+	<span class="article">This month Record</span>
 	<div id="ledgerReList" class="article">		
 	</div>
 		

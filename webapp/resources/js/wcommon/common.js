@@ -1,33 +1,16 @@
 /**
  *  common.js
  */
-let platform = "pc";
 $(document).ready(function(){
 	let filter = "win16|win32|win64|mac|macintel";
-	
 	if(navigator.platform){
-
 		if(0 > filter.indexOf(navigator.platform.toLowerCase())){
-			platform = "mobile";
+			common.platform = "mobile";
 		}else{
-			platform = "pc";
+			common.platform = "pc";
 		}
 	}
 });
-
-//비어있는지 체크
-let emptyCheck = {
-	//데이터가 있으면 true 데이터가 없으면 false
-	isNotEmpty : function(_str){
-		let obj = String(_str);
-		if(obj == null || obj == undefined || obj == 'null' || obj == 'undefined' || obj == '' ) return false;
-		else return true;
-	},
-	//데이터가 있으면 false 데이터가 없으면 true
-	isEmpty : function(_str){
-		return !emptyCheck.isNotEmpty(_str);
-	}
-}
 
 //날짜반환함수
 let isDate = {	
@@ -175,6 +158,8 @@ let isTime = {
 
 //공통함수
 let common = {
+	platform : "pc",
+	
 	//깊은복사
 	clone : function deepObjCopy (dupeObj) {
 		var retObj = new Object();
@@ -254,6 +239,20 @@ let common = {
 		}
 		return true;
 		
+	}
+}
+
+//비어있는지 체크
+let emptyCheck = {
+	//데이터가 있으면 true 데이터가 없으면 false
+	isNotEmpty : function(_str){
+		let obj = String(_str);
+		if(obj == null || obj == undefined || obj == 'null' || obj == 'undefined' || obj == '' ) return false;
+		else return true;
+	},
+	//데이터가 있으면 false 데이터가 없으면 true
+	isEmpty : function(_str){
+		return !emptyCheck.isNotEmpty(_str);
 	}
 }
 

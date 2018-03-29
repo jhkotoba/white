@@ -1,14 +1,17 @@
-/* input text */
-table,span{font-size: 10px;}
+
+span{font-size: 10px;}
+table{font-size: 10px;}
+td{height:38px; vertical-align: middle !important;;}
 input[type=text] {font-size: 10px;}
 
 #navMenu ul {list-style:none; margin:0; padding:0;}
 #navMenu li {margin: 0 15 0 0; padding: 0 0 0 0; border : 0; float: left;}
 .article{padding-left: 20px; padding-right: 20px;}
-/*.memo{padding-left: 20px; padding-right: 20px;width:90vmin;}*/
 .width-vmin{width:80vmin;}
 .width-full{width:100%;}
 .height-half{height: 50%;}
+
+.space{width:100%; height:10px;}
 
 
 /* font */
@@ -55,13 +58,8 @@ input[type=text] {font-size: 10px;}
 	text-decoration: none;	
 }
 
-.left{
-	float: left; margin-right: 5px;
-}
-
-.right{
-	float: right; margin-right: 5px;
-}
+.left{float: left; margin-right: 5px; margin-bottom: 10px;}
+.right{float: right; margin-right: 5px; margin-bottom: 10px;}
 
 .font10{
 	font-size: 10px;
