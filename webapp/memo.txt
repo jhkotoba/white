@@ -1,1 +1,0 @@
-ALTER TABLE money_record_re ADD INDEX record_date ( record_date );

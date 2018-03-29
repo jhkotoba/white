@@ -13,18 +13,6 @@
 <link rel="stylesheet" href="${contextPath}/resources/css/btn.css" type="text/css" />
 <link rel="stylesheet" href="${contextPath}/resources/css/icon.css" type="text/css" />
 <link rel="stylesheet" href="${contextPath}/resources/css/bootstrap/bootstrap.css" type="text/css" />
-
-<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/earlyaccess/hanna.css">
-<style>
-.hanna-20{
-  font-family: 'Hanna', serif;
-  font-size: 20px;
-}
-.hanna-15{
-  font-family: 'Hanna', serif;
-  font-size: 15px;
-}
-</style>
 <%-- <link rel="stylesheet" href="${contextPath}/resources/bootstrap/css/bootstrap-reboot.css" type="text/css" />
 <link rel="stylesheet" href="${contextPath}/resources/bootstrap/css/bootstrap-grid.css" type="text/css" /> --%>
 
@@ -47,7 +35,7 @@
 		</c:if>				
 	</header>
 	
-	<nav class="navbar navbar-expand-lg navbar-dark bg-dark hanna-20">
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark NanumSquareRoundB-20">
 		<a class="navbar-brand" href="${contextPath}/main">white</a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
@@ -74,8 +62,8 @@
 			</ul>
 		</div>
 	</nav>
-		
-	<section>
+	
+	<section style="margin-top: 10px;">
 		<jsp:include page="${requestScope.sectionPage}" flush="false" />
 	</section>
 	

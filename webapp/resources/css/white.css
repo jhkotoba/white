@@ -1,9 +1,31 @@
 /* input text */
-input[type=text] {width: 90px;}
-#memoTb input[type=text] {width: 500px;}
+table,span{font-size: 10px;}
+input[type=text] {font-size: 10px;}
 
 #navMenu ul {list-style:none; margin:0; padding:0;}
 #navMenu li {margin: 0 15 0 0; padding: 0 0 0 0; border : 0; float: left;}
+.article{padding-left: 20px; padding-right: 20px;}
+/*.memo{padding-left: 20px; padding-right: 20px;width:90vmin;}*/
+.width-vmin{width:80vmin;}
+.width-full{width:100%;}
+.height-half{height: 50%;}
+
+
+/* font */
+@font-face { font-family: 'GodoB'; src: url(../ttf/GodoB.ttf) format('truetype'); }
+.GodoB-20{font-family: 'GodoB', serif;font-size: 20px;}
+.GodoB-15{font-family: 'GodoB', serif;font-size: 15px;}
+.GodoB-10{font-family: 'GodoB', serif;font-size: 10px;}
+
+@font-face { font-family: 'NanumSquareB'; src: url(../ttf/NanumSquareB.ttf) format('truetype'); }
+.NanumSquareRoundB-20{font-family: 'NanumSquareB', serif;font-size: 20px;}
+.NanumSquareRoundB-15{font-family: 'NanumSquareB', serif;font-size: 15px;}
+.NanumSquareRoundB-10{font-family: 'NanumSquareB', serif;font-size: 10px;}
+
+@font-face { font-family: 'NanumSquareRoundB'; src: url(../ttf/NanumSquareRoundB.ttf) format('truetype'); }
+.NanumSquareRoundB-20{font-family: 'NanumSquareRoundB', serif;font-size: 20px;}
+.NanumSquareRoundB-15{font-family: 'NanumSquareRoundB', serif;font-size: 15px;}
+.NanumSquareRoundB-10{font-family: 'NanumSquareRoundB', serif;font-size: 10px;}
 
 .sideView{
 	position: absolute;
@@ -34,7 +56,11 @@ input[type=text] {width: 90px;}
 }
 
 .left{
-	float: left; margin-left: 5px;
+	float: left; margin-right: 5px;
+}
+
+.right{
+	float: right; margin-right: 5px;
 }
 
 .font10{

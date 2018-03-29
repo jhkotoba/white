@@ -73,7 +73,7 @@ let pur = {
 		
 		$("#purList").empty();
 		
-		let tag = "<table border=1>";
+		let tag = "<table class='table table-hover table-sm table-bordered'>";
 			tag	+= "<tr>";			
 			tag += "<th>Del</th>";
 			tag	+= "<th>No</th>";
@@ -339,7 +339,7 @@ let purDtl = {
 	
 		$("#purDtlList").empty();
 	
-		let tag = "<table border=1>";
+		let tag = "<table class='table table-hover table-sm table-bordered'>";
 			tag	+= "<tr>";
 			tag += "<th>Del</th>";
 			tag	+= "<th>No</th>";

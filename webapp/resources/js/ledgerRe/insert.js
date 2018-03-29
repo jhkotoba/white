@@ -151,7 +151,7 @@ let recIn = {
 		$("#ledgerReList").empty();
 		let selected = "";
 		
-		let tag = "<table border=1 class='font10'>"
+		let tag = "<table class='table table-hover table-sm'>"
 				+ "<tr>"				
 				+ "<th>No</th>"
 				+ "<th>Date*</th>"

@@ -42,29 +42,56 @@ let memo = {
 	},
 	//메모출력
 	view : function(){			
-		$("#memoTb").empty();
+		$("#memoTb").empty();	
 		
-		let tag = "";	
+		let tag = "";
+		for(let i=0; i<this.list.length; i++){
+			tag +=	"<div class='input-group mb-3'>";
+			if(emptyCheck.isNotEmpty(this.list[i].memoContent)){
+				if(this.list[i].state === "delete"){
+					tag +=	"<input id='memoContent_"+i+"' type='text' class='form-control' placeholder='메모를 입력하세요' aria-describedby='basic-addon2' style='color:red;' onkeyup='memo.edit("+i+")' value='"+this.list[i].memoContent+"'>";
+				}else if(this.list[i].state === "update"){
+					tag +=	"<input id='memoContent_"+i+"' type='text' class='form-control' placeholder='메모를 입력하세요' aria-describedby='basic-addon2' style='color:blue; onkeyup='memo.edit("+i+")' value='"+this.list[i].memoContent+"'>";
+				}else{
+					tag +=	"<input id='memoContent_"+i+"' type='text' class='form-control' placeholder='메모를 입력하세요' aria-describedby='basic-addon2' onkeyup='memo.edit("+i+")' value='"+this.list[i].memoContent+"'>";
+				}				
+			}else{
+				tag +=	"<input id='memoContent_"+i+"' type='text' class='form-control' placeholder='메모를 입력하세요' aria-describedby='basic-addon2' style='color:green;' onkeyup='memo.edit("+i+")' value=''>";	
+			}
+			tag +=		"<div class='input-group-append'>";
+			tag +=			"<span class='input-group-text' id='basic-addon2'>";
+			tag +=				"<div class='btn-group' role='group' aria-label='Basic example'>";
+			tag +=	  				"<button type='button' class='btn btn-secondary' style='font-size:10px;' onclick='memo.del("+i+")'>삭제</button>";
+			if(this.list[i].state === "select" || this.list[i].state === "delete" || this.list[i].state === "update"){
+				tag += 				"<button type='button' class='btn btn-secondary' style='font-size:10px;' onclick='memo.delCan("+i+")'>취소</button>";	
+			}			
+			tag +=				"</div>";
+			tag +=			"</span>";
+			tag +=		"</div>";
+			tag +=	"</div>";
+		}
+		
+		/*
 		for(let i=0; i<this.list.length; i++){
 			
 			//삭제선 체크
-			let redLine = "";
+			/*let redLine = "";
 			let tagIsDel = "";
 			if(memo.list[i].state === "delete"){
 				redLine = "redLine";
-				tagIsDel = "<button class='btn_azure02' onclick='memo.delCan("+i+")'>취소</button></td></tr>";
+				tagIsDel = "<button class='btn_azure02' onclick='memo.delCan("+i+")'>취소</button></span><br>";
 			}else{
 				redLine = "";
-				tagIsDel = "<button class='btn_azure02' onclick='memo.del("+i+")'>삭제</button></td></tr>";
+				tagIsDel = "<button class='btn_azure02' onclick='memo.del("+i+")'>삭제</button></span><br>";
 			}
 			
 			if(emptyCheck.isNotEmpty(this.list[i].memoContent)){
-				tag += "<tr><td><input id='memoContent_"+i+"' class='"+redLine+"' type='text' onkeyup='memo.edit("+i+")' value='"+this.list[i].memoContent+"'>";
+				tag += "<span>"+(i+1)+"<input id='memoContent_"+i+"' class='"+redLine+"' type='text' onkeyup='memo.edit("+i+")' value='"+this.list[i].memoContent+"'>";
 			}else{
-				tag += "<tr><td><input id='memoContent_"+i+"' class='"+redLine+"' type='text' onkeyup='memo.edit("+i+")' value=''>";
+				tag += "<span>"+(i+1)+"<input id='memoContent_"+i+"' class='"+redLine+"' type='text' onkeyup='memo.edit("+i+")' value=''>";
 			}			
-			tag += tagIsDel;
-		}			
+			tag += tagIsDel;			
+		}*/
 		$("#memoTb").append(tag);	
 		
 	},
@@ -110,14 +137,19 @@ let memo = {
 	//메모수정
 	edit : function(idx){	
 		this.list[idx].memoContent = $("#memoContent_"+idx).val();
-		if(this.list[idx].state === "select"){
-			this.list[idx].state = "update";	
-		}		
+		
+		if(this.list[idx].memoContent === this.clone[idx].memoContent){
+			this.list[idx].state = "select";
+			$("#memoContent_"+idx).css("color", "black");
+		}else{
+			this.list[idx].state = "update";
+			$("#memoContent_"+idx).css("color", "blue");
+		}
 	},
 	
 	//메모저장
 	insert : function(){
-		if(confirm("메모을 저장 하시겠습니까?")){
+		if(confirm("메모을 반영 하시겠습니까?")){
 			$.ajax({		
 				type: 'POST',
 				url: common.path()+'/memo/memoSave.ajax',

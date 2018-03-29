@@ -52,21 +52,22 @@ let rec = {
 	view : function(){		
 		$("#ledgerReList").empty();
 		
-		let tag = "<table border=1 class='font10'>";
-			tag	+= "<tr>";			
-			tag	+= "<th>recordDate</th>";
-			tag	+= "<th>position</th>";
-			tag	+= "<th>content</th>";
-			tag	+= "<th>purpose</th>";
-			tag	+= "<th>purDetail</th>";
-			tag	+= "<th>bankName</th>";
-			tag	+= "<th>money</th>";			
-			tag	+= "<th>amount</th>";
-			tag	+= "<th>cash</th>";
-			for(let i=0; i<this.bankList.length; i++){
-				tag += "<th>"+this.bankList[i].bankName+"("+(this.bankList[i].bankAccount==="cash" ? "":this.bankList[i].bankAccount) +")</th>";
-			}	
-			tag += "</tr>";		
+		let tag = "";
+		tag += "<table class='table table-hover table-bordered table-sm'>";
+		tag	+= "<tr>";			
+		tag	+= "<th>recordDate</th>";
+		tag	+= "<th>position</th>";
+		tag	+= "<th>content</th>";
+		tag	+= "<th>purpose</th>";
+		tag	+= "<th>purDetail</th>";
+		tag	+= "<th>bankName</th>";
+		tag	+= "<th>money</th>";			
+		tag	+= "<th>amount</th>";
+		tag	+= "<th>cash</th>";
+		for(let i=0; i<this.bankList.length; i++){
+			tag += "<th>"+this.bankList[i].bankName+"("+(this.bankList[i].bankAccount==="cash" ? "":this.bankList[i].bankAccount) +")</th>";
+		}	
+		tag += "</tr>";		
 		
 		for(let i=this.recList.length-1; i>=0; i--){
 			
@@ -100,7 +101,7 @@ let rec = {
 			tag += "<span class='font10 edit'>■수정</span>";
 			tag += "<span class='font10 redLine'>■삭제</span>";
 			tag += "</div>";
-			tag += "<table border=1>";
+			tag += "<table class='table table-hover table-sm table-bordered'>";
 			tag	+= "<tr>";
 			tag += "<th>No</th>"
 			tag += "<th>Del</th>"

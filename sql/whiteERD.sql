@@ -43,7 +43,7 @@ CREATE TABLE memo
 	memo_seq int NOT NULL AUTO_INCREMENT,
 	user_seq int NOT NULL,
 	memo_type varchar(10) NOT NULL,
-	memo_content varchar(50) NOT NULL,
+	memo_content varchar(100) NOT NULL,
 	reg_date datetime NOT NULL,
 	PRIMARY KEY (memo_seq)
 );

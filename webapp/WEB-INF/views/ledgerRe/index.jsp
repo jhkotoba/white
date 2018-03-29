@@ -30,14 +30,13 @@ $(document).ready(function(){
 	});	
 	
 	//메인조회 리스트
-	$("#startDate").val(isDate.addMonToday(-1));
+	$("#startDate").val(isDate.today());
 	$("#endDate").val(isDate.today())	
 		
 	let param = {};	
 	param.startDate = $("#startDate").val() + " 00:00:00";
 	param.endDate = $("#endDate").val() + " 23:59:59";
 	param.mode = "main";
-	$("#mainTitle").text($("#startDate").val() +" ~ "+ $("#endDate").val());
 	
 	$.ajax({		
 		type: 'POST',
@@ -50,29 +49,45 @@ $(document).ready(function(){
 	    error : function(request, status, error){
 	    	alert("error");
 	    }
-	});	
+	});
 });
 
 </script>
 </head>
-<body>	
-
-	<div id="ledgerMemo">
+<body>
+	<div class="article">
+		<div class="left width-vmin">
+			<div class="form-control " style="height: 300px;">
+				form-control1
+			</div>
+		</div>
 		
-		<button class="btn_azure03" id="memoAddBt">메모 추가</button>
-		<button class="btn_azure03" id="memoSaveBt">메모 저장</button>
-		<button class="btn_azure03" id="memoCancelBt">취소</button>
+		<div class="left width-vmin">
+			<div class="form-control" style="height: 300px;">
+				form-control2
+			</div>
+		</div>		
+	</div>
 	
-		<table id='memoTb'>
-		</table>
-	</div>	
+	<div id="ledgerMemo" class="article">
+		<div class="btn-group btn-group-sm width-full" role="group">
+			<button id="memoAddBt" type="button" class="btn btn-secondary NanumSquareRoundB-15">메모 추가</button>
+			<button id="memoSaveBt" type="button" class="btn btn-secondary NanumSquareRoundB-15">메모 저장</button>
+			<button id="memoCancelBt" type="button" class="btn btn-secondary NanumSquareRoundB-15">취소</button>
+		</div>
+	
+		<div id='memoTb'>
+		</div>
+	</div>
+	
 
 	<input id="startDate" type="hidden" value="">
 	<input id="endDate" type="hidden" value="">
 	
-	<h4 id="mainTitle"></h4>
-	<div id="ledgerReList">		
-	</div>		
+	<span class="article">Today Record</span>
+	<div id="ledgerReList" class="article">		
+	</div>
+		
 	
 </body>
 </html>

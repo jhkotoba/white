@@ -139,7 +139,7 @@ $(document).ready(function(){
 	<button id="closeInfo" type="button" class="close" aria-label="Close">
 		<span aria-hidden="true">&times;</span>
 	</button>
-	<table border="1">
+	<table class='table table-hover table-sm table-bordered'>
 		<thead>
 			<tr>
 				<th>userNo</th>

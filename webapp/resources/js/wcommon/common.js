@@ -1,6 +1,19 @@
 /**
  *  common.js
  */
+let platform = "pc";
+$(document).ready(function(){
+	let filter = "win16|win32|win64|mac|macintel";
+	
+	if(navigator.platform){
+
+		if(0 > filter.indexOf(navigator.platform.toLowerCase())){
+			platform = "mobile";
+		}else{
+			platform = "pc";
+		}
+	}
+});
 
 //비어있는지 체크
 let emptyCheck = {
