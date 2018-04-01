@@ -7,9 +7,9 @@ input[type=text] {font-size: 10px;}
 #navMenu ul {list-style:none; margin:0; padding:0;}
 #navMenu li {margin: 0 15 0 0; padding: 0 0 0 0; border : 0; float: left;}
 .article{padding-left: 20px; padding-right: 20px;}
-.width-vmin{width:80vmin;}
+.width-vmin{width:90vmin;}
 .width-full{width:100%;}
-.height-half{height: 50%;}
+.height-default{height: 300px;}
 
 .space{width:100%; height:10px;}
 

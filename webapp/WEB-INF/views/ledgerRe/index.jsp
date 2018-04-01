@@ -10,6 +10,7 @@
 
 <script type="text/javascript" src="${contextPath}/resources/js/ledgerRe/record.js"></script>
 <script type="text/javascript" src="${contextPath}/resources/js/memo/memo.js"></script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
 	
@@ -44,27 +45,86 @@ $(document).ready(function(){
 		data: param,
 		dataType: 'json',
 	    success : function(data) {
+	    	chart.view();
 	    	rec.init("index", data.recList, data.purList, data.purDtlList, data.bankList).view();	    	
 	    },
 	    error : function(request, status, error){
 	    	alert("error");
 	    }
 	});
-});
+	
+	let chart = {
+		view : function(data){
+			
+			google.charts.load('current', {'packages':['corechart']});
+			
+			//comboChart
+			google.charts.setOnLoadCallback(drawVisualization);
+			function drawVisualization() {
+				let data = google.visualization.arrayToDataTable([
+					['Date', '수입', '지출'],
+					['1~7',  165,      938],
+					['8~14',  135,      1120],
+					['15~21',  157,      1167],
+					['22~31',  136,      691]]
+				);
 
+				let options = {
+					title : '',
+					chartArea: {
+						width:'60%',
+						height:'300px'
+					},
+					colors:['#6799FF','#F15F5F'],
+					vAxis: {title: '10,000'},
+					hAxis: {title: 'week'},
+					seriesType: 'bars',
+					series: {5: {type: 'line'}}
+				};
+
+				let chart = new google.visualization.ComboChart(document.getElementById('comboChart'));
+				chart.draw(data, options);
+			}
+
+			//donutChart
+			google.charts.setOnLoadCallback(drawChart);
+			function drawChart() {
+				let data = google.visualization.arrayToDataTable([
+					['Task', 'Hours per Day'],
+					['Work',     11],
+					['Eat',      2],
+					['Commute',  2],
+					['Watch TV', 2],
+					['Sleep',    7]
+			    ]);
+
+				let options = {
+					title: '',
+					chartArea: {
+						width:'80%',
+						height:'300px'
+					},
+					pieHole: 0.4,
+				};
+
+				let chart = new google.visualization.PieChart(document.getElementById('donutChart'));
+				chart.draw(data, options);
+			}
+		}
+	}
+});
 </script>
+
 </head>
 <body>
 	<div class="article">
 		<div class="left width-vmin">
-			<div class="form-control height-half">
-				stats form1
+			<div id="comboChart" class="form-control height-default">
 			</div>
 		</div>
 		
 		<div class="left width-vmin">
-			<div class="form-control height-half">
-				stats form2
+			<div id="donutChart" class="form-control height-default">
 			</div>
 		</div>		
 	</div>
