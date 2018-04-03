@@ -1,14 +1,11 @@
 package com.ljh.white.common.service;
 
-import java.util.List;
-
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
 import com.ljh.white.common.StaticValue;
-import com.ljh.white.common.collection.WhiteMap;
 import com.ljh.white.common.mapper.WhiteMapper;
 
 @Service("WhiteService")

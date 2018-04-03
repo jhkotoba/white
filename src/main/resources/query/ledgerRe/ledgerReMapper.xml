@@ -57,7 +57,14 @@
 			'select' AS state,
 			</if>
 			rec.record_seq AS recordSeq,
-			DATE_FORMAT(rec.record_date,'%Y-%m-%d %H:%i:%s') AS recordDate,
+			<choose>
+				<when test="mode == 'select'">
+					DATE_FORMAT(rec.record_date,'%Y-%m-%d %H:%i:%s') AS recordDate,
+				</when>
+				<otherwise>
+					DATE_FORMAT(rec.record_date,'%Y-%m-%d') AS recordDate,
+				</otherwise>
+			</choose>			
 			IFNULL(rec.position, '') AS position,
 			rec.content,
 			rec.pur_seq AS purSeq,

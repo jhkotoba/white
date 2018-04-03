@@ -32,7 +32,8 @@ $(document).ready(function(){
 	
 	//메인조회 리스트
 	$("#startDate").val(isDate.addMonToday(-1));
-	$("#endDate").val(isDate.today())	
+	$("#endDate").val(isDate.today());
+	$("span[name=date]").text($("#startDate").val() +" ~ "+$("#endDate").val());
 		
 	let param = {};	
 	param.startDate = $("#startDate").val() + " 00:00:00";
@@ -45,7 +46,7 @@ $(document).ready(function(){
 		data: param,
 		dataType: 'json',
 	    success : function(data) {
-	    	chart.view();
+	    	chart.view(data.recList);
 	    	rec.init("index", data.recList, data.purList, data.purDtlList, data.bankList).view();	    	
 	    },
 	    error : function(request, status, error){
@@ -54,30 +55,49 @@ $(document).ready(function(){
 	});
 	
 	let chart = {
-		view : function(data){
+		view : function(recList){
+			
+			let record = new Array();
+			let recAve = 0;
+			
+			record.push(['Date', '지출']);
+			for(let i=0; i<recList.length; i++){
+				if(recList[i].purSeq !== 0){
+					if(recList[i].money < 0){						
+						if(record[record.length-1][0] === recList[i].recordDate){
+							record[record.length-1][1] += Math.abs(recList[i].money);
+							recAve += record[record.length-1][1];
+						}else{
+							record.push([recList[i].recordDate, Math.abs(recList[i].money)]);
+							recAve += record[record.length-1][1];
+						}						
+					}
+				}				
+			}
+			recAve = Math.floor(recAve/record.length);
 			
 			google.charts.load('current', {'packages':['corechart']});
 			
 			//comboChart
 			google.charts.setOnLoadCallback(drawVisualization);
 			function drawVisualization() {
-				let data = google.visualization.arrayToDataTable([
-					['Date', '수입', '지출'],
-					['1~7',  165,      938],
-					['8~14',  135,      1120],
-					['15~21',  157,      1167],
-					['22~31',  136,      691]]
-				);
+				let data = google.visualization.arrayToDataTable(record);
 
 				let options = {
-					title : '',
+					axisTitlesPosition : 'none',
 					chartArea: {
 						width:'60%',
 						height:'300px'
 					},
-					colors:['#6799FF','#F15F5F'],
-					vAxis: {title: '10,000'},
-					hAxis: {title: 'week'},
+					colors:['#F15F5F'],
+					vAxis: {
+						baseline : 0,
+						viewWindow : {
+							max : recAve*2,
+							min : 0
+						},
+						viewWindowMode : 'maximized'
+					},
 					seriesType: 'bars',
 					series: {5: {type: 'line'}}
 				};
@@ -117,6 +137,7 @@ $(document).ready(function(){
 
 </head>
 <body>
+	<span class="article" name="date"></span>
 	<div class="article">
 		<div class="left width-vmin">
 			<div id="comboChart" class="form-control height-default">
@@ -148,7 +169,7 @@ $(document).ready(function(){
 	
 	<div class="space left"></div>
 	
-	<span class="article">This month Record</span>
+	<span class="article" name="date"></span>
 	<div id="ledgerReList" class="article">		
 	</div>
 		
