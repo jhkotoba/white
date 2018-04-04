@@ -45,7 +45,7 @@ $(document).ready(function(){
 		url: common.path()+'/ledgerRe/selectRecordList.ajax',	
 		data: param,
 		dataType: 'json',
-	    success : function(data) {
+	    success : function(data) {	    	
 	    	chart.view(data.recList);
 	    	rec.init("index", data.recList, data.purList, data.purDtlList, data.bankList).view();	    	
 	    },
@@ -57,31 +57,36 @@ $(document).ready(function(){
 	let chart = {
 		view : function(recList){
 			
-			let record = new Array();
-			let recAve = 0;
-			
-			record.push(['Date', '지출']);
-			for(let i=0; i<recList.length; i++){
-				if(recList[i].purSeq !== 0){
-					if(recList[i].money < 0){						
-						if(record[record.length-1][0] === recList[i].recordDate){
-							record[record.length-1][1] += Math.abs(recList[i].money);
-							recAve += record[record.length-1][1];
-						}else{
-							record.push([recList[i].recordDate, Math.abs(recList[i].money)]);
-							recAve += record[record.length-1][1];
-						}						
-					}
-				}				
-			}
-			recAve = Math.floor(recAve/record.length);
-			
 			google.charts.load('current', {'packages':['corechart']});
 			
 			//comboChart
+			let recCombo = new Array();
+			let recAve = 0;
+			
+			recCombo.push(['Date', '지출']);
+			if(recList.length === 0){
+				recAve = 5000;
+				recCombo.push(["No Data", 0]);
+			}else{
+				for(let i=0; i<recList.length; i++){
+					if(recList[i].purSeq !== 0){
+						if(recList[i].money < 0){						
+							if(recCombo[recCombo.length-1][0] === recList[i].recordDate.split(" ")[0]){
+								recCombo[recCombo.length-1][1] += Math.abs(recList[i].money);
+								recAve += recCombo[recCombo.length-1][1];
+							}else{
+								recCombo.push([recList[i].recordDate.split(" ")[0], Math.abs(recList[i].money)]);
+								recAve += recCombo[recCombo.length-1][1];
+							}						
+						}
+					}				
+				}
+				recAve = Math.floor(recAve/recCombo.length);
+			}
+			
 			google.charts.setOnLoadCallback(drawVisualization);
 			function drawVisualization() {
-				let data = google.visualization.arrayToDataTable(record);
+				let data = google.visualization.arrayToDataTable(recCombo);
 
 				let options = {
 					axisTitlesPosition : 'none',
@@ -105,21 +110,45 @@ $(document).ready(function(){
 				let chart = new google.visualization.ComboChart(document.getElementById('comboChart'));
 				chart.draw(data, options);
 			}
-
+			
+			
 			//donutChart
+			let recDonut = new Array();
+			let purpose = new Object();
+			
+			if(recList.length === 0){
+				recDonut.push(["No Data", 1]);
+			}else{
+				for(let i=0; i<recList.length; i++){
+					if(recList[i].purSeq !== 0){
+						if(recList[i].money < 0){						
+							if(emptyCheck.isEmpty(purpose[recList[i].purpose])){								
+								purpose[recList[i].purpose] = Math.abs(recList[i].money);								
+							}else{								
+								purpose[recList[i].purpose] = purpose[recList[i].purpose]+Math.abs(recList[i].money);								
+							}						
+						}
+					}				
+				}
+				
+				recDonut.push(['Purpose', 'money']);
+				let purKeys = Object.keys(purpose);
+				
+				for(let i=0; i<purKeys.length; i++){
+					recDonut.push([purKeys[i], purpose[purKeys[i]]]);
+				}
+			}
+			
+			
+			
+			
 			google.charts.setOnLoadCallback(drawChart);
 			function drawChart() {
-				let data = google.visualization.arrayToDataTable([
-					['Task', 'Hours per Day'],
-					['Work',     11],
-					['Eat',      2],
-					['Commute',  2],
-					['Watch TV', 2],
-					['Sleep',    7]
-			    ]);
 
+			    let data = google.visualization.arrayToDataTable(recDonut);
+			    
 				let options = {
-					title: '',
+					axisTitlesPosition : 'none',
 					chartArea: {
 						width:'80%',
 						height:'300px'

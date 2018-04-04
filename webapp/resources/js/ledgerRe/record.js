@@ -103,6 +103,116 @@ let rec = {
 		
 		tag +="</table>";
 		$("#ledgerReList").append(tag);
+		
+		/*
+		//창이 넓이가 500보다 큰 경우
+		if(window.innerWidth > 500){
+			let tag = "";
+			tag += "<table class='table table-hover table-bordered table-sm'>";
+			tag	+= "<tr>";			
+			tag	+= "<th>날짜</th>";
+			tag	+= "<th>위치</th>";
+			tag	+= "<th>내용</th>";
+			tag	+= "<th>목적</th>";
+			tag	+= "<th>상세목적</th>";
+			tag	+= "<th>사용구분</th>";
+			tag	+= "<th>사용금액</th>";			
+			tag	+= "<th>소지금액</th>";
+			
+			//index화면일 경우 간략화(금액은 +-금액과 총액만 출력)
+			if(this.mode === "select"){
+				tag	+= "<th>현금</th>";
+				for(let i=0; i<this.bankList.length; i++){
+					tag += "<th>"+this.bankList[i].bankName+"("+(this.bankList[i].bankAccount==="cash" ? "":this.bankList[i].bankAccount) +")</th>";
+				}
+			}	
+			tag += "</tr>";		
+			
+			for(let i=this.recList.length-1; i>=0; i--){
+				
+				tag += "<tr>";			
+				tag += "<td>"+this.recList[i].recordDate+"</td>";
+				tag += "<td>"+this.recList[i].position+"</td>";
+				tag += "<td>"+this.recList[i].content+"</td>";			
+				tag += "<td>"+(this.recList[i].purpose === 'move' ? (Number(this.recList[i].purSeq) === -1 ? "excel" : "금액이동") : this.recList[i].purpose)+"</td>";
+				tag += "<td>"+this.recList[i].purDetail+"</td>";
+				tag += "<td>"+(this.recList[i].bankName === 'cash' ? "현금" : this.recList[i].bankName +"<br>("+this.recList[i].bankAccount+")")+"</td>";
+				if(this.recList[i].purpose === 'move'){
+					tag += "<td>("+common.comma(Math.abs(this.recList[i].money))+")</td>";
+				}else{
+					tag += "<td>"+common.comma(this.recList[i].money)+"</td>";
+				}
+				tag += "<td>"+common.comma(this.recList[i].amount)+"</td>";
+				
+				//index화면일 경우 간략화(금액은 +-금액과 총액만 출력)
+				if(this.mode === "select"){
+					tag += "<td>"+common.comma(this.recList[i].cash)+"</td>";
+					
+					for(let j=0; j<this.bankList.length; j++){
+						tag += "<td>"+common.comma(this.recList[i]["bank"+j])+"</td>";
+					}
+				}
+				tag += "</tr>";		
+			}
+			
+			tag +="</table>";
+			$("#ledgerReList").append(tag);
+			
+			
+		//창이 넓이가 500보다 작은 경우
+		}else{
+			let tag = "";
+			tag += "<table class='table table-hover table-bordered table-sm'>";
+			tag	+= "<tr>";			
+			tag	+= "<th>날짜</th>";
+			tag	+= "<th>위치/내용</th>";
+			tag	+= "<th>목적</th>";
+			tag	+= "<th>사용구분</th>";
+			tag	+= "<th>사용금액</th>";			
+			tag	+= "<th>소지금액</th>";
+			
+			//index화면일 경우 간략화(금액은 +-금액과 총액만 출력)
+			if(this.mode === "select"){
+				tag	+= "<th>현금</th>";
+				for(let i=0; i<this.bankList.length; i++){
+					tag += "<th>"+this.bankList[i].bankName+"("+(this.bankList[i].bankAccount==="cash" ? "":this.bankList[i].bankAccount) +")</th>";
+				}
+			}	
+			tag += "</tr>";		
+			
+			for(let i=this.recList.length-1; i>=0; i--){
+				
+				tag += "<tr>";			
+				tag += "<td rowspan='2'>"+this.recList[i].recordDate+"</td>";
+				tag += "<td>"+this.recList[i].position+"</td>";
+				tag += "<td>"+(this.recList[i].purpose === 'move' ? (Number(this.recList[i].purSeq) === -1 ? "excel" : "금액이동") : this.recList[i].purpose)+"</td>";
+				tag += "<td rowspan='2'>"+(this.recList[i].bankName === 'cash' ? "현금" : this.recList[i].bankName +"<br>("+this.recList[i].bankAccount+")")+"</td>";
+				if(this.recList[i].purpose === 'move'){
+					tag += "<td rowspan='2'>("+common.comma(Math.abs(this.recList[i].money))+")</td>";
+				}else{
+					tag += "<td rowspan='2'>"+common.comma(this.recList[i].money)+"</td>";
+				}
+				tag += "<td rowspan='2'>"+common.comma(this.recList[i].amount)+"</td>";
+				tag += "</tr>";
+				
+				tag += "<tr>";			
+				tag += "<td>"+this.recList[i].content+"</td>";
+				tag += "<td>"+this.recList[i].purDetail+"</td>";				
+				
+				
+				//index화면일 경우 간략화(금액은 +-금액과 총액만 출력)
+				if(this.mode === "select"){
+					tag += "<td>"+common.comma(this.recList[i].cash)+"</td>";
+					
+					for(let j=0; j<this.bankList.length; j++){
+						tag += "<td>"+common.comma(this.recList[i]["bank"+j])+"</td>";
+					}
+				}
+				tag += "</tr>";		
+			}
+			
+			tag +="</table>";
+			$("#ledgerReList").append(tag);*/
 	},
 	
 	edit : function(){
