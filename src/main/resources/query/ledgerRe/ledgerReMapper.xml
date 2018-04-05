@@ -57,7 +57,7 @@
 			'select' AS state,
 			</if>
 			rec.record_seq AS recordSeq,
-			DATE_FORMAT(rec.record_date,'%Y-%m-%d %H:%i:%s') AS recordDate,			
+			DATE_FORMAT(rec.record_date,'%Y-%m-%d %H:%i') AS recordDate,			
 			IFNULL(rec.position, '') AS position,
 			rec.content,
 			rec.pur_seq AS purSeq,
