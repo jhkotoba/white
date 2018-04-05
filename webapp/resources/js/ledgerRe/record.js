@@ -158,9 +158,6 @@ let rec = {
 			tag +="</table>";
 			$("#ledgerReList").append(tag);			
 		}
-		
-		
-
 	},
 	
 	edit : function(){
@@ -202,11 +199,11 @@ let rec = {
 			tag += "<tr>";			
 			tag += "<td>"+n+"</td>";			
 			tag += "<td><input id='delete_"+i+"' type='checkbox' onchange='rec.sync(this)' title='삭제 체크박스'></td>";			
-			tag += "<td><input id='date_"+i+"' type='date' class='font10' value='"+this.recList[i].recordDate.split(' ')[0]+"'></td>";
-			tag += "<td><input id='time_"+i+"' type='time' class='font10'  value='"+this.recList[i].recordDate.split(' ')[1]+"'></td>";
-			tag += "<td><input id='position_"+i+"' type='text' class='font10' value='"+this.recList[i].position+"'></td>";
-			tag += "<td><input id='content_"+i+"' type='text' class='font10' value='"+this.recList[i].content+"'></td>";
-			tag += "<td><select id='purSeq_"+i+"' class='font10'>";			
+			tag += "<td><input id='date_"+i+"' type='date' value='"+this.recList[i].recordDate.split(' ')[0]+"'></td>";
+			tag += "<td><input id='time_"+i+"' type='time' value='"+this.recList[i].recordDate.split(' ')[1]+"'></td>";
+			tag += "<td><input id='position_"+i+"' type='text' value='"+this.recList[i].position+"'></td>";
+			tag += "<td><input id='content_"+i+"' type='text' value='"+this.recList[i].content+"'></td>";
+			tag += "<td><select id='purSeq_"+i+"'>";			
 			if(Number(this.recList[i].purSeq) === -1){
 				tag += "<option value=-1>excel</option>";
 			}					
@@ -216,7 +213,7 @@ let rec = {
 				tag += "<option "+selected+" value='"+this.purList[j].purSeq+"'>"+this.purList[j].purpose+"</option>";
 			}	
 			tag += "</select></td>";
-			tag += "<td><select id='purDtlSeq_"+i+"' class='font10'>";
+			tag += "<td><select id='purDtlSeq_"+i+"'>";
 			tag += "<option value=''>선택</option>";			
 			for(let j=0; j<this.purDtlList.length; j++){				
 				if(String(this.recList[i].purSeq) === String(this.purDtlList[j].purSeq)){
@@ -225,21 +222,21 @@ let rec = {
 				}
 			}	
 			tag += "</select></td>";
-			tag += "<td><select id='bankSeq_"+i+"' class='font10'>";
+			tag += "<td><select id='bankSeq_"+i+"'>";
 			tag += "<option "+(this.recList[i].bankSeq === '0' ? "selected='selected'" : "")+" value=0>현금</option>";			
 			for(let j=0; j<this.bankList.length; j++){
 				String(this.recList[i].bankSeq) === String(this.bankList[j].bankSeq) ? selected = "selected='selected'" : selected = "";
 				tag += "<option "+selected+" value='"+this.bankList[j].bankSeq+"'>"+this.bankList[j].bankName+"("+this.bankList[j].bankAccount+")</option>";
 			}
 			tag += "</select></td>";
-			tag += "<td><select id='moveSeq_"+i+"' class='font10' "+disabled+">";
+			tag += "<td><select id='moveSeq_"+i+"' "+disabled+">";
 			tag += "<option value=''>선택</option>";
 			tag += "<option "+(this.recList[i].moveSeq === '0' ? "selected='selected'" : "")+" value=0>현금</option>";		
 			for(let j=0; j<this.bankList.length; j++){
 				String(this.recList[i].moveSeq) === String(this.bankList[j].bankSeq) ? selected = "selected='selected'" : selected = "";
 				tag += "<option "+selected+" value='"+this.bankList[j].bankSeq+"'>"+this.bankList[j].bankName+"("+this.bankList[j].bankAccount+")</option>";
 			}	
-			tag += "<td><input id='money_"+i+"' type='text' class='font10' value='"+this.recList[i].money+"'></td>";			
+			tag += "<td><input id='money_"+i+"' type='text' value='"+this.recList[i].money+"'></td>";			
 			tag += "</tr>";
 			
 			this.deleteRow(i);
