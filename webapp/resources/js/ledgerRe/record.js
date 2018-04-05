@@ -72,7 +72,7 @@ let rec = {
 			if(this.mode === "select"){
 				tag	+= "<th>현금</th>";
 				for(let i=0; i<this.bankList.length; i++){
-					tag += "<th>"+this.bankList[i].bankName+"("+(this.bankList[i].bankAccount==="cash" ? "":this.bankList[i].bankAccount) +")</th>";
+					tag += "<th>"+this.bankList[i].bankName+"<br>("+(this.bankList[i].bankAccount==="cash" ? "":this.bankList[i].bankAccount) +")</th>";
 				}
 			}	
 			tag += "</tr>";		
@@ -111,8 +111,10 @@ let rec = {
 		//창이 넓이가 500보다 작은 경우
 		}else{
 			let tag = "";
-			tag += "<a id='dtlShow' class='right-a' href=\"javascript:$('tr[name^=dtlMoney_]').show(); $('#dtlShow').hide(); $('#dtlHide').show();\">전체 자세히보기</a>";
-			tag += "<a id='dtlHide' class='right-a' style='display:none' href=\"javascript:$('tr[name^=dtlMoney_]').hide(); $('#dtlShow').show(); $('#dtlHide').hide();\">전체 간단히 보기</a>";
+			if(this.mode === "select"){
+				tag += "<a id='dtlShow' class='right-a' href=\"javascript:$('tr[name^=dtlMoney_]').show(); $('#dtlShow').hide(); $('#dtlHide').show();\">전체 자세히보기</a>";
+				tag += "<a id='dtlHide' class='right-a' style='display:none' href=\"javascript:$('tr[name^=dtlMoney_]').hide(); $('#dtlShow').show(); $('#dtlHide').hide();\">전체 간단히 보기</a>";
+			}
 			tag += "<table class='table table-hover table-bordered table-sm'>";
 			tag	+= "<tr>";			
 			tag	+= "<th>날짜</th>";
@@ -144,11 +146,11 @@ let rec = {
 					
 					tag	+= "<tr name='dtlMoney_"+i+"' style='display:none'>";
 					tag += "<th rowspan='"+(this.bankList.length+1)+"'>상세금액</th>";
-					tag	+= "<th>현금</th>";
+					tag	+= "<td>현금</td>";
 					tag += "<td colspan='5'>"+common.comma(this.recList[i].cash)+"</td></tr>";
 					for(let j=0; j<this.bankList.length; j++){
 						tag += "<tr name='dtlMoney_"+i+"' style='display:none'>";
-						tag += "<th>"+this.bankList[j].bankName+"</th><th colspan='3'>("+this.bankList[j].bankAccount+")</th>";
+						tag += "<td>"+this.bankList[j].bankName+"</td><td colspan='3'>("+this.bankList[j].bankAccount+")</td>";
 						tag += "<td>"+common.comma(this.recList[i]["bank"+j])+"</td></tr>";
 					}					
 					tag += "</td>";

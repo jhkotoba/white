@@ -128,7 +128,7 @@ $(document).ready(function(){
 </head>
 <body>
 	
-	<h4 class="article">금전기록 기간조회</h4>
+	<h6 class="article">Date Search</h6>
 	
 	<div class="article">
 		<input id="startDate" type="date" value="">
