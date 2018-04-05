@@ -111,19 +111,17 @@ let rec = {
 		//창이 넓이가 500보다 작은 경우
 		}else{
 			let tag = "";
-			if(this.mode === "select"){
-				tag += "<a id='dtlShow' class='right-a' href=\"javascript:$('tr[name=dtlMoney]').show(); $('#dtlShow').hide(); $('#dtlHide').show();\">자세히 보기</a>";
-				tag += "<a id='dtlHide' class='right-a' style='display:none' href=\"javascript:$('tr[name=dtlMoney]').hide(); $('#dtlShow').show(); $('#dtlHide').hide();\">간단히 보기</a>";
-			}
 			tag += "<table class='table table-hover table-bordered table-sm'>";
 			tag	+= "<tr>";			
 			tag	+= "<th>날짜</th>";
 			tag	+= "<th>위치/내용</th>";
 			tag	+= "<th>목적</th>";
 			tag	+= "<th>사용<br>구분</th>";
-			tag	+= "<th>사용<br>금액</th>";			
-			tag	+= "<th>해당<br>금액</th>";		
-			tag	+= "<th>총금액</th>";		
+			tag	+= "<th>사용<br>금액</th>";
+			if(this.mode === "select"){
+				tag	+= "<th>해당<br>금액</th>";					
+			}
+			tag	+= "<th>소지<br>금액</th>";
 			tag += "</tr>";
 			
 			for(let i=this.recList.length-1; i>=0; i--){				
@@ -138,47 +136,20 @@ let rec = {
 					tag += "<td>("+common.comma(Math.abs(this.recList[i].money))+")</td>";
 				}else{
 					tag += "<td>"+common.comma(this.recList[i].money)+"</td>";
-				}				
-				if(this.recList[i].bankSeq === 0){
-					tag += "<td>"+common.comma(this.recList[i].cash)+"</td>";
-				}else{
-					for(let j=0; j<this.bankList.length; j++){
-						if(this.recList[i].bankSeq===this.bankList[j].bankSeq){
-							tag += "<td>"+common.comma(this.recList[i]["bank"+j])+"</td>";
-							break;
-						}						
-					}					
-				}				
-				tag += "<td>"+common.comma(this.recList[i].amount)+"</td>";
-				
-				//index화면일 경우 간략화(금액은 +-금액과 총액만 출력)
+				}
 				if(this.mode === "select"){
-					tag += "</tr>";		
-					
-					tag	+= "<tr name='dtlMoney' style='display:none;'>";
-					tag += "<th rowspan='"+(this.bankList.length+1)+"'>상세<br>금액</th>";
-					tag	+= "<td>현금</td>";
-					tag += "<td colspan='5'>"+common.comma(this.recList[i].cash)+"</td></tr>";
-					for(let j=0; j<this.bankList.length; j++){
-						tag += "<tr name='dtlMoney' style='display:none'>";
-						tag += "<td>"+this.bankList[j].bankName+"</td><td colspan='3'>("+this.bankList[j].bankAccount+")</td>";
-						tag += "<td colspan='2'>"+common.comma(this.recList[i]["bank"+j])+"</td></tr>";
+					if(this.recList[i].bankSeq === 0){
+						tag += "<td>"+common.comma(this.recList[i].cash)+"</td>";
+					}else{
+						for(let j=0; j<this.bankList.length; j++){
+							if(this.recList[i].bankSeq===this.bankList[j].bankSeq){
+								tag += "<td>"+common.comma(this.recList[i]["bank"+j])+"</td>";
+								break;
+							}						
+						}					
 					}
-					
-					if(i>0){
-						tag += "</td><tr name='dtlMoney' style='display:none; height:10px;'></tr>";						
-						tag	+= "<tr name='dtlMoney' style='display:none;'>";			
-						tag	+= "<th>날짜</th>";
-						tag	+= "<th>위치/내용</th>";
-						tag	+= "<th>목적</th>";
-						tag	+= "<th>사용<br>구분</th>";
-						tag	+= "<th>사용<br>금액</th>";			
-						tag	+= "<th>해당<br>금액</th>";		
-						tag	+= "<th>총금액</th>";		
-						tag += "</tr>";
-					}
-					
-				}				
+				}
+				tag += "<td>"+common.comma(this.recList[i].amount)+"</td>";				
 				tag += "</tr>";		
 			}	
 			
