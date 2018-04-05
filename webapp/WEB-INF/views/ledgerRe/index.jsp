@@ -201,7 +201,5 @@ $(document).ready(function(){
 	<span class="article" name="date"></span>
 	<div id="ledgerReList" class="article">		
 	</div>
-		
-	
 </body>
 </html>

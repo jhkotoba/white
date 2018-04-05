@@ -128,9 +128,9 @@ $(document).ready(function(){
 </head>
 <body>
 	
-	<h4>금전기록 기간조회</h4>
+	<h4 class="article">금전기록 기간조회</h4>
 	
-	<div>
+	<div class="article">
 		<input id="startDate" type="date" value="">
 		<input id="endDate" type="date" value="">
 		<button id="recShBtn" class="btn_azure03">조회</button>		
@@ -151,7 +151,7 @@ $(document).ready(function(){
 		<button id="reset" class="btn_azure03">초기화</button>
 	</div>
 	
-	<div id="ledgerReList">		
+	<div id="ledgerReList" class="article">		
 	</div>
 	<br>	
 	
