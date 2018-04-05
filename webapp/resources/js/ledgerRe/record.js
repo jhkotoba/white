@@ -147,8 +147,9 @@ let rec = {
 					tag	+= "<th>현금</th>";
 					tag += "<td colspan='5'>"+common.comma(this.recList[i].cash)+"</td></tr>";
 					for(let j=0; j<this.bankList.length; j++){
-						tag += "<tr name='dtlMoney_"+i+"' style='display:none'><th>"+this.bankList[j].bankName+"("+(this.bankList[j].bankAccount==="cash" ? "":this.bankList[j].bankAccount) +")</th>";
-						tag += "<td colspan='5'>"+common.comma(this.recList[i]["bank"+j])+"</td></tr>";
+						tag += "<tr name='dtlMoney_"+i+"' style='display:none'>";
+						tag += "<th>"+this.bankList[j].bankName+"</th><th colspan='3'>("+this.bankList[j].bankAccount+")</th>";
+						tag += "<td>"+common.comma(this.recList[i]["bank"+j])+"</td></tr>";
 					}					
 					tag += "</td>";
 				}				
