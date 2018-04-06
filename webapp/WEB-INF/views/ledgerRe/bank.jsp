@@ -2,17 +2,12 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="contextPath" value="<%=request.getContextPath()%>"></c:set>
-<!DOCTYPE html PUBLIC>
-<html>
-<head>
-<meta charset=UTF-8>
-<title>whiteHome</title>
 
 <script type="text/javascript" src="${contextPath}/resources/js/ledgerRe/bank.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
 	
-	$.ajax({		
+	$.ajax(
 		type: 'POST',
 		url: common.path()+'/ledgerRe/selectBankList.ajax',
 		dataType: 'json',
@@ -47,21 +42,17 @@ $(document).ready(function(){
 	});
 });
 
-</script>
-</head>
-<body>
-	
-	<div>
-		<span class='add'>■추가</span>
-		<span class='edit'>■수정</span>
-		<span class='redLine'>■삭제</span>
-	</div>
-	<br>
-	
-	<div class="left">
-		<button id="bankAddBtn" class="btn_azure03">추가</button>
-		<button id="bankSaveBtn" class="btn_azure03">저장</button>
-		<button id="bankCelBtn" class="btn_azure03">취소</button>
-		<div id="bankList" class="scroll"></div>
-	</div>
-</body>
+</script>	
+<div>
+	<span class='add'>■추가</span>
+	<span class='edit'>■수정</span>
+	<span class='redLine'>■삭제</span>
+</div>
+<br>
+
+<div class="left">
+	<button id="bankAddBtn" class="btn_azure03">추가</button>
+	<button id="bankSaveBtn" class="btn_azure03">저장</button>
+	<button id="bankCelBtn" class="btn_azure03">취소</button>
+	<div id="bankList" class="scroll"></div>
+</div>

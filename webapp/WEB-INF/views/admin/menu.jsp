@@ -2,11 +2,6 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="contextPath" value="<%=request.getContextPath()%>"></c:set>
-<!DOCTYPE html PUBLIC>
-<html>
-<head>
-<meta charset=UTF-8>
-<title>whiteHome</title>
 
 <script type="text/javascript" src="${contextPath}/resources/js/admin/menu.js"></script>
 <script type="text/javascript">
@@ -72,28 +67,24 @@ $(document).ready(function(){
 	});
 });
 
-</script>
-</head>
-<body>
-	
-	<div>
-		<span class='add'>■추가</span>
-		<span class='edit'>■수정</span>
-		<span class='redLine'>■삭제</span>
-	</div>
-	<br>
-	
-	<div class="left">
-		<button id="navAddBtn" class="btn_azure03">추가</button>
-		<button id="navSaveBtn" class="btn_azure03">네비메뉴 저장</button>
-		<button id="navCelBtn" class="btn_azure03">취소</button>
-		<div id="navList" class="scroll"></div>	
-	</div>
-	
-	<div class="left">
-		<button id="sideAddBtn" class="btn_azure03">추가</button>
-		<button id="sideSaveBtn" class="btn_azure03">사이드메뉴 저장</button>
-		<button id="sideCelBtn" class="btn_azure03">취소</button>
-		<div id="sideList" class="scroll"></div>
-	</div>
-</body>
+</script>	
+<div>
+	<span class='add'>■추가</span>
+	<span class='edit'>■수정</span>
+	<span class='redLine'>■삭제</span>
+</div>
+<br>
+
+<div class="left">
+	<button id="navAddBtn" class="btn_azure03">추가</button>
+	<button id="navSaveBtn" class="btn_azure03">네비메뉴 저장</button>
+	<button id="navCelBtn" class="btn_azure03">취소</button>
+	<div id="navList" class="scroll"></div>	
+</div>
+
+<div class="left">
+	<button id="sideAddBtn" class="btn_azure03">추가</button>
+	<button id="sideSaveBtn" class="btn_azure03">사이드메뉴 저장</button>
+	<button id="sideCelBtn" class="btn_azure03">취소</button>
+	<div id="sideList" class="scroll"></div>
+</div>

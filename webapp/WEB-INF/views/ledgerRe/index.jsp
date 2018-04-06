@@ -2,11 +2,6 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="contextPath" value="<%=request.getContextPath()%>"></c:set>
-<!DOCTYPE html PUBLIC>
-<html>
-<head>
-<meta charset=UTF-8>
-<title>WhiteHome</title>
 
 <script type="text/javascript" src="${contextPath}/resources/js/ledgerRe/record.js"></script>
 <script type="text/javascript" src="${contextPath}/resources/js/memo/memo.js"></script>
@@ -116,7 +111,8 @@ $(document).ready(function(){
 			let recDonut = new Array();
 			let purpose = new Object();
 			
-			if(recList.length === 0){
+			recDonut.push(['Purpose', 'money']);
+			if(recList.length === 0){				
 				recDonut.push(["No Data", 1]);
 			}else{
 				for(let i=0; i<recList.length; i++){
@@ -130,17 +126,11 @@ $(document).ready(function(){
 						}
 					}				
 				}
-				
-				recDonut.push(['Purpose', 'money']);
-				let purKeys = Object.keys(purpose);
-				
+				let purKeys = Object.keys(purpose);				
 				for(let i=0; i<purKeys.length; i++){
 					recDonut.push([purKeys[i], purpose[purKeys[i]]]);
 				}
 			}
-			
-			
-			
 			
 			google.charts.setOnLoadCallback(drawChart);
 			function drawChart() {
@@ -164,42 +154,39 @@ $(document).ready(function(){
 });
 </script>
 
-</head>
-<body>
-	<span class="article" name="date"></span>
-	<div class="article">
-		<div class="left width-vmin">
-			<div id="comboChart" class="form-control height-default">
-			</div>
-		</div>
-		
-		<div class="left width-vmin">
-			<div id="donutChart" class="form-control height-default">
-			</div>
-		</div>		
-	</div>
-	
-	<div class="space left"></div>
-	
-	<div id="ledgerMemo" class="article">
-		<div class="btn-group btn-group-sm width-full" role="group">
-			<button id="memoAddBt" type="button" class="btn btn-secondary NanumSquareRoundB-15">메모 추가</button>
-			<button id="memoSaveBt" type="button" class="btn btn-secondary NanumSquareRoundB-15">메모 저장</button>
-			<button id="memoCancelBt" type="button" class="btn btn-secondary NanumSquareRoundB-15">취소</button>
-		</div>
-	
-		<div id='memoTb'>
+<span class="article" name="date"></span>
+<div class="article">
+	<div class="left width-vmin">
+		<div id="comboChart" class="form-control height-default">
 		</div>
 	</div>
 	
+	<div class="left width-vmin">
+		<div id="donutChart" class="form-control height-default">
+		</div>
+	</div>		
+</div>
 
-	<input id="startDate" type="hidden" value="">
-	<input id="endDate" type="hidden" value="">
-	
-	<div class="space left"></div>
-	
-	<span class="article" name="date"></span>
-	<div id="ledgerReList" class="article">		
+<div class="space left"></div>
+
+<div id="ledgerMemo" class="article">
+	<div class="btn-group btn-group-sm width-full" role="group">
+		<button id="memoAddBt" type="button" class="btn btn-secondary NanumSquareRoundB-15">메모 추가</button>
+		<button id="memoSaveBt" type="button" class="btn btn-secondary NanumSquareRoundB-15">메모 저장</button>
+		<button id="memoCancelBt" type="button" class="btn btn-secondary NanumSquareRoundB-15">취소</button>
 	</div>
-</body>
-</html>
+
+	<div id='memoTb'>
+	</div>
+</div>
+
+
+<input id="startDate" type="hidden" value="">
+<input id="endDate" type="hidden" value="">
+
+<div class="space left"></div>
+
+<span class="article" name="date"></span>
+<div id="ledgerReList" class="article">		
+</div>
+

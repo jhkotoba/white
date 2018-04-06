@@ -2,11 +2,6 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="contextPath" value="<%=request.getContextPath()%>"></c:set>
-<!DOCTYPE html PUBLIC>
-<html>
-<head>
-<meta charset=UTF-8>
-<title>whiteHome</title>
 
 <script type="text/javascript" src="${contextPath}/resources/js/admin/lookup.js"></script>
 <script type="text/javascript">
@@ -130,8 +125,6 @@ $(document).ready(function(){
 });
 
 </script>
-</head>
-<body>
 
 <div id="userInfo" class="divPop">
 	<input id="userNo" type="hidden" value="">
@@ -183,7 +176,3 @@ $(document).ready(function(){
 
 <div id="paging">
 </div>
-
-
-</body>
-</html>

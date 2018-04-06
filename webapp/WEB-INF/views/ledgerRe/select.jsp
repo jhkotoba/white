@@ -2,11 +2,6 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="contextPath" value="<%=request.getContextPath()%>"></c:set>
-<!DOCTYPE html PUBLIC>
-<html>
-<head>
-<meta charset=UTF-8>
-<title>whiteHome</title>
 
 <script type="text/javascript" src="${contextPath}/resources/js/ledgerRe/record.js"></script>
 <script type="text/javascript">
@@ -125,35 +120,30 @@ $(document).ready(function(){
 });
 
 </script>
-</head>
-<body>
 	
-	<h6 class="article">Date Search</h6>
-	
-	<div class="article">
-		<input id="startDate" type="date" value="">
-		<input id="endDate" type="date" value="">
-		<button id="recShBtn" class="btn_azure03">조회</button>		
-		<button id="recEditBtn" class="btn_disabled03" disabled="disabled">편집</button>
-		<button id="recSaveBtn" class="btn_disabled03" disabled="disabled">저장</button>
-		<button id="recCelBtn" class="btn_disabled03" disabled="disabled">취소</button>		
-	</div>
-	
-	<div id="srhBox" style="display: none">		
-		<select id="srhPur">
-			<option value=''>목적 검색</option>			
-		</select>
-		<select id="srhBank">
-			<option value=''>은행 검색</option>			
-			<option value='0'>현금</option>			
-		</select>
-		<button id="srhBtn" class="btn_azure03">검색</button>
-		<button id="reset" class="btn_azure03">초기화</button>
-	</div>
-	
-	<div id="ledgerReList" class="article">		
-	</div>
-	<br>	
-	
-</body>
-</html>
+<h6 class="article">Date Search</h6>
+
+<div class="article">
+	<input id="startDate" type="date" value="">
+	<input id="endDate" type="date" value="">
+	<button id="recShBtn" class="btn_azure03">조회</button>		
+	<button id="recEditBtn" class="btn_disabled03" disabled="disabled">편집</button>
+	<button id="recSaveBtn" class="btn_disabled03" disabled="disabled">저장</button>
+	<button id="recCelBtn" class="btn_disabled03" disabled="disabled">취소</button>		
+</div>
+
+<div id="srhBox" style="display: none">		
+	<select id="srhPur">
+		<option value=''>목적 검색</option>			
+	</select>
+	<select id="srhBank">
+		<option value=''>은행 검색</option>			
+		<option value='0'>현금</option>			
+	</select>
+	<button id="srhBtn" class="btn_azure03">검색</button>
+	<button id="reset" class="btn_azure03">초기화</button>
+</div>
+
+<div id="ledgerReList" class="article">		
+</div>
+<br>
