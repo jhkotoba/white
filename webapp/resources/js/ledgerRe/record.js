@@ -52,8 +52,6 @@ let rec = {
 	view : function(){		
 		$("#ledgerReList").empty();
 		
-
-		
 		//창이 넓이가 500보다 큰 경우
 		if(window.innerWidth > 500){
 			let tag = "";

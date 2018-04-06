@@ -11,6 +11,7 @@
 
 /*°øÅë*/
 td, th{height:38px; vertical-align: middle !important;}
+.double-date{width: 400px;}
 
 #navMenu ul {list-style:none; margin:0; padding:0;}
 #navMenu li {margin: 0 15 0 0; padding: 0 0 0 0; border : 0; float: left;}
