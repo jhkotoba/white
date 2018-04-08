@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="contextPath" value="<%=request.getContextPath()%>"></c:set>
 
-<script type="text/javascript" src="${contextPath}/resources/js/ledgerRe/record.js?ver=0.006"></script>
+<script type="text/javascript" src="${contextPath}/resources/js/ledgerRe/record.js?ver=0.009"></script>
 <script type="text/javascript">
 $(document).ready(function(){
 	
@@ -11,7 +11,6 @@ $(document).ready(function(){
 		$("#dateBox").addClass("width-vmin");
 		$("#searchBox").addClass("width-vmin");
 	}
-
 	
 	$("#startDate").val(isDate.firstDay());
 	$("#endDate").val(isDate.lastDay());
@@ -28,6 +27,12 @@ $(document).ready(function(){
 	    		tag += "<option value='"+data.purList[i].purSeq+"'>"+data.purList[i].purpose+"</option>";
 	    	}
 	    	$("#srhPur").append(tag);
+	    	
+	    	tag = "";
+	    	for(let i=0; i<data.purDtlList.length; i++){		
+	    		tag += "<option value='"+data.purDtlList[i].purDtlSeq+"'>"+data.purDtlList[i].purDetail+"</option>";
+	    	}
+	    	$("#srhPurDtl").append(tag);
 	    	
 	    	tag = "";
 	    	for(let i=0; i<data.bankList.length; i++){		
