@@ -5,9 +5,9 @@
 
 <script type="text/javascript" src="${contextPath}/resources/js/ledgerRe/bank.js"></script>
 <script type="text/javascript">
-$(document).ready(function(){
+$(document).ready(function(){	
 	
-	$.ajax(
+	$.ajax({
 		type: 'POST',
 		url: common.path()+'/ledgerRe/selectBankList.ajax',
 		dataType: 'json',

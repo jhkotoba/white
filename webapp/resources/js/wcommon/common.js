@@ -12,6 +12,14 @@ $(document).ready(function(){
 	}
 });
 
+$(document).ajaxSend(function() {
+	 $(".blind").show();
+});
+
+$(document).ajaxComplete(function() {
+	$(".blind").hide();
+});
+
 //날짜반환함수
 let isDate = {	
 	dateProcess : function dateProcess(isMonth, type){	
@@ -157,9 +165,7 @@ let isTime = {
 }
 
 //공통함수
-let common = {
-	platform : "pc",
-	
+let common = {	
 	//깊은복사
 	clone : function deepObjCopy (dupeObj) {
 		var retObj = new Object();

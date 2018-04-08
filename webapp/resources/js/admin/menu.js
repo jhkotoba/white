@@ -80,7 +80,7 @@ let nav = {
 		
 		$("#navList").empty();
 		
-		let tag = "<table class='table table-hover table-bordered'>";
+		let tag = "<table class='table table-striped table-bordered'>";
 			tag	+= "<tr>";			
 			tag += "<th>Del</th>";
 			tag	+= "<th>No</th>";			
@@ -388,7 +388,7 @@ let side = {
 	
 		$("#sideList").empty();
 	
-		let tag = "<table class='table table-hover table-sm table-bordered'>";
+		let tag = "<table class='table table-striped table-sm table-bordered'>";
 			tag	+= "<tr>";			
 			tag += "<th>Del</th>";
 			tag	+= "<th>No</th>";			

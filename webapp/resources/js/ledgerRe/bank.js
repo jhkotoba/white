@@ -41,7 +41,7 @@ let bank = {
 		
 		$("#bankList").empty();
 		
-		let tag = "<table class='table table-hover'>";
+		let tag = "<table class='table table-striped table-sm'>";
 			tag	+= "<tr>";			
 			tag += "<th>Del</th>";
 			tag	+= "<th>No</th>";

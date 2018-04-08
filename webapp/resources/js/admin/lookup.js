@@ -96,7 +96,7 @@ let ad = {
 		
 		$("#userList").empty();
 		
-		let tag = "<table class='table table-hover table-bordered'>";
+		let tag = "<table class='table table-striped table-bordered'>";
 			tag	+= "<tr>";			
 			tag	+= "<th>userNo</th>";
 			tag	+= "<th>userId</th>";

@@ -3,7 +3,7 @@
  */
 
 let whiteGrid = {
-		
+	value : null,
 	options : {
 		
 	},

@@ -1,28 +1,41 @@
-/*모바일*/
+/*mobile*/
 @media (max-width: 500px) {
 	span, table{font-size: 9px;}
-	input[type=text] {font-size: 9px;}	
+	input[type=date], input[type=time],input[type=text] {font-size: 9px;}
+	.slt-font-size{font-size: 9px;}
+	.span-font-size{font-size: 9px !important;}
+	.btn-font-size{font-size: 9px !important;}
+	
 }
-/*피시*/
+/*pc*/
 @media screen and (min-width: 501px) {
-    span, table{font-size: 11px;}
-    input[type=text] {font-size: 10px;}  
+    span, table{font-size: 11px;}    
+	input[type=date], input[type=time],input[type=text] {font-size: 12px;}
+	.slt-font-size{font-size: 12px;}
+	.span-font-size{font-size: 16px !important;}
+	.btn-font-size{font-size: 16px !important;}
+
 }
 
-/*공통*/
+/*common*/
 td, th{height:38px; vertical-align: middle !important;}
-.double-date{width: 400px;}
+
+
+
 
 #navMenu ul {list-style:none; margin:0; padding:0;}
 #navMenu li {margin: 0 15 0 0; padding: 0 0 0 0; border : 0; float: left;}
 .article{padding-left: 20px; padding-right: 20px;}
 .width-vmin{width:90vmin;}
 .width-full{width:100%;}
-.height-default{height: 300px;}
+.default-height{height: 300px;}
 
-.space{width:100%; height:10px;}
+.delete{color : red !important;}
+.update{color : blue !important;}
+.insert{color : green !important;}
 
-.right-a{float: right; font-size: 10px;}
+.space{width:100%;}
+.blind{position:absolute !important; background:black; background : rgba(0, 0, 0, 0.2);  left:0 !important; top:0 !important; width: 100% !important; height: 100% !important; z-index:9999;}
 
 /* font */
 @font-face { font-family: 'GodoB'; src: url(../ttf/GodoB.ttf) format('truetype'); }
@@ -34,11 +47,13 @@ td, th{height:38px; vertical-align: middle !important;}
 .NanumSquareRoundB-20{font-family: 'NanumSquareB', serif;font-size: 20px;}
 .NanumSquareRoundB-15{font-family: 'NanumSquareB', serif;font-size: 15px;}
 .NanumSquareRoundB-10{font-family: 'NanumSquareB', serif;font-size: 10px;}
+.NanumSquareRoundB{font-family: 'NanumSquareB', serif;}
 
 @font-face { font-family: 'NanumSquareRoundB'; src: url(../ttf/NanumSquareRoundB.ttf) format('truetype'); }
 .NanumSquareRoundB-20{font-family: 'NanumSquareRoundB', serif;font-size: 20px;}
 .NanumSquareRoundB-15{font-family: 'NanumSquareRoundB', serif;font-size: 15px;}
 .NanumSquareRoundB-10{font-family: 'NanumSquareRoundB', serif;font-size: 10px;}
+.NanumSquareRoundB{font-family: 'NanumSquareRoundB', serif;}
 
 .sideView{
 	position: absolute;
@@ -78,10 +93,6 @@ td, th{height:38px; vertical-align: middle !important;}
 .scroll{
     overflow-y: auto;
     height:500px;
-}
-
-tr:hover{
-	background: #E6FFFF;
 }
 
 .paging > button{

@@ -38,36 +38,33 @@ let memo = {
 		this.list = new Array();
 		this.clone = new Array();
 		this.type = "";
-		$("#memoTb").empty();
+		$("#memoList").empty();
 	},
 	//메모출력
 	view : function(){			
-		$("#memoTb").empty();	
+		$("#memoList").empty();	
 		
 		let tag = "";
 		for(let i=0; i<this.list.length; i++){
-			tag +=	"<div class='input-group mb-3'>";
+			
+			tag +=	"<div class='input-group'>";
 			if(emptyCheck.isNotEmpty(this.list[i].memoContent)){
 				if(this.list[i].state === "delete"){
-					tag +=	"<input id='memoContent_"+i+"' type='text' class='form-control' placeholder='메모를 입력하세요' aria-describedby='basic-addon2' style='color:red;' onkeyup='memo.edit("+i+")' value='"+this.list[i].memoContent+"'>";
+					tag +=	"<input id='memoContent_"+i+"' type='text' class='form-control' placeholder='메모를 입력하세요' style='color:red;' onkeyup='memo.edit("+i+")' value='"+this.list[i].memoContent+"'>";
 				}else if(this.list[i].state === "update"){
-					tag +=	"<input id='memoContent_"+i+"' type='text' class='form-control' placeholder='메모를 입력하세요' aria-describedby='basic-addon2' style='color:blue; onkeyup='memo.edit("+i+")' value='"+this.list[i].memoContent+"'>";
+					tag +=	"<input id='memoContent_"+i+"' type='text' class='form-control' placeholder='메모를 입력하세요' style='color:blue; onkeyup='memo.edit("+i+")' value='"+this.list[i].memoContent+"'>";
 				}else{
-					tag +=	"<input id='memoContent_"+i+"' type='text' class='form-control' placeholder='메모를 입력하세요' aria-describedby='basic-addon2' onkeyup='memo.edit("+i+")' value='"+this.list[i].memoContent+"'>";
+					tag +=	"<input id='memoContent_"+i+"' type='text' class='form-control' placeholder='메모를 입력하세요' onkeyup='memo.edit("+i+")' value='"+this.list[i].memoContent+"'>";
 				}				
 			}else{
 				tag +=	"<input id='memoContent_"+i+"' type='text' class='form-control' placeholder='메모를 입력하세요' aria-describedby='basic-addon2' style='color:green;' onkeyup='memo.edit("+i+")' value=''>";	
 			}
 			tag +=		"<div class='input-group-append'>";
-			tag +=			"<span class='input-group-text' id='basic-addon2'>";
-			tag +=				"<div class='btn-group' role='group' aria-label='Basic example'>";
-			tag +=	  				"<button type='button' class='btn btn-secondary' style='font-size:10px;' onclick='memo.del("+i+")'>삭제</button>";
-			if(this.list[i].state === "select" || this.list[i].state === "delete" || this.list[i].state === "update"){
-				tag += 				"<button type='button' class='btn btn-secondary' style='font-size:10px;' onclick='memo.delCan("+i+")'>취소</button>";	
-			}			
-			tag +=	"</div></span></div></div>";
+			tag +=			"<button class='btn btn-secondary btn-font-size NanumSquareRoundB' type='button' onclick='memo.del("+i+")'>삭제</button>";
+			tag +=			"<button class='btn btn-secondary btn-font-size NanumSquareRoundB' type='button' onclick='memo.delCan("+i+")'>취소</button>";
+			tag +=		"</div></div>";			
 		}		
-		$("#memoTb").append(tag);		
+		$("#memoList").append(tag);
 	},	
 	
 	//메모 추가

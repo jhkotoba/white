@@ -67,9 +67,11 @@ public class LedgerReController {
 
 		JSONObject result = new JSONObject();		
 		result.put("recList", new JSONArray(ledgerReService.selectRecordList(param, bankList)));
-		result.put("purList", new JSONArray(ledgerReService.selectPurList(param)));
-		result.put("purDtlList", new JSONArray(ledgerReService.selectPurDtlList(param)));
-		result.put("bankList", new JSONArray(bankList));
+		if("index".equals(param.get("mode"))){
+			result.put("purList", new JSONArray(ledgerReService.selectPurList(param)));
+			result.put("purDtlList", new JSONArray(ledgerReService.selectPurDtlList(param)));
+			result.put("bankList", new JSONArray(bankList));
+		}		
 		request.setAttribute("result", result);	
 		
 		return "result.jsp";

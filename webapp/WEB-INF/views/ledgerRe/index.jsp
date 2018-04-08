@@ -3,9 +3,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="contextPath" value="<%=request.getContextPath()%>"></c:set>
 
-<script type="text/javascript" src="${contextPath}/resources/js/ledgerRe/record.js"></script>
-<script type="text/javascript" src="${contextPath}/resources/js/memo/memo.js"></script>
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript" src="${contextPath}/resources/js/ledgerRe/record.js?ver=1.00"></script>
+<script type="text/javascript" src="${contextPath}/resources/js/memo/memo.js?ver=1.03"></script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js?ver=1.00"></script>
 <script type="text/javascript">
 $(document).ready(function(){
 	
@@ -42,7 +42,7 @@ $(document).ready(function(){
 		dataType: 'json',
 	    success : function(data) {	    	
 	    	chart.view(data.recList);
-	    	rec.init("index", data.recList, data.purList, data.purDtlList, data.bankList).view();	    	
+	    	rec.initPB(data.purList, data.purDtlList, data.bankList).initRec("index", data.recList).view();	    	
 	    },
 	    error : function(request, status, error){
 	    	alert("error");
@@ -157,12 +157,12 @@ $(document).ready(function(){
 <span class="article" name="date"></span>
 <div class="article">
 	<div class="left width-vmin">
-		<div id="comboChart" class="form-control height-default">
+		<div id="comboChart" class="form-control default-height">
 		</div>
 	</div>
 	
 	<div class="left width-vmin">
-		<div id="donutChart" class="form-control height-default">
+		<div id="donutChart" class="form-control default-height">
 		</div>
 	</div>		
 </div>
@@ -171,13 +171,33 @@ $(document).ready(function(){
 
 <div id="ledgerMemo" class="article">
 	<div class="btn-group btn-group-sm width-full" role="group">
-		<button id="memoAddBt" type="button" class="btn btn-secondary NanumSquareRoundB-15">메모 추가</button>
-		<button id="memoSaveBt" type="button" class="btn btn-secondary NanumSquareRoundB-15">메모 저장</button>
-		<button id="memoCancelBt" type="button" class="btn btn-secondary NanumSquareRoundB-15">취소</button>
+		<button id="memoAddBt" type="button" class="btn btn-secondary btn-font-size NanumSquareRoundB">메모 추가</button>
+		<button id="memoSaveBt" type="button" class="btn btn-secondary btn-font-size NanumSquareRoundB">메모 저장</button>
+		<button id="memoCancelBt" type="button" class="btn btn-secondary btn-font-size NanumSquareRoundB">취소</button>
 	</div>
-
-	<div id='memoTb'>
+	
+	<div style="width: 100%; height: 10px;"></div>
+	
+	<div id='memoList'>
 	</div>
+	
+	<!-- test -->
+	<!-- <div class='input-group'>
+		<input type='text' class='form-control' placeholder='Recipient's username' aria-label='Recipient's username' aria-describedby='basic-addon2'>
+		<div class='input-group-append'>
+			<button class='btn btn-outline-secondary' type='button'>Button</button>
+			<button class='btn btn-outline-secondary' type='button'>Button</button>
+		</div>
+	</div>
+		<div class='input-group'>
+		<input type='text' class='form-control' placeholder='Recipient's username' aria-label='Recipient's username' aria-describedby='basic-addon2'>
+		<div class='input-group-append'>
+			<button class='btn btn-outline-secondary' type='button'>Button</button>
+			<button class='btn btn-outline-secondary' type='button'>Button</button>
+		</div>
+	</div> -->
+	
+	<!-- test -->
 </div>
 
 

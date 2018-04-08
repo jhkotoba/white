@@ -56,7 +56,7 @@ let auth = {
 		
 		$("#authList").empty();
 		
-		let tag = "<table class='table table-hover table-bordered'>";
+		let tag = "<table class='table table-striped table-bordered'>";
 			tag	+= "<tr>";			
 			tag += "<th>Del</th>";
 			tag	+= "<th>No</th>";
