@@ -70,7 +70,7 @@ let rec = {
 			tag	+= "<th>목적</th>";
 			tag	+= "<th>상세목적</th>";
 			tag	+= "<th>사용수단</th>";
-			tag	+= "<th>사용금액</th>";			
+			tag	+= "<th>수입/지출</th>";			
 			tag	+= "<th>소지금액</th>";
 			
 			//index화면일 경우 간략화(금액은 +-금액과 총액만 출력)
@@ -133,7 +133,7 @@ let rec = {
 			tag	+= "<th>위치/내용</th>";
 			tag	+= "<th>목적</th>";
 			tag	+= "<th>사용<br>수단</th>";
-			tag	+= "<th>사용<br>금액</th>";
+			tag	+= "<th>수입<br>지출</th>";
 			if(this.mode === "select"){
 				tag	+= "<th>해당<br>금액</th>";					
 			}
@@ -201,7 +201,7 @@ let rec = {
 			tag	+= "<th>위치 / 내용*</th>";
 			tag	+= "<th>목적* / 상세목적</th>";
 			tag	+= "<th>사용수단* / (이동대상)</th>";
-			tag	+= "<th>금액*</th>";
+			tag	+= "<th>수입 지출*</th>";
 			tag += "</tr>";		
 			
 			let n = 1;
@@ -344,7 +344,7 @@ let rec = {
 				tag += "</td></tr>";
 				
 				
-				tag += "<tr><th>금액*</th>";
+				tag += "<tr><th>수입 지출*</th>";
 				tag += "<td><input id='money_"+i+"' type='text' class='form-control' value='"+this.recList[i].money+"'></td></tr>";				
 				
 				this.deleteRow(i);

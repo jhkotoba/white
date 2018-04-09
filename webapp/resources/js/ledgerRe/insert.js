@@ -150,67 +150,127 @@ let recIn = {
 		
 		$("#ledgerReList").empty();
 		let selected = "";
+		let tag = "";
 		
-		let tag = "<table class='table table-striped table-sm'>"
-				+ "<tr>"				
-				+ "<th>No</th>"
-				+ "<th>Date*</th>"
-				+ "<th>Time*</th>"
-				+ "<th>position</th>"
-				+ "<th>content*</th>"
-				+ "<th>purpose*</th>"
-				+ "<th>purDetail</th>"
-				+ "<th>bankName*</th>"
-				+ "<th>moveName</th>"
-				+ "<th>money*</th>";	
-			tag += "</tr>";		
+		if(window.innerWidth > 500){
 		
-		for(let i=0; i<this.inList.length; i++){
+			tag += "<table class='table table-striped table-sm table-bordered'>";
+			tag	+= "<tr>";
+			tag += "<th>no</th>";
+			tag	+= "<th>날짜*</th>";
+			tag	+= "<th>위치 / 내용*</th>";
+			tag	+= "<th>목적* / 상세목적</th>";
+			tag	+= "<th>사용수단* / (이동대상)</th>";
+			tag	+= "<th>수입 지출*</th>";
+			tag += "</tr>";
+		
+			for(let i=0; i<this.inList.length; i++){
 			
-			tag += "<tr>";			
-			tag += "<td>"+(i+1)+"</td>";
-			tag += "<td><input id='date_"+i+"' type='date' class='font10' value='"+this.inList[i].date+"'></td>";
-			tag += "<td><input id='time_"+i+"' type='time' class='font10' value='"+this.inList[i].time+"'></td>";
-			tag += "<td><input id='position_"+i+"' type='text' class='font10' value='"+this.inList[i].position+"'></td>";			
-			tag += "<td><input id='content_"+i+"' type='text' class='font10' value='"+this.inList[i].content+"'></td>";			
-			tag += "<td><select id='purSeq_"+i+"' class='font10' onchange='recIn.sync(this); recIn.appSel(this,"+i+");'>";
-			tag += "<option value=''>선택</option>";
-			tag += "<option value=0>금액이동</option>";			
-			for(let j=0; j<this.purList.length; j++){
-				this.inList[i].purSeq === String(this.purList[j].purSeq) ? selected = "selected='selected'" : selected = "";
-				tag += "<option "+selected+" value="+this.purList[j].purSeq+">"+this.purList[j].purpose+"</option>";
-			}				
-			tag += "</select></td>";
-			tag += "<td><select id='purDtlSeq_"+i+"' class='font10'>";
-			tag += "<option value=''>선택</option>";
-			for(let j=0; j<this.purDtlList.length; j++){
-				if(this.inList[i].purSeq === String(this.purDtlList[j].purSeq)){
-					this.inList[i].purDtlSeq === String(this.purDtlList[j].purDtlSeq) ? selected = "selected='selected'" : selected = "";
-					tag += "<option "+selected+" value="+this.purDtlList[j].purDtlSeq+">"+this.purDtlList[j].purDetail+"</option>";
-				}
-			}	
-			tag += "</select></td>";
-			tag += "<td><select id='bankSeq_"+i+"' class='font10''>";
-			tag += "<option value=''>선택</option>";
-			tag += "<option "+(this.inList[i].bankSeq === '0' ? "selected='selected'" : "")+" value=0>현금</option>";			
-			for(let j=0; j<this.bankList.length; j++){
-				this.inList[i].bankSeq === this.bankList[j].bankSeq ? selected = "selected='selected'" : selected = "";
-				tag += "<option "+selected+" value="+this.bankList[j].bankSeq+">"+this.bankList[j].bankName+"("+this.bankList[j].bankAccount+")</option>";
-			}				
-			tag += "</select></td>";
-			tag += "<td><select id='moveSeq_"+i+"' class='font10' disabled='disabled'>";
-			tag += "<option value=''>선택</option>";
-			tag += "<option "+(this.inList[i].moveSeq === '0' ? "selected='selected'" : "")+" value=0>현금</option>";			
-			for(let j=0; j<this.bankList.length; j++){
-				this.inList[i].moveSeq === this.bankList[j].bankSeq ? selected = "selected='selected'" : selected = "";
-				tag += "<option "+selected+" value="+this.bankList[j].bankSeq+">"+this.bankList[j].bankName+"("+this.bankList[j].bankAccount+")</option>";
-			}				
-			tag += "</select></td>";
-			tag += "<td><input id='money_"+i+"' type='text' class='font10' value='"+this.inList[i].money+"'></td>";			
-			tag += "</tr>";		
-		}
+				tag += "<tr>";			
+				tag += "<td>"+(i+1)+"</td>";
+				tag += "<td><input id='date_"+i+"' type='date' class='form-control' value='"+this.inList[i].date+"'>";
+				tag += "<input id='time_"+i+"' type='time' class='form-control' value='"+this.inList[i].time+"'></td>";
+				tag += "<td><input id='position_"+i+"' type='text' class='form-control' value='"+this.inList[i].position+"'>";			
+				tag += "<input id='content_"+i+"' type='text' class='form-control' value='"+this.inList[i].content+"'></td>";			
+				tag += "<td><select id='purSeq_"+i+"' class='custom-select slt-font-size' onchange='recIn.sync(this); recIn.appSel(this,"+i+");'>";
+				tag += "<option value=''>선택</option>";
+				tag += "<option value=0>금액이동</option>";			
+				for(let j=0; j<this.purList.length; j++){
+					this.inList[i].purSeq === String(this.purList[j].purSeq) ? selected = "selected='selected'" : selected = "";
+					tag += "<option "+selected+" value="+this.purList[j].purSeq+">"+this.purList[j].purpose+"</option>";
+				}				
+				tag += "</select>";
+				tag += "<select id='purDtlSeq_"+i+"' class='custom-select slt-font-size'>";
+				tag += "<option value=''>선택</option>";
+				for(let j=0; j<this.purDtlList.length; j++){
+					if(this.inList[i].purSeq === String(this.purDtlList[j].purSeq)){
+						this.inList[i].purDtlSeq === String(this.purDtlList[j].purDtlSeq) ? selected = "selected='selected'" : selected = "";
+						tag += "<option "+selected+" value="+this.purDtlList[j].purDtlSeq+">"+this.purDtlList[j].purDetail+"</option>";
+					}
+				}	
+				tag += "</select></td>";
+				tag += "<td><select id='bankSeq_"+i+"' class='custom-select slt-font-size'>";
+				tag += "<option value=''>선택</option>";
+				tag += "<option "+(this.inList[i].bankSeq === '0' ? "selected='selected'" : "")+" value=0>현금</option>";			
+				for(let j=0; j<this.bankList.length; j++){
+					this.inList[i].bankSeq === this.bankList[j].bankSeq ? selected = "selected='selected'" : selected = "";
+					tag += "<option "+selected+" value="+this.bankList[j].bankSeq+">"+this.bankList[j].bankName+"("+this.bankList[j].bankAccount+")</option>";
+				}				
+				tag += "</select>";
+				tag += "<select id='moveSeq_"+i+"' class='custom-select slt-font-size' disabled='disabled'>";
+				tag += "<option value=''>선택</option>";
+				tag += "<option "+(this.inList[i].moveSeq === '0' ? "selected='selected'" : "")+" value=0>현금</option>";			
+				for(let j=0; j<this.bankList.length; j++){
+					this.inList[i].moveSeq === this.bankList[j].bankSeq ? selected = "selected='selected'" : selected = "";
+					tag += "<option "+selected+" value="+this.bankList[j].bankSeq+">"+this.bankList[j].bankName+"("+this.bankList[j].bankAccount+")</option>";
+				}				
+				tag += "</select></td>";
+				tag += "<td><input id='money_"+i+"' type='text' class='form-control'  value='"+this.inList[i].money+"'></td>";			
+				tag += "</tr>";		
+			}		
+			tag +="</table>";
 		
-		tag +="</table>";
+		}else{			
+			tag += "<table class='table table-striped table-sm table-bordered'>";		
+			for(let i=0; i<this.inList.length; i++){
+				
+				tag	+= "<tr>";
+				tag += "<th>no</th>";
+				tag += "<th style='width: 60px;'>입력사항</th>";
+				tag += "<th>입력내용</th>";
+				tag += "<tr>";
+				
+				tag += "<tr><td rowspan='6'>"+(i+1)+"</td>";
+				tag	+= "<tr><th>날짜*</th>";
+				tag += "<td><input id='date_"+i+"' type='date' class='form-control' value='"+this.inList[i].date+"'>";
+				tag += "<input id='time_"+i+"' type='time' class='form-control' value='"+this.inList[i].time+"'></td></tr>";
+				
+				tag	+= "<tr><th>위치/내용*</th>";
+				tag += "<td><input id='position_"+i+"' type='text' class='form-control' value='"+this.inList[i].position+"'>";			
+				tag += "<input id='content_"+i+"' type='text' class='form-control' value='"+this.inList[i].content+"'></td></tr>";
+				
+				tag	+= "<tr><th>목적*/상세목적</th>";
+				tag += "<td><select id='purSeq_"+i+"' class='custom-select slt-font-size' onchange='recIn.sync(this); recIn.appSel(this,"+i+");'>";
+				tag += "<option value=''>선택</option>";
+				tag += "<option value=0>금액이동</option>";			
+				for(let j=0; j<this.purList.length; j++){
+					this.inList[i].purSeq === String(this.purList[j].purSeq) ? selected = "selected='selected'" : selected = "";
+					tag += "<option "+selected+" value="+this.purList[j].purSeq+">"+this.purList[j].purpose+"</option>";
+				}				
+				tag += "</select>";
+				tag += "<select id='purDtlSeq_"+i+"' class='custom-select slt-font-size'>";
+				tag += "<option value=''>선택</option>";
+				for(let j=0; j<this.purDtlList.length; j++){
+					if(this.inList[i].purSeq === String(this.purDtlList[j].purSeq)){
+						this.inList[i].purDtlSeq === String(this.purDtlList[j].purDtlSeq) ? selected = "selected='selected'" : selected = "";
+						tag += "<option "+selected+" value="+this.purDtlList[j].purDtlSeq+">"+this.purDtlList[j].purDetail+"</option>";
+					}
+				}	
+				tag += "</select></td></tr>";
+				
+				tag	+= "<tr><th>사용수단* / (이동대상)</th>";
+				tag += "<td><select id='bankSeq_"+i+"' class='custom-select slt-font-size'>";
+				tag += "<option value=''>선택</option>";
+				tag += "<option "+(this.inList[i].bankSeq === '0' ? "selected='selected'" : "")+" value=0>현금</option>";			
+				for(let j=0; j<this.bankList.length; j++){
+					this.inList[i].bankSeq === this.bankList[j].bankSeq ? selected = "selected='selected'" : selected = "";
+					tag += "<option "+selected+" value="+this.bankList[j].bankSeq+">"+this.bankList[j].bankName+"("+this.bankList[j].bankAccount+")</option>";
+				}				
+				tag += "</select>";
+				tag += "<select id='moveSeq_"+i+"' class='custom-select slt-font-size' disabled='disabled'>";
+				tag += "<option value=''>선택</option>";
+				tag += "<option "+(this.inList[i].moveSeq === '0' ? "selected='selected'" : "")+" value=0>현금</option>";			
+				for(let j=0; j<this.bankList.length; j++){
+					this.inList[i].moveSeq === this.bankList[j].bankSeq ? selected = "selected='selected'" : selected = "";
+					tag += "<option "+selected+" value="+this.bankList[j].bankSeq+">"+this.bankList[j].bankName+"("+this.bankList[j].bankAccount+")</option>";
+				}				
+				tag += "</select></td></tr>";
+				tag	+= "<tr><th>수입 지출*</th>";
+				tag += "<td><input id='money_"+i+"' type='text' class='form-control'  value='"+this.inList[i].money+"'></td></tr>";				
+			}
+			tag +="</table>";
+			
+		}
 		$("#ledgerReList").append(tag);
 	},
 	appSel : function(target, idx){	

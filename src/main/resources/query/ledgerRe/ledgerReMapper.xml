@@ -15,9 +15,12 @@
 			bank_seq AS bankSeq,
 			bank_name AS bankName,
 			bank_account AS bankAccount,
-			bank_now_use_yn AS bankNowUseYn
+			bank_use_yn AS bankUseYn
 		FROM user_bank
 		WHERE user_seq = #{userSeq}
+		<if test="mode != 'select'">
+		AND bank_use_yn = 'Y'
+		</if>
 		ORDER BY bank_seq ASC
 	</select>
 	
@@ -69,7 +72,7 @@
 			IFNULL(purDtl.pur_detail,'') AS purDetail,
 			IFNULL(bank.bank_name, 'cash')	AS bankName,
 			IFNULL(bank.bank_account, 'cash')	AS bankAccount,
-			IFNULL(bank.bank_now_use_yn,'X') AS bankNowUseYn
+			IFNULL(bank.bank_use_yn,'X') AS bankUseYn
 		FROM money_record_re rec
 		LEFT OUTER JOIN purpose pur
 			ON rec.pur_seq = pur.pur_seq
@@ -224,13 +227,13 @@
 			user_seq,	
 			bank_name,
 			bank_account,
-			bank_now_use_yn			
+			bank_use_yn			
 		)VALUES
 		<foreach collection="list" item="item" separator="),(" open="(" close=")">
 			#{item.userSeq}, 
 			#{item.bankName},
 			#{item.bankAccount},		
-			#{item.bankNowUseYn}	
+			#{item.bankUseYn}	
 		</foreach>	
 	</insert>
 	
@@ -372,10 +375,10 @@
 			WHEN bank_seq = #{item.bankSeq} THEN #{item.bankAccount}
 		</foreach>		
 		END,
-		bank_now_use_yn = 
+		bank_use_yn = 
 		CASE		
 		<foreach collection="list" item="item">
-			WHEN bank_seq = #{item.bankSeq} THEN #{item.bankNowUseYn}
+			WHEN bank_seq = #{item.bankSeq} THEN #{item.bankUseYn}
 		</foreach>		
 		END
 		WHERE bank_seq IN 
