@@ -9,7 +9,7 @@
 <meta charset=UTF-8>
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>whiteHome</title>
-<link rel="stylesheet" href="${contextPath}/resources/css/white.css?ver=0.007" type="text/css" />
+<link rel="stylesheet" href="${contextPath}/resources/css/white.css?ver=0.008" type="text/css" />
 <link rel="stylesheet" href="${contextPath}/resources/css/btn.css" type="text/css" />
 <link rel="stylesheet" href="${contextPath}/resources/css/icon.css" type="text/css" />
 <link rel="stylesheet" href="${contextPath}/resources/css/bootstrap/bootstrap.css" type="text/css" />

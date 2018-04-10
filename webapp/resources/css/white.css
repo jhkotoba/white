@@ -34,6 +34,7 @@ td, th{height:38px; vertical-align: middle !important;}
 .update{color : blue !important;}
 .insert{color : green !important;}
 
+.scroll{overflow-y: auto;}
 .space{width:100%;}
 .blind{position:absolute !important; background:black; background : rgba(0, 0, 0, 0.2);  left:0 !important; top:0 !important; width: 100% !important; height: 100% !important; z-index:9999;}
 
@@ -90,10 +91,7 @@ td, th{height:38px; vertical-align: middle !important;}
 	font-size: 10px;
 }
 
-.scroll{
-    overflow-y: auto;
-    height:500px;
-}
+
 
 .paging > button{
 	border-color:#5CD1E5; border-width:1px; border-style:solid; border-radius:5px;

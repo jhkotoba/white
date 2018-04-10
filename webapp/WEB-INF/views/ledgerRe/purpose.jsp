@@ -66,23 +66,18 @@ $(document).ready(function(){
 
 </script>
 
-<div>
-	<span class='add'>■추가</span>
-	<span class='edit'>■수정</span>
-	<span class='redLine'>■삭제</span>
-</div>
-<br>
-
-<div class="left">
-	<button id="purAddBtn" class="btn_azure03">추가</button>
-	<button id="purSaveBtn" class="btn_azure03">목적 저장</button>
-	<button id="purCelBtn" class="btn_azure03">취소</button>
-	<div id="purList" class="scroll"></div>	
-</div>
-
-<div class="left">
-	<button id="purDtlAddBtn" class="btn_azure03">추가</button>
-	<button id="purDtlSaveBtn" class="btn_azure03">상세목적 저장</button>
-	<button id="purDtlCelBtn" class="btn_azure03">취소</button>
-	<div id="purDtlList" class="scroll"></div>
+<div class="article">
+	<div class="width-vmin left">
+		<button id="purAddBtn" class="btn_azure03">추가</button>
+		<button id="purSaveBtn" class="btn_azure03">목적 저장</button>
+		<button id="purCelBtn" class="btn_azure03">취소</button>
+		<div id="purList" class="scroll"></div>	
+	</div>
+	
+	<div class="width-vmin left">
+		<button id="purDtlAddBtn" class="btn_azure03">추가</button>
+		<button id="purDtlSaveBtn" class="btn_azure03">상세목적 저장</button>
+		<button id="purDtlCelBtn" class="btn_azure03">취소</button>
+		<div id="purDtlList" class="scroll"></div>
+	</div>
 </div>
