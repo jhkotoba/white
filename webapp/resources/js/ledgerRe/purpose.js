@@ -1,5 +1,5 @@
 /**
- * ledgerRePurpose.js
+ * purpose.js
  */
 
 $(document).ready(function(){
@@ -75,17 +75,17 @@ let pur = {
 		
 		let tag = "<table class='table table-striped table-sm table-bordered'>";
 			tag	+= "<tr>";			
-			tag += "<th>Del</th>";
-			tag	+= "<th>No</th>";
-			tag	+= "<th>purpose</th>";
-			tag	+= "<th>move</th>";
+			tag += "<th colspan='2'>순서</th>";
+			tag	+= "<th>목적내용</th>";
+			tag	+= "<th>순서설정</th>";
+			tag	+= "<th>상세보기</th>";
 			tag += "</tr>";
 		
 		let addAttr = {chked:"", cls:"", read:""};
 		this.lastIdx = 0;
 		
 		if(this.purList.length === 0){
-			tag += "<tr><td colspan='4'>no data</td></tr>";
+			tag += "<tr><td colspan='4'>목적 리스트가 없습니다.</td></tr>";
 			tag +="</table>";
 			$("#purList").append(tag);
 		}else{
@@ -94,9 +94,9 @@ let pur = {
 				if(this.purList[i].state === "insert"){
 					addAttr = {chked:"", cls:"add", read:""};			
 				}else if(this.purList[i].state === "delete"){				
-					addAttr = {chked:"checked='checked'", cls:"redLine", read:"readonly='readonly'"};
+					addAttr = {chked:"checked='checked'", cls:"delete", read:"readonly='readonly'"};
 				}else if(this.purList[i].state === "update"){
-					addAttr = {chked:"", cls:"edit", read:""};
+					addAttr = {chked:"", cls:"update", read:""};
 				}else{
 					addAttr = {chked:"", cls:"", read:""};
 				}
@@ -104,25 +104,25 @@ let pur = {
 				tag += "<tr>";			
 				tag += "<td><input id='purDel_"+i+"' type='checkbox' "+addAttr.chked+" title='삭제 체크박스'></td>";
 				tag += "<td>"+(i+1)+"</td>";
-				tag += "<td><input id='purpose_"+i+"' type='text' class='font10 "+addAttr.cls+"' "+addAttr.read+" value='"+this.purList[i].purpose
-					+"' onclick='purDtl.cancel().view("+this.purList[i].purSeq+",\""+this.purList[i].purpose+"\")'></td>";			
+				tag += "<td><input id='purpose_"+i+"' type='text' class='form-control "+addAttr.cls+"' "+addAttr.read+" value='"+this.purList[i].purpose+"' ></td>";			
 				if(this.purList[i].state !== "insert"){
-					tag += "<td><button id='purUp_"+i+"' class='btn_azure02'>위로</button><button id='purDown_"+i+"' class='btn_azure02'>아래</button></td>";
+					tag += "<td><button id='purUp_"+i+"' class='btn btn-secondary btn-sm btn-sm-fs'>위로</button><button id='purDown_"+i+"' class='btn btn-secondary btn-sm btn-sm-fs'>아래</button></td>";
 					this.lastIdx++;
 				}else{
-					tag += "<td><button id='purUp_"+i+"' class='btn_disabled02' disabled'>위로</button><button id='purDown_"+i+"' class='btn_disabled02' disabled>아래</button></td>";
+					tag += "<td><button id='purUp_"+i+"' class='btn btn-secondary btn-sm btn-sm-fs' disabled>위로</button><button id='purDown_"+i+"' class='btn btn-secondary btn-sm btn-sm-fs' disabled>아래</button></td>";
 				}
+				tag += "<td><button id='purDtlView_"+i+"' class='btn btn-secondary btn-sm btn-sm-fs' onclick='purDtl.cancel().view("+this.purList[i].purSeq+",\""+this.purList[i].purpose+"\");'>보기</button></td>";
 				tag += "</tr>";
 			}			
 			tag +="</table>";
 			$("#purList").append(tag);
 			
 			//게시물이 1개일경우 순서버튼 막기
-			$("#purList #purUp_0").removeClass().addClass("btn_disabled02").prop("disabled", true);
+			$("#purList #purUp_0").prop("disabled", true);
 			if(this.purList.length === 1){				
-				$("#purList #purDown_0").removeClass().addClass("btn_disabled02").prop("disabled", true);
+				$("#purList #purDown_0").prop("disabled", true);
 			}else{				
-				$("#purList #purDown_"+String(this.lastIdx-1)).removeClass().addClass("btn_disabled02").prop("disabled", true);
+				$("#purList #purDown_"+String(this.lastIdx-1)).prop("disabled", true);
 			}
 		}
 		
@@ -175,12 +175,12 @@ let pur = {
 			}			
 			
 			if( $(target).is(":checked") === true ){							
-				$("#purpose_"+idx).removeClass().addClass("redLine").prop("readOnly", true);				
+				$("#purpose_"+idx).removeClass("update").addClass("delete").prop("readOnly", true);				
 				this.purList[idx].state = "delete";
 			}else{				
-				$("#purpose_"+idx).removeClass().prop("readOnly", false);				
-				if(idx !== 0) $("#navUp_"+idx).removeClass().addClass("btn_azure02").prop("disabled", false);				
-				if(idx !== this.lastIdx-1) $("#navDown_"+idx).removeClass().addClass("btn_azure02").prop("disabled", false);
+				$("#purpose_"+idx).removeClass("delete").prop("readOnly", false);				
+				if(idx !== 0) $("#navUp_"+idx).prop("disabled", false);				
+				if(idx !== this.lastIdx-1) $("#navDown_"+idx).prop("disabled", false);
 				this.purList[idx].state = "select";
 			}
 			break;
@@ -203,10 +203,10 @@ let pur = {
 			case "update" :
 				if($(target).is(":checked") === false && obj.equals(idx) === false){
 					obj.purList[idx].state = "update";			
-					$("#purpose_"+idx).addClass("edit").prop("readOnly", false);					
+					$("#purpose_"+idx).addClass("update").prop("readOnly", false);					
 				}else{
 					$(target).is(":checked") === true ? obj.purList[idx].state = "delete" : obj.purList[idx].state = "select";					
-					$("#purpose_"+idx).removeClass();			
+					$("#purpose_"+idx).removeClass("update");			
 				}
 				break;
 			}
@@ -341,10 +341,9 @@ let purDtl = {
 	
 		let tag = "<table class='table table-striped table-sm table-bordered'>";
 			tag	+= "<tr>";
-			tag += "<th>Del</th>";
-			tag	+= "<th>No</th>";
-			tag	+= "<th>"+ (emptyCheck.isEmpty(this.purpose)===true?"":this.purpose) +" Detailed Purpose</th>";
-			tag	+= "<th>move</th>";
+			tag += "<th colspan='2'>순서</th>";
+			tag	+= "<th>"+ (emptyCheck.isEmpty(this.purpose)===true?"":"\""+this.purpose+"\"") +" 상세목적 내용</th>";
+			tag	+= "<th>순서설정</th>";
 			tag += "</tr>";
 		
 		this.lastIdx = 0;
@@ -362,9 +361,9 @@ let purDtl = {
 					if(this.purDtlList[i].state === "insert"){
 						addAttr = {chked:"", cls:"add", read:""};			
 					}else if(this.purDtlList[i].state === "delete"){				
-						addAttr = {chked:"checked='checked'", cls:"redLine", read:"readonly='readonly'"};
+						addAttr = {chked:"checked='checked'", cls:"delete", read:"readonly='readonly'"};
 					}else if(this.purDtlList[i].state === "update"){
-						addAttr = {chked:"", cls:"edit", read:""};
+						addAttr = {chked:"", cls:"update", read:""};
 					}else{
 						addAttr = {chked:"", cls:"", read:""};
 					}				
@@ -372,12 +371,12 @@ let purDtl = {
 					tag += "<tr>";		
 					tag += "<td><input id='purDtlDel_"+i+"' type='checkbox' "+addAttr.chked+" title='삭제 체크박스'></td>";
 					tag += "<td>"+this.purDtlList[i].purDtlOrder+"</td>";
-					tag += "<td><input id='purDetail_"+i+"' type='text' class='font10 "+addAttr.cls+"' value='"+this.purDtlList[i].purDetail+"' "+addAttr.read+"></td>";
+					tag += "<td><input id='purDetail_"+i+"' type='text' class='form-control"+addAttr.cls+"' value='"+this.purDtlList[i].purDetail+"' "+addAttr.read+"></td>";
 					if(this.purDtlList[i].state !== "insert"){
-						tag += "<td><button id='purDtlUp_"+i+"' class='btn_azure02'>위로</button><button id='purDtlDown_"+i+"' class='btn_azure02'>아래</button></td>";
+						tag += "<td><button id='purDtlUp_"+i+"' class='btn btn-secondary btn-sm btn-sm-fs'>위로</button><button id='purDtlDown_"+i+"' class='btn btn-secondary btn-sm btn-sm-fs'>아래</button></td>";
 						this.lastIdx++;
 					}else{
-						tag += "<td><button id='purDtlUp_"+i+"' class='btn_disabled02' disabled'>위로</button><button id='purDtlDown_"+i+"' class='btn_disabled02' disabled>아래</button></td>";
+						tag += "<td><button id='purDtlUp_"+i+"' class='btn btn-secondary btn-sm btn-sm-fs' disabled'>위로</button><button id='purDtlDown_"+i+"' class='btn btn-secondary btn-sm btn-sm-fs' disabled>아래</button></td>";
 					}
 					tag += "</tr>";					
 					purDtlView.cnt ++;
@@ -387,15 +386,16 @@ let purDtl = {
 			
 			//해당 게시물이 0개일경우 NoData
 			if(purDtlView.cnt === 0){
-				tag += "<tr><td colspan='4'>no data</td></tr>";				
+				tag += "<tr><td colspan='4'>상세목적 리스트가 없습니다.</td></tr>";				
 			}
 			tag +="</table>";
 			$("#purDtlList").append(tag);
-			$("#purDtlList #purDtlUp_"+purDtlView.idxList[0]).removeClass().addClass("btn_disabled02").prop("disabled", true);
-			$("#purDtlList #purDtlDown_"+purDtlView.idxList[purDtlView.idxList.length-1]).removeClass().addClass("btn_disabled02").prop("disabled", true);
+			$("#purDtlList #purDtlUp_"+purDtlView.idxList[0]).prop("disabled", true);
+			$("#purDtlList #purDtlDown_"+purDtlView.idxList[purDtlView.idxList.length-1]).prop("disabled", true);
 			this.firstIdx = purDtlView.idxList[0];
 		}
 		
+		document.getElementById('purDtlWidth').scrollIntoView(true);		
 		return this;
 	},
 	
@@ -469,12 +469,12 @@ let purDtl = {
 			}			
 			
 			if( $(target).is(":checked") === true ){							
-				$("#purDetail_"+idx).removeClass().addClass("redLine").prop("readOnly", true);
+				$("#purDetail_"+idx).removeClass("update").addClass("delete").prop("readOnly", true);
 				this.purDtlList[idx].state = "delete";
 			}else{				
 				$("#purDetail_"+idx).removeClass().prop("readOnly", false);
-				if(idx !== this.firstIdx) $("#purDtlUp_"+idx).removeClass().addClass("btn_azure02").prop("disabled", false);				
-				if(idx !== this.lastIdx-1) $("#purDtlDown_"+idx).removeClass().addClass("btn_azure02").prop("disabled", false);
+				if(idx !== this.firstIdx) $("#purDtlUp_"+idx).prop("disabled", false);				
+				if(idx !== this.lastIdx-1) $("#purDtlDown_"+idx).prop("disabled", false);
 				this.purDtlList[idx].state = "select";
 			}
 			break;
@@ -513,10 +513,10 @@ let purDtl = {
 			case "update" :
 				if($(target).is(":checked") === false && obj.equals(idx) === false){
 					obj.purDtlList[idx].state = "update";			
-					$("#purDetail_"+idx).addClass("edit").prop("readOnly", false);
+					$("#purDetail_"+idx).addClass("update").prop("readOnly", false);
 				}else{
 					$(target).is(":checked") === true ? obj.purDtlList[idx].state = "delete" : obj.purDtlList[idx].state = "select";					
-					$("#purDetail_"+idx).removeClass();			
+					$("#purDetail_"+idx).removeClass("update");			
 				}
 				break;
 			}

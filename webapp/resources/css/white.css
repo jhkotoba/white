@@ -2,18 +2,20 @@
 @media (max-width: 500px) {
 	span, table{font-size: 9px;}
 	input[type=date], input[type=time],input[type=text] {font-size: 9px;}
-	.slt-font-size{font-size: 9px;}
-	.span-font-size{font-size: 9px !important;}
-	.btn-font-size{font-size: 9px !important;}
+	.slt-fs{font-size: 9px;}
+	.span-fs{font-size: 9px !important;}
+	.btn-fs{font-size: 9px !important;}
+	.btn-sm-fs{font-size: 9px !important;}
 	
 }
 /*pc*/
 @media screen and (min-width: 501px) {
     span, table{font-size: 11px;}    
 	input[type=date], input[type=time],input[type=text] {font-size: 12px;}
-	.slt-font-size{font-size: 12px;}
-	.span-font-size{font-size: 16px !important;}
-	.btn-font-size{font-size: 16px !important;}
+	.slt-fs{font-size: 12px;}
+	.span-fs{font-size: 16px !important;}
+	.btn-fs{font-size: 16px !important;}
+	.btn-sm-fs{font-size: 10px !important;}
 
 }
 
@@ -38,6 +40,10 @@ td, th{height:38px; vertical-align: middle !important;}
 .space{width:100%;}
 .blind{position:absolute !important; background:black; background : rgba(0, 0, 0, 0.2);  left:0 !important; top:0 !important; width: 100% !important; height: 100% !important; z-index:9999;}
 
+
+/* icon */
+.caret-bottom-l4{background-image: url('../img/icon/caret-bottom-4x.png');}
+
 /* font */
 @font-face { font-family: 'GodoB'; src: url(../ttf/GodoB.ttf) format('truetype'); }
 .GodoB-20{font-family: 'GodoB', serif;font-size: 20px;}
@@ -49,6 +55,7 @@ td, th{height:38px; vertical-align: middle !important;}
 .NanumSquareRoundB-15{font-family: 'NanumSquareB', serif;font-size: 15px;}
 .NanumSquareRoundB-10{font-family: 'NanumSquareB', serif;font-size: 10px;}
 .NanumSquareRoundB{font-family: 'NanumSquareB', serif;}
+.nsrb{font-family: 'NanumSquareB', serif;}
 
 @font-face { font-family: 'NanumSquareRoundB'; src: url(../ttf/NanumSquareRoundB.ttf) format('truetype'); }
 .NanumSquareRoundB-20{font-family: 'NanumSquareRoundB', serif;font-size: 20px;}

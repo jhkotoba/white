@@ -171,9 +171,9 @@ $(document).ready(function(){
 
 <div id="ledgerMemo" class="article">
 	<div class="btn-group btn-group-sm width-full" role="group">
-		<button id="memoAddBt" type="button" class="btn btn-secondary btn-font-size NanumSquareRoundB">메모 추가</button>
-		<button id="memoSaveBt" type="button" class="btn btn-secondary btn-font-size NanumSquareRoundB">메모 저장</button>
-		<button id="memoCancelBt" type="button" class="btn btn-secondary btn-font-size NanumSquareRoundB">취소</button>
+		<button id="memoAddBt" type="button" class="btn btn-secondary btn-fs nsrb">메모 추가</button>
+		<button id="memoSaveBt" type="button" class="btn btn-secondary btn-fs nsrb">메모 저장</button>
+		<button id="memoCancelBt" type="button" class="btn btn-secondary btn-fs nsrb">취소</button>
 	</div>
 	
 	<div style="width: 100%; height: 10px;"></div>

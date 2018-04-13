@@ -60,8 +60,8 @@ let memo = {
 				tag +=	"<input id='memoContent_"+i+"' type='text' class='form-control' placeholder='메모를 입력하세요' aria-describedby='basic-addon2' style='color:green;' onkeyup='memo.edit("+i+")' value=''>";	
 			}
 			tag +=		"<div class='input-group-append'>";
-			tag +=			"<button class='btn btn-secondary btn-font-size NanumSquareRoundB' type='button' onclick='memo.del("+i+")'>삭제</button>";
-			tag +=			"<button class='btn btn-secondary btn-font-size NanumSquareRoundB' type='button' onclick='memo.delCan("+i+")'>취소</button>";
+			tag +=			"<button class='btn btn-secondary btn-fs nsrb' type='button' onclick='memo.del("+i+")'>삭제</button>";
+			tag +=			"<button class='btn btn-secondary btn-fs nsrb' type='button' onclick='memo.delCan("+i+")'>취소</button>";
 			tag +=		"</div></div>";			
 		}		
 		$("#memoList").append(tag);

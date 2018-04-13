@@ -122,7 +122,7 @@ $(document).ready(function(){
 	<div id="dateBox" class="left">
 		<div class="input-group">
 			<div class="input-group-prepend">
-				<span class="input-group-text span-font-size NanumSquareRoundB">날짜</span>
+				<span class="input-group-text span-fs nsrb">날짜</span>
 			</div>
 			<input id="startDate" value="" type="date" class="form-control">
 			<input id="endDate" value="" type="date" class="form-control">			
@@ -133,17 +133,17 @@ $(document).ready(function(){
 		<div class="input-group">
 						
 			<div class="input-group-prepend">
-				<span class="input-group-text span-font-size NanumSquareRoundB">조건</span>
+				<span class="input-group-text span-fs nsrb">조건</span>
 			</div>			
 		
-			<select id="srhPur" class="custom-select slt-font-size">
+			<select id="srhPur" class="custom-select slt-fs">
 				<option value=''>목적 검색</option>	
 				<option value='0'>금액이동</option>
 			</select>
-			<select id="srhPurDtl" class="custom-select slt-font-size">
+			<select id="srhPurDtl" class="custom-select slt-fs">
 				<option value=''>상세 검색</option>
 			</select>
-			<select id="srhBank" class="custom-select slt-font-size">
+			<select id="srhBank" class="custom-select slt-fs">
 				<option value=''>은행 검색</option>			
 				<option value='0'>현금</option>	
 			</select>			
@@ -151,10 +151,10 @@ $(document).ready(function(){
 	</div>
 	<div class="left">
 		<div class="btn-group" role="group">
-			<button id="recShBtn" type="button" class="btn btn-secondary btn-font-size NanumSquareRoundB">조회</button>
-			<button id="recEditBtn" type="button" style="display:none;" class="btn btn-secondary btn-font-size NanumSquareRoundB">편집</button>
-			<button id="recSaveBtn" type="button" style="display:none;" class="btn btn-secondary btn-font-size NanumSquareRoundB">저장</button>
-			<button id="recCelBtn" type="button" class="btn btn-secondary btn-font-size NanumSquareRoundB">초기화</button>
+			<button id="recShBtn" type="button" class="btn btn-secondary btn-fs nsrb">조회</button>
+			<button id="recEditBtn" type="button" style="display:none;" class="btn btn-secondary btn-fs nsrb">편집</button>
+			<button id="recSaveBtn" type="button" style="display:none;" class="btn btn-secondary btn-fs nsrb">저장</button>
+			<button id="recCelBtn" type="button" class="btn btn-secondary btn-fs nsrb">초기화</button>
 		</div>
 	</div>
 	

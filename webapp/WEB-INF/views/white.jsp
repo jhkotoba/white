@@ -9,7 +9,7 @@
 <meta charset=UTF-8>
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>whiteHome</title>
-<link rel="stylesheet" href="${contextPath}/resources/css/white.css?ver=0.008" type="text/css" />
+<link rel="stylesheet" href="${contextPath}/resources/css/white.css?ver=0.011" type="text/css" />
 <link rel="stylesheet" href="${contextPath}/resources/css/btn.css" type="text/css" />
 <link rel="stylesheet" href="${contextPath}/resources/css/icon.css" type="text/css" />
 <link rel="stylesheet" href="${contextPath}/resources/css/bootstrap/bootstrap.css" type="text/css" />
@@ -35,7 +35,7 @@
 		</c:if>				
 	</header>
 	
-	<nav class="navbar navbar-expand-lg navbar-dark bg-dark NanumSquareRoundB-20">
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark nsrb" style='font-size: 20px;'>
 		<a class="navbar-brand" href="${contextPath}/main">white</a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>

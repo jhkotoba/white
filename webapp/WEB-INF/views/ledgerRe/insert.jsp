@@ -40,11 +40,11 @@ $(document).ready(function(){6
 
 </script>
 <div class="article">
-	<h6 class="NanumSquareRoundB">Money registration</h6>
+	<h6 class="nsrb">Money registration</h6>
 	<div id="recIn" class="btn-group" role="group">	
-		<button id="recAddBtn" type="button" class="btn btn-secondary btn-font-size NanumSquareRoundB">추가</button>
-		<button id="recDelBtn" type="button" class="btn btn-secondary btn-font-size NanumSquareRoundB">삭제</button>
-		<button id="recInsertBtn" type="button" class="btn btn-secondary btn-font-size NanumSquareRoundB">저장</button>
+		<button id="recAddBtn" type="button" class="btn btn-secondary btn-fs nsrb">추가</button>
+		<button id="recDelBtn" type="button" class="btn btn-secondary btn-fs nsrb">삭제</button>
+		<button id="recInsertBtn" type="button" class="btn btn-secondary btn-fs nsrb">저장</button>
 	</div>
 	
 	<div class="space left"></div>

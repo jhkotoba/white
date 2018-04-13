@@ -3,9 +3,16 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="contextPath" value="<%=request.getContextPath()%>"></c:set>
 
-<script type="text/javascript" src="${contextPath}/resources/js/ledgerRe/purpose.js"></script>
+<script type="text/javascript" src="${contextPath}/resources/js/ledgerRe/purpose.js?ver=0.007"></script>
 <script type="text/javascript">
 $(document).ready(function(){
+	
+	if(window.innerWidth > 500){
+		$("#purWidth").addClass("left");
+		$("#purDtlWidth").addClass("left");		
+		//$("#purList").addClass("scroll default-height");
+		//$("#purDtlList").addClass("scroll default-height");
+	}	
 	
 	$.ajax({		
 		type: 'POST',
@@ -66,18 +73,24 @@ $(document).ready(function(){
 
 </script>
 
-<div class="article">
-	<div class="width-vmin left">
-		<button id="purAddBtn" class="btn_azure03">추가</button>
-		<button id="purSaveBtn" class="btn_azure03">목적 저장</button>
-		<button id="purCelBtn" class="btn_azure03">취소</button>
-		<div id="purList" class="scroll"></div>	
-	</div>
+<div class="article">	
+	<div id="purWidth" class="width-vmin">
+		<h6 class="nsrb">Purpose</h6>
+		<div class="btn-group" role="group">	
+			<button id="purAddBtn" type="button" class="btn btn-secondary btn-fs nsrb">추가</button>
+			<button id="purSaveBtn" type="button" class="btn btn-secondary btn-fs nsrb">목적 저장</button>
+			<button id="purCelBtn" type="button" class="btn btn-secondary btn-fs nsrb">취소</button>
+		</div>
+		<div id="purList"></div>	
+	</div>	
 	
-	<div class="width-vmin left">
-		<button id="purDtlAddBtn" class="btn_azure03">추가</button>
-		<button id="purDtlSaveBtn" class="btn_azure03">상세목적 저장</button>
-		<button id="purDtlCelBtn" class="btn_azure03">취소</button>
-		<div id="purDtlList" class="scroll"></div>
+	<div id="purDtlWidth" class="width-vmin">
+		<h6 class="nsrb">Detail Purpose</h6>
+		<div class="btn-group" role="group">	
+			<button id="purDtlAddBtn" type="button" class="btn btn-secondary btn-fs nsrb">추가</button>
+			<button id="purDtlSaveBtn" type="button" class="btn btn-secondary btn-fs nsrb">상세목적 저장</button>
+			<button id="purDtlCelBtn" type="button" class="btn btn-secondary btn-fs nsrb">취소</button>
+		</div>
+		<div id="purDtlList"></div>
 	</div>
 </div>
