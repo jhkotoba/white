@@ -92,7 +92,7 @@ let pur = {
 			for(let i=0; i<this.purList.length; i++){			
 				
 				if(this.purList[i].state === "insert"){
-					addAttr = {chked:"", cls:"add", read:""};			
+					addAttr = {chked:"", cls:"insert", read:""};			
 				}else if(this.purList[i].state === "delete"){				
 					addAttr = {chked:"checked='checked'", cls:"delete", read:"readonly='readonly'"};
 				}else if(this.purList[i].state === "update"){
@@ -359,7 +359,7 @@ let purDtl = {
 				if(this.purDtlList[i].purSeq === this.purSeq){
 					
 					if(this.purDtlList[i].state === "insert"){
-						addAttr = {chked:"", cls:"add", read:""};			
+						addAttr = {chked:"", cls:"insert", read:""};			
 					}else if(this.purDtlList[i].state === "delete"){				
 						addAttr = {chked:"checked='checked'", cls:"delete", read:"readonly='readonly'"};
 					}else if(this.purDtlList[i].state === "update"){
@@ -371,12 +371,12 @@ let purDtl = {
 					tag += "<tr>";		
 					tag += "<td><input id='purDtlDel_"+i+"' type='checkbox' "+addAttr.chked+" title='삭제 체크박스'></td>";
 					tag += "<td>"+this.purDtlList[i].purDtlOrder+"</td>";
-					tag += "<td><input id='purDetail_"+i+"' type='text' class='form-control"+addAttr.cls+"' value='"+this.purDtlList[i].purDetail+"' "+addAttr.read+"></td>";
+					tag += "<td><input id='purDetail_"+i+"' type='text' class='form-control "+addAttr.cls+"' value='"+this.purDtlList[i].purDetail+"' "+addAttr.read+"></td>";
 					if(this.purDtlList[i].state !== "insert"){
 						tag += "<td><button id='purDtlUp_"+i+"' class='btn btn-secondary btn-sm btn-sm-fs'>위로</button><button id='purDtlDown_"+i+"' class='btn btn-secondary btn-sm btn-sm-fs'>아래</button></td>";
 						this.lastIdx++;
 					}else{
-						tag += "<td><button id='purDtlUp_"+i+"' class='btn btn-secondary btn-sm btn-sm-fs' disabled'>위로</button><button id='purDtlDown_"+i+"' class='btn btn-secondary btn-sm btn-sm-fs' disabled>아래</button></td>";
+						tag += "<td><button id='purDtlUp_"+i+"' class='btn btn-secondary btn-sm btn-sm-fs' disabled>위로</button><button id='purDtlDown_"+i+"' class='btn btn-secondary btn-sm btn-sm-fs' disabled>아래</button></td>";
 					}
 					tag += "</tr>";					
 					purDtlView.cnt ++;
@@ -390,8 +390,14 @@ let purDtl = {
 			}
 			tag +="</table>";
 			$("#purDtlList").append(tag);
-			$("#purDtlList #purDtlUp_"+purDtlView.idxList[0]).prop("disabled", true);
-			$("#purDtlList #purDtlDown_"+purDtlView.idxList[purDtlView.idxList.length-1]).prop("disabled", true);
+			
+			if(this.purDtlClone.length === 1){
+				$("#purDtlList #purDtlUp_"+purDtlView.idxList[0]).prop("disabled", true);
+				$("#purDtlList #purDtlDown_"+purDtlView.idxList[0]).prop("disabled", true);
+			}else{
+				$("#purDtlList #purDtlUp_"+purDtlView.idxList[0]).prop("disabled", true);
+				$("#purDtlList #purDtlDown_"+purDtlView.idxList[purDtlView.idxList.length-1]).prop("disabled", true);
+			}			
 			this.firstIdx = purDtlView.idxList[0];
 		}
 		
@@ -472,7 +478,7 @@ let purDtl = {
 				$("#purDetail_"+idx).removeClass("update").addClass("delete").prop("readOnly", true);
 				this.purDtlList[idx].state = "delete";
 			}else{				
-				$("#purDetail_"+idx).removeClass().prop("readOnly", false);
+				$("#purDetail_"+idx).removeClass("delete").prop("readOnly", false);
 				if(idx !== this.firstIdx) $("#purDtlUp_"+idx).prop("disabled", false);				
 				if(idx !== this.lastIdx-1) $("#purDtlDown_"+idx).prop("disabled", false);
 				this.purDtlList[idx].state = "select";

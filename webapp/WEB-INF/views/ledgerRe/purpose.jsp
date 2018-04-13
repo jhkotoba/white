@@ -3,15 +3,13 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="contextPath" value="<%=request.getContextPath()%>"></c:set>
 
-<script type="text/javascript" src="${contextPath}/resources/js/ledgerRe/purpose.js?ver=0.007"></script>
+<script type="text/javascript" src="${contextPath}/resources/js/ledgerRe/purpose.js?ver=0.008"></script>
 <script type="text/javascript">
 $(document).ready(function(){
 	
 	if(window.innerWidth > 500){
 		$("#purWidth").addClass("left");
-		$("#purDtlWidth").addClass("left");		
-		//$("#purList").addClass("scroll default-height");
-		//$("#purDtlList").addClass("scroll default-height");
+		$("#purDtlWidth").addClass("left");
 	}	
 	
 	$.ajax({		
