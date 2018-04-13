@@ -46,7 +46,7 @@ let bank = {
 			tag += "<th colspan='2'>순서</th>";
 			tag	+= "<th>은행이름</th>";
 			tag	+= "<th>계좌번호</th>";
-			tag	+= "<th>사용여부</th>";
+			tag	+= "<th style='width: 20px;'>사용여부</th>";
 			tag += "</tr>";
 		
 		let addAttr = {chked:"", cls:"", read:""};
