@@ -1,5 +1,5 @@
 /**
- * ledgerReBank.js
+ * bank.js
  */
 
 $(document).ready(function(){
@@ -43,11 +43,10 @@ let bank = {
 		
 		let tag = "<table class='table table-striped table-sm'>";
 			tag	+= "<tr>";			
-			tag += "<th>Del</th>";
-			tag	+= "<th>No</th>";
-			tag	+= "<th>bankName</th>";
-			tag	+= "<th>bankAccount</th>";
-			tag	+= "<th>bankUse</th>";
+			tag += "<th colspan='2'>순서</th>";
+			tag	+= "<th>은행이름</th>";
+			tag	+= "<th>계좌번호</th>";
+			tag	+= "<th>사용여부</th>";
 			tag += "</tr>";
 		
 		let addAttr = {chked:"", cls:"", read:""};
@@ -56,23 +55,23 @@ let bank = {
 		for(let i=0; i<this.bankList.length; i++){			
 			
 			if(this.bankList[i].state === "insert"){
-				addAttr = {chked:"", cls:"add", read:""};			
+				addAttr = {chked:"", cls:"insert", read:""};			
 			}else if(this.bankList[i].state === "delete"){				
 				addAttr = {chked:"checked='checked'", cls:"redLine", read:"readonly='readonly'"};
 			}else if(this.bankList[i].state === "update"){
-				addAttr = {chked:"", cls:"edit", read:""};
+				addAttr = {chked:"", cls:"update", read:""};
 			}else{
 				addAttr = {chked:"", cls:"", read:""};
 			}
 			
-			this.bankList[i].bankUseYn === "Y" ? useCls = "btn_azure01" : useCls = "btn_pink01";
+			this.bankList[i].bankUseYn === "N" ? useCls = "btn-outline-danger" : useCls = "";
 						
 			tag += "<tr>";			
 			tag += "<td><input id='delete_"+i+"' type='checkbox' "+addAttr.chked+" title='삭제 체크박스'></td>";
 			tag += "<td>"+(i+1)+"</td>";
-			tag += "<td><input id='bankName_"+i+"' type='text' class='font10 "+addAttr.cls+"' "+addAttr.read+" value='"+this.bankList[i].bankName+"' ></td>";
-			tag += "<td><input id='bankAccount_"+i+"' type='text' class='font10 "+addAttr.cls+"' "+addAttr.read+" value='"+this.bankList[i].bankAccount+"'></td>";
-			tag += "<td><input id='bankUseYn_"+i+"' type='button' class='"+addAttr.cls+" "+useCls+"' "+addAttr.read+" value='"+this.bankList[i].bankUseYn+"'></td>";
+			tag += "<td><input id='bankName_"+i+"' type='text' class='form-control "+addAttr.cls+"' "+addAttr.read+" value='"+this.bankList[i].bankName+"' ></td>";
+			tag += "<td><input id='bankAccount_"+i+"' type='text' class='form-control "+addAttr.cls+"' "+addAttr.read+" value='"+this.bankList[i].bankAccount+"'></td>";
+			tag += "<td><input id='bankUseYn_"+i+"' type='button' class='btn btn-outline-secondary btn-sm btn-sm-fs "+useCls+"' "+addAttr.read+" value='"+this.bankList[i].bankUseYn+"'></td>";
 			tag += "</tr>";	
 		}			
 		tag +="</table>";
@@ -94,22 +93,22 @@ let bank = {
 			
 			if( $(target).is(":checked") === true ){				
 				this.bankList[idx].state = "delete";				
-				$("#bankName_"+idx).addClass("redLine").prop("readOnly", true);
-				$("#bankAccount_"+idx).addClass("redLine").prop("readOnly", true);				
-				$("#bankUseYn_"+idx).removeClass("btn_azure01").addClass("btn_disabled01").prop("disabled", true);
+				$("#bankName_"+idx).addClass("delete").prop("readOnly", true);
+				$("#bankAccount_"+idx).addClass("delete").prop("readOnly", true);				
+				$("#bankUseYn_"+idx).prop("disabled", true);
 			}else{
 				this.bankList[idx].state = "select";
-				$("#bankName_"+idx).removeClass("redLine").prop("readOnly", false);
-				$("#bankAccount_"+idx).removeClass("redLine").prop("readOnly", false);
-				$("#bankUseYn_"+idx).removeClass("btn_disabled01").addClass("btn_azure01").prop("disabled", false);
+				$("#bankName_"+idx).removeClass("delete").prop("readOnly", false);
+				$("#bankAccount_"+idx).removeClass("delete").prop("readOnly", false);
+				$("#bankUseYn_"+idx).prop("disabled", false);
 			}
 		}else if(name === "bankUseYn"){
 			if(target.value === "Y"){
 				this.bankList[idx][name] = "N";
-				$(target).val("N").removeClass("btn_azure01").addClass("btn_pink01");
+				$(target).val("N").addClass("btn-outline-danger");				
 			}else if(target.value === "N"){
 				this.bankList[idx][name] = "Y";
-				$(target).val("Y").removeClass("btn_pink01").addClass("btn_azure01");
+				$(target).val("Y").removeClass("btn-outline-danger");
 			}			
 		}else{			
 			this.bankList[idx][name] = String(target.value);
@@ -119,15 +118,13 @@ let bank = {
 		if(this.bankList[idx].state !== "insert"){
 			if($(target).is(":checked") === false && this.equals(idx) === false){
 				this.bankList[idx].state = "update";			
-				$("#bankName_"+idx).addClass("edit").prop("readOnly", false);
-				$("#bankAccount_"+idx).addClass("edit").prop("readOnly", false);
-				$("#bankUseYn_"+idx).addClass("edit").prop("disabled", false);
+				$("#bankName_"+idx).addClass("update").prop("readOnly", false);
+				$("#bankAccount_"+idx).addClass("update").prop("readOnly", false);
 			}else{
 				if(this.bankList[idx].state !== "insert"){
 					$(target).is(":checked") === true ? this.bankList[idx].state = "delete" : this.bankList[idx].state = "select";			
-					$("#bankName_"+idx).removeClass("edit");
-					$("#bankAccount_"+idx).removeClass("edit");
-					$("#bankUseYn_"+idx).removeClass("edit");
+					$("#bankName_"+idx).removeClass("update");
+					$("#bankAccount_"+idx).removeClass("update");
 				}
 			}
 		}

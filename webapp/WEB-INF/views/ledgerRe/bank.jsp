@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="contextPath" value="<%=request.getContextPath()%>"></c:set>
 
-<script type="text/javascript" src="${contextPath}/resources/js/ledgerRe/bank.js"></script>
+<script type="text/javascript" src="${contextPath}/resources/js/ledgerRe/bank.js?ver=0.007"></script>
 <script type="text/javascript">
 $(document).ready(function(){	
 	
@@ -43,16 +43,13 @@ $(document).ready(function(){
 });
 
 </script>	
-<div>
-	<span class='add'>■추가</span>
-	<span class='edit'>■수정</span>
-	<span class='redLine'>■삭제</span>
-</div>
-<br>
+<div class="article">
 
-<div class="left">
-	<button id="bankAddBtn" class="btn_azure03">추가</button>
-	<button id="bankSaveBtn" class="btn_azure03">저장</button>
-	<button id="bankCelBtn" class="btn_azure03">취소</button>
-	<div id="bankList" class="scroll"></div>
+	<h6 class="nsrb">Bank List</h6>
+	<div class="btn-group" role="group">	
+		<button id="bankAddBtn" type="button" class="btn btn-secondary btn-fs nsrb">추가</button>
+		<button id="bankSaveBtn" type="button" class="btn btn-secondary btn-fs nsrb">저장</button>
+		<button id="bankCelBtn" type="button" class="btn btn-secondary btn-fs nsrb">취소</button>
+	</div>
+	<div id="bankList"></div>
 </div>
