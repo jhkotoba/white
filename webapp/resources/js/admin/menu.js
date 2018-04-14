@@ -80,74 +80,138 @@ let nav = {
 		
 		$("#navList").empty();
 		
-		let tag = "<table class='table table-striped table-bordered'>";
-			tag	+= "<tr>";			
-			tag += "<th>Del</th>";
-			tag	+= "<th>No</th>";			
-			tag	+= "<th>name</th>";
-			tag	+= "<th>navUrl</th>";
-			tag	+= "<th>auth</th>";
-			tag += "<th>show</th>";
-			tag	+= "<th>move</th>";
-			tag += "</tr>";
+		let tag = "";
 		
-		this.lastIdx = 0;
-		let addAttr = {chked:"", cls:"", read:""};
-		
-		if(this.navList.length === 0){
-			tag += "<tr><td colspan='6'>no data</td></tr>";
-			tag +="</table>";
-			$("#navList").append(tag);
-		}else{
-			for(let i=0; i<this.navList.length; i++){			
-				
-				if(this.navList[i].state === "insert"){
-					addAttr = {chked:"", cls:"add", read:""};			
-				}else if(this.navList[i].state === "delete"){				
-					addAttr = {chked:"checked='checked'", cls:"redLine", read:"readonly='readonly'"};
-				}else if(this.navList[i].state === "update"){
-					addAttr = {chked:"", cls:"edit", read:""};
-				}else{
-					addAttr = {chked:"", cls:"", read:""};
-				}
-				
-				this.navList[i].navShowYn === "Y" ? useCls = "btn_azure01" : useCls = "btn_pink01";
-				
-				tag += "<tr>";			
-				tag += "<td><input id='navDel_"+i+"' type='checkbox' "+addAttr.chked+" title='삭제 체크박스'></td>";
-				tag += "<td>"+(i+1)+"</td>";
-				tag += "<td><input id='navNm_"+i+"' type='text' class='"+addAttr.cls+"' "+addAttr.read+" value='"+this.navList[i].navNm
-					+"' onclick='side.cancel().view("+this.navList[i].navSeq+",\""+this.navList[i].navUrl+"\")'></td>";
-				tag += "<td><input id='navUrl_"+i+"' type='text' class=' "+addAttr.cls+"' "+addAttr.read+" value='"+this.navList[i].navUrl
-					+"' onclick='side.cancel().view("+this.navList[i].navSeq+",\""+this.navList[i].navUrl+"\")'></td>";
-				tag += "<td><select id='navAuthNmSeq_"+i+"' class='"+addAttr.cls+"'>";				
-				tag += "<option value=''>선택</option>";			
-				for(let j=0; j<this.authList.length; j++){
-					String(this.navList[i].navAuthNmSeq) === String(this.authList[j].authNmSeq) ? selected = "selected='selected'" : selected = "";
-					tag += "<option "+selected+" value='"+this.authList[j].authNmSeq+"'>"+this.authList[j].authNm+"</option>";
-				}
-				tag += "<td><input id='navShowYn_"+i+"' type='button' class='"+addAttr.cls+" "+useCls+"' "+addAttr.read+" value='"+this.navList[i].navShowYn+"'></td>";
-				tag += "</select></td>";
-				if(this.navList[i].state !== "insert"){
-					tag += "<td><button id='navUp_"+i+"' class='btn_azure02'>위로</button><button id='navDown_"+i+"' class='btn_azure02'>아래</button></td>";
-					this.lastIdx++;
-				}else{
-					tag += "<td><button id='navUp_"+i+"' class='btn_disabled02' disabled'>위로</button><button id='navDown_"+i+"' class='btn_disabled02' disabled>아래</button></td>";
-				}
-				
-				tag += "</tr>";	
-			}			
-			tag +="</table>";
-			$("#navList").append(tag);
+		if(window.innerWidth > 500){
 			
-			//게시물이 1개일경우 순서버튼 막기
-			$("#navList #navUp_0").removeClass().addClass("btn_disabled02").prop("disabled", true);
-			if(this.navList.length === 1){				
-				$("#navList #navDown_0").removeClass().addClass("btn_disabled02").prop("disabled", true);
-			}else{				
-				$("#navList #navDown_"+String(this.lastIdx-1)).removeClass().addClass("btn_disabled02").prop("disabled", true);
+			tag += "<table class='table table-striped table-bordered'>";
+			tag	+= "<tr>";			
+			tag += "<th colspan='2'>순서</th>";		
+			tag	+= "<th>네비메뉴 이름</th>";
+			tag	+= "<th>URL</th>";
+			tag	+= "<th>권한</th>";
+			tag += "<th>표시</th>";
+			tag	+= "<th>순서설정</th>";
+			tag	+= "<th>상세보기</th>";
+			tag += "</tr>";
+			
+			this.lastIdx = 0;
+			let addAttr = {chked:"", cls:"", read:""};
+			
+			if(this.navList.length === 0){
+				tag += "<tr><td colspan='6'>메뉴 리스트가 없습니다.</td></tr>";
+				tag +="</table>";
+				$("#navList").append(tag);
+			}else{
+				for(let i=0; i<this.navList.length; i++){			
+					
+					if(this.navList[i].state === "insert"){
+						addAttr = {chked:"", cls:"insert", read:""};			
+					}else if(this.navList[i].state === "delete"){				
+						addAttr = {chked:"checked='checked'", cls:"delete", read:"readonly='readonly'"};
+					}else if(this.navList[i].state === "update"){
+						addAttr = {chked:"", cls:"update", read:""};
+					}else{
+						addAttr = {chked:"", cls:"", read:""};
+					}
+									
+					this.navList[i].navShowYn === "N" ? useCls = "btn-outline-danger" : useCls = "";
+					
+					tag += "<tr>";			
+					tag += "<td><input id='navDel_"+i+"' type='checkbox' "+addAttr.chked+" title='삭제 체크박스'></td>";
+					tag += "<td>"+(i+1)+"</td>";
+					tag += "<td><input id='navNm_"+i+"' type='text' class='form-control "+addAttr.cls+"' "+addAttr.read+" value='"+this.navList[i].navNm+"'></td>";
+					tag += "<td><input id='navUrl_"+i+"' type='text' class='form-control "+addAttr.cls+"' "+addAttr.read+" value='"+this.navList[i].navUrl+"'></td>";
+					tag += "<td><select id='navAuthNmSeq_"+i+"' class='custom-select slt-fs"+addAttr.cls+"'>";				
+					tag += "<option value=''>선택</option>";			
+					for(let j=0; j<this.authList.length; j++){
+						String(this.navList[i].navAuthNmSeq) === String(this.authList[j].authNmSeq) ? selected = "selected='selected'" : selected = "";
+						tag += "<option "+selected+" value='"+this.authList[j].authNmSeq+"'>"+this.authList[j].authNm+"</option>";
+					}
+					tag += "</select></td>";
+					tag += "<td><input id='navShowYn_"+i+"' type='button' class='btn btn-outline-secondary btn-sm btn-sm-fs "+useCls+"' "+addAttr.read+" value='"+this.navList[i].navShowYn+"'></td>";
+					if(this.navList[i].state !== "insert"){
+						tag += "<td><button id='navUp_"+i+"' class='btn btn-secondary btn-sm btn-sm-fs'>위로</button><button id='navDown_"+i+"' class='btn btn-secondary btn-sm btn-sm-fs'>아래</button></td>";
+						this.lastIdx++;
+					}else{
+						tag += "<td><button id='navUp_"+i+"' class='btn btn-secondary btn-sm btn-sm-fs' disabled>위로</button><button id='navDown_"+i+"' class='btn btn-secondary btn-sm btn-sm-fs' disabled>아래</button></td>";
+					}
+					tag += "<td><button class='btn btn-secondary btn-sm btn-sm-fs' onclick='side.cancel().view("+this.navList[i].navSeq+",\""+this.navList[i].navUrl+"\")'>보기</button></td>";
+					tag += "</tr>";	
+				}			
+				tag +="</table>";
+				$("#navList").append(tag);
+				
+				//게시물이 1개일경우 순서버튼 막기
+				$("#navList #navUp_0").prop("disabled", true);
+				if(this.navList.length === 1){				
+					$("#navList #navDown_0").prop("disabled", true);
+				}else{				
+					$("#navList #navDown_"+String(this.lastIdx-1)).prop("disabled", true);
+				}
 			}
-		}		
+		}else{		
+			
+			tag += "<table class='table table-striped table-sm table-bordered'>";
+			
+			this.lastIdx = 0;
+			let addAttr = {chked:"", cls:"", read:""};
+			
+			if(this.navList.length === 0){
+				tag += "<tr><td colspan='2'>메뉴 리스트가 없습니다.</td></tr>";
+				tag +="</table>";
+				$("#navList").append(tag);
+			}else{
+				for(let i=0; i<this.navList.length; i++){			
+					
+					if(this.navList[i].state === "insert"){
+						addAttr = {chked:"", cls:"insert", read:""};			
+					}else if(this.navList[i].state === "delete"){				
+						addAttr = {chked:"checked='checked'", cls:"delete", read:"readonly='readonly'"};
+					}else if(this.navList[i].state === "update"){
+						addAttr = {chked:"", cls:"update", read:""};
+					}else{
+						addAttr = {chked:"", cls:"", read:""};
+					}
+									
+					this.navList[i].navShowYn === "N" ? useCls = "btn-outline-danger" : useCls = "";						
+				
+					tag += "<tr><th colspan='2'>순서</th>";					
+					tag += "<th style='width: 60px;'>입력사항</th>";
+					tag += "<th>입력내용</th>";
+					tag += "<tr>";
+										
+					tag += "<tr><td rowspan='6'><input id='navDel_"+i+"' type='checkbox' "+addAttr.chked+" title='삭제 체크박스'></td>";
+					tag += "<td rowspan='6'>"+(i+1)+"</td></tr>";
+					
+					tag += "<tr><th>네비메뉴 이름</th>";
+					tag += "<td><input id='navNm_"+i+"' type='text' class='form-control "+addAttr.cls+"' "+addAttr.read+" value='"+this.navList[i].navNm+"'></td></tr>";
+					
+					tag	+= "<tr><th>URL</th>";
+					tag += "<td><input id='navUrl_"+i+"' type='text' class='form-control "+addAttr.cls+"' "+addAttr.read+" value='"+this.navList[i].navUrl+"'></td></tr>";
+					
+					tag	+= "<tr><th>권한</th>";
+					tag += "<td><select id='navAuthNmSeq_"+i+"' class='custom-select slt-fs"+addAttr.cls+"'>";				
+					tag += "<option value=''>선택</option>";			
+					for(let j=0; j<this.authList.length; j++){
+						String(this.navList[i].navAuthNmSeq) === String(this.authList[j].authNmSeq) ? selected = "selected='selected'" : selected = "";
+						tag += "<option "+selected+" value='"+this.authList[j].authNmSeq+"'>"+this.authList[j].authNm+"</option>";
+					}
+					tag += "</select></td></tr>";
+					
+					tag += "<tr><th>표시</th>";
+					tag += "<td><input id='navShowYn_"+i+"' type='button' class='btn btn-outline-secondary btn-sm btn-sm-fs "+useCls+"' "+addAttr.read+" value='"+this.navList[i].navShowYn+"'></td></tr>";
+					
+					tag	+= "<tr><th>상세보기</th>";
+					tag += "<td><button class='btn btn-secondary btn-sm btn-sm-fs' onclick='side.cancel().view("+this.navList[i].navSeq+",\""+this.navList[i].navUrl+"\")'>보기</button></td></tr>";
+					
+					tag += "<tr style='height:2px;'></tr>";
+					tag += "<tr style='height:2px;'></tr>";
+				}			
+				tag +="</table>";
+				$("#navList").append(tag);
+			}
+		}
 		return this;
 	},
 	
@@ -197,26 +261,28 @@ let nav = {
 			}			
 			
 			if( $(target).is(":checked") === true ){							
-				$("#navNm_"+idx).removeClass().addClass("redLine").prop("readOnly", true);
-				$("#navUrl_"+idx).removeClass().addClass("redLine").prop("readOnly", true);
-				$("#navAuthNmSeq_"+idx).removeClass().addClass("redLine").prop("disabled", true);
+				$("#navNm_"+idx).removeClass("update").addClass("delete").prop("readOnly", true);
+				$("#navUrl_"+idx).removeClass("update").addClass("delete").prop("readOnly", true);
+				$("#navAuthNmSeq_"+idx).removeClass("update").addClass("delete").prop("disabled", true);
+				$("#navShowYn_"+idx).prop("disabled", true);
 				this.navList[idx].state = "delete";
 			}else{				
-				$("#navNm_"+idx).removeClass().prop("readOnly", false);
-				$("#navUrl_"+idx).removeClass().prop("readOnly", false);
-				$("#navAuthNmSeq_"+idx).removeClass().prop("disabled", false);
-				if(idx !== 0) $("#navUp_"+idx).removeClass().addClass("btn_azure02").prop("disabled", false);			
-				if(idx !== this.lastIdx-1) $("#navDown_"+idx).removeClass().addClass("btn_azure02").prop("disabled", false);
+				$("#navNm_"+idx).removeClass("delete").prop("readOnly", false);
+				$("#navUrl_"+idx).removeClass("delete").prop("readOnly", false);
+				$("#navAuthNmSeq_"+idx).removeClass("delete").prop("disabled", false);
+				$("#navShowYn_"+idx).prop("disabled", false);
+				if(idx !== 0) $("#navUp_"+idx).prop("disabled", false);			
+				if(idx !== this.lastIdx-1) $("#navDown_"+idx).prop("disabled", false);
 				this.navList[idx].state = "select";
 			}
 			break;
 		case "navShowYn" :
 			if(target.value === "Y"){
 				this.navList[idx][name] = "N";
-				$(target).val("N").removeClass().addClass("btn_pink01");
+				$(target).val("N").addClass("btn-outline-danger");
 			}else if(target.value === "N"){
 				this.navList[idx][name] = "Y";
-				$(target).val("Y").removeClass().addClass("btn_azure01");
+				$(target).val("Y").removeClass("btn-outline-danger");
 			}
 			break;			
 		case "navUp" :
@@ -238,14 +304,14 @@ let nav = {
 			case "update" :
 				if($(target).is(":checked") === false && obj.equals(idx) === false){
 					obj.navList[idx].state = "update";			
-					$("#navNm_"+idx).addClass("edit").prop("readOnly", false);
-					$("#navUrl_"+idx).addClass("edit").prop("readOnly", false);
-					$("#navAuthNmSeq_"+idx).addClass("edit").prop("readOnly", false);
+					$("#navNm_"+idx).addClass("update").prop("readOnly", false);
+					$("#navUrl_"+idx).addClass("update").prop("readOnly", false);
+					$("#navAuthNmSeq_"+idx).addClass("update").prop("readOnly", false);
 				}else{
 					$(target).is(":checked") === true ? obj.navList[idx].state = "delete" : obj.navList[idx].state = "select";					
-					$("#navNm_"+idx).removeClass();
-					$("#navUrl_"+idx).removeClass();
-					$("#navAuthNmSeq_"+idx).removeClass();					
+					$("#navNm_"+idx).removeClass("update");
+					$("#navUrl_"+idx).removeClass("update");
+					$("#navAuthNmSeq_"+idx).removeClass("update");					
 				}
 				break;
 			}
@@ -386,81 +452,185 @@ let side = {
 			this.navUrl = navUrl;
 		}
 	
-		$("#sideList").empty();
+		$("#sideList").empty();		
+		let tag = "";
+		
+		if(window.innerWidth > 500){
 	
-		let tag = "<table class='table table-striped table-sm table-bordered'>";
+			tag += "<table class='table table-striped table-sm table-bordered'>";
 			tag	+= "<tr>";			
-			tag += "<th>Del</th>";
-			tag	+= "<th>No</th>";			
-			tag	+= "<th>name</th>";
-			tag	+= "<th>sideUrl</th>";
-			tag	+= "<th>auth</th>";
-			tag	+= "<th>show</th>";
-			tag	+= "<th>move</th>";
+			tag += "<th colspan='2'>순서</th>";		
+			tag	+= "<th>하단메뉴 이름</th>";
+			tag	+= "<th>URL</th>";
+			tag	+= "<th>권한</th>";
+			tag	+= "<th>표시</th>";
+			tag	+= "<th>순서설정</th>";
 			tag += "</tr>";
-		
-		this.lastIdx = 0;
-		let sideView = {cnt:0, idxList : new Array()};
-		let addAttr = {chked:"", cls:"", read:""};
-		
-		if(this.sideList.length === 0){
-			tag += "<tr><td colspan='7'>no data</td></tr>";
-			tag +="</table>";
-			$("#sideList").append(tag);
-		}else{
-			for(let i=0; i<this.sideList.length; i++){
-				
-				//navSeq 일치하는 것만 view하는 조건문
-				if(this.sideList[i].navSeq === this.navSeq){ 
-				
-					if(this.sideList[i].state === "insert"){
-						addAttr = {chked:"", cls:"add", read:""};			
-					}else if(this.sideList[i].state === "delete"){				
-						addAttr = {chked:"checked='checked'", cls:"redLine", read:"readonly='readonly'"};
-					}else if(this.sideList[i].state === "update"){
-						addAttr = {chked:"", cls:"edit", read:""};
-					}else{
-						addAttr = {chked:"", cls:"", read:""};
-					}
-					
-					this.sideList[i].sideShowYn === "Y" ? useCls = "btn_azure01" : useCls = "btn_pink01";
-					
-					tag += "<tr>";			
-					tag += "<td><input id='sideDel_"+i+"' type='checkbox' "+addAttr.chked+" title='삭제 체크박스'></td>";
-					tag += "<td>"+(i+1)+"</td>";
-					tag += "<td><input id='sideNm_"+i+"' type='text' class='"+addAttr.cls+"' "+addAttr.read+" value='"+this.sideList[i].sideNm+"'></td>";					
-					tag += "<td>"+this.navUrl+"<input id='sideUrl_"+i+"' type='text' class=' "+addAttr.cls+"' "+addAttr.read+" value='"+this.sideList[i].sideUrl+"'></td>";
-					tag += "<td><select id='sideAuthNmSeq_"+i+"' class='"+addAttr.cls+"'>";
-					tag += "<option value=''>선택</option>";			
-					for(let j=0; j<this.authList.length; j++){
-						String(this.sideList[i].sideAuthNmSeq) === String(this.authList[j].authNmSeq) ? selected = "selected='selected'" : selected = "";
-						tag += "<option "+selected+" value='"+this.authList[j].authNmSeq+"'>"+this.authList[j].authNm+"</option>";
-					}	
-					tag += "</select></td>";
-					tag += "<td><input id='sideShowYn_"+i+"' type='button' class='"+addAttr.cls+" "+useCls+"' "+addAttr.read+" value='"+this.sideList[i].sideShowYn+"'></td>";
-					if(this.sideList[i].state !== "insert"){
-						tag += "<td><button id='sideUp_"+i+"' class='btn_azure02'>위로</button><button id='sideDown_"+i+"' class='btn_azure02'>아래</button></td>";
-						this.lastIdx++;
-					}else{
-						tag += "<td><button id='sideUp_"+i+"' class='btn_disabled02' disabled'>위로</button><button id='sideDown_"+i+"' class='btn_disabled02' disabled>아래</button></td>";
-					}
-					
-					tag += "</tr>";	
-					sideView.cnt ++;
-					sideView.idxList.push(i);
-				}
-			}
 			
-			//해당 게시물이 0개일경우 NoData
-			if(sideView.cnt === 0){
-				tag += "<tr><td colspan='7'>no data</td></tr>";				
+			this.lastIdx = 0;
+			let sideView = {cnt:0, idxList : new Array()};
+			let addAttr = {chked:"", cls:"", read:""};
+			
+			if(this.sideList.length === 0){
+				tag += "<tr><td colspan='7'>no data</td></tr>";
+				tag +="</table>";
+				$("#sideList").append(tag);
+			}else{
+				for(let i=0; i<this.sideList.length; i++){
+					
+					//navSeq 일치하는 것만 view하는 조건문
+					if(this.sideList[i].navSeq === this.navSeq){ 
+					
+						if(this.sideList[i].state === "insert"){
+							addAttr = {chked:"", cls:"insert", read:""};			
+						}else if(this.sideList[i].state === "delete"){				
+							addAttr = {chked:"checked='checked'", cls:"delete", read:"readonly='readonly'"};
+						}else if(this.sideList[i].state === "update"){
+							addAttr = {chked:"", cls:"update", read:""};
+						}else{
+							addAttr = {chked:"", cls:"", read:""};
+						}
+						
+						this.sideList[i].sideShowYn === "N" ? useCls = "btn-outline-danger" : useCls = "";
+						
+						tag += "<tr>";			
+						tag += "<td><input id='sideDel_"+i+"' type='checkbox' "+addAttr.chked+" title='삭제 체크박스'></td>";
+						tag += "<td>"+(i+1)+"</td>";
+						tag += "<td><input id='sideNm_"+i+"' type='text' class='form-control "+addAttr.cls+"' "+addAttr.read+" value='"+this.sideList[i].sideNm+"'></td>";					
+						tag += "<td><div class='input-group'><div class='input-group-prepend'><span class='input-group-text span-fs'>";
+						tag += this.navUrl+"</span></div><input id='sideUrl_"+i+"' type='text' class='form-control "+addAttr.cls+"' "+addAttr.read+" value='"+this.sideList[i].sideUrl+"'></div></td>";
+						tag += "<td><select id='sideAuthNmSeq_"+i+"' class='custom-select "+addAttr.cls+"'>";
+						tag += "<option value=''>선택</option>";			
+						for(let j=0; j<this.authList.length; j++){
+							String(this.sideList[i].sideAuthNmSeq) === String(this.authList[j].authNmSeq) ? selected = "selected='selected'" : selected = "";
+							tag += "<option "+selected+" value='"+this.authList[j].authNmSeq+"'>"+this.authList[j].authNm+"</option>";
+						}	
+						tag += "</select></td>";
+						tag += "<td><input id='sideShowYn_"+i+"' type='button' class='btn btn-outline-secondary btn-sm btn-sm-fs "+useCls+"' "+addAttr.read+" value='"+this.sideList[i].sideShowYn+"'></td>";
+						if(this.sideList[i].state !== "insert"){
+							tag += "<td><button id='sideUp_"+i+"' class='btn btn-secondary btn-sm btn-sm-fs'>위로</button><button id='sideDown_"+i+"' class='btn btn-secondary btn-sm btn-sm-fs'>아래</button></td>";
+							this.lastIdx++;
+						}else{
+							tag += "<td><button id='sideUp_"+i+"' class='btn btn-secondary btn-sm btn-sm-fs' disabled>위로</button><button id='sideDown_"+i+"' class='btn btn-secondary btn-sm btn-sm-fs' disabled>아래</button></td>";
+						}
+						
+						tag += "</tr>";						
+						sideView.cnt ++;
+						sideView.idxList.push(i);
+					}
+				}
+				
+				//해당 게시물이 0개일경우 NoData
+				if(sideView.cnt === 0){
+					tag += "<tr><td colspan='7'>하단메뉴 리스트가 없습니다.</td></tr>";				
+				}
+				tag +="</table>";
+				$("#sideList").append(tag);
+				if(this.sideClone.length === 1){
+					$("#sideList #sideUp_"+sideView.idxList[0]).prop("disabled", true);
+					$("#sideList #sideDown_"+sideView.idxList[0]).prop("disabled", true);
+				}else{
+					$("#sideList #sideUp_"+sideView.idxList[0]).prop("disabled", true);
+					$("#sideList #sideDown_"+sideView.idxList[sideView.idxList.length-1]).prop("disabled", true);
+				}				
+				this.firstIdx = sideView.idxList[0];
 			}
-			tag +="</table>";
-			$("#sideList").append(tag);
-			$("#sideList #sideUp_"+sideView.idxList[0]).removeClass().addClass("btn_disabled02").prop("disabled", true);
-			$("#sideList #sideDown_"+sideView.idxList[sideView.idxList.length-1]).removeClass().addClass("btn_disabled02").prop("disabled", true);
-			this.firstIdx = sideView.idxList[0];
+		}else{
+			tag += "<table class='table table-striped table-sm table-bordered'>";			
+			
+			this.lastIdx = 0;
+			let sideView = {cnt:0, idxList : new Array()};
+			let addAttr = {chked:"", cls:"", read:""};
+			
+			if(this.sideList.length === 0){
+				tag += "<tr><td colspan='2'>no data</td></tr>";
+				tag +="</table>";
+				$("#sideList").append(tag);
+			}else{
+				for(let i=0; i<this.sideList.length; i++){
+					
+					//navSeq 일치하는 것만 view하는 조건문
+					if(this.sideList[i].navSeq === this.navSeq){ 
+					
+						if(this.sideList[i].state === "insert"){
+							addAttr = {chked:"", cls:"insert", read:""};			
+						}else if(this.sideList[i].state === "delete"){				
+							addAttr = {chked:"checked='checked'", cls:"delete", read:"readonly='readonly'"};
+						}else if(this.sideList[i].state === "update"){
+							addAttr = {chked:"", cls:"update", read:""};
+						}else{
+							addAttr = {chked:"", cls:"", read:""};
+						}
+						
+						this.sideList[i].sideShowYn === "N" ? useCls = "btn-outline-danger" : useCls = "";
+						
+						tag += "<tr><th colspan='2'>순서</th>";					
+						tag += "<th style='width: 60px;'>입력사항</th>";
+						tag += "<th>입력내용</th>";
+						tag += "<tr>";
+						
+						tag += "<tr><td rowspan='5'><input id='sideDel_"+i+"' type='checkbox' "+addAttr.chked+" title='삭제 체크박스'></td>";
+						tag += "<td rowspan='5'>"+(i+1)+"</td></tr>";
+						
+						tag	+= "<tr><th>하단메뉴 이름</th>";
+						tag += "<td><input id='sideNm_"+i+"' type='text' class='form-control "+addAttr.cls+"' "+addAttr.read+" value='"+this.sideList[i].sideNm+"'></td></tr>";
+						
+						tag	+= "<tr><th>URL</th>";
+						tag += "<td><div class='input-group'><div class='input-group-prepend'><span class='input-group-text span-fs'>";
+						tag += this.navUrl+"</span></div><input id='sideUrl_"+i+"' type='text' class='form-control "+addAttr.cls+"' "+addAttr.read+" value='"+this.sideList[i].sideUrl+"'></div></td></tr>";
+						
+						tag	+= "<tr><th>권한</th>";
+						tag += "<td><select id='sideAuthNmSeq_"+i+"' class='custom-select "+addAttr.cls+"'>";
+						tag += "<option value=''>선택</option>";			
+						for(let j=0; j<this.authList.length; j++){
+							String(this.sideList[i].sideAuthNmSeq) === String(this.authList[j].authNmSeq) ? selected = "selected='selected'" : selected = "";
+							tag += "<option "+selected+" value='"+this.authList[j].authNmSeq+"'>"+this.authList[j].authNm+"</option>";
+						}	
+						tag += "</select></td></tr>";
+						
+						tag	+= "<tr><th>표시</th>";
+						tag += "<td><input id='sideShowYn_"+i+"' type='button' class='btn btn-outline-secondary btn-sm btn-sm-fs "+useCls+"' "+addAttr.read+" value='"+this.sideList[i].sideShowYn+"'></td></tr>";
+						tag += "<tr style='height:5px;'></tr>";
+						
+						/*tag += "<tr>";			
+						tag += "<td><input id='sideDel_"+i+"' type='checkbox' "+addAttr.chked+" title='삭제 체크박스'></td>";
+						tag += "<td>"+(i+1)+"</td>";
+						tag += "<td><input id='sideNm_"+i+"' type='text' class='form-control "+addAttr.cls+"' "+addAttr.read+" value='"+this.sideList[i].sideNm+"'></td>";					
+						tag += "<td><div class='input-group'><div class='input-group-prepend'><span class='input-group-text'>";
+						tag += this.navUrl+"</span></div><input id='sideUrl_"+i+"' type='text' class='form-control "+addAttr.cls+"' "+addAttr.read+" value='"+this.sideList[i].sideUrl+"'></div></td>";
+						tag += "<td><select id='sideAuthNmSeq_"+i+"' class='custom-select "+addAttr.cls+"'>";
+						tag += "<option value=''>선택</option>";			
+						for(let j=0; j<this.authList.length; j++){
+							String(this.sideList[i].sideAuthNmSeq) === String(this.authList[j].authNmSeq) ? selected = "selected='selected'" : selected = "";
+							tag += "<option "+selected+" value='"+this.authList[j].authNmSeq+"'>"+this.authList[j].authNm+"</option>";
+						}	
+						tag += "</select></td>";
+						tag += "<td><input id='sideShowYn_"+i+"' type='button' class='btn btn-outline-secondary btn-sm btn-sm-fs "+useCls+"' "+addAttr.read+" value='"+this.sideList[i].sideShowYn+"'></td>";
+						if(this.sideList[i].state !== "insert"){
+							tag += "<td><button id='sideUp_"+i+"' class='btn btn-secondary btn-sm btn-sm-fs'>위로</button><button id='sideDown_"+i+"' class='btn btn-secondary btn-sm btn-sm-fs'>아래</button></td>";
+							this.lastIdx++;
+						}else{
+							tag += "<td><button id='sideUp_"+i+"' class='btn btn-secondary btn-sm btn-sm-fs' disabled>위로</button><button id='sideDown_"+i+"' class='btn btn-secondary btn-sm btn-sm-fs' disabled>아래</button></td>";
+						}
+						
+						tag += "</tr>";	*/
+						
+						
+						sideView.cnt ++;
+						sideView.idxList.push(i);
+					}
+				}
+				
+				//해당 게시물이 0개일경우 NoData
+				if(sideView.cnt === 0){
+					tag += "<tr><td colspan='2'>하단메뉴 리스트가 없습니다.</td></tr>";				
+				}
+				tag +="</table>";
+				$("#sideList").append(tag);								
+				this.firstIdx = sideView.idxList[0];
+			}
 		}
+		document.getElementById('sideMenuWidth').scrollIntoView(true);
 		return this;
 	},
 	
@@ -534,18 +704,18 @@ let side = {
 			}			
 			
 			if( $(target).is(":checked") === true ){							
-				$("#sideNm_"+idx).removeClass().addClass("redLine").prop("readOnly", true);
-				$("#sideNavUrl_"+idx).removeClass().addClass("redLine").prop("readOnly", true);
-				$("#sideUrl_"+idx).removeClass().addClass("redLine").prop("readOnly", true);
-				$("#sideAuthNmSeq_"+idx).removeClass().addClass("redLine").prop("disabled", true);	
+				$("#sideNm_"+idx).removeClass("update").addClass("delete").prop("readOnly", true);
+				$("#sideNavUrl_"+idx).removeClass("update").addClass("delete").prop("readOnly", true);
+				$("#sideUrl_"+idx).removeClass("update").addClass("delete").prop("readOnly", true);
+				$("#sideAuthNmSeq_"+idx).removeClass("update").addClass("delete").prop("disabled", true);	
 				this.sideList[idx].state = "delete";
 			}else{				
 				$("#sideNm_"+idx).removeClass().prop("readOnly", false);
 				$("#sideNavUrl_"+idx).removeClass().prop("readOnly", false);
 				$("#sideUrl_"+idx).removeClass().prop("readOnly", false);
 				$("#sideAuthNmSeq_"+idx).removeClass().prop("disabled", false);
-				if(idx !== this.firstIdx) $("#sideUp_"+idx).removeClass().addClass("btn_azure02").prop("disabled", false);				
-				if(idx !== this.lastIdx-1) $("#sideDown_"+idx).removeClass().addClass("btn_azure02").prop("disabled", false);
+				if(idx !== this.firstIdx) $("#sideUp_"+idx).prop("disabled", false);				
+				if(idx !== this.lastIdx-1) $("#sideDown_"+idx).prop("disabled", false);
 				this.sideList[idx].state = "select";
 			}
 			break;
@@ -574,10 +744,10 @@ let side = {
 		case "sideShowYn" :
 			if(target.value === "Y"){
 				this.sideList[idx][name] = "N";
-				$(target).val("N").removeClass().addClass("btn_pink01");
+				$(target).val("N").addClass("btn-outline-danger");
 			}else if(target.value === "N"){
 				this.sideList[idx][name] = "Y";
-				$(target).val("Y").removeClass().addClass("btn_azure01");
+				$(target).val("Y").removeClass("btn-outline-danger");
 			}
 			break;	
 		default :
@@ -593,16 +763,16 @@ let side = {
 			case "update" :
 				if($(target).is(":checked") === false && obj.equals(idx) === false){
 					obj.sideList[idx].state = "update";			
-					$("#sideNm_"+idx).addClass("edit").prop("readOnly", false);
-					$("#sideNavUrl_"+idx).addClass("edit").prop("readOnly", false);
-					$("#sideUrl_"+idx).addClass("edit").prop("readOnly", false);
-					$("#sideAuthNmSeq_"+idx).addClass("edit").prop("readOnly", false);
+					$("#sideNm_"+idx).addClass("update").prop("readOnly", false);
+					$("#sideNavUrl_"+idx).addClass("update").prop("readOnly", false);
+					$("#sideUrl_"+idx).addClass("update").prop("readOnly", false);
+					$("#sideAuthNmSeq_"+idx).addClass("update").prop("readOnly", false);
 				}else{
 					$(target).is(":checked") === true ? obj.sideList[idx].state = "delete" : obj.sideList[idx].state = "select";					
-					$("#sideNm_"+idx).removeClass();
-					$("#sideNavUrl_"+idx).removeClass();
-					$("#sideUrl_"+idx).removeClass();
-					$("#sideAuthNmSeq_"+idx).removeClass();					
+					$("#sideNm_"+idx).removeClass("update");
+					$("#sideNavUrl_"+idx).removeClass("update");
+					$("#sideUrl_"+idx).removeClass("update");
+					$("#sideAuthNmSeq_"+idx).removeClass("update");					
 				}
 				break;
 			}

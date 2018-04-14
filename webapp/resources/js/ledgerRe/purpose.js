@@ -111,7 +111,7 @@ let pur = {
 				}else{
 					tag += "<td><button id='purUp_"+i+"' class='btn btn-secondary btn-sm btn-sm-fs' disabled>위로</button><button id='purDown_"+i+"' class='btn btn-secondary btn-sm btn-sm-fs' disabled>아래</button></td>";
 				}
-				tag += "<td><button id='purDtlView_"+i+"' class='btn btn-secondary btn-sm btn-sm-fs' onclick='purDtl.cancel().view("+this.purList[i].purSeq+",\""+this.purList[i].purpose+"\");'>보기</button></td>";
+				tag += "<td><button class='btn btn-secondary btn-sm btn-sm-fs' onclick='purDtl.cancel().view("+this.purList[i].purSeq+",\""+this.purList[i].purpose+"\");'>보기</button></td>";
 				tag += "</tr>";
 			}			
 			tag +="</table>";

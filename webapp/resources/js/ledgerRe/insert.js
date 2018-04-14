@@ -218,9 +218,9 @@ let recIn = {
 				tag += "<th>no</th>";
 				tag += "<th style='width: 60px;'>입력사항</th>";
 				tag += "<th>입력내용</th>";
-				tag += "<tr>";
+				tag += "</tr>";
 				
-				tag += "<tr><td rowspan='6'>"+(i+1)+"</td>";
+				tag += "<tr><td rowspan='6'>"+(i+1)+"</td></tr>";
 				tag	+= "<tr><th>날짜*</th>";
 				tag += "<td><input id='date_"+i+"' type='date' class='form-control' value='"+this.inList[i].date+"'>";
 				tag += "<input id='time_"+i+"' type='time' class='form-control' value='"+this.inList[i].time+"'></td></tr>";

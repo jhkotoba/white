@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="contextPath" value="<%=request.getContextPath()%>"></c:set>
 
-<script type="text/javascript" src="${contextPath}/resources/js/admin/menu.js"></script>
+<script type="text/javascript" src="${contextPath}/resources/js/admin/menu.js?ver=0.006"></script>
 <script type="text/javascript">
 $(document).ready(function(){
 	
@@ -67,24 +67,25 @@ $(document).ready(function(){
 	});
 });
 
-</script>	
-<div>
-	<span class='add'>■추가</span>
-	<span class='edit'>■수정</span>
-	<span class='redLine'>■삭제</span>
-</div>
-<br>
-
-<div class="left">
-	<button id="navAddBtn" class="btn_azure03">추가</button>
-	<button id="navSaveBtn" class="btn_azure03">네비메뉴 저장</button>
-	<button id="navCelBtn" class="btn_azure03">취소</button>
-	<div id="navList" class="scroll"></div>	
-</div>
-
-<div class="left">
-	<button id="sideAddBtn" class="btn_azure03">추가</button>
-	<button id="sideSaveBtn" class="btn_azure03">사이드메뉴 저장</button>
-	<button id="sideCelBtn" class="btn_azure03">취소</button>
-	<div id="sideList" class="scroll"></div>
+</script>
+<div class="article">
+	<div id="navMenuWidth">
+		<h6 class="nsrb">Nav Menu</h6>
+		<div class="btn-group" role="group">	
+			<button id="navAddBtn" type="button" class="btn btn-secondary btn-fs nsrb">추가</button>
+			<button id="navSaveBtn" type="button" class="btn btn-secondary btn-fs nsrb">네비메뉴 저장</button>
+			<button id="navCelBtn" type="button" class="btn btn-secondary btn-fs nsrb">취소</button>
+		</div>
+		<div id="navList"></div>	
+	</div>	
+	
+	<div id="sideMenuWidth">
+		<h6 class="nsrb">Side Menu</h6>
+		<div class="btn-group" role="group">	
+			<button id="sideAddBtn" type="button" class="btn btn-secondary btn-fs nsrb">추가</button>
+			<button id="sideSaveBtn" type="button" class="btn btn-secondary btn-fs nsrb">하단메뉴 저장</button>
+			<button id="sideCelBtn" type="button" class="btn btn-secondary btn-fs nsrb">취소</button>
+		</div>
+		<div id="sideList"></div>
+	</div>
 </div>
