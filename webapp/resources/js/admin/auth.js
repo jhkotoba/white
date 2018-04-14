@@ -56,30 +56,29 @@ let auth = {
 		
 		$("#authList").empty();
 		
-		let tag = "<table class='table table-striped table-bordered'>";
+		let tag = "<table class='table table-striped table-sm table-bordered'>";
 			tag	+= "<tr>";			
-			tag += "<th>Del</th>";
-			tag	+= "<th>No</th>";
-			tag	+= "<th>authNm</th>";
-			tag	+= "<th>move</th>";
+			tag += "<th colspan='2'>순서</th>";
+			tag	+= "<th>권한이름</th>";
+			tag	+= "<th>순서설정</th>";
 			tag += "</tr>";
 		
 		this.lastIdx = 0;
 		let addAttr = {chked:"", cls:"", read:""};
 		
 		if(authList.length === 0){
-			tag += "<tr><td colspan='4'>no data</td></tr>";
+			tag += "<tr><td colspan='4'>권한 리스트가 없습니다.</td></tr>";
 			tag +="</table>";
 			$("#authList").append(tag);
 		}else{
 			for(let i=0; i<this.authList.length; i++){			
 				
 				if(this.authList[i].state === "insert"){
-					addAttr = {chked:"", cls:"add", read:""};			
+					addAttr = {chked:"", cls:"insert", read:""};			
 				}else if(this.authList[i].state === "delete"){				
-					addAttr = {chked:"checked='checked'", cls:"redLine", read:"readonly='readonly'"};
+					addAttr = {chked:"checked='checked'", cls:"delete", read:"readonly='readonly'"};
 				}else if(this.authList[i].state === "update"){
-					addAttr = {chked:"", cls:"edit", read:""};
+					addAttr = {chked:"", cls:"update", read:""};
 				}else{
 					addAttr = {chked:"", cls:"", read:""};
 				}

@@ -41,7 +41,7 @@ let bank = {
 		
 		$("#bankList").empty();
 		
-		let tag = "<table class='table table-striped table-sm'>";
+		let tag = "<table class='table table-striped table-sm table-bordered'>";
 			tag	+= "<tr>";			
 			tag += "<th colspan='2'>순서</th>";
 			tag	+= "<th>은행이름</th>";
@@ -57,7 +57,7 @@ let bank = {
 			if(this.bankList[i].state === "insert"){
 				addAttr = {chked:"", cls:"insert", read:""};			
 			}else if(this.bankList[i].state === "delete"){				
-				addAttr = {chked:"checked='checked'", cls:"redLine", read:"readonly='readonly'"};
+				addAttr = {chked:"checked='checked'", cls:"delete", read:"readonly='readonly'"};
 			}else if(this.bankList[i].state === "update"){
 				addAttr = {chked:"", cls:"update", read:""};
 			}else{

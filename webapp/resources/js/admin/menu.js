@@ -83,12 +83,11 @@ let nav = {
 		let tag = "";
 		
 		if(window.innerWidth > 500){
-			
-			tag += "<table class='table table-striped table-bordered'>";
+
+			tag += "<table class='table table-striped table-sm table-bordered'>";
 			tag	+= "<tr>";			
 			tag += "<th colspan='2'>순서</th>";		
-			tag	+= "<th>네비메뉴 이름</th>";
-			tag	+= "<th>URL</th>";
+			tag	+= "<th>네비메뉴 이름/URL</th>";
 			tag	+= "<th>권한</th>";
 			tag += "<th>표시</th>";
 			tag	+= "<th>순서설정</th>";
@@ -120,8 +119,8 @@ let nav = {
 					tag += "<tr>";			
 					tag += "<td><input id='navDel_"+i+"' type='checkbox' "+addAttr.chked+" title='삭제 체크박스'></td>";
 					tag += "<td>"+(i+1)+"</td>";
-					tag += "<td><input id='navNm_"+i+"' type='text' class='form-control "+addAttr.cls+"' "+addAttr.read+" value='"+this.navList[i].navNm+"'></td>";
-					tag += "<td><input id='navUrl_"+i+"' type='text' class='form-control "+addAttr.cls+"' "+addAttr.read+" value='"+this.navList[i].navUrl+"'></td>";
+					tag += "<td><input id='navNm_"+i+"' type='text' class='form-control "+addAttr.cls+"' "+addAttr.read+" value='"+this.navList[i].navNm+"'>";
+					tag += "<input id='navUrl_"+i+"' type='text' class='form-control "+addAttr.cls+"' "+addAttr.read+" value='"+this.navList[i].navUrl+"'></td>";
 					tag += "<td><select id='navAuthNmSeq_"+i+"' class='custom-select slt-fs"+addAttr.cls+"'>";				
 					tag += "<option value=''>선택</option>";			
 					for(let j=0; j<this.authList.length; j++){
@@ -460,8 +459,7 @@ let side = {
 			tag += "<table class='table table-striped table-sm table-bordered'>";
 			tag	+= "<tr>";			
 			tag += "<th colspan='2'>순서</th>";		
-			tag	+= "<th>하단메뉴 이름</th>";
-			tag	+= "<th>URL</th>";
+			tag	+= "<th>하단메뉴 이름/URL</th>";
 			tag	+= "<th>권한</th>";
 			tag	+= "<th>표시</th>";
 			tag	+= "<th>순서설정</th>";
@@ -496,8 +494,8 @@ let side = {
 						tag += "<tr>";			
 						tag += "<td><input id='sideDel_"+i+"' type='checkbox' "+addAttr.chked+" title='삭제 체크박스'></td>";
 						tag += "<td>"+(i+1)+"</td>";
-						tag += "<td><input id='sideNm_"+i+"' type='text' class='form-control "+addAttr.cls+"' "+addAttr.read+" value='"+this.sideList[i].sideNm+"'></td>";					
-						tag += "<td><div class='input-group'><div class='input-group-prepend'><span class='input-group-text span-fs'>";
+						tag += "<td><input id='sideNm_"+i+"' type='text' class='form-control "+addAttr.cls+"' "+addAttr.read+" value='"+this.sideList[i].sideNm+"'>";					
+						tag += "<div class='input-group input-group-sm'><div class='input-group-prepend'><span class='input-group-text span-fs'>";
 						tag += this.navUrl+"</span></div><input id='sideUrl_"+i+"' type='text' class='form-control "+addAttr.cls+"' "+addAttr.read+" value='"+this.sideList[i].sideUrl+"'></div></td>";
 						tag += "<td><select id='sideAuthNmSeq_"+i+"' class='custom-select "+addAttr.cls+"'>";
 						tag += "<option value=''>선택</option>";			
@@ -592,30 +590,6 @@ let side = {
 						tag += "<td><input id='sideShowYn_"+i+"' type='button' class='btn btn-outline-secondary btn-sm btn-sm-fs "+useCls+"' "+addAttr.read+" value='"+this.sideList[i].sideShowYn+"'></td></tr>";
 						tag += "<tr style='height:5px;'></tr>";
 						
-						/*tag += "<tr>";			
-						tag += "<td><input id='sideDel_"+i+"' type='checkbox' "+addAttr.chked+" title='삭제 체크박스'></td>";
-						tag += "<td>"+(i+1)+"</td>";
-						tag += "<td><input id='sideNm_"+i+"' type='text' class='form-control "+addAttr.cls+"' "+addAttr.read+" value='"+this.sideList[i].sideNm+"'></td>";					
-						tag += "<td><div class='input-group'><div class='input-group-prepend'><span class='input-group-text'>";
-						tag += this.navUrl+"</span></div><input id='sideUrl_"+i+"' type='text' class='form-control "+addAttr.cls+"' "+addAttr.read+" value='"+this.sideList[i].sideUrl+"'></div></td>";
-						tag += "<td><select id='sideAuthNmSeq_"+i+"' class='custom-select "+addAttr.cls+"'>";
-						tag += "<option value=''>선택</option>";			
-						for(let j=0; j<this.authList.length; j++){
-							String(this.sideList[i].sideAuthNmSeq) === String(this.authList[j].authNmSeq) ? selected = "selected='selected'" : selected = "";
-							tag += "<option "+selected+" value='"+this.authList[j].authNmSeq+"'>"+this.authList[j].authNm+"</option>";
-						}	
-						tag += "</select></td>";
-						tag += "<td><input id='sideShowYn_"+i+"' type='button' class='btn btn-outline-secondary btn-sm btn-sm-fs "+useCls+"' "+addAttr.read+" value='"+this.sideList[i].sideShowYn+"'></td>";
-						if(this.sideList[i].state !== "insert"){
-							tag += "<td><button id='sideUp_"+i+"' class='btn btn-secondary btn-sm btn-sm-fs'>위로</button><button id='sideDown_"+i+"' class='btn btn-secondary btn-sm btn-sm-fs'>아래</button></td>";
-							this.lastIdx++;
-						}else{
-							tag += "<td><button id='sideUp_"+i+"' class='btn btn-secondary btn-sm btn-sm-fs' disabled>위로</button><button id='sideDown_"+i+"' class='btn btn-secondary btn-sm btn-sm-fs' disabled>아래</button></td>";
-						}
-						
-						tag += "</tr>";	*/
-						
-						
 						sideView.cnt ++;
 						sideView.idxList.push(i);
 					}
@@ -707,13 +681,15 @@ let side = {
 				$("#sideNm_"+idx).removeClass("update").addClass("delete").prop("readOnly", true);
 				$("#sideNavUrl_"+idx).removeClass("update").addClass("delete").prop("readOnly", true);
 				$("#sideUrl_"+idx).removeClass("update").addClass("delete").prop("readOnly", true);
-				$("#sideAuthNmSeq_"+idx).removeClass("update").addClass("delete").prop("disabled", true);	
+				$("#sideAuthNmSeq_"+idx).removeClass("update").addClass("delete").prop("disabled", true);
+				$("#sideShowYn_"+idx).prop("disabled", true);
 				this.sideList[idx].state = "delete";
 			}else{				
-				$("#sideNm_"+idx).removeClass().prop("readOnly", false);
-				$("#sideNavUrl_"+idx).removeClass().prop("readOnly", false);
-				$("#sideUrl_"+idx).removeClass().prop("readOnly", false);
-				$("#sideAuthNmSeq_"+idx).removeClass().prop("disabled", false);
+				$("#sideNm_"+idx).removeClass("delete").prop("readOnly", false);
+				$("#sideNavUrl_"+idx).removeClass("delete").prop("readOnly", false);
+				$("#sideUrl_"+idx).removeClass("delete").prop("readOnly", false);
+				$("#sideAuthNmSeq_"+idx).removeClass("delete").prop("disabled", false);
+				$("#sideShowYn_"+idx).prop("disabled", false);
 				if(idx !== this.firstIdx) $("#sideUp_"+idx).prop("disabled", false);				
 				if(idx !== this.lastIdx-1) $("#sideDown_"+idx).prop("disabled", false);
 				this.sideList[idx].state = "select";

@@ -3,9 +3,14 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="contextPath" value="<%=request.getContextPath()%>"></c:set>
 
-<script type="text/javascript" src="${contextPath}/resources/js/admin/menu.js?ver=0.006"></script>
+<script type="text/javascript" src="${contextPath}/resources/js/admin/menu.js?ver=0.008"></script>
 <script type="text/javascript">
 $(document).ready(function(){
+	
+	if(window.innerWidth > 500){
+		$("#navMenuWidth").addClass("left");
+		$("#sideMenuWidth").addClass("left");
+	}	
 	
 	$.ajax({		
 		type: 'POST',
@@ -69,7 +74,7 @@ $(document).ready(function(){
 
 </script>
 <div class="article">
-	<div id="navMenuWidth">
+	<div id="navMenuWidth" class="width-vmin">
 		<h6 class="nsrb">Nav Menu</h6>
 		<div class="btn-group" role="group">	
 			<button id="navAddBtn" type="button" class="btn btn-secondary btn-fs nsrb">추가</button>
@@ -79,7 +84,7 @@ $(document).ready(function(){
 		<div id="navList"></div>	
 	</div>	
 	
-	<div id="sideMenuWidth">
+	<div id="sideMenuWidth" class="width-vmin">
 		<h6 class="nsrb">Side Menu</h6>
 		<div class="btn-group" role="group">	
 			<button id="sideAddBtn" type="button" class="btn btn-secondary btn-fs nsrb">추가</button>
