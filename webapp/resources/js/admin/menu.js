@@ -603,8 +603,11 @@ let side = {
 				$("#sideList").append(tag);								
 				this.firstIdx = sideView.idxList[0];
 			}
-		}
-		document.getElementById('sideMenuWidth').scrollIntoView(true);
+			
+			if(sideView.cnt !== 0){
+				document.getElementById('sideMenuWidth').scrollIntoView(true);
+			}
+		}		
 		return this;
 	},
 	

@@ -401,7 +401,9 @@ let purDtl = {
 			this.firstIdx = purDtlView.idxList[0];
 		}
 		
-		document.getElementById('purDtlWidth').scrollIntoView(true);		
+		if(purDtlView.cnt !== 0){
+			document.getElementById('purDtlWidth').scrollIntoView(true);	
+		}	
 		return this;
 	},
 	
