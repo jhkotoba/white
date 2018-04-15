@@ -1,5 +1,5 @@
 /**
- * adminLookup.js
+ * lookup.js
  */
 
 $(document).ready(function(){
@@ -8,7 +8,7 @@ $(document).ready(function(){
 		if(!common.isOnlyNum(event.target.value)) return;
 		
 		$("#pageNum").val(event.target.value);
-		ad.select();	
+		look.select();	
 	});
 	
 	$("#pageCnt").on("change select", function(event){
@@ -25,10 +25,10 @@ $(document).ready(function(){
 		case "viewBtn" :
 			$("#userInfo").show();
 			
-			$("#userNum").text(ad.userList[idx].userSeq);
-			$("#userNo").val(ad.userList[idx].userSeq);
-			$("#userId").text(ad.userList[idx].userId);
-			$("#userNm").text(ad.userList[idx].userName);		
+			$("#userNum").text(look.userList[idx].userSeq);
+			$("#userNo").val(look.userList[idx].userSeq);
+			$("#userId").text(look.userList[idx].userId);
+			$("#userNm").text(look.userList[idx].userName);		
 			
 			$.ajax({		
 				type: 'POST',
@@ -54,7 +54,7 @@ $(document).ready(function(){
 	});
 });
 
-let ad = {
+let look = {
 	count : 0,
 	pageNum : 1,
 	pageCnt : 10,
@@ -72,8 +72,8 @@ let ad = {
 	select : function(){
 		
 		let param = {};
-		param.srhId = $("#srhId").val();
-		param.srhNm = $("#srhNm").val();	
+		param.srhSlt = $("#srhSlt").val();
+		param.srhMsg = $("#srhMsg").val();	
 		param.pageNum = $("#pageNum").val();
 		param.pageCnt = $("#pageCnt").val();
 		this.pageNum = $("#pageNum").val();
@@ -84,7 +84,7 @@ let ad = {
 			data: param,
 			dataType: 'json',
 		    success : function(data) {		    
-		    	ad.init(param.pageCnt, param.pageNum, data.count, data.userList).view().paging();			
+		    	look.init(param.pageCnt, param.pageNum, data.count, data.userList).view().paging();			
 		    },
 		    error : function(request, status, error){
 		    	alert("error");
@@ -122,39 +122,47 @@ let ad = {
 		
 		$("#paging").empty();
 		
-		let tag = "<div class='paging'>";
+		let tag = "<div class='btn-toolbar' role='toolbar'>";
 		let blockNum = Math.floor(this.pageNum/this.blockCnt)*this.blockCnt;
 		let blockLen = Math.ceil(this.count / this.pageCnt);
 		
 		if(blockNum !== 0){
-			tag += "<button value='1' style='width: 50px;'>◀◀</button>";
+			tag += "<div class='btn-group btn-group-sm mr-2' role='group'>";
+			tag += "<button type='button' class='btn btn-secondary' value='1'>◀◀</button>";
 			
 			if(this.pageNum <= 10){
-				tag += "<button value='1'>◀</button>";
+				tag += "<button type='button' class='btn btn-secondary' value='1'>◀</button>";
 			}else{
-				tag += "<button value='"+(blockNum-this.blockCnt)+"'>◀</button>";
+				tag += "<button type='button' class='btn btn-secondary' value='"+(blockNum-this.blockCnt)+"'>◀</button>";
 			}
 		}
+		tag += "</div>";
 		
+		
+		tag += "<div class='btn-group btn-group-sm mr-2' role='group'>";
 		for(let i=blockNum; i<blockNum+this.blockCnt; i++){
-			if(i === 0) continue;
+			if(i === 0) continue;			
 			
 			if(i <= blockLen){
 				if(this.pageNum === i){
-					tag += "<button value="+i+" style='font-weight:bold;'>"+i+"</button>";
+					tag += "<button type='button' class='btn btn-dark' value="+i+">"+i+"</button>";
 				}else{
-					tag += "<button value="+i+">"+i+"</button>";
+					tag += "<button type='button' class='btn btn-secondary' value="+i+">"+i+"</button>";
 				}
-			}
-		}		
+			}			
+		}
+		tag += "</div>";
 		
 		if(this.pageNum < blockLen){
+			
+			tag += "<div class='btn-group btn-group-sm mr-2' role='group'>";
 			if(this.pageNum <= blockLen-this.blockCnt){
-				tag += "<button value='"+(blockNum+this.blockCnt)+"'>▶</button>";
+				tag += "<button type='button' class='btn btn-secondary' value='"+(blockNum+this.blockCnt)+"'>▶</button>";
 			}else{
-				tag += "<button value='"+String(blockLen)+"'>▶</button>";
+				tag += "<button type='button' class='btn btn-secondary' value='"+String(blockLen)+"'>▶</button>";
 			}			
-			tag += "<button value='"+String(blockLen)+"' style='width: 50px;'>▶▶</button>";
+			tag += "<button type='button' class='btn btn-secondary' value='"+String(blockLen)+"'>▶▶</button>";
+			tag += "</div>";
 		}		
 				
 		tag += "</div>";

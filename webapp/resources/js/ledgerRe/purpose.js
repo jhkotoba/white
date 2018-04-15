@@ -104,7 +104,7 @@ let pur = {
 				tag += "<tr>";			
 				tag += "<td><input id='purDel_"+i+"' type='checkbox' "+addAttr.chked+" title='삭제 체크박스'></td>";
 				tag += "<td>"+(i+1)+"</td>";
-				tag += "<td><input id='purpose_"+i+"' type='text' class='form-control "+addAttr.cls+"' "+addAttr.read+" value='"+this.purList[i].purpose+"' ></td>";			
+				tag += "<td><input id='purpose_"+i+"' type='text' class='form-control form-control-sm "+addAttr.cls+"' "+addAttr.read+" value='"+this.purList[i].purpose+"' ></td>";			
 				if(this.purList[i].state !== "insert"){
 					tag += "<td><button id='purUp_"+i+"' class='btn btn-secondary btn-sm btn-sm-fs'>위로</button><button id='purDown_"+i+"' class='btn btn-secondary btn-sm btn-sm-fs'>아래</button></td>";
 					this.lastIdx++;
@@ -371,7 +371,7 @@ let purDtl = {
 					tag += "<tr>";		
 					tag += "<td><input id='purDtlDel_"+i+"' type='checkbox' "+addAttr.chked+" title='삭제 체크박스'></td>";
 					tag += "<td>"+this.purDtlList[i].purDtlOrder+"</td>";
-					tag += "<td><input id='purDetail_"+i+"' type='text' class='form-control "+addAttr.cls+"' value='"+this.purDtlList[i].purDetail+"' "+addAttr.read+"></td>";
+					tag += "<td><input id='purDetail_"+i+"' type='text' class='form-control form-control-sm "+addAttr.cls+"' value='"+this.purDtlList[i].purDetail+"' "+addAttr.read+"></td>";
 					if(this.purDtlList[i].state !== "insert"){
 						tag += "<td><button id='purDtlUp_"+i+"' class='btn btn-secondary btn-sm btn-sm-fs'>위로</button><button id='purDtlDown_"+i+"' class='btn btn-secondary btn-sm btn-sm-fs'>아래</button></td>";
 						this.lastIdx++;

@@ -119,9 +119,9 @@ let nav = {
 					tag += "<tr>";			
 					tag += "<td><input id='navDel_"+i+"' type='checkbox' "+addAttr.chked+" title='삭제 체크박스'></td>";
 					tag += "<td>"+(i+1)+"</td>";
-					tag += "<td><input id='navNm_"+i+"' type='text' class='form-control "+addAttr.cls+"' "+addAttr.read+" value='"+this.navList[i].navNm+"'>";
-					tag += "<input id='navUrl_"+i+"' type='text' class='form-control "+addAttr.cls+"' "+addAttr.read+" value='"+this.navList[i].navUrl+"'></td>";
-					tag += "<td><select id='navAuthNmSeq_"+i+"' class='custom-select slt-fs"+addAttr.cls+"'>";				
+					tag += "<td><input id='navNm_"+i+"' type='text' class='form-control form-control-sm "+addAttr.cls+"' "+addAttr.read+" value='"+this.navList[i].navNm+"'>";
+					tag += "<input id='navUrl_"+i+"' type='text' class='form-control form-control-sm "+addAttr.cls+"' "+addAttr.read+" value='"+this.navList[i].navUrl+"'></td>";
+					tag += "<td><select id='navAuthNmSeq_"+i+"' class='custom-select custom-select-sm slt-fs "+addAttr.cls+"'>";				
 					tag += "<option value=''>선택</option>";			
 					for(let j=0; j<this.authList.length; j++){
 						String(this.navList[i].navAuthNmSeq) === String(this.authList[j].authNmSeq) ? selected = "selected='selected'" : selected = "";
@@ -184,13 +184,13 @@ let nav = {
 					tag += "<td rowspan='6'>"+(i+1)+"</td></tr>";
 					
 					tag += "<tr><th>네비메뉴 이름</th>";
-					tag += "<td><input id='navNm_"+i+"' type='text' class='form-control "+addAttr.cls+"' "+addAttr.read+" value='"+this.navList[i].navNm+"'></td></tr>";
+					tag += "<td><input id='navNm_"+i+"' type='text' class='form-control form-control-sm "+addAttr.cls+"' "+addAttr.read+" value='"+this.navList[i].navNm+"'></td></tr>";
 					
 					tag	+= "<tr><th>URL</th>";
-					tag += "<td><input id='navUrl_"+i+"' type='text' class='form-control "+addAttr.cls+"' "+addAttr.read+" value='"+this.navList[i].navUrl+"'></td></tr>";
+					tag += "<td><input id='navUrl_"+i+"' type='text' class='form-control form-control-sm "+addAttr.cls+"' "+addAttr.read+" value='"+this.navList[i].navUrl+"'></td></tr>";
 					
 					tag	+= "<tr><th>권한</th>";
-					tag += "<td><select id='navAuthNmSeq_"+i+"' class='custom-select slt-fs"+addAttr.cls+"'>";				
+					tag += "<td><select id='navAuthNmSeq_"+i+"' class='custom-select custom-select-sm slt-fs "+addAttr.cls+"'>";				
 					tag += "<option value=''>선택</option>";			
 					for(let j=0; j<this.authList.length; j++){
 						String(this.navList[i].navAuthNmSeq) === String(this.authList[j].authNmSeq) ? selected = "selected='selected'" : selected = "";
@@ -494,10 +494,10 @@ let side = {
 						tag += "<tr>";			
 						tag += "<td><input id='sideDel_"+i+"' type='checkbox' "+addAttr.chked+" title='삭제 체크박스'></td>";
 						tag += "<td>"+(i+1)+"</td>";
-						tag += "<td><input id='sideNm_"+i+"' type='text' class='form-control "+addAttr.cls+"' "+addAttr.read+" value='"+this.sideList[i].sideNm+"'>";					
-						tag += "<div class='input-group input-group-sm'><div class='input-group-prepend'><span class='input-group-text span-fs'>";
-						tag += this.navUrl+"</span></div><input id='sideUrl_"+i+"' type='text' class='form-control "+addAttr.cls+"' "+addAttr.read+" value='"+this.sideList[i].sideUrl+"'></div></td>";
-						tag += "<td><select id='sideAuthNmSeq_"+i+"' class='custom-select "+addAttr.cls+"'>";
+						tag += "<td><input id='sideNm_"+i+"' type='text' class='form-control form-control-sm "+addAttr.cls+"' "+addAttr.read+" value='"+this.sideList[i].sideNm+"'>";					
+						tag += "<div class='input-group input-group-sm'><div class='input-group-prepend'><span class='input-group-text'>";
+						tag += this.navUrl+"</span></div><input id='sideUrl_"+i+"' type='text' class='form-control form-control-sm "+addAttr.cls+"' "+addAttr.read+" value='"+this.sideList[i].sideUrl+"'></div></td>";
+						tag += "<td><select id='sideAuthNmSeq_"+i+"' class='custom-select custom-select-sm slt-fs "+addAttr.cls+"'>";
 						tag += "<option value=''>선택</option>";			
 						for(let j=0; j<this.authList.length; j++){
 							String(this.sideList[i].sideAuthNmSeq) === String(this.authList[j].authNmSeq) ? selected = "selected='selected'" : selected = "";
@@ -571,14 +571,14 @@ let side = {
 						tag += "<td rowspan='5'>"+(i+1)+"</td></tr>";
 						
 						tag	+= "<tr><th>하단메뉴 이름</th>";
-						tag += "<td><input id='sideNm_"+i+"' type='text' class='form-control "+addAttr.cls+"' "+addAttr.read+" value='"+this.sideList[i].sideNm+"'></td></tr>";
+						tag += "<td><input id='sideNm_"+i+"' type='text' class='form-control form-control-sm "+addAttr.cls+"' "+addAttr.read+" value='"+this.sideList[i].sideNm+"'></td></tr>";
 						
 						tag	+= "<tr><th>URL</th>";
-						tag += "<td><div class='input-group'><div class='input-group-prepend'><span class='input-group-text span-fs'>";
-						tag += this.navUrl+"</span></div><input id='sideUrl_"+i+"' type='text' class='form-control "+addAttr.cls+"' "+addAttr.read+" value='"+this.sideList[i].sideUrl+"'></div></td></tr>";
+						tag += "<td><div class='input-group'><div class='input-group-prepend'><span class='input-group-text'>";
+						tag += this.navUrl+"</span></div><input id='sideUrl_"+i+"' type='text' class='form-control form-control-sm "+addAttr.cls+"' "+addAttr.read+" value='"+this.sideList[i].sideUrl+"'></div></td></tr>";
 						
 						tag	+= "<tr><th>권한</th>";
-						tag += "<td><select id='sideAuthNmSeq_"+i+"' class='custom-select "+addAttr.cls+"'>";
+						tag += "<td><select id='sideAuthNmSeq_"+i+"' class='custom-select custom-select-sm slt-fs "+addAttr.cls+"'>";
 						tag += "<option value=''>선택</option>";			
 						for(let j=0; j<this.authList.length; j++){
 							String(this.sideList[i].sideAuthNmSeq) === String(this.authList[j].authNmSeq) ? selected = "selected='selected'" : selected = "";

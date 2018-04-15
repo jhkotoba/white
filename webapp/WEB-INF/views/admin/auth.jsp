@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="contextPath" value="<%=request.getContextPath()%>"></c:set>
 
-<script type="text/javascript" src="${contextPath}/resources/js/admin/auth.js"></script>
+<script type="text/javascript" src="${contextPath}/resources/js/admin/auth.js?ver=0.001"></script>
 <script type="text/javascript">
 $(document).ready(function(){
 	
@@ -44,17 +44,14 @@ $(document).ready(function(){
 });
 
 </script>
-	
-<div>
-	<span class='add'>■추가</span>
-	<span class='edit'>■수정</span>
-	<span class='redLine'>■삭제</span>
-</div>
-<br>
-
-<div>
-	<button id="authAddBtn" class="btn_azure03">추가</button>
-	<button id="authSaveBtn" class="btn_azure03">권한 저장</button>
-	<button id="authCelBtn" class="btn_azure03">취소</button>
-	<div id="authList" class="scroll"></div>	
-</div>
+<div class="article">
+	<h6 class="nsrb">Auth List</h6>
+	<div class="width-vmin">
+		<div class="btn-group" role="group">	
+			<button id="authAddBtn" type="button" class="btn btn-secondary btn-fs nsrb">추가</button>
+			<button id="authSaveBtn" type="button" class="btn btn-secondary btn-fs nsrb">권한 저장</button>
+			<button id="authCelBtn" type="button" class="btn btn-secondary btn-fs nsrb">취소</button>
+		</div>
+		<div id="authList"></div>
+	</div>
+<div class="article">

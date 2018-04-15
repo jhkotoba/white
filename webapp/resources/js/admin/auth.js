@@ -86,12 +86,12 @@ let auth = {
 				tag += "<tr>";			
 				tag += "<td><input id='authDel_"+i+"' type='checkbox' "+addAttr.chked+" title='삭제 체크박스'></td>";
 				tag += "<td>"+(i+1)+"</td>";
-				tag += "<td><input id='authNm_"+i+"' type='text' class='"+addAttr.cls+"' "+addAttr.read+" value='"+this.authList[i].authNm+"' ></td>";
+				tag += "<td><input id='authNm_"+i+"' type='text' class='form-control "+addAttr.cls+"' "+addAttr.read+" value='"+this.authList[i].authNm+"' ></td>";
 				if(this.authList[i].state !== "insert"){
-					tag += "<td><button id='authUp_"+i+"' class='btn_azure02'>위로</button><button id='authDown_"+i+"' class='btn_azure02'>아래</button></td>";
+					tag += "<td><button id='authUp_"+i+"' class='btn btn-secondary btn-sm btn-sm-fs'>위로</button><button id='authDown_"+i+"' class='btn btn-secondary btn-sm btn-sm-fs'>아래</button></td>";
 					this.lastIdx++;
 				}else{
-					tag += "<td><button id='authUp_"+i+"' class='btn_disabled02' disabled'>위로</button><button id='authDown_"+i+"' class='btn_disabled02' disabled>아래</button></td>";
+					tag += "<td><button id='authUp_"+i+"' class='btn btn-secondary btn-sm btn-sm-fs' disabled>위로</button><button id='authDown_"+i+"' class='btn btn-secondary btn-sm btn-sm-fs' disabled>아래</button></td>";
 				}
 				tag += "</tr>";	
 			}			
@@ -99,11 +99,11 @@ let auth = {
 			$("#authList").append(tag);
 			
 			//게시물이 1개일경우 순서버튼 막기
-			$("#authList #authUp_0").removeClass().addClass("btn_disabled02").prop("disabled", true);
+			$("#authList #authUp_0").prop("disabled", true);
 			if(this.authList.length === 1){				
-				$("#authList #authDown_0").removeClass().addClass("btn_disabled02").prop("disabled", true);
+				$("#authList #authDown_0").prop("disabled", true);
 			}else{				
-				$("#authList #authDown_"+String(this.lastIdx-1)).removeClass().addClass("btn_disabled02").prop("disabled", true);
+				$("#authList #authDown_"+String(this.lastIdx-1)).prop("disabled", true);
 			}
 			
 		}
@@ -158,12 +158,12 @@ let auth = {
 			}			
 			
 			if( $(target).is(":checked") === true ){							
-				$("#authNm_"+idx).removeClass().addClass("redLine").prop("readOnly", true);				
+				$("#authNm_"+idx).removeClass("update").addClass("delete").prop("readOnly", true);				
 				this.authList[idx].state = "delete";
 			}else{				
-				$("#authNm_"+idx).removeClass().prop("readOnly", false);				
-				if(idx !== 0) $("#authUp_"+idx).removeClass().addClass("btn_azure02").prop("disabled", false);			
-				if(idx !== this.lastIdx-1) $("#authDown_"+idx).removeClass().addClass("btn_azure02").prop("disabled", false);
+				$("#authNm_"+idx).removeClass("delete").prop("readOnly", false);				
+				if(idx !== 0) $("#authUp_"+idx).prop("disabled", false);			
+				if(idx !== this.lastIdx-1) $("#authDown_"+idx).prop("disabled", false);
 				this.authList[idx].state = "select";
 			}
 			break;			
@@ -186,10 +186,10 @@ let auth = {
 			case "update" :
 				if($(target).is(":checked") === false && obj.equals(idx) === false){
 					obj.authList[idx].state = "update";			
-					$("#authNm_"+idx).addClass("edit").prop("readOnly", false);					
+					$("#authNm_"+idx).addClass("update").prop("readOnly", false);					
 				}else{
 					$(target).is(":checked") === true ? obj.authList[idx].state = "delete" : obj.authList[idx].state = "select";					
-					$("#authNm_"+idx).removeClass();			
+					$("#authNm_"+idx).removeClass("update");			
 				}
 				break;
 			}

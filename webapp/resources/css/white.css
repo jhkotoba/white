@@ -2,7 +2,7 @@
 @media (max-width: 500px) {
 	span, table{font-size: 9px;}
 	input[type=date], input[type=time],input[type=text] {font-size: 9px;}
-	.slt-fs{font-size: 9px;}
+	.slt-fs{font-size: 9px !important;}
 	.span-fs{font-size: 9px !important;}
 	.btn-fs{font-size: 9px !important;}
 	.btn-sm-fs{font-size: 9px !important;}
@@ -12,7 +12,7 @@
 @media screen and (min-width: 501px) {
     span, table{font-size: 11px;}    
 	input[type=date], input[type=time],input[type=text] {font-size: 12px;}
-	.slt-fs{font-size: 12px;}
+	.slt-fs{font-size: 12px !important;}
 	.span-fs{font-size: 16px !important;}
 	.btn-fs{font-size: 16px !important;}
 	.btn-sm-fs{font-size: 10px !important;}

@@ -69,8 +69,8 @@ let bank = {
 			tag += "<tr>";			
 			tag += "<td><input id='delete_"+i+"' type='checkbox' "+addAttr.chked+" title='삭제 체크박스'></td>";
 			tag += "<td>"+(i+1)+"</td>";
-			tag += "<td><input id='bankName_"+i+"' type='text' class='form-control "+addAttr.cls+"' "+addAttr.read+" value='"+this.bankList[i].bankName+"' ></td>";
-			tag += "<td><input id='bankAccount_"+i+"' type='text' class='form-control "+addAttr.cls+"' "+addAttr.read+" value='"+this.bankList[i].bankAccount+"'></td>";
+			tag += "<td><input id='bankName_"+i+"' type='text' class='form-control form-control-sm "+addAttr.cls+"' "+addAttr.read+" value='"+this.bankList[i].bankName+"' ></td>";
+			tag += "<td><input id='bankAccount_"+i+"' type='text' class='form-control form-control-sm "+addAttr.cls+"' "+addAttr.read+" value='"+this.bankList[i].bankAccount+"'></td>";
 			tag += "<td><input id='bankUseYn_"+i+"' type='button' class='btn btn-outline-secondary btn-sm btn-sm-fs "+useCls+"' "+addAttr.read+" value='"+this.bankList[i].bankUseYn+"'></td>";
 			tag += "</tr>";	
 		}			

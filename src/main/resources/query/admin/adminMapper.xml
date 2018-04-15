@@ -6,12 +6,12 @@
 	
 	<select id="selectUserCount" resultType="int" parameterType="WhiteMap">
 		SELECT COUNT(1) FROM white_user
-		WHERE 1=1
-		<if test="srhId != ''">
-		AND user_id = #{srhId}
+		WHERE 1=1		
+		<if test="srhSlt == 'id'">
+		AND user_id = #{srhMsg}
 		</if>
-		<if test="srhNm != ''">
-		AND user_name = #{srhNm}
+		<if test="srhSlt == 'nm'">
+		AND user_name = #{srhMsg}
 		</if>
 	</select>
 	
@@ -22,11 +22,11 @@
 			user_name AS userName
  		FROM white_user
  		WHERE 1=1
- 		<if test="srhId != ''">
-		AND user_id = #{srhId}
+ 		<if test="srhSlt == 'id'">
+		AND user_id = #{srhMsg}
 		</if>
-		<if test="srhNm != ''">
-		AND user_name = #{srhNm}
+		<if test="srhSlt == 'nm'">
+		AND user_name = #{srhMsg}
 		</if>
  		Limit ${pagePre}, ${pageCnt}
 	</select>
