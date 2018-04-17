@@ -30,7 +30,7 @@ $(document).ready(function(){
 	    	
 	    	tag = "";
 	    	for(let i=0; i<data.purDtlList.length; i++){		
-	    		tag += "<option value='"+data.purDtlList[i].purDtlSeq+"'>"+data.purDtlList[i].purDetail+"</option>";
+	    		tag += "<option name='pSeq_"+data.purDtlList[i].purSeq+"' value='"+data.purDtlList[i].purDtlSeq+"' style='display:none;'>"+data.purDtlList[i].purDetail+"</option>";
 	    	}
 	    	$("#srhPurDtl").append(tag);
 	    	
@@ -98,17 +98,23 @@ $(document).ready(function(){
 		}
 	});
 	
-	//검색 텍스트  purSeq sync
-	$("#srhPur").change(function(){
+	//목적 셀렉트 박스 선택시
+	$("#srhPur").change(function(){		
 		rec.search.purSeq = this.value;
+		
+		//상세목적 전체 hide
+		$("#srhPurDtl option[name^=pSeq_]").hide();
+		//목적 선택 seq에 해당하는 것만 show
+		$("#srhPurDtl option[name=pSeq_"+this.value+"]").show();
+		
 	});
 	
-	//검색 텍스트  purSeq sync
-	$("#srhPurDtl").change(function(){
+	//상세목적 셀렉트 박스 선택시
+	$("#srhPurDtl").change(function(){		
 		rec.search.purDtlSeq = this.value;
 	});
 	
-	//검색 텍스트  bankSeq sync
+	//은행 셀렉트 박스 선택시
 	$("#srhBank").change(function(){
 		rec.search.bankSeq = this.value;
 	});
