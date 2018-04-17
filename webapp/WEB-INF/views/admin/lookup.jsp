@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="contextPath" value="<%=request.getContextPath()%>"></c:set>
 
-<script type="text/javascript" src="${contextPath}/resources/js/admin/lookup.js?ver=0.002"></script>
+<script type="text/javascript" src="${contextPath}/resources/js/admin/lookup.js?ver=0.003"></script>
 <script type="text/javascript">
 $(document).ready(function(){
 	
@@ -62,6 +62,6 @@ $(document).ready(function(){
 	<div id="userList">	
 	</div>
 	
-	<div id="paging">
+	<div id="paging" style="margin-left: 45%;">
 	</div>
 </div>
