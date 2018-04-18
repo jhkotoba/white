@@ -170,6 +170,7 @@ $(document).ready(function(){
 	</div>
 
 	<div id="userView" style="display: none;">
+		<input id="userNo" type="hidden" value="">
 		<div class="space left" style="height: 10px;"></div>
 		<h6 class="space left">사용자 상세정보</h6>
 		<table class='table table-striped table-sm table-bordered'>		
