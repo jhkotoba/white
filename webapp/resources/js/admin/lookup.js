@@ -15,15 +15,13 @@ $(document).ready(function(){
 		$("#pageNum").val("1");
 	});
 	
-	$('#userList').on("click button", function(event) {		
-	
+	$('#userList').on("click button", function(event) {	
 		let name = event.target.id.split('_')[0];
 		let idx = event.target.id.split('_')[1];
 		
 		switch(name){
 		
-		case "viewBtn" :
-			$("#userInfo").show();
+		case "viewBtn" :			
 			
 			$("#userNum").text(look.userList[idx].userSeq);
 			$("#userNo").val(look.userList[idx].userSeq);
@@ -37,7 +35,11 @@ $(document).ready(function(){
 					userNo : Number(event.target.value)
 				},
 				dataType: 'json',
-			    success : function(data, stat, xhr) { 
+			    success : function(data, stat, xhr) {		    	
+			    	
+			    	$("#userView").show();			    	
+			    
+			    	$("input:checkbox[id^='auth_']").prop("checked", false).val('none');			    	
 			    	for(let i=0; i<data.length; i++){
 			    		$("#auth_"+data[i].authNmSeq).prop("checked", true).val("select_"+data[i].authSeq);
 			    	}
@@ -45,10 +47,7 @@ $(document).ready(function(){
 			    error : function(xhr, stat, err) {
 			    	alert("error");
 			    }
-			});
-			
-			$("body").scrollTop(0);
-			
+			});			
 		break;
 		}
 	});
@@ -96,20 +95,20 @@ let look = {
 		
 		$("#userList").empty();
 		
-		let tag = "<table class='table table-striped table-bordered'>";
+		let tag = "<table class='table table-sm table-striped table-bordered'>";
 			tag	+= "<tr>";			
-			tag	+= "<th>userNo</th>";
-			tag	+= "<th>userId</th>";
-			tag	+= "<th>userName</th>";			
-			tag	+= "<th>btn</th>";			
+			tag	+= "<th style='width: 3%;'>번호</th>";
+			tag	+= "<th>아이디</th>";
+			tag	+= "<th>이름</th>";			
+			tag	+= "<th>상세정보</th>";			
 			tag += "</tr>";		
 		
 		for(let i=0; i<this.userList.length; i++){			
 			tag += "<tr>";			
 			tag += "<td>"+this.userList[i].userSeq+"</td>";
 			tag += "<td>"+this.userList[i].userId+"</td>";
-			tag += "<td>"+this.userList[i].userName+"</td>";		
-			tag += "<td><button id='viewBtn_"+i+"' class='viewIcon' value='"+this.userList[i].userSeq+"' title='사용자 정보 보기'></button></td>";		
+			tag += "<td>"+this.userList[i].userName+"</td>";	
+			tag += "<td><button id='viewBtn_"+i+"' class='btn btn-outline-secondary btn-sm btn-sm-fs' value='"+this.userList[i].userSeq+"'>보기</button></td>";	
 			tag += "</tr>";		
 		}
 		
