@@ -17,7 +17,7 @@ $(document).ready(function(){
 		type: 'POST',
 		url: common.path()+'/admin/selectAuthList.ajax',
 		dataType: 'json',
-		async : false,
+		//async : false,
 	    success : function(data) {
 	    	
 			$("#authList").empty();
@@ -61,7 +61,13 @@ $(document).ready(function(){
 	});
 	
 	$("#authClose").on("click button", function(event){
-		$("#userView").hide();	
+		$("#userView").hide();
+		$("#userNum").text("");
+		$("#userNo").val("");
+		$("#userId").text("");
+		$("#userNm").text("");
+		$("input:checkbox[id^='auth_']").prop("checked", false).val('none');
+		
 	});
 	
 	$("#authSave").on("click button", function(event){
