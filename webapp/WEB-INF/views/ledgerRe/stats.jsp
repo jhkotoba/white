@@ -6,7 +6,7 @@
 <script type="text/javascript">
 $(document).ready(function(){
 	
-	$("#datepicker").datepicker();
+	
 	
 	
 	$("#monthTab").on("click", function(){
@@ -35,7 +35,7 @@ $(document).ready(function(){
 	</ul>
 	<div class="tab-content" id="myTabContent">
 		<div class="tab-pane fade show active" id="month" role="tabpanel" aria-labelledby="monthTab">
-			<input id="datepicker" value="" type="text" class="form-control">
+			<input value="" type="text" class="form-control">
 		</div>
 		<div class="tab-pane fade" id="year" role="tabpanel" aria-labelledby="yearTab">
 		

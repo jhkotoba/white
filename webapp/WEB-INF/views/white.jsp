@@ -13,13 +13,11 @@
 <link rel="stylesheet" href="${contextPath}/resources/css/btn.css" type="text/css" />
 <link rel="stylesheet" href="${contextPath}/resources/css/icon.css" type="text/css" />
 <link rel="stylesheet" href="${contextPath}/resources/css/bootstrap/bootstrap.css" type="text/css" />
-<link rel="stylesheet" href="${contextPath}/resources/js/wcommon/jquery-ui-1.12.1.custom/jquery-ui.min.css" type="text/css" />
 <%-- <link rel="stylesheet" href="${contextPath}/resources/bootstrap/css/bootstrap-reboot.css" type="text/css" />
 <link rel="stylesheet" href="${contextPath}/resources/bootstrap/css/bootstrap-grid.css" type="text/css" /> --%>
 
 
 <script type="text/javascript" src="${contextPath}/resources/js/wcommon/jquery/jquery-3.2.1.min.js"></script>
-<script type="text/javascript" src="${contextPath}/resources/js/wcommon/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
 <script type="text/javascript" src="${contextPath}/resources/js/bootstrap/bootstrap.js"></script>
 <%-- <script type="text/javascript" src="${contextPath}/resources/bootstrap/js/bootstrap.bundle.js"></script> --%>
 
