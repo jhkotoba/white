@@ -97,7 +97,7 @@ let look = {
 		
 		let tag = "<table class='table table-sm table-striped table-bordered'>";
 			tag	+= "<tr>";			
-			tag	+= "<th style='width: 3%;'>번호</th>";
+			tag	+= "<th style='width: 5%;'>번호</th>";
 			tag	+= "<th>아이디</th>";
 			tag	+= "<th>이름</th>";			
 			tag	+= "<th>상세정보</th>";			

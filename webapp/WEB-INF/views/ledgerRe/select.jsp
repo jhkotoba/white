@@ -133,7 +133,7 @@ $(document).ready(function(){
 			<input id="startDate" value="" type="date" class="form-control">
 			<input id="endDate" value="" type="date" class="form-control">			
 		</div>
-	</div>	
+	</div>
 	
 	<div id="searchBox" class="left">
 		<div class="input-group">

@@ -27,7 +27,10 @@ td, th{height:38px; vertical-align: middle !important;}
 .article{padding-left: 20px; padding-right: 20px;}
 .width-vmin{width:90vmin;}
 .width-full{width:100%;}
+.div-head{font-size:16px; }
 .default-height{height: 300px;}
+.default-border{border: 1px solid #dee2e6;padding:10px;}
+.updown-spacing{margin-top: 10px; margin-bottom: 15px;}
 
 .delete{color : red !important;}
 .update{color : blue !important;}

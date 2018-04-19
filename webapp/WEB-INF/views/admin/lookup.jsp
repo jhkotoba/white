@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="contextPath" value="<%=request.getContextPath()%>"></c:set>
 
-<script type="text/javascript" src="${contextPath}/resources/js/admin/lookup.js?ver=0.005"></script>
+<script type="text/javascript" src="${contextPath}/resources/js/admin/lookup.js?ver=0.006"></script>
 <script type="text/javascript">
 $(document).ready(function(){
 	
@@ -17,14 +17,17 @@ $(document).ready(function(){
 		type: 'POST',
 		url: common.path()+'/admin/selectAuthList.ajax',
 		dataType: 'json',
-		//async : false,
+		async : false,
 	    success : function(data) {
 	    	
 			$("#authList").empty();
 			
 			let tag = "";
-			for(let i=0; i<data.length; i++){
-				tag += "<input id='auth_"+data[i].authNmSeq+"' name='authChk' type='checkbox' value='none'>"+data[i].authNm;
+			for(let i=0; i<data.length; i++){				
+				tag += "<div class='form-check form-check-inline'>";
+				tag += "<input type='checkbox' name='authChk' id='auth_"+data[i].authNmSeq+"'' class='form-check-input' value='none'>";
+				tag += "<label class='form-check-label' for='auth_"+data[i].authNmSeq+"'>"+data[i].authNm+"</label>";
+				tag += "</div>";				
 			}			
 			$("#authList").append(tag);
 	    },
@@ -60,7 +63,7 @@ $(document).ready(function(){
 		}
 	});
 	
-	$("#authClose").on("click button", function(event){
+	$("#authClose").on("click button", function(){
 		$("#userView").hide();
 		$("#userNum").text("");
 		$("#userNo").val("");
@@ -73,7 +76,7 @@ $(document).ready(function(){
 	$("#authSave").on("click button", function(event){
 		let userNo = $("#userNo").val();		
 		let inList = new Array();
-		let delList = new Array();
+		let delList = new Array();		
 		
 		let name = "";
 		let seq = "";
@@ -91,6 +94,10 @@ $(document).ready(function(){
 			return;
 		}else if(inList.length <= 0 && delList.length <= 0){
 			alert("추가하거나 삭제할 대상이 없습니다.");
+			return;
+		}
+		
+		if(!confirm("수정한 내용을 저장하시겠습니까?")){
 			return;
 		}
 		
@@ -117,10 +124,10 @@ $(document).ready(function(){
 		    	}
 		    	msg += " 되었습니다.";
 		    	alert(msg);
-		    	$('#closeInfo').trigger('click');
+		    	$('#authClose').trigger('click');
 			},
 			error : function(xhr, stat, err) {
-				alert("inDelAuthList error");
+				alert("error");
 			}
 		});
 	});
@@ -175,13 +182,13 @@ $(document).ready(function(){
 		</div>	
 	</div>
 
-	<div id="userView" style="display: none;">
+	<div id="userView" class="width-vmin" style="display: none;">
 		<input id="userNo" type="hidden" value="">
 		<div class="space left" style="height: 10px;"></div>
 		<h6 class="space left">사용자 상세정보</h6>
 		<table class='table table-striped table-sm table-bordered'>		
 			<tr>
-				<th>번호</th>
+				<th style="width: 5%">번호</th>
 				<th>아이디</th>
 				<th>이름</th>
 			</tr>
@@ -190,14 +197,20 @@ $(document).ready(function(){
 				<td><span id="userId"></span></td>
 				<td><span id="userNm"></span></td>
 			</tr>			
-		</table>		
-		<div id="authList"></div>		
-		<button id="authClose" type="button" class="btn btn-secondary">Close</button>
-		<button id="authSave" type="button" class="btn btn-primary">Save changes</button>
-		<div class="space" style="height: 30px;"></div>
+		</table>
+		<div>
+			<span class="width-full div-head">권한설정</span>
+			<div id="authList" class="default-border">
+			</div>
+		</div>	
+		
+		<div class="updown-spacing">
+			<button id="authClose" type="button" class="btn btn-secondary">Close</button>
+			<button id="authSave" type="button" class="btn btn-secondary">Save changes</button>
+		</div>
 	</div>
 	
-	<div>
+	<div class="width-vmin">
 		<div id="userList">	
 		</div>
 		
