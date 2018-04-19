@@ -6,7 +6,8 @@
 <script type="text/javascript">
 $(document).ready(function(){
 	
-	
+	let date = new Date();
+	$("#searchDate").val(date.getFullYear() + "-" + (date.getMonth() + 1));	
 	
 	
 	$("#monthTab").on("click", function(){
@@ -35,7 +36,11 @@ $(document).ready(function(){
 	</ul>
 	<div class="tab-content" id="myTabContent">
 		<div class="tab-pane fade show active" id="month" role="tabpanel" aria-labelledby="monthTab">
-			<input value="" type="text" class="form-control">
+			<div class="updown-spacing">
+				<button>prev</button>
+				<input id="searchDate" value="" type="text" class="form-control">
+				<button>next</button>
+			</div>
 		</div>
 		<div class="tab-pane fade" id="year" role="tabpanel" aria-labelledby="yearTab">
 		

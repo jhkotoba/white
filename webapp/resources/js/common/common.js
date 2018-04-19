@@ -12,10 +12,12 @@ $(document).ready(function(){
 	}
 });
 
+//ajax 시작할때 실행되는 영역
 $(document).ajaxSend(function() {
 	 $(".blind").show();
 });
 
+//ajax 성공하면 실행되는 영역
 $(document).ajaxComplete(function() {
 	$(".blind").hide();
 });
