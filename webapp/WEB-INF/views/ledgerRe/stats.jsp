@@ -1,18 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<c:set var="contextPath" value="<%=request.getContextPath()%>"></c:set>
 
 <script type="text/javascript">
-$(document).ready(function(){
-	
-	let date = new Date();
-	$("#searchDate").val(date.getFullYear() + "-" + (date.getMonth() + 1));	
-	
-	
+$(document).ready(function(){	
 	$("#monthTab").on("click", function(){
 		
-	});
+	});	
 	$("#yearTab").on("click", function(){
 		
 	});
@@ -37,9 +31,8 @@ $(document).ready(function(){
 	<div class="tab-content" id="myTabContent">
 		<div class="tab-pane fade show active" id="month" role="tabpanel" aria-labelledby="monthTab">
 			<div class="updown-spacing">
-				<button>prev</button>
-				<input id="searchDate" value="" type="text" class="form-control">
-				<button>next</button>
+				<div></div>					
+				<div></div>				
 			</div>
 		</div>
 		<div class="tab-pane fade" id="year" role="tabpanel" aria-labelledby="yearTab">

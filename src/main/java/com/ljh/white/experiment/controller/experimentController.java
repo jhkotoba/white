@@ -5,40 +5,24 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.ljh.white.common.collection.WhiteMap;
+
 @Controller
 public class experimentController {
 	
 	@RequestMapping(value="/experiment")
 	public String experiment(HttpServletRequest request){
-		System.out.println("experiment");
+		System.out.println("experiment start");
 		
-		request.setAttribute("sidePage", null);		
-		request.setAttribute("sectionPage", "experiment/experiment.jsp");
-		return "white.jsp";
-	}
-	
-	@RequestMapping(value="/experiment/exitTimer.do")
-	public String exitTime(HttpServletRequest request){
-		System.out.println("exitTime");
+		WhiteMap param = new WhiteMap(request);
 		
-		request.setAttribute("sidePage", null);		
-		request.setAttribute("sectionPage", "experiment/exitTimer.jsp");
-		return "white.jsp";
-	}
-	
-	@RequestMapping(value="/experiment/cssDemo.do")
-	public String cssDemo(HttpServletRequest request){
-		System.out.println("cssDemo");
-		request.setAttribute("sidePage", null);		
-		request.setAttribute("sectionPage", "experiment/cssDemo.jsp");
-		return "white.jsp";
-	}
-	
-	@RequestMapping(value="/experiment/roofTest.do")
-	public String roofTest(HttpServletRequest request){
-		System.out.println("roofTest");
-		request.setAttribute("sidePage", null);		
-		request.setAttribute("sectionPage", "experiment/roofTest.jsp");
+		String navUrl = param.getString("navUrl");
+		String sideUrl = param.getString("sideUrl");
+		
+		request.setAttribute("navUrl", navUrl);
+		request.setAttribute("sideUrl", sideUrl);
+
+		request.setAttribute("sectionPage", navUrl.replace("/", "")+sideUrl+".jsp");
 		return "white.jsp";
 	}
 }
