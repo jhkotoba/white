@@ -23,6 +23,7 @@
 
 
 <script type="text/javascript" src="${contextPath}/resources/js/common/common.js?ver=0.003"></script>
+<script type="text/javascript" src="${contextPath}/resources/js/common/calendar.js?ver=0.010"></script>
 </head>
 <body>
 	<header class='header'>	
