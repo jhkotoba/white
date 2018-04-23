@@ -4,49 +4,24 @@
 <c:set var="contextPath" value="<%=request.getContextPath()%>"></c:set>
 
 
-<style>
-.calendar{position:absolute; height: 200px; width:200px; border: 1px solid #dee2e6; background: white;}
+<link href="dist/css/datepicker.min.css" rel="stylesheet" type="text/css">
+<script src="dist/js/datepicker.min.js"></script>
 
+<!-- Include English language -->
+<script src="dist/js/i18n/datepicker.en.js"></script>
 
-</style>
-
+<link rel="stylesheet" href="${contextPath}/resources/css/air-datepicker/datepicker.min.css" type="text/css"/>
+<script type="text/javascript" src="${contextPath}/resources/js/air-datepicker/datepicker.min.js"></script>
+<script type="text/javascript" src="${contextPath}/resources/js/air-datepicker/i18n/datepicker.ko.js"></script>
 
 <script type="text/javascript">
 $(document).ready(function(){
-	let cal1 = whiteCalendar("searchDate1", "2011-11-22");
-	let cal2 = whiteCalendar("searchDate2", "3333-11-22");
-	let cal3 = whiteCalendar("searchDate3", "4444-11-22");
-	let cal4 = whiteCalendar("searchDate4", "5555-11-22");	
+	
 });
 
 
 </script>
 
+<input type='text' class='datepicker-here' data-language='ko' />
 
-<div class="article">
-	<div id="searchDate1">	
-	</div>
-	<br><br>
-	
-	<div id="searchDate2">	
-	</div>
-	<br><br>
-	
-	<table border="1">
-		<tr>
-			<th>Test</th>
-		</tr>
-		<tr>
-			<td>
-				<div id="searchDate3">	
-			</td>
-		</tr>
-	</table>
-	<br><br>
-	
-	<div id="searchDate4">	
-	<br><br>
-</div>
-
-<div name="calendar"></div>
 

@@ -10,28 +10,28 @@ function whiteCalendar(id, date){
 		let day = date.getDate();
 		month = month < 10 ? '0' + month : '' + month;
 		day = day < 10 ? '0' + day : '' + day;		
-		return new calendar(id, date.getFullYear()+"-"+month+"-"+day);
+		return new _calendar(id, date.getFullYear()+"-"+month+"-"+day);
 	}else{
-		return new calendar(id, date);
+		return new _calendar(id, date);
 	}	
 }
 
-let calendar = function(id, date){	
+let _calendar = function(id, date){	
 	this.target = document.getElementById(id);
-	this.date = date;
-	this.option = {
-		monthTitle : [ "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ],
-		weekTitle : [ "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
-		dateFormat : "yyyy-mm-dd"
-	};
+	this.date = date;	
 	
-	this.calendar = calFn.create();
+	this.calendar = whiteCalendar.create();
 	
 	//this.calendar 
 };
 
-let calFn = {
-	
+let whiteCalendar = {
+		
+	option : {
+		monthTitle : [ "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ],
+		weekTitle : [ "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+		dateFormat : "yyyy-mm-dd"
+	},	
 	create : function(){
 		console.log("calFn.create");
 	}

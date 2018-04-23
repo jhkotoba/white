@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="contextPath" value="<%=request.getContextPath()%>"></c:set>
 
-<script type="text/javascript" src="${contextPath}/resources/js/ledgerRe/record.js?ver=0.011"></script>
+<script type="text/javascript" src="${contextPath}/resources/js/ledgerRe/record.js?ver=0.015"></script>
 <script type="text/javascript">
 $(document).ready(function(){
 	
@@ -130,11 +130,11 @@ $(document).ready(function(){
 			<div class="input-group-prepend">
 				<span class="input-group-text span-fs nsrb">날짜</span>
 			</div>
-			<input id="startDate" value="" type="date" class="form-control">
-			<input id="endDate" value="" type="date" class="form-control">			
+			<input id="startDate" value="" type="text" class="datepicker-here form-control" data-language='ko'>
+			<input id="endDate" value="" type="text" class="datepicker-here form-control" data-language='ko'>			
 		</div>
 	</div>
-	
+
 	<div id="searchBox" class="left">
 		<div class="input-group">
 						

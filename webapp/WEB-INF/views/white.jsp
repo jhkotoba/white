@@ -7,23 +7,30 @@
 <html>
 <head>
 <meta charset=UTF-8>
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<!-- <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> -->
 <title>whiteHome</title>
-<link rel="stylesheet" href="${contextPath}/resources/css/white.css?ver=0.013" type="text/css" />
-<link rel="stylesheet" href="${contextPath}/resources/css/btn.css" type="text/css" />
-<link rel="stylesheet" href="${contextPath}/resources/css/icon.css" type="text/css" />
+
+<!-- jQuery -->
+<script type="text/javascript" src="${contextPath}/resources/js/common/jquery/jquery-3.2.1.min.js"></script>
+
+<!-- Bootstrap -->
 <link rel="stylesheet" href="${contextPath}/resources/css/bootstrap/bootstrap.css" type="text/css" />
 <%-- <link rel="stylesheet" href="${contextPath}/resources/bootstrap/css/bootstrap-reboot.css" type="text/css" />
 <link rel="stylesheet" href="${contextPath}/resources/bootstrap/css/bootstrap-grid.css" type="text/css" /> --%>
-
-
-<script type="text/javascript" src="${contextPath}/resources/js/common/jquery/jquery-3.2.1.min.js"></script>
 <script type="text/javascript" src="${contextPath}/resources/js/bootstrap/bootstrap.js"></script>
 <%-- <script type="text/javascript" src="${contextPath}/resources/bootstrap/js/bootstrap.bundle.js"></script> --%>
 
+<!-- Air Datepicker -->
+<link rel="stylesheet" href="${contextPath}/resources/css/air-datepicker/datepicker.min.css" type="text/css"/>
+<script type="text/javascript" src="${contextPath}/resources/js/air-datepicker/datepicker.min.js"></script>
+<script type="text/javascript" src="${contextPath}/resources/js/air-datepicker/i18n/datepicker.ko.js"></script>
 
+
+<link rel="stylesheet" href="${contextPath}/resources/css/white.css?ver=0.013" type="text/css" />
+<link rel="stylesheet" href="${contextPath}/resources/css/btn.css" type="text/css" />
+<link rel="stylesheet" href="${contextPath}/resources/css/icon.css" type="text/css" />
 <script type="text/javascript" src="${contextPath}/resources/js/common/common.js?ver=0.003"></script>
-<script type="text/javascript" src="${contextPath}/resources/js/common/calendar.js?ver=0.010"></script>
+
 </head>
 <body>
 	<header class='header'>	

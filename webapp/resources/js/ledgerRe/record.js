@@ -11,7 +11,9 @@ $(document).ready(function(){
 			rec.sync(event.target);
 			break;
 		}
-	});	
+	});
+	
+	
 });
 
 let rec = {
@@ -222,8 +224,7 @@ let rec = {
 				tag += "<tr>";			
 				tag += "<td>"+n+"</td>";			
 				tag += "<td><input id='delete_"+i+"' type='checkbox' onchange='rec.sync(this)' title='삭제 체크박스'></td>";			
-				tag += "<td><input id='date_"+i+"' type='date' class='form-control form-control-sm' value='"+this.recList[i].recordDate.split(' ')[0]+"'>";
-				tag += "<input id='time_"+i+"' type='time' class='form-control form-control-sm' value='"+this.recList[i].recordDate.split(' ')[1]+"'></td>";
+				tag += "<td><input id='date_"+i+"' type='text' class='form-control form-control-sm' value='"+this.recList[i].recordDate+"'></td>";
 				tag += "<td><input id='position_"+i+"' type='text' class='form-control form-control-sm' value='"+this.recList[i].position+"'>";
 				tag += "<input id='content_"+i+"' type='text' class='form-control form-control-sm' value='"+this.recList[i].content+"'></td>";
 				tag += "<td><select id='purSeq_"+i+"' class='custom-select custom-select-sm slt-fs'>";			
@@ -297,8 +298,7 @@ let rec = {
 				tag += "<td rowspan='6'><input id='delete_"+i+"' type='checkbox' onchange='rec.sync(this)' title='삭제 체크박스'></td></tr>";
 				
 				tag += "<tr><th>날짜*</th>";
-				tag += "<td><input id='date_"+i+"' type='date' class='form-control form-control-sm' value='"+this.recList[i].recordDate.split(' ')[0]+"'>";
-				tag += "<input id='time_"+i+"' type='time' class='form-control form-control-sm' value='"+this.recList[i].recordDate.split(' ')[1]+"'></td></tr>";
+				tag += "<td><input id='date_"+i+"' type='text' class='form-control form-control-sm' value='"+this.recList[i].recordDate+"'></td></tr>";				
 				
 				tag += "<tr><th>위치/내용*</th>";
 				tag += "<td><input id='position_"+i+"' type='text' class='form-control form-control-sm' value='"+this.recList[i].position+"'>";
@@ -354,6 +354,19 @@ let rec = {
 		}
 		$("#ledgerReList").append(tag);
 		
+		//Air Datepicker 설정
+		for(let i=this.recList.length-1; i>=0; i--){			
+			$("#date_"+i).datepicker({
+				language: 'ko',
+				timepicker: true,
+				onSelect: function() {
+					//rec.sync 연결
+					$("#ledgerReList #date_"+i).trigger('change');
+				}
+			});
+			$("#date_"+i).data('datepicker');	
+		}
+		
 	},
 		
 	appSel : function(target, idx){
@@ -381,13 +394,10 @@ let rec = {
 		let name = target.id.split('_')[0];
 		let idx = target.id.split('_')[1];
 		
-		switch(name){
+		switch(name){		
 		
 		case "date" :
-			this.recList[idx].recordDate = String(target.value) + " " + this.recList[idx].recordDate.split(' ')[1];
-			break;
-		case "time" :
-			this.recList[idx].recordDate = this.recList[idx].recordDate.split(' ')[0] + " " + String(target.value);
+			this.recList[idx].recordDate = String(target.value);
 			break;
 		case "delete" :
 			if( $(target).is(":checked") === true ){				
