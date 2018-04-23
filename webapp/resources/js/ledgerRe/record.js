@@ -200,9 +200,12 @@ let rec = {
 			tag += "<th style='width: 30px;'>순번</th>";
 			tag += "<th style='width: 30px;'>삭제</th>";
 			tag	+= "<th>날짜*</th>";
-			tag	+= "<th>위치 / 내용*</th>";
-			tag	+= "<th>목적* / 상세목적</th>";
-			tag	+= "<th>사용수단* / (이동대상)</th>";
+			tag	+= "<th>위치</th>";
+			tag	+= "<th>내용*</th>";
+			tag	+= "<th>목적*</th>";
+			tag	+= "<th>상세목적</th>";
+			tag	+= "<th>사용수단*</th>";
+			tag	+= "<th>이동대상</th>";
 			tag	+= "<th>수입 지출*</th>";
 			tag += "</tr>";		
 			
@@ -225,8 +228,8 @@ let rec = {
 				tag += "<td>"+n+"</td>";			
 				tag += "<td><input id='delete_"+i+"' type='checkbox' onchange='rec.sync(this)' title='삭제 체크박스'></td>";			
 				tag += "<td><input id='date_"+i+"' type='text' class='form-control form-control-sm' value='"+this.recList[i].recordDate+"'></td>";
-				tag += "<td><input id='position_"+i+"' type='text' class='form-control form-control-sm' value='"+this.recList[i].position+"'>";
-				tag += "<input id='content_"+i+"' type='text' class='form-control form-control-sm' value='"+this.recList[i].content+"'></td>";
+				tag += "<td><input id='position_"+i+"' type='text' class='form-control form-control-sm' value='"+this.recList[i].position+"'></td>";
+				tag += "<td><input id='content_"+i+"' type='text' class='form-control form-control-sm' value='"+this.recList[i].content+"'></td>";
 				tag += "<td><select id='purSeq_"+i+"' class='custom-select custom-select-sm slt-fs'>";			
 				if(Number(this.recList[i].purSeq) === -1){
 					tag += "<option value=-1>excel</option>";
@@ -236,8 +239,8 @@ let rec = {
 					String(this.recList[i].purSeq) === String(this.purList[j].purSeq) ? selected = "selected='selected'" : selected = "";
 					tag += "<option "+selected+" value='"+this.purList[j].purSeq+"'>"+this.purList[j].purpose+"</option>";
 				}	
-				tag += "</select>";
-				tag += "<select id='purDtlSeq_"+i+"' class='custom-select custom-select-sm slt-fs'>";
+				tag += "</select></td>";
+				tag += "<td><select id='purDtlSeq_"+i+"' class='custom-select custom-select-sm slt-fs'>";
 				tag += "<option value=''>선택</option>";			
 				for(let j=0; j<this.purDtlList.length; j++){				
 					if(String(this.recList[i].purSeq) === String(this.purDtlList[j].purSeq)){
@@ -252,8 +255,8 @@ let rec = {
 					String(this.recList[i].bankSeq) === String(this.bankList[j].bankSeq) ? selected = "selected='selected'" : selected = "";
 					tag += "<option "+selected+" value='"+this.bankList[j].bankSeq+"'>"+this.bankList[j].bankName+"("+this.bankList[j].bankAccount+")</option>";
 				}
-				tag += "</select>";
-				tag += "<select id='moveSeq_"+i+"' "+disabled+" class='custom-select custom-select-sm slt-fs'>";
+				tag += "</select></td>";
+				tag += "<td><select id='moveSeq_"+i+"' "+disabled+" class='custom-select custom-select-sm slt-fs'>";
 				tag += "<option value=''>선택</option>";
 				tag += "<option "+(this.recList[i].moveSeq === '0' ? "selected='selected'" : "")+" value=0>현금</option>";		
 				for(let j=0; j<this.bankList.length; j++){
@@ -298,7 +301,7 @@ let rec = {
 				tag += "<td rowspan='6'><input id='delete_"+i+"' type='checkbox' onchange='rec.sync(this)' title='삭제 체크박스'></td></tr>";
 				
 				tag += "<tr><th>날짜*</th>";
-				tag += "<td><input id='date_"+i+"' type='text' class='form-control form-control-sm' value='"+this.recList[i].recordDate+"'></td></tr>";				
+				tag += "<td><input id='date_"+i+"' type='text' class='form-control form-control-sm' value='"+this.recList[i].recordDate+"' readonly></td></tr>";				
 				
 				tag += "<tr><th>위치/내용*</th>";
 				tag += "<td><input id='position_"+i+"' type='text' class='form-control form-control-sm' value='"+this.recList[i].position+"'>";
@@ -480,10 +483,7 @@ let rec = {
 			// 빈값, null 체크
 			if(this.recList[i].date === '' || this.recList[i].date === null){
 				check = {check : false, msg : j + "행의 날짜 데이터가 입력되지 않았습니다."};
-				break;
-			}else if(this.recList[i].time === '' || this.recList[i].time === null){
-				check = {check : false, msg : j + "행의 시간 데이터가 입력되지 않았습니다."};
-				break;
+				break;			
 			}else if(this.recList[i].content === '' || this.recList[i].content === null){
 				check = {check : false, msg : j + "행의 내용이 입력되지 않았습니다."};
 				break;
@@ -593,8 +593,7 @@ let rec = {
 		let bind = "";
 		classNm === "redLine" ? bind = true : bind = false;		
 
-		$("#date_"+idx).addClass(classNm).prop("readOnly", bind);
-		$("#time_"+idx).addClass(classNm).prop("readOnly", bind);
+		$("#date_"+idx).addClass(classNm).prop("readOnly", bind);		
 		$("#content_"+idx).addClass(classNm).prop("readOnly", bind);
 		$("#position_"+idx).addClass(classNm).prop("readOnly", bind);
 		$("#purSeq_"+idx).addClass(classNm).prop("disabled", bind);
@@ -606,8 +605,7 @@ let rec = {
 	
 	removeClass : function(idx, classNm){		
 		
-		$("#date_"+idx).removeClass(classNm);
-		$("#time_"+idx).removeClass(classNm);
+		$("#date_"+idx).removeClass(classNm);		
 		$("#content_"+idx).removeClass(classNm);
 		$("#position_"+idx).removeClass(classNm);
 		$("#purSeq_"+idx).removeClass(classNm);
@@ -618,8 +616,7 @@ let rec = {
 		
 		if(classNm === "redLine"){
 			
-			$("#date_"+idx).prop("readOnly", false);
-			$("#time_"+idx).prop("readOnly", false);
+			$("#date_"+idx).prop("readOnly", false);			
 			$("#content_"+idx).prop("readOnly", false);
 			$("#position_"+idx).prop("readOnly", false);
 			$("#purSeq_"+idx).prop("disabled", false);

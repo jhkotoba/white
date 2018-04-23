@@ -36,7 +36,7 @@ let recIn = {
 	},
 	
 	add : function(){
-		this.inList.push({date: isDate.today(), time: isTime.curTime(), position:'', content:'', purSeq: '', purDtlSeq: '', bankSeq: '', moveSeq: '', money: ''});
+		this.inList.push({date: isDate.today()+" "+isTime.curTime(), position:'', content:'', purSeq: '', purDtlSeq: '', bankSeq: '', moveSeq: '', money: ''});
 		return this;
 	},
 	
@@ -82,9 +82,6 @@ let recIn = {
 			// 빈값, null 체크
 			if(this.inList[i].date === '' || this.inList[i].date === null){
 				check = {check : false, msg : (i+1) + "행의 날짜 데이터가 입력되지 않았습니다."};
-				break;
-			}else if(this.inList[i].time === '' || this.inList[i].time === null){
-				check = {check : false, msg : (i+1) + "행의 시간 데이터가 입력되지 않았습니다."};
 				break;
 			}else if(this.inList[i].content === '' || this.inList[i].content === null){
 				check = {check : false, msg : (i+1) + "행의 내용이 입력되지 않았습니다."};
@@ -158,9 +155,12 @@ let recIn = {
 			tag	+= "<tr>";
 			tag += "<th>no</th>";
 			tag	+= "<th>날짜*</th>";
-			tag	+= "<th>위치 / 내용*</th>";
-			tag	+= "<th>목적* / 상세목적</th>";
-			tag	+= "<th>사용수단* / (이동대상)</th>";
+			tag	+= "<th>위치</th>";
+			tag	+= "<th>내용*</th>";
+			tag	+= "<th>목적*</th>";
+			tag	+= "<th>상세목적</th>";
+			tag	+= "<th>사용수단*</th>";
+			tag	+= "<th>이동대상</th>";
 			tag	+= "<th>수입 지출*</th>";
 			tag += "</tr>";
 		
@@ -168,10 +168,9 @@ let recIn = {
 			
 				tag += "<tr>";			
 				tag += "<td>"+(i+1)+"</td>";
-				tag += "<td><input id='date_"+i+"' type='date' class='form-control form-control-sm' value='"+this.inList[i].date+"'>";
-				tag += "<input id='time_"+i+"' type='time' class='form-control form-control-sm' value='"+this.inList[i].time+"'></td>";
-				tag += "<td><input id='position_"+i+"' type='text' class='form-control form-control-sm' value='"+this.inList[i].position+"'>";			
-				tag += "<input id='content_"+i+"' type='text' class='form-control form-control-sm' value='"+this.inList[i].content+"'></td>";			
+				tag += "<td><input id='date_"+i+"' type='text' class='form-control form-control-sm' value='"+this.inList[i].date+"'></td>";
+				tag += "<td><input id='position_"+i+"' type='text' class='form-control form-control-sm' value='"+this.inList[i].position+"'></td>";			
+				tag += "<td><input id='content_"+i+"' type='text' class='form-control form-control-sm' value='"+this.inList[i].content+"'></td>";			
 				tag += "<td><select id='purSeq_"+i+"' class='custom-select custom-select-sm slt-fs' onchange='recIn.sync(this); recIn.appSel(this,"+i+");'>";
 				tag += "<option value=''>선택</option>";
 				tag += "<option value=0>금액이동</option>";			
@@ -179,8 +178,8 @@ let recIn = {
 					this.inList[i].purSeq === String(this.purList[j].purSeq) ? selected = "selected='selected'" : selected = "";
 					tag += "<option "+selected+" value="+this.purList[j].purSeq+">"+this.purList[j].purpose+"</option>";
 				}				
-				tag += "</select>";
-				tag += "<select id='purDtlSeq_"+i+"' class='custom-select custom-select-sm slt-fs'>";
+				tag += "</select></td>";
+				tag += "<td><select id='purDtlSeq_"+i+"' class='custom-select custom-select-sm slt-fs'>";
 				tag += "<option value=''>선택</option>";
 				for(let j=0; j<this.purDtlList.length; j++){
 					if(this.inList[i].purSeq === String(this.purDtlList[j].purSeq)){
@@ -196,8 +195,8 @@ let recIn = {
 					this.inList[i].bankSeq === this.bankList[j].bankSeq ? selected = "selected='selected'" : selected = "";
 					tag += "<option "+selected+" value="+this.bankList[j].bankSeq+">"+this.bankList[j].bankName+"("+this.bankList[j].bankAccount+")</option>";
 				}				
-				tag += "</select>";
-				tag += "<select id='moveSeq_"+i+"' class='custom-select custom-select-sm slt-fs' disabled='disabled'>";
+				tag += "</select></td>";
+				tag += "<td><select id='moveSeq_"+i+"' class='custom-select custom-select-sm slt-fs' disabled='disabled'>";
 				tag += "<option value=''>선택</option>";
 				tag += "<option "+(this.inList[i].moveSeq === '0' ? "selected='selected'" : "")+" value=0>현금</option>";			
 				for(let j=0; j<this.bankList.length; j++){
@@ -222,8 +221,7 @@ let recIn = {
 				
 				tag += "<tr><td rowspan='6'>"+(i+1)+"</td></tr>";
 				tag	+= "<tr><th>날짜*</th>";
-				tag += "<td><input id='date_"+i+"' type='date' class='form-control form-control-sm' value='"+this.inList[i].date+"'>";
-				tag += "<input id='time_"+i+"' type='time' class='form-control form-control-sm' value='"+this.inList[i].time+"'></td></tr>";
+				tag += "<td><input id='date_"+i+"' type='text' class='form-control form-control-sm' value='"+this.inList[i].date+"' readonly></td></tr>";
 				
 				tag	+= "<tr><th>위치/내용*</th>";
 				tag += "<td><input id='position_"+i+"' type='text' class='form-control form-control-sm' value='"+this.inList[i].position+"'>";			
@@ -272,6 +270,19 @@ let recIn = {
 			
 		}
 		$("#ledgerReList").append(tag);
+		
+		//Air Datepicker 설정
+		for(let i=0; i<this.inList.length; i++){
+			$("#date_"+i).datepicker({
+				language: 'ko',
+				timepicker: true,
+				onSelect: function() {
+					//rec.sync 연결
+					$("#ledgerReList #date_"+i).trigger('change');
+				}
+			});
+			$("#date_"+i).data('datepicker');	
+		}
 	},
 	appSel : function(target, idx){	
 		$("#purDtlSeq_"+idx).empty();	

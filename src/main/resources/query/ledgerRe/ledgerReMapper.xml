@@ -164,7 +164,7 @@
 		)VALUES
 		<foreach collection="list" item="item" separator="),(" open="(" close=")">
 			#{item.userSeq}, 
-			CONCAT(CONCAT(#{item.date}, ' '), #{item.time}),
+			#{item.date},
 			#{item.position},
 			#{item.content}, 
 			#{item.purSeq},	

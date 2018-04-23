@@ -19,16 +19,16 @@ $(document).ready(function(){
 <div class="article">
 	<ul class="nav nav-tabs" id="" role="tablist">
 		<li class="nav-item">
-			<a class="nav-link text-secondary active nsrb" id="monthTab" data-toggle="tab" href="#month" role="tab" aria-controls="month" aria-selected="true">월별</a>
+			<a class="nav-link text-secondary active nsrb" id="monthTab" data-toggle="tab" href="#month" role="tab" aria-controls="month" aria-selected="true">Month</a>
 		</li>
 		<li class="nav-item">
-			<a class="nav-link text-secondary nsrb" id="yearTab" data-toggle="tab" href="#year" role="tab" aria-controls="profile" aria-selected="false">년별</a>
+			<a class="nav-link text-secondary nsrb" id="yearTab" data-toggle="tab" href="#year" role="tab" aria-controls="year" aria-selected="false">Year</a>
 		</li>
 		<li class="nav-item">
-			<a class="nav-link text-secondary nsrb" id="purposeTab" data-toggle="tab" href="#purpose" role="tab" aria-controls="contact" aria-selected="false">목적별</a>
+			<a class="nav-link text-secondary nsrb" id="purposeTab" data-toggle="tab" href="#purpose" role="tab" aria-controls="purpose" aria-selected="false">Purpose</a>
 		</li>
 	</ul>
-	<div class="tab-content" id="myTabContent">
+	<div class="tab-content" id="statsTap">
 		<div class="tab-pane fade show active" id="month" role="tabpanel" aria-labelledby="monthTab">
 			<div class="updown-spacing">
 				<div></div>					
