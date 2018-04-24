@@ -141,7 +141,46 @@
 		</foreach>
 	</select>
 	
-	
+	<!-- 월별 통계 조회  -->
+	<select id="selectMonthStatsList" resultType="whiteMap" parameterType="java.util.List">		
+		<foreach collection="list" item="item" separator="UNION ALL" >
+		SELECT #{item.ym} AS month,		
+			(
+			  SELECT SUM(money) FROM money_record_re
+			  WHERE user_seq = #{item.userSeq}
+			  AND record_date <![CDATA[ >= ]]> #{item.date}
+			  AND record_date <![CDATA[ <= ]]> LAST_DAY(#{item.date})
+			  AND pur_seq <![CDATA[ <> ]]> 0
+			  AND money <![CDATA[ > ]]> 0
+			) AS profit,
+			(
+			  SELECT SUM(money) FROM money_record_re
+			  WHERE user_seq = #{item.userSeq}
+			  AND record_date <![CDATA[ >= ]]> #{item.date}
+			  AND record_date <![CDATA[ <= ]]> LAST_DAY(#{item.date})
+			  AND pur_seq <![CDATA[ <> ]]> 0
+			  AND money <![CDATA[ < ]]> 0  
+			) AS expenditure
+		</foreach>
+		
+		
+		<!-- (
+		  select sum(money) FROM money_record_re
+		  where user_seq = 2
+		  and record_date >= '2017-12-01'
+		  and record_date <![CDATA[ <= ]]> LAST_DAY('2017-12-01')
+		  and pur_seq <![CDATA[ <> ]]> 0
+		  and money > 0
+		) AS inc,
+		(
+		  select sum(money) FROM money_record_re
+		  where user_seq = 2
+		  and record_date > LAST_DAY('2017-12-01' - interval 1 month)
+		  and record_date <![CDATA[ <= ]]> LAST_DAY('2017-12-01')
+		  and pur_seq <![CDATA[ <> ]]> 0
+		  and money <![CDATA[ < ]]> 0  
+		) AS exp -->
+	</select>
 	
 	
 	

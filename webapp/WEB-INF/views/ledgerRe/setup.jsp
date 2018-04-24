@@ -3,14 +3,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <script type="text/javascript">
-$(document).ready(function(){	
-	$("#monthTab").on("click", function(){
-		
-	});	
-	$("#yearTab").on("click", function(){
-		
-	});	
-});
 </script>
 
 <div class="article">
@@ -23,9 +15,11 @@ $(document).ready(function(){
 		</li>		
 	</ul>
 	<div class="tab-content" id="setupTap">
-		<div class="tab-pane fade show active" id="purpose" role="tabpanel" aria-labelledby="purposeTab">			
+		<div class="tab-pane fade show active" id="purpose" role="tabpanel" aria-labelledby="purposeTab">
+			<jsp:include page="./setup/purpose.jsp" flush="false" />		
 		</div>
-		<div class="tab-pane fade" id="bank" role="tabpanel" aria-labelledby="bankTab">		
+		<div class="tab-pane fade" id="bank" role="tabpanel" aria-labelledby="bankTab">	
+			<jsp:include page="./setup/bank.jsp" flush="false" />
 		</div>		
 	</div>
 </div>

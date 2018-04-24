@@ -1,6 +1,10 @@
 package com.ljh.white.ledgerRe.service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -313,5 +317,60 @@ public class LedgerReService {
 		
 		return resultMap;
 	}
+	
+	/**
+	 * 가계부 통계 조회
+	 * @param list
+	 * @return
+	 * @throws ParseException 
+	 */
+	public List<WhiteMap> selectStatsList(WhiteMap param) throws ParseException {
+		
+		int userSeq = param.getInt("userSeq");
+		List<WhiteMap> resultList = null;		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		
+		List<WhiteMap> dateList = new ArrayList<WhiteMap>();
+		Date date = sdf.parse(param.getString("date"));
+		Calendar cal = Calendar.getInstance();
+		
+		WhiteMap map = new WhiteMap();
+		
+		//통계구분
+		switch(param.getString("mode")){
+		case "month" :			
+			cal.setTime(date);
+			
+			cal.add(Calendar.MONTH, -11);
+			map.put("userSeq", userSeq);
+			map.put("date", sdf.format(cal.getTime()));
+			map.put("ym", map.getString("date").substring(0,7).replace("-", ""));	
+			dateList.add(map);
+			
+			for(int i=0; i<11; i++) {				
+				cal.add(Calendar.MONTH, 1);
+				
+				map = new WhiteMap();
+				map.put("userSeq", userSeq);
+				map.put("date", sdf.format(cal.getTime()));
+				map.put("ym", map.getString("date").substring(0,7).replace("-", ""));
+				dateList.add(map);
+			}
+			
+			resultList =  ledgerReMapper.selectMonthStatsList(dateList);
+			break;
+		case "year" :
+			break;
+		case "purpose" :
+			break;
+			
+			
+		case "used" :
+			break;
+		}
+		
+		return resultList;
+	}
+	
 	
 }

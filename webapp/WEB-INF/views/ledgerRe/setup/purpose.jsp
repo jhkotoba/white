@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="contextPath" value="<%=request.getContextPath()%>"></c:set>
 
-<script type="text/javascript" src="${contextPath}/resources/js/ledgerRe/purpose.js?ver=0.010"></script>
+<script type="text/javascript" src="${contextPath}/resources/js/ledgerRe/setup/purpose.js?ver=0.010"></script>
 <script type="text/javascript">
 $(document).ready(function(){
 	
@@ -70,25 +70,21 @@ $(document).ready(function(){
 });
 
 </script>
-
-<div class="article">	
-	<div id="purWidth" class="width-vmin">
-		<h6 class="nsrb">Purpose</h6>
-		<div class="btn-group" role="group">	
-			<button id="purAddBtn" type="button" class="btn btn-secondary btn-fs nsrb">추가</button>
-			<button id="purSaveBtn" type="button" class="btn btn-secondary btn-fs nsrb">목적 저장</button>
-			<button id="purCelBtn" type="button" class="btn btn-secondary btn-fs nsrb">취소</button>
-		</div>
-		<div id="purList"></div>	
-	</div>	
-	
-	<div id="purDtlWidth" class="width-vmin">
-		<h6 class="nsrb">Detail Purpose</h6>
-		<div class="btn-group" role="group">	
-			<button id="purDtlAddBtn" type="button" class="btn btn-secondary btn-fs nsrb">추가</button>
-			<button id="purDtlSaveBtn" type="button" class="btn btn-secondary btn-fs nsrb">상세목적 저장</button>
-			<button id="purDtlCelBtn" type="button" class="btn btn-secondary btn-fs nsrb">취소</button>
-		</div>
-		<div id="purDtlList"></div>
+<div class="space left"></div>
+<div id="purWidth" class="width-vmin">
+	<div class="btn-group" role="group">	
+		<button id="purAddBtn" type="button" class="btn btn-secondary btn-fs nsrb">추가</button>
+		<button id="purSaveBtn" type="button" class="btn btn-secondary btn-fs nsrb">목적 저장</button>
+		<button id="purCelBtn" type="button" class="btn btn-secondary btn-fs nsrb">취소</button>
 	</div>
+	<div id="purList"></div>	
+</div>	
+
+<div id="purDtlWidth" class="width-vmin">
+	<div class="btn-group" role="group">	
+		<button id="purDtlAddBtn" type="button" class="btn btn-secondary btn-fs nsrb">추가</button>
+		<button id="purDtlSaveBtn" type="button" class="btn btn-secondary btn-fs nsrb">상세목적 저장</button>
+		<button id="purDtlCelBtn" type="button" class="btn btn-secondary btn-fs nsrb">취소</button>
+	</div>
+	<div id="purDtlList"></div>
 </div>

@@ -3,17 +3,41 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <script type="text/javascript">
-$(document).ready(function(){	
+$(document).ready(function(){
+	
+	let statsList;
+	recordStats("month");
+	
 	$("#monthTab").on("click", function(){
-		
+		recordStats("month");
 	});	
 	$("#yearTab").on("click", function(){
-		
+		recordStats("year");
 	});
 	$("#purposeTab").on("click", function(){
-		
+		recordStats("purpose");
 	});
 });
+
+function recordStats(tap){
+	
+	let param = {};
+	param.mode = tap;
+	param.date = isDate.firstDay();
+	
+	$.ajax({		
+		type: 'POST',
+		url: common.path()+'/ledgerRe/selectStatsList.ajax',	
+		data: param,
+		dataType: 'json',
+	    success : function(data) {	    	
+	    	console.log(data);
+	    },
+	    error : function(request, status, error){
+	    	alert("error");
+	    }
+	});
+}
 </script>
 
 <div class="article">
@@ -30,20 +54,13 @@ $(document).ready(function(){
 	</ul>
 	<div class="tab-content" id="statsTap">
 		<div class="tab-pane fade show active" id="month" role="tabpanel" aria-labelledby="monthTab">
-			<div class="updown-spacing">
-				<div></div>					
-				<div></div>				
-			</div>
-		</div>
+			<div></div>
+		</div>		
 		<div class="tab-pane fade" id="year" role="tabpanel" aria-labelledby="yearTab">
-		
-		
-		
+			<div></div>
 		</div>
 		<div class="tab-pane fade" id="purpose" role="tabpanel" aria-labelledby="purposeTab">
-		
-		
-		
+			<div></div>
 		</div>
 	</div>
 </div>

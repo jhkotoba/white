@@ -1,5 +1,6 @@
 package com.ljh.white.ledgerRe.controller;
 
+import java.text.ParseException;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -154,6 +155,15 @@ public class LedgerReController {
 		WhiteMap param = new WhiteMap(request);		
 		WhiteMap resultMap = ledgerReService.inUpDelBankList(param);
 		request.setAttribute("result", new JSONObject(resultMap));		
+		return "result.jsp";
+	}
+	
+	@RequestMapping(value="/ledgerRe/selectStatsList.ajax" )
+	public String selectStatsList(HttpServletRequest request) throws ParseException{
+		logger.debug("selectStatsList Start");
+		
+		WhiteMap param = new WhiteMap(request);		
+		request.setAttribute("result", new JSONArray(ledgerReService.selectStatsList(param)));		
 		return "result.jsp";
 	}
 }

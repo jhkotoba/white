@@ -204,5 +204,14 @@ public class LedgerReMapper {
 		return sqlSession.selectOne("ledgerReMapper.selectIsUsedBank", list);		 
 	}
 	
+	/**
+	 * 가계부 월별 통계
+	 * @param list
+	 * @return
+	 */
+	public List<WhiteMap> selectMonthStatsList(List<WhiteMap> list) {		
+		return sqlSession.selectList("ledgerReMapper.selectMonthStatsList", list);		 
+	}
+	
 	
 }
