@@ -144,23 +144,23 @@
 	<!-- 월별 통계 조회  -->
 	<select id="selectMonthStatsList" resultType="whiteMap" parameterType="java.util.List">		
 		<foreach collection="list" item="item" separator="UNION ALL" >
-		SELECT #{item.ym} AS month,		
-			(
+		SELECT #{item.ym} AS date,		
+			IFNULL((
 			  SELECT SUM(money) FROM money_record_re
 			  WHERE user_seq = #{item.userSeq}
 			  AND record_date <![CDATA[ >= ]]> #{item.date}
 			  AND record_date <![CDATA[ <= ]]> LAST_DAY(#{item.date})
 			  AND pur_seq <![CDATA[ <> ]]> 0
 			  AND money <![CDATA[ > ]]> 0
-			) AS profit,
-			(
+			),0) AS plus,
+			IFNULL((
 			  SELECT SUM(money) FROM money_record_re
 			  WHERE user_seq = #{item.userSeq}
 			  AND record_date <![CDATA[ >= ]]> #{item.date}
 			  AND record_date <![CDATA[ <= ]]> LAST_DAY(#{item.date})
 			  AND pur_seq <![CDATA[ <> ]]> 0
 			  AND money <![CDATA[ < ]]> 0  
-			) AS expenditure
+			),0) AS minus
 		</foreach>
 	</select>
 	

@@ -5,7 +5,7 @@
 
 <script type="text/javascript" src="${contextPath}/resources/js/ledgerRe/record.js?ver=1.00"></script>
 <script type="text/javascript" src="${contextPath}/resources/js/memo/memo.js?ver=1.03"></script>
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js?ver=1.00"></script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
 	
