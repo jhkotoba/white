@@ -36,9 +36,11 @@ public class LedgerReController {
 		
 		String navUrl = param.getString("navUrl");
 		String sideUrl = param.getString("sideUrl");
+		String tab = param.getString("tab");
 		
 		request.setAttribute("navUrl", navUrl);
 		request.setAttribute("sideUrl", sideUrl);
+		request.setAttribute("tab", tab);
 		
 		request.setAttribute("sectionPage", navUrl.replace("/", "")+sideUrl+".jsp");
 		return "white.jsp";
@@ -163,7 +165,7 @@ public class LedgerReController {
 		logger.debug("selectStatsList Start");
 		
 		WhiteMap param = new WhiteMap(request);		
-		request.setAttribute("result", new JSONArray(ledgerReService.selectStatsList(param)));		
+		request.setAttribute("result", new JSONArray(ledgerReService.selectStatsList(param)));	
 		return "result.jsp";
 	}
 }

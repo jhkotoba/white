@@ -86,7 +86,7 @@
 		ORDER BY rec.record_date ASC,  rec.record_seq ASC				
 	</select>
 	
-	<!--  -->
+	<!-- 금전기록 해당날짜 이전 각각(현금, 은행등등) 금액 합산 조회 -->
 	<select id="selectCalPastRecord" resultType="whiteMap" parameterType="java.util.List">
 		SELECT
 		<foreach collection="list" item="item" separator=",">
@@ -103,6 +103,16 @@
 			  AND record_date <![CDATA[ < ]]>  #{item.startDate}
 			)AS ${item.bankName}	
 		</foreach>
+	</select>
+	
+	<!-- 금전기록 해당날짜 이전 금액(통합) 합산 조회 -->
+	<select id="selectCalPastAmountRecord" resultType="int" parameterType="whiteMap">		
+		SELECT
+			SUM(money)
+		FROM money_record_re
+		WHERE user_seq = #{userSeq}
+		AND record_date <![CDATA[ <= ]]> LAST_DAY(#{startDate})
+		AND pur_seq <![CDATA[ <> ]]> 0
 	</select>
 	
 	<!-- 목적 사용되는지 확인 -->
@@ -163,6 +173,8 @@
 			),0) AS minus
 		</foreach>
 	</select>
+	
+
 	
 	
 	

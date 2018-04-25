@@ -276,7 +276,7 @@ let pur = {
 		    	}else{
 		    		alert("추가:"+data.inCnt+"개, 수정:"+data.upCnt+"개, 삭제:"+data.delCnt+"개가 저장되었습니다.");
 		    	}		    	
-		    	white.submit($("#moveForm #navUrl").val(), $("#moveForm #sideUrl").val());
+		    	white.submit($("#moveForm #navUrl").val(), $("#moveForm #sideUrl").val(), "purpose");
 		    },
 		    error : function(xhr, stat, err) {
 		    	alert("insert, update, delete error");
@@ -594,7 +594,7 @@ let purDtl = {
 		    	}else{
 		    		alert("추가:"+data.inCnt+"개, 수정:"+data.upCnt+"개, 삭제:"+data.delCnt+"개가 저장되었습니다.");
 		    	}		    	
-		    	white.submit($("#moveForm #navUrl").val(), $("#moveForm #sideUrl").val());
+		    	white.submit($("#moveForm #navUrl").val(), $("#moveForm #sideUrl").val(), "purpose");
 		    },
 		    error : function(xhr, stat, err) {
 		    	alert("insert, update, delete error");

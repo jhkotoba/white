@@ -300,9 +300,12 @@ function getContextPath(){
 
 
 let white = {	
-	 submit : function(navUrl, sideUrl){
+	 submit : function(navUrl, sideUrl, tab){
 		$("#moveForm #navUrl").attr("value", navUrl);
 		$("#moveForm #sideUrl").attr("value", sideUrl);
+		if(!(tab === null || tab === undefined || tab === 'null' || tab === 'undefined' || tab === '' )){
+			$("#moveForm #tab").attr("value", tab);
+		}		
 		$("#moveForm").attr("method", "post");
 		$("#moveForm").attr("action", common.path()+navUrl).submit();
 	}

@@ -51,12 +51,21 @@ public class LedgerReMapper {
 	}
 	
 	/**
-	 * 금전기록 해당날짜 이전 각각 금액 합산 조회
+	 * 금전기록 해당날짜 이전 각각(현금, 은행등등) 금액 합산 조회
 	 * @param pastRec
 	 * @return
 	 */
 	public WhiteMap selectCalPastRecord(List<WhiteMap> list) {
 		return sqlSession.selectOne("ledgerReMapper.selectCalPastRecord", list);
+	}
+	
+	/**
+	 * 금전기록 해당날짜 이전 금액(통합) 합산 조회
+	 * @param AmountMon
+	 * @return
+	 */
+	public int selectCalPastAmountRecord(WhiteMap param) {
+		return sqlSession.selectOne("ledgerReMapper.selectCalPastAmountRecord", param);
 	}
 	
 	/**

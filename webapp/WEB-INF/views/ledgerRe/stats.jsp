@@ -42,8 +42,17 @@ function recordStats(tap, date){
 		url: common.path()+'/ledgerRe/selectStatsList.ajax',
 		data: param,
 		dataType: 'json',
-	    success : function(data) {	    	
-	    	statsDraw(data, tap);
+	    success : function(data) {
+	    	switch(tap){
+	    	case "month" :
+	    		statsMonthDraw(data);
+	    		break;
+	    	case "year" :
+	    		break;
+	    	case "purpose" :
+	    		break;
+	    	}
+	    	
 	    },
 	    error : function(request, status, error){
 	    	alert("error");
@@ -51,31 +60,51 @@ function recordStats(tap, date){
 	});
 }
 
-function statsDraw(stats, tap){
+//월별 통계
+function statsMonthDraw(stats){
+	console.log(stats);
 	
 	let combo = new Array();
-	let tag = {head:"<th>날짜</th>", plus:"<td>수입</td>", minus:"<td>지출</td>", sum:"<td>합계</td>"};
+	let line = new Array();
+	let comboTag = {head:"<th>날짜</th>", plus:"<td>수입</td>", minus:"<td>지출</td>", sum:"<td>합계</td>"};
+	let lineTag = {head:"<th>날짜</th>", amount:"<td>월별합계</td>"};
 	
 	combo.push(['date', '수입', '지출']);
-	for(let i=0; i<stats.length; i++){
-		//통계 차트
-		combo.push([stats[i].date, stats[i].plus, Math.abs(stats[i].minus)]);		
-		
-		//통계 표
-		tag.head += "<th>"+stats[i].date+"</th>";
-		tag.plus += "<td>"+stats[i].plus+"</td>";
-		tag.minus += "<td>"+stats[i].minus+"</td>";	
-		tag.sum += "<td>"+(stats[i].plus - Math.abs(stats[i].minus))+"</td>";	
-	}
-	//통계 표 그리기
-	$("#"+tap+"StatsList").append("<table class='table table-striped table-bordered table-sm'><tr>"
-			+tag.head+"</tr><tr>"+common.comma(tag.plus)+"</tr><tr>"+common.comma(tag.minus)+"</tr>"
-			+"<tr>"+common.comma(tag.sum)+"</tr></table>");
+	line.push(['date', '월별합계']);
+	let amount = stats[0].stAmount;
 	
-	//통계 차트 그리기
+	for(let i=0; i<stats.length; i++){
+		//월별 통계 차트
+		combo.push([stats[i].date, stats[i].plus, Math.abs(stats[i].minus)]);
+		
+		//월별 증감 차트
+		amount += (stats[i].plus - Math.abs(stats[i].minus));
+		line.push([stats[i].date, amount]);		
+		
+		//월별통계 표
+		comboTag.head += "<th>"+stats[i].date+"</th>";
+		comboTag.plus += "<td>"+stats[i].plus+"</td>";
+		comboTag.minus += "<td>"+stats[i].minus+"</td>";	
+		comboTag.sum += "<td>"+(stats[i].plus - Math.abs(stats[i].minus))+"</td>";
+		
+		//월별증감 표
+		lineTag.head += "<th>"+stats[i].date+"</th>";
+		lineTag.amount += "<td>"+amount+"</td>";
+	}
+	//월별통계 표 그리기
+	$("#monthStatsList").append("<table class='table table-striped table-bordered table-sm'><tr>"
+			+comboTag.head+"</tr><tr>"+common.comma(comboTag.plus)+"</tr><tr>"+common.comma(comboTag.minus)+"</tr>"
+			+"<tr>"+common.comma(comboTag.sum)+"</tr></table>");
+	
+	//월별증감 표 그리기
+	$("#monthAmountSumList").append("<table class='table table-striped table-bordered table-sm'><tr>"
+		+lineTag.head+"</tr><tr>"+common.comma(lineTag.amount)+"</tr></table>");	
+	
+	
+	//월별 통계 차트 그리기
 	google.charts.load('current', {'packages':['corechart']});	
-	google.charts.setOnLoadCallback(drawVisualization);	
-	function drawVisualization() {
+	google.charts.setOnLoadCallback(drawVisualization_combo);	
+	function drawVisualization_combo() {
 				
 		let data = google.visualization.arrayToDataTable(combo);
 
@@ -89,7 +118,29 @@ function statsDraw(stats, tap){
 			series: {5: {type: 'line'}}
 		};
 		
-		let chart = new google.visualization.ComboChart(document.getElementById(tap+'StatsChart'));		
+		let chart = new google.visualization.ComboChart(document.getElementById("monthStatsChart"));		
+		chart.draw(data, options);
+		
+	}
+	
+	//월별 증감 차트 그리기
+	google.charts.load('current', {'packages':['corechart']});	
+	google.charts.setOnLoadCallback(drawVisualization_line);	
+	function drawVisualization_line() {
+				
+		let data = google.visualization.arrayToDataTable(line);
+
+		let options = {
+			colors:['#6799FF'],
+			vAxis: {
+				baseline : 0,
+				viewWindowMode : 'maximized'
+			},
+			seriesType: 'bars',
+			series: {5: {type: 'line'}}
+		};
+		
+		let chart = new google.visualization.ComboChart(document.getElementById("monthAmountSumChart"));		
 		chart.draw(data, options);
 		
 	}
@@ -115,6 +166,8 @@ function statsDraw(stats, tap){
 		<div class="tab-pane fade show active" id="month" role="tabpanel" aria-labelledby="monthTab">
 			<div id="monthStatsChart"></div>
 			<div id="monthStatsList"></div>
+			<div id="monthAmountSumChart"></div>
+			<div id="monthAmountSumList"></div>
 		</div>		
 		<div class="tab-pane fade" id="year" role="tabpanel" aria-labelledby="yearTab">
 			<div id="yearStatsChart"></div>

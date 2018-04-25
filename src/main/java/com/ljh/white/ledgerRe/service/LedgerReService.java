@@ -58,7 +58,7 @@ public class LedgerReService {
 	 */
 	public List<WhiteMap> selectRecordList(WhiteMap param, List<WhiteMap> bankList) {		
 						
-		//금전기록 기간 조회시 기간 이전  각각 금액 데이터 합산
+		//금전기록 기간 조회시 기간 이전  각각(현금, 은행등등) 금액 데이터 합산
 		List<WhiteMap> pastRecList = new ArrayList<WhiteMap>();
 		WhiteMap map = null;
 		for(int i=0; i<bankList.size()+1; i++) {
@@ -342,8 +342,10 @@ public class LedgerReService {
 			cal.setTime(date);
 			
 			cal.add(Calendar.MONTH, -11);
+			
+			String startDate = sdf.format(cal.getTime());
 			map.put("userSeq", userSeq);
-			map.put("date", sdf.format(cal.getTime()));
+			map.put("date", startDate);
 			map.put("ym", map.getString("date").substring(0,7).replace("-", ""));	
 			dateList.add(map);
 			
@@ -358,6 +360,11 @@ public class LedgerReService {
 			}
 			
 			resultList =  ledgerReMapper.selectMonthStatsList(dateList);
+			
+			param.put("startDate", startDate);
+			int amount = ledgerReMapper.selectCalPastAmountRecord(param);
+			resultList.get(0).put("stAmount", amount);
+			
 			break;
 		case "year" :
 			break;
@@ -370,7 +377,5 @@ public class LedgerReService {
 		}
 		
 		return resultList;
-	}
-	
-	
+	}	
 }
