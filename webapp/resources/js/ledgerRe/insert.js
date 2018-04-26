@@ -3,17 +3,42 @@
  */
 
 $(document).ready(function(){
-	$('#ledgerReList').on("change keyup input", function(event) {
-		switch(event.target.id.split('_')[0]){		
-		case "purSeq" :			
-			recIn.appSel(event.target, event.target.id.split('_')[1]);
-		default :
-			recIn.sync(event.target);
+	$('#ledgerReList').on("change keyup click input", function(event) {
+		
+		switch(event.type){
+		
+		case "keyup":
+		case "change":
+			
+			switch(event.target.id.split('_')[0]){		
+			case "purSeq" :			
+				recIn.appSel(event.target, event.target.id.split('_')[1]);		
+			default :
+				recIn.sync(event.target);
+				break;
+			}
+			break;		
+		
+		case "click":			
+			let idx = Number(event.target.id.split('_')[1]);
+			let name = event.target.id.split('_')[0];			
+			if(name === "positionCopy" || name === "dateCopy" || name === "purSeqCopy" || name === "bankSeqCopy"){
+				let targetId = name.replace("Copy", "");				
+				let data = recIn.inList[idx][targetId];				
+				for(let i=idx+1; i<recIn.inList.length; i++){
+					recIn.inList[i][targetId] = data;
+					$("#"+targetId+"_"+i).val(data);
+					if(name === "purSeqCopy"){
+						recIn.appSel(data, i);						
+					}
+				}
+			}
 			break;
-		}
-	});	
+		}		
+	});
+	
+	
 });
-
 let recIn = {
 	inList : new Array(),
 	purList : new Array(),
@@ -148,7 +173,7 @@ let recIn = {
 		$("#ledgerReList").empty();
 		let selected = "";
 		let tag = "";
-		
+
 		if(window.innerWidth > 500){
 		
 			tag += "<table class='table table-striped table-sm table-bordered'>";
@@ -165,20 +190,22 @@ let recIn = {
 			tag += "</tr>";
 		
 			for(let i=0; i<this.inList.length; i++){
-			
 				tag += "<tr>";			
 				tag += "<td>"+(i+1)+"</td>";
-				tag += "<td><input id='date_"+i+"' type='text' class='form-control form-control-sm' value='"+this.inList[i].date+"'></td>";
-				tag += "<td><input id='position_"+i+"' type='text' class='form-control form-control-sm' value='"+this.inList[i].position+"'></td>";			
+				tag += "<td><div class='input-group'><input id='date_"+i+"' type='text' class='form-control form-control-sm' value='"+this.inList[i].date+"'>";
+				tag += "<input id='dateCopy_"+i+"' type='button' class='btn btn-outline-secondary btn-sm btn-sm-fs' value='↓' title='하단 일괄복사'></div></td>";
+				tag += "<td><div class='input-group'><input id='position_"+i+"' type='text' class='form-control form-control-sm' value='"+this.inList[i].position+"'>";
+				tag += "<input id='positionCopy_"+i+"' type='button' class='btn btn-outline-secondary btn-sm btn-sm-fs' value='↓' title='하단 일괄복사'></div></td>";			
 				tag += "<td><input id='content_"+i+"' type='text' class='form-control form-control-sm' value='"+this.inList[i].content+"'></td>";			
-				tag += "<td><select id='purSeq_"+i+"' class='custom-select custom-select-sm slt-fs' onchange='recIn.sync(this); recIn.appSel(this,"+i+");'>";
+				tag += "<td><div class='input-group'><select id='purSeq_"+i+"' class='custom-select custom-select-sm slt-fs' onchange='recIn.sync(this); recIn.appSel(\""+this.inList[i].purSeq+"\","+i+");'>";
 				tag += "<option value=''>선택</option>";
 				tag += "<option value=0>금액이동</option>";			
 				for(let j=0; j<this.purList.length; j++){
 					this.inList[i].purSeq === String(this.purList[j].purSeq) ? selected = "selected='selected'" : selected = "";
 					tag += "<option "+selected+" value="+this.purList[j].purSeq+">"+this.purList[j].purpose+"</option>";
 				}				
-				tag += "</select></td>";
+				tag += "</select>";
+				tag += "<input id='purSeqCopy_"+i+"' type='button' class='btn btn-outline-secondary btn-sm btn-sm-fs' value='↓' title='하단 일괄복사'></div></td>";
 				tag += "<td><select id='purDtlSeq_"+i+"' class='custom-select custom-select-sm slt-fs'>";
 				tag += "<option value=''>선택</option>";
 				for(let j=0; j<this.purDtlList.length; j++){
@@ -187,15 +214,16 @@ let recIn = {
 						tag += "<option "+selected+" value="+this.purDtlList[j].purDtlSeq+">"+this.purDtlList[j].purDetail+"</option>";
 					}
 				}	
-				tag += "</select></td>";
-				tag += "<td><select id='bankSeq_"+i+"' class='custom-select custom-select-sm slt-fs'>";
+				tag += "</select></td>";				
+				tag += "<td><div class='input-group'><select id='bankSeq_"+i+"' class='custom-select custom-select-sm slt-fs'>";
 				tag += "<option value=''>선택</option>";
 				tag += "<option "+(this.inList[i].bankSeq === '0' ? "selected='selected'" : "")+" value=0>현금</option>";			
 				for(let j=0; j<this.bankList.length; j++){
 					this.inList[i].bankSeq === this.bankList[j].bankSeq ? selected = "selected='selected'" : selected = "";
 					tag += "<option "+selected+" value="+this.bankList[j].bankSeq+">"+this.bankList[j].bankName+"("+this.bankList[j].bankAccount+")</option>";
 				}				
-				tag += "</select></td>";
+				tag += "</select>";
+				tag += "<input id='bankSeqCopy_"+i+"' type='button' class='btn btn-outline-secondary btn-sm btn-sm-fs' value='↓' title='하단 일괄복사'></div></td>";
 				tag += "<td><select id='moveSeq_"+i+"' class='custom-select custom-select-sm slt-fs' disabled='disabled'>";
 				tag += "<option value=''>선택</option>";
 				tag += "<option "+(this.inList[i].moveSeq === '0' ? "selected='selected'" : "")+" value=0>현금</option>";			
@@ -284,7 +312,7 @@ let recIn = {
 			$("#date_"+i).data('datepicker');	
 		}
 	},
-	appSel : function(target, idx){	
+	appSel : function(value, idx){
 		$("#purDtlSeq_"+idx).empty();	
 
 		let selected = "";
@@ -298,7 +326,7 @@ let recIn = {
 		$("#purDtlSeq_"+idx).append(tag);
 		
 		//move 셀렉트박스 금액이동이외 disabled 처리
-		if('0' === String(target.value)){			
+		if('0' === String(value)){			
 			$("#moveSeq_"+idx).removeAttr("disabled");
 		}else{
 			$("#moveSeq_"+idx).val('').prop("selected", true).attr("disabled","disabled");
