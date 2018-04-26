@@ -8,6 +8,7 @@
 $(document).ready(function(){
 	
 	recordStats("month");
+	$("#chartDate").val(isDate.firstDay());
 		
 	$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
 		switch(e.target.id){
@@ -62,15 +63,14 @@ function recordStats(tap, date){
 
 //월별 통계
 function statsMonthDraw(stats){
-	console.log(stats);
 	
 	let combo = new Array();
 	let line = new Array();
 	let comboTag = {head:"<th>날짜</th>", plus:"<td>수입</td>", minus:"<td>지출</td>", sum:"<td>합계</td>"};
-	let lineTag = {head:"<th>날짜</th>", amount:"<td>월별합계</td>"};
+	let lineTag = {head:"<th>날짜</th>", amount:"<td>월별자금</td>"};
 	
 	combo.push(['date', '수입', '지출']);
-	line.push(['date', '월별합계']);
+	line.push(['date', '월별자금']);
 	let amount = stats[0].stAmount;
 	
 	for(let i=0; i<stats.length; i++){
@@ -109,13 +109,19 @@ function statsMonthDraw(stats){
 		let data = google.visualization.arrayToDataTable(combo);
 
 		let options = {
-			colors:['#6799FF','#F15F5F'],
-			vAxis: {
-				baseline : 0,
-				viewWindowMode : 'maximized'
+			title : '월별 수익/지출',
+			titleTextStyle:{
+				color: 'black',
+				fontSize: 20,
+				bold: true,
+				italic: false
 			},
-			seriesType: 'bars',
-			series: {5: {type: 'line'}}
+			fontSize : 15,
+			colors:['#6799FF','#F15F5F'],			
+			vAxis: {
+				baseline : 0
+			},
+			seriesType: 'bars'
 		};
 		
 		let chart = new google.visualization.ComboChart(document.getElementById("monthStatsChart"));		
@@ -131,16 +137,22 @@ function statsMonthDraw(stats){
 		let data = google.visualization.arrayToDataTable(line);
 
 		let options = {
+			title:'월별 자금현황',
+			titleTextStyle:{
+				color: 'black',
+				fontSize: 20,
+				bold: true,
+				italic: false
+			},
+			fontSize : 15,
 			colors:['#6799FF'],
 			vAxis: {
 				baseline : 0,
-				viewWindowMode : 'maximized'
+				minValue: 0
 			},
-			seriesType: 'bars',
-			series: {5: {type: 'line'}}
 		};
 		
-		let chart = new google.visualization.ComboChart(document.getElementById("monthAmountSumChart"));		
+		let chart = new google.visualization.AreaChart(document.getElementById("monthAmountSumChart"));		
 		chart.draw(data, options);
 		
 	}
@@ -164,17 +176,24 @@ function statsMonthDraw(stats){
 	</ul>
 	<div class="tab-content" id="statsTap">
 		<div class="tab-pane fade show active" id="month" role="tabpanel" aria-labelledby="monthTab">
-			<div id="monthStatsChart"></div>
+			<div class="input-group w-25 updown-spacing">
+				<input id="chartDate" class="form-control" type="text" value="">
+				<div class="input-group-append">
+					<button class="btn btn-outline-secondary" type="button">Search</button>
+				</div>
+			</div>	
+			<div class="chart-height" id="monthStatsChart"></div>
 			<div id="monthStatsList"></div>
-			<div id="monthAmountSumChart"></div>
+			
+			<div class="chart-height" id="monthAmountSumChart"></div>
 			<div id="monthAmountSumList"></div>
 		</div>		
 		<div class="tab-pane fade" id="year" role="tabpanel" aria-labelledby="yearTab">
-			<div id="yearStatsChart"></div>
+			<div class="chart-height" id="yearStatsChart"></div>
 			<div id="yearStatsList"></div>
 		</div>
 		<div class="tab-pane fade" id="purpose" role="tabpanel" aria-labelledby="purposeTab">
-			<div id="purposeStatsChart"></div>
+			<div class="chart-height" id="purposeStatsChart"></div>
 			<div id="purposeStatsList"></div>
 		</div>
 	</div>

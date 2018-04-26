@@ -31,6 +31,7 @@ td, th{height:38px; vertical-align: middle !important;}
 .default-height{height: 300px;}
 .default-border{border: 1px solid #dee2e6;padding:10px;}
 .updown-spacing{margin-top: 10px; margin-bottom: 15px;}
+.chart-height{height: 500px;}
 
 .delete{color : red !important;}
 .update{color : blue !important;}
