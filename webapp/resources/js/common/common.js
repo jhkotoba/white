@@ -108,39 +108,45 @@ let isTime = {
 		let date = new Date();
 		
 		let hour = date.getHours() + hourData;
-		let minute = date.getMinutes() + minuteData;
-		let second = date.getSeconds() + secondData;
-			
 		if(hour<0){
 			hour = Math.abs(hour) % 24;			
 			hour = date.getHours() + (23 - hour);
 		}else if(hour>23){
 			hour = hour % 24;
-		}	
+		}
+		hour = hour < 10 ? '0' + hour : '' + hour;
 		
+		let minute = date.getMinutes() + minuteData;
 		if(minute<0){
 			minute = Math.abs(minute) % 60;			
 			minute = date.getMinutes() + (59 - minute);
 		}else if(minute>59){
 			minute = minute % 60;
 		}
+		minute = minute < 10 ? '0' + minute : '' + minute;
 		
-		if(second<0){
-			second = Math.abs(second) % 60;			
-			second = date.getSeconds() + (59 - second);
-		}else if(second>59){
-			second = second % 60;
+		let second = "";
+		if(emptyCheck.isNotEmpty(secondData)){
+			let second = date.getSeconds() + secondData;
+			if(second<0){
+				second = Math.abs(second) % 60;			
+				second = date.getSeconds() + (59 - second);
+			}else if(second>59){
+				second = second % 60;
+			}
+			
+			second = second < 10 ? ':0' + second : ':' + second;
 		}
 		
-		hour = hour < 10 ? '0' + hour : '' + hour;
-		minute = minute < 10 ? '0' + minute : '' + minute;
-		second = second < 10 ? '0' + second : '' + second;
-		
-		return hour+":"+minute+":"+second;
+		return hour+":"+minute+second;
 	},
 	//현재시간 반환  hh:mm:ss
 	curTime : function(){		
 		return this.timeProcess(0,0,0);
+	},
+	//현재시간 반환(시분)  hh:mm
+	curTime : function(){		
+		return this.timeProcess(0,0);
 	},
 	//현재시간 반환  (hh+hour):mm:ss
 	addCurHour : function(hour){

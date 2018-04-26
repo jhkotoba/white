@@ -39,7 +39,7 @@ td, th{height:38px; vertical-align: middle !important;}
 .scroll{overflow-y: auto;}
 .space{width:100%;}
 .blind{position:absolute !important; background:black; background : rgba(0, 0, 0, 0.2);  left:0 !important; top:0 !important; width: 100% !important; height: 100% !important; z-index:9999;}
-
+.bg-white{background: white !important;}
 /* font */
 @font-face { font-family: 'NanumSquareB'; src: url(../ttf/NanumSquareB.ttf) format('truetype'); }
 .nsb{font-family: 'NanumSquareB', serif;}

@@ -221,7 +221,7 @@ let recIn = {
 				
 				tag += "<tr><td rowspan='6'>"+(i+1)+"</td></tr>";
 				tag	+= "<tr><th>날짜*</th>";
-				tag += "<td><input id='date_"+i+"' type='text' class='form-control form-control-sm' value='"+this.inList[i].date+"' readonly></td></tr>";
+				tag += "<td><input id='date_"+i+"' type='text' class='form-control form-control-sm bg-white' value='"+this.inList[i].date+"' readonly></td></tr>";
 				
 				tag	+= "<tr><th>위치/내용*</th>";
 				tag += "<td><input id='position_"+i+"' type='text' class='form-control form-control-sm' value='"+this.inList[i].position+"'>";			
