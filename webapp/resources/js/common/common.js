@@ -173,7 +173,9 @@ let isTime = {
 }
 
 //공통함수
-let common = {	
+let common = {
+	platform : 'pc',
+	platformSize : 500,
 	//깊은복사
 	clone : function deepObjCopy (dupeObj) {
 		var retObj = new Object();

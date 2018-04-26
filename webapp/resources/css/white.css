@@ -6,6 +6,7 @@
 	.span-fs{font-size: 9px !important;}
 	.btn-fs{font-size: 9px !important;}
 	.btn-sm-fs{font-size: 9px !important;}
+	.chart-height{height: 200px;}
 	
 }
 /*pc*/
@@ -16,6 +17,7 @@
 	.span-fs{font-size: 16px !important;}
 	.btn-fs{font-size: 16px !important;}
 	.btn-sm-fs{font-size: 10px !important;}
+	.chart-height{height: 500px;}
 
 }
 
@@ -31,7 +33,7 @@ td, th{height:38px; vertical-align: middle !important;}
 .default-height{height: 300px;}
 .default-border{border: 1px solid #dee2e6;padding:10px;}
 .updown-spacing{margin-top: 10px; margin-bottom: 15px;}
-.chart-height{height: 500px;}
+
 
 .delete{color : red !important;}
 .update{color : blue !important;}

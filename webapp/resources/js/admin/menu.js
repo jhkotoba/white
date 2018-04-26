@@ -82,7 +82,7 @@ let nav = {
 		
 		let tag = "";
 		
-		if(window.innerWidth > 500){
+		if(window.innerWidth > common.platformSize){
 
 			tag += "<table class='table table-striped table-sm table-bordered'>";
 			tag	+= "<tr>";			
@@ -454,7 +454,7 @@ let side = {
 		$("#sideList").empty();		
 		let tag = "";
 		
-		if(window.innerWidth > 500){
+		if(window.innerWidth > common.platformSize){
 	
 			tag += "<table class='table table-striped table-sm table-bordered'>";
 			tag	+= "<tr>";			
