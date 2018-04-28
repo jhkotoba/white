@@ -146,7 +146,7 @@ function statsMonthDraw(stats){
 				baseline : 0,
 				viewWindowMode : window.innerWidth > common.platformSize ? '' : 'maximized'
 			},
-			seriesType: 'bars'			
+			seriesType: 'bars'
 		};
 		
 		let chart = new google.visualization.ComboChart(document.getElementById("monthStatsChart"));		
@@ -158,7 +158,7 @@ function statsMonthDraw(stats){
 	google.charts.load('current', {'packages':['corechart']});	
 	google.charts.setOnLoadCallback(drawVisualization_line);	
 	function drawVisualization_line() {
-				
+		
 		let data = google.visualization.arrayToDataTable(line);
 
 		let options = {
@@ -178,7 +178,7 @@ function statsMonthDraw(stats){
 				minValue: 0,
 				viewWindowMode : window.innerWidth > common.platformSize ? '' : 'maximized'
 			},
-		};		
+		};
 		
 		let chart = new google.visualization.AreaChart(document.getElementById("monthAmountSumChart"));		
 		chart.draw(data, options);
