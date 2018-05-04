@@ -319,12 +319,12 @@ public class LedgerReService {
 	}
 	
 	/**
-	 * 가계부 통계 조회
+	 * 가계부 통계 조회(수익, 지출, 누적)
 	 * @param list
 	 * @return
 	 * @throws ParseException 
 	 */
-	public List<WhiteMap> selectStatsList(WhiteMap param) throws ParseException {
+	public List<WhiteMap> selectMonthIEAStats(WhiteMap param) throws ParseException {
 		
 		int userSeq = param.getInt("userSeq");
 		List<WhiteMap> resultList = null;		
@@ -336,46 +336,88 @@ public class LedgerReService {
 		
 		WhiteMap map = new WhiteMap();
 		
-		//통계구분
-		switch(param.getString("mode")){
-		case "month" :			
-			cal.setTime(date);
+		cal.setTime(date);		
+		cal.add(Calendar.MONTH, -11);
+		
+		String startDate = sdf.format(cal.getTime());
+		map.put("userSeq", userSeq);
+		map.put("date", startDate);
+		map.put("ym", map.getString("date").substring(0,7).replace("-", ""));	
+		dateList.add(map);
+		
+		for(int i=0; i<11; i++) {				
+			cal.add(Calendar.MONTH, 1);
 			
-			cal.add(Calendar.MONTH, -11);
-			
-			String startDate = sdf.format(cal.getTime());
+			map = new WhiteMap();
 			map.put("userSeq", userSeq);
-			map.put("date", startDate);
-			map.put("ym", map.getString("date").substring(0,7).replace("-", ""));	
+			map.put("date", sdf.format(cal.getTime()));
+			map.put("ym", map.getString("date").substring(0,7).replace("-", ""));
 			dateList.add(map);
-			
-			for(int i=0; i<11; i++) {				
-				cal.add(Calendar.MONTH, 1);
-				
-				map = new WhiteMap();
-				map.put("userSeq", userSeq);
-				map.put("date", sdf.format(cal.getTime()));
-				map.put("ym", map.getString("date").substring(0,7).replace("-", ""));
-				dateList.add(map);
-			}
-			
-			resultList =  ledgerReMapper.selectMonthStatsList(dateList);
-			
-			param.put("startDate", startDate);
-			int amount = ledgerReMapper.selectCalPastAmountRecord(param);
-			resultList.get(0).put("stAmount", amount);
-			
-			break;
-		case "year" :
-			break;
-		case "purpose" :
-			break;
-			
-			
-		case "used" :
-			break;
 		}
 		
+		resultList =  ledgerReMapper.selectMonthIEAStats(dateList);
+		
+		param.put("startDate", startDate);
+		int amount = ledgerReMapper.selectCalPastAmountRecord(param);
+		resultList.get(0).put("stAmount", amount);
+		
 		return resultList;
-	}	
+	}
+	/**
+	 * 가계부 통계 조회(현금, 은행별)
+	 * @param list
+	 * @return
+	 * @throws ParseException 
+	 */
+	public List<WhiteMap> selectMonthCBStats(WhiteMap param) throws ParseException {
+		
+		List<WhiteMap> resultList = null;		
+		List<WhiteMap> bankList = this.selectBankList(param);		
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		
+		Date date = sdf.parse(param.getString("date"));
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);		
+		cal.add(Calendar.MONTH, -11);		
+		String startDate = sdf.format(cal.getTime());		
+		
+		//금전기록 기간 조회시 기간 이전  각각(현금, 은행등등) 금액 데이터 합산
+		List<WhiteMap> pastRecList = new ArrayList<WhiteMap>();
+		WhiteMap map = null;
+		for(int i=0; i<bankList.size()+1; i++) {
+			map = new WhiteMap();
+			if(i==0) {
+				map.put("bankName", "cash");
+				map.put("bankSeq", 0);				
+				map.put("userSeq", param.getInt("userSeq"));
+				map.put("startDate", startDate);
+			}else {
+				map.put("bankName", "bank"+(i-1));
+				map.put("bankSeq", bankList.get(i-1).getInt("bankSeq"));
+				map.put("userSeq", param.getInt("userSeq"));
+				map.put("startDate", startDate);
+			}
+			pastRecList.add(map);
+		}
+		WhiteMap pastRec = ledgerReMapper.selectCalPastRecord(pastRecList);		
+		
+		List<WhiteMap> CBList = new ArrayList<WhiteMap>();
+
+		for(int i=0; i<bankList.size(); i++) {
+			CBList.add(bankList.get(i).deepCopy());
+		}
+		
+		for(int i=0; i<CBList.size(); i++) {		
+			CBList.get(i).put("money", pastRec.get("bank"+i));			
+		}
+		map = new WhiteMap();
+		map.put("bankName", "cash");
+		map.put("bankSeq", 0);
+		map.put("cash", pastRec.get("cash"));
+		CBList.add(map);
+		
+		
+		return resultList;
+	}
 }

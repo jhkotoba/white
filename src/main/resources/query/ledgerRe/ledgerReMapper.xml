@@ -92,23 +92,25 @@
 		<foreach collection="list" item="item" separator=",">
 			(
 			  SELECT 
-			    SUM( 
-			      CASE
-			      WHEN bank_seq = #{item.bankSeq} THEN money
-			      WHEN move_seq = #{item.bankSeq} THEN ABS(money)
-			      END
-			    )
+			    IFNULL(
+				    SUM( 
+				      CASE
+				      WHEN bank_seq = #{item.bankSeq} THEN money
+				      WHEN move_seq = #{item.bankSeq} THEN ABS(money)
+				      END
+				    )
+				  ,0)
 			  FROM money_record_re
 			  WHERE user_seq = #{item.userSeq} 
 			  AND record_date <![CDATA[ < ]]>  #{item.startDate}
 			)AS ${item.bankName}	
-		</foreach>
+		</foreach>		
 	</select>
 	
 	<!-- 금전기록 해당날짜 이전 금액(통합) 합산 조회 -->
 	<select id="selectCalPastAmountRecord" resultType="int" parameterType="whiteMap">		
 		SELECT
-			SUM(money)
+			IFNULL(SUM(money),0) AS amount
 		FROM money_record_re
 		WHERE user_seq = #{userSeq}
 		AND record_date <![CDATA[ <= ]]> LAST_DAY(#{startDate})
@@ -151,8 +153,8 @@
 		</foreach>
 	</select>
 	
-	<!-- 월별 통계 조회  -->
-	<select id="selectMonthStatsList" resultType="whiteMap" parameterType="java.util.List">		
+	<!-- 월별 통계 조회(수입, 지출, 누적)  -->
+	<select id="selectMonthIEAStats" resultType="whiteMap" parameterType="java.util.List">		
 		<foreach collection="list" item="item" separator="UNION ALL" >
 		SELECT #{item.ym} AS date,		
 			IFNULL((

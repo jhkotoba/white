@@ -5,6 +5,7 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -103,6 +104,19 @@ public class WhiteMap extends HashMap<String, Object> {
 			list.add(map);
 		}		
 		return list;
+	}
+	
+	public WhiteMap deepCopy() {
+		
+		WhiteMap copyMap = new WhiteMap();
+		
+		Set<String> set = this.keySet();
+		Iterator<String> ite = set.iterator();
+		while(ite.hasNext()) {				
+			String key = ite.next();
+			copyMap.put(key, this.get(key));
+		}		
+		return copyMap;
 	}
 }
 

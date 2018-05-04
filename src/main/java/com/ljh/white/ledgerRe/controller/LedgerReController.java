@@ -160,12 +160,18 @@ public class LedgerReController {
 		return "result.jsp";
 	}
 	
-	@RequestMapping(value="/ledgerRe/selectStatsList.ajax" )
+	@RequestMapping(value="/ledgerRe/selectMonthStats.ajax" )
 	public String selectStatsList(HttpServletRequest request) throws ParseException{
 		logger.debug("selectStatsList Start");
 		
-		WhiteMap param = new WhiteMap(request);		
-		request.setAttribute("result", new JSONArray(ledgerReService.selectStatsList(param)));	
+		WhiteMap param = new WhiteMap(request);			
+		
+		JSONObject result = new JSONObject();
+		result.put("IEA", new JSONArray(ledgerReService.selectMonthIEAStats(param)));
+		result.put("CB", new JSONArray(ledgerReService.selectMonthCBStats(param)));
+			
+		request.setAttribute("result", result);	
+		
 		return "result.jsp";
 	}
 }

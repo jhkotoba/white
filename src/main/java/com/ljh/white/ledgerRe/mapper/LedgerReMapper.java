@@ -218,8 +218,8 @@ public class LedgerReMapper {
 	 * @param list
 	 * @return
 	 */
-	public List<WhiteMap> selectMonthStatsList(List<WhiteMap> list) {		
-		return sqlSession.selectList("ledgerReMapper.selectMonthStatsList", list);		 
+	public List<WhiteMap> selectMonthIEAStats(List<WhiteMap> list) {		
+		return sqlSession.selectList("ledgerReMapper.selectMonthIEAStats", list);		 
 	}
 	
 	
