@@ -169,6 +169,7 @@ public class LedgerReController {
 		JSONObject result = new JSONObject();
 		result.put("IEA", new JSONArray(ledgerReService.selectMonthIEAStats(param)));
 		result.put("CB", new JSONArray(ledgerReService.selectMonthCBStats(param)));
+		//result.put("P", new JSONArray(ledgerReService.selectMonthPStats(param)));
 			
 		request.setAttribute("result", result);	
 		

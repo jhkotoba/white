@@ -364,7 +364,7 @@ public class LedgerReService {
 		return resultList;
 	}
 	/**
-	 * 가계부 통계 조회(현금, 은행별)
+	 * 가계부 월별 통계 조회(현금, 은행별)
 	 * @param list
 	 * @return
 	 * @throws ParseException 
@@ -372,7 +372,8 @@ public class LedgerReService {
 	public List<WhiteMap> selectMonthCBStats(WhiteMap param) throws ParseException {
 		
 		List<WhiteMap> resultList = null;		
-		List<WhiteMap> bankList = this.selectBankList(param);		
+		List<WhiteMap> bankList = this.selectBankList(param);
+		int userSeq = param.getInt("userSeq");
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		
@@ -400,10 +401,10 @@ public class LedgerReService {
 			}
 			pastRecList.add(map);
 		}
-		WhiteMap pastRec = ledgerReMapper.selectCalPastRecord(pastRecList);		
+		WhiteMap pastRec = ledgerReMapper.selectCalPastRecord(pastRecList);	
 		
+		//은행리스트 복제, 현금추가
 		List<WhiteMap> CBList = new ArrayList<WhiteMap>();
-
 		for(int i=0; i<bankList.size(); i++) {
 			CBList.add(bankList.get(i).deepCopy());
 		}
@@ -417,7 +418,36 @@ public class LedgerReService {
 		map.put("cash", pastRec.get("cash"));
 		CBList.add(map);
 		
+		//현금, 은행별 시작날짜로부터 월별 합계 조회
+		WhiteMap listMap = new WhiteMap();		
+		List<WhiteMap> dateList = new ArrayList<WhiteMap>();
+			
+		for(int j=0; j<11; j++) {				
+			cal.add(Calendar.MONTH, 1);
+			
+			map = new WhiteMap();
+			map.put("userSeq", userSeq);
+			map.put("date", sdf.format(cal.getTime()));
+			map.put("ym", map.getString("date").substring(0,7).replace("-", ""));			
+			dateList.add(map);
+		}
+		listMap.put("CBList", CBList);
+		listMap.put("dateList", dateList);
 		
+		resultList =  ledgerReMapper.selectMonthCBStats(listMap);
+		pastRec.put("date", "prevDate");
+		resultList.add(0, pastRec);
 		return resultList;
+	}
+	
+	/**
+	 * 가계부 월별 통계 조회(목적별)
+	 * @param list
+	 * @return
+	 * @throws ParseException 
+	 */
+	public List<WhiteMap> selectMonthPStats(WhiteMap param) throws ParseException {
+		
+		return null;
 	}
 }

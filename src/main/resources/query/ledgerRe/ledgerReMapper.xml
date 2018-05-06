@@ -153,10 +153,10 @@
 		</foreach>
 	</select>
 	
-	<!-- 월별 통계 조회(수입, 지출, 누적)  -->
+	<!-- 가계부 월별 통계 조회(수입, 지출, 누적)  -->
 	<select id="selectMonthIEAStats" resultType="whiteMap" parameterType="java.util.List">		
 		<foreach collection="list" item="item" separator="UNION ALL" >
-		SELECT #{item.ym} AS date,		
+		SELECT #{item.ym} AS date,
 			IFNULL((
 			  SELECT SUM(money) FROM money_record_re
 			  WHERE user_seq = #{item.userSeq}
@@ -174,6 +174,41 @@
 			  AND money <![CDATA[ < ]]> 0  
 			),0) AS minus
 		</foreach>
+	</select>
+	
+	<!-- 가계부 월별 통계 조회(현금, 은행별)  -->
+	<select id="selectMonthCBStats" resultType="whiteMap" parameterType="whiteMap">
+	 <foreach collection="dateList" item="date" separator="UNION ALL" >
+		SELECT
+			'${date.ym}' AS date,
+			<foreach collection="CBList" item="bank" separator="," >
+			IFNULL((
+			  SELECT			  	
+			  	SUM( 
+			      CASE
+			      WHEN bank_seq = '${bank.bankSeq}' THEN money
+			      WHEN move_seq = '${bank.bankSeq}' THEN ABS(money)
+			      END
+			    ) 			    
+			  FROM money_record_re
+			  WHERE user_seq = '${date.userSeq}'
+			  AND record_date <![CDATA[ >= ]]> '${date.date}'
+			  AND record_date <![CDATA[ <= ]]> LAST_DAY('${date.date}')
+			),0) AS	<choose>
+						<when test="bank.bankSeq == 0">
+							cash
+						</when>
+						<otherwise>
+							bank${bank.bankSeq}
+						</otherwise>
+					</choose>
+			</foreach>
+		</foreach>
+	</select>
+	
+	<!-- 가계부 월별 통계 조회(목적별)  -->
+	<select id="selectMonthPStats" resultType="whiteMap" parameterType="whiteMap">
+		SELECT 1
 	</select>
 	
 

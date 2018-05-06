@@ -42,13 +42,15 @@ function monthStats(date){
 		dataType: 'json',
 	    success : function(data) {
 	    	monthIEAStatsDraw(data.IEA);
+	    	monthCBStatsDraw(data.CB);
+	    	//monthPStatsDraw(data.P);
 	    },
 	    error : function(request, status, error){
 	    	alert("error");
 	    } 
 	});
 }
-//월별 통계
+//가계부 월별 통계 조회(수익, 지출, 누적)
 function monthIEAStatsDraw(IEA){
 	
 	let combo = new Array();
@@ -169,6 +171,19 @@ function monthIEAStatsDraw(IEA){
 		let chart = new google.visualization.AreaChart(document.getElementById("monthAmountSumChart"));		
 		chart.draw(data, options);		
 	}	
+}
+
+//가계부 월별 통계 조회(현금, 은행별)
+function monthCBStatsDraw(BC){
+	
+	console.log(BC);
+	
+}
+
+//가계부 월별 통계 조회(목적졀)
+function monthPStatsDraw(P){
+	
+	
 }
 </script>
 

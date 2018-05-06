@@ -214,12 +214,30 @@ public class LedgerReMapper {
 	}
 	
 	/**
-	 * 가계부 월별 통계
+	 * 가계부 월별 통계 조회(수익, 지출, 누적)
 	 * @param list
 	 * @return
 	 */
 	public List<WhiteMap> selectMonthIEAStats(List<WhiteMap> list) {		
 		return sqlSession.selectList("ledgerReMapper.selectMonthIEAStats", list);		 
+	}
+	
+	/**
+	 * 가계부 월별 통계 조회(현금, 은행별)
+	 * @param list
+	 * @return
+	 */
+	public List<WhiteMap> selectMonthCBStats(WhiteMap listMap) {		
+		return sqlSession.selectList("ledgerReMapper.selectMonthCBStats", listMap);		 
+	}
+	
+	/**
+	 * 가계부 월별 통계 조회(목적별)
+	 * @param list
+	 * @return
+	 */
+	public List<WhiteMap> selectMonthPStats(WhiteMap listMap) {		
+		return sqlSession.selectList("ledgerReMapper.selectMonthPStats", listMap);		 
 	}
 	
 	
