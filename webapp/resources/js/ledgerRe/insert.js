@@ -174,7 +174,7 @@ let recIn = {
 		let selected = "";
 		let tag = "";
 
-		if(window.innerWidth > common.platformSize){
+		if(window.innerWidth > common.pfs){
 		
 			tag += "<table class='table table-striped table-sm table-bordered'>";
 			tag	+= "<tr>";

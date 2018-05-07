@@ -18,11 +18,9 @@ public class experimentController {
 		
 		String navUrl = param.getString("navUrl");
 		String sideUrl = param.getString("sideUrl");
-		String tab = param.getString("tab");
 		
 		request.setAttribute("navUrl", navUrl);
 		request.setAttribute("sideUrl", sideUrl);
-		request.setAttribute("tab", tab);
 
 		request.setAttribute("sectionPage", navUrl.replace("/", "")+sideUrl+".jsp");
 		return "white.jsp";

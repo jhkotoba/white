@@ -143,7 +143,7 @@ $(document).ready(function(){
 						width:'80%',
 						height:'300px'
 					},
-					pieHole: 0.4,
+					pieHole: 0.4
 				};
 
 				let chart = new google.visualization.PieChart(document.getElementById('donutChart'));

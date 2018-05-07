@@ -75,8 +75,7 @@
 	
 	<form id="moveForm" action="">
 		<input id="navUrl" name="navUrl" type="hidden" value="${navUrl}"></input>
-		<input id="sideUrl" name="sideUrl" type="hidden" value="${sideUrl}"></input>
-		<input id="tab" name="tab" type="hidden" value="${tab}"></input>
+		<input id="sideUrl" name="sideUrl" type="hidden" value="${sideUrl}"></input>		
 	</form>
 	
 	<div class="blind" style="display: none;">

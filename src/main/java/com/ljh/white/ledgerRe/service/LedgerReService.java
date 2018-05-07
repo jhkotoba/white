@@ -147,7 +147,7 @@ public class LedgerReService {
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
 	public int insertRecordList(WhiteMap param) {
 		
-		List<WhiteMap> list = param.getListWhiteMap("inList");
+		List<WhiteMap> list = param.convertJsonStrToListWhiteMap("inList");
 		
 		for(int i=0; i<list.size(); i++) {
 			list.get(i).put("userSeq", param.getInt("userSeq"));
@@ -163,8 +163,8 @@ public class LedgerReService {
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
 	public WhiteMap updateDeleteRecordList(WhiteMap param) {
 		
-		List<WhiteMap> upList = param.getListWhiteMap("upList");
-		List<WhiteMap> delList = param.getListWhiteMap("delList");
+		List<WhiteMap> upList = param.convertJsonStrToListWhiteMap("upList");
+		List<WhiteMap> delList = param.convertJsonStrToListWhiteMap("delList");
 		
 		WhiteMap resultMap = new WhiteMap();
 		if(upList.size() > 0 ) {			
@@ -190,9 +190,9 @@ public class LedgerReService {
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
 	public WhiteMap inUpDelPurList(WhiteMap param) {
 		
-		List<WhiteMap> inList = param.getListWhiteMap("inList");
-		List<WhiteMap> upList = param.getListWhiteMap("upList");
-		List<WhiteMap> delList = param.getListWhiteMap("delList");
+		List<WhiteMap> inList = param.convertJsonStrToListWhiteMap("inList");
+		List<WhiteMap> upList = param.convertJsonStrToListWhiteMap("upList");
+		List<WhiteMap> delList = param.convertJsonStrToListWhiteMap("delList");
 		
 		WhiteMap resultMap = new WhiteMap();
 		
@@ -237,9 +237,9 @@ public class LedgerReService {
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
 	public WhiteMap inUpDelPurDtlList(WhiteMap param) {
 		
-		List<WhiteMap> inList = param.getListWhiteMap("inList");
-		List<WhiteMap> upList = param.getListWhiteMap("upList");
-		List<WhiteMap> delList = param.getListWhiteMap("delList");
+		List<WhiteMap> inList = param.convertJsonStrToListWhiteMap("inList");
+		List<WhiteMap> upList = param.convertJsonStrToListWhiteMap("upList");
+		List<WhiteMap> delList = param.convertJsonStrToListWhiteMap("delList");
 		
 		WhiteMap resultMap = new WhiteMap();
 		
@@ -282,9 +282,9 @@ public class LedgerReService {
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
 	public WhiteMap inUpDelBankList(WhiteMap param) {
 		
-		List<WhiteMap> inList = param.getListWhiteMap("inList");
-		List<WhiteMap> upList = param.getListWhiteMap("upList");
-		List<WhiteMap> delList = param.getListWhiteMap("delList");
+		List<WhiteMap> inList = param.convertJsonStrToListWhiteMap("inList");
+		List<WhiteMap> upList = param.convertJsonStrToListWhiteMap("upList");
+		List<WhiteMap> delList = param.convertJsonStrToListWhiteMap("delList");
 		
 		WhiteMap resultMap = new WhiteMap();
 		
@@ -413,6 +413,7 @@ public class LedgerReService {
 		listMap.put("dateList", this.getDateList(param, 4));
 		resultList =  ledgerReMapper.selectMonthPStats(listMap);
 		
+		resultList.add(0, this.convertPurListToPurMap(purList));
 		return resultList;
 	}
 	
@@ -436,10 +437,10 @@ public class LedgerReService {
 		
 		String startDate = "";
 		if("".equals(param.getString("date")) || null == param.getString("date")) {
-			startDate = sdf.format(cal.getTime());
+			cal.add(Calendar.MONTH, cnt);	
+			startDate = sdf.format(cal.getTime());					
 		}else {
-			Date date = sdf.parse(param.getString("date") );
-			
+			Date date = sdf.parse(param.getString("date"));			
 			cal.setTime(date);		
 			cal.add(Calendar.MONTH, cnt);
 			startDate = sdf.format(cal.getTime());
@@ -460,5 +461,19 @@ public class LedgerReService {
 			dateList.add(map);
 		}
 		return dateList;
+	}
+	
+	/**
+	 * 목적리스트  (ListWhiteMap) 
+	 * purList에서 목적시퀀스번을 Key로 목적이름을 value로 한 WhiteMap 객체 생성
+	 * @return
+	 */
+	private WhiteMap convertPurListToPurMap(List<WhiteMap> purList) {
+		WhiteMap purMap = new WhiteMap();
+		
+		for(int i=0; i<purList.size(); i++) {
+			purMap.put(purList.get(i).getString("purSeq"), purList.get(i).getString("purpose"));
+		}
+		return purMap;
 	}
 }

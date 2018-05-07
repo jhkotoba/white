@@ -5,9 +5,9 @@ $(document).ready(function(){
 	let filter = "win16|win32|win64|mac|macintel";
 	if(navigator.platform){
 		if(0 > filter.indexOf(navigator.platform.toLowerCase())){
-			common.platform = "mobile";
+			common.pf = "mobile";
 		}else{
-			common.platform = "pc";
+			common.pf = "pc";
 		}
 	}
 });
@@ -173,9 +173,9 @@ let isTime = {
 }
 
 //공통함수
-let common = {
-	platform : 'pc',
-	platformSize : 500,
+let common = {	
+	pf : 'pc',	//platform	
+	pfs : 500,	//platformSize
 	//깊은복사
 	clone : function deepObjCopy (dupeObj) {
 		var retObj = new Object();
@@ -308,12 +308,9 @@ function getContextPath(){
 
 
 let white = {	
-	 submit : function(navUrl, sideUrl, tab){
+	 submit : function(navUrl, sideUrl){
 		$("#moveForm #navUrl").attr("value", navUrl);
-		$("#moveForm #sideUrl").attr("value", sideUrl);
-		if(!(tab === null || tab === undefined || tab === 'null' || tab === 'undefined' || tab === '' )){
-			$("#moveForm #tab").attr("value", tab);
-		}		
+		$("#moveForm #sideUrl").attr("value", sideUrl);				
 		$("#moveForm").attr("method", "post");
 		$("#moveForm").attr("action", common.path()+navUrl).submit();
 	}

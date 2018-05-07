@@ -216,6 +216,7 @@
 		  		SELECT ABS(SUM(money)) FROM money_record_re
 			    WHERE user_seq = #{date.userSeq}
 			    AND pur_seq = #{pur.purSeq}
+			    AND money <![CDATA[ < ]]> 0
 			    AND record_date <![CDATA[ >= ]]> #{date.date}
 			    AND record_date <![CDATA[ <= ]]> LAST_DAY(#{date.date})
 		  	) AS pur${pur.purSeq}
