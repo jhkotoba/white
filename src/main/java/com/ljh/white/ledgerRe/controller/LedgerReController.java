@@ -164,12 +164,12 @@ public class LedgerReController {
 	public String selectStatsList(HttpServletRequest request) throws ParseException{
 		logger.debug("selectStatsList Start");
 		
-		WhiteMap param = new WhiteMap(request);			
+		WhiteMap param = new WhiteMap(request);		
 		
-		JSONObject result = new JSONObject();
+		JSONObject result = new JSONObject();		
 		result.put("IEA", new JSONArray(ledgerReService.selectMonthIEAStats(param)));
 		result.put("CB", new JSONArray(ledgerReService.selectMonthCBStats(param)));
-		//result.put("P", new JSONArray(ledgerReService.selectMonthPStats(param)));
+		result.put("P", new JSONArray(ledgerReService.selectMonthPStats(param)));
 			
 		request.setAttribute("result", result);	
 		

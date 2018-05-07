@@ -326,43 +326,18 @@ public class LedgerReService {
 	 */
 	public List<WhiteMap> selectMonthIEAStats(WhiteMap param) throws ParseException {
 		
-		int userSeq = param.getInt("userSeq");
-		List<WhiteMap> resultList = null;		
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		List<WhiteMap> resultList = null;	
 		
-		List<WhiteMap> dateList = new ArrayList<WhiteMap>();
-		Date date = sdf.parse(param.getString("date"));
-		Calendar cal = Calendar.getInstance();
-		
-		WhiteMap map = new WhiteMap();
-		
-		cal.setTime(date);		
-		cal.add(Calendar.MONTH, -11);
-		
-		String startDate = sdf.format(cal.getTime());
-		map.put("userSeq", userSeq);
-		map.put("date", startDate);
-		map.put("ym", map.getString("date").substring(0,7).replace("-", ""));	
-		dateList.add(map);
-		
-		for(int i=0; i<11; i++) {				
-			cal.add(Calendar.MONTH, 1);
-			
-			map = new WhiteMap();
-			map.put("userSeq", userSeq);
-			map.put("date", sdf.format(cal.getTime()));
-			map.put("ym", map.getString("date").substring(0,7).replace("-", ""));
-			dateList.add(map);
-		}
-		
+		List<WhiteMap> dateList = this.getDateList(param, 12);
 		resultList =  ledgerReMapper.selectMonthIEAStats(dateList);
 		
-		param.put("startDate", startDate);
+		param.put("startDate", dateList.get(0).getString("date"));
 		int amount = ledgerReMapper.selectCalPastAmountRecord(param);
 		resultList.get(0).put("stAmount", amount);
 		
 		return resultList;
 	}
+	
 	/**
 	 * 가계부 월별 통계 조회(현금, 은행별)
 	 * @param list
@@ -371,17 +346,9 @@ public class LedgerReService {
 	 */
 	public List<WhiteMap> selectMonthCBStats(WhiteMap param) throws ParseException {
 		
-		List<WhiteMap> resultList = null;		
-		List<WhiteMap> bankList = this.selectBankList(param);
-		int userSeq = param.getInt("userSeq");
-		
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		
-		Date date = sdf.parse(param.getString("date"));
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(date);		
-		cal.add(Calendar.MONTH, -11);		
-		String startDate = sdf.format(cal.getTime());		
+		List<WhiteMap> resultList = null;
+		List<WhiteMap> bankList = this.selectBankList(param);		
+		List<WhiteMap> dateList = this.getDateList(param, 12);
 		
 		//금전기록 기간 조회시 기간 이전  각각(현금, 은행등등) 금액 데이터 합산
 		List<WhiteMap> pastRecList = new ArrayList<WhiteMap>();
@@ -392,12 +359,12 @@ public class LedgerReService {
 				map.put("bankName", "cash");
 				map.put("bankSeq", 0);				
 				map.put("userSeq", param.getInt("userSeq"));
-				map.put("startDate", startDate);
+				map.put("startDate", dateList.get(0).getString("date"));
 			}else {
-				map.put("bankName", "bank"+(i-1));
+				map.put("bankName", "bank"+bankList.get(i-1).getInt("bankSeq"));
 				map.put("bankSeq", bankList.get(i-1).getInt("bankSeq"));
 				map.put("userSeq", param.getInt("userSeq"));
-				map.put("startDate", startDate);
+				map.put("startDate", dateList.get(0).getString("date"));
 			}
 			pastRecList.add(map);
 		}
@@ -420,22 +387,13 @@ public class LedgerReService {
 		
 		//현금, 은행별 시작날짜로부터 월별 합계 조회
 		WhiteMap listMap = new WhiteMap();		
-		List<WhiteMap> dateList = new ArrayList<WhiteMap>();
-			
-		for(int j=0; j<11; j++) {				
-			cal.add(Calendar.MONTH, 1);
-			
-			map = new WhiteMap();
-			map.put("userSeq", userSeq);
-			map.put("date", sdf.format(cal.getTime()));
-			map.put("ym", map.getString("date").substring(0,7).replace("-", ""));			
-			dateList.add(map);
-		}
+		
 		listMap.put("CBList", CBList);
 		listMap.put("dateList", dateList);
 		
 		resultList =  ledgerReMapper.selectMonthCBStats(listMap);
 		pastRec.put("date", "prevDate");
+		pastRec.put("bankList", bankList);
 		resultList.add(0, pastRec);
 		return resultList;
 	}
@@ -447,7 +405,60 @@ public class LedgerReService {
 	 * @throws ParseException 
 	 */
 	public List<WhiteMap> selectMonthPStats(WhiteMap param) throws ParseException {
+		List<WhiteMap> resultList = null;
+		List<WhiteMap> purList = this.selectPurList(param);
 		
-		return null;
+		WhiteMap listMap = new WhiteMap();
+		listMap.put("purList", purList);
+		listMap.put("dateList", this.getDateList(param, 4));
+		resultList =  ledgerReMapper.selectMonthPStats(listMap);
+		
+		return resultList;
+	}
+	
+	
+	
+	/**
+	 * 통계용 내부 날짜리스트 계산용 메소드
+	 * @return
+	 * @throws ParseException 
+	 */
+	private List<WhiteMap> getDateList(WhiteMap param, int count) throws ParseException{
+		
+		WhiteMap map = new WhiteMap();
+		
+		List<WhiteMap> dateList = new ArrayList<WhiteMap>();
+		int userSeq = param.getInt("userSeq");
+		int cnt = ((Math.abs(count)-1)*-1);
+				
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Calendar cal = Calendar.getInstance();
+		
+		String startDate = "";
+		if("".equals(param.getString("date")) || null == param.getString("date")) {
+			startDate = sdf.format(cal.getTime());
+		}else {
+			Date date = sdf.parse(param.getString("date") );
+			
+			cal.setTime(date);		
+			cal.add(Calendar.MONTH, cnt);
+			startDate = sdf.format(cal.getTime());
+		}		
+		
+		map.put("userSeq", userSeq);
+		map.put("date", startDate);
+		map.put("ym", map.getString("date").substring(0,7).replace("-", ""));	
+		dateList.add(map);
+		
+		for(int i=0; i<(count-1); i++) {			
+			cal.add(Calendar.MONTH, 1);
+			
+			map = new WhiteMap();
+			map.put("userSeq", userSeq);
+			map.put("date", sdf.format(cal.getTime()));
+			map.put("ym", map.getString("date").substring(0,7).replace("-", ""));
+			dateList.add(map);
+		}
+		return dateList;
 	}
 }

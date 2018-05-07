@@ -43,7 +43,7 @@ function monthStats(date){
 	    success : function(data) {
 	    	monthIEAStatsDraw(data.IEA);
 	    	monthCBStatsDraw(data.CB);
-	    	//monthPStatsDraw(data.P);
+	    	monthPStatsDraw(data.P);
 	    },
 	    error : function(request, status, error){
 	    	alert("error");
@@ -127,18 +127,23 @@ function monthIEAStatsDraw(IEA){
 				bold: true,
 				italic: false
 			},
+			legend :{
+				position : window.innerWidth > common.platformSize ? 'right' : 'top'
+			},
 			chartArea:{
-				width: window.innerWidth > common.platformSize ? '85%' : '60%'
+				width: '80%'
 			},
 			colors:['#6799FF','#F15F5F'],			
 			vAxis: {
 				baseline : 0,
-				viewWindowMode : window.innerWidth > common.platformSize ? '' : 'maximized'
+				viewWindowMode : window.innerWidth > common.platformSize ? '' : 'maximized',
+				format : window.innerWidth > common.platformSize ? 'decimal' : 'short'
+						
 			},
 			seriesType: 'bars'
 		};
 		
-		let chart = new google.visualization.ComboChart(document.getElementById("monthStatsChart"));		
+		let chart = new google.visualization.ComboChart(document.getElementById("monthIEStatsChart"));		
 		chart.draw(data, options);		
 	}
 	
@@ -157,14 +162,18 @@ function monthIEAStatsDraw(IEA){
 				bold: true,
 				italic: false
 			},
+			legend :{
+				position : window.innerWidth > common.platformSize ? 'right' : 'top'
+			},
 			chartArea:{
-				width: window.innerWidth > common.platformSize ? '85%' : '60%'
+				width: '80%'
 			},
 			colors:['#6799FF'],
 			vAxis: {
 				baseline : 0,
 				minValue: 0,
-				viewWindowMode : window.innerWidth > common.platformSize ? '' : 'maximized'
+				viewWindowMode : window.innerWidth > common.platformSize ? '' : 'maximized',
+				format : window.innerWidth > common.platformSize ? 'decimal' : 'short',
 			},
 		};
 		
@@ -175,14 +184,85 @@ function monthIEAStatsDraw(IEA){
 
 //가계부 월별 통계 조회(현금, 은행별)
 function monthCBStatsDraw(BC){
+		
+	let line = new Array();	
+	let lineData = new Array();
 	
-	console.log(BC);
+	//제목 입력
+	let bankList = BC[0].bankList;
+	lineData.push("date");
+	lineData.push("현금");	
+	for(let i=0; i<bankList.length; i++){
+		lineData.push(bankList[i].bankName);
+	}
+	line.push(lineData);
+	
+	//데이터 입력	
+	for(let i=1; i<BC.length; i++){
+		if(i==1){
+			lineData = new Array();
+			lineData.push(BC[i].date);
+			lineData.push(BC[0].cash + BC[i].cash);
+			for(let j=0; j<bankList.length; j++){
+				lineData.push(BC[0]["bank"+bankList[j].bankSeq] + BC[i]["bank"+bankList[j].bankSeq]);
+			}
+			line.push(lineData);
+			
+		}else{
+			lineData = new Array();
+			lineData.push(BC[i].date);
+			lineData.push(line[i-1][1] + BC[i].cash);
+			
+			for(let j=0; j<bankList.length; j++){				
+				lineData.push(line[i-1][j+2] + BC[i]["bank"+bankList[j].bankSeq]);
+			}
+			line.push(lineData);
+		}
+	}	
+
+	//월별 현금,은행별 누적 차트 그리기
+	google.charts.load('current', {'packages':['corechart']});	
+	google.charts.setOnLoadCallback(drawVisualization_line);	
+	function drawVisualization_line() {
+		
+		let data = google.visualization.arrayToDataTable(line);
+
+		let options = {
+			title:'월별 종류별 자금현황',
+			
+			titleTextStyle:{
+				color: 'black',
+				fontSize: window.innerWidth > common.platformSize ? 20 : 15,
+				bold: true,
+				italic: false
+			},
+			lineWidth : window.innerWidth > common.platformSize ? 3 : 2,
+			legend :{
+				position : window.innerWidth > common.platformSize ? 'right' : 'top',
+				textStyle : {
+					fontSize: window.innerWidth > common.platformSize ? 10 : 7,
+				}
+			},
+			chartArea:{
+				width: '80%'
+			},
+			vAxis: {
+				format : window.innerWidth > common.platformSize ? 'decimal' : 'short',
+				baseline : 0,
+				minValue : 0,
+				viewWindowMode : window.innerWidth > common.platformSize ? '' : 'maximized'
+			}
+		};
+		
+		let chart = new google.visualization.AreaChart(document.getElementById("monthCashBankChart"));		
+		chart.draw(data, options);
+	}	
 	
 }
 
-//가계부 월별 통계 조회(목적졀)
+//가계부 월별 통계 조회(목적별)
 function monthPStatsDraw(P){
-	
+	console.log(P);
 	
 }
 </script>
@@ -204,8 +284,8 @@ function monthPStatsDraw(P){
 					<button class="btn btn-outline-secondary" type="button">Search</button>
 				</div>
 			</div>
-			<!-- 월별 통계 -->
-			<div class="chart-height" id="monthStatsChart"></div>
+			<!-- 월별 수입지출 통계 -->
+			<div class="chart-height" id="monthIEStatsChart"></div>
 			<div id="monthStatsList"></div>
 			
 			<!-- 월별 누적통계 -->
@@ -217,7 +297,8 @@ function monthPStatsDraw(P){
 			<div id="monthCashBankList"></div>
 			
 			<!-- 월별 목적별 통계 -->
-			<div class="chart-height" id="monthPurposeChart"></div>
+			<div class="chart-height" id="monthPurposePChart"></div>
+			<div class="chart-height" id="monthPurposeMChart"></div>
 			<div id="monthPurposeList"></div>
 			
 		</div>		

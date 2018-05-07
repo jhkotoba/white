@@ -180,20 +180,20 @@
 	<select id="selectMonthCBStats" resultType="whiteMap" parameterType="whiteMap">
 	 <foreach collection="dateList" item="date" separator="UNION ALL" >
 		SELECT
-			'${date.ym}' AS date,
+			#{date.ym} AS date,
 			<foreach collection="CBList" item="bank" separator="," >
 			IFNULL((
 			  SELECT			  	
 			  	SUM( 
 			      CASE
-			      WHEN bank_seq = '${bank.bankSeq}' THEN money
-			      WHEN move_seq = '${bank.bankSeq}' THEN ABS(money)
+			      WHEN bank_seq = #{bank.bankSeq} THEN money
+			      WHEN move_seq = #{bank.bankSeq} THEN ABS(money)
 			      END
 			    ) 			    
 			  FROM money_record_re
-			  WHERE user_seq = '${date.userSeq}'
-			  AND record_date <![CDATA[ >= ]]> '${date.date}'
-			  AND record_date <![CDATA[ <= ]]> LAST_DAY('${date.date}')
+			  WHERE user_seq = #{date.userSeq}
+			  AND record_date <![CDATA[ >= ]]> #{date.date}
+			  AND record_date <![CDATA[ <= ]]> LAST_DAY(#{date.date})
 			),0) AS	<choose>
 						<when test="bank.bankSeq == 0">
 							cash
@@ -208,7 +208,19 @@
 	
 	<!-- 가계부 월별 통계 조회(목적별)  -->
 	<select id="selectMonthPStats" resultType="whiteMap" parameterType="whiteMap">
-		SELECT 1
+		<foreach collection="dateList" item="date" separator="UNION ALL" >
+		SELECT
+			#{date.ym} AS date,
+			<foreach collection="purList" item="pur" separator="," >
+		  	(
+		  		SELECT ABS(SUM(money)) FROM money_record_re
+			    WHERE user_seq = #{date.userSeq}
+			    AND pur_seq = #{pur.purSeq}
+			    AND record_date <![CDATA[ >= ]]> #{date.date}
+			    AND record_date <![CDATA[ <= ]]> LAST_DAY(#{date.date})
+		  	) AS pur${pur.purSeq}
+			</foreach>
+		</foreach>
 	</select>
 	
 
