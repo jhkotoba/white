@@ -65,9 +65,14 @@ public class WhiteMap extends HashMap<String, Object> {
 		}		
 	}
 	
-	public WhiteMap convertJsonStrToWhiteMap(String paramKey) {
-		if(this.getString(paramKey) == null) return null;
-		String jsonStr = this.getString(paramKey);
+	/**
+	 * String Json convert WhiteMap
+	 * @param String jsonStrParamKey
+	 * @return
+	 */
+	public WhiteMap convertWhiteMap(String jsonStrParamKey) {
+		if(this.getString(jsonStrParamKey) == null) return null;
+		String jsonStr = this.getString(jsonStrParamKey);
 		WhiteMap map = new WhiteMap();
 		
 		JSONObject jsonObj = new JSONObject(jsonStr);		
@@ -79,10 +84,15 @@ public class WhiteMap extends HashMap<String, Object> {
 		}
 		return map;
 	}
-
-	public List<WhiteMap> convertJsonStrToListWhiteMap(String paramKey) {		
-		if(this.getString(paramKey) == null) return null;
-		String jsonStr = this.getString(paramKey);
+	
+	/**
+	 * String Json convert ListWhiteMap
+	 * @param String jsonStrParamKey
+	 * @return
+	 */
+	public List<WhiteMap> convertListWhiteMap(String jsonStrParamKey) {		
+		if(this.getString(jsonStrParamKey) == null) return null;
+		String jsonStr = this.getString(jsonStrParamKey);
 		
 		List<WhiteMap> list = new ArrayList<WhiteMap>();
 		WhiteMap map = null;	

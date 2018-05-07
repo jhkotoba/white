@@ -145,14 +145,15 @@ public class LedgerReService {
 	 * @return
 	 */
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
-	public int insertRecordList(WhiteMap param) {
+	public int insertRecordList(WhiteMap param) {		
 		
-		List<WhiteMap> list = param.convertJsonStrToListWhiteMap("inList");
+		List<WhiteMap> list = param.convertListWhiteMap("inList");
+		//this.ledgerIntegrityCheck(list);
 		
 		for(int i=0; i<list.size(); i++) {
 			list.get(i).put("userSeq", param.getInt("userSeq"));
 		}		
-		return ledgerReMapper.insertRecordList(list);	
+		return ledgerReMapper.insertRecordList(list);
 	}
 	
 	/**
@@ -163,8 +164,8 @@ public class LedgerReService {
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
 	public WhiteMap updateDeleteRecordList(WhiteMap param) {
 		
-		List<WhiteMap> upList = param.convertJsonStrToListWhiteMap("upList");
-		List<WhiteMap> delList = param.convertJsonStrToListWhiteMap("delList");
+		List<WhiteMap> upList = param.convertListWhiteMap("upList");
+		List<WhiteMap> delList = param.convertListWhiteMap("delList");
 		
 		WhiteMap resultMap = new WhiteMap();
 		if(upList.size() > 0 ) {			
@@ -190,9 +191,9 @@ public class LedgerReService {
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
 	public WhiteMap inUpDelPurList(WhiteMap param) {
 		
-		List<WhiteMap> inList = param.convertJsonStrToListWhiteMap("inList");
-		List<WhiteMap> upList = param.convertJsonStrToListWhiteMap("upList");
-		List<WhiteMap> delList = param.convertJsonStrToListWhiteMap("delList");
+		List<WhiteMap> inList = param.convertListWhiteMap("inList");
+		List<WhiteMap> upList = param.convertListWhiteMap("upList");
+		List<WhiteMap> delList = param.convertListWhiteMap("delList");
 		
 		WhiteMap resultMap = new WhiteMap();
 		
@@ -237,9 +238,9 @@ public class LedgerReService {
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
 	public WhiteMap inUpDelPurDtlList(WhiteMap param) {
 		
-		List<WhiteMap> inList = param.convertJsonStrToListWhiteMap("inList");
-		List<WhiteMap> upList = param.convertJsonStrToListWhiteMap("upList");
-		List<WhiteMap> delList = param.convertJsonStrToListWhiteMap("delList");
+		List<WhiteMap> inList = param.convertListWhiteMap("inList");
+		List<WhiteMap> upList = param.convertListWhiteMap("upList");
+		List<WhiteMap> delList = param.convertListWhiteMap("delList");
 		
 		WhiteMap resultMap = new WhiteMap();
 		
@@ -282,9 +283,9 @@ public class LedgerReService {
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
 	public WhiteMap inUpDelBankList(WhiteMap param) {
 		
-		List<WhiteMap> inList = param.convertJsonStrToListWhiteMap("inList");
-		List<WhiteMap> upList = param.convertJsonStrToListWhiteMap("upList");
-		List<WhiteMap> delList = param.convertJsonStrToListWhiteMap("delList");
+		List<WhiteMap> inList = param.convertListWhiteMap("inList");
+		List<WhiteMap> upList = param.convertListWhiteMap("upList");
+		List<WhiteMap> delList = param.convertListWhiteMap("delList");
 		
 		WhiteMap resultMap = new WhiteMap();
 		
@@ -417,6 +418,31 @@ public class LedgerReService {
 		return resultList;
 	}
 	
+	
+	/**
+	 * 가계부 데이터 무결성 체크(List)
+	 * @param list
+	 * @return
+	 */
+	private boolean ledgerIntegrityCheck(List<WhiteMap> list) {	
+		
+		boolean check = false;		
+		for(int i=0; i<list.size(); i++) {
+			check = this.ledgerIntegrityCheck(list.get(i));			
+			if(check == false) {				
+			}
+		}		
+		return check;
+	}
+	
+	/**
+	 * 가계부 데이터 무결성 체크(Map)
+	 * @param list
+	 * @return
+	 */
+	private boolean ledgerIntegrityCheck(WhiteMap map) {
+		return true;
+	}
 	
 	
 	/**

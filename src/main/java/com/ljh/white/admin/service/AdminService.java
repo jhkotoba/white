@@ -62,8 +62,8 @@ public class AdminService {
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
 	public WhiteMap inDelAuthList(WhiteMap param) {
 		
-		List<WhiteMap> inList = param.convertJsonStrToListWhiteMap("inList");
-		List<WhiteMap> delList = param.convertJsonStrToListWhiteMap("delList");		
+		List<WhiteMap> inList = param.convertListWhiteMap("inList");
+		List<WhiteMap> delList = param.convertListWhiteMap("delList");		
 		
 		WhiteMap resultMap = new WhiteMap();
 		if(inList.size() > 0 ) {			
@@ -108,9 +108,9 @@ public class AdminService {
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
 	public WhiteMap inUpDelNavMenuList(WhiteMap param) {
 		
-		List<WhiteMap> inList = param.convertJsonStrToListWhiteMap("inList");
-		List<WhiteMap> upList = param.convertJsonStrToListWhiteMap("upList");
-		List<WhiteMap> delList = param.convertJsonStrToListWhiteMap("delList");
+		List<WhiteMap> inList = param.convertListWhiteMap("inList");
+		List<WhiteMap> upList = param.convertListWhiteMap("upList");
+		List<WhiteMap> delList = param.convertListWhiteMap("delList");
 		
 		WhiteMap resultMap = new WhiteMap();
 		
@@ -147,9 +147,9 @@ public class AdminService {
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
 	public WhiteMap inUpDelSideMenuList(WhiteMap param) {
 		
-		List<WhiteMap> inList = param.convertJsonStrToListWhiteMap("inList");
-		List<WhiteMap> upList = param.convertJsonStrToListWhiteMap("upList");
-		List<WhiteMap> delList = param.convertJsonStrToListWhiteMap("delList");
+		List<WhiteMap> inList = param.convertListWhiteMap("inList");
+		List<WhiteMap> upList = param.convertListWhiteMap("upList");
+		List<WhiteMap> delList = param.convertListWhiteMap("delList");
 		
 		WhiteMap resultMap = new WhiteMap();
 		
@@ -183,9 +183,9 @@ public class AdminService {
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
 	public WhiteMap inUpDelAuthNmList(WhiteMap param) {
 		
-		List<WhiteMap> inList = param.convertJsonStrToListWhiteMap("inList");
-		List<WhiteMap> upList = param.convertJsonStrToListWhiteMap("upList");
-		List<WhiteMap> delList = param.convertJsonStrToListWhiteMap("delList");
+		List<WhiteMap> inList = param.convertListWhiteMap("inList");
+		List<WhiteMap> upList = param.convertListWhiteMap("upList");
+		List<WhiteMap> delList = param.convertListWhiteMap("delList");
 		
 		WhiteMap resultMap = new WhiteMap();
 		
