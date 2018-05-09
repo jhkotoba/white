@@ -148,7 +148,7 @@ public class LedgerReService {
 	public int insertRecordList(WhiteMap param) {		
 		
 		List<WhiteMap> list = param.convertListWhiteMap("inList");
-		//this.ledgerIntegrityCheck(list);
+		this.ledgerIntegrityCheck(list);
 		
 		for(int i=0; i<list.size(); i++) {
 			list.get(i).put("userSeq", param.getInt("userSeq"));
@@ -426,13 +426,7 @@ public class LedgerReService {
 	 */
 	private boolean ledgerIntegrityCheck(List<WhiteMap> list) {	
 		
-		boolean check = false;		
-		for(int i=0; i<list.size(); i++) {
-			check = this.ledgerIntegrityCheck(list.get(i));			
-			if(check == false) {				
-			}
-		}		
-		return check;
+		return true;
 	}
 	
 	/**
@@ -440,9 +434,11 @@ public class LedgerReService {
 	 * @param list
 	 * @return
 	 */
-	private boolean ledgerIntegrityCheck(WhiteMap map) {
-		return true;
-	}
+	/*private boolean ledgerIntegrityCheck(WhiteMap map) {
+		List<WhiteMap> list = new ArrayList<WhiteMap>();
+		list.add(map);
+		return ledgerIntegrityCheck(list);
+	}*/
 	
 	
 	/**
