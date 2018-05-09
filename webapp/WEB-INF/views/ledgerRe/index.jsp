@@ -140,7 +140,7 @@ $(document).ready(function(){
 				let options = {
 					axisTitlesPosition : 'none',
 					chartArea: {
-						width:'80%',
+						width:'100%',
 						height:'300px'
 					},
 					pieHole: 0.4
