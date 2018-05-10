@@ -22,7 +22,7 @@ $(document).ready(function(){
 		case "click":			
 			let idx = Number(event.target.id.split('_')[1]);
 			let name = event.target.id.split('_')[0];			
-			if(name === "positionCopy" || name === "dateCopy" || name === "purSeqCopy" || name === "bankSeqCopy"){
+			if(name === "positionCopy" || name === "recordDateCopy" || name === "purSeqCopy" || name === "bankSeqCopy"){
 				let targetId = name.replace("Copy", "");				
 				let data = recIn.inList[idx][targetId];				
 				for(let i=idx+1; i<recIn.inList.length; i++){
@@ -61,7 +61,7 @@ let recIn = {
 	},
 	
 	add : function(){
-		this.inList.push({date: isDate.today()+" "+isTime.curTime(), position:'', content:'', purSeq: '', purDtlSeq: '', bankSeq: '', moveSeq: '', money: ''});
+		this.inList.push({recordDate: isDate.today()+" "+isTime.curTime(), position:'', content:'', purSeq: '', purDtlSeq: '', bankSeq: '', moveSeq: '', money: ''});
 		return this;
 	},
 	
@@ -105,7 +105,7 @@ let recIn = {
 		for(let i=0; i<this.inList.length; i++){
 			
 			// 빈값, null 체크
-			if(this.inList[i].date === '' || this.inList[i].date === null){
+			if(this.inList[i].recordDate === '' || this.inList[i].recordDate === null){
 				check = {check : false, msg : (i+1) + "행의 날짜 데이터가 입력되지 않았습니다."};
 				break;
 			}else if(this.inList[i].content === '' || this.inList[i].content === null){
@@ -157,9 +157,14 @@ let recIn = {
 					inList : JSON.stringify(this.inList)
 				},
 				dataType: 'json',
-			    success : function(data, stat, xhr) {  
-			    	alert(data+" 개의 행이 저장되었습니다.");
-			    	white.submit($("#moveForm #navUrl").val(), $("#moveForm #sideUrl").val());
+			    success : function(data, stat, xhr) {			    	
+			    	if(data < 0){
+			    		alert("입력한 데이터가 정확하지 않습니다.");
+			    		white.submit($("#moveForm #navUrl").val(), $("#moveForm #sideUrl").val());
+			    	}else{
+			    		alert(data+" 개의 행이 저장되었습니다.");
+				    	white.submit($("#moveForm #navUrl").val(), $("#moveForm #sideUrl").val());
+			    	}
 			    },
 			    error : function(xhr, stat, err) {
 			    	alert("insert error");
@@ -192,8 +197,8 @@ let recIn = {
 			for(let i=0; i<this.inList.length; i++){
 				tag += "<tr>";			
 				tag += "<td>"+(i+1)+"</td>";
-				tag += "<td><div class='input-group'><input id='date_"+i+"' type='text' class='form-control form-control-sm' value='"+this.inList[i].date+"'>";
-				tag += "<input id='dateCopy_"+i+"' type='button' class='btn btn-outline-secondary btn-sm btn-sm-fs' value='↓' title='하단 일괄복사'></div></td>";
+				tag += "<td><div class='input-group'><input id='recordDate_"+i+"' type='text' class='form-control form-control-sm' value='"+this.inList[i].recordDate+"'>";
+				tag += "<input id='recordDateCopy_"+i+"' type='button' class='btn btn-outline-secondary btn-sm btn-sm-fs' value='↓' title='하단 일괄복사'></div></td>";
 				tag += "<td><div class='input-group'><input id='position_"+i+"' type='text' class='form-control form-control-sm' value='"+this.inList[i].position+"'>";
 				tag += "<input id='positionCopy_"+i+"' type='button' class='btn btn-outline-secondary btn-sm btn-sm-fs' value='↓' title='하단 일괄복사'></div></td>";			
 				tag += "<td><input id='content_"+i+"' type='text' class='form-control form-control-sm' value='"+this.inList[i].content+"'></td>";			
@@ -249,7 +254,7 @@ let recIn = {
 				
 				tag += "<tr><td rowspan='6'>"+(i+1)+"</td></tr>";
 				tag	+= "<tr><th>날짜*</th>";
-				tag += "<td><input id='date_"+i+"' type='text' class='form-control form-control-sm bg-white' value='"+this.inList[i].date+"' readonly></td></tr>";
+				tag += "<td><input id='recordDate_"+i+"' type='text' class='form-control form-control-sm bg-white' value='"+this.inList[i].recordDate+"' readonly></td></tr>";
 				
 				tag	+= "<tr><th>위치/내용*</th>";
 				tag += "<td><input id='position_"+i+"' type='text' class='form-control form-control-sm' value='"+this.inList[i].position+"'>";			
@@ -301,15 +306,15 @@ let recIn = {
 		
 		//Air Datepicker 설정
 		for(let i=0; i<this.inList.length; i++){
-			$("#date_"+i).datepicker({
+			$("#recordDate_"+i).datepicker({
 				language: 'ko',
 				timepicker: true,
 				onSelect: function() {
 					//rec.sync 연결
-					$("#ledgerReList #date_"+i).trigger('change');
+					$("#ledgerReList #recordDate_"+i).trigger('change');
 				}
 			});
-			$("#date_"+i).data('datepicker');	
+			$("#recordDate_"+i).data('datepicker');	
 		}
 	},
 	appSel : function(value, idx){

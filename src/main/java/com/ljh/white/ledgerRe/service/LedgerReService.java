@@ -148,7 +148,9 @@ public class LedgerReService {
 	public int insertRecordList(WhiteMap param) {		
 		
 		List<WhiteMap> list = param.convertListWhiteMap("inList");
-		this.ledgerIntegrityCheck(list);
+		if(!this.recordIntegrityCheck(list)) {
+			return -1;
+		}
 		
 		for(int i=0; i<list.size(); i++) {
 			list.get(i).put("userSeq", param.getInt("userSeq"));
@@ -424,8 +426,47 @@ public class LedgerReService {
 	 * @param list
 	 * @return
 	 */
-	private boolean ledgerIntegrityCheck(List<WhiteMap> list) {	
+	private boolean recordIntegrityCheck(List<WhiteMap> list) {	
 		
+		String record = null;
+		String recArr[] = null;
+		
+		//데이터 체크
+		try {			
+			for(int i=0; i<list.size(); i++) {
+				record = list.get(i).getString("recordDate");
+				
+				System.out.println(record);
+				System.out.println(record.length());
+				//recordDate 체크
+				if(record.length() != 16) {
+					throw new Exception("test");
+				}
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+			}
+			
+			
+			
+			
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+			
 		return true;
 	}
 	
@@ -434,7 +475,7 @@ public class LedgerReService {
 	 * @param list
 	 * @return
 	 */
-	/*private boolean ledgerIntegrityCheck(WhiteMap map) {
+	/*private boolean recordIntegrityCheck(WhiteMap map) {
 		List<WhiteMap> list = new ArrayList<WhiteMap>();
 		list.add(map);
 		return ledgerIntegrityCheck(list);
