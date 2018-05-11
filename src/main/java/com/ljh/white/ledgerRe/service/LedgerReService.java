@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ljh.white.common.collection.WhiteMap;
+import com.ljh.white.common.Constant;
 import com.ljh.white.common.White;
 import com.ljh.white.ledgerRe.mapper.LedgerReMapper;
 
@@ -149,7 +150,7 @@ public class LedgerReService {
 	public int insertRecordList(WhiteMap param) {		
 		
 		List<WhiteMap> list = param.convertListWhiteMap("inList");
-		if(!this.recordIntegrityCheck(list)) {
+		if(!this.recordIntegrityCheck(list, param.getInt("userSeq"))) {
 			return -1;
 		}
 		
@@ -427,13 +428,16 @@ public class LedgerReService {
 	 * @param list
 	 * @return
 	 */
-	private boolean recordIntegrityCheck(List<WhiteMap> list) {	
+	private boolean recordIntegrityCheck(List<WhiteMap> list, int userSeq) {	
 		
 		String record = null;
-		String recArr[] = null;
 		
-		//데이터 체크
-			
+		//WhiteMap param = new WhiteMap();
+		//param.put("userSeq", userSeq);
+		//List<WhiteMap> purList = this.selectPurList(param);
+		//List<WhiteMap> purDtlList = this.selectPurDtlList(param);
+		
+		//데이터 체크			
 		for(int i=0; i<list.size(); i++) {
 			
 			//html태그 삭제
@@ -446,16 +450,19 @@ public class LedgerReService {
 			}
 			
 			//position 체크
-			record = list.get(i).getString("position");			
-			if(!(record.length() > 0 && record.length() < 20)){
+			record = list.get(i).getString("position");
+			if(!(record.length() > 0 && record.length() < Constant.POSITION_LENGTH)){
 				return false;
 			}
 			
 			//content 체크			
 			record = list.get(i).getString("content");			
-			if(!(record.length() > 0 && record.length() < 50)){
+			if(!(record.length() > 0 && record.length() < Constant.CONTENT_LENGTH)){
 				return false;
 			}
+			
+			//purpose 체크
+			//record = list.get(i).getString("purSeq");
 			
 			
 			

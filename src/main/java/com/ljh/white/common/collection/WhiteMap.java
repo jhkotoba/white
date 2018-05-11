@@ -42,9 +42,6 @@ public class WhiteMap extends HashMap<String, Object> {
 				this.put(key, values);			
 			}	
 		}
-		
-		//if("".equals(this.getString("sideUrl"))) this.put("sideUrl", "/index");
-		
 		logger.debug("new WhiteMap(request): "+this);
 	}
 	

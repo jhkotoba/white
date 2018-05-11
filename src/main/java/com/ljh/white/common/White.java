@@ -47,14 +47,7 @@ public class White {
 	 * @return
 	 */
 	static public boolean dateCheck(String date) {		
-		try {
-            DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-            df.setLenient(false);
-            df.parse(date);
-            return true;
-        } catch (ParseException e) {
-            return false;
-        }
+		return White.dateCheck(date, null);
 	}
 	
 	/**
@@ -62,7 +55,12 @@ public class White {
 	 * @param date
 	 * @return
 	 */
-	static public boolean dateCheck(String date, String type) {		
+	static public boolean dateCheck(String date, String type) {
+		
+		if("".equals(type) || type == null) {
+			type = "yyyy-MM-dd";
+		}
+		
 		try {
             DateFormat df = new SimpleDateFormat(type);
             df.setLenient(false);
