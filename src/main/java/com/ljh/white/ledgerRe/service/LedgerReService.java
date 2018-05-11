@@ -432,39 +432,37 @@ public class LedgerReService {
 		String recArr[] = null;
 		
 		//데이터 체크
-		try {			
-			for(int i=0; i<list.size(); i++) {
-				record = list.get(i).getString("recordDate");
-				
-				System.out.println(record);
-				System.out.println(record.length());
-				//recordDate 체크
-				if(record.length() != 16) {
-					throw new Exception("test");
-				}
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
+			
+		for(int i=0; i<list.size(); i++) {
+			record = list.get(i).getString("recordDate");
+			
+			System.out.println(record);
+			System.out.println(record.length());
+			//recordDate 체크
+			if(record.length() != 16) {
+				return false;
 			}
 			
 			
 			
 			
 			
-		}catch (Exception e) {
-			e.printStackTrace();
+			
+			
+			
+			
+			
+			
+			
+			
+			
 		}
+		
+			
+			
+			
+			
+		
 		
 			
 		return true;
