@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ljh.white.common.collection.WhiteMap;
+import com.ljh.white.common.White;
 import com.ljh.white.ledgerRe.mapper.LedgerReMapper;
 
 
@@ -434,14 +435,28 @@ public class LedgerReService {
 		//데이터 체크
 			
 		for(int i=0; i<list.size(); i++) {
-			record = list.get(i).getString("recordDate");
 			
-			System.out.println(record);
-			System.out.println(record.length());
+			//html태그 삭제
+			White.htmlReplace(list.get(i));
+			
 			//recordDate 체크
-			if(record.length() != 16) {
+			record = list.get(i).getString("recordDate");
+			if(!White.dateCheck(record)) {
 				return false;
 			}
+			
+			//position 체크
+			record = list.get(i).getString("position");			
+			if(!(record.length() > 0 && record.length() < 20)){
+				return false;
+			}
+			
+			//content 체크			
+			record = list.get(i).getString("content");			
+			if(!(record.length() > 0 && record.length() < 50)){
+				return false;
+			}
+			
 			
 			
 			
@@ -466,19 +481,7 @@ public class LedgerReService {
 		
 			
 		return true;
-	}
-	
-	/**
-	 * 가계부 데이터 무결성 체크(Map)
-	 * @param list
-	 * @return
-	 */
-	/*private boolean recordIntegrityCheck(WhiteMap map) {
-		List<WhiteMap> list = new ArrayList<WhiteMap>();
-		list.add(map);
-		return ledgerIntegrityCheck(list);
-	}*/
-	
+	}	
 	
 	/**
 	 * 통계용 내부 날짜리스트 계산용 메소드

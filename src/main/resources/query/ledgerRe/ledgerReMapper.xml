@@ -247,7 +247,7 @@
 		)VALUES
 		<foreach collection="list" item="item" separator="),(" open="(" close=")">
 			#{item.userSeq}, 
-			#{item.date},
+			#{item.recordDate},
 			#{item.position},
 			#{item.content}, 
 			#{item.purSeq},	

@@ -6,7 +6,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
-import com.ljh.white.common.StaticValue;
+import com.ljh.white.common.Auth;
 import com.ljh.white.common.collection.WhiteMap;
 
 public class SessionInterceptor extends HandlerInterceptorAdapter {
@@ -34,12 +34,12 @@ public class SessionInterceptor extends HandlerInterceptorAdapter {
 			WhiteMap auth = (WhiteMap)request.getSession(false).getAttribute("authority");
 			
 			//nav메뉴 권한 체크
-			if(auth.getInt(StaticValue.getNavAuthList().getString(navUrl))==1) {
+			if(auth.getInt(Auth.getNavAuthList().getString(navUrl))==1) {
 				
 				//side메뉴 권한 체크
 				if("/index".equals(sideUrl)){
 					return true;
-				}else if(auth.getInt(StaticValue.getSideAuthList().getString(sideUrl))==1) {					
+				}else if(auth.getInt(Auth.getSideAuthList().getString(sideUrl))==1) {					
 					return true;
 				}else {
 					response.sendRedirect(path+"/main");

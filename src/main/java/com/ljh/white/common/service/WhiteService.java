@@ -5,7 +5,7 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import com.ljh.white.common.StaticValue;
+import com.ljh.white.common.Auth;
 import com.ljh.white.common.mapper.WhiteMapper;
 
 @Service("WhiteService")
@@ -27,13 +27,13 @@ public class WhiteService{
 	 *  네비메뉴 권한 메모리 저장
 	 */
 	public void setNavAuth() {
-		StaticValue.setNavAuth(whiteMapper.selectNavAuthList());
+		Auth.setNavAuth(whiteMapper.selectNavAuthList());
 	}
 	
 	/**
 	 *  사이드메뉴 권한 메모리 저장
 	 */
 	public void setSideAuth() {
-		StaticValue.setSideAuth(whiteMapper.selectSideAuthList());
-	}
+		Auth.setSideAuth(whiteMapper.selectSideAuthList());
+	}	
 }
