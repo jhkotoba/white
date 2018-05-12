@@ -46,6 +46,7 @@ let bank = {
 			tag += "<th colspan='2'>순서</th>";
 			tag	+= "<th>은행이름</th>";
 			tag	+= "<th>계좌번호</th>";
+			tag	+= "<th style='width: 20px;'>표시여부</th>";
 			tag	+= "<th style='width: 20px;'>사용여부</th>";
 			tag += "</tr>";
 		
@@ -71,6 +72,7 @@ let bank = {
 			tag += "<td>"+(i+1)+"</td>";
 			tag += "<td><input id='bankName_"+i+"' type='text' class='form-control form-control-sm "+addAttr.cls+"' "+addAttr.read+" value='"+this.bankList[i].bankName+"' ></td>";
 			tag += "<td><input id='bankAccount_"+i+"' type='text' class='form-control form-control-sm "+addAttr.cls+"' "+addAttr.read+" value='"+this.bankList[i].bankAccount+"'></td>";
+			tag += "<td><input id='bankShowYn_"+i+"' type='button' class='btn btn-outline-secondary btn-sm btn-sm-fs' value='Y' ></td>";
 			tag += "<td><input id='bankUseYn_"+i+"' type='button' class='btn btn-outline-secondary btn-sm btn-sm-fs "+useCls+"' "+addAttr.read+" value='"+this.bankList[i].bankUseYn+"'></td>";
 			tag += "</tr>";	
 		}			

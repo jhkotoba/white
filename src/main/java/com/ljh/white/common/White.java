@@ -7,6 +7,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.springframework.mobile.device.Device;
+
 import com.ljh.white.common.collection.WhiteMap;
 
 /**
@@ -16,6 +18,20 @@ import com.ljh.white.common.collection.WhiteMap;
  */
 
 public class White {
+	
+	/**
+	 * 접속기기 구분
+	 * @param device
+	 * @return
+	 */
+	static public String device(Device device) {
+		if(device.isNormal()) {
+			return "normal";
+		}else {
+			//return "mobile";
+			return "normal";
+		}
+	}
 
 	/**
 	 * html태그 삭제 (String)

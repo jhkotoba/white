@@ -9,10 +9,12 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.mobile.device.Device;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.ljh.white.admin.service.AdminService;
+import com.ljh.white.common.White;
 import com.ljh.white.common.collection.WhiteMap;
 import com.ljh.white.common.service.WhiteService;
 
@@ -29,7 +31,7 @@ public class AdminController {
 	private WhiteService whiteService;	
 	
 	@RequestMapping(value="/admin")
-	public String adminMain(HttpServletRequest request){
+	public String adminMain(HttpServletRequest request, Device device){
 		logger.debug("admin Start");
 		
 		WhiteMap param = new WhiteMap(request);
@@ -41,7 +43,7 @@ public class AdminController {
 		request.setAttribute("sideUrl", sideUrl);
 
 		request.setAttribute("sectionPage", navUrl.replace("/", "")+sideUrl+".jsp");
-		return "white.jsp";
+		return White.device(device)+"/white.jsp";
 	}
 	
 	@RequestMapping(value="/admin/selectUserList.ajax")

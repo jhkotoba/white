@@ -10,9 +10,11 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.mobile.device.Device;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.ljh.white.common.White;
 import com.ljh.white.common.collection.WhiteMap;
 import com.ljh.white.ledgerRe.service.LedgerReService;
 import com.ljh.white.memo.service.MemoService;
@@ -29,7 +31,7 @@ public class LedgerReController {
 	private MemoService memoService;
 	
 	@RequestMapping(value="/ledgerRe" )
-	public String ledgerReMain(HttpServletRequest request){
+	public String ledgerReMain(HttpServletRequest request, Device device){
 		logger.debug("ledgerRe Start");
 		
 		WhiteMap param = new WhiteMap(request);
@@ -41,7 +43,7 @@ public class LedgerReController {
 		request.setAttribute("sideUrl", sideUrl);
 		
 		request.setAttribute("sectionPage", navUrl.replace("/", "")+sideUrl+".jsp");
-		return "white.jsp";
+		return White.device(device)+"/white.jsp";
 	}
 	
 	@RequestMapping(value="/ledgerRe/selectPurBankList.ajax" )

@@ -1,18 +1,19 @@
-package com.ljh.white.experiment.controller;
+package com.ljh.white.styleSheet.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.mobile.device.Device;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.ljh.white.common.White;
 import com.ljh.white.common.collection.WhiteMap;
 
 @Controller
-public class experimentController {
+public class StyleSheetController {
 	
-	@RequestMapping(value="/experiment")
-	public String experiment(HttpServletRequest request){
-		System.out.println("experiment start");
+	@RequestMapping(value="/styleSheet")
+	public String experiment(HttpServletRequest request, Device device){
 		
 		WhiteMap param = new WhiteMap(request);
 		
@@ -23,6 +24,6 @@ public class experimentController {
 		request.setAttribute("sideUrl", sideUrl);
 
 		request.setAttribute("sectionPage", navUrl.replace("/", "")+sideUrl+".jsp");
-		return "white.jsp";
+		return White.device(device)+"/white.jsp";
 	}
 }

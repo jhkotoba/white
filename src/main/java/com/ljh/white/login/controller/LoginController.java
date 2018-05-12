@@ -12,9 +12,11 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.mobile.device.Device;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.ljh.white.common.White;
 import com.ljh.white.common.collection.WhiteMap;
 import com.ljh.white.common.utility.cryptolect.BCrypt;
 import com.ljh.white.login.service.LoginService;
@@ -29,13 +31,13 @@ public class LoginController {
 
 	//login
 	@RequestMapping(value = "/login/login.do")
-	public String login(){		
-		return "login/login.jsp";
+	public String login(Device device){		
+		return White.device(device)+"/login/login.jsp";
 	}
 	
 	//loginProcess
 	@RequestMapping(value = "/login/loginProcess.do")
-	public String loginProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{		
+	public String loginProcess(HttpServletRequest request, Device device) throws ServletException, IOException{		
 		String userId = request.getParameter("userId");
 		String passwd = request.getParameter("passwd");
 		logger.debug("userId: "+userId + ", passwd:"+BCrypt.hashpw(passwd, BCrypt.gensalt()));				
@@ -70,7 +72,7 @@ public class LoginController {
 			
 			return "redirect:/main";
 		}else{
-			return "login/login.jsp";	
+			return White.device(device)+"/login/login.jsp";	
 		}		
 	}
 	
@@ -92,8 +94,8 @@ public class LoginController {
 	
 	//유저등록 페이지
 	@RequestMapping(value="/login/signUp.do")
-	public String signUp(HttpServletRequest request){
-		return "login/signUp.jsp";
+	public String signUp(HttpServletRequest request, Device device){
+		return White.device(device)+"/login/signUp.jsp";
 	}
 	
 	//유저 등록
