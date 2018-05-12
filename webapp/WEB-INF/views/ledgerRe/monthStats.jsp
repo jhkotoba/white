@@ -5,6 +5,10 @@
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
 <script type="text/javascript">
+
+let wdh = window.innerWidth;
+let pfs = common.platformSize;
+
 $(document).ready(function(){	
 	monthStats();
 	$("#chartDate").val(isDate.firstDay());
@@ -49,12 +53,10 @@ function monthIEAStatsDraw(IEA){
 	let combo = new Array();
 	let area = new Array();
 	
-	let comboTag = window.innerWidth > common.pfs 
-		? {head:"<th>날짜</th>", plus:"<td>수입</td>", minus:"<td>지출</td>", sum:"<td>합계</td>"}
+	let comboTag = wdh > pfs ? {head:"<th>날짜</th>", plus:"<td>수입</td>", minus:"<td>지출</td>", sum:"<td>합계</td>"}
 		: "<th>날짜</th><th>수입</th><th>지출</th><th>합계</th>";
 										   
-	let areaTag = window.innerWidth > common.pfs 
-		? {head:"<th>날짜</th>", amount:"<td>월별자금</td>"}
+	let areaTag = wdh > pfs ? {head:"<th>날짜</th>", amount:"<td>월별자금</td>"}
 	 	: "<th>날짜</th><th>월별자금</th>";
 	 									  
 	combo.push(['date', '수입', '지출']);
@@ -70,7 +72,7 @@ function monthIEAStatsDraw(IEA){
 		area.push([IEA[i].date, amount]);		
 		
 		//데스크탑
-		if(window.innerWidth > common.pfs){
+		if(wdh > pfs){
 			//월별통계 표
 			comboTag.head += "<th>"+IEA[i].date+"</th>";
 			comboTag.plus += "<td>"+common.comma(IEA[i].plus)+"</td>";
@@ -97,12 +99,12 @@ function monthIEAStatsDraw(IEA){
 	}
 	//월별통계 표 그리기
 	$("#monthStatsList").append("<table class='table table-striped table-bordered table-sm'><tr>" + (
-			window.innerWidth > common.pfs ? comboTag.head+"</tr><tr>"+comboTag.plus+"</tr><tr>"+comboTag.minus+"</tr>"
+			wdh > pfs ? comboTag.head+"</tr><tr>"+comboTag.plus+"</tr><tr>"+comboTag.minus+"</tr>"
 			+"<tr>"+comboTag.sum : comboTag  )+"</tr></table>");
 	
 	//월별누적 표 그리기
 	$("#monthAmountSumList").append("<table class='table table-striped table-bordered table-sm'><tr>" + (
-			window.innerWidth > common.pfs ? areaTag.head+"</tr><tr>"+areaTag.amount : areaTag )+"</tr></table>");	
+			wdh > pfs ? areaTag.head+"</tr><tr>"+areaTag.amount : areaTag )+"</tr></table>");	
 	
 	
 	//월별 통계 차트 그리기
@@ -116,12 +118,12 @@ function monthIEAStatsDraw(IEA){
 			title : '월별 수익/지출',
 			titleTextStyle:{
 				color: 'black',
-				fontSize: window.innerWidth > common.pfs ? 20 : 15,
+				fontSize: wdh > pfs ? 20 : 15,
 				bold: true,
 				italic: false
 			},
 			legend :{
-				position : window.innerWidth > common.pfs ? 'right' : 'top'
+				position : wdh > pfs ? 'right' : 'top'
 			},
 			chartArea:{
 				width: '80%'
@@ -129,8 +131,8 @@ function monthIEAStatsDraw(IEA){
 			colors:['#6799FF','#F15F5F'],			
 			vAxis: {
 				baseline : 0,
-				viewWindowMode : window.innerWidth > common.pfs ? '' : 'maximized',
-				format : window.innerWidth > common.pfs ? 'decimal' : 'short'
+				viewWindowMode : wdh > pfs ? '' : 'maximized',
+				format : wdh > pfs ? 'decimal' : 'short'
 						
 			},
 			seriesType: 'bars'
@@ -151,12 +153,12 @@ function monthIEAStatsDraw(IEA){
 			title:'월별 자금현황',
 			titleTextStyle:{
 				color: 'black',
-				fontSize: window.innerWidth > common.pfs ? 20 : 15,
+				fontSize: wdh > pfs ? 20 : 15,
 				bold: true,
 				italic: false
 			},
 			legend :{
-				position : window.innerWidth > common.pfs ? 'right' : 'top'
+				position : wdh > pfs ? 'right' : 'top'
 			},
 			chartArea:{
 				width: '80%'
@@ -165,8 +167,8 @@ function monthIEAStatsDraw(IEA){
 			vAxis: {
 				baseline : 0,
 				minValue: 0,
-				viewWindowMode : window.innerWidth > common.pfs ? '' : 'maximized',
-				format : window.innerWidth > common.pfs ? 'decimal' : 'short',
+				viewWindowMode : wdh > pfs ? '' : 'maximized',
+				format : wdh > pfs ? 'decimal' : 'short',
 			},
 		};
 		
@@ -202,8 +204,6 @@ function monthCBStatsDraw(BC){
 				areaData.push(BC[0]["bank"+bankList[j].bankSeq] + BC[i]["bank"+bankList[j].bankSeq]);
 			}
 			area.push(areaData);
-			
-			areaTag.head += "<th>구분/날짜</th>";			
 		}else{
 			areaData = new Array();
 			areaData.push(BC[i].date);
@@ -213,13 +213,9 @@ function monthCBStatsDraw(BC){
 				areaData.push(area[i-1][j+2] + BC[i]["bank"+bankList[j].bankSeq]);
 			}
 			area.push(areaData);
-			
-			areaTag.head += "<th>"+BC[i].date+"</th>";
 		}
 		
-	}
-	//월별 현금, 은행별 누적 표 그리기
-	$("#monthCashBankList").append("<table class='table table-striped table-bordered table-sm'><tr>"+areaTag.head+"</tr></table>");
+	}	
 
 	//월별 현금,은행별 누적 차트 그리기
 	google.charts.load('current', {'packages':['corechart']});
@@ -233,25 +229,25 @@ function monthCBStatsDraw(BC){
 			
 			titleTextStyle:{
 				color: 'black',
-				fontSize: window.innerWidth > common.pfs ? 20 : 15,
+				fontSize: wdh > pfs ? 20 : 15,
 				bold: true,
 				italic: false
 			},
-			lineWidth : window.innerWidth > common.pfs ? 3 : 2,
+			lineWidth : wdh > pfs ? 3 : 2,
 			legend :{
-				position : window.innerWidth > common.pfs ? 'right' : 'top',
+				position : wdh > pfs ? 'right' : 'top',
 				textStyle : {
-					fontSize: window.innerWidth > common.pfs ? 10 : 7,
+					fontSize: wdh > pfs ? 10 : 7,
 				}
 			},
 			chartArea:{
 				width: '80%'
 			},
 			vAxis: {
-				format : window.innerWidth > common.pfs ? 'decimal' : 'short',
+				format : wdh > pfs ? 'decimal' : 'short',
 				baseline : 0,
 				minValue : 0,
-				viewWindowMode : window.innerWidth > common.pfs ? '' : 'maximized'
+				viewWindowMode : wdh > pfs ? '' : 'maximized'
 			}
 		};
 		
@@ -288,13 +284,20 @@ function monthPStatsDraw(P){
 		keys = Object.keys(P[i]);		
 		
 		//데이터 입력
-		for(let j=1; j<keys.length; j++){			
-			pieData = new Array();			
-			pieData.push(purMap[keys[j].replace("pur", "")]);
-			pieData.push(P[i][keys[j]]);			
-			pie.push(pieData);
-			
-			monSum += P[i][keys[j]];			
+		if(keys.length > 1){
+			for(let j=1; j<keys.length; j++){			
+				pieData = new Array();
+				pieData.push(purMap[keys[j].replace("pur", "")]);
+				pieData.push(P[i][keys[j]]);
+				pie.push(pieData);
+				monSum += P[i][keys[j]];
+			}
+		}else{
+			pieData = new Array();
+			pieData.push("No Data");
+			pieData.push(1);
+			pie.push(pieData);			
+			monSum = 0;
 		}
 		
 		pieTitle.push([P[i].date, monSum]);
@@ -341,7 +344,7 @@ function monthPStatsDraw(P){
 	
 	<!-- 월별 현금, 은행별 통계 -->
 	<div class="chart-height" id="monthCashBankChart"></div>
-	<div id="monthCashBankList"></div>
+	<%-- <div id="monthCashBankList"></div> 추후 업데이트--%>
 	
 	<!-- 월별 목적별 통계 -->
 	<div>
@@ -351,5 +354,5 @@ function monthPStatsDraw(P){
 		<div class="chart-height purChart" id="monthPurposeP3Chart"></div>
 		<div class="chart-height purChart" id="monthPurposeP4Chart"></div>
 	</div>			
-	<div id="monthPurposeList"></div>
+	<%-- <div id="monthPurposeList"></div> 추후 업데이트--%>
 </div>

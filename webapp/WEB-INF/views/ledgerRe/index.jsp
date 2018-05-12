@@ -7,6 +7,10 @@
 <script type="text/javascript" src="${contextPath}/resources/js/memo/memo.js?ver=1.03"></script>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
+
+let wdh = window.innerWidth;
+let pfs = common.platformSize;
+
 $(document).ready(function(){
 	
 	//ledger 메모 리스트 조회

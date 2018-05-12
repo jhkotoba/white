@@ -61,7 +61,7 @@ let rec = {
 		$("#ledgerReList").empty();
 		
 		//창이 넓이가 500보다 큰 경우
-		if(window.innerWidth > common.pfs){			
+		if(window.innerWidth > common.platformSize){			
 			
 			let tag = "";
 			tag += "<table class='table table-striped table-bordered table-sm'>";
@@ -193,7 +193,7 @@ let rec = {
 		let selected = "";
 		let disabled = "";
 		
-		if(window.innerWidth > common.pfs){		
+		if(window.innerWidth > common.platformSize){		
 		
 			tag += "<table class='table table-striped table-sm table-bordered'>";
 			tag	+= "<tr>";

@@ -5,9 +5,9 @@ $(document).ready(function(){
 	let filter = "win16|win32|win64|mac|macintel";
 	if(navigator.platform){
 		if(0 > filter.indexOf(navigator.platform.toLowerCase())){
-			common.pf = "mobile";
+			common.platform = "mobile";
 		}else{
-			common.pf = "pc";
+			common.platform = "pc";
 		}
 	}
 });
@@ -174,8 +174,8 @@ let isTime = {
 
 //공통함수
 let common = {	
-	pf : 'pc',	//platform	
-	pfs : 500,	//platformSize
+	platform : 'pc',
+	platformSize : 500,
 	//깊은복사
 	clone : function deepObjCopy (dupeObj) {
 		var retObj = new Object();

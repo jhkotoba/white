@@ -7,7 +7,7 @@
 <script type="text/javascript">
 $(document).ready(function(){
 	
-	if(window.innerWidth < 501){
+	if(window.innerWidth < common.platformSize+1){
 		$("#dateBox").addClass("width-vmin");
 		$("#searchBox").addClass("width-vmin");
 	}

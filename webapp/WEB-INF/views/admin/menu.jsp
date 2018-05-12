@@ -7,7 +7,7 @@
 <script type="text/javascript">
 $(document).ready(function(){
 	
-	if(window.innerWidth > common.pfs){
+	if(window.innerWidth > common.platformSize){
 		$("#navMenuWidth").addClass("left");
 		$("#sideMenuWidth").addClass("left");
 	}	

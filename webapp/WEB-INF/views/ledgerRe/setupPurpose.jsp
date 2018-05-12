@@ -7,7 +7,7 @@
 <script type="text/javascript">
 $(document).ready(function(){
 	
-	if(window.innerWidth > common.pfs){
+	if(window.innerWidth > common.platformSize){
 		$("#purWidth").addClass("left");
 		$("#purDtlWidth").addClass("left");
 	}	

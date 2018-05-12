@@ -412,7 +412,7 @@ public class LedgerReService {
 	
 	
 	/**
-	 * 가계부 데이터 무결성 체크(List)
+	 * 가계부 테이블 money_record_re 데이터 무결성 체크(List)
 	 * @param list
 	 * @return
 	 */
