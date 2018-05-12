@@ -36,10 +36,7 @@ public class SessionInterceptor extends HandlerInterceptorAdapter {
 			//nav메뉴 권한 체크
 			if(auth.getInt(Auth.getNavAuthList().getString(navUrl))==1) {
 				
-				//side메뉴 권한 체크
-				if("/index".equals(sideUrl)){
-					return true;
-				}else if(auth.getInt(Auth.getSideAuthList().getString(sideUrl))==1) {					
+				if(auth.getInt(Auth.getSideAuthList().getString(sideUrl))==1) {					
 					return true;
 				}else {
 					response.sendRedirect(path+"/main");

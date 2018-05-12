@@ -29,6 +29,7 @@ public class White {
 			return "normal";
 		}else {
 			//return "mobile";
+			//모바일 버전이 준비가 되면 주석해제
 			return "normal";
 		}
 	}
