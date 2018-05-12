@@ -4,6 +4,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import com.ljh.white.common.collection.WhiteMap;
@@ -69,5 +70,47 @@ public class White {
         } catch (ParseException e) {
             return false;
         }
+	}
+	
+	/**
+	 * ListWhiteMap 에서 지정된 Key와 value를 바탕으로 WhiteMap 객체 생성
+	 * @return
+	 */
+	static public WhiteMap convertListToMap(List<WhiteMap> list, String keyNm, String valueNm) {
+		WhiteMap map = new WhiteMap();
+		
+		for(int i=0; i<list.size(); i++) {
+			map.put(list.get(i).getString(keyNm), list.get(i).getString(valueNm));
+		}
+		return map;
+	}
+	
+	/**
+	 * null 데이터 빈 스트링 으로 변환
+	 * @param str
+	 * @return
+	 */
+	static public String nullDelete(String str) {
+		if(str == null) {
+			return "";
+		}else {
+			return str;
+		}
+	}
+	
+	/**
+	 * null 데이터 빈 스트링 으로 변환(Map)
+	 * @param str
+	 * @return
+	 */
+	static public void nullDelete(WhiteMap map) {
+		
+		Set<String> keys= map.keySet();		
+		Iterator<String> ite = keys.iterator();
+		
+		while(ite.hasNext()) {				
+			String key = ite.next();				
+			map.put(key, White.nullDelete(map.getString(key)));
+		}
 	}
 }

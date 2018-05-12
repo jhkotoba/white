@@ -36,7 +36,7 @@ public class LedgerReService {
 	}
 	
 	/**
-	 * 
+	 * 해당유저 목적 리스트
 	 * @param param
 	 * @return
 	 */
@@ -45,7 +45,7 @@ public class LedgerReService {
 		
 	}	
 	/**
-	 * 
+	 * 해당유저 상세목적 리스트
 	 * @param param
 	 * @return
 	 */
@@ -149,7 +149,7 @@ public class LedgerReService {
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
 	public int insertRecordList(WhiteMap param) {		
 		
-		List<WhiteMap> list = param.convertListWhiteMap("inList");
+		List<WhiteMap> list = param.convertListWhiteMap("inList", true);
 		if(!this.recordIntegrityCheck(list, param.getInt("userSeq"))) {
 			return -1;
 		}
@@ -168,8 +168,8 @@ public class LedgerReService {
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
 	public WhiteMap updateDeleteRecordList(WhiteMap param) {
 		
-		List<WhiteMap> upList = param.convertListWhiteMap("upList");
-		List<WhiteMap> delList = param.convertListWhiteMap("delList");
+		List<WhiteMap> upList = param.convertListWhiteMap("upList", false);
+		List<WhiteMap> delList = param.convertListWhiteMap("delList", false);
 		
 		WhiteMap resultMap = new WhiteMap();
 		if(upList.size() > 0 ) {			
@@ -195,9 +195,9 @@ public class LedgerReService {
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
 	public WhiteMap inUpDelPurList(WhiteMap param) {
 		
-		List<WhiteMap> inList = param.convertListWhiteMap("inList");
-		List<WhiteMap> upList = param.convertListWhiteMap("upList");
-		List<WhiteMap> delList = param.convertListWhiteMap("delList");
+		List<WhiteMap> inList = param.convertListWhiteMap("inList", true);
+		List<WhiteMap> upList = param.convertListWhiteMap("upList", false);
+		List<WhiteMap> delList = param.convertListWhiteMap("delList", false);
 		
 		WhiteMap resultMap = new WhiteMap();
 		
@@ -216,10 +216,6 @@ public class LedgerReService {
 		}
 		
 		if(inList.size() > 0 ) {
-			
-			for(int i=0; i<inList.size(); i++) {
-				inList.get(i).put("userSeq", param.getInt("userSeq"));
-			}			
 			resultMap.put("inCnt", ledgerReMapper.insertPurList(inList));	
 		}else {
 			resultMap.put("inCnt", 0);	
@@ -242,9 +238,9 @@ public class LedgerReService {
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
 	public WhiteMap inUpDelPurDtlList(WhiteMap param) {
 		
-		List<WhiteMap> inList = param.convertListWhiteMap("inList");
-		List<WhiteMap> upList = param.convertListWhiteMap("upList");
-		List<WhiteMap> delList = param.convertListWhiteMap("delList");
+		List<WhiteMap> inList = param.convertListWhiteMap("inList", true);
+		List<WhiteMap> upList = param.convertListWhiteMap("upList", false);
+		List<WhiteMap> delList = param.convertListWhiteMap("delList", false);
 		
 		WhiteMap resultMap = new WhiteMap();
 		
@@ -260,10 +256,6 @@ public class LedgerReService {
 		}
 		
 		if(inList.size() > 0 ) {
-			
-			for(int i=0; i<inList.size(); i++) {
-				inList.get(i).put("userSeq", param.getInt("userSeq"));
-			}			
 			resultMap.put("inCnt", ledgerReMapper.insertPurDtlList(inList));	
 		}else {
 			resultMap.put("inCnt", 0);	
@@ -287,9 +279,9 @@ public class LedgerReService {
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
 	public WhiteMap inUpDelBankList(WhiteMap param) {
 		
-		List<WhiteMap> inList = param.convertListWhiteMap("inList");
-		List<WhiteMap> upList = param.convertListWhiteMap("upList");
-		List<WhiteMap> delList = param.convertListWhiteMap("delList");
+		List<WhiteMap> inList = param.convertListWhiteMap("inList", true);
+		List<WhiteMap> upList = param.convertListWhiteMap("upList", false);
+		List<WhiteMap> delList = param.convertListWhiteMap("delList", false);
 		
 		WhiteMap resultMap = new WhiteMap();
 		
@@ -305,10 +297,6 @@ public class LedgerReService {
 		}
 		
 		if(inList.size() > 0 ) {
-			
-			for(int i=0; i<inList.size(); i++) {
-				inList.get(i).put("userSeq", param.getInt("userSeq"));
-			}			
 			resultMap.put("inCnt", ledgerReMapper.insertBankList(inList));	
 		}else {
 			resultMap.put("inCnt", 0);	
@@ -418,7 +406,7 @@ public class LedgerReService {
 		listMap.put("dateList", this.getDateList(param, 4));
 		resultList =  ledgerReMapper.selectMonthPStats(listMap);
 		
-		resultList.add(0, this.convertPurListToPurMap(purList));
+		resultList.add(0, White.convertListToMap(purList, "purSeq", "purpose"));
 		return resultList;
 	}
 	
@@ -430,63 +418,76 @@ public class LedgerReService {
 	 */
 	private boolean recordIntegrityCheck(List<WhiteMap> list, int userSeq) {	
 		
-		String record = null;
+		String record = null;		
+		WhiteMap param = new WhiteMap();
+		param.put("userSeq", userSeq);
 		
-		//WhiteMap param = new WhiteMap();
-		//param.put("userSeq", userSeq);
-		//List<WhiteMap> purList = this.selectPurList(param);
-		//List<WhiteMap> purDtlList = this.selectPurDtlList(param);
+		WhiteMap purMap = White.convertListToMap(this.selectPurList(param), "purSeq", "purpose");		
+		WhiteMap purDtlMap = White.convertListToMap(this.selectPurDtlList(param), "purDtlSeq", "purSeq");
+		WhiteMap bankMap = White.convertListToMap(this.selectBankList(param), "bankSeq", "bankName");
+		purMap.put("0", "move");
+		bankMap.put("0", "cash");
 		
 		//데이터 체크			
-		for(int i=0; i<list.size(); i++) {
+		for(int i=0; i<list.size(); i++) {			
 			
-			//html태그 삭제
-			White.htmlReplace(list.get(i));
+			White.htmlReplace(list.get(i));			
+			White.nullDelete(list.get(i));			
 			
-			//recordDate 체크
-			record = list.get(i).getString("recordDate");
+			record = list.get(i).getString("recordDate");			
 			if(!White.dateCheck(record)) {
 				return false;
 			}
 			
-			//position 체크
-			record = list.get(i).getString("position");
+			record = list.get(i).getString("position");			
 			if(!(record.length() > 0 && record.length() < Constant.POSITION_LENGTH)){
 				return false;
-			}
-			
-			//content 체크			
-			record = list.get(i).getString("content");			
+			}			
+						
+			record = list.get(i).getString("content");		
 			if(!(record.length() > 0 && record.length() < Constant.CONTENT_LENGTH)){
 				return false;
 			}
 			
-			//purpose 체크
-			//record = list.get(i).getString("purSeq");
+			record = list.get(i).getString("bankSeq");			
+			if(bankMap.get(record) == null) {
+				return false;
+			}			
+					
+			record = list.get(i).getString("purSeq");			
+			if(purMap.get(record) == null) {
+				return false;
+			}			
 			
+			if("0".equals(record)) {				
+				String moveSeq = list.get(i).getString("moveSeq");				
+				if(bankMap.get(moveSeq) == null) {
+					return false;				
+				}				
+				if(moveSeq.equals(list.get(i).getString("bankSeq"))) {
+					return false;
+				}			
+			}else {				
+				if(!"".equals(list.get(i).getString("moveSeq"))){
+					System.out.println(list.get(i).getString("moveSeq"));
+					return false;
+				}
+			}
 			
+			record = list.get(i).getString("purDtlSeq");			
+			if(!"".equals(record)) {
+				if(!list.get(i).getString("purSeq").equals(purDtlMap.get(record))) {
+					return false;				
+				}
+			}		
 			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
+			record = list.get(i).getString("money");
+			try {
+				Integer.parseInt(record);
+			}catch (NumberFormatException e) {
+				return false;
+			}
 		}
-		
-			
-			
-			
-			
-		
-		
-			
 		return true;
 	}	
 	
@@ -535,16 +536,18 @@ public class LedgerReService {
 	}
 	
 	/**
+	 * Whiet.convertListToMap으로 수정
+	 * 사용안함 추후 삭제
 	 * 목적리스트  (ListWhiteMap) 
 	 * purList에서 목적시퀀스번을 Key로 목적이름을 value로 한 WhiteMap 객체 생성
 	 * @return
 	 */
-	private WhiteMap convertPurListToPurMap(List<WhiteMap> purList) {
+	/*private WhiteMap convertPurListToPurMap(List<WhiteMap> purList) {
 		WhiteMap purMap = new WhiteMap();
 		
 		for(int i=0; i<purList.size(); i++) {
 			purMap.put(purList.get(i).getString("purSeq"), purList.get(i).getString("purpose"));
 		}
 		return purMap;
-	}
+	}*/
 }
