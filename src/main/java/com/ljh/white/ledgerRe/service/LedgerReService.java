@@ -431,7 +431,7 @@ public class LedgerReService {
 		//데이터 체크			
 		for(int i=0; i<list.size(); i++) {			
 			
-			White.htmlReplace(list.get(i));			
+			White.htmlReplace(list.get(i));
 			White.nullDelete(list.get(i));			
 			
 			record = list.get(i).getString("recordDate");			
