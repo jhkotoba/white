@@ -46,7 +46,7 @@ $(document).ready(function(){
 		dataType: 'json',
 	    success : function(data) {	    	
 	    	chart.view(data.recList);
-	    	rec.initPB(data.purList, data.purDtlList, data.bankList).initRec("index", data.recList).view();	    	
+	    	rec.initPB(data.purList, data.purDtlList, data.bankList).initRec("index", data.recList).view();
 	    },
 	    error : function(request, status, error){
 	    	alert("error");
@@ -157,6 +157,10 @@ $(document).ready(function(){
 	}
 });
 </script>
+
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+	<h1 class="h2 nsrb">가계부</h1>
+</div>
 
 <span class="article" name="date"></span>
 <div class="article">

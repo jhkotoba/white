@@ -7,7 +7,6 @@
 <html>
 <head>
 <meta charset=UTF-8>
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>whiteHome</title>
 
 <link rel="stylesheet" href="${contextPath}/resources/bootstrap-4.1.1/css/bootstrap.min.css" type="text/css" />
@@ -35,13 +34,13 @@
 	</header>
 	
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark nsrb" style='font-size: 20px;'>
-		<a class="navbar-brand" href="${contextPath}/main">white</a>
+		<a class="navbar-brand col-sm-3 col-md-2 mr-0"" href="${contextPath}/main">white</a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
 		</button>
 		<div class="collapse navbar-collapse" id="navbarNavDropdown">
 			<ul class="navbar-nav">
-				<c:forEach items="${sessionScope.navList}" var="nav">			
+				<c:forEach items="${sessionScope.navList}" var="nav">
 					<c:if test="${nav.auth eq 1 }">
 						<li id="${nav.navUrl}" class="nav-item dropdown">
 							<a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="cursor:pointer;">${nav.navNm}</a>
@@ -49,7 +48,7 @@
 								<c:forEach items="${sessionScope.sideList}" var="side">									
 									<c:if test="${nav.navSeq eq side.navSeq }">
 										<c:if test="${side.auth eq 1 }">
-											<a class="dropdown-item" href="javascript:white.submit('${nav.navUrl}', '${side.sideUrl}')">${side.sideNm}</a>
+											<a class="dropdown-item nsrb" href="javascript:white.submit('${nav.navUrl}', '${side.sideUrl}')">${side.sideNm}</a>
 										</c:if>
 									</c:if>
 								</c:forEach>
@@ -59,10 +58,36 @@
 				</c:forEach>
 			</ul>
 		</div>
-	</nav>
+	</nav>	
 	
-	<section style="margin-top: 10px;">
-		<jsp:include page="${requestScope.sectionPage}" flush="false" />
+	<section class="container-fluid">
+		<div class="row">
+			<nav id="sideNav" class="col-md-2 d-none d-md-block bg-light sidebar">
+				<div class="sidebar-sticky">					
+					<ul class="nav flex-column">
+						<c:forEach items="${sessionScope.navList}" var="nav">
+							<c:if test="${nav.auth eq 1 }">
+								<c:forEach items="${sessionScope.sideList}" var="side">
+									<c:if test="${nav.navSeq eq side.navSeq }">
+										<c:if test="${side.auth eq 1 }">
+											<c:if test="${navUrl eq nav.navUrl }">
+												<li class="nav-item">
+													<a class="nav-link active text-secondary nsrb" href="javascript:white.submit('${nav.navUrl}', '${side.sideUrl}')">${side.sideNm}</a>
+												</li>
+											</c:if>
+										</c:if>
+									</c:if>
+								</c:forEach>
+							</c:if>
+						</c:forEach>
+					</ul>
+				</div>
+        	</nav>
+      
+	        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+	        	<jsp:include page="${requestScope.sectionPage}" flush="false" />
+	        </main>
+		</div>
 	</section>
 	
 	<footer>
@@ -70,7 +95,7 @@
 	
 	<form id="moveForm" action="">
 		<input id="navUrl" name="navUrl" type="hidden" value="${navUrl}"></input>
-		<input id="sideUrl" name="sideUrl" type="hidden" value="${sideUrl}"></input>		
+		<input id="sideUrl" name="sideUrl" type="hidden" value="${sideUrl}"></input>
 	</form>
 	
 	<div class="blind" style="display: none;">
