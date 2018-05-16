@@ -1,28 +1,32 @@
-/*mobile*/
-@media (max-width: 500px) {
-	span, table{font-size: 9px;}
-	input[type=date], input[type=time],input[type=text] {font-size: 9px;}
-	.slt-fs{font-size: 9px !important;}
-	.span-fs{font-size: 9px !important;}
-	.btn-fs{font-size: 9px !important;}
-	.btn-sm-fs{font-size: 9px !important;}
-	.chart-height{height: 200px;}	
-	.purChart{width: 95%;}
-}
-/*pc*/
-@media screen and (min-width: 501px) {
-    span, table{font-size: 11px;}    
-	input[type=date], input[type=time],input[type=text] {font-size: 12px;}
-	.slt-fs{font-size: 12px !important;}
-	.span-fs{font-size: 16px !important;}
-	.btn-fs{font-size: 16px !important;}
-	.btn-sm-fs{font-size: 10px !important;}
-	.chart-height{height: 500px;}
-	.purChart{width: 24%; float: left; margin-right: 5px; margin-bottom: 10px;}
 
-}
+/* font */
+@font-face { font-family: 'NanumSquareB'; src: url(../ttf/NanumSquareB.ttf) format('truetype'); }
+.nsb{font-family: 'NanumSquareB', serif;}
+@font-face { font-family: 'NanumSquareRoundB'; src: url(../ttf/NanumSquareRoundB.ttf) format('truetype'); }
+.nsrb{font-family: 'NanumSquareRoundB', serif;}
 
-/*common*/
+.article{padding-left: 20px; padding-right: 20px;}
+.left{float: left; margin-right: 5px; margin-bottom: 10px;}
+.right{float: right; margin-right: 5px; margin-bottom: 10px;}
+.width-half{width:49%;}
+.width-full{width:100%;}
+.height-half{height: 50%;}
+.height-full{height: 100%;}
+
+
+
+span, table{font-size: 11px;}    
+input[type=date], input[type=time],input[type=text] {font-size: 12px;}
+.slt-fs{font-size: 12px !important;}
+.span-fs{font-size: 16px !important;}
+.btn-fs{font-size: 16px !important;}
+.btn-sm-fs{font-size: 10px !important;}
+.chart-height{height: 500px;}
+.purChart{width: 24%; float: left; margin-right: 5px; margin-bottom: 10px;}
+
+
+
+
 td, th{height:38px; vertical-align: middle !important;}
 
 #navMenu ul {list-style:none; margin:0; padding:0;}
@@ -44,12 +48,8 @@ td, th{height:38px; vertical-align: middle !important;}
 .space{width:100%;}
 .blind{position:absolute !important; background:black; background : rgba(0, 0, 0, 0.2);  left:0 !important; top:0 !important; width: 100% !important; height: 100% !important; z-index:9999;}
 .bg-white{background: white !important;}
-/* font */
-@font-face { font-family: 'NanumSquareB'; src: url(../ttf/NanumSquareB.ttf) format('truetype'); }
-.nsb{font-family: 'NanumSquareB', serif;}
 
-@font-face { font-family: 'NanumSquareRoundB'; src: url(../ttf/NanumSquareRoundB.ttf) format('truetype'); }
-.nsrb{font-family: 'NanumSquareRoundB', serif;}
+
 
 .sideView{
 	position: absolute;
@@ -79,8 +79,7 @@ td, th{height:38px; vertical-align: middle !important;}
 	text-decoration: none;	
 }
 
-.left{float: left; margin-right: 5px; margin-bottom: 10px;}
-.right{float: right; margin-right: 5px; margin-bottom: 10px;}
+
 
 .font10{
 	font-size: 10px;
