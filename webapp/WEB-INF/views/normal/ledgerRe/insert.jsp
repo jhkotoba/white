@@ -40,7 +40,9 @@ $(document).ready(function(){6
 
 </script>
 <div class="article">
-	<h6 class="nsrb">Money registration</h6>
+	<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+		<h1 class="h2 nsrb">가계부 입력</h1>
+	</div>
 	<div id="recIn" class="btn-group" role="group">	
 		<button id="recAddBtn" type="button" class="btn btn-secondary btn-fs nsrb">추가</button>
 		<button id="recDelBtn" type="button" class="btn btn-secondary btn-fs nsrb">삭제</button>

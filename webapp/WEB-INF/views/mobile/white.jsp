@@ -13,16 +13,13 @@
 
 <link rel="stylesheet" href="${contextPath}/resources/bootstrap-4.1.1/css/bootstrap.min.css" type="text/css" />
 <link rel="stylesheet" href="${contextPath}/resources/air-datepicker/css/datepicker.min.css" type="text/css"/>
-<link rel="stylesheet" href="${contextPath}/resources/css/white.css?ver=0.013" type="text/css" />
-<link rel="stylesheet" href="${contextPath}/resources/css/btn.css" type="text/css" />
-<link rel="stylesheet" href="${contextPath}/resources/css/icon.css" type="text/css" />
+<link rel="stylesheet" href="${contextPath}/resources/white/css/white.css?ver=0.014" type="text/css" />
 
-<script type="text/javascript" src="${contextPath}/resources/js/common/jquery/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="${contextPath}/resources/jquery/js/jquery-3.2.1.min.js"></script>
 <script type="text/javascript" src="${contextPath}/resources/bootstrap-4.1.1/js/bootstrap.bundle.min.js"></script>
 <script type="text/javascript" src="${contextPath}/resources/air-datepicker/js/datepicker.min.js"></script>
 <script type="text/javascript" src="${contextPath}/resources/air-datepicker/js/i18n/datepicker.ko.js"></script>
-<script type="text/javascript" src="${contextPath}/resources/js/common/common.js?ver=0.005"></script>
-
+<script type="text/javascript" src="${contextPath}/resources/white/js/common.js?ver=0.005"></script>
 </head>
 <body>
 	<header class='header'>	

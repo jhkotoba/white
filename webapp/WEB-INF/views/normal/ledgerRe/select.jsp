@@ -122,8 +122,11 @@ $(document).ready(function(){
 
 </script>
 
-<div class="article">
-	<h6>Date Search</h6>
+<div class="article">	
+	
+	<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+		<h1 class="h2 nsrb">조회&입력</h1>
+	</div>
 	
 	<div id="dateBox" class="left">
 		<div class="input-group">

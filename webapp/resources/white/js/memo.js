@@ -67,12 +67,12 @@ let memo = {
 				if(this._list[i].state === "delete"){
 					tag +=	"<input id='memoContent_"+i+"' type='text' class='form-control' placeholder='메모를 입력하세요' style='color:red;' onkeyup='memo._edit("+i+")' value='"+this._list[i].memoContent+"'>";
 				}else if(this._list[i].state === "update"){
-					tag +=	"<input id='memoContent_"+i+"' type='text' class='form-control' placeholder='메모를 입력하세요' style='color:blue; onkeyup='memo._edit("+i+")' value='"+this._list[i].memoContent+"'>";
+					tag +=	"<input id='memoContent_"+i+"' type='text' class='form-control' placeholder='메모를 입력하세요' style='color:blue;' onkeyup='memo._edit("+i+")' value='"+this._list[i].memoContent+"'>";
 				}else{
 					tag +=	"<input id='memoContent_"+i+"' type='text' class='form-control' placeholder='메모를 입력하세요' onkeyup='memo._edit("+i+")' value='"+this._list[i].memoContent+"'>";
 				}				
 			}else{
-				tag +=	"<input id='memoContent_"+i+"' type='text' class='form-control' placeholder='메모를 입력하세요' aria-describedby='basic-addon2' style='color:green;' onkeyup='memo._edit("+i+")' value=''>";	
+				tag +=	"<input id='memoContent_"+i+"' type='text' class='form-control' placeholder='메모를 입력하세요' style='color:green;' onkeyup='memo._edit("+i+")' value=''>";	
 			}
 			tag +=		"<div class='input-group-append'>";
 			tag +=			"<button class='btn btn-secondary btn-fs nsrb' type='button' onclick='memo._del("+i+")'>삭제</button>";

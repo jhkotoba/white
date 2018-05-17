@@ -328,6 +328,11 @@ function monthPStatsDraw(P){
 </script>
 
 <div class="article">
+
+	<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+		<h1 class="h2 nsrb">월별통계</h1>
+	</div>
+
 	<div class="input-group w-25 updown-spacing">
 		<input id="chartDate" class="form-control" type="text" value="">
 		<div class="input-group-append">

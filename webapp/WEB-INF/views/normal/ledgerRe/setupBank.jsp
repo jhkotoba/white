@@ -43,12 +43,18 @@ $(document).ready(function(){
 });
 
 </script>
-<div class="space left"></div>
+<div class="article">
+	<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+		<h1 class="h2 nsrb">은행설정</h1>
+	</div>
+	
+	<div class="btn-group" role="group">	
+		<button id="bankAddBtn" type="button" class="btn btn-secondary btn-fs nsrb">추가</button>
+		<button id="bankSaveBtn" type="button" class="btn btn-secondary btn-fs nsrb">저장</button>
+		<button id="bankCelBtn" type="button" class="btn btn-secondary btn-fs nsrb">취소</button>
+	</div>
+	
+	<div id="bankList" class="width-vmin"></div>
 
-<div class="btn-group" role="group">	
-	<button id="bankAddBtn" type="button" class="btn btn-secondary btn-fs nsrb">추가</button>
-	<button id="bankSaveBtn" type="button" class="btn btn-secondary btn-fs nsrb">저장</button>
-	<button id="bankCelBtn" type="button" class="btn btn-secondary btn-fs nsrb">취소</button>
 </div>
 
-<div id="bankList" class="width-vmin"></div>
