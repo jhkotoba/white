@@ -4,7 +4,7 @@
 <c:set var="contextPath" value="<%=request.getContextPath()%>"></c:set>
 
 <script type="text/javascript" src="${contextPath}/resources/js/ledgerRe/record.js?ver=1.00"></script>
-<script type="text/javascript" src="${contextPath}/resources/js/memo/memo.js?ver=1.03"></script>
+<script type="text/javascript" src="${contextPath}/resources/white/js/memo.js?ver=1.03"></script>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
 
@@ -14,7 +14,7 @@ let pfs = common.platformSize;
 $(document).ready(function(){
 	
 	//ledger 메모 리스트 조회
-	memo.select("ledger");
+	memo.create("ledgerMemo","ledger");
 	
 	//새로운 메모 추가
 	$("#memoAddBt").click(function(){
@@ -173,19 +173,8 @@ $(document).ready(function(){
 
 <div class="space left"></div>
 
-<div id="ledgerMemo" class="article">
-	<div class="btn-group btn-group-sm width-full" role="group">
-		<button id="memoAddBt" type="button" class="btn btn-secondary btn-fs nsrb">메모 추가</button>
-		<button id="memoSaveBt" type="button" class="btn btn-secondary btn-fs nsrb">메모 저장</button>
-		<button id="memoCancelBt" type="button" class="btn btn-secondary btn-fs nsrb">취소</button>
-	</div>
-	
-	<div style="width: 100%; height: 10px;"></div>
-	
-	<div id='memoList'>
-	</div>
+<div id="ledgerMemo" class="article">	
 </div>
-
 
 <input id="startDate" type="hidden" value="">
 <input id="endDate" type="hidden" value="">

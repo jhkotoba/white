@@ -6,12 +6,7 @@
 <script type="text/javascript" src="${contextPath}/resources/js/ledgerRe/record.js?ver=0.015"></script>
 <script type="text/javascript">
 $(document).ready(function(){
-	
-	if(window.innerWidth < common.platformSize+1){
-		$("#dateBox").addClass("width-vmin");
-		$("#searchBox").addClass("width-vmin");
-	}
-	
+		
 	$("#startDate").val(isDate.firstDay());
 	$("#endDate").val(isDate.lastDay());
 		
@@ -62,8 +57,8 @@ $(document).ready(function(){
 			dataType: 'json',
 		    success : function(data) {	    	
 		    	rec.initRec("select", data.recList).view();		    	
-		    	$("#recEditBtn").show();
-				$("#recSaveBtn").hide();
+		    	$("#recEditBtn").prop("disabled", false);
+				$("#recSaveBtn").prop("disabled", true);
 		    },
 		    error : function(request, status, error){
 		    	alert("error");
@@ -75,14 +70,14 @@ $(document).ready(function(){
 	//수정 및 삭제
 	$("#recEditBtn").click(function(){
 		rec.edit();
-		$("#recSaveBtn").show();
+		$("#recSaveBtn").prop("disabled", false);
 	});
 	
 	//취소
 	$("#recCelBtn").click(function(){
 		rec.cancel().view();
 		
-		$("#recSaveBtn").hide();
+		$("#recSaveBtn").prop("disabled", true);
 		
 		$("#srhPur").val("").prop("selected", true);
 		$("#srhBank").val("").prop("selected", true);
@@ -125,46 +120,39 @@ $(document).ready(function(){
 <div class="article">	
 	
 	<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-		<h1 class="h2 nsrb">조회&입력</h1>
+		<h1 class="h2 nsrb">조회&편집</h1>
 	</div>
 	
-	<div id="dateBox" class="left">
-		<div class="input-group">
-			<div class="input-group-prepend">
-				<span class="input-group-text span-fs nsrb">날짜</span>
-			</div>
-			<input id="startDate" value="" type="text" class="datepicker-here form-control" data-language='ko'>
-			<input id="endDate" value="" type="text" class="datepicker-here form-control" data-language='ko'>			
+	<div class="input-group pb-2">
+		<div class="input-group-prepend">
+			<span class="input-group-text span-fs nsrb">날짜</span>
 		</div>
-	</div>
-
-	<div id="searchBox" class="left">
-		<div class="input-group">
-						
-			<div class="input-group-prepend">
-				<span class="input-group-text span-fs nsrb">조건</span>
-			</div>			
+		<input id="startDate" value="" type="text" class="datepicker-here form-control" data-language='ko'>
+		<input id="endDate" value="" type="text" class="datepicker-here form-control" data-language='ko'>	
 		
-			<select id="srhPur" class="custom-select slt-fs">
-				<option value=''>목적 검색</option>	
-				<option value='0'>금액이동</option>
-			</select>
-			<select id="srhPurDtl" class="custom-select slt-fs">
-				<option value=''>상세 검색</option>
-			</select>
-			<select id="srhBank" class="custom-select slt-fs">
-				<option value=''>은행 검색</option>			
-				<option value='0'>현금</option>	
-			</select>			
-		</div>			      
-	</div>
-	<div class="left">
+		
+		<div class="input-group-prepend">
+			<span class="input-group-text span-fs nsrb">조건</span>
+		</div>			
+	
+		<select id="srhPur" class="custom-select slt-fs">
+			<option value=''>목적 검색</option>	
+			<option value='0'>금액이동</option>
+		</select>
+		<select id="srhPurDtl" class="custom-select slt-fs">
+			<option value=''>상세 검색</option>
+		</select>
+		<select id="srhBank" class="custom-select slt-fs">
+			<option value=''>은행 검색</option>			
+			<option value='0'>현금</option>	
+		</select>
+		
 		<div class="btn-group" role="group">
 			<button id="recShBtn" type="button" class="btn btn-secondary btn-fs nsrb">조회</button>
-			<button id="recEditBtn" type="button" style="display:none;" class="btn btn-secondary btn-fs nsrb">편집</button>
-			<button id="recSaveBtn" type="button" style="display:none;" class="btn btn-secondary btn-fs nsrb">저장</button>
+			<button id="recEditBtn" type="button" class="btn btn-secondary btn-fs nsrb" disabled="disabled">편집</button>
+			<button id="recSaveBtn" type="button" class="btn btn-secondary btn-fs nsrb" disabled="disabled">저장</button>
 			<button id="recCelBtn" type="button" class="btn btn-secondary btn-fs nsrb">초기화</button>
-		</div>
+		</div>					
 	</div>
 	
 	<div id="ledgerReList">		

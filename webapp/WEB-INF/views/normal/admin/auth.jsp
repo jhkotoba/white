@@ -45,7 +45,9 @@ $(document).ready(function(){
 
 </script>
 <div class="article">
-	<h6 class="nsrb">Auth List</h6>
+	<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+		<h1 class="h2 nsrb">권한설정</h1>
+	</div>
 	<div class="width-vmin">
 		<div class="btn-group" role="group">	
 			<button id="authAddBtn" type="button" class="btn btn-secondary btn-fs nsrb">추가</button>

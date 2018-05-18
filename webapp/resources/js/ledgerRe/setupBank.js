@@ -43,7 +43,7 @@ let bank = {
 		
 		let tag = "<table class='table table-striped table-sm table-bordered'>";
 			tag	+= "<tr>";			
-			tag += "<th colspan='2'>순서</th>";
+			tag += "<th colspan='2' style='width:3%'>순서</th>";
 			tag	+= "<th>은행이름</th>";
 			tag	+= "<th>계좌번호</th>";
 			tag	+= "<th style='width: 20px;'>표시여부</th>";

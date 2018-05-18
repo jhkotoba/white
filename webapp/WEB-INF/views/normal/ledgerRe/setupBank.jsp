@@ -54,7 +54,7 @@ $(document).ready(function(){
 		<button id="bankCelBtn" type="button" class="btn btn-secondary btn-fs nsrb">취소</button>
 	</div>
 	
-	<div id="bankList" class="width-vmin"></div>
+	<div id="bankList" class="width-full"></div>
 
 </div>
 

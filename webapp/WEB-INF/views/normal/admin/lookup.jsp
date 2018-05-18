@@ -137,9 +137,12 @@ $(document).ready(function(){
 <input id="pageNum" type="hidden" value="1">
 
 <div class="article">
+	
+	<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+		<h1 class="h2 nsrb">사용자 조회</h1>
+	</div>
 
-	<div id="userSearch">
-		<h6>User Search</h6>
+	<div id="userSearch">		
 		<div class="left">	
 			<div class="input-group">
 				<div class="input-group-prepend">

@@ -74,8 +74,13 @@ $(document).ready(function(){
 
 </script>
 <div class="article">
-	<div id="navMenuWidth" class="width-vmin">
-		<h6 class="nsrb">Nav Menu</h6>
+	
+	<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+		<h1 class="h2 nsrb">메뉴설정</h1>
+	</div>
+
+	<div id="navMenuWidth" class="width-half">
+		<h6 class="nsrb">상위메뉴</h6>
 		<div class="btn-group" role="group">	
 			<button id="navAddBtn" type="button" class="btn btn-secondary btn-fs nsrb">추가</button>
 			<button id="navSaveBtn" type="button" class="btn btn-secondary btn-fs nsrb">네비메뉴 저장</button>
@@ -84,8 +89,8 @@ $(document).ready(function(){
 		<div id="navList"></div>	
 	</div>	
 	
-	<div id="sideMenuWidth" class="width-vmin">
-		<h6 class="nsrb">Side Menu</h6>
+	<div id="sideMenuWidth" class="width-half">
+		<h6 class="nsrb">하위메뉴</h6>
 		<div class="btn-group" role="group">	
 			<button id="sideAddBtn" type="button" class="btn btn-secondary btn-fs nsrb">추가</button>
 			<button id="sideSaveBtn" type="button" class="btn btn-secondary btn-fs nsrb">하단메뉴 저장</button>

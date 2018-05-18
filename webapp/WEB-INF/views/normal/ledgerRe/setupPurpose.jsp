@@ -76,7 +76,7 @@ $(document).ready(function(){
 	<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
 		<h1 class="h2 nsrb">목적설정</h1>
 	</div>
-	<div id="purWidth" class="width-vmin">
+	<div id="purWidth" class="width-half">
 		<div class="btn-group" role="group">	
 			<button id="purAddBtn" type="button" class="btn btn-secondary btn-fs nsrb">추가</button>
 			<button id="purSaveBtn" type="button" class="btn btn-secondary btn-fs nsrb">목적 저장</button>
@@ -85,7 +85,7 @@ $(document).ready(function(){
 		<div id="purList"></div>	
 	</div>	
 	
-	<div id="purDtlWidth" class="width-vmin">
+	<div id="purDtlWidth" class="width-half">
 		<div class="btn-group" role="group">	
 			<button id="purDtlAddBtn" type="button" class="btn btn-secondary btn-fs nsrb">추가</button>
 			<button id="purDtlSaveBtn" type="button" class="btn btn-secondary btn-fs nsrb">상세목적 저장</button>
