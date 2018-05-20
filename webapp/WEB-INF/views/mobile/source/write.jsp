@@ -4,16 +4,14 @@
 
 <head>
 <meta charset=UTF-8>
-<title>whiteHome</title>	
-<script type="text/javascript">			
+<title>whiteHome</title>
+<script type="text/javascript">
 </script>
-	
+
 	
 </head>
 <body>
 write.jsp<br>
-	
-
 </body>
 
 

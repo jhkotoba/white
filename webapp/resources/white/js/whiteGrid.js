@@ -3,7 +3,7 @@
  * ver 0.000
  */
 
-let whiteGrid = {
+/*let whiteGrid = {
 	value : null,
 	options : {
 		
@@ -14,4 +14,13 @@ let whiteGrid = {
 	view : function(){
 		
 	}
+}*/
+
+let wthieGrid = function(id){
+	this._id = id;
+	
+	this.getId = function(){
+		return this._id;
+	}
+	
 }
