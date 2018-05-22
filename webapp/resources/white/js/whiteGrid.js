@@ -16,7 +16,7 @@
 	}
 }*/
 
-let wthieGrid = function(id){
+let whiteGrid = function(id){
 	this._id = id;
 	
 	this.getId = function(){
