@@ -6,9 +6,6 @@
 
 <script type="text/javascript">
 
-let wdh = window.innerWidth;
-let pfs = common.platformSize;
-
 $(document).ready(function(){	
 	monthStats();
 	$("#chartDate").val(isDate.firstDay());
@@ -53,11 +50,8 @@ function monthIEAStatsDraw(IEA){
 	let combo = new Array();
 	let area = new Array();
 	
-	let comboTag = wdh > pfs ? {head:"<th>날짜</th>", plus:"<td>수입</td>", minus:"<td>지출</td>", sum:"<td>합계</td>"}
-		: "<th>날짜</th><th>수입</th><th>지출</th><th>합계</th>";
-										   
-	let areaTag = wdh > pfs ? {head:"<th>날짜</th>", amount:"<td>월별자금</td>"}
-	 	: "<th>날짜</th><th>월별자금</th>";
+	let comboTag = {head:"<th>날짜</th>", plus:"<td>수입</td>", minus:"<td>지출</td>", sum:"<td>합계</td>"};										   
+	let areaTag = {head:"<th>날짜</th>", amount:"<td>월별자금</td>"};
 	 									  
 	combo.push(['date', '수입', '지출']);
 	area.push(['date', '월별자금']);
@@ -71,40 +65,25 @@ function monthIEAStatsDraw(IEA){
 		amount += (IEA[i].plus - Math.abs(IEA[i].minus));
 		area.push([IEA[i].date, amount]);		
 		
-		//데스크탑
-		if(wdh > pfs){
-			//월별통계 표
-			comboTag.head += "<th>"+IEA[i].date+"</th>";
-			comboTag.plus += "<td>"+common.comma(IEA[i].plus)+"</td>";
-			comboTag.minus += "<td>"+common.comma(IEA[i].minus)+"</td>";	
-			comboTag.sum += "<td>"+common.comma(IEA[i].plus - Math.abs(IEA[i].minus))+"</td>";
-			
-			//월별누적 표
-			areaTag.head += "<th>"+IEA[i].date+"</th>";
-			areaTag.amount += "<td>"+common.comma(amount)+"</td>";
+		//월별통계 표
+		comboTag.head += "<th>"+IEA[i].date+"</th>";
+		comboTag.plus += "<td>"+common.comma(IEA[i].plus)+"</td>";
+		comboTag.minus += "<td>"+common.comma(IEA[i].minus)+"</td>";	
+		comboTag.sum += "<td>"+common.comma(IEA[i].plus - Math.abs(IEA[i].minus))+"</td>";
 		
-		//모바일
-		}else{
-			//월별통계 표
-			comboTag += "<tr><th>"+IEA[i].date+"</th>";
-			comboTag += "<td>"+common.comma(IEA[i].plus)+"</td>";
-			comboTag += "<td>"+common.comma(IEA[i].minus)+"</td>";	
-			comboTag += "<td>"+common.comma(IEA[i].plus - Math.abs(IEA[i].minus))+"</td></tr>";
-			
-			//월별누적 표
-			areaTag += "<tr><th>"+IEA[i].date+"</th>";
-			areaTag += "<td>"+common.comma(amount)+"</td></tr>";
-		}
+		//월별누적 표
+		areaTag.head += "<th>"+IEA[i].date+"</th>";
+		areaTag.amount += "<td>"+common.comma(amount)+"</td>";		
 		
 	}
 	//월별통계 표 그리기
-	$("#monthStatsList").append("<table class='table table-striped table-bordered table-sm'><tr>" + (
-			wdh > pfs ? comboTag.head+"</tr><tr>"+comboTag.plus+"</tr><tr>"+comboTag.minus+"</tr>"
-			+"<tr>"+comboTag.sum : comboTag  )+"</tr></table>");
+	$("#monthStatsList").append("<table class='table table-striped table-bordered table-sm'><tr>" + 			
+			comboTag.head+"</tr><tr>"+comboTag.plus+"</tr><tr>"+comboTag.minus+"</tr>"
+			+"<tr>"+comboTag.sum+"</tr></table>");
 	
 	//월별누적 표 그리기
-	$("#monthAmountSumList").append("<table class='table table-striped table-bordered table-sm'><tr>" + (
-			wdh > pfs ? areaTag.head+"</tr><tr>"+areaTag.amount : areaTag )+"</tr></table>");	
+	$("#monthAmountSumList").append("<table class='table table-striped table-bordered table-sm'><tr>" + 
+			areaTag.head+"</tr><tr>"+areaTag.amount+"</tr></table>");	
 	
 	
 	//월별 통계 차트 그리기
@@ -118,12 +97,12 @@ function monthIEAStatsDraw(IEA){
 			title : '월별 수익/지출',
 			titleTextStyle:{
 				color: 'black',
-				fontSize: wdh > pfs ? 20 : 15,
+				fontSize: 20,
 				bold: true,
 				italic: false
 			},
 			legend :{
-				position : wdh > pfs ? 'right' : 'top'
+				position : 'right'
 			},
 			chartArea:{
 				width: '80%'
@@ -131,9 +110,7 @@ function monthIEAStatsDraw(IEA){
 			colors:['#6799FF','#F15F5F'],			
 			vAxis: {
 				baseline : 0,
-				viewWindowMode : wdh > pfs ? '' : 'maximized',
-				format : wdh > pfs ? 'decimal' : 'short'
-						
+				format : 'decimal'						
 			},
 			seriesType: 'bars'
 		};
@@ -153,12 +130,12 @@ function monthIEAStatsDraw(IEA){
 			title:'월별 자금현황',
 			titleTextStyle:{
 				color: 'black',
-				fontSize: wdh > pfs ? 20 : 15,
+				fontSize: 20,
 				bold: true,
 				italic: false
 			},
 			legend :{
-				position : wdh > pfs ? 'right' : 'top'
+				position : 'right'
 			},
 			chartArea:{
 				width: '80%'
@@ -167,8 +144,7 @@ function monthIEAStatsDraw(IEA){
 			vAxis: {
 				baseline : 0,
 				minValue: 0,
-				viewWindowMode : wdh > pfs ? '' : 'maximized',
-				format : wdh > pfs ? 'decimal' : 'short',
+				format : 'decimal'
 			},
 		};
 		
@@ -229,25 +205,24 @@ function monthCBStatsDraw(BC){
 			
 			titleTextStyle:{
 				color: 'black',
-				fontSize: wdh > pfs ? 20 : 15,
+				fontSize: 20,
 				bold: true,
 				italic: false
 			},
-			lineWidth : wdh > pfs ? 3 : 2,
+			lineWidth : 3,
 			legend :{
-				position : wdh > pfs ? 'right' : 'top',
+				position : 'right',
 				textStyle : {
-					fontSize: wdh > pfs ? 10 : 7,
+					fontSize: 10,
 				}
 			},
 			chartArea:{
 				width: '80%'
 			},
 			vAxis: {
-				format : wdh > pfs ? 'decimal' : 'short',
+				format : 'decimal',
 				baseline : 0,
 				minValue : 0,
-				viewWindowMode : wdh > pfs ? '' : 'maximized'
 			}
 		};
 		
@@ -313,7 +288,7 @@ function monthPStatsDraw(P){
 		
 		    let data = google.visualization.arrayToDataTable(pieList[i]);
 			let options = {
-				title: pieTitle[i][0]+" ("+common.comma(pieTitle[i][1])+")",
+				title: pieTitle[i][0]+" 목적 지출통계 ("+common.comma(pieTitle[i][1])+" 원)",
 				chartArea: {
 					width:'100%'
 				},
@@ -340,24 +315,24 @@ function monthPStatsDraw(P){
 		</div>
 	</div>
 	<!-- 월별 수입지출 통계 -->
-	<div class="chart-height" id="monthIEStatsChart"></div>
+	<div class="chart-height form-control" id="monthIEStatsChart"></div>
 	<div id="monthStatsList"></div>
 	
 	<!-- 월별 누적통계 -->
-	<div class="chart-height" id="monthAmountSumChart"></div>
+	<div class="chart-height form-control" id="monthAmountSumChart"></div>
 	<div id="monthAmountSumList"></div>
 	
 	<!-- 월별 현금, 은행별 통계 -->
-	<div class="chart-height" id="monthCashBankChart"></div>
+	<div class="chart-height form-control" id="monthCashBankChart"></div>
 	<%-- <div id="monthCashBankList"></div> 추후 업데이트--%>
 	
 	<!-- 월별 목적별 통계 -->
-	<div>
-		<h6 style="margin-left:10%;  font-family:Arial; font-size:20px; font-weight:bold";><strong>월별 목적별 지출통계</strong></h6>
-		<div class="chart-height purChart" id="monthPurposeP1Chart"></div>
-		<div class="chart-height purChart" id="monthPurposeP2Chart"></div>
-		<div class="chart-height purChart" id="monthPurposeP3Chart"></div>
-		<div class="chart-height purChart" id="monthPurposeP4Chart"></div>
+	<div class="updown-spacing">
+		<!-- <h6 style="margin-left:10%;  font-family:Arial; font-size:20px; font-weight:bold";><strong>월별 목적별 지출통계</strong></h6> -->
+		<div class="chart-height left width-half form-control" id="monthPurposeP1Chart"></div>
+		<div class="chart-height right width-half form-control" id="monthPurposeP2Chart"></div>
+		<div class="chart-height left width-half form-control" id="monthPurposeP3Chart"></div>
+		<div class="chart-height right width-half form-control" id="monthPurposeP4Chart"></div>
 	</div>			
 	<%-- <div id="monthPurposeList"></div> 추후 업데이트--%>
 </div>

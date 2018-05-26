@@ -9,7 +9,24 @@
 <script type="text/javascript" src="${contextPath}/resources/white/js/whiteGrid.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
-	let wg = new whiteGrid("test");
+	
+	let navUrl = $("#moveForm #navUrl").val();
+	
+	//test
+	console.log(navUrl);
+	
+	let white = new WhiteGrid("wgTest");
+	
+	let list = new Array();
+	list.push("aaa");
+	list.push("bbb");
+	
+	white.setList(list);
+	console.log(white.list);
+	console.log(white.listCopy);
+	
+	
+	//test
 });
 </script>
 	
@@ -18,7 +35,16 @@ $(document).ready(function(){
 <body>
 write.jsp<br>
 
-<input id="test" type="text" value="" />
+<!-- <input id="wgTest" type="text" value="" /> -->
+
+<div class="article">
+
+	<select id="writeList">
+	</select>
+	<pre>
+		<textarea rows="100%" cols="100%"></textarea>
+	</pre>
+</div>
 
 </body>
 
