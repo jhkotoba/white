@@ -12,6 +12,19 @@ $(document).ready(function(){
 	
 	let navUrl = $("#moveForm #navUrl").val();
 	
+	/* $.ajax({	
+		type: 'POST',
+		url: common.path()+'/source/selectSourceSideList.ajax',
+		data: navUrl,
+		dataType: 'json',
+	    success : function(data) {
+	    	
+	    },
+	    error : function(request, status, error){
+	    	alert("error");
+	    } 
+	}); */
+	
 	//test
 	console.log(navUrl);
 	

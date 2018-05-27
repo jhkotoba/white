@@ -118,11 +118,11 @@ CREATE TABLE source_board
 (
 	source_seq int NOT NULL AUTO_INCREMENT,
 	source_type varchar(20) NOT NULL,
-	user_seq int NOT NULL,
+	writer_seq int NOT NULL,
 	content varchar(4000) NOT NULL,
 	reg_date datetime NOT NULL,
 	PRIMARY KEY (source_seq),
-	UNIQUE (user_seq)
+	UNIQUE (writer_seq)
 );
 
 
@@ -226,7 +226,7 @@ ALTER TABLE purpose
 
 
 ALTER TABLE source_board
-	ADD FOREIGN KEY (user_seq)
+	ADD FOREIGN KEY (writer_seq)
 	REFERENCES white_user (user_seq)
 	ON UPDATE RESTRICT
 	ON DELETE RESTRICT

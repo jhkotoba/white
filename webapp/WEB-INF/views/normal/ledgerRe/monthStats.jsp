@@ -327,8 +327,7 @@ function monthPStatsDraw(P){
 	<%-- <div id="monthCashBankList"></div> 추후 업데이트--%>
 	
 	<!-- 월별 목적별 통계 -->
-	<div class="updown-spacing">
-		<!-- <h6 style="margin-left:10%;  font-family:Arial; font-size:20px; font-weight:bold";><strong>월별 목적별 지출통계</strong></h6> -->
+	<div class="updown-spacing">		
 		<div class="chart-height left width-half form-control" id="monthPurposeP1Chart"></div>
 		<div class="chart-height right width-half form-control" id="monthPurposeP2Chart"></div>
 		<div class="chart-height left width-half form-control" id="monthPurposeP3Chart"></div>

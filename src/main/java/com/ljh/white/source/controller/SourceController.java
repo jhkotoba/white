@@ -5,13 +5,15 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.mobile.device.Device;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.ljh.white.common.White;
 import com.ljh.white.common.collection.WhiteMap;
-import com.ljh.white.common.service.WhiteService;
+import com.ljh.white.source.service.SourceService;
 
 
 @Controller
@@ -19,8 +21,8 @@ public class SourceController {
 			
 	private static Logger logger = LogManager.getLogger(SourceController.class);
 	
-	@Resource(name = "WhiteService")
-	private WhiteService whiteService;
+	@Resource(name = "SourceService")
+	private SourceService sourceService;
 	
 	@RequestMapping(value="/source")
 	public String source(HttpServletRequest request, Device device){
@@ -36,5 +38,15 @@ public class SourceController {
 		
 		request.setAttribute("sectionPage", navUrl.replace("/", "")+sideUrl+".jsp");
 		return White.device(device)+"/white.jsp";
+	}
+	
+	@RequestMapping(value="/source/selectSourceInfoList.ajax" )
+	public String selectPurBankList(HttpServletRequest request){
+		logger.debug("selectPurBankList Start");
+		
+		WhiteMap param = new WhiteMap(request);
+		request.setAttribute("sourceInfoList", new JSONArray(sourceService.selectSourceInfoList(param)));	
+		
+		return "result.jsp";
 	}
 }
