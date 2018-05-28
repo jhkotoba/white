@@ -14,7 +14,7 @@ $(document).ready(function(){
 	
 	$.ajax({	
 		type: 'POST',
-		url: common.path()+'/source/selectSourceSideList.ajax',
+		url: common.path()+'/source/selectSourceInfoList.ajax',
 		data: navUrl,
 		dataType: 'json',
 	    success : function(data) {
@@ -46,7 +46,7 @@ $(document).ready(function(){
 	
 </head>
 <body>
-write.jsp<br>
+sourceInfo.jsp<br>
 
 <!-- <input id="wgTest" type="text" value="" /> -->
 

@@ -21,5 +21,4 @@
     	LEFT OUTER JOIN auth_name an
     	ON an.auth_nm_seq = sm.side_auth_nm_seq	
 	</select>
-	
 </mapper>

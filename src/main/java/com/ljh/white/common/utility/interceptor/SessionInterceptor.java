@@ -27,7 +27,12 @@ public class SessionInterceptor extends HandlerInterceptorAdapter {
 			//ajax일 경우 권한검사 통과
 			if(request.getRequestURI().endsWith(".ajax")) {
 				return true;
-			}			
+			}
+			
+			/*if("leedev".equals(session.getAttribute("userId").toString())){
+				return true;
+			}*/
+			
 			//nav 권한 검사
 			String navUrl = "/"+(request.getRequestURI().replaceAll(path, "")).split("/")[1];
 			String sideUrl = request.getParameter("sideUrl");

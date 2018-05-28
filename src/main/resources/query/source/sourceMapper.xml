@@ -4,26 +4,17 @@
 
 <mapper namespace="sourceMapper">
 	
-	<select id="selectSourceInfoList" resultType="WhiteMap" parameterType="WhiteMap">
+	<select id="selectSourceInfoList" resultType="WhiteMap" parameterType="WhiteMap">		
 		<!-- SELECT
-			source_seq AS sourceSeq,
-			source_type AS sourceType,
-			writer_seq AS writerSeq,
-			content,
-			reg_date AS ragDate			
-		FROM source_board
-		LIMIT 0, 10	 -->
-		select
 		 *
-		FROM side_menu as side
-		left outer join nav_menu as nav
-		on side.nav_seq = nav.nav_seq
-		left outer join auth_name as auth
-		on side.side_auth_nm_seq = auth.auth_nm_seq
-		where nav.nav_url = '/source'
-		and auth.auth_nm = 'user'
-		order by side.side_order ASC
-		
+		FROM side_menu AS side
+		LEFT OUTER JOIN nav_menu AS nav
+		ON side.nav_seq = nav.nav_seq
+		LEFT OUTER JOIN auth_name AS auth
+		ON side.side_auth_nm_seq = auth.auth_nm_seq
+		WHERE nav.nav_url = #{navUrl}
+		AND auth.auth_nm = 'user'
+		ORDER BY side.side_order ASC -->	
 	</select>
 	
 </mapper>
