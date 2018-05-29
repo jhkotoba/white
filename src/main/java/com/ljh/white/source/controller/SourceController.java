@@ -44,7 +44,7 @@ public class SourceController {
 		logger.debug("selectPurBankList Start");
 		
 		WhiteMap param = new WhiteMap(request);
-		request.setAttribute("sourceInfoList", new JSONArray(sourceService.selectSourceInfoList(param)));	
+		request.setAttribute("sourceInfoList", new JSONArray(sourceService.selectSourceCodeList(param)));	
 		
 		return "result.jsp";
 	}

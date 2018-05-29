@@ -20,8 +20,8 @@ public class SourceService {
 	 * @param Parma
 	 * @return
 	 */
-	public List<WhiteMap> selectSourceInfoList(WhiteMap parma){
-		return sourceMapper.selectSourceInfoList(parma);
+	public List<WhiteMap> selectSourceCodeList(WhiteMap parma){
+		return sourceMapper.selectSourceCodeList(parma);
 	}
 
 }

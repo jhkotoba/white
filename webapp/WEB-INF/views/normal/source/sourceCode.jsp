@@ -14,7 +14,7 @@ $(document).ready(function(){
 	
 	$.ajax({	
 		type: 'POST',
-		url: common.path()+'/source/selectSourceInfoList.ajax',
+		url: common.path()+'/source/selectSourceCodeList.ajax',
 		data: navUrl,
 		dataType: 'json',
 	    success : function(data) {

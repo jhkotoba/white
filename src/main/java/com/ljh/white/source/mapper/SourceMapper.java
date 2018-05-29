@@ -14,8 +14,8 @@ public class SourceMapper {
 	@Autowired
 	private SqlSession sqlSession;
 
-	public List<WhiteMap> selectSourceInfoList(WhiteMap param) {
-		//return sqlSession.selectList("sourceMapper.selectSourceInfoList", param);
+	public List<WhiteMap> selectSourceCodeList(WhiteMap param) {
+		//return sqlSession.selectList("sourceMapper.selectSourceCodeList", param);
 		return null;
 	}
 	

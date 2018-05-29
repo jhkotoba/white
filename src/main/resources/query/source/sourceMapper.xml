@@ -4,7 +4,7 @@
 
 <mapper namespace="sourceMapper">
 	
-	<select id="selectSourceInfoList" resultType="WhiteMap" parameterType="WhiteMap">		
+	<select id="selectSourceCodeList" resultType="WhiteMap" parameterType="WhiteMap">		
 		<!-- SELECT
 		 *
 		FROM side_menu AS side
