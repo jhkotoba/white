@@ -39,12 +39,13 @@ public class SourceController {
 		return White.device(device)+"/white.jsp";
 	}
 	
-	@RequestMapping(value="/source/selectSourceInfoList.ajax" )
-	public String selectPurBankList(HttpServletRequest request){
-		logger.debug("selectPurBankList Start");
+	@RequestMapping(value="/source/selectSourceCodeList.ajax" )
+	public String selectSourceCodeList(HttpServletRequest request){
+		logger.debug("selectSourceCodeList Start");
+		
 		
 		WhiteMap param = new WhiteMap(request);
-		request.setAttribute("sourceInfoList", new JSONArray(sourceService.selectSourceCodeList(param)));	
+		request.setAttribute("result", new JSONArray(sourceService.selectSourceCodeList(param)));	
 		
 		return "result.jsp";
 	}

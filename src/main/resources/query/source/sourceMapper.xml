@@ -5,16 +5,14 @@
 <mapper namespace="sourceMapper">
 	
 	<select id="selectSourceCodeList" resultType="WhiteMap" parameterType="WhiteMap">		
-		<!-- SELECT
-		 *
-		FROM side_menu AS side
-		LEFT OUTER JOIN nav_menu AS nav
-		ON side.nav_seq = nav.nav_seq
-		LEFT OUTER JOIN auth_name AS auth
-		ON side.side_auth_nm_seq = auth.auth_nm_seq
-		WHERE nav.nav_url = #{navUrl}
-		AND auth.auth_nm = 'user'
-		ORDER BY side.side_order ASC -->	
+		SELECT
+			source_seq AS sourceSeq,
+			source_type AS sourceType,
+			writer_seq AS writerSeq,
+			content,
+			reg_date AS regDate
+		FROM source_board
+		WHERE source_type = #{sourceType}
 	</select>
 	
 </mapper>

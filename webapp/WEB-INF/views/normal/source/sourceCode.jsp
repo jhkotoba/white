@@ -10,43 +10,27 @@
 <script type="text/javascript">
 $(document).ready(function(){
 	
-	let navUrl = $("#moveForm #navUrl").val();
+	let param = {};
+	param.sourceType = "Java";
 	
 	$.ajax({	
 		type: 'POST',
 		url: common.path()+'/source/selectSourceCodeList.ajax',
-		data: navUrl,
+		data: param,
 		dataType: 'json',
 	    success : function(data) {
-	    	
+	    	console.log(data);
 	    },
 	    error : function(request, status, error){
 	    	alert("error");
 	    } 
-	});
-	
-	//test
-	console.log(navUrl);
-	
-	let white = new WhiteGrid("wgTest");
-	
-	let list = new Array();
-	list.push("aaa");
-	list.push("bbb");
-	
-	white.setList(list);
-	console.log(white.list);
-	console.log(white.listCopy);
-	
-	
-	//test
+	});	
 });
 </script>
 	
 	
 </head>
 <body>
-sourceInfo.jsp<br>
 
 <!-- <input id="wgTest" type="text" value="" /> -->
 

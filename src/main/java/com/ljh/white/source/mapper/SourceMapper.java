@@ -15,8 +15,7 @@ public class SourceMapper {
 	private SqlSession sqlSession;
 
 	public List<WhiteMap> selectSourceCodeList(WhiteMap param) {
-		//return sqlSession.selectList("sourceMapper.selectSourceCodeList", param);
-		return null;
+		return sqlSession.selectList("sourceMapper.selectSourceCodeList", param);		
 	}
 	
 }
