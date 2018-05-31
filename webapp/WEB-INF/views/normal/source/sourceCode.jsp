@@ -6,9 +6,11 @@
 <head>
 <meta charset=UTF-8>
 <title>whiteHome</title>
-<script type="text/javascript" src="${contextPath}/resources/white/js/whiteGrid.js"></script>
+<script type="text/javascript" src="${contextPath}/resources/white/js/white.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
+	
+	let white = new White("testList");
 	
 	let param = {};
 	param.sourceType = "Java";
@@ -20,11 +22,33 @@ $(document).ready(function(){
 		dataType: 'json',
 	    success : function(data) {
 	    	console.log(data);
+	    	white.head = ["aaa","bbb","ccc", 1, 2, 3, true, false];
+	    	white.list = data;
+	    	
+	    	console.log(white.head);
+	    	console.log(white.list);
+	    	console.log(white.clone);	    	
+	    	console.log(white.id);	    	
+	    	console.log(white.eId);	    	
 	    },
 	    error : function(request, status, error){
 	    	alert("error");
 	    } 
-	});	
+	});
+	
+	
+	console.log("####");
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 });
 </script>
 	
@@ -32,15 +56,7 @@ $(document).ready(function(){
 </head>
 <body>
 
-<!-- <input id="wgTest" type="text" value="" /> -->
-
-<div class="article">
-
-	<select id="writeList">
-	</select>
-	<pre>
-		<textarea rows="100%" cols="100%"></textarea>
-	</pre>
+<div id="testList">
 </div>
 
 </body>
