@@ -1,14 +1,11 @@
-/**
- * white.js
- * ver 0.01
- */
-
+let doc = document;
 class White{
 	constructor(id) {
 		this._id = id;
 		this._head = "";
-		this._list = new Array();
-		this._clone = new Array();
+		this._column = null;
+		this._list = null;
+		this._clone = null;
 	}
 	
 	set id(id){
@@ -20,7 +17,7 @@ class White{
 	};
 	
 	get eId(){
-		return document.getElementById(this._id);
+		return doc.getElementById(this._id);
 	};
 	
 	set head(head){
@@ -38,6 +35,10 @@ class White{
 			}
 			return rhead;
 		}
+	};
+	
+	set column(column){
+		this._column = column;
 	};
 	
 	get head(){
@@ -83,11 +84,25 @@ class White{
 	};
 	
 	sync(){
-		
+				
 	};
 	
-	view(){
-		
+	view(){		
+		if(this._list.length === 0){
+			return;
+		}else{
+			let tag = "<table>";
+			tag += this._head;			
+			for(let i=0; i<this._list.length; i++){
+				tag += "<tr>";
+				for(let j=0; j<this._column.length; j++){					
+					tag += "<td>" + this._list[i][this._column[j]] + "</td>";				
+				}
+				tag += "</tr>";
+			}
+			tag += "</table>";
+			this.eId.innerHTML = tag;
+		}
 	};
 }
 
