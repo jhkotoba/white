@@ -13,9 +13,23 @@ public class SourceMapper {
 	
 	@Autowired
 	private SqlSession sqlSession;
-
+	
+	/**
+	 * 소스게시판 리스트 카운트
+	 * @param param
+	 * @return
+	 */
+	public int selectSourceCodeCount(WhiteMap param) {
+		return sqlSession.selectOne("sourceMapper.selectSourceCodeCount", param);
+	}
+	
+	/**
+	 * 소스게시판 리스트 조회
+	 * @param param
+	 * @return
+	 */
 	public List<WhiteMap> selectSourceCodeList(WhiteMap param) {
-		return sqlSession.selectList("sourceMapper.selectSourceCodeList", param);		
+		return sqlSession.selectList("sourceMapper.selectSourceCodeList", param);
 	}
 	
 }

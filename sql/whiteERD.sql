@@ -121,8 +121,7 @@ CREATE TABLE source_board
 	writer_seq int NOT NULL,
 	content varchar(4000) NOT NULL,
 	reg_date datetime NOT NULL,
-	PRIMARY KEY (source_seq),
-	UNIQUE (writer_seq)
+	PRIMARY KEY (source_seq)
 );
 
 

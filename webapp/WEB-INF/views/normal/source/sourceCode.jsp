@@ -6,11 +6,25 @@
 <head>
 <meta charset=UTF-8>
 <title>whiteHome</title>
-<script type="text/javascript" src="${contextPath}/resources/white/js/white.js"></script>
+<script type="text/javascript" src="${contextPath}/resources/white/js/grey.js"></script>
 <script type="text/javascript">
-$(document).ready(function(){	
+$(document).ready(function(){
+	
+	let grey = new Grey("testList");
+	grey.head = ["Date","Content"];
+	grey.column = ["regDate","content"];
+	grey.isClone = false;
+	
+	sourceAjax(grey, "all");
+});
+
+function sourceAjax(grey, sourceType){	
+	
 	let param = {};
-	param.sourceType = "Java";
+	param.sourceType = sourceType;
+	param.pageNum = grey.pageNum,
+	param.pageCnt = grey.pageCnt;
+	param.totalCnt = grey.totalCnt;
 	
 	$.ajax({	
 		type: 'POST',
@@ -18,28 +32,14 @@ $(document).ready(function(){
 		data: param,
 		dataType: 'json',
 	    success : function(data) {
-	    	sourceCode(data);
-	    		    	   	
+	    	grey.totalCnt = data.totalCnt;
+	    	grey.list = data.list;	    	
+	    	grey.view();
 	    },
 	    error : function(request, status, error){
 	    	alert("error");
 	    } 
 	});	
-});
-
-function sourceCode(data){
-	let white = new White("testList");
-	white.list = data;
-	white.head = ["Date","Content"];
-	white.column = ["regDate","content"];
-	
-	console.log("####");
-	console.log(white.head);
-	console.log(white.list);
-	console.log(white.clone);	    	
-	console.log(white.id);	    	
-	console.log(white.eId);
-	white.view();
 }
 </script>
 	

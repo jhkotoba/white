@@ -15,13 +15,24 @@ public class SourceService {
 	@Resource(name = "SourceMapper")
 	private SourceMapper sourceMapper;
 	
+	
+	/**
+	 * 소스게시판 리스트 카운트
+	 * @param param
+	 * @return
+	 */
+	public int selectSourceCodeCount(WhiteMap param) {
+		return sourceMapper.selectSourceCodeCount(param);	
+	}
+	
 	/**
 	 * 소스게시판 리스트 조회
 	 * @param Parma
 	 * @return
 	 */
-	public List<WhiteMap> selectSourceCodeList(WhiteMap parma){
-		return sourceMapper.selectSourceCodeList(parma);
+	public List<WhiteMap> selectSourceCodeList(WhiteMap param){
+		param.put("pagePre", (param.getInt("pageNum")-1)*param.getInt("pageCnt"));
+		return sourceMapper.selectSourceCodeList(param);
 	}
 
 }
