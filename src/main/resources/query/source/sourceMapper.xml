@@ -6,7 +6,7 @@
 	
 	<select id="selectSourceCodeCount" resultType="int" parameterType="WhiteMap">
 		SELECT COUNT(1) FROM source_board
-		<if test="sourceType != 'all'">
+		<if test="sourceType != '' and sourceType != null">
 		WHERE source_type = #{sourceType}
 		</if>
 	</select>
@@ -19,7 +19,7 @@
 			content,
 			reg_date AS regDate
 		FROM source_board
-		<if test="sourceType != 'all'">
+		<if test="sourceType != '' and sourceType != null">
 		WHERE source_type = #{sourceType}
 		</if>
 		Limit ${pagePre}, ${pageCnt}

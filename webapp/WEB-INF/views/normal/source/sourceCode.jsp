@@ -15,32 +15,14 @@ $(document).ready(function(){
 	grey.column = ["regDate","content"];
 	grey.isClone = false;
 	
-	sourceAjax(grey, "all");
-});
-
-function sourceAjax(grey, sourceType){	
-	
-	let param = {};
-	param.sourceType = sourceType;
+	let param = {};	
 	param.pageNum = grey.pageNum,
 	param.pageCnt = grey.pageCnt;
 	param.totalCnt = grey.totalCnt;
 	
-	$.ajax({	
-		type: 'POST',
-		url: common.path()+'/source/selectSourceCodeList.ajax',
-		data: param,
-		dataType: 'json',
-	    success : function(data) {
-	    	grey.totalCnt = data.totalCnt;
-	    	grey.list = data.list;	    	
-	    	grey.view();
-	    },
-	    error : function(request, status, error){
-	    	alert("error");
-	    } 
-	});	
-}
+	grey.url = common.path()+'/source/selectSourceCodeList.xhr';
+	grey.asyncConn(param);	
+});
 </script>
 	
 	

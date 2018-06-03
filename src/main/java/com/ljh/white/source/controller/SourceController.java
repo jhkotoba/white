@@ -42,11 +42,12 @@ public class SourceController {
 		return White.device(device)+"/white.jsp";
 	}
 	
-	@RequestMapping(value="/source/selectSourceCodeList.ajax" )
+	@RequestMapping(value="/source/selectSourceCodeList.xhr" )
 	public String selectSourceCodeList(HttpServletRequest request){
 		logger.debug("selectSourceCodeList Start");
 		
 		WhiteMap param = new WhiteMap(request);
+		System.out.println(param);
 		int totalCnt = sourceService.selectSourceCodeCount(param);
 		
 		JSONObject result = new JSONObject();		

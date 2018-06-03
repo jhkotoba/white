@@ -24,8 +24,10 @@ public class SessionInterceptor extends HandlerInterceptorAdapter {
 			return false;		
 		}else{
 			
-			//ajax일 경우 권한검사 통과
+			//비동기 통신일 경우 권한검사 통과
 			if(request.getRequestURI().endsWith(".ajax")) {
+				return true;
+			}else if(request.getRequestURI().endsWith(".xhr")) {
 				return true;
 			}
 			

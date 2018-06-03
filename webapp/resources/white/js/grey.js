@@ -5,22 +5,29 @@ class Grey{
 		this._head = "";
 		this._column = null;
 		this._list = null;
-		this._clone = null;
-		this.beforeView = function(){};
-		this.afterView = function(){};
+		this._clone = null;		
+		this.fnBeforeView = function(){};
+		this.fnAfterView = function(){};
+		this.fnXhrStart = function(){};
+		this.fnXhrEnd = function(){};
 		this._option = {
-			clone : true,
-			paging : true,			
-			pagingInfo : {
+			clone : true,			
+			async : {
+				url : "",
+				async : true,
+			},						
+			paging : {
+				paging : true,
 				pageNum : 1,
 				pageCnt : 10,
 				blockCnt : 10,
 				totalCnt : 0
-			}
+			},
+			
 		}
 	}
 	
-	/* 데이터 관련 */	
+	/* getter, setter */	
 	set id(id){
 		this._id = id;
 	};
@@ -31,6 +38,22 @@ class Grey{
 	
 	get eId(){
 		return doc.getElementById(this._id);
+	};
+	
+	set async(bool){
+		if(typeof bool === "boolean"){
+			this._option.async.async = bool;
+		}else{
+			alert("no boolean");
+		}
+	};
+	
+	set url(url){
+		this._option.async.url = url;
+	};
+	
+	get url(){
+		return this._option.async.url;
 	};
 	
 	set head(head){
@@ -58,7 +81,7 @@ class Grey{
 		return this._head;
 	};
 	
-	set list(list){		
+	set list(list){	
 		this._list = list;
 		if(this._option.clone === true){
 			this._clone = deepObjCopy(list);
@@ -97,64 +120,66 @@ class Grey{
 	/* 페이징 관련 */
 	set isPaging(bool){
 		if(typeof bool === "boolean"){
-			this._option.paging = bool;
+			this._option.paging.paging = bool;
+		}else{
+			alert("no boolean");
 		}
 	};
 	
 	get pagingState(){
-		return {paging:this._option.paging, pagingInfo:this._option.pagingInfo};
+		return this._option.paging;
 	};
 	
 	get totalCnt(){
-		return this._option.pagingInfo.totalCnt;
+		return this._option.paging.totalCnt;
 	};
 	
 	set totalCnt(cnt){
 		if(!isNaN(cnt)){
-			this._option.pagingInfo.totalCnt = Number(cnt);
+			this._option.paging.totalCnt = Number(cnt);
 		}else{
 			alert("totalCount NaN.");
 		}		
 	};
 	
 	get pageNum(){
-		return this._option.pagingInfo.pageNum;
+		return this._option.paging.pageNum;
 	};
 	
 	set pageNum(pageNum){
 		if(!isNaN(pageNum)){
-			this._option.pagingInfo.pageNum = Number(pageNum);
+			this._option.paging.pageNum = Number(pageNum);
 		}else{
 			alert("pageNum NaN.");
 		}	
 	};
 	
 	get pageCnt(){
-		return this._option.pagingInfo.pageCnt;
+		return this._option.paging.pageCnt;
 	};
 	
 	set pageCnt(cnt){
 		if(!isNaN(cnt)){
-			this._option.pagingInfo.pageCnt = Number(cnt);
+			this._option.paging.pageCnt = Number(cnt);
 		}else{
 			alert("pageCnt NaN.");
 		}
 	};
 	
 	get blockCnt(){
-		return this._option.pagingInfo.pageCnt;
+		return this._option.paging.pageCnt;
 	};
 	
 	set blockCnt(cnt){
 		if(!isNaN(cnt)){
-			this._option.pagingInfo.blockCnt = Number(cnt);
+			this._option.paging.blockCnt = Number(cnt);
 		}else{
 			alert("blockCnt NaN.");
 		}			
 	};
 	
 	/* 함수  */
-	view(){		
+	_view(){		
 		if(this._list.length === 0){
 			return;
 		}else{	
@@ -163,24 +188,25 @@ class Grey{
 			while(this.eId.firstChild !== null) this.eId.removeChild(this.eId.firstChild);
 			
 			//그리드 그리기전 함수 실행
-			this.beforeView(this._id);
+			this.fnBeforeView(this._id);
 			
 			//그리그 출력
-			let tag = "<table>";
+			let tag = "<table id='tb_"+this._id+"'>";
 			tag += this._head;			
 			for(let i=0; i<this._list.length; i++){
 				tag += "<tr>";
 				for(let j=0; j<this._column.length; j++){					
-					tag += "<td>" + this._list[i][this._column[j]] + "</td>";				
+					tag += "<td id='"+i+"'>" + this._list[i][this._column[j]] + "</td>";				
 				}
 				tag += "</tr>";
 			}
-			tag += "</table>";		
+			tag += "</table>";
 			
 			if(this._option.paging === true){
 				//페이징바 출력
 				tag += "<div id='"+this._id+"_paging'>";				
-				for(let i=0; i<this._option.pagingInfo.blockCnt; i++){
+				for(let i=this._option.paging.pageNum; 
+						i<this._option.paging.blockCnt+this._option.paging.pageNum; i++){
 					tag += "<a> "+i+" </a>";
 				}				
 				tag += "</div>";
@@ -189,8 +215,38 @@ class Grey{
 			this.eId.innerHTML = tag;		
 			
 			//그리드 그린 후 함수 실행
-			this.afterView(this._id);
+			this.fnAfterView(this._id);
 		}
+	};
+	
+	/* 비동기통신 */
+	asyncConn(param){
+		
+		let xhr = new XMLHttpRequest();
+		let obj = this;
+		
+		
+		xhr.open("POST", this._option.async.url, this._option.async.async);
+		
+		xhr.onreadystatechange = function(){
+			if (xhr.readyState == 4) {
+				if (xhr.status == 200) {						
+					let data = JSON.parse(xhr.responseText);						
+					obj.totalCnt = data.totalCnt;
+					obj.list = data.list;
+					obj._view();
+				}else{
+					alert(xhr.status);
+				}
+			}
+		}
+		
+		let formData = new FormData();			
+		let keys = Object.keys(param);			
+		for(let i=0; i<keys.length; i++){				
+			formData.append(keys[i], String(param[keys[i]]));
+		}			
+		xhr.send(formData);
 	};
 }
 
