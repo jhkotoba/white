@@ -142,12 +142,14 @@ $(document).ready(function(){
 });
 </script>
 
-<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-	<h1 class="h2 nsrb">가계부</h1>
-</div>
-
-<span class="article" name="date"></span>
 <div class="article">
+	<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+		<h1 class="h2 nsrb">가계부</h1>
+	</div>
+
+	<span name="date"></span>
+	<div class="space left"></div>
+	
 	<div class="left width-half">
 		<div id="comboChart" class="form-control height-half">
 		</div>
@@ -157,19 +159,19 @@ $(document).ready(function(){
 		<div id="donutChart" class="form-control height-half">
 		</div>
 	</div>		
-</div>
-
-<!-- 메모 -->
-<div id="ledgerMemo" class="article">	
-</div>
 
 
-<input id="startDate" type="hidden" value="">
-<input id="endDate" type="hidden" value="">
+	<!-- 메모 -->
+	<div id="ledgerMemo">	
+	</div>
+	
+	<input id="startDate" type="hidden" value="">
+	<input id="endDate" type="hidden" value="">
 
-<div class="space left"></div>
+	<div class="space left"></div>
 
-<span class="article" name="date"></span>
-<div id="ledgerReList" class="article">		
+	<span class="article" name="date"></span>
+	<div id="ledgerReList">		
+	</div>
 </div>
 
