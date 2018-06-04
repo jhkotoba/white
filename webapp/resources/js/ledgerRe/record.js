@@ -118,7 +118,7 @@ let rec = {
 			if(this.mode === "select"){
 				tag	+= "<th>사용수단 금액</th>";					
 			}
-			tag	+= "<th>소지<br>금액</th>";
+			tag	+= "<th>소지금액</th>";
 			tag += "</tr>";
 			
 			for(let i=this.recList.length-1; i>=0; i--){
