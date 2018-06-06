@@ -440,7 +440,7 @@ public class LedgerReService {
 			}
 			
 			record = list.get(i).getString("position");			
-			if(!(record.length() > 0 && record.length() < Constant.POSITION_LENGTH)){
+			if(record.length() > Constant.POSITION_LENGTH){
 				return false;
 			}			
 						
@@ -469,7 +469,6 @@ public class LedgerReService {
 				}			
 			}else {				
 				if(!"".equals(list.get(i).getString("moveSeq"))){
-					System.out.println(list.get(i).getString("moveSeq"));
 					return false;
 				}
 			}
