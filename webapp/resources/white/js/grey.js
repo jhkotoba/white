@@ -126,9 +126,9 @@ class Grey{
 		}
 	};
 	
-	get pagingState(){
+	/*get pagingState(){
 		return this._option.paging;
-	};
+	};*/
 	
 	get totalCnt(){
 		return this._option.paging.totalCnt;
@@ -176,7 +176,7 @@ class Grey{
 		}else{
 			alert("blockCnt NaN.");
 		}			
-	};
+	};	
 	
 	/* 함수  */
 	_view(){		
@@ -236,7 +236,7 @@ class Grey{
 					obj.list = data.list;
 					obj._view();
 				}else{
-					alert(xhr.status);
+					alert("xhr.status:"+xhr.status);
 				}
 			}
 		}
