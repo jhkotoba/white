@@ -1,16 +1,17 @@
 package com.ljh.white.memo.controller;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
-import org.json.JSONArray;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.ljh.white.common.collection.WhiteMap;
 import com.ljh.white.memo.service.MemoService;
 
-@Controller
+@RestController
 public class MemoController {
 	
 	@Resource(name = "MemoService")
@@ -18,25 +19,20 @@ public class MemoController {
 			
 	
 	@RequestMapping(value="/memo/selectMemoList.ajax" )
-	public String selectMemoList(HttpServletRequest request){		
+	public List<WhiteMap> selectMemoList(HttpServletRequest request){		
 		
-		WhiteMap param = new WhiteMap(request);
-		
-		request.setAttribute("result", new JSONArray(memoService.selectMemoList(param)));
-		return "result.jsp";
+		WhiteMap param = new WhiteMap(request);		
+		return memoService.selectMemoList(param);		
 	}
 	
 	@RequestMapping(value="/memo/memoSave.ajax" )
-	public String memoSave(HttpServletRequest request){
+	public List<WhiteMap> memoSave(HttpServletRequest request){	
 		
 		int userSeq = Integer.parseInt(request.getSession(false).getAttribute("userSeq").toString());
 		String memoType = request.getParameter("memoType");
 		String jsonStr = request.getParameter("jsonStr");		
 		
-		JSONArray memoJsonList = memoService.memoSave(userSeq, memoType, jsonStr);
-		
-		request.setAttribute("result", memoJsonList);		
-		return "result.jsp";
+		return memoService.memoSave(userSeq, memoType, jsonStr);
 	}
 	
 }

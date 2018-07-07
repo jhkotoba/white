@@ -8,18 +8,14 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.springframework.mobile.device.Device;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import com.ljh.white.common.White;
 import com.ljh.white.common.collection.WhiteMap;
 import com.ljh.white.ledgerRe.service.LedgerReService;
 import com.ljh.white.memo.service.MemoService;
 
-@Controller
+@RestController
 public class LedgerReController {
 
 	private static Logger logger = LogManager.getLogger(LedgerReController.class);
@@ -30,149 +26,107 @@ public class LedgerReController {
 	@Resource(name = "MemoService")
 	private MemoService memoService;
 	
-	@RequestMapping(value="/ledgerRe" )
-	public String ledgerReMain(HttpServletRequest request, Device device){
-		logger.debug("ledgerRe Start");
-		
-		WhiteMap param = new WhiteMap(request);
-		
-		String navUrl = param.getString("navUrl");
-		String sideUrl = param.getString("sideUrl");
-		
-		request.setAttribute("navUrl", navUrl);
-		request.setAttribute("sideUrl", sideUrl);
-		
-		request.setAttribute("sectionPage", navUrl.replace("/", "")+sideUrl+".jsp");
-		return White.device(device)+"/white.jsp";
-	}
-	
 	@RequestMapping(value="/ledgerRe/selectPurBankList.ajax" )
-	public String selectPurBankList(HttpServletRequest request){
+	public WhiteMap selectPurBankList(HttpServletRequest request){
 		logger.debug("selectPurBankList Start");
 		
 		WhiteMap param = new WhiteMap(request);
 
-		JSONObject result = new JSONObject();		
-		result.put("purList", new JSONArray(ledgerReService.selectPurList(param)));
-		result.put("purDtlList", new JSONArray(ledgerReService.selectPurDtlList(param)));
-		result.put("bankList", new JSONArray(ledgerReService.selectBankList(param)));
-		request.setAttribute("result", result);	
-		
-		return "result.jsp";
+		WhiteMap result = new WhiteMap();		
+		result.put("purList", ledgerReService.selectPurList(param));
+		result.put("purDtlList", ledgerReService.selectPurDtlList(param));
+		result.put("bankList", ledgerReService.selectBankList(param));
+		return result;
 	}
 	
 	@RequestMapping(value="/ledgerRe/selectRecordList.ajax" )
-	public String selectRecordList(HttpServletRequest request){
+	public WhiteMap selectRecordList(HttpServletRequest request){
 		logger.debug("selectRecordList Start");
 		
 		WhiteMap param = new WhiteMap(request);
 		List<WhiteMap> bankList = ledgerReService.selectBankList(param);
-
-		JSONObject result = new JSONObject();		
-		result.put("recList", new JSONArray(ledgerReService.selectRecordList(param, bankList)));
-		if("index".equals(param.get("mode"))){
-			result.put("purList", new JSONArray(ledgerReService.selectPurList(param)));
-			result.put("purDtlList", new JSONArray(ledgerReService.selectPurDtlList(param)));
-			result.put("bankList", new JSONArray(bankList));
-		}		
-		request.setAttribute("result", result);	
 		
-		return "result.jsp";
+		WhiteMap result = new WhiteMap(request);		
+		result.put("recList", ledgerReService.selectRecordList(param, bankList));
+		if("index".equals(param.get("mode"))){
+			result.put("purList", ledgerReService.selectPurList(param));
+			result.put("purDtlList", ledgerReService.selectPurDtlList(param));
+			result.put("bankList", bankList);
+		}	
+		
+		return result;
 	}
 	
 	@RequestMapping(value="/ledgerRe/insertRecordList.ajax" )
-	public String insertRecordList(HttpServletRequest request){
+	public int insertRecordList(HttpServletRequest request){
 		logger.debug("insertRecordList Start");
 		
 		WhiteMap param = new WhiteMap(request);	
-	
-		int cnt = ledgerReService.insertRecordList(param);
-		request.setAttribute("result", cnt);
-		
-		return "result.jsp";
+		return ledgerReService.insertRecordList(param);
 	}
 	
 	@RequestMapping(value="/ledgerRe/updateDeleteRecordList.ajax" )
-	public String updateDeleteRecordList(HttpServletRequest request){
+	public WhiteMap updateDeleteRecordList(HttpServletRequest request){
 		logger.debug("updateDeleteRecordList Start");
 		
 		WhiteMap param = new WhiteMap(request);	
-	
-		WhiteMap resultMap = ledgerReService.updateDeleteRecordList(param);
-		request.setAttribute("result", new JSONObject(resultMap));
-		
-		return "result.jsp";
+		return ledgerReService.updateDeleteRecordList(param);
 	}
 	
 	@RequestMapping(value="/ledgerRe/selectPurAndDtlList.ajax" )
-	public String selectPurAndDtlList(HttpServletRequest request){
+	public WhiteMap selectPurAndDtlList(HttpServletRequest request){
 		logger.debug("selectPurposeList Start");
 		
 		WhiteMap param = new WhiteMap(request);	
 		
-		JSONObject result = new JSONObject();		
-		result.put("purList", new JSONArray(ledgerReService.selectPurList(param)));			
-		result.put("purDtlList", new JSONArray(ledgerReService.selectPurDtlList(param)));			
-		request.setAttribute("result", result);	
-		
-		return "result.jsp";
+		WhiteMap result = new WhiteMap();		
+		result.put("purList", ledgerReService.selectPurList(param));			
+		result.put("purDtlList", ledgerReService.selectPurDtlList(param));		
+		return result;
 	}
 	
 	@RequestMapping(value="/ledgerRe/inUpDelPurList.ajax" )
-	public String inUpDelPurList(HttpServletRequest request){
+	public WhiteMap inUpDelPurList(HttpServletRequest request){
 		logger.debug("inUpDelPurList Start");
 		
 		WhiteMap param = new WhiteMap(request);		
-		WhiteMap resultMap = ledgerReService.inUpDelPurList(param);
-		request.setAttribute("result", new JSONObject(resultMap));		
-		return "result.jsp";
+		return ledgerReService.inUpDelPurList(param);		
 	}
 	
 	@RequestMapping(value="/ledgerRe/inUpDelPurDtlList.ajax" )
-	public String inUpDelPurDtlList(HttpServletRequest request){
+	public WhiteMap inUpDelPurDtlList(HttpServletRequest request){
 		logger.debug("inUpDelPurDtlList Start");
 		
 		WhiteMap param = new WhiteMap(request);		
-		WhiteMap resultMap = ledgerReService.inUpDelPurDtlList(param);
-		request.setAttribute("result", new JSONObject(resultMap));		
-		return "result.jsp";
+		return ledgerReService.inUpDelPurDtlList(param);
 	}
 	
 	@RequestMapping(value="/ledgerRe/selectBankList.ajax" )
-	public String selectBankList(HttpServletRequest request){
+	public List<WhiteMap> selectBankList(HttpServletRequest request){
 		logger.debug("selectBankList Start");
 		
-		WhiteMap param = new WhiteMap(request);
-		JSONObject result = new JSONObject();
-		result.put("bankList", new JSONArray(ledgerReService.selectBankList(param)));				
-		request.setAttribute("result", result);			
-		return "result.jsp";
-		
+		WhiteMap param = new WhiteMap(request);		
+		return ledgerReService.selectBankList(param);
 	}
 	
 	@RequestMapping(value="/ledgerRe/inUpDelBankList.ajax" )
-	public String inUpDelBankList(HttpServletRequest request){
+	public WhiteMap inUpDelBankList(HttpServletRequest request){
 		logger.debug("inUpDelBankList Start");
 		
 		WhiteMap param = new WhiteMap(request);		
-		WhiteMap resultMap = ledgerReService.inUpDelBankList(param);
-		request.setAttribute("result", new JSONObject(resultMap));		
-		return "result.jsp";
+		return ledgerReService.inUpDelBankList(param);
 	}
 	
 	@RequestMapping(value="/ledgerRe/selectMonthStats.ajax" )
-	public String selectStatsList(HttpServletRequest request) throws ParseException{
+	public WhiteMap selectStatsList(HttpServletRequest request) throws ParseException{
 		logger.debug("selectStatsList Start");
 		
 		WhiteMap param = new WhiteMap(request);		
 		
-		JSONObject result = new JSONObject();		
-		result.put("IEA", new JSONArray(ledgerReService.selectMonthIEAStats(param)));
-		result.put("CB", new JSONArray(ledgerReService.selectMonthCBStats(param)));
-		result.put("P", new JSONArray(ledgerReService.selectMonthPStats(param)));
-			
-		request.setAttribute("result", result);	
-		
-		return "result.jsp";
+		WhiteMap result = new WhiteMap();		
+		result.put("IEA", ledgerReService.selectMonthIEAStats(param));
+		result.put("CB", ledgerReService.selectMonthCBStats(param));
+		result.put("P", ledgerReService.selectMonthPStats(param));		
+		return result;
 	}
 }
