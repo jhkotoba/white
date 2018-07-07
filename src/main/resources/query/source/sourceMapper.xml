@@ -35,7 +35,7 @@
 			sb.source_seq AS sourceSeq,
 			c.code_nm AS codeNm,
 			sb.user_seq AS userSeq,
-      		wu.user_id AS userId,
+			wu.user_id AS userId,
 			sb.title,
 			sb.content,
 			DATE_FORMAT(sb.reg_date,'%Y-%m-%d %H:%i:%s') AS regDate
