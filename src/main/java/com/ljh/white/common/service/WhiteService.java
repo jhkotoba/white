@@ -1,11 +1,14 @@
 package com.ljh.white.common.service;
 
+import java.util.List;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
 import com.ljh.white.common.Auth;
+import com.ljh.white.common.collection.WhiteMap;
 import com.ljh.white.common.mapper.WhiteMapper;
 
 @Service("WhiteService")
@@ -35,5 +38,14 @@ public class WhiteService{
 	 */
 	public void setSideAuth() {
 		Auth.setSideAuth(whiteMapper.selectSideAuthList());
-	}		
+	}
+	
+	/**
+	 * 코드리스트 SELECT
+	 * @param param
+	 * @return
+	 */
+	public List<WhiteMap> selectCodeList(WhiteMap param){
+		return whiteMapper.selectCodeList(param);
+	}
 }

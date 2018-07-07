@@ -6,11 +6,12 @@ DROP TABLE IF EXISTS authority;
 DROP TABLE IF EXISTS side_menu;
 DROP TABLE IF EXISTS nav_menu;
 DROP TABLE IF EXISTS auth_name;
+DROP TABLE IF EXISTS source_board;
+DROP TABLE IF EXISTS code;
 DROP TABLE IF EXISTS memo;
 DROP TABLE IF EXISTS money_record_re;
 DROP TABLE IF EXISTS purpose_detail;
 DROP TABLE IF EXISTS purpose;
-DROP TABLE IF EXISTS source_board;
 DROP TABLE IF EXISTS user_bank;
 DROP TABLE IF EXISTS white_user;
 
@@ -35,6 +36,16 @@ CREATE TABLE auth_name
 	auth_order int NOT NULL,
 	PRIMARY KEY (auth_nm_seq),
 	UNIQUE (auth_nm)
+);
+
+
+CREATE TABLE code
+(
+	code_seq int NOT NULL,
+	code_type varchar(10) NOT NULL,
+	code_key varchar(5) NOT NULL,
+	code_nm varchar(20) NOT NULL,
+	PRIMARY KEY (code_seq)
 );
 
 
@@ -117,8 +128,9 @@ CREATE TABLE side_menu
 CREATE TABLE source_board
 (
 	source_seq int NOT NULL AUTO_INCREMENT,
-	source_type varchar(20) NOT NULL,
-	writer_seq int NOT NULL,
+	user_seq int NOT NULL,
+	code_seq int NOT NULL,
+	title varchar(50) NOT NULL,
 	content varchar(4000) NOT NULL,
 	reg_date datetime NOT NULL,
 	PRIMARY KEY (source_seq)
@@ -176,6 +188,14 @@ ALTER TABLE side_menu
 ;
 
 
+ALTER TABLE source_board
+	ADD FOREIGN KEY (code_seq)
+	REFERENCES code (code_seq)
+	ON UPDATE RESTRICT
+	ON DELETE RESTRICT
+;
+
+
 ALTER TABLE side_menu
 	ADD FOREIGN KEY (nav_seq)
 	REFERENCES nav_menu (nav_seq)
@@ -225,7 +245,7 @@ ALTER TABLE purpose
 
 
 ALTER TABLE source_board
-	ADD FOREIGN KEY (writer_seq)
+	ADD FOREIGN KEY (user_seq)
 	REFERENCES white_user (user_seq)
 	ON UPDATE RESTRICT
 	ON DELETE RESTRICT

@@ -5,17 +5,13 @@ class Grey{
 		this._head = "";
 		this._column = null;
 		this._list = null;
-		this._clone = null;		
-		this.fnBeforeView = function(){};
+		this._clone = null;
+		this.fnBeforeView = function(){};		
 		this.fnAfterView = function(){};
 		this.fnXhrStart = function(){};
 		this.fnXhrEnd = function(){};
 		this._option = {
-			clone : true,			
-			async : {
-				url : "",
-				async : true,
-			},						
+			clone : true,								
 			paging : {
 				paging : true,
 				pageNum : 1,
@@ -38,22 +34,6 @@ class Grey{
 	
 	get eId(){
 		return doc.getElementById(this._id);
-	};
-	
-	set async(bool){
-		if(typeof bool === "boolean"){
-			this._option.async.async = bool;
-		}else{
-			alert("no boolean");
-		}
-	};
-	
-	set url(url){
-		this._option.async.url = url;
-	};
-	
-	get url(){
-		return this._option.async.url;
 	};
 	
 	set head(head){
@@ -188,17 +168,18 @@ class Grey{
 			while(this.eId.firstChild !== null) this.eId.removeChild(this.eId.firstChild);
 			
 			//그리드 그리기전 함수 실행
-			this.fnBeforeView(this._id);
+			this.fnBeforeView(this._id, this._list);
 			
 			//그리그 출력
 			let tag = "<table id='tb_"+this._id+"'>";
 			tag += this._head;			
-			for(let i=0; i<this._list.length; i++){
+			for(let i=0; i<this._list.length; i++){				
 				tag += "<tr>";
-				for(let j=0; j<this._column.length; j++){					
+				for(let j=0; j<this._column.length; j++){
+					
 					tag += "<td id='"+i+"'>" + this._list[i][this._column[j]] + "</td>";				
 				}
-				tag += "</tr>";
+				tag += "</tr>";				
 			}
 			tag += "</table>";
 			
@@ -206,7 +187,7 @@ class Grey{
 				//페이징바 출력
 				tag += "<div id='"+this._id+"_paging'>";				
 				for(let i=this._option.paging.pageNum; 
-						i<this._option.paging.blockCnt+this._option.paging.pageNum; i++){
+						i<this._option.paging.blockCnt+this._option.paging.pageNum; i++){					
 					tag += "<a> "+i+" </a>";
 				}				
 				tag += "</div>";
@@ -220,13 +201,17 @@ class Grey{
 	};
 	
 	/* 비동기통신 */
-	asyncConn(param){
+	asyncConn(url, param, async){
 		
 		let xhr = new XMLHttpRequest();
 		let obj = this;
 		
+		if(async == null || async == undefined || async == '' ){
+			async = true;
+		}
 		
-		xhr.open("POST", this._option.async.url, this._option.async.async);
+		
+		xhr.open("POST", url, async);
 		
 		xhr.onreadystatechange = function(){
 			if (xhr.readyState == 4) {

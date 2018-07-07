@@ -384,7 +384,7 @@ let nav = {
 		    	}else{
 		    		alert(data.inCnt+" 개의 메뉴가 입력, "+data.upCnt+" 개의 메뉴가 수정, "+ data.delCnt+" 개의 메뉴가 삭제되었습니다");
 		    	}		    	
-		    	white.submit($("#moveForm #navUrl").val(), $("#moveForm #sideUrl").val());
+		    	mf.submit($("#moveForm #navUrl").val(), $("#moveForm #sideUrl").val());
 		    },
 		    error : function(xhr, stat, err) {
 		    	alert("insert, update, delete error");
@@ -823,7 +823,7 @@ let side = {
 			dataType: 'json',
 		    success : function(data, stat, xhr) {
 		    	alert(data.inCnt+" 개의 메뉴가 입력, "+data.upCnt+" 개의 메뉴가 수정, "+ data.delCnt+" 개의 메뉴가 삭제되었습니다");
-		    	white.submit($("#moveForm #navUrl").val(), $("#moveForm #sideUrl").val());
+		    	mf.submit($("#moveForm #navUrl").val(), $("#moveForm #sideUrl").val());
 		    },
 		    error : function(xhr, stat, err) {
 		    	alert("insert, update, delete error");

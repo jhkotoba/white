@@ -307,7 +307,7 @@ function getContextPath(){
 }*/
 
 
-let white = {	
+let mf = {	
 	 submit : function(navUrl, sideUrl){
 		$("#moveForm #navUrl").attr("value", navUrl);
 		$("#moveForm #sideUrl").attr("value", sideUrl);				

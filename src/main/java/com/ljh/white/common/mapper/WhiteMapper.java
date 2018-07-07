@@ -23,4 +23,13 @@ public class WhiteMapper {
 	public List<WhiteMap> selectSideAuthList() {	
 		return sqlSession.selectList("whiteMapper.selectSideAuthList");
 	}
+	
+	/**
+	 * 코드리스트 SELECT
+	 * @param param
+	 * @return
+	 */
+	public List<WhiteMap> selectCodeList(WhiteMap param) {	
+		return sqlSession.selectList("whiteMapper.selectCodeList", param);
+	}
 }

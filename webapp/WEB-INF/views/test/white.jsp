@@ -49,11 +49,11 @@
 						<li id="${nav.navUrl}" class="nav-item dropdown">
 							<a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="cursor:pointer;">${nav.navNm}</a>
 							<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-								<a class="dropdown-item" href="javascript:white.submit('${nav.navUrl}', '/index')">${nav.navNm}</a>
+								<a class="dropdown-item" href="javascript:mf.submit('${nav.navUrl}', '/index')">${nav.navNm}</a>
 								<c:forEach items="${sessionScope.sideList}" var="side">									
 									<c:if test="${nav.navSeq eq side.navSeq }">
 										<c:if test="${side.auth eq 1 }">
-											<a class="dropdown-item" href="javascript:white.submit('${nav.navUrl}', '${side.sideUrl}')">${side.sideNm}</a>
+											<a class="dropdown-item" href="javascript:mf.submit('${nav.navUrl}', '${side.sideUrl}')">${side.sideNm}</a>
 										</c:if>
 									</c:if>
 								</c:forEach>

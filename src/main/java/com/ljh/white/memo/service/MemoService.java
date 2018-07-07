@@ -26,7 +26,7 @@ public class MemoService{
 	}	
 	
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
-	public JSONArray memoSave(int userSeq, String memoType, String jsonStr) {
+	public List<WhiteMap> memoSave(int userSeq, String memoType, String jsonStr) {
 		
 		List<WhiteMap> insertList = new ArrayList<WhiteMap>();
 		List<WhiteMap> updateList = new ArrayList<WhiteMap>();
@@ -71,7 +71,7 @@ public class MemoService{
 		map.put("userSeq", userSeq);
 		map.put("memoType", memoType);		
 		
-		return new JSONArray(memoMapper.selectMemoList(map));
+		return memoMapper.selectMemoList(map);
 		
 		
 	}

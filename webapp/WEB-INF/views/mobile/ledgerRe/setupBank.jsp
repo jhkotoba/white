@@ -15,7 +15,7 @@ $(document).ready(function(){
 			mode : "select"
 		},
 	    success : function(data) {
-	    	bank.init(data.bankList).view();
+	    	bank.init(data).view();
 	    },
 	    error : function(request, status, error){
 	    	alert("bank error");

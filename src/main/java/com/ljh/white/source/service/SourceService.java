@@ -34,5 +34,14 @@ public class SourceService {
 		param.put("pagePre", (param.getInt("pageNum")-1)*param.getInt("pageCnt"));
 		return sourceMapper.selectSourceCodeList(param);
 	}
+	
+	/**
+	 * 소스게시판 상세화면 조회
+	 * @param param
+	 * @return
+	 */
+	public WhiteMap selectSourceDtlView(WhiteMap param) {
+		return sourceMapper.selectSourceDtlView(param);
+	}
 
 }

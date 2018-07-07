@@ -11,13 +11,13 @@
 
 <link rel="stylesheet" href="${contextPath}/resources/bootstrap-4.1.1/css/bootstrap.min.css" type="text/css" />
 <link rel="stylesheet" href="${contextPath}/resources/air-datepicker/css/datepicker.min.css" type="text/css"/>
-<link rel="stylesheet" href="${contextPath}/resources/white/css/white.css?ver=0.014" type="text/css" />
+<link rel="stylesheet" href="${contextPath}/resources/white/css/common.css" type="text/css" />
 
 <script type="text/javascript" src="${contextPath}/resources/jquery/js/jquery-3.2.1.min.js"></script>
 <script type="text/javascript" src="${contextPath}/resources/bootstrap-4.1.1/js/bootstrap.bundle.min.js"></script>
 <script type="text/javascript" src="${contextPath}/resources/air-datepicker/js/datepicker.min.js"></script>
 <script type="text/javascript" src="${contextPath}/resources/air-datepicker/js/i18n/datepicker.ko.js"></script>
-<script type="text/javascript" src="${contextPath}/resources/white/js/common.js?ver=0.005"></script>
+<script type="text/javascript" src="${contextPath}/resources/white/js/common.js"></script>
 
 </head>
 <body>
@@ -32,7 +32,7 @@
 	</header>
 	
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark nsrb" style='font-size: 20px;'>
-		<a class="navbar-brand col-sm-3 col-md-2 mr-0"" href="${contextPath}/main">white</a>
+		<a class="navbar-brand col-sm-3 col-md-2 mr-0" href="${contextPath}/main">white</a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
 		</button>
@@ -46,7 +46,7 @@
 								<c:forEach items="${sessionScope.sideList}" var="side">									
 									<c:if test="${nav.navSeq eq side.navSeq }">
 										<c:if test="${side.auth eq 1 }">
-											<a class="dropdown-item nsrb" href="javascript:white.submit('${nav.navUrl}', '${side.sideUrl}')">${side.sideNm}</a>
+											<a class="dropdown-item nsrb" href="javascript:mf.submit('${nav.navUrl}', '${side.sideUrl}')">${side.sideNm}</a>
 										</c:if>
 									</c:if>
 								</c:forEach>
@@ -70,7 +70,7 @@
 										<c:if test="${side.auth eq 1 }">
 											<c:if test="${navUrl eq nav.navUrl }">
 												<li class="nav-item">
-													<a class="nav-link active text-secondary nsrb" href="javascript:white.submit('${nav.navUrl}', '${side.sideUrl}')">${side.sideNm}</a>
+													<a class="nav-link active text-secondary nsrb" href="javascript:mf.submit('${nav.navUrl}', '${side.sideUrl}')">${side.sideNm}</a>
 												</li>
 											</c:if>
 										</c:if>

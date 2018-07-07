@@ -21,4 +21,12 @@
     	LEFT OUTER JOIN auth_name an
     	ON an.auth_nm_seq = sm.side_auth_nm_seq	
 	</select>
+	
+	<select id="selectCodeList" resultType="WhiteMap" parameterType="WhiteMap">
+		SELECT 
+			code_key AS codeKey,
+			code_nm AS codeNm
+		FROM code
+		WHERE code_type = #{codeType}
+	</select>
 </mapper>

@@ -32,4 +32,13 @@ public class SourceMapper {
 		return sqlSession.selectList("sourceMapper.selectSourceCodeList", param);
 	}
 	
+	/**
+	 * 소스게시판 상세화면 조회
+	 * @param param
+	 * @return
+	 */
+	public WhiteMap selectSourceDtlView(WhiteMap param) {
+		return sqlSession.selectOne("sourceMapper.selectSourceDtlView", param);
+	}
+	
 }

@@ -160,10 +160,10 @@ let recIn = {
 			    success : function(data, stat, xhr) {			    	
 			    	if(data < 0){
 			    		alert("입력한 데이터가 정확하지 않습니다.");
-			    		//white.submit($("#moveForm #navUrl").val(), $("#moveForm #sideUrl").val());
+			    		//mf.submit($("#moveForm #navUrl").val(), $("#moveForm #sideUrl").val());
 			    	}else{
 			    		alert(data+" 개의 행이 저장되었습니다.");
-				    	white.submit($("#moveForm #navUrl").val(), $("#moveForm #sideUrl").val());
+			    		mf.submit($("#moveForm #navUrl").val(), $("#moveForm #sideUrl").val());
 			    	}
 			    },
 			    error : function(xhr, stat, err) {

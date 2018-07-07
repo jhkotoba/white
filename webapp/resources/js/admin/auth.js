@@ -250,7 +250,7 @@ let auth = {
 		    	if(data.msg==="used"){
 		    		alert("사용되는 권한이 존재합니다.");
 		    	}
-		    	white.submit($("#moveForm #navUrl").val(), $("#moveForm #sideUrl").val());
+		    	mf.submit($("#moveForm #navUrl").val(), $("#moveForm #sideUrl").val());
 		    },
 		    error : function(xhr, stat, err) {
 		    	alert("insert, update, delete error");

@@ -47,7 +47,7 @@
 								<c:forEach items="${sessionScope.sideList}" var="side">									
 									<c:if test="${nav.navSeq eq side.navSeq }">
 										<c:if test="${side.auth eq 1 }">
-											<a class="dropdown-item" href="javascript:white.submit('${nav.navUrl}', '${side.sideUrl}')">${side.sideNm}</a>
+											<a class="dropdown-item" href="javascript:mf.submit('${nav.navUrl}', '${side.sideUrl}')">${side.sideNm}</a>
 										</c:if>
 									</c:if>
 								</c:forEach>

@@ -614,7 +614,7 @@ let rec = {
 		    	}
 		    	msg += " 되었습니다.";
 		    	alert(msg);
-		    	white.submit($("#moveForm #navUrl").val(), $("#moveForm #sideUrl").val());
+		    	mf.submit($("#moveForm #navUrl").val(), $("#moveForm #sideUrl").val());
 		    },
 		    error : function(xhr, stat, err) {
 		    	alert("update, delete error");
