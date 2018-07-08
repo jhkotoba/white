@@ -15,3 +15,5 @@ $(document).ready(function(){
 		<h1 class="h2 nsrb">코드 설정</h1>
 	</div>	
 </div>
+
+<h5>미구현....</h5>

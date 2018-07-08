@@ -2,17 +2,18 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="contextPath" value="<%=request.getContextPath()%>"></c:set>
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
 <script type="text/javascript">
-$(document).ready(function(){	
+$(document).ready(function(){
+	
+	
 });
 </script>
 
-<div class="article">	
+<div class="article">
 	<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-		<h1 class="h2 nsrb">년도별통계</h1>
-	</div>
+		<h1 class="h2 nsrb">자유게시판</h1>
+	</div>	
 </div>
 
 <h5>미구현....</h5>

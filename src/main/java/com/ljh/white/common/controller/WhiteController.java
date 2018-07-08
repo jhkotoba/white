@@ -37,7 +37,7 @@ public class WhiteController {
 		return White.device(device)+"/white.jsp";
 	}
 	
-	@RequestMapping(value= {"/source", "/admin", "/ledgerRe", "/styleSheet"})
+	@RequestMapping(value= {"/admin", "/board", "/ledgerRe", "/source", "/bookmark", "/styleSheet"})
 	public String white(HttpServletRequest request, Device device){
 		
 		WhiteMap param = new WhiteMap(request);
