@@ -8,9 +8,21 @@
 		SELECT COUNT(1) FROM source_board sb
 		LEFT OUTER JOIN code c
 	    	ON sb.code_seq = c.code_seq
-		<if test="codeKey != '' and codeKey != null">
-		WHERE c.code_key = #{codeKey}
-		</if>
+		<where>
+  			<if test="codeKey != '' and codeKey != null">
+		  	AND c.code_key = #{codeKey}
+		  	</if>
+		  	
+		  	<if test="searchType == 'id'">
+			AND wu.user_id = #{searchText}
+		  	</if>
+		  	<if test="searchType == 'title'">
+			AND sb.title LIKE #{searchText}
+		  	</if>
+		  	<if test="searchType == 'content'">
+		  	AND sb.content LIKE #{searchText}
+		  	</if>
+  		</where> 
 	</select>
 	
 	<select id="selectSourceCodeList" resultType="WhiteMap" parameterType="WhiteMap">	
@@ -18,14 +30,29 @@
 			sb.source_seq AS sourceSeq,
 			c.code_nm AS codeNm,
 			sb.user_seq AS userSeq,
+			wu.user_id AS userId,
 			sb.title,
 			DATE_FORMAT(sb.reg_date,'%Y-%m-%d %H:%i:%s') AS regDate
 		FROM source_board sb
 	    LEFT OUTER JOIN code c
 	    	ON sb.code_seq = c.code_seq
-		<if test="codeKey != '' and codeKey != null">
-	  	WHERE c.code_key = #{codeKey}
-	  	</if>		
+	    LEFT OUTER JOIN white_user wu
+  			ON wu.user_seq = sb.user_seq
+  		<where>
+  			<if test="codeKey != '' and codeKey != null">
+		  	AND c.code_key = #{codeKey}
+		  	</if>
+		  	
+		  	<if test="searchType == 'id'">
+			AND wu.user_id = #{searchText}
+		  	</if>
+		  	<if test="searchType == 'title'">
+			AND sb.title LIKE #{searchText}
+		  	</if>
+		  	<if test="searchType == 'content'">
+		  	AND sb.content LIKE #{searchText}
+		  	</if>
+  		</where>  	
 		ORDER BY sb.source_seq DESC
 		Limit ${pagePre}, ${pageCnt}
 	</select>
@@ -46,5 +73,17 @@
 	    	ON sb.code_seq = c.code_seq   
 		WHERE sb.source_seq = #{sourceSeq}
 	</select>
+	
+	<insert id="insertSourceCode" parameterType="WhiteMap">
+		INSERT
+		INTO source_board(user_seq, code_seq, title, content, reg_date)
+		VALUES(
+			#{userSeq},
+			(SELECT DISTINCT code_seq FROM code WHERE code_key = #{codeKey}),
+			#{title},
+			#{content},
+			NOW()
+		)
+	</insert>
 </mapper>
 

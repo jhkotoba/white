@@ -43,5 +43,14 @@ public class SourceService {
 	public WhiteMap selectSourceDtlView(WhiteMap param) {
 		return sourceMapper.selectSourceDtlView(param);
 	}
+	
+	/**
+	 * 소스게시판 새글 저장
+	 * @param param
+	 * @return
+	 */
+	public int insertSourceCode(WhiteMap param) {
+		return sourceMapper.insertSourceCode(param);
+	}
 
 }

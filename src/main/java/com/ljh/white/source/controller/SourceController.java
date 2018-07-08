@@ -43,4 +43,13 @@ public class SourceController {
 		
 	}
 	
+	@RequestMapping(value="/source/insertSourceCode.ajax" )
+	public int insertSourceCode(HttpServletRequest request){
+		logger.debug("insertSourceCode Start");
+		
+		WhiteMap param = new WhiteMap(request);
+		return sourceService.insertSourceCode(param);
+	
+	}
+	
 }

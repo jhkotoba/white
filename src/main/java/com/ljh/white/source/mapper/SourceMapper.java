@@ -41,4 +41,13 @@ public class SourceMapper {
 		return sqlSession.selectOne("sourceMapper.selectSourceDtlView", param);
 	}
 	
+	/**
+	 * 소스게시판 새글 저장
+	 * @param param
+	 * @return
+	 */
+	public int insertSourceCode(WhiteMap param) {
+		return sqlSession.insert("sourceMapper.insertSourceCode", param);
+	}
+	
 }
