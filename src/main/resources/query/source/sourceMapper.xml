@@ -8,19 +8,21 @@
 		SELECT COUNT(1) FROM source_board sb
 		LEFT OUTER JOIN code c
 	    	ON sb.code_seq = c.code_seq
+	    LEFT OUTER JOIN white_user wu
+  			ON wu.user_seq = sb.user_seq
 		<where>
   			<if test="codeKey != '' and codeKey != null">
 		  	AND c.code_key = #{codeKey}
 		  	</if>
 		  	
-		  	<if test="searchType == 'id'">
-			AND wu.user_id = #{searchText}
+		  	<if test="type == 'id'">
+			AND wu.user_id = #{text}
 		  	</if>
-		  	<if test="searchType == 'title'">
-			AND sb.title LIKE #{searchText}
+		  	<if test="type == 'title'">
+			AND sb.title LIKE #{text}
 		  	</if>
-		  	<if test="searchType == 'content'">
-		  	AND sb.content LIKE #{searchText}
+		  	<if test="type == 'content'">
+		  	AND sb.content LIKE #{text}
 		  	</if>
   		</where> 
 	</select>
@@ -43,14 +45,14 @@
 		  	AND c.code_key = #{codeKey}
 		  	</if>
 		  	
-		  	<if test="searchType == 'id'">
-			AND wu.user_id = #{searchText}
+		  	<if test="type == 'id'">
+			AND wu.user_id = #{text}
 		  	</if>
-		  	<if test="searchType == 'title'">
-			AND sb.title LIKE #{searchText}
+		  	<if test="type == 'title'">
+			AND sb.title LIKE #{text}
 		  	</if>
-		  	<if test="searchType == 'content'">
-		  	AND sb.content LIKE #{searchText}
+		  	<if test="type == 'content'">
+		  	AND sb.content LIKE #{text}
 		  	</if>
   		</where>  	
 		ORDER BY sb.source_seq DESC

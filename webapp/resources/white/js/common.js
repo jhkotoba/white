@@ -22,6 +22,8 @@ $(document).ajaxComplete(function() {
 	$(".blind").hide();
 });
 
+
+
 //날짜반환함수
 let isDate = {	
 	dateProcess : function dateProcess(isMonth, type){	
@@ -259,6 +261,15 @@ let common = {
 }
 
 //비어있는지 체크
+function isEmpty(_str){
+	return !isNotEmpty(_str);
+}
+function isNotEmpty(_str){
+	let obj = String(_str);
+	if(obj == null || obj == undefined || obj == 'null' || obj == 'undefined' || obj == '' ) return false;
+	else return true;
+}
+
 let emptyCheck = {
 	//데이터가 있으면 true 데이터가 없으면 false
 	isNotEmpty : function(_str){
@@ -271,6 +282,7 @@ let emptyCheck = {
 		return !emptyCheck.isNotEmpty(_str);
 	}
 }
+
 
 //문자열 관련
 let str = {
