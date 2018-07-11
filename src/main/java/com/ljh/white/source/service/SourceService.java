@@ -21,8 +21,8 @@ public class SourceService {
 	 * @param param
 	 * @return
 	 */
-	public int selectSourceCodeCount(WhiteMap param) {
-		return sourceMapper.selectSourceCodeCount(param);	
+	public int selectSourceCount(WhiteMap param) {
+		return sourceMapper.selectSourceCount(param);	
 	}
 	
 	/**
@@ -30,9 +30,9 @@ public class SourceService {
 	 * @param Parma
 	 * @return
 	 */
-	public List<WhiteMap> selectSourceCodeList(WhiteMap param){
-		param.put("pagePre", (param.getInt("pageNum")-1)*param.getInt("pageCnt"));
-		return sourceMapper.selectSourceCodeList(param);
+	public List<WhiteMap> selectSourceList(WhiteMap param){
+		param.put("pagePre", (param.getInt("pageIndex")-1)*param.getInt("pageSize"));
+		return sourceMapper.selectSourceList(param);
 	}
 	
 	/**

@@ -21,20 +21,20 @@ public class SourceController {
 	@Resource(name = "SourceService")
 	private SourceService sourceService;	
 	
-	@RequestMapping(value="/source/selectSourceCodeList.ajax" )
-	public WhiteMap selectSourceCodeList(HttpServletRequest request){
-		logger.debug("selectSourceCodeList Start");
+	@RequestMapping(value="/source/selectSourceList.ajax" )
+	public WhiteMap selectSourceList(HttpServletRequest request){
+		logger.debug("selectSourceList Start");
 		
 		WhiteMap param = new WhiteMap(request);		
 		
 		WhiteMap result = new WhiteMap();
-		result.put("totalCnt", sourceService.selectSourceCodeCount(param));
-		result.put("list", sourceService.selectSourceCodeList(param));
+		result.put("itemsCount", sourceService.selectSourceCount(param));
+		result.put("list", sourceService.selectSourceList(param));
 		
 		return result;
 	}
 	
-	@RequestMapping(value="/source/selectSourceDtlView")
+	@RequestMapping(value="/source/selectSourceDtlView.ajax")
 	public WhiteMap selectSourceDtlView(HttpServletRequest request) {
 		logger.debug("selectSourceDtlView Start");
 		

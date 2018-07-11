@@ -19,8 +19,8 @@ public class SourceMapper {
 	 * @param param
 	 * @return
 	 */
-	public int selectSourceCodeCount(WhiteMap param) {
-		return sqlSession.selectOne("sourceMapper.selectSourceCodeCount", param);
+	public int selectSourceCount(WhiteMap param) {
+		return sqlSession.selectOne("sourceMapper.selectSourceCount", param);
 	}
 	
 	/**
@@ -28,8 +28,8 @@ public class SourceMapper {
 	 * @param param
 	 * @return
 	 */
-	public List<WhiteMap> selectSourceCodeList(WhiteMap param) {
-		return sqlSession.selectList("sourceMapper.selectSourceCodeList", param);
+	public List<WhiteMap> selectSourceList(WhiteMap param) {
+		return sqlSession.selectList("sourceMapper.selectSourceList", param);
 	}
 	
 	/**

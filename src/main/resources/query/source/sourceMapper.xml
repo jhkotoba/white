@@ -4,7 +4,7 @@
 
 <mapper namespace="sourceMapper">	
 	
-	<select id="selectSourceCodeCount" resultType="int" parameterType="WhiteMap">
+	<select id="selectSourceCount" resultType="int" parameterType="WhiteMap">
 		SELECT COUNT(1) FROM source_board sb
 		LEFT OUTER JOIN code c
 	    	ON sb.code_seq = c.code_seq
@@ -25,7 +25,7 @@
   		</where> 
 	</select>
 	
-	<select id="selectSourceCodeList" resultType="WhiteMap" parameterType="WhiteMap">	
+	<select id="selectSourceList" resultType="WhiteMap" parameterType="WhiteMap">	
 		SELECT
 			sb.source_seq AS sourceSeq,
 			c.code_nm AS codeNm,
@@ -54,7 +54,7 @@
 		  	</if>
   		</where>  	
 		ORDER BY sb.source_seq DESC
-		Limit ${pagePre}, ${pageCnt}
+		Limit ${pagePre}, ${pageSize}
 	</select>
 	
 	<select id="selectSourceDtlView" resultType="WhiteMap" parameterType="WhiteMap">	
@@ -74,7 +74,7 @@
 		WHERE sb.source_seq = #{sourceSeq}
 	</select>
 	
-	<insert id="insertSourceCode" parameterType="WhiteMap">
+	<insert id="insertSource" parameterType="WhiteMap">
 		INSERT
 		INTO source_board(user_seq, code_seq, title, content, reg_date)
 		VALUES(
