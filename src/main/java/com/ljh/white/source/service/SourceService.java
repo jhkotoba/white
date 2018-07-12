@@ -49,8 +49,8 @@ public class SourceService {
 	 * @param param
 	 * @return
 	 */
-	public int insertSourceCode(WhiteMap param) {
-		return sourceMapper.insertSourceCode(param);
+	public int insertSource(WhiteMap param) {
+		return sourceMapper.insertSource(param);
 	}
 
 }

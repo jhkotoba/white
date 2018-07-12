@@ -48,7 +48,7 @@ public class SourceController {
 		logger.debug("insertSource Start");
 		
 		WhiteMap param = new WhiteMap(request);
-		return sourceService.insertSourceCode(param);
+		return sourceService.insertSource(param);
 	
 	}
 	

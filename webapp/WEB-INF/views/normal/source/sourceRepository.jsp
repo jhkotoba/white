@@ -43,28 +43,17 @@ $(document).ready(function(){
 		$("#text").val($("#sourceSearch #text").val()): 
 		$("#text").val("%"+$("#sourceSearch #text").val()+"%");
 		
-		jsGridStart(1);		
+		jsGridStart(1);
 	});
   	
 	//조회타입 전체시 텍스트 비움
 	$("#sourceSearch #type").on("change", function(itme){
 		if(itme.target.value === ""){
-			$("#sourceSearch #text").val("");
-			$("#sourceSearch #text").attr("disabled","disabled");
+			$("#sourceSearch #text").val("").attr("disabled","disabled");
 		}else{
 			$("#sourceSearch #text").removeAttr("disabled");
 		}		
-	});
-	
-	/* //조회타입 전체시 텍스트 비움
-	$("#sourceSearch #type").on("change", function(itme){
-		if(itme.target.value === ""){
-			$("#sourceSearch #text").val("");
-			$("#sourceSearch #text").attr("disabled","disabled");
-		}else{
-			$("#sourceSearch #text").removeAttr("disabled");
-		}		
-	});
+	});	
 	
 	//글쓰기 버튼	
 	$("button[name=write]").on("click", function(){
@@ -94,6 +83,7 @@ $(document).ready(function(){
 	
 	//글쓰기 - 타이블 글자수 표시
 	$("#sourceWrite #content").on("keydown", function(){
+		ta.ck($("#sourceWrite #content").val());
 		let len = $("#sourceWrite #content").val().length;
 		if(len > 4000){
 			alert("더이상 입력하실 수 없습니다.");
@@ -102,12 +92,11 @@ $(document).ready(function(){
 	});
 	
 	//글쓰기 - 저장 버튼
-	$("#sourceWrite #save").on("click", function(){		
-		
+	$("#sourceWrite #save").on("click", function(){
 		let param = {};
 		param.codeKey = $("#sourceWrite #codeKey").val();
 		param.title = $("#sourceWrite #title").val();
-		param.content = $("#sourceWrite #content").val();		
+		param.content = $("#sourceWrite #content").val();
 		
 		if(param.title.replace(/^\s+|\s+$/g,"") === ""){
 			alert("제목을 입력해주세요.");
@@ -135,21 +124,21 @@ $(document).ready(function(){
 		    	$("#codeKey").val("");
 				$("#type").val("");
 				$("#text").val("");
-				white.pageNum = 1;
-				white.fnAjax();
+				
+				jsGridStart(1);
 		    },
 		    error : function(request, status, error){
 		    	alert("error");
 		    }
 		});
 		
-	}); */
+	});
 	
 });
 
 //리스트 조회
 function jsGridStart(pageIdx, pageSize, pageBtnCnt){
-	$("#sourceList").jsGrid({
+	$("#sourceList").jsGrid("destroy").jsGrid({
         height: "auto",
         width: "100%",
         
@@ -191,8 +180,10 @@ function jsGridStart(pageIdx, pageSize, pageBtnCnt){
                 });                
                 return deferred.promise();
             }
-        }, 		
- 
+        },
+        rowClick: function(args) {
+        	sourceView(args.item.sourceSeq);
+        }, 
         fields: [
             { title:"번호",		name:"sourceSeq", 	type:"text", width:"4%"},
             { title:"종류", 		name:"codeNm", 		type:"text", width:"8%"},
@@ -201,6 +192,54 @@ function jsGridStart(pageIdx, pageSize, pageBtnCnt){
             { title:"날짜",		name:"regDate",		type:"text", width:"10%"}
         ]
     });
+}
+
+function sourceView(sourceSeq){
+	sourceWriteEmpty();
+	$("#sourceWrite").hide();
+	$("#sourceView").show();	
+	
+	$.ajax({		
+		type: 'POST',
+		url: common.path()+'/source/selectSourceDtlView.ajax',
+		data : {
+			sourceSeq : sourceSeq
+		},
+		dataType: 'json',
+		async : true,
+	    success : function(data) {
+	    	$("#sourceView #sourceSeq").val(data.sourceSeq);	    	
+	    	$("#sourceView #no").text(data.sourceSeq);	    	
+			$("#sourceView #title").text(data.title);
+			$("#sourceView #regDate").text(data.regDate);
+			$("#sourceView #userId").text(data.userId);
+			$("#sourceView #codeNm").text(data.codeNm);			
+			$("#sourceView #content").empty().append(textareaAddColor(data.codeNm, data.content));
+			//$("#sourceView #content").text(textareaAddColor(data.content));
+	    },
+	    error : function(request, status, error){
+	    	alert("error");
+	    }
+	});
+}
+
+//뷰 정보 비우기
+function sourceViewEmpty(){
+	$("#sourceView #no").text("");
+	$("#sourceView #title").text("");
+	$("#sourceView #regDate").text("");
+	$("#sourceView #userId").text("");
+	$("#sourceView #codeNm").text("");
+	//$("#sourceView #content").text("");
+	$("#sourceView #content").empty();
+}
+
+//글쓰기정보 비우기
+function sourceWriteEmpty(){
+	$("#sourceWrite #no").val("");
+	$("#sourceWrite #title").val("");
+	$("#sourceWrite #codeKey").find('option:first').attr('selected', 'selected');
+	$("#sourceWrite #content").val("");
 }
 </script>
 
@@ -224,7 +263,8 @@ function jsGridStart(pageIdx, pageSize, pageBtnCnt){
 		<span id="titleCnt">0</span><span>/50</span>
 	</div>	
 	<div class="updown-spacing">
-		<textarea id="content" maxlength="4000" style="height:50%; width:100%;"></textarea>
+		<textarea id="content" class="ta-code" maxlength="4000" style="height:50%; width:100%; background-color: balck">		
+		</textarea>
 		<span id="contentCnt">0</span><span>/4000</span>
 	</div>
 	<button id="save">저장</button>
@@ -254,7 +294,7 @@ function jsGridStart(pageIdx, pageSize, pageBtnCnt){
 		<span id="regDate"></span>
 	</div>
 	<div class="updown-spacing">
-		<pre><span id="content"></span></pre>
+		<pre id="content" class="ta-code"></pre>
 	</div>		
 </div>
 
@@ -267,7 +307,7 @@ function jsGridStart(pageIdx, pageSize, pageBtnCnt){
 		<option value="title">제목</option>
 		<option value="content">내용</option>
 	</select>
-	<input id="text" type="text" placeholder="타입을 선택하세요." disabled="disabled">
+	<input id="text" type="text" disabled="disabled">
 	<button id="search">조회</button>
 </div>
 <div class="right">

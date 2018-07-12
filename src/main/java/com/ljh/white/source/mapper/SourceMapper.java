@@ -46,8 +46,8 @@ public class SourceMapper {
 	 * @param param
 	 * @return
 	 */
-	public int insertSourceCode(WhiteMap param) {
-		return sqlSession.insert("sourceMapper.insertSourceCode", param);
+	public int insertSource(WhiteMap param) {
+		return sqlSession.insert("sourceMapper.insertSource", param);
 	}
 	
 }
