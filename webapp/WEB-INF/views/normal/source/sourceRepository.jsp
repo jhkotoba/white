@@ -214,7 +214,7 @@ function sourceView(sourceSeq){
 			$("#sourceView #regDate").text(data.regDate);
 			$("#sourceView #userId").text(data.userId);
 			$("#sourceView #codeNm").text(data.codeNm);			
-			$("#sourceView #content").empty().append(textareaAddColor(data.codeNm, data.content));
+			$("#sourceView #content").empty().append(data.content);
 			//$("#sourceView #content").text(textareaAddColor(data.content));
 	    },
 	    error : function(request, status, error){

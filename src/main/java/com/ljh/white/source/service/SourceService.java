@@ -40,8 +40,11 @@ public class SourceService {
 	 * @param param
 	 * @return
 	 */
-	public WhiteMap selectSourceDtlView(WhiteMap param) {
-		return sourceMapper.selectSourceDtlView(param);
+	public WhiteMap selectSourceDtlView(WhiteMap param) {		
+		WhiteMap map = sourceMapper.selectSourceDtlView(param);
+		return this.codeColorAdjust(map);
+		//return map;
+		
 	}
 	
 	/**
@@ -53,4 +56,44 @@ public class SourceService {
 		return sourceMapper.insertSource(param);
 	}
 
+	/**
+	 * 소스코드 색상 적용
+	 * @return
+	 */
+	private WhiteMap codeColorAdjust(WhiteMap map) {
+		
+		StringBuilder str = new StringBuilder();
+		
+		char[] ch = map.getString("content").toCharArray();		
+		String state = "none";
+		
+		int annCnt = 0;	//개행문자 오기 전까지 주석 개수
+		
+		for(int i=0; i<ch.length; i++){			
+			switch(state) {			
+			case "//" :				
+				if(ch[i] == '\r' || ch[i] == '\n') {					
+					for(int j=0; j<annCnt; j++) {
+						str.append("</span>");
+					}					
+					state = "none";
+					annCnt = 0;
+				}
+				break;			
+			}
+			switch(ch[i]) {
+			case '/':				
+				if(ch.length-1 >= i+1 && ch[i+1]=='/') {
+					str.append("<span style='color:#6BA980;'>");
+					state = "//";
+					annCnt++;		
+				}				
+				break;		
+			}
+			str.append(ch[i]);
+		}	
+		String result = str.toString();
+		map.put("content", result);
+		return map;
+	}
 }
