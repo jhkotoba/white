@@ -5,9 +5,9 @@
 
 <script type="text/javascript">
 $(document).ready(function(){
-	
+
 	let sourceCode = {};
-	
+
 	//코드 셀렉트박스 조회
 	$.ajax({		
 		type: 'POST',
@@ -32,7 +32,7 @@ $(document).ready(function(){
 	});	
 	
 	//리스트 출력
-	jsGridStart();    
+	jsGridStart();
     
   	//조회 버튼
 	$("#sourceSearch #search").on("click", function(){		
@@ -185,11 +185,11 @@ function jsGridStart(pageIdx, pageSize, pageBtnCnt){
         	sourceView(args.item.sourceSeq);
         }, 
         fields: [
-            { title:"번호",		name:"sourceSeq", 	type:"text", width:"4%"},
-            { title:"종류", 		name:"codeNm", 		type:"text", width:"8%"},
-            { title:"글제목", 	name:"title",		type:"text", width:"70%"},
-            { title:"작성자",		name:"userId",		type:"text", width:"8%"},
-            { title:"날짜",		name:"regDate",		type:"text", width:"10%"}
+			{ title:"번호",	name:"sourceSeq",	type:"text", width:"4%"},
+			{ title:"종류",	name:"codeNm",		type:"text", width:"8%"},
+			{ title:"글제목",	name:"title",		type:"text", width:"70%"},
+			{ title:"작성자",	name:"userId",		type:"text", width:"8%"},
+			{ title:"날짜",	name:"regDate",		type:"text", width:"10%"}
         ]
     });
 }
@@ -222,7 +222,6 @@ function sourceView(sourceSeq){
 	    }
 	});
 }
-
 //뷰 정보 비우기
 function sourceViewEmpty(){
 	$("#sourceView #no").text("");
@@ -241,6 +240,7 @@ function sourceWriteEmpty(){
 	$("#sourceWrite #codeKey").find('option:first').attr('selected', 'selected');
 	$("#sourceWrite #content").val("");
 }
+
 </script>
 
 <div class="article">

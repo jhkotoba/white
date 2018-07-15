@@ -23,7 +23,7 @@ public class WhiteService{
 	@PostConstruct
 	public void postConstruct() {
 		this.setNavAuth();
-		this.setSideAuth();		
+		this.setSideAuth();
 	}
 	
 	/**
