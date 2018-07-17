@@ -318,7 +318,7 @@ function getContextPath(){
 	return zero + n;
 }*/
 
-
+//moveForm
 let mf = {	
 	 submit : function(navUrl, sideUrl){
 		$("#moveForm #navUrl").attr("value", navUrl);
@@ -326,4 +326,30 @@ let mf = {
 		$("#moveForm").attr("method", "post");
 		$("#moveForm").attr("action", common.path()+navUrl).submit();
 	}
+}
+
+//공통코드 조회
+let code = {		
+	select : function(codeType){	
+		let deferred = $.Deferred();		
+		$.ajax({		
+			type: 'POST',
+			url: common.path()+'/white/selectCodeList.ajax',
+			data : {
+				codeType : codeType.toUpperCase()
+			},
+			dataType: 'json',
+			async : true,
+		    success : function(data) {
+		    	deferred.resolve(data);
+		    },
+		    error : function(request, status, error){
+		    	deferred.reject(error);
+		    	return null;		    	
+		    }
+		});		
+		return deferred.promise();
+	}	
+		
+		
 }
