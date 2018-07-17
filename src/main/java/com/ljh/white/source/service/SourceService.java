@@ -16,8 +16,10 @@ public class SourceService {
 	@Resource(name = "SourceMapper")
 	private SourceMapper sourceMapper;
 	
-	
-	
+	/*색상코드*/
+	private String blue = "<span style='color:#569CF1; font-size:inherit;'>";
+	private String green = "<span style='color:#CE8153; font-size:inherit;'>";
+	private String brown = "<span style='color:#CE8153; font-size:inherit;'>";	
 	
 	/**
 	 * 소스게시판 리스트 카운트
@@ -160,12 +162,18 @@ public class SourceService {
 						state = "none";
 					}				
 					break;
-				case "if":					
+				case "if":				
 					if(ch.length-1 > i+1 && this.spCharCheck(ch[i]) && ch[i-1]=='f'){
 						str.append("</span>");
 						state = "none";
 					}				
-					break;				
+					break;
+				case "in":
+					if(ch.length-1 > i+1 && this.spCharCheck(ch[i]) && ch[i-1]=='n'){
+						str.append("</span>");
+						state = "none";
+					}				
+					break;
 				}
 				
 				//시작처리
@@ -183,12 +191,12 @@ public class SourceService {
 								}
 							}
 							if(annCheck) {
-								str.append("<span style='color:#6BA980; font-size:inherit;'>");
+								str.append(this.green);
 								state = "/*";
 							}
 						}else if(ch.length-1 >= i+1 && ch[i+1]=='/') {
 							if("/*".equals(state)==false) {
-								str.append("<span style='color:#6BA980; font-size:inherit;'>");
+								str.append(this.green);
 								state = "//";
 								annCnt++;
 							}								
@@ -206,7 +214,7 @@ public class SourceService {
 								}
 							}
 							if(dQuotation) {
-								str.append("<span style='color:#CE8153; font-size:inherit;'>");
+								str.append(this.brown);
 								state = "\"";
 							}
 						}
@@ -223,7 +231,7 @@ public class SourceService {
 								}
 							}
 							if(quotation) {
-								str.append("<span style='color:#CE8153; font-size:inherit;'>");
+								str.append(this.brown);
 								state = "\'";
 							}
 						}
@@ -235,13 +243,13 @@ public class SourceService {
 								temp.append(ch[j]);
 							}
 							if("function".equals(temp.toString())) {								
-								str.append("<span style='color:#569CF1; font-size:inherit;'>");
+								str.append(this.blue);
 								state = "end";
 							}
 							temp.setLength(0);
 						}else if(ch.length-1 >= i+8 && ch[i+1]=='u' && ch[i+2]=='n' && ch[i+3]=='c' && 
 							ch[i+4]=='t' && ch[i+5]=='i' && ch[i+6]=='o' && ch[i+7]=='n' && this.spCharCheck(ch[i+8])) {					
-							str.append("<span style='color:#569CF1; font-size:inherit;'>");
+							str.append(this.blue);
 							state = "function";
 						}
 						break;
@@ -252,12 +260,12 @@ public class SourceService {
 								temp.append(ch[j]);
 							}
 							if("true".equals(temp.toString())) {								
-								str.append("<span style='color:#569CF1; font-size:inherit;'>");
+								str.append(this.blue);
 								state = "end";
 							}
 							temp.setLength(0);
 						}else if(ch.length-1 >= i+4 && ch[i+1]=='r' && ch[i+2]=='u' && ch[i+3]=='e' && this.spCharCheck(ch[i+4])) {					
-							str.append("<span style='color:#569CF1; font-size:inherit;'>");
+							str.append(this.blue);
 							state = "true";
 						}
 						break;
@@ -267,14 +275,17 @@ public class SourceService {
 							for(int j=i; j<ch.length; j++) {
 								temp.append(ch[j]);
 							}
-							if("if".equals(temp.toString())) {								
-								str.append("<span style='color:#569CF1; font-size:inherit;'>");
+							if("if".equals(temp.toString()) || "in".equals(temp.toString())) {								
+								str.append(this.blue);
 								state = "end";
 							}
 							temp.setLength(0);
 						}else if(ch.length-1 >= i+2 && ch[i+1]=='f' && this.spCharCheck(ch[i+2])) {					
-							str.append("<span style='color:#569CF1; font-size:inherit;'>");
+							str.append(this.blue);
 							state = "if";
+						}else if(ch.length-1 >= i+2 && ch[i+1]=='n' && this.spCharCheck(ch[i+2])) {					
+							str.append(this.blue);
+							state = "in";
 						}
 						break;
 					//else
@@ -284,12 +295,12 @@ public class SourceService {
 								temp.append(ch[j]);
 							}
 							if("else".equals(temp.toString())) {								
-								str.append("<span style='color:#569CF1; font-size:inherit;'>");
+								str.append(this.blue);
 								state = "end";
 							}
 							temp.setLength(0);							
 						}else if(ch.length-1 >= i+4 && ch[i+1]=='l' && ch[i+2]=='s' && ch[i+3]=='e' && this.spCharCheck(ch[i+4])) {					
-							str.append("<span style='color:#569CF1; font-size:inherit;'>");
+							str.append(this.blue);
 							state = "else";
 						}
 						break;
