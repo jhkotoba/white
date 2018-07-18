@@ -54,7 +54,9 @@ $(document).ready(function(){
 		$("#sourceWrite #content").val("");
 		
 		sourceViewEmpty();
+		sourceEditEmpty();
 		$("#sourceView").hide();
+		$("#sourceEdit").hide();
 		$("#sourceWrite").show();
 	});
 	
@@ -128,7 +130,46 @@ $(document).ready(function(){
 	
 	//글수정-저장
 	$("#sourceEdit #save").on("click", function(){
-		alert("개발중..");
+		let param = {};
+		param.codeKey = $("#sourceEdit #codeKey").val();
+		param.title = $("#sourceEdit #title").val();
+		param.content = $("#sourceEdit #content").val();
+		
+		if(param.title.replace(/^\s+|\s+$/g,"") === ""){
+			alert("제목을 입력해주세요.");
+			return;
+		}
+		if(param.content.replace(/^\s+|\s+$/g,"") === ""){
+			alert("내용을 입력해주세요.");
+			return;
+		}		
+		
+		$.ajax({		
+			type: 'POST',
+			url: common.path()+'/source/updateSource.ajax',
+			data : param,
+			dataType: 'json',
+			async : true,
+			success : function(data) {
+		    	if(1 === Number(data)){
+		    		alert("수정 하였습니다.");
+		    	}else{
+		    		alert("수정에 실패하였습니다.");
+		    	}
+		    	sourceWriteEmpty();
+		    	sourceEditEmpty();
+		    	$("#sourceView").hide();
+				$("#sourceEdit").hide();
+		    	$("#codeKey").val("");
+				$("#type").val("");
+				$("#text").val("");
+				
+				jsGridCall(1);
+		    },
+		    error : function(request, status, error){
+		    	alert("error");
+		    }
+		});
 	});
 	
 });
@@ -245,8 +286,10 @@ function sourceViewEmpty(){
 	$("#sourceView #userId").text("");
 	$("#sourceView #codeNm").text("");	
 	$("#sourceView #content").empty();
-	
-	//수정부분도 삭제
+}
+
+//수정 삭제
+function sourceEditEmpty(){
 	$("#sourceEdit #sourceSeq").val("");	    	    	
 	$("#sourceEdit #title").val("");
 	$("#sourceEdit #regDate").text("");

@@ -344,8 +344,7 @@ let code = {
 		    	deferred.resolve(data);
 		    },
 		    error : function(request, status, error){
-		    	deferred.reject(error);
-		    	return null;		    	
+		    	deferred.reject(error);		    			    	
 		    }
 		});		
 		return deferred.promise();
