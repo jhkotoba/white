@@ -65,7 +65,7 @@ public class SourceMapper {
 	 * @return
 	 */
 	public int deleteSource(WhiteMap param) {
-		return sqlSession.update("sourceMapper.deleteSource", param);
+		return sqlSession.delete("sourceMapper.deleteSource", param);
 	}
 	
 }
