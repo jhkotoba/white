@@ -52,4 +52,20 @@ public class SourceController {
 	
 	}
 	
+	@RequestMapping(value="/source/updateSource.ajax" )
+	public int updateSource(HttpServletRequest request){
+		logger.debug("updateSource Start");
+		
+		WhiteMap param = new WhiteMap(request);		
+		return sourceService.updateSource(param);	
+	}
+	
+	@RequestMapping(value="/source/deleteSource.ajax" )
+	public int deleteSource(HttpServletRequest request){
+		logger.debug("deleteSource Start");
+		
+		WhiteMap param = new WhiteMap(request);		
+		return sourceService.deleteSource(param);	
+	}
+	
 }

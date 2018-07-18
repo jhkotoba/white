@@ -87,5 +87,20 @@
 			NOW()
 		)
 	</insert>
+	
+	<update id="updateSource" parameterType="WhiteMap">
+		UPDATE source_board
+		SET	title = #{title},
+			code_seq = (SELECT DISTINCT code_seq FROM code WHERE code_key = #{codeKey}),
+			content = #{content}
+		WHERE user_seq = #{userSeq}
+		AND source_seq = #{sourceSeq}
+	</update>
+	
+	<delete id="deleteSource" parameterType="WhiteMap">
+		DELETE FROM source_board
+		WHERE user_seq = #{userSeq}
+		AND source_seq = #{sourceSeq}	
+	</delete>
 </mapper>
 

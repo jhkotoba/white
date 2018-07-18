@@ -5,9 +5,11 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
-
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ljh.white.common.collection.WhiteMap;
+import com.ljh.white.common.mapper.WhiteMapper;
 import com.ljh.white.source.mapper.SourceMapper;
 
 @Service("SourceService")
@@ -15,6 +17,9 @@ public class SourceService {
 	
 	@Resource(name = "SourceMapper")
 	private SourceMapper sourceMapper;
+	
+	@Resource(name = "WhiteMapper")
+	private WhiteMapper whiteMapper;
 	
 	/*색상코드*/
 	private String blue = "<span style='color:#569CF1; font-size:inherit;'>";
@@ -57,8 +62,29 @@ public class SourceService {
 	 * @param param
 	 * @return
 	 */
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
 	public int insertSource(WhiteMap param) {
 		return sourceMapper.insertSource(param);
+	}
+	
+	/**
+	 * 소스게시판 글수정
+	 * @param param
+	 * @return
+	 */
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
+	public int updateSource(WhiteMap param) {		
+		return sourceMapper.updateSource(param);
+	}
+	
+	/**
+	 * 소스게시판 글삭제
+	 * @param param
+	 * @return
+	 */
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
+	public int deleteSource(WhiteMap param) {		
+		return sourceMapper.deleteSource(param);
 	}
 	
 	/**

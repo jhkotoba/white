@@ -131,6 +131,7 @@ $(document).ready(function(){
 	//글수정-저장
 	$("#sourceEdit #save").on("click", function(){
 		let param = {};
+		param.sourceSeq = $("#sourceEdit #sourceSeq").val();
 		param.codeKey = $("#sourceEdit #codeKey").val();
 		param.title = $("#sourceEdit #title").val();
 		param.content = $("#sourceEdit #content").val();
@@ -152,11 +153,11 @@ $(document).ready(function(){
 			async : true,
 			success : function(data) {
 		    	if(1 === Number(data)){
-		    		alert("수정 하였습니다.");
+		    		alert("수정 하였습니다.");		    		
 		    	}else{
 		    		alert("수정에 실패하였습니다.");
 		    	}
-		    	sourceWriteEmpty();
+		    	sourceViewEmpty();
 		    	sourceEditEmpty();
 		    	$("#sourceView").hide();
 				$("#sourceEdit").hide();
@@ -172,6 +173,44 @@ $(document).ready(function(){
 		});
 	});
 	
+	
+	//글보기 - 삭제
+	$("#sourceView #delete").on("click", function(){
+		
+		if(!confirm("삭제하시겠습니까?")){
+			return;
+		}
+		
+		let param = {};
+		param.sourceSeq = $("#sourceView #sourceSeq").val();
+		
+		$.ajax({		
+			type: 'POST',
+			url: common.path()+'/source/deleteSource.ajax',
+			data : param,
+			dataType: 'json',
+			async : true,
+			success : function(data) {
+		    	if(1 === Number(data)){
+		    		alert("삭제 하였습니다.");		    		
+		    	}else{
+		    		alert("삭제에 실패하였습니다.");
+		    	}
+		    	sourceViewEmpty();
+		    	sourceEditEmpty();
+		    	$("#sourceView").hide();
+				$("#sourceEdit").hide();
+		    	$("#codeKey").val("");
+				$("#type").val("");
+				$("#text").val("");
+				
+				jsGridCall(1);
+		    },
+		    error : function(request, status, error){
+		    	alert("error");
+		    }
+		});
+	});
 });
 
 //리스트 조회
@@ -233,9 +272,12 @@ function jsGridCall(pageIdx, pageSize, pageBtnCnt){
 }
 
 function sourceView(sourceSeq){
-	sourceWriteEmpty();
+	sourceWriteEmpty();	
+
 	$("#sourceWrite").hide();
-	$("#sourceView").show();	
+	$("#sourceView").show();
+	$("#sourceView #edit").addClass("hide");
+	$("#sourceView #delete").addClass("hide");	
 	
 	$.ajax({		
 		type: 'POST',
@@ -261,6 +303,10 @@ function sourceView(sourceSeq){
 			$("#sourceEdit #userId").text(data.userId);
 			$("#sourceEdit #codeNm").text(data.codeNm);			
 			$("#sourceEdit #content").val(data.content);
+			if('${sessionScope.userId}' === String(data.userId)){
+				$("#sourceView #edit").removeClass("hide");
+				$("#sourceView #delete").removeClass("hide");
+			}			
 			
 			let tag = "";
 			for(let i=0; i<codeList.length; i++){
@@ -367,7 +413,8 @@ function sourceWriteEmpty(){
 <div id="sourceView" class="form-control updown-spacing hide">	
 	<input id="sourceSeq" type="hidden" value="">
 	<div class="right">
-		<button id="edit">수정</button>		
+		<button id="edit" class="hide">수정</button>	
+		<button id="delete" class="hide">삭제</button>	
 		<button name="write">글쓰기</button>
 		<button onclick="$('#sourceView').hide();">닫기</button>
 	</div>

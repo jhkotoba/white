@@ -50,4 +50,22 @@ public class SourceMapper {
 		return sqlSession.insert("sourceMapper.insertSource", param);
 	}
 	
+	/**
+	 * 소스게시판 글수정
+	 * @param param
+	 * @return
+	 */
+	public int updateSource(WhiteMap param) {
+		return sqlSession.update("sourceMapper.updateSource", param);
+	}
+	
+	/**
+	 * 소스게시판 글삭제
+	 * @param param
+	 * @return
+	 */
+	public int deleteSource(WhiteMap param) {
+		return sqlSession.update("sourceMapper.deleteSource", param);
+	}
+	
 }
