@@ -51,9 +51,7 @@ public class SourceService {
 	 * @return
 	 */
 	public WhiteMap selectSourceDtlView(WhiteMap param) {		
-		WhiteMap map = sourceMapper.selectSourceDtlView(param);
-		return this.codeColorAdjust(map);
-		
+		return sourceMapper.selectSourceDtlView(param);	
 		
 	}
 	
@@ -87,7 +85,7 @@ public class SourceService {
 		return sourceMapper.deleteSource(param);
 	}
 	
-	/**
+	/** @deprecated
 	 * 코드 텍스트 색상 적용
 	 * @param param
 	 * @return
@@ -113,7 +111,7 @@ public class SourceService {
 		
 	}
 	
-	/**
+	/**@deprecated
 	 * javascript 소스코드 색상 적용
 	 * @return
 	 */
