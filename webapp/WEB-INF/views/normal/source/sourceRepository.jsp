@@ -18,7 +18,7 @@ $(document).ready(function(){
 	});	
 	
 	//리스트 출력
-	jsGridCall();
+	fnJsGrid();
     
   	//조회 버튼
 	$("#sourceSearch #search").on("click", function(){		
@@ -53,30 +53,10 @@ $(document).ready(function(){
 		$("#sourceWrite #title").val("");
 		$("#sourceWrite #content").val("");
 		
-		sourceViewEmpty();
-		sourceEditEmpty();
-		$("#sourceView").hide();
-		$("#sourceEdit").hide();
+		fnViewEmpty();
+		fnEditEmpty();
 		$("#sourceWrite").show();
-	});
-	
-	//글쓰기 - 타이블 글자수 표시
-	$("#sourceWrite #title").on("keydown", function(){
-		let len = $("#sourceWrite #title").val().length;
-		if(len > 50){
-			alert("더이상 입력하실 수 없습니다.");
-		}
-		$("#sourceWrite #titleCnt").text(len);
-	});
-	
-	//글쓰기 - 타이블 글자수 표시
-	$("#sourceWrite #content").on("keydown", function(){
-		ta.ck($("#sourceWrite #content").val());
-		let len = $("#sourceWrite #content").val().length;
-		if(len > 4000){
-			alert("더이상 입력하실 수 없습니다.");
-		}
-		$("#sourceWrite #contentCnt").text(len);
+		$("body").scrollTop(0);
 	});
 	
 	//글쓰기 - 저장 버튼
@@ -93,7 +73,15 @@ $(document).ready(function(){
 		if(param.content.replace(/^\s+|\s+$/g,"") === ""){
 			alert("내용을 입력해주세요.");
 			return;
-		}		
+		}
+		if($("#sourceWrite #title").val().length > 50){
+			alert("제목 글이 50자를 초과합니다.");
+			return;
+		}
+		if($("#sourceWrite #content").val().length > 4000){
+			alert("제목 글이 4000자를 초과합니다.");
+			return;
+		}
 		
 		$.ajax({		
 			type: 'POST',
@@ -107,19 +95,20 @@ $(document).ready(function(){
 		    	}else{
 		    		alert("저장에 실패하였습니다.");
 		    	}
-		    	sourceWriteEmpty();
-		    	$("#sourceWrite").hide();
-		    	$("#codeKey").val("");
-				$("#type").val("");
-				$("#text").val("");
-				
-				jsGridCall(1);
+		    	fnWriteEmpty();		    	
+		    	fnSearchEmpty();			
+				fnJsGrid(1);
 		    },
 		    error : function(request, status, error){
 		    	alert("error");
 		    }
 		});
 		
+	});
+	
+	//글쓰기 - 닫기
+	$("#sourceWrite #close").on("click", function(){
+		fnWriteEmpty();
 	});
 	
 	//글수정
@@ -157,15 +146,10 @@ $(document).ready(function(){
 		    	}else{
 		    		alert("수정에 실패하였습니다.");
 		    	}
-		    	sourceViewEmpty();
-		    	sourceEditEmpty();
-		    	$("#sourceView").hide();
-				$("#sourceEdit").hide();
-		    	$("#codeKey").val("");
-				$("#type").val("");
-				$("#text").val("");
-				
-				jsGridCall(1);
+		    	fnViewEmpty();
+		    	fnEditEmpty();		    	
+		    	fnSearchEmpty();			
+				fnJsGrid(1);
 		    },
 		    error : function(request, status, error){
 		    	alert("error");
@@ -173,6 +157,10 @@ $(document).ready(function(){
 		});
 	});
 	
+	//글수정 - 닫기
+	$("#sourceEdit #close").on("click", function(){
+		fnEditEmpty();
+	});	
 	
 	//글보기 - 삭제
 	$("#sourceView #delete").on("click", function(){
@@ -181,13 +169,12 @@ $(document).ready(function(){
 			return;
 		}
 		
-		let param = {};
-		param.sourceSeq = $("#sourceView #sourceSeq").val();
-		
 		$.ajax({		
 			type: 'POST',
 			url: common.path()+'/source/deleteSource.ajax',
-			data : param,
+			data : {
+				sourceSeq : $("#sourceView #sourceSeq").val()
+			},
 			dataType: 'json',
 			async : true,
 			success : function(data) {
@@ -196,25 +183,25 @@ $(document).ready(function(){
 		    	}else{
 		    		alert("삭제에 실패하였습니다.");
 		    	}
-		    	sourceViewEmpty();
-		    	sourceEditEmpty();
-		    	$("#sourceView").hide();
-				$("#sourceEdit").hide();
-		    	$("#codeKey").val("");
-				$("#type").val("");
-				$("#text").val("");
-				
-				jsGridCall(1);
+		    	fnViewEmpty();
+		    	fnEditEmpty();
+		    	fnSearchEmpty();				
+				fnJsGrid(1);
 		    },
 		    error : function(request, status, error){
 		    	alert("error");
 		    }
 		});
 	});
+	
+	//글수정 - 닫기
+	$("#sourceView #close").on("click", function(){
+		fnViewEmpty();
+	});	
 });
 
 //리스트 조회
-function jsGridCall(pageIdx, pageSize, pageBtnCnt){
+function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
 	$("#sourceList").jsGrid({
         height: "auto",
         width: "100%",
@@ -259,7 +246,7 @@ function jsGridCall(pageIdx, pageSize, pageBtnCnt){
             }
         },
         rowClick: function(args) {
-        	sourceView(args.item.sourceSeq);
+        	fnView(args.item.sourceSeq);
         }, 
         fields: [
 			{ title:"번호",	name:"sourceSeq",	type:"text", width:"4%"},
@@ -271,10 +258,8 @@ function jsGridCall(pageIdx, pageSize, pageBtnCnt){
     });
 }
 
-function sourceView(sourceSeq){
-	sourceWriteEmpty();	
-
-	$("#sourceWrite").hide();
+function fnView(sourceSeq){
+	fnWriteEmpty();
 	$("#sourceView").show();
 	$("#sourceView #edit").addClass("hide");
 	$("#sourceView #delete").addClass("hide");	
@@ -288,35 +273,9 @@ function sourceView(sourceSeq){
 		dataType: 'json',
 		async : true,
 	    success : function(data) {
-	    	$("#sourceView #sourceSeq").val(data.sourceSeq);	    	
-	    	$("#sourceView #no").text(data.sourceSeq);	    	
-			$("#sourceView #title").text(data.title);
-			$("#sourceView #regDate").text(data.regDate);
-			$("#sourceView #userId").text(data.userId);
-			$("#sourceView #codeNm").text(data.codeNm);			
-			$("#sourceView #content").empty().append(data.content);
-			
-			//수정 구역도 미리 구성
-			$("#sourceEdit #sourceSeq").val(data.sourceSeq);	    	    	
-			$("#sourceEdit #title").val(data.title);
-			$("#sourceEdit #regDate").text(data.regDate);
-			$("#sourceEdit #userId").text(data.userId);
-			$("#sourceEdit #codeNm").text(data.codeNm);			
-			$("#sourceEdit #content").val(data.content);
-			if('${sessionScope.userId}' === String(data.userId)){
-				$("#sourceView #edit").removeClass("hide");
-				$("#sourceView #delete").removeClass("hide");
-			}			
-			
-			let tag = "";
-			for(let i=0; i<codeList.length; i++){
-				if(data.codeNm === codeList[i].codeNm){
-					tag += "<option value="+codeList[i].codeKey+" selected='selected'>"+codeList[i].codeNm+"</option>";
-				}else{
-					tag += "<option value="+codeList[i].codeKey+">"+codeList[i].codeNm+"</option>";
-				}
-			}
-			$("#sourceEdit #codeKey").append(tag);
+	    	fnViewInit(data);
+	    	fnEditInit(data);			
+			$("body").scrollTop(0);
 	    },
 	    error : function(request, status, error){
 	    	alert("error");
@@ -324,32 +283,78 @@ function sourceView(sourceSeq){
 	});
 }
 
+//검색정보 삭제
+function fnSearchEmpty(){
+	$("#codeKey").val("");
+	$("#type").val("");
+	$("#text").val("");
+}
+
+//뷰 정보 추가
+function fnViewInit(data){
+	$("#sourceView #sourceSeq").val(data.sourceSeq);	    	
+	$("#sourceView #no").text(data.sourceSeq);	    	
+	$("#sourceView #title").text(data.title);
+	$("#sourceView #regDate").text(data.regDate);
+	$("#sourceView #userId").text(data.userId);
+	$("#sourceView #codeNm").text(data.codeNm);			
+	$("#sourceView #content").empty().append(data.content);
+}
+
 //뷰 정보 비우기
-function sourceViewEmpty(){
+function fnViewEmpty(){
 	$("#sourceView #no").text("");
 	$("#sourceView #title").text("");
 	$("#sourceView #regDate").text("");
 	$("#sourceView #userId").text("");
 	$("#sourceView #codeNm").text("");	
 	$("#sourceView #content").empty();
+	$("#sourceView").hide();
 }
 
-//수정 삭제
-function sourceEditEmpty(){
+//수정 내용 추가
+function fnEditInit(data){
+	$("#sourceEdit #sourceSeq").val(data.sourceSeq);	    	    	
+	$("#sourceEdit #title").val(data.title);
+	$("#sourceEdit #regDate").text(data.regDate);
+	$("#sourceEdit #userId").text(data.userId);
+	$("#sourceEdit #codeNm").text(data.codeNm);			
+	$("#sourceEdit #content").val(data.content);
+	if('${sessionScope.userId}'!== '' && '${sessionScope.userId}' === String(data.userId)){
+		$("#sourceView #edit").removeClass("hide");
+		$("#sourceView #delete").removeClass("hide");
+	}			
+	
+	let tag = "";
+	for(let i=0; i<codeList.length; i++){
+		if(data.codeNm === codeList[i].codeNm){
+			tag += "<option value="+codeList[i].codeKey+" selected='selected'>"+codeList[i].codeNm+"</option>";
+		}else{
+			tag += "<option value="+codeList[i].codeKey+">"+codeList[i].codeNm+"</option>";
+		}
+	}
+	$("#sourceEdit #codeKey").append(tag);
+}
+
+
+//수정 내용 삭제
+function fnEditEmpty(){
 	$("#sourceEdit #sourceSeq").val("");	    	    	
 	$("#sourceEdit #title").val("");
 	$("#sourceEdit #regDate").text("");
 	$("#sourceEdit #userId").text("");
 	$("#sourceEdit #codeNm").text("");	
 	$("#sourceEdit #content").val("");
+	$("#sourceEdit").hide();
 }
 
 //글쓰기정보 비우기
-function sourceWriteEmpty(){
+function fnWriteEmpty(){
 	$("#sourceWrite #no").val("");
 	$("#sourceWrite #title").val("");
 	$("#sourceWrite #codeKey").find('option:first').attr('selected', 'selected');
 	$("#sourceWrite #content").val("");
+	$("#sourceWrite").hide();
 }
 
 </script>
@@ -371,16 +376,16 @@ function sourceWriteEmpty(){
 		<select id="codeKey">	
 		</select>
 		<span>제목</span>
-		<input id="title" type="text" maxlength="50" style="width:70%;">
-		<span id="titleCnt">0</span><span>/50</span>
+		<input id="title" type="text" maxlength="50" style="width:70%;">		
 	</div>	
 	<div class="updown-spacing">
 		<textarea id="content" class="ta-code" maxlength="4000" style="height:50%; width:100%; background-color: balck">		
-		</textarea>
-		<span id="contentCnt">0</span><span>/4000</span>
+		</textarea>		
 	</div>
-	<button id="save">저장</button>
-	<button onclick="$('#sourceWrite').hide();">닫기</button>
+	<div>
+		<button id="save">저장</button>
+		<button id="close">닫기</button>
+	</div>
 </div>
 
 <!-- 글수정 -->
@@ -392,7 +397,6 @@ function sourceWriteEmpty(){
 		</select>
 		<span>제목</span>
 		<input id="title" type="text" maxlength="50" style="width:70%;">
-		<span id="titleCnt">0</span><span>/50</span>
 	</div>
 	<div>
 		<span>사용자</span>
@@ -402,11 +406,12 @@ function sourceWriteEmpty(){
 	</div>
 	<div class="updown-spacing">
 		<textarea id="content" class="ta-code" maxlength="4000" style="height:50%; width:100%; background-color: balck">		
-		</textarea>
-		<span id="contentCnt">0</span><span>/4000</span>
+		</textarea>		
 	</div>
-	<button id="save">저장</button>
-	<button onclick="$('#sourceEdit').hide();">닫기</button>
+	<div>
+		<button id="save">저장</button>
+		<button id="close">닫기</button>
+	</div>
 </div>
 
 <!-- 글보기 -->
@@ -416,7 +421,7 @@ function sourceWriteEmpty(){
 		<button id="edit" class="hide">수정</button>	
 		<button id="delete" class="hide">삭제</button>	
 		<button name="write">글쓰기</button>
-		<button onclick="$('#sourceView').hide();">닫기</button>
+		<button id="close">닫기</button>
 	</div>
 
 	<div>

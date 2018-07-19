@@ -23,9 +23,6 @@
 .height-half{height: 50%;}
 .height-full{height: 100%;}
 
-.hide{display: none;}
-
-
 span, table{font-size: 11px;}    
 input[type=date], input[type=time],input[type=text] {font-size: 12px;}
 .slt-fs{font-size: 12px !important;}
