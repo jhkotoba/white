@@ -102,12 +102,12 @@ let cAdjust = {
 							}
 						}
 						if(annBool) {
-							str += "<span class='cAdjust-comment'>";
+							str += "<span class='js-comment'>";
 							state = "/*";
 						}
 					}else if(ch.length-1 >= i+1 && ch[i+1]==='/') {
 						if("/*" !== state) {
-							str += "<span class='cAdjust-comment'>";
+							str += "<span class='js-comment'>";
 							state = "//";
 							annCnt++;
 						}								
