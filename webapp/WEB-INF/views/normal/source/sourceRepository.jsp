@@ -2,7 +2,8 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="contextPath" value="<%=request.getContextPath()%>"></c:set>
-
+<link rel="stylesheet" href="${contextPath}/resources/cAdjust/css/cAdjust.css" type="text/css" />
+<script type="text/javascript" src="${contextPath}/resources/cAdjust/js/cAdjust.js"></script>
 <script type="text/javascript">
 let codeList;
 $(document).ready(function(){
@@ -297,8 +298,10 @@ function fnViewInit(data){
 	$("#sourceView #title").text(data.title);
 	$("#sourceView #regDate").text(data.regDate);
 	$("#sourceView #userId").text(data.userId);
-	$("#sourceView #codeNm").text(data.codeNm);			
-	$("#sourceView #content").empty().append(data.content);
+	$("#sourceView #codeNm").text(data.codeNm);
+	
+	let adjustContent = cAdjust.adjust(data.codeNm, data.content);
+	$("#sourceView #content").empty().append(adjustContent);
 }
 
 //뷰 정보 비우기

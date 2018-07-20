@@ -1,0 +1,117 @@
+
+/*jsGrid ¼³Á¤ */
+.jsgrid-grid-header, .jsgrid-grid-body{overflow: auto;}
+
+/* textarea code */
+.ta-code{
+	background: #363636;
+	color: #FFFFFF;	
+}
+
+/* font */
+@font-face { font-family: 'NanumSquareB'; src: url(../ttf/NanumSquareB.ttf) format('truetype'); }
+.nsb{font-family: 'NanumSquareB', serif;}
+@font-face { font-family: 'NanumSquareRoundB'; src: url(../ttf/NanumSquareRoundB.ttf) format('truetype'); }
+.nsrb{font-family: 'NanumSquareRoundB', serif;}
+
+.hide{display: none;}
+.article{padding-left: 20px; padding-right: 20px;}
+.left{float: left; margin-right: 5px; margin-bottom: 10px;}
+.right{float: right; margin-right: 5px; margin-bottom: 10px;}
+.width-half{width:49%;}
+.width-full{width:100%;}
+.height-half{height: 50%;}
+.height-full{height: 100%;}
+
+span, table{font-size: 11px;}    
+input[type=date], input[type=time],input[type=text] {font-size: 12px;}
+.slt-fs{font-size: 12px !important;}
+.span-fs{font-size: 16px !important;}
+.btn-fs{font-size: 16px !important;}
+.btn-sm-fs{font-size: 10px !important;}
+.chart-height{height: 500px;}
+.purChart{width: 24%; float: left; margin-right: 5px; margin-bottom: 10px;}
+
+
+
+
+td, th{height:38px; vertical-align: middle !important;}
+
+#navMenu ul {list-style:none; margin:0; padding:0;}
+#navMenu li {margin: 0 15 0 0; padding: 0 0 0 0; border : 0; float: left;}
+.article{padding-left: 20px; padding-right: 20px;}
+.width-vmin{width:90vmin;}
+.width-full{width:100%;}
+.div-head{font-size:16px; }
+.default-height{height: 300px;}
+.default-border{border: 1px solid #dee2e6;padding:10px;}
+.updown-spacing{margin-top: 10px; margin-bottom: 15px;}
+
+.delete{color : red !important;}
+.update{color : blue !important;}
+.insert{color : green !important;}
+
+.scroll{overflow-y: auto;}
+.space{width:100%;}
+.blind{position:absolute !important; background:black; background : rgba(0, 0, 0, 0.2);  left:0 !important; top:0 !important; width: 100% !important; height: 100% !important; z-index:9999;}
+.bg-white{background: white !important;}
+
+
+.sideView{
+	position: absolute;
+}
+.mainView{
+	margin-left: 165px;
+	
+}
+
+.redLine{
+	text-decoration-line: line-through;
+	color : red;
+}
+
+.add{
+	color : green;
+}
+
+.edit{
+	color : blue;
+}
+
+.header{	
+	font-size: 12px;	
+}
+.header a{
+	text-decoration: none;	
+}
+
+
+
+.font10{
+	font-size: 10px;
+}
+
+
+
+.paging > button{
+	border-color:#5CD1E5; border-width:1px; border-style:solid; border-radius:5px;
+    background-color:#FFFFFF; color:#24A6BD;
+    cursor:pointer; font-size:15px;
+    width: 30px;
+}
+
+.paging > button:hover{   
+	border-color:#5CD1E5; border-width:1px; border-style:solid; border-radius:5px;
+    background-color:#24A6BD; color:#FFFFFF;
+    cursor:pointer; font-size:15px;
+    width: 30px;
+}
+
+.divPop{
+	display: none;
+	position: absolute;
+	background: white;
+	width: 100%;
+	height: 100%;
+	z-index: 1;
+}
