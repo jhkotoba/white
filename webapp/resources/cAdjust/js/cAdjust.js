@@ -1,4 +1,5 @@
 /**
+ * @author JeHoon
  * 
  */
 
@@ -163,17 +164,73 @@ let cAdjust = {
 					str += "</span>";
 					state = "none";
 				}
+				break;
 			case "var":
 				if(ch.length-1 > i+1 && this._spCharCheck(ch[i]) && ch[i-1]=='r'){
 					str += "</span>";
 					state = "none";
 				}
+				break;
 			case "false":
 				if(ch.length-1 > i+1 && this._spCharCheck(ch[i]) && ch[i-1]=='e'){
 					str += "</span>";
 					state = "none";
 				}
-			
+				break;
+			case "throw":
+				if(ch.length-1 > i+1 && this._spCharCheck(ch[i]) && ch[i-1]=='w'){
+					str += "</span>";
+					state = "none";
+				}
+				break;
+			case "new":
+				if(ch.length-1 > i+1 && this._spCharCheck(ch[i]) && ch[i-1]=='w'){
+					str += "</span>";
+					state = "none";
+				}				
+				break;
+			case "continue":
+				if(ch.length-1 > i+1 && this._spCharCheck(ch[i]) && ch[i-1]=='e'){
+					str += "</span>";
+					state = "none";
+				}				
+				break;
+			case "finally":
+				if(ch.length-1 > i+1 && this._spCharCheck(ch[i]) && ch[i-1]=='y'){
+					str += "</span>";
+					state = "none";
+				}				
+				break;
+			case "delete":
+				if(ch.length-1 > i+1 && this._spCharCheck(ch[i]) && ch[i-1]=='e'){
+					str += "</span>";
+					state = "none";
+				}				
+				break;
+			case "while":
+				if(ch.length-1 > i+1 && this._spCharCheck(ch[i]) && ch[i-1]=='e'){
+					str += "</span>";
+					state = "none";
+				}				
+				break;
+			case "catch":
+				if(ch.length-1 > i+1 && this._spCharCheck(ch[i]) && ch[i-1]=='h'){
+					str += "</span>";
+					state = "none";
+				}
+				break;
+			case "try":
+				if(ch.length-1 > i+1 && this._spCharCheck(ch[i]) && ch[i-1]=='y'){
+					str += "</span>";
+					state = "none";
+				}
+				break;
+			case "for":
+				if(ch.length-1 > i+1 && this._spCharCheck(ch[i]) && ch[i-1]=='r'){
+					str += "</span>";
+					state = "none";
+				}
+				break;
 			}
 			
 			//시작처리
@@ -253,38 +310,91 @@ let cAdjust = {
 						state = "break";
 					}
 					break;
-				//case
-				case 'c':						
-					if(ch.length-1 < i+4) {
-						for(let j=i; j<ch.length; j++) {
-							temp += ch[j];
-						}
-						if("case" === temp) {								
+				//case, continue, catch
+				case 'c':	
+					if(ch.length-1 >= i+2 && ch[i+1]=='a' && ch[i+2]=='s'){
+						//case
+						if(ch.length-1 < i+4) {
+							for(let j=i; j<ch.length; j++) {
+								temp += ch[j];
+							}
+							if("case" === temp) {								
+								str += "<span class='js-directive'>";
+								state = "end";
+							}
+							temp === "";						
+						}else if(ch.length-1 >= i+4 && ch[i+1]=='a' && ch[i+2]=='s' && ch[i+3]=='e' && this._spCharCheck(ch[i+4])) {					
 							str += "<span class='js-directive'>";
-							state = "end";
+							state = "case";
 						}
-						temp === "";						
-					}else if(ch.length-1 >= i+4 && ch[i+1]=='a' && ch[i+2]=='s' && ch[i+3]=='e' && this._spCharCheck(ch[i+4])) {					
-						str += "<span class='js-directive'>";
-						state = "else";
+					}else if(ch.length-1 >= i+1 && ch[i+1]=='o'){
+						//continue
+						if(ch.length-1 < i+8) {
+							for(let j=i; j<ch.length; j++) {
+								temp += ch[j];
+							}
+							if("continue" === temp) {								
+								str += "<span class='js-directive'>";
+								state = "end";
+							}
+							temp === "";						
+						}else if(ch.length-1 >= i+8 && ch[i+1]=='o' && ch[i+2]=='n' && ch[i+3]=='t' && 
+								ch[i+4]=='i' && ch[i+5]=='n' && ch[i+6]=='u' && ch[i+7]=='e' && this._spCharCheck(ch[i+8])) {					
+							str += "<span class='js-directive'>";
+							state = "continue";
+						}
+					}else if(ch.length-1 >= i+2 && ch[i+1]=='a' && ch[i+2]=='t'){
+						
+						//catch
+						if(ch.length-1 < i+5) {
+							for(let j=i; j<ch.length; j++) {
+								temp += ch[j];
+							}
+							if("catch" === temp) {								
+								str += "<span class='js-directive'>";
+								state = "end";
+							}
+							temp === "";						
+						}else if(ch.length-1 >= i+5 && ch[i+1]=='a' && ch[i+2]=='t' && ch[i+3]=='c' && ch[i+4]=='h' && this._spCharCheck(ch[i+5])) {					
+							str += "<span class='js-directive'>";
+							state = "catch";
+						}
 					}
 					break;
-				//default
-				case 'd':						
-					if(ch.length-1 < i+7) {
-						for(let j=i; j<ch.length; j++) {
-							temp += ch[j];
-						}
-						if("default" === temp) {								
+				//default, delete
+				case 'd':
+					if(ch.length-1 >= i+2 && ch[i+1]=='e' && ch[i+2]=='f'){
+						if(ch.length-1 < i+7) {
+							for(let j=i; j<ch.length; j++) {
+								temp += ch[j];
+							}
+							if("default" === temp) {								
+								str += "<span class='js-directive'>";
+								state = "end";
+							}
+							temp === "";						
+						}else if(ch.length-1 >= i+7 && ch[i+1]=='e' && ch[i+2]=='f' && ch[i+3]=='a' && ch[i+4]=='u' && ch[i+5]=='l'
+								&& ch[i+6]=='t' && this._spCharCheck(ch[i+7])) {					
 							str += "<span class='js-directive'>";
-							state = "end";
+							state = "default";
 						}
-						temp === "";						
-					}else if(ch.length-1 >= i+7 && ch[i+1]=='e' && ch[i+2]=='f' && ch[i+3]=='a' && ch[i+4]=='u' && ch[i+5]=='l'
-							&& ch[i+6]=='t' && this._spCharCheck(ch[i+7])) {					
-						str += "<span class='js-directive'>";
-						state = "default";
+					}else if(ch.length-1 >= i+1 && ch[i+1]=='e' && ch[i+2]=='l'){
+						if(ch.length-1 < i+7) {
+							for(let j=i; j<ch.length; j++) {
+								temp += ch[j];
+							}
+							if("delete" === temp) {								
+								str += "<span class='js-directive'>";
+								state = "end";
+							}
+							temp === "";						
+						}else if(ch.length-1 >= i+6 && ch[i+1]=='e' && ch[i+2]=='l' && ch[i+3]=='e' && ch[i+4]=='t' && ch[i+5]=='e'
+								&& this._spCharCheck(ch[i+6])) {					
+							str += "<span class='js-directive'>";
+							state = "delete";
+						}
 					}
+					
 					break;
 				//else
 				case 'e':						
@@ -302,7 +412,7 @@ let cAdjust = {
 						state = "else";
 					}
 					break;
-				//function, false
+				//function, false, for, finally
 				case 'f':
 					//function
 					if(ch.length-1 >= i+1 && ch[i+1]=='u'){
@@ -321,6 +431,7 @@ let cAdjust = {
 							state = "function";
 						}
 					}else if(ch.length-1 >= i+1 && ch[i+1]=='a'){
+						//false
 						if(ch.length-1 < i+5) {
 							for(let j=i; j<ch.length; j++) {
 								temp += ch[j];
@@ -335,7 +446,40 @@ let cAdjust = {
 							str += "<span class='js-directive'>";
 							state = "false";
 						}
-					}						
+					}else if(ch.length-1 >= i+1 && ch[i+1]=='o'){
+						//for
+						if(ch.length-1 < i+3) {
+							for(let j=i; j<ch.length; j++) {
+								temp += ch[j];
+							}
+							if("for" === temp) {
+								str += "<span class='js-directive'>";
+								state = "end";
+							}
+							temp = "";
+						}else if(ch.length-1 >= i+3 && ch[i+1]=='o' && ch[i+2]=='r' && this._spCharCheck(ch[i+3])) {					
+							str += "<span class='js-directive'>";
+							state = "for";
+						}
+					}else if(ch.length-1 >= i+1 && ch[i+1]=='i'){
+						//finally
+						if(ch.length-1 < i+7) {
+							for(let j=i; j<ch.length; j++) {
+								temp += ch[j];
+							}
+							if("finally" === temp) {
+								str += "<span class='js-directive'>";
+								state = "end";
+							}
+							temp = "";
+						}else if(ch.length-1 >= i+7 && ch[i+1]=='i' && ch[i+2]=='n' && ch[i+3]=='a' && ch[i+4]=='l' 
+								&& ch[i+5]=='l' && ch[i+6]=='y' && this._spCharCheck(ch[i+7])) {					
+							str += "<span class='js-directive'>";
+							state = "finally";
+						}
+						
+					}
+					
 					break;
 				//if
 				case 'i':						
@@ -372,21 +516,39 @@ let cAdjust = {
 						state = "let";
 					}
 					break;
-				//null
-				case 'n':					
-					console.log(ch[i]);
-					if(ch.length-1 < i+4) {
-						for(let j=i; j<ch.length; j++) {
-							temp += ch[j];
-						}
-						if("null" === temp) {								
+				//null, new
+				case 'n':
+					if(ch.length-1 >= i+1 && ch[i+1] == 'u'){
+						//null
+						if(ch.length-1 < i+4) {
+							for(let j=i; j<ch.length; j++) {
+								temp += ch[j];
+							}
+							if("null" === temp) {								
+								str += "<span class='js-directive'>";
+								state = "end";
+							}
+							temp === "";						
+						}else if(ch.length-1 >= i+4 && ch[i+1]=='u' && ch[i+2]=='l' && ch[i+3]=='l' && this._spCharCheck(ch[i+4])) {					
 							str += "<span class='js-directive'>";
-							state = "end";
+							state = "null";
 						}
-						temp === "";						
-					}else if(ch.length-1 >= i+4 && ch[i+1]=='u' && ch[i+2]=='l' && ch[i+3]=='l' && this._spCharCheck(ch[i+4])) {					
-						str += "<span class='js-directive'>";
-						state = "null";
+					}else if(ch.length-1 >= i+1 && ch[i+1] == 'e'){
+						//new
+						if(ch.length-1 < i+3) {
+							for(let j=i; j<ch.length; j++) {
+								temp += ch[j];
+							}
+							if("new" === temp) {								
+								str += "<span class='js-directive'>";
+								state = "end";
+							}
+							temp === "";						
+						}else if(ch.length-1 >= i+3 && ch[i+1]=='e' && ch[i+2]=='w' && this._spCharCheck(ch[i+3])) {					
+							str += "<span class='js-directive'>";
+							state = "new";
+						}
+						
 					}
 					break;
 				//return
@@ -422,23 +584,41 @@ let cAdjust = {
 						state = "switch";
 					}
 					break;
-				//true, typeof
+				//true, typeof, throw, try
 				case 't':
-					//true
+					//true, try
 					if(ch.length-1 >= i+1 && ch[i+1] == 'r'){
-						if(ch.length-1 < i+4) {
-							for(let j=i; j<ch.length; j++) {
-								temp += ch[j];
-							}
-							if("true" === temp) {								
+						//true
+						if(ch.length-1 >= i+2 && ch[i+2] == 'u'){
+							if(ch.length-1 < i+4) {
+								for(let j=i; j<ch.length; j++) {
+									temp += ch[j];
+								}
+								if("true" === temp) {								
+									str += "<span class='js-directive'>";
+									state = "end";
+								}
+								temp = "";
+							}else if(ch.length-1 >= i+4 && ch[i+1]=='r' && ch[i+2]=='u' && ch[i+3]=='e' && this._spCharCheck(ch[i+4])) {					
 								str += "<span class='js-directive'>";
-								state = "end";
+								state = "true";
 							}
-							temp = "";
-						}else if(ch.length-1 >= i+4 && ch[i+1]=='r' && ch[i+2]=='u' && ch[i+3]=='e' && this._spCharCheck(ch[i+4])) {					
-							str += "<span class='js-directive'>";
-							state = "true";
-						}
+						//try
+						}else if(ch.length-1 >= i+2 && ch[i+2] == 'y'){
+							if(ch.length-1 < i+3) {
+								for(let j=i; j<ch.length; j++) {
+									temp += ch[j];
+								}
+								if("try" === temp) {								
+									str += "<span class='js-directive'>";
+									state = "end";
+								}
+								temp = "";
+							}else if(ch.length-1 >= i+3 && ch[i+1]=='r' && ch[i+2]=='y' && this._spCharCheck(ch[i+3])) {					
+								str += "<span class='js-directive'>";
+								state = "try";
+							}
+						}						
 					}else if(ch.length-1 >= i+1 && ch[i+1] === 'y'){
 						//typeof
 						if(ch.length-1 < i+6) {
@@ -454,7 +634,22 @@ let cAdjust = {
 							str += "<span class='js-directive'>";
 							state = "typeof";
 						}
-					}					
+					}else if(ch.length-1 >= i+1 && ch[i+1] === 'h'){
+						//throw
+						if(ch.length-1 < i+5) {
+							for(let j=i; j<ch.length; j++) {
+								temp += ch[j];
+							}
+							if("throw" === temp) {								
+								str += "<span class='js-directive'>";
+								state = "end";
+							}
+							temp = "";
+						}else if(ch.length-1 >= i+5 && ch[i+1]=='h' && ch[i+2]=='r' && ch[i+3]=='o' && ch[i+4]=='w' && this._spCharCheck(ch[i+5])) {					
+							str += "<span class='js-directive'>";
+							state = "throw";
+						}
+					}			
 					break;				
 				//undefined
 				case 'u':						
@@ -473,6 +668,22 @@ let cAdjust = {
 						state = "undefined";
 					}
 					break;
+				case 'w':
+					//while
+					if(ch.length-1 < i+5) {
+						for(let j=i; j<ch.length; j++) {
+							temp += ch[j];
+						}
+						if("while" === temp) {								
+							str += "<span class='js-directive'>";
+							state = "end";
+						}
+						temp === "";						
+					}else if(ch.length-1 >= i+5 && ch[i+1]=='h' && ch[i+2]=='i' && ch[i+3]=='l' && ch[i+4]=='e' && this._spCharCheck(ch[i+5])) {					
+						str += "<span class='js-directive'>";
+						state = "while";
+					}
+					break;
 				//var
 				case 'v':						
 					if(ch.length-1 < i+3) {
@@ -484,14 +695,11 @@ let cAdjust = {
 							state = "end";
 						}
 						temp === "";						
-					}else if(ch.length-1 >= i+9 && ch[i+1]=='a' && ch[i+2]=='r' && this._spCharCheck(ch[i+3])) {					
+					}else if(ch.length-1 >= i+3 && ch[i+1]=='a' && ch[i+2]=='r' && this._spCharCheck(ch[i+3])) {					
 						str += "<span class='js-directive'>";
 						state = "var";
 					}
-					break;
-					
-					//throw new for continue try catch finally while delete
-					
+					break;					
 				}			
 			}
 			str += ch[i];
