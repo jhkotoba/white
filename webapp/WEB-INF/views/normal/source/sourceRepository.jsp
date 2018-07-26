@@ -9,7 +9,7 @@ let codeList;
 $(document).ready(function(){
 
 	//코드 셀렉트박스 조회
-	code.select("sourceCode").done(function(data){			
+	code.select("SCODE").done(function(data){			
 		codeList = data;
     	let tag = "<option value=''>전체</option>";
     	for(let i=0; i<data.length; i++){

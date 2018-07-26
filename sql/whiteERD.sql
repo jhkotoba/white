@@ -42,7 +42,7 @@ CREATE TABLE auth_name
 CREATE TABLE code
 (
 	code_seq int NOT NULL,
-	code_type varchar(10) NOT NULL,
+	code_prt varchar(5) NOT NULL,
 	code_key varchar(5) NOT NULL,
 	code_nm varchar(20) NOT NULL,
 	PRIMARY KEY (code_seq)

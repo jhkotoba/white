@@ -27,6 +27,7 @@
 			code_key AS codeKey,
 			code_nm AS codeNm
 		FROM code
-		WHERE code_type = #{codeType}
+		WHERE code_prt = #{codePrt}
+		
 	</select>
 </mapper>

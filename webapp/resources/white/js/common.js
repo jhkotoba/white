@@ -330,13 +330,13 @@ let mf = {
 
 //공통코드 조회
 let code = {		
-	select : function(codeType){	
+	select : function(codePrt){	
 		let deferred = $.Deferred();		
 		$.ajax({		
 			type: 'POST',
 			url: common.path()+'/white/selectCodeList.ajax',
 			data : {
-				codeType : codeType.toUpperCase()
+				code_prt : codePrt.toUpperCase()
 			},
 			dataType: 'json',
 			async : true,

@@ -91,7 +91,7 @@ $(document).ready(function(){
 		type: 'POST',
 		url: common.path()+'/white/selectCodeList.ajax',
 		data : {
-			codeType : "SOURCECODE"
+			codePrt : "CD001"
 		},
 		dataType: 'json',
 		async : true,
