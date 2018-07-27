@@ -6,13 +6,13 @@
 	
 	<select id="selectSourceCount" resultType="int" parameterType="WhiteMap">
 		SELECT COUNT(1) FROM source_board sb
-		LEFT OUTER JOIN code c
-	    	ON sb.code_seq = c.code_seq
+		LEFT OUTER JOIN cmm_code cc
+	    	ON sb.lang_cd = cc.code
 	    LEFT OUTER JOIN white_user wu
   			ON wu.user_seq = sb.user_seq
 		<where>
-  			<if test="codeKey != '' and codeKey != null">
-		  	AND c.code_key = #{codeKey}
+  			<if test="code != '' and code != null">
+		  	AND sb.lang_cd = #{code}
 		  	</if>
 		  	
 		  	<if test="type == 'id'">
@@ -30,19 +30,19 @@
 	<select id="selectSourceList" resultType="WhiteMap" parameterType="WhiteMap">	
 		SELECT
 			sb.source_seq AS sourceSeq,
-			c.code_nm AS codeNm,
+			cc.code_nm AS codeNm,
 			sb.user_seq AS userSeq,
 			wu.user_id AS userId,
 			sb.title,
 			DATE_FORMAT(sb.reg_date,'%Y-%m-%d %H:%i:%s') AS regDate
 		FROM source_board sb
-	    LEFT OUTER JOIN code c
-	    	ON sb.code_seq = c.code_seq
+	    LEFT OUTER JOIN cmm_code cc
+	    	ON sb.lang_cd = cc.code
 	    LEFT OUTER JOIN white_user wu
   			ON wu.user_seq = sb.user_seq
   		<where>
-  			<if test="codeKey != '' and codeKey != null">
-		  	AND c.code_key = #{codeKey}
+  			<if test="code != '' and code != null">
+		  	AND sb.lang_cd = #{code}
 		  	</if>
 		  	
 		  	<if test="type == 'id'">
@@ -62,7 +62,7 @@
 	<select id="selectSourceDtlView" resultType="WhiteMap" parameterType="WhiteMap">	
 		SELECT 
 			sb.source_seq AS sourceSeq,
-			c.code_nm AS codeNm,
+			cc.code_nm AS codeNm,
 			sb.user_seq AS userSeq,
 			wu.user_id AS userId,
 			sb.title,
@@ -71,17 +71,17 @@
 		FROM source_board sb
    		LEFT OUTER JOIN white_user wu
   			ON wu.user_seq = sb.user_seq
-  		LEFT OUTER JOIN code c
-	    	ON sb.code_seq = c.code_seq   
+  		LEFT OUTER JOIN cmm_code cc
+	    	ON sb.lang_cd = cc.code   
 		WHERE sb.source_seq = #{sourceSeq}
 	</select>
 	
 	<insert id="insertSource" parameterType="WhiteMap">
 		INSERT
-		INTO source_board(user_seq, code_seq, title, content, reg_date)
+		INTO source_board(user_seq, lang_cd, title, content, reg_date)
 		VALUES(
 			#{userSeq},
-			(SELECT DISTINCT code_seq FROM code WHERE code_key = #{codeKey}),
+			#{code},
 			#{title},
 			#{content},
 			NOW()
@@ -91,7 +91,7 @@
 	<update id="updateSource" parameterType="WhiteMap">
 		UPDATE source_board
 		SET	title = #{title},
-			code_seq = (SELECT DISTINCT code_seq FROM code WHERE code_key = #{codeKey}),
+			lang_cd = #{code},
 			content = #{content}
 		WHERE user_seq = #{userSeq}
 		AND source_seq = #{sourceSeq}

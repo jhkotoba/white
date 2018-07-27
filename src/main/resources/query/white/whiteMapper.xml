@@ -24,10 +24,9 @@
 	
 	<select id="selectCodeList" resultType="WhiteMap" parameterType="WhiteMap">
 		SELECT 
-			code_key AS codeKey,
+			code,
 			code_nm AS codeNm
-		FROM code
-		WHERE code_prt = #{codePrt}
-		
+		FROM cmm_code 
+		WHERE code_prt = #{codePrt}		
 	</select>
 </mapper>

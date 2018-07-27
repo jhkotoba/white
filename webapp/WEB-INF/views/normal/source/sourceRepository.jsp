@@ -9,13 +9,13 @@ let codeList;
 $(document).ready(function(){
 
 	//코드 셀렉트박스 조회
-	code.select("SCODE").done(function(data){			
+	cmmCode.select("sc").done(function(data){			
 		codeList = data;
     	let tag = "<option value=''>전체</option>";
     	for(let i=0; i<data.length; i++){
-    		tag += "<option value="+data[i].codeKey+">"+data[i].codeNm+"</option>";	    		
+    		tag += "<option value="+data[i].code+">"+data[i].codeNm+"</option>";	    		
     	}
-    	$("#sourceSearch #codeKey").append(tag);	
+    	$("#sourceSearch #code").append(tag);	
 	});	
 	
 	//리스트 출력
@@ -23,7 +23,7 @@ $(document).ready(function(){
     
   	//조회 버튼
 	$("#sourceSearch #search").on("click", function(){		
-		$("#codeKey").val($("#sourceSearch #codeKey").val());
+		$("#code").val($("#sourceSearch #code").val());
 		$("#type").val($("#sourceSearch #type").val());
 		
 		$("#type").val() === "id"? 
@@ -46,10 +46,10 @@ $(document).ready(function(){
 	$("button[name=write]").on("click", function(){
 		let tag = "";
 		for(let i=0; i<codeList.length; i++){
-			tag += "<option value="+codeList[i].codeKey+">"+codeList[i].codeNm+"</option>";	    		
+			tag += "<option value="+codeList[i].code+">"+codeList[i].codeNm+"</option>";	    		
 		}
-		$("#sourceWrite #codeKey").append(tag);
-		$("#sourceWrite #codeKey").find('option:first').attr('selected', 'selected');
+		$("#sourceWrite #code").append(tag);
+		$("#sourceWrite #code").find('option:first').attr('selected', 'selected');
 		
 		$("#sourceWrite #title").val("");
 		$("#sourceWrite #content").val("");
@@ -63,7 +63,7 @@ $(document).ready(function(){
 	//글쓰기 - 저장 버튼
 	$("#sourceWrite #save").on("click", function(){
 		let param = {};
-		param.codeKey = $("#sourceWrite #codeKey").val();
+		param.code = $("#sourceWrite #code").val();
 		param.title = $("#sourceWrite #title").val();
 		param.content = $("#sourceWrite #content").val();
 		
@@ -122,7 +122,7 @@ $(document).ready(function(){
 	$("#sourceEdit #save").on("click", function(){
 		let param = {};
 		param.sourceSeq = $("#sourceEdit #sourceSeq").val();
-		param.codeKey = $("#sourceEdit #codeKey").val();
+		param.code = $("#sourceEdit #code").val();
 		param.title = $("#sourceEdit #title").val();
 		param.content = $("#sourceEdit #content").val();
 		
@@ -219,7 +219,7 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
             	let deferred = $.Deferred();
             	
             	let param = {};
-            	param.codeKey = $("#codeKey").val();
+            	param.code = $("#code").val();
             	param.type = $("#type").val();
             	param.text = $("#text").val();
             	
@@ -236,7 +236,7 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
                 	data : param,
                     url: common.path()+'/source/selectSourceList.ajax',
                     dataType: 'json',
-                    success: function(data){
+                    success: function(data){console.log(data);
                         deferred.resolve({
     						data: data.list,    						
     						itemsCount: data.itemsCount
@@ -286,7 +286,7 @@ function fnView(sourceSeq){
 
 //검색정보 삭제
 function fnSearchEmpty(){
-	$("#codeKey").val("");
+	$("#code").val("");
 	$("#type").val("");
 	$("#text").val("");
 }
@@ -331,12 +331,12 @@ function fnEditInit(data){
 	let tag = "";
 	for(let i=0; i<codeList.length; i++){
 		if(data.codeNm === codeList[i].codeNm){
-			tag += "<option value="+codeList[i].codeKey+" selected='selected'>"+codeList[i].codeNm+"</option>";
+			tag += "<option value="+codeList[i].code+" selected='selected'>"+codeList[i].codeNm+"</option>";
 		}else{
-			tag += "<option value="+codeList[i].codeKey+">"+codeList[i].codeNm+"</option>";
+			tag += "<option value="+codeList[i].code+">"+codeList[i].codeNm+"</option>";
 		}
 	}
-	$("#sourceEdit #codeKey").append(tag);
+	$("#sourceEdit #code").append(tag);
 }
 
 
@@ -355,7 +355,7 @@ function fnEditEmpty(){
 function fnWriteEmpty(){
 	$("#sourceWrite #no").val("");
 	$("#sourceWrite #title").val("");
-	$("#sourceWrite #codeKey").find('option:first').attr('selected', 'selected');
+	$("#sourceWrite #code").find('option:first').attr('selected', 'selected');
 	$("#sourceWrite #content").val("");
 	$("#sourceWrite").hide();
 }
@@ -368,7 +368,7 @@ function fnWriteEmpty(){
 	</div>	
 </div>
 
-<input id="codeKey" type="hidden" value="">
+<input id="code" type="hidden" value="">
 <input id="type" type="hidden" value="">
 <input id="text" type="hidden" value="">
 
@@ -376,7 +376,7 @@ function fnWriteEmpty(){
 <div id="sourceWrite" class="form-control updown-spacing hide">
 	<div>
 		<span>타입</span>
-		<select id="codeKey">	
+		<select id="code">	
 		</select>
 		<span>제목</span>
 		<input id="title" type="text" maxlength="50" style="width:70%;">		
@@ -396,7 +396,7 @@ function fnWriteEmpty(){
 	<input id="sourceSeq" type="hidden" value="">
 	<div>
 		<span>타입</span>
-		<select id="codeKey">	
+		<select id="code">	
 		</select>
 		<span>제목</span>
 		<input id="title" type="text" maxlength="50" style="width:70%;">
@@ -448,7 +448,7 @@ function fnWriteEmpty(){
 
 <!-- 검색 -->
 <div id="sourceSearch" class="left">
-	<select id="codeKey">				
+	<select id="code">				
 	</select>
 	<select id="type">
 		<option value="">선택</option>

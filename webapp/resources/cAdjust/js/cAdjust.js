@@ -10,7 +10,7 @@ let cAdjust = {
 		
 		type = type.replace(/^\s+|\s+$/g,"").toLowerCase();
 		switch(type){		
-		case "javascript":
+		case "javascript":	case "jquery":	case "jsgrid":
 			adjustData = this._javascript(data);
 			break;
 		default:
@@ -25,10 +25,8 @@ let cAdjust = {
 	},
 	_javascript : function(data){
 		
-		//조합 데이터
-		let str = "";
-		let temp = "";
-		
+		//라인 체크		
+		let lineCnt = 1;
 		//반복 상태값
 		let state = "none";		
 		//개행문자 오기 전까지 주석 개수

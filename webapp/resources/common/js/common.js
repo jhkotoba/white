@@ -328,27 +328,3 @@ let mf = {
 	}
 }
 
-//공통코드 조회
-let code = {		
-	select : function(codePrt){	
-		let deferred = $.Deferred();		
-		$.ajax({		
-			type: 'POST',
-			url: common.path()+'/white/selectCodeList.ajax',
-			data : {
-				code_prt : codePrt.toUpperCase()
-			},
-			dataType: 'json',
-			async : true,
-		    success : function(data) {
-		    	deferred.resolve(data);
-		    },
-		    error : function(request, status, error){
-		    	deferred.reject(error);		    			    	
-		    }
-		});		
-		return deferred.promise();
-	}	
-		
-		
-}
