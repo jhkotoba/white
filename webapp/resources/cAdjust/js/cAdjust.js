@@ -25,8 +25,7 @@ let cAdjust = {
 	},
 	_javascript : function(data){
 		
-		//라인 체크		
-		let lineCnt = 1;
+		
 		//반복 상태값
 		let state = "none";		
 		//개행문자 오기 전까지 주석 개수

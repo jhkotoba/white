@@ -11,8 +11,8 @@
 	    LEFT OUTER JOIN white_user wu
   			ON wu.user_seq = sb.user_seq
 		<where>
-  			<if test="code != '' and code != null">
-		  	AND sb.lang_cd = #{code}
+  			<if test="langCd != '' and langCd != null">
+		  	AND sb.lang_cd = #{langCd}
 		  	</if>
 		  	
 		  	<if test="type == 'id'">
@@ -41,8 +41,8 @@
 	    LEFT OUTER JOIN white_user wu
   			ON wu.user_seq = sb.user_seq
   		<where>
-  			<if test="code != '' and code != null">
-		  	AND sb.lang_cd = #{code}
+  			<if test="langCd != '' and langCd != null">
+		  	AND sb.lang_cd = #{langCd}
 		  	</if>
 		  	
 		  	<if test="type == 'id'">
@@ -81,7 +81,7 @@
 		INTO source_board(user_seq, lang_cd, title, content, reg_date)
 		VALUES(
 			#{userSeq},
-			#{code},
+			#{langCd},
 			#{title},
 			#{content},
 			NOW()
@@ -91,7 +91,7 @@
 	<update id="updateSource" parameterType="WhiteMap">
 		UPDATE source_board
 		SET	title = #{title},
-			lang_cd = #{code},
+			lang_cd = #{langCd},
 			content = #{content}
 		WHERE user_seq = #{userSeq}
 		AND source_seq = #{sourceSeq}

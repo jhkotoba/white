@@ -15,7 +15,7 @@ $(document).ready(function(){
     	for(let i=0; i<data.length; i++){
     		tag += "<option value="+data[i].code+">"+data[i].codeNm+"</option>";	    		
     	}
-    	$("#sourceSearch #code").append(tag);	
+    	$("#sourceSearch #langCd").append(tag);	
 	});	
 	
 	//리스트 출력
@@ -23,14 +23,14 @@ $(document).ready(function(){
     
   	//조회 버튼
 	$("#sourceSearch #search").on("click", function(){		
-		$("#code").val($("#sourceSearch #code").val());
+		$("#langCd").val($("#sourceSearch #langCd").val());
 		$("#type").val($("#sourceSearch #type").val());
 		
 		$("#type").val() === "id"? 
 		$("#text").val($("#sourceSearch #text").val()): 
 		$("#text").val("%"+$("#sourceSearch #text").val()+"%");
 		
-		jsGridCall(1);
+		fnJsGrid(1);
 	});
   	
 	//조회타입 전체시 텍스트 비움
@@ -48,8 +48,8 @@ $(document).ready(function(){
 		for(let i=0; i<codeList.length; i++){
 			tag += "<option value="+codeList[i].code+">"+codeList[i].codeNm+"</option>";	    		
 		}
-		$("#sourceWrite #code").append(tag);
-		$("#sourceWrite #code").find('option:first').attr('selected', 'selected');
+		$("#sourceWrite #langCd").append(tag);
+		$("#sourceWrite #langCd").find('option:first').attr('selected', 'selected');
 		
 		$("#sourceWrite #title").val("");
 		$("#sourceWrite #content").val("");
@@ -63,7 +63,7 @@ $(document).ready(function(){
 	//글쓰기 - 저장 버튼
 	$("#sourceWrite #save").on("click", function(){
 		let param = {};
-		param.code = $("#sourceWrite #code").val();
+		param.langCd = $("#sourceWrite #langCd").val();
 		param.title = $("#sourceWrite #title").val();
 		param.content = $("#sourceWrite #content").val();
 		
@@ -122,7 +122,7 @@ $(document).ready(function(){
 	$("#sourceEdit #save").on("click", function(){
 		let param = {};
 		param.sourceSeq = $("#sourceEdit #sourceSeq").val();
-		param.code = $("#sourceEdit #code").val();
+		param.langCd = $("#sourceEdit #langCd").val();
 		param.title = $("#sourceEdit #title").val();
 		param.content = $("#sourceEdit #content").val();
 		
@@ -219,7 +219,7 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
             	let deferred = $.Deferred();
             	
             	let param = {};
-            	param.code = $("#code").val();
+            	param.langCd = $("#langCd").val();
             	param.type = $("#type").val();
             	param.text = $("#text").val();
             	
@@ -236,7 +236,7 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
                 	data : param,
                     url: common.path()+'/source/selectSourceList.ajax',
                     dataType: 'json',
-                    success: function(data){console.log(data);
+                    success: function(data){
                         deferred.resolve({
     						data: data.list,    						
     						itemsCount: data.itemsCount
@@ -286,7 +286,7 @@ function fnView(sourceSeq){
 
 //검색정보 삭제
 function fnSearchEmpty(){
-	$("#code").val("");
+	$("#langCd").val("");
 	$("#type").val("");
 	$("#text").val("");
 }
@@ -336,7 +336,7 @@ function fnEditInit(data){
 			tag += "<option value="+codeList[i].code+">"+codeList[i].codeNm+"</option>";
 		}
 	}
-	$("#sourceEdit #code").append(tag);
+	$("#sourceEdit #langCd").append(tag);
 }
 
 
@@ -355,7 +355,7 @@ function fnEditEmpty(){
 function fnWriteEmpty(){
 	$("#sourceWrite #no").val("");
 	$("#sourceWrite #title").val("");
-	$("#sourceWrite #code").find('option:first').attr('selected', 'selected');
+	$("#sourceWrite #langCd").find('option:first').attr('selected', 'selected');
 	$("#sourceWrite #content").val("");
 	$("#sourceWrite").hide();
 }
@@ -368,7 +368,7 @@ function fnWriteEmpty(){
 	</div>	
 </div>
 
-<input id="code" type="hidden" value="">
+<input id="langCd" type="hidden" value="">
 <input id="type" type="hidden" value="">
 <input id="text" type="hidden" value="">
 
@@ -376,7 +376,7 @@ function fnWriteEmpty(){
 <div id="sourceWrite" class="form-control updown-spacing hide">
 	<div>
 		<span>타입</span>
-		<select id="code">	
+		<select id="langCd">	
 		</select>
 		<span>제목</span>
 		<input id="title" type="text" maxlength="50" style="width:70%;">		
@@ -396,7 +396,7 @@ function fnWriteEmpty(){
 	<input id="sourceSeq" type="hidden" value="">
 	<div>
 		<span>타입</span>
-		<select id="code">	
+		<select id="langCd">	
 		</select>
 		<span>제목</span>
 		<input id="title" type="text" maxlength="50" style="width:70%;">
@@ -448,7 +448,7 @@ function fnWriteEmpty(){
 
 <!-- 검색 -->
 <div id="sourceSearch" class="left">
-	<select id="code">				
+	<select id="langCd">				
 	</select>
 	<select id="type">
 		<option value="">선택</option>
