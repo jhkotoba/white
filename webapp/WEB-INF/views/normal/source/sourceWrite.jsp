@@ -251,8 +251,9 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
         }, 
         fields: [
 			{ title:"번호",	name:"sourceSeq",	type:"text", width:"4%"},
-			{ title:"종류",	name:"codeNm",		type:"text", width:"8%"},
-			{ title:"글제목",	name:"title",		type:"text", width:"70%"},
+			{ title:"분류",	name:"",			type:"text", width:"8%"},
+			{ title:"언어",	name:"codeNm",		type:"text", width:"8%"},
+			{ title:"글제목",	name:"title",		type:"text", width:"62%"},
 			{ title:"작성자",	name:"userId",		type:"text", width:"8%"},
 			{ title:"날짜",	name:"regDate",		type:"text", width:"10%"}
         ]
