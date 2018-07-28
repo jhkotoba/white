@@ -2,17 +2,17 @@
 /*jsGrid ¼³Á¤ */
 .jsgrid-grid-header, .jsgrid-grid-body{overflow: auto;}
 
-/* textarea code */
-.ta-code{
-	background: #363636;
-	color: #FFFFFF;	
-}
-
 /* font */
 @font-face { font-family: 'NanumSquareB'; src: url(../ttf/NanumSquareB.ttf) format('truetype'); }
 .nsb{font-family: 'NanumSquareB', serif;}
 @font-face { font-family: 'NanumSquareRoundB'; src: url(../ttf/NanumSquareRoundB.ttf) format('truetype'); }
 .nsrb{font-family: 'NanumSquareRoundB', serif;}
+
+
+
+
+
+
 
 .hide{display: none;}
 .article{padding-left: 20px; padding-right: 20px;}

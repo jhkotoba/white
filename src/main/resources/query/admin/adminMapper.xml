@@ -38,6 +38,7 @@
 			</if>
 			auth_nm_seq AS authNmSeq,
 			auth_nm AS authNm,
+			auth_cmt AS authCmt,
 			auth_order AS authOrder
  		FROM auth_name
  		WHERE auth_nm <![CDATA[ <> ]]> 'dev'
@@ -267,11 +268,13 @@
 	<!-- 권한 insert -->
 	<insert id="insertAuthNmList" parameterType="java.util.List">
 		INSERT INTO auth_name(		
-			auth_nm,	
+			auth_nm,
+			auth_cmt,
 			auth_order
 		)VALUES
 		<foreach collection="list" item="item" separator="),(" open="(" close=")">
 			#{item.authNm}, 
+			#{item.authCmt}, 
 			#{item.authOrder}		
 		</foreach>	
 	</insert>
@@ -285,7 +288,13 @@
 		<foreach collection="list" item="item">
 			WHEN auth_nm_seq = #{item.authNmSeq} THEN #{item.authNm}
 		</foreach>		
-		END,	
+		END,
+		auth_cmt = 
+		CASE		
+		<foreach collection="list" item="item">
+			WHEN auth_nm_seq = #{item.authNmSeq} THEN #{item.authCmt}
+		</foreach>
+		END,
 		auth_order = 
 		CASE		
 		<foreach collection="list" item="item">

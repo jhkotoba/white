@@ -66,18 +66,18 @@ public class AdminController {
 	public WhiteMap inUpDelNavMenuList(HttpServletRequest request){		
 		
 		WhiteMap param = new WhiteMap(request);	
-		
+		WhiteMap result = adminService.inUpDelNavMenuList(param);
 		whiteService.setNavAuth();
-		return adminService.inUpDelNavMenuList(param);
+		return result;
 	}
 	
 	@RequestMapping(value="/admin/inUpDelSideMenuList.ajax" )
 	public WhiteMap inUpDelSideMenuList(HttpServletRequest request){
 			
 		WhiteMap param = new WhiteMap(request);	
-		
+		WhiteMap result = adminService.inUpDelSideMenuList(param);
 		whiteService.setSideAuth();
-		return adminService.inUpDelSideMenuList(param);
+		return result;
 	}
 	
 	@RequestMapping(value="/admin/selectAuthList.ajax" )

@@ -1,6 +1,6 @@
 /**
  * @author JeHoon
- * 
+ * @version 1.0
  */
 
 let cAdjust = {
@@ -9,9 +9,12 @@ let cAdjust = {
 		let adjustData;
 		
 		type = type.replace(/^\s+|\s+$/g,"").toLowerCase();
+		
 		switch(type){		
-		case "javascript":	case "jquery":	case "jsgrid":
-			adjustData = this._javascript(data);
+		case "javascript":	
+		case "jquery":	
+		case "jsgrid":
+			adjustData = this._javascript(data, false);
 			break;
 		default:
 			adjustData = data;
@@ -23,9 +26,13 @@ let cAdjust = {
 	_jsp : function(){
 		
 	},
-	_javascript : function(data){
+	_javascript : function(data, part){
 		
-		
+		//조합 데이터
+		let str = "";
+		let temp = "";
+		let line = 1;
+				
 		//반복 상태값
 		let state = "none";		
 		//개행문자 오기 전까지 주석 개수
@@ -44,6 +51,11 @@ let cAdjust = {
 			//태그문자 변환
 			if(ch[i] === "<"){
 				ch[i] = "&lt;";
+			}
+			
+			//라인 수
+			if(ch[i] === '\n'){
+				line++;
 			}
 			
 			//종료처리
@@ -224,6 +236,12 @@ let cAdjust = {
 				break;
 			case "for":
 				if(ch.length-1 > i+1 && this._spCharCheck(ch[i]) && ch[i-1]=='r'){
+					str += "</span>";
+					state = "none";
+				}
+				break;
+			case "this":
+				if(ch.length-1 > i+1 && this._spCharCheck(ch[i]) && ch[i-1]=='s'){
 					str += "</span>";
 					state = "none";
 				}
@@ -581,7 +599,7 @@ let cAdjust = {
 						state = "switch";
 					}
 					break;
-				//true, typeof, throw, try
+				//true, typeof, throw, try, this
 				case 't':
 					//true, try
 					if(ch.length-1 >= i+1 && ch[i+1] == 'r'){
@@ -632,19 +650,38 @@ let cAdjust = {
 							state = "typeof";
 						}
 					}else if(ch.length-1 >= i+1 && ch[i+1] === 'h'){
+						
 						//throw
-						if(ch.length-1 < i+5) {
-							for(let j=i; j<ch.length; j++) {
-								temp += ch[j];
-							}
-							if("throw" === temp) {								
+						if(ch.length-1 >= i+2 && ch[i+2] === 'r'){
+							if(ch.length-1 < i+5) {
+								for(let j=i; j<ch.length; j++) {
+									temp += ch[j];
+								}
+								if("throw" === temp) {								
+									str += "<span class='js-directive'>";
+									state = "end";
+								}
+								temp = "";
+							}else if(ch.length-1 >= i+5 && ch[i+1]=='h' && ch[i+2]=='r' && ch[i+3]=='o' && ch[i+4]=='w' && this._spCharCheck(ch[i+5])) {					
 								str += "<span class='js-directive'>";
-								state = "end";
+								state = "throw";
 							}
-							temp = "";
-						}else if(ch.length-1 >= i+5 && ch[i+1]=='h' && ch[i+2]=='r' && ch[i+3]=='o' && ch[i+4]=='w' && this._spCharCheck(ch[i+5])) {					
-							str += "<span class='js-directive'>";
-							state = "throw";
+							
+						//this
+						}else if(ch.length-1 >= i+2 && ch[i+2] === 'i'){
+							if(ch.length-1 < i+4) {
+								for(let j=i; j<ch.length; j++) {
+									temp += ch[j];
+								}
+								if("this" === temp) {								
+									str += "<span class='js-directive'>";
+									state = "end";
+								}
+								temp = "";
+							}else if(ch.length-1 >= i+4 && ch[i+1]=='h' && ch[i+2]=='i' && ch[i+3]=='s' && this._spCharCheck(ch[i+4])) {					
+								str += "<span class='js-directive'>";
+								state = "this";
+							}
 						}
 					}			
 					break;				
@@ -705,8 +742,21 @@ let cAdjust = {
 		if("end" === state) {				
 			str += "</span>";
 			state = "none";
-		}
-		return str;
+		}		
+		
+		if(part === false){
+			let result = "<div>";		
+			result += "<div class='cAdjust-line'>";
+			
+			for(let i=0; i<line; i++){
+				result += "<div>"+(i+1)+"</div>";
+			}	
+			result +="</div><pre class='cAdjust-textarea'>"+str+"</pre></div>";		
+			return result;
+			
+		}else{
+			return {cotent : str, line : line};
+		}	
 	},
 	_html : function(){
 		

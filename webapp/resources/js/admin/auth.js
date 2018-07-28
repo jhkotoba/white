@@ -34,9 +34,9 @@ let auth = {
 	
 	add : function(){
 		if(authList.length === 0){
-			this.authList.push({authNmSeq: '', authNm: '', authOrder : 1, state: 'insert'});
+			this.authList.push({authNmSeq: '', authNm: '', authCmt:'', authOrder : 1, state: 'insert'});
 		}else{
-			this.authList.push({authNmSeq: '', authNm: '', authOrder : (this.authList[this.authList.length-1].authOrder+1), state: 'insert'});
+			this.authList.push({authNmSeq: '', authNm: '', authCmt:'', authOrder : (this.authList[this.authList.length-1].authOrder+1), state: 'insert'});
 		}
 			
 		return this;
@@ -60,6 +60,7 @@ let auth = {
 			tag	+= "<tr>";			
 			tag += "<th colspan='2'>순서</th>";
 			tag	+= "<th>권한이름</th>";
+			tag	+= "<th>권한설명</th>";
 			tag	+= "<th>순서설정</th>";
 			tag += "</tr>";
 		
@@ -87,6 +88,7 @@ let auth = {
 				tag += "<td><input id='authDel_"+i+"' type='checkbox' "+addAttr.chked+" title='삭제 체크박스'></td>";
 				tag += "<td>"+(i+1)+"</td>";
 				tag += "<td><input id='authNm_"+i+"' type='text' class='form-control "+addAttr.cls+"' "+addAttr.read+" value='"+this.authList[i].authNm+"' ></td>";
+				tag += "<td><input id='authCmt_"+i+"' type='text' class='form-control "+addAttr.cls+"' "+addAttr.read+" value='"+this.authList[i].authCmt+"' ></td>";
 				if(this.authList[i].state !== "insert"){
 					tag += "<td><button id='authUp_"+i+"' class='btn btn-secondary btn-sm btn-sm-fs'>위로</button><button id='authDown_"+i+"' class='btn btn-secondary btn-sm btn-sm-fs'>아래</button></td>";
 					this.lastIdx++;
@@ -158,10 +160,12 @@ let auth = {
 			}			
 			
 			if( $(target).is(":checked") === true ){							
-				$("#authNm_"+idx).removeClass("update").addClass("delete").prop("readOnly", true);				
+				$("#authNm_"+idx).removeClass("update").addClass("delete").prop("readOnly", true);			
+				$("#authCmt_"+idx).removeClass("update").addClass("delete").prop("readOnly", true);			
 				this.authList[idx].state = "delete";
 			}else{				
 				$("#authNm_"+idx).removeClass("delete").prop("readOnly", false);				
+				$("#authCmt_"+idx).removeClass("delete").prop("readOnly", false);				
 				if(idx !== 0) $("#authUp_"+idx).prop("disabled", false);			
 				if(idx !== this.lastIdx-1) $("#authDown_"+idx).prop("disabled", false);
 				this.authList[idx].state = "select";
@@ -187,9 +191,11 @@ let auth = {
 				if($(target).is(":checked") === false && obj.equals(idx) === false){
 					obj.authList[idx].state = "update";			
 					$("#authNm_"+idx).addClass("update").prop("readOnly", false);					
+					$("#authCmt_"+idx).addClass("update").prop("readOnly", false);					
 				}else{
 					$(target).is(":checked") === true ? obj.authList[idx].state = "delete" : obj.authList[idx].state = "select";					
-					$("#authNm_"+idx).removeClass("update");			
+					$("#authNm_"+idx).removeClass("update");		
+					$("#authCmt_"+idx).removeClass("update");		
 				}
 				break;
 			}
@@ -261,7 +267,9 @@ let auth = {
 	equals : function(idx){
 		
 		if(this.authList[idx].authNm !== this.authClone[idx].authNm){
-			return false;		
+			return false;
+		}else if(this.authList[idx].authCmt !== this.authClone[idx].authCmt){
+			return false;
 		}else{
 			return true;	
 		}
