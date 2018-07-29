@@ -128,7 +128,6 @@ CREATE TABLE source_board
 (
 	source_seq int NOT NULL AUTO_INCREMENT,
 	user_seq int NOT NULL,
-	lang_cd varchar(5) NOT NULL,
 	title varchar(50) NOT NULL,
 	content varchar(4000) NOT NULL,
 	reg_date datetime NOT NULL,

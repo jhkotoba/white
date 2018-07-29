@@ -14,6 +14,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.mobile.device.Device;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ljh.white.common.White;
 import com.ljh.white.common.collection.WhiteMap;
@@ -111,11 +112,9 @@ public class LoginController {
 	}
 	
 	//유저 중복 id체크
+	@ResponseBody
 	@RequestMapping(value="/login/userIdCheck.ajax")
-	public String userIdCheck(HttpServletRequest request){		
-		int isCnt = loginService.userIdCheck(request.getParameter("userId"));
-		
-		request.setAttribute("result", isCnt);
-		return "result.jsp";		
+	public int userIdCheck(HttpServletRequest request){		
+		return loginService.userIdCheck(request.getParameter("userId"));			
 	}
 }
