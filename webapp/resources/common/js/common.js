@@ -264,6 +264,7 @@ let common = {
 function isEmpty(_str){
 	return !isNotEmpty(_str);
 }
+//비어있지 않는지 체크
 function isNotEmpty(_str){
 	let obj = String(_str);
 	if(obj == null || obj == undefined || obj == 'null' || obj == 'undefined' || obj == '' ) return false;
@@ -327,4 +328,3 @@ let mf = {
 		$("#moveForm").attr("action", common.path()+navUrl).submit();
 	}
 }
-

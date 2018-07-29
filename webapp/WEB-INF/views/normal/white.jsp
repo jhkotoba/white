@@ -36,6 +36,8 @@
 		</c:if>				
 	</header>
 	
+	
+	
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark nsrb" style='font-size: 20px;'>
 		<a class="navbar-brand col-sm-3 col-md-2 mr-0" href="${contextPath}/main">white</a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -93,8 +95,84 @@
 		</div>
 	</section>
 	
-	<footer>
+	<footer>		
 	</footer>
+	
+	<c:if test="${sessionScope.userId eq 'leedev' }">
+	<!-- new nav test -->	
+	<style>
+	.ul-test {
+	    list-style-type: none;
+	    margin: 0;
+	    padding: 0;
+	    overflow: hidden;
+	    background-color: #333;
+	}
+	
+	.li-test {
+	    float: left;
+	}
+	
+	.li-test a, .dropbtn {
+	    display: inline-block;
+	    color: white;
+	    text-align: center;
+	    padding: 14px 16px;
+	    text-decoration: none;
+	}
+	
+	.li-test a:hover, .dropdown:hover .dropbtn {
+	    background-color: red;
+	}
+	
+	.li-test.dropdown {
+	    display: inline-block;
+	}
+	
+	.dropdown-content {
+	    display: none;
+	    position: absolute;
+	    background-color: #f9f9f9;
+	    min-width: 160px;
+	    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+	    z-index: 1;
+	}
+	
+	.dropdown-content a {
+	    color: black;
+	    padding: 12px 16px;
+	    text-decoration: none;
+	    display: block;
+	    text-align: left;
+	}
+	
+	.dropdown-content a:hover {background-color: #f1f1f1}
+	
+	.dropdown:hover .dropdown-content {
+	    display: block;
+	}
+	</style>
+	<nav>
+		<ul class="ul-test">
+			<c:forEach items="${sessionScope.navList}" var="nav">
+				<c:if test="${nav.auth eq 1 }">
+					<li id="${nav.navUrl}" class="li-test dropdown">
+						<a class="dropbtn">${nav.navNm}</a>
+						<div class="dropdown-content">									
+							<c:forEach items="${sessionScope.sideList}" var="side">									
+								<c:if test="${nav.navSeq eq side.navSeq }">
+									<c:if test="${side.auth eq 1 }">
+										<a class="nsrb" href="javascript:mf.submit('${nav.navUrl}', '${side.sideUrl}')">${side.sideNm}</a>
+									</c:if>
+								</c:if>
+							</c:forEach>
+						</div>					
+					</li>
+				</c:if>
+			</c:forEach>
+		</ul>	
+	</nav>
+	</c:if>
 	
 	<form id="moveForm" action="">
 		<input id="navUrl" name="navUrl" type="hidden" value="${navUrl}"></input>

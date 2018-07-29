@@ -45,6 +45,7 @@ $(document).ready(function(){
 	//글쓰기 버튼	
 	$("button[name=write]").on("click", function(){
 		let tag = "";
+		$("#sourceWrite #langCd").empty();
 		for(let i=0; i<codeList.length; i++){
 			tag += "<option value="+codeList[i].code+">"+codeList[i].codeNm+"</option>";	    		
 		}
@@ -336,6 +337,7 @@ function fnEditInit(data){
 			tag += "<option value="+codeList[i].code+">"+codeList[i].codeNm+"</option>";
 		}
 	}
+	$("#sourceEdit #langCd").empty();
 	$("#sourceEdit #langCd").append(tag);
 }
 
@@ -364,7 +366,7 @@ function fnWriteEmpty(){
 
 <div class="article">
 	<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-		<h1 class="h2 nsrb">소스코드 작성</h1>
+		<h1 class="h2 nsrb">소스코드</h1>
 	</div>	
 </div>
 
