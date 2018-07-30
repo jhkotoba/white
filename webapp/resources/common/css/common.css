@@ -8,9 +8,39 @@
 @font-face { font-family: 'NanumSquareRoundB'; src: url(../ttf/NanumSquareRoundB.ttf) format('truetype'); }
 .nsrb{font-family: 'NanumSquareRoundB', serif;}
 
+/* navbar */
+.nav{margin: 0 auto; max-width: 800px; background: #4C4C4C; box-shadow:0 3px 15px rgba(0,0,0,.15);}
+.nav::after {display: block; clear: both;}
+.nav ul {padding: 0; margin: 0; list-style: none;}
+.nav ul li {float: left; position: relative;}
+.nav ul li a {display: block; color: rgba(189, 189, 189, .9); text-decoration: none; padding: 1rem 2rem; border-top: 2px solid transparent; border-bottom: 2px solid transparent; transition: all .3s ease-in-out;}
+.nav ul li a:hover, nav ul li a:focus { color: white;}
+.nav ul li a:focus {color: white;}
+.nav ul li a:not(:only-child)::after {padding-left: 4px;}
+.nav ul li ul li {min-width: 190px;}
+.nav ul li ul li a {background: transparent; color: #555; border-bottom: 1px solid #DDE0E7;}
+.nav ul li ul li a:hover, nav ul li ul li a:focus {background: #eee; color: #111;}
+.nav-dropdown {display: none; position: absolute; background: #fff;	box-shadow: 0 4px 10px rgba(10, 20, 30, .2);}
 
-
-
+/* body */
+body {
+-moz-osx-font-smoothing:grayscale;
+-ms-flex-direction:column;
+-webkit-box-direction:normal;
+-webkit-box-orient:vertical;
+-webkit-font-smoothing:antialiased;
+background:#f5f5f5;
+color:#777;
+display:flex;
+flex-direction:column;
+font-family:Montserrat, sans-serif;
+font-size: 1em;
+/* font-weight:300; */
+font-weight:400;
+margin:0;
+min-height:100vh;
+/* padding:5%; */
+}
 
 
 

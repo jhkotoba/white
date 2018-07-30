@@ -28,6 +28,12 @@ public class WhiteController {
 	public String white(HttpServletRequest request){			
 		return "redirect:main";
 	}
+	
+	//테스트 페이지
+	@RequestMapping(value="/test")
+	public String test(HttpServletRequest request, Device device){
+		return White.device(device)+"/test.jsp";
+	}
 
 	//메인페이지
 	@RequestMapping(value="/main")
