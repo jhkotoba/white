@@ -38,7 +38,7 @@ public class White {
 	 * @return
 	 */
 	static public String htmlReplace(String str) {
-		return str.replaceAll("<(/)?([a-zA-Z]*)(\\s[a-zA-Z]*=[^>]*)?(\\s)*(/)?>", "");
+		return str.replaceAll("<(/)?([a-zA-Z0-6]*)(\\s[a-zA-Z]*=[^>]*)?(\\s)*(/)?>", "");
 	}
 	
 	/**

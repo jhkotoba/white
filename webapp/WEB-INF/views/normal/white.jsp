@@ -26,7 +26,9 @@
 
 <script type="text/javascript">
 $(document).ready(function(){
-	$(".nav-drop").mouseover(function() {
+	$(".nav-drop").mouseover(function(e) {
+		console.log(e);
+		e.target.outerText
 		$(".nav-dropdown").show(300);
 	});
 	$(".nav-drop").mouseleave(function() {
@@ -48,20 +50,21 @@ $(document).ready(function(){
 	</header>
 	
 	<c:if test="${sessionScope.userId == 'leedev' }">
-		<nav class="nav">
+		<nav class="nav nsrb">
 			<ul>
-				<li><a href="#">Start</a></li>
-				<li><a href="#">한글</a></li>
-			    <li><a href="#">O nas</a></li>
-				<li class="nav-drop"><a href="#">Oferta</a>
-					<ul class="nav-dropdown">
-						<li><a href="#">Oferta 01</a></li>
-						<li><a href="#">Oferta 02</a></li>
-						<li><a href="#">Oferta 03</a></li>
-					</ul>
-				</li>
-				<li><a href="#">Aktualności</a></li>
-				<li><a href="#">Kontakt</a></li>
+				<c:forEach items="${sessionScope.navList}" var="nav">
+					<li class="nav-drop"><a href="javascript:void(0);">${nav.navNm}</a>
+						<ul class="nav-dropdown">								
+							<c:forEach items="${sessionScope.sideList}" var="side">									
+								<c:if test="${nav.navSeq eq side.navSeq }">
+									<c:if test="${side.auth eq 1 }">
+										<a href="javascript:mf.submit('${nav.navUrl}', '${side.sideUrl}')">${side.sideNm}</a>
+									</c:if>
+								</c:if>
+							</c:forEach>
+						</ul>
+					</li>
+				</c:forEach>		
 			</ul>
 		</nav>
 	

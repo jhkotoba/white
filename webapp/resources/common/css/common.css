@@ -9,11 +9,11 @@
 .nsrb{font-family: 'NanumSquareRoundB', serif;}
 
 /* navbar */
-.nav{margin: 0 auto; max-width: 800px; background: #4C4C4C; box-shadow:0 3px 15px rgba(0,0,0,.15);}
+.nav{margin: 0 auto; max-width: 100%; background: #4C4C4C; box-shadow:0 3px 15px rgba(0,0,0,.15);}
 .nav::after {display: block; clear: both;}
 .nav ul {padding: 0; margin: 0; list-style: none;}
 .nav ul li {float: left; position: relative;}
-.nav ul li a {display: block; color: rgba(189, 189, 189, .9); text-decoration: none; padding: 1rem 2rem; border-top: 2px solid transparent; border-bottom: 2px solid transparent; transition: all .3s ease-in-out;}
+.nav ul li a {display: block; color: rgba(189, 189, 189, .9); text-decoration: none; padding: 1rem 1rem; border-top: 2px solid transparent; border-bottom: 2px solid transparent; transition: all .3s ease-in-out;}
 .nav ul li a:hover, nav ul li a:focus { color: white;}
 .nav ul li a:focus {color: white;}
 .nav ul li a:not(:only-child)::after {padding-left: 4px;}
