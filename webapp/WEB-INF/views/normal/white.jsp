@@ -25,7 +25,7 @@
 <script type="text/javascript" src="${contextPath}/resources/common/js/common.js"></script>
 
 <script type="text/javascript">
-$(document).ready(function(){
+/* $(document).ready(function(){
 	$(".nav-drop").mouseover(function(e) {
 		console.log(e);
 		e.target.outerText
@@ -34,11 +34,12 @@ $(document).ready(function(){
 	$(".nav-drop").mouseleave(function() {
 		$(".nav-dropdown").hide(300);     
 	});
-});
+}); */
 </script>
 
 </head>
 <body>
+<div class="wallpaper">
 	<header class='header'>	
 		<c:if test="${sessionScope.userId eq null}">
 			<a href="${contextPath}/login/login.do" class="badge badge-light">login</a>	
@@ -53,8 +54,9 @@ $(document).ready(function(){
 		<nav class="nav nsrb">
 			<ul>
 				<c:forEach items="${sessionScope.navList}" var="nav">
-					<li class="nav-drop"><a href="javascript:void(0);">${nav.navNm}</a>
-						<ul class="nav-dropdown">								
+					<li class="nav-dropdown">
+						<a href="javascript:void(0);" class="dropbtn">${nav.navNm}</a>
+						<div class="nav-content">								
 							<c:forEach items="${sessionScope.sideList}" var="side">									
 								<c:if test="${nav.navSeq eq side.navSeq }">
 									<c:if test="${side.auth eq 1 }">
@@ -62,33 +64,13 @@ $(document).ready(function(){
 									</c:if>
 								</c:if>
 							</c:forEach>
-						</ul>
+						</div>
 					</li>
 				</c:forEach>		
 			</ul>
 		</nav>
-	
-		<%-- <nav class="nav">			
-			<ul>
-				<c:forEach items="${sessionScope.navList}" var="nav">
-					<c:if test="${nav.auth eq 1 }">
-						<li id="${nav.navUrl}" class="nav-drop">
-							<a>${nav.navNm}</a>
-							<ul class="nav-dropdown">								
-								<c:forEach items="${sessionScope.sideList}" var="side">									
-									<c:if test="${nav.navSeq eq side.navSeq }">
-										<c:if test="${side.auth eq 1 }">
-											<a href="javascript:mf.submit('${nav.navUrl}', '${side.sideUrl}')">${side.sideNm}</a>
-										</c:if>
-									</c:if>
-								</c:forEach>
-							</ul>
-						</li>
-					</c:if>
-				</c:forEach>
-			</ul>
-		</nav> --%>	
 	</c:if>
+	
 		
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark nsrb" style='font-size: 20px;'>
 		<a class="navbar-brand col-sm-3 col-md-2 mr-0" href="${contextPath}/main">white</a>
@@ -157,5 +139,6 @@ $(document).ready(function(){
 	
 	<div class="blind" style="display: none;">
 	</div>
+</div>
 </body>
 </html>

@@ -8,8 +8,70 @@
 @font-face { font-family: 'NanumSquareRoundB'; src: url(../ttf/NanumSquareRoundB.ttf) format('truetype'); }
 .nsrb{font-family: 'NanumSquareRoundB', serif;}
 
+
+
+body{background: #363636;}
+.wallpaper{
+	background: #FFF;
+	position: relative;
+	width: 1280px;
+    height: 720px;
+    margin: 20px auto 20px;
+}
+.nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+}
+
+.nav li {
+    float: left;
+}
+
+.nav li a, .dropbtn {
+    display: inline-block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+.nav li a:hover, .nav-dropdown:hover .dropbtn {
+    background-color: red;
+}
+
+.nav li .nav-dropdown {
+    display: inline-block;
+}
+
+.nav-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.nav-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+}
+
+.nav-content a:hover {background-color: #f1f1f1}
+
+.nav-dropdown:hover .nav-content {
+    display: block;
+}
+
+
 /* navbar */
-.nav{margin: 0 auto; max-width: 100%; background: #4C4C4C; box-shadow:0 3px 15px rgba(0,0,0,.15);}
+/* .nav{margin: 0 auto; max-width: 100%; background: #4C4C4C; box-shadow:0 3px 15px rgba(0,0,0,.15);}
 .nav::after {display: block; clear: both;}
 .nav ul {padding: 0; margin: 0; list-style: none;}
 .nav ul li {float: left; position: relative;}
@@ -20,10 +82,10 @@
 .nav ul li ul li {min-width: 190px;}
 .nav ul li ul li a {background: transparent; color: #555; border-bottom: 1px solid #DDE0E7;}
 .nav ul li ul li a:hover, nav ul li ul li a:focus {background: #eee; color: #111;}
-.nav-dropdown {display: none; position: absolute; background: #fff;	box-shadow: 0 4px 10px rgba(10, 20, 30, .2);}
+.nav-dropdown {display: none; position: absolute; background: #fff;	box-shadow: 0 4px 10px rgba(10, 20, 30, .2);} */
 
 /* body */
-body {
+/* body {
 -moz-osx-font-smoothing:grayscale;
 -ms-flex-direction:column;
 -webkit-box-direction:normal;
@@ -35,12 +97,13 @@ display:flex;
 flex-direction:column;
 font-family:Montserrat, sans-serif;
 font-size: 1em;
-/* font-weight:300; */
+font-weight:300;
 font-weight:400;
 margin:0;
 min-height:100vh;
-/* padding:5%; */
-}
+padding:5%;
+} */
+
 
 
 
