@@ -8,67 +8,23 @@
 @font-face { font-family: 'NanumSquareRoundB'; src: url(../ttf/NanumSquareRoundB.ttf) format('truetype'); }
 .nsrb{font-family: 'NanumSquareRoundB', serif;}
 
-
-
+/* defalut */
 body{background: #363636;}
-.wallpaper{
-	background: #FFF;
-	position: relative;
-	width: 1280px;
-    height: 720px;
-    margin: 20px auto 20px;
-}
-.nav ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    background-color: #333;
-}
+.wallpaper{background: #FFF; position: relative; width: 1280px; min-height: 720px; height: auto; margin: 20px auto 20px; font-size: 12px;}
 
-.nav li {
-    float: left;
+/* nav */
+.nav{margin: 0 auto; max-width: 100%; background: #4C4C4C; box-shadow:0 3px 15px rgba(0,0,0,.35); font-size: 1.2em;}
+.nav ul {padding: 0; margin: 0; list-style: none; }
+.nav ul li{float: left; position: relative;}
+.nav ul li a {display: block; color: rgba(189, 189, 189, .9); text-decoration: none; padding: 10px 10px; border-top: 2px solid transparent; border-bottom: 2px solid transparent; transition: all .3s ease-in-out;}
+.nav ul li a:hover{ color: white;} 
+.nav ul li a:focus{ color: white;}
+.dropdown-content{display: none; position: absolute; background-color: #4C4C4C; min-width: 160px; box-shadow:0 3px 15px rgba(0,0,0,.35); z-index: 1;}
+.dropdown-content a{display: block; padding: 10px;}
+.dropdown:hover .dropdown-content {display: block;}
+.nav .nav-brand{
+	width: 100px; display: block; color: rgba(246, 246, 246, .9); text-decoration: none; font-weight:700; padding: 10px 10px; border-top: 2px solid transparent; border-bottom: 2px solid transparent; transition: all .3s ease-in-out;
 }
-
-.nav li a, .dropbtn {
-    display: inline-block;
-    color: white;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-}
-
-.nav li a:hover, .nav-dropdown:hover .dropbtn {
-    background-color: red;
-}
-
-.nav li .nav-dropdown {
-    display: inline-block;
-}
-
-.nav-content {
-    display: none;
-    position: absolute;
-    background-color: #f9f9f9;
-    min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
-}
-
-.nav-content a {
-    color: black;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
-    text-align: left;
-}
-
-.nav-content a:hover {background-color: #f1f1f1}
-
-.nav-dropdown:hover .nav-content {
-    display: block;
-}
-
 
 /* navbar */
 /* .nav{margin: 0 auto; max-width: 100%; background: #4C4C4C; box-shadow:0 3px 15px rgba(0,0,0,.15);}

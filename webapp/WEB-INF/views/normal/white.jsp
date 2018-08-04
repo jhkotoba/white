@@ -29,10 +29,11 @@
 	$(".nav-drop").mouseover(function(e) {
 		console.log(e);
 		e.target.outerText
-		$(".nav-dropdown").show(300);
+		//$(".nav-dropdown").show(300);
+		$("#d"+e.target.id).show(300);
 	});
-	$(".nav-drop").mouseleave(function() {
-		$(".nav-dropdown").hide(300);     
+	$(".nav-drop").mouseleave(function(e) {
+		$("#d"+e.target.id).hide(300);     
 	});
 }); */
 </script>
@@ -51,27 +52,28 @@
 	</header>
 	
 	<c:if test="${sessionScope.userId == 'leedev' }">
-		<nav class="nav nsrb">
+		<nav class="nav">
+			<a class="nav-brand" href="${contextPath}/main">white</a>
 			<ul>
 				<c:forEach items="${sessionScope.navList}" var="nav">
-					<li class="nav-dropdown">
-						<a href="javascript:void(0);" class="dropbtn">${nav.navNm}</a>
-						<div class="nav-content">								
+					<li class="dropdown">
+						<a id="nav-${nav.navSeq}" href="javascript:void(0);">${nav.navNm}</a>
+						<div id="nav-${nav.navSeq}-down" class="dropdown-content">								
 							<c:forEach items="${sessionScope.sideList}" var="side">									
 								<c:if test="${nav.navSeq eq side.navSeq }">
 									<c:if test="${side.auth eq 1 }">
-										<a href="javascript:mf.submit('${nav.navUrl}', '${side.sideUrl}')">${side.sideNm}</a>
+										<a class="sideHeight" href="javascript:mf.submit('${nav.navUrl}', '${side.sideUrl}')">${side.sideNm}</a>
 									</c:if>
 								</c:if>
 							</c:forEach>
 						</div>
 					</li>
 				</c:forEach>		
-			</ul>
+			</ul>			
 		</nav>
 	</c:if>
 	
-		
+	<c:if test="${sessionScope.userId != 'leedev' }">
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark nsrb" style='font-size: 20px;'>
 		<a class="navbar-brand col-sm-3 col-md-2 mr-0" href="${contextPath}/main">white</a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -97,36 +99,13 @@
 				</c:forEach>
 			</ul>
 		</div>
-	</nav>	
+	</nav>
+	</c:if>	
 	
-	<section class="container-fluid">
-		<div class="row">
-			<nav class="col-md-2 d-none d-md-block bg-light sidebar">
-				<div class="sidebar-sticky">					
-					<ul class="nav flex-column height-full">
-						<c:forEach items="${sessionScope.navList}" var="nav">
-							<c:if test="${nav.auth eq 1 }">
-								<c:forEach items="${sessionScope.sideList}" var="side">
-									<c:if test="${nav.navSeq eq side.navSeq }">
-										<c:if test="${side.auth eq 1 }">
-											<c:if test="${navUrl eq nav.navUrl }">
-												<li class="nav-item">
-													<a class="nav-link active text-secondary nsrb" href="javascript:mf.submit('${nav.navUrl}', '${side.sideUrl}')">${side.sideNm}</a>
-												</li>
-											</c:if>
-										</c:if>
-									</c:if>
-								</c:forEach>
-							</c:if>
-						</c:forEach>
-					</ul>
-				</div>
-        	</nav>
-      
-	        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-	        	<jsp:include page="${requestScope.sectionPage}" flush="false" />
-	        </main>
-		</div>
+	<section>		
+        <main role="main">
+        	<jsp:include page="${requestScope.sectionPage}" flush="false" />
+        </main>
 	</section>
 	
 	<footer>		
