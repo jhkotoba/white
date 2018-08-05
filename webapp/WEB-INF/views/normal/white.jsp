@@ -24,20 +24,6 @@
 <script type="text/javascript" src="${contextPath}/resources/common/js/cmmCode.js"></script>
 <script type="text/javascript" src="${contextPath}/resources/common/js/common.js"></script>
 
-<script type="text/javascript">
-/* $(document).ready(function(){
-	$(".nav-drop").mouseover(function(e) {
-		console.log(e);
-		e.target.outerText
-		//$(".nav-dropdown").show(300);
-		$("#d"+e.target.id).show(300);
-	});
-	$(".nav-drop").mouseleave(function(e) {
-		$("#d"+e.target.id).hide(300);     
-	});
-}); */
-</script>
-
 </head>
 <body>
 	<nav class="nav">
@@ -61,50 +47,19 @@
 		
 		<div class="user">
 			<c:if test="${sessionScope.userId eq null}">
-				<a  href="${contextPath}/login/login.do"><img alt="login" src="${contextPath}/resources/common/img/login.png"></a>	
+				<a  href="${contextPath}/login/login.do"><img title="login" alt="login" src="${contextPath}/resources/common/img/login.png"></a>	
 			</c:if>	
 			<c:if test="${sessionScope.userId ne null}">
 				<span>${sessionScope.userId}</span>			
-				<a  href="${contextPath}/login/logoutProcess.do"><img alt="logout" src="${contextPath}/resources/common/img/logout.png"></a>
+				<a  href="${contextPath}/login/logoutProcess.do"><img title="logout" alt="logout" src="${contextPath}/resources/common/img/logout.png"></a>
 			</c:if>
-		</div>
-					
-	</nav>
-		
-			
-	<%-- <nav class="navbar navbar-expand-lg navbar-dark bg-dark nsrb" style='font-size: 20px;'>
-		<a class="navbar-brand col-sm-3 col-md-2 mr-0" href="${contextPath}/main">white</a>
-		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-			<span class="navbar-toggler-icon"></span>
-		</button>
-		<div class="collapse navbar-collapse" id="navbarNavDropdown">
-			<ul class="navbar-nav">
-				<c:forEach items="${sessionScope.navList}" var="nav">
-					<c:if test="${nav.auth eq 1 }">
-						<li id="${nav.navUrl}" class="nav-item dropdown">
-							<a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="cursor:pointer;">${nav.navNm}</a>
-							<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">								
-								<c:forEach items="${sessionScope.sideList}" var="side">									
-									<c:if test="${nav.navSeq eq side.navSeq }">
-										<c:if test="${side.auth eq 1 }">
-											<a class="dropdown-item nsrb" href="javascript:mf.submit('${nav.navUrl}', '${side.sideUrl}')">${side.sideNm}</a>
-										</c:if>
-									</c:if>
-								</c:forEach>
-							</div>
-						</li>
-					</c:if>
-				</c:forEach>
-			</ul>
-		</div>
-	</nav> --%>
-	
+		</div>					
+	</nav>	
 	<section>		
         <main role="main">
         	<jsp:include page="${requestScope.sectionPage}" flush="false" />
         </main>
-	</section>
-	
+	</section>	
 	<footer>		
 	</footer>
 	
