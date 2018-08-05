@@ -1,6 +1,9 @@
 
 /*jsGrid ¼³Á¤ */
 .jsgrid-grid-header, .jsgrid-grid-body{overflow: auto;}
+.jsgrid-custom-style{
+	
+}
 
 /* font */
 @font-face { font-family: 'NanumSquareB'; src: url(../ttf/NanumSquareB.ttf) format('truetype'); }

@@ -11,15 +11,15 @@
 
 <link rel="stylesheet" href="${contextPath}/resources/bootstrap-4.1.1/css/bootstrap.min.css" type="text/css" />
 <link rel="stylesheet" href="${contextPath}/resources/air-datepicker/css/datepicker.min.css" type="text/css"/>
-<link rel="stylesheet" href="${contextPath}/resources/jsgrid-1.5.3/css/jsgrid.min.css" type="text/css"/>
-<link rel="stylesheet" href="${contextPath}/resources/jsgrid-1.5.3/css/jsgrid-theme.min.css" type="text/css"/>
+<link rel="stylesheet" href="${contextPath}/resources/jsgrid-1.5.3/css/jsgrid.css" type="text/css"/>
+<link rel="stylesheet" href="${contextPath}/resources/jsgrid-1.5.3/css/jsgrid-theme.css" type="text/css"/>
 <link rel="stylesheet" href="${contextPath}/resources/common/css/common.css" type="text/css" />
 
 <script type="text/javascript" src="${contextPath}/resources/jquery/js/jquery-3.2.1.min.js"></script>
 <script type="text/javascript" src="${contextPath}/resources/bootstrap-4.1.1/js/bootstrap.bundle.min.js"></script>
 <script type="text/javascript" src="${contextPath}/resources/air-datepicker/js/datepicker.min.js"></script>
 <script type="text/javascript" src="${contextPath}/resources/air-datepicker/js/i18n/datepicker.ko.js"></script>
-<script type="text/javascript" src="${contextPath}/resources/jsgrid-1.5.3/js/jsgrid.min.js"></script>
+<script type="text/javascript" src="${contextPath}/resources/jsgrid-1.5.3/js/jsgrid.js"></script>
 <script type="text/javascript" src="${contextPath}/resources/jsgrid-1.5.3/js/db.js"></script>
 <script type="text/javascript" src="${contextPath}/resources/common/js/cmmCode.js"></script>
 <script type="text/javascript" src="${contextPath}/resources/common/js/common.js"></script>
