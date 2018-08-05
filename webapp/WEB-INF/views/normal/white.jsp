@@ -40,25 +40,13 @@
 
 </head>
 <body>
-<div class="wallpaper">
-	<header class='header'>	
-		<c:if test="${sessionScope.userId eq null}">
-			<a href="${contextPath}/login/login.do" class="badge badge-light">login</a>	
-		</c:if>	
-		<c:if test="${sessionScope.userId ne null}">
-			<span class="badge badge-primary">${sessionScope.userId}</span>			
-			<a href="${contextPath}/login/logoutProcess.do" class="badge badge-light">logout</a>
-		</c:if>				
-	</header>
-	
-	
 	<nav class="nav">
 		<a class="nav-brand" href="${contextPath}/main">white</a>
 		<ul>
 			<c:forEach items="${sessionScope.navList}" var="nav">
 				<li class="dropdown">
-					<a <%-- id="nav-${nav.navSeq}" --%> href="javascript:void(0);">${nav.navNm}</a>
-					<div <%-- id="nav-${nav.navSeq}-down" --%> class="dropdown-content">								
+					<a href="javascript:void(0);">${nav.navNm}</a>
+					<div class="dropdown-content">								
 						<c:forEach items="${sessionScope.sideList}" var="side">									
 							<c:if test="${nav.navSeq eq side.navSeq }">
 								<c:if test="${side.auth eq 1 }">
@@ -68,9 +56,21 @@
 						</c:forEach>
 					</div>
 				</li>
-			</c:forEach>		
-		</ul>			
+			</c:forEach>
+		</ul>
+		
+		<div class="user">
+			<c:if test="${sessionScope.userId eq null}">
+				<a  href="${contextPath}/login/login.do"><img alt="login" src="${contextPath}/resources/common/img/login.png"></a>	
+			</c:if>	
+			<c:if test="${sessionScope.userId ne null}">
+				<span>${sessionScope.userId}</span>			
+				<a  href="${contextPath}/login/logoutProcess.do"><img alt="logout" src="${contextPath}/resources/common/img/logout.png"></a>
+			</c:if>
+		</div>
+					
 	</nav>
+		
 			
 	<%-- <nav class="navbar navbar-expand-lg navbar-dark bg-dark nsrb" style='font-size: 20px;'>
 		<a class="navbar-brand col-sm-3 col-md-2 mr-0" href="${contextPath}/main">white</a>
@@ -115,6 +115,5 @@
 	
 	<div class="blind" style="display: none;">
 	</div>
-</div>
 </body>
 </html>
