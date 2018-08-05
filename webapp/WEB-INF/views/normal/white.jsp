@@ -51,30 +51,28 @@
 		</c:if>				
 	</header>
 	
-	<c:if test="${sessionScope.userId == 'leedev' }">
-		<nav class="nav">
-			<a class="nav-brand" href="${contextPath}/main">white</a>
-			<ul>
-				<c:forEach items="${sessionScope.navList}" var="nav">
-					<li class="dropdown">
-						<a id="nav-${nav.navSeq}" href="javascript:void(0);">${nav.navNm}</a>
-						<div id="nav-${nav.navSeq}-down" class="dropdown-content">								
-							<c:forEach items="${sessionScope.sideList}" var="side">									
-								<c:if test="${nav.navSeq eq side.navSeq }">
-									<c:if test="${side.auth eq 1 }">
-										<a class="sideHeight" href="javascript:mf.submit('${nav.navUrl}', '${side.sideUrl}')">${side.sideNm}</a>
-									</c:if>
-								</c:if>
-							</c:forEach>
-						</div>
-					</li>
-				</c:forEach>		
-			</ul>			
-		</nav>
-	</c:if>
 	
-	<c:if test="${sessionScope.userId != 'leedev' }">
-	<nav class="navbar navbar-expand-lg navbar-dark bg-dark nsrb" style='font-size: 20px;'>
+	<nav class="nav">
+		<a class="nav-brand" href="${contextPath}/main">white</a>
+		<ul>
+			<c:forEach items="${sessionScope.navList}" var="nav">
+				<li class="dropdown">
+					<a <%-- id="nav-${nav.navSeq}" --%> href="javascript:void(0);">${nav.navNm}</a>
+					<div <%-- id="nav-${nav.navSeq}-down" --%> class="dropdown-content">								
+						<c:forEach items="${sessionScope.sideList}" var="side">									
+							<c:if test="${nav.navSeq eq side.navSeq }">
+								<c:if test="${side.auth eq 1 }">
+									<a class="sideHeight" href="javascript:mf.submit('${nav.navUrl}', '${side.sideUrl}')">${side.sideNm}</a>
+								</c:if>
+							</c:if>
+						</c:forEach>
+					</div>
+				</li>
+			</c:forEach>		
+		</ul>			
+	</nav>
+			
+	<%-- <nav class="navbar navbar-expand-lg navbar-dark bg-dark nsrb" style='font-size: 20px;'>
 		<a class="navbar-brand col-sm-3 col-md-2 mr-0" href="${contextPath}/main">white</a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
@@ -99,8 +97,7 @@
 				</c:forEach>
 			</ul>
 		</div>
-	</nav>
-	</c:if>	
+	</nav> --%>
 	
 	<section>		
         <main role="main">

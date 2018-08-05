@@ -10,21 +10,25 @@
 
 /* defalut */
 body{background: #363636;}
-.wallpaper{background: #FFF; position: relative; width: 1280px; min-height: 720px; height: auto; margin: 20px auto 20px; font-size: 12px;}
+.wallpaper{background: #FFF; position: relative; width: 1280px; min-height: 720px; height: auto; margin: 20px auto 20px; font-size: 12px; box-shadow: 0 3px 15px rgba(246,246,246,0.3);}
 
 /* nav */
 .nav{margin: 0 auto; max-width: 100%; background: #4C4C4C; box-shadow:0 3px 15px rgba(0,0,0,.35); font-size: 1.2em;}
+.nav .nav-brand{width: 100px; display: block; color: rgba(246, 246, 246, .9); text-decoration: none; font-weight:700; padding: 10px 10px; border-top: 2px solid transparent; border-bottom: 2px solid transparent; transition: all .3s ease-in-out;}
 .nav ul {padding: 0; margin: 0; list-style: none; }
 .nav ul li{float: left; position: relative;}
 .nav ul li a {display: block; color: rgba(189, 189, 189, .9); text-decoration: none; padding: 10px 10px; border-top: 2px solid transparent; border-bottom: 2px solid transparent; transition: all .3s ease-in-out;}
 .nav ul li a:hover{ color: white;} 
 .nav ul li a:focus{ color: white;}
-.dropdown-content{display: none; position: absolute; background-color: #4C4C4C; min-width: 160px; box-shadow:0 3px 15px rgba(0,0,0,.35); z-index: 1;}
+.dropdown-content{display: none; position: absolute; background-color: #4C4C4C; min-width: 160px; box-shadow:0 3px 15px rgba(0,0,0,.35); border-radius: 0 0 3px 3px; z-index: 1; }
 .dropdown-content a{display: block; padding: 10px;}
-.dropdown:hover .dropdown-content {display: block;}
-.nav .nav-brand{
-	width: 100px; display: block; color: rgba(246, 246, 246, .9); text-decoration: none; font-weight:700; padding: 10px 10px; border-top: 2px solid transparent; border-bottom: 2px solid transparent; transition: all .3s ease-in-out;
-}
+.dropdown:hover .dropdown-content {display: block; opacity: .92; animation: fadeIn 0.16s ease-in; -webkit-animation: fadeIn 0.16s ease-in; -moz-animation:fadeIn 0.16s ease-in; -ms-animation:fadeIn 0.16s ease-in; -o-animation:fadeIn 0.16s ease-in;}
+@-webkit-keyframes fadeIn{from{opacity:0}to{opacity:.92}}
+@-moz-keyframes fadeIn{from{opacity:0}to{opacity:.92}}
+@-ms-keyframes fadeIn{from{opacity:0}to{opacity:.92}}
+@-o-keyframes fadeIn{from{opacity:0}to{opacity:.92}}
+@keyframes fadeIn{from{opacity:0}to{opacity:.92}}
+
 
 /* navbar */
 /* .nav{margin: 0 auto; max-width: 100%; background: #4C4C4C; box-shadow:0 3px 15px rgba(0,0,0,.15);}
