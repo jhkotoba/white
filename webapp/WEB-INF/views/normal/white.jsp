@@ -56,7 +56,7 @@
 		</div>					
 	</nav>	
 	<section>		
-        <main role="main">
+        <main role="main" class="main">
         	<jsp:include page="${requestScope.sectionPage}" flush="false" />
         </main>
 	</section>	
