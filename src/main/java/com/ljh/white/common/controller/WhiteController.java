@@ -1,7 +1,5 @@
 package com.ljh.white.common.controller;
 
-
-
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -16,7 +14,11 @@ import com.ljh.white.common.White;
 import com.ljh.white.common.collection.WhiteMap;
 import com.ljh.white.common.service.WhiteService;
 
-
+/**
+ * 공통 컨트롤러
+ * @author JeHoon
+ *
+ */
 @Controller
 public class WhiteController {
 	
@@ -43,13 +45,13 @@ public class WhiteController {
 		return White.device(device)+"/white.jsp";
 	}
 	
-	@RequestMapping(value= {"/admin", "/board", "/ledgerRe", "/source", "/bookmark"})
-	public String white(HttpServletRequest request, Device device){
+	//화면이동 컨트롤러
+	@RequestMapping(value="{navUrl}")
+	public String white(HttpServletRequest request, Device device){		
+		WhiteMap param = new WhiteMap(request);		
 		
-		WhiteMap param = new WhiteMap(request);
-		
-		String navUrl = param.getString("navUrl");
-		String sideUrl = param.getString("sideUrl");		
+		String navUrl = param.getString("navUrl");		
+		String sideUrl = param.getString("sideUrl");				
 		
 		request.setAttribute("navUrl", navUrl);
 		request.setAttribute("sideUrl", sideUrl);		

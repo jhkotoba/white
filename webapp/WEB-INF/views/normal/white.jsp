@@ -29,7 +29,9 @@
 $(document).ready(function(){
 	$("#loginBtn").on("click", function(){		
 		$(".blind").show(800);
-		$("#login").show(1000);
+		$("#login").fadeIn("slow", function(e){
+			console.log(e);
+		});
 		
 		
 	});	
@@ -53,10 +55,10 @@ $(document).ready(function(){
 			</li>
 		</c:forEach>
 	</ul>
-	
+	<a href="javascript:void(0)" id="loginBtn" style="margin-left: 50%;"><img title="login" alt="login" src="${contextPath}/resources/common/img/login.png"></a>
 	<div class="user">
 		<c:if test="${sessionScope.userId eq null}">				
-			<a href="${contextPath}/login/login.do"><img title="login" alt="login" src="${contextPath}/resources/common/img/login.png"></a>
+			<a href="${contextPath}/login/login.do"><img title="login" alt="login" src="${contextPath}/resources/common/img/login.png"></a>			
 		</c:if>	
 		<c:if test="${sessionScope.userId ne null}">
 			<span>${sessionScope.userId}</span>			
@@ -65,7 +67,6 @@ $(document).ready(function(){
 	</div>					
 </nav>	
 <section>
-<a href="javascript:void(0)" id="loginBtn" style="margin-left: 50%;"><img title="login" alt="login" src="${contextPath}/resources/common/img/login.png"></a>
 	<main role="main" class="main">
 		<jsp:include page="${requestScope.sectionPage}" flush="false" />
 	</main>
@@ -78,7 +79,8 @@ $(document).ready(function(){
 	<input id="sideUrl" name="sideUrl" type="hidden" value="${sideUrl}"></input>
 </form>
 
-<div id="login" class="login" style="display: none;"></div>	
+<div id="login" class="login" style="display: none;">	
+</div>	
 <div class="blind" style="display: none;"></div>
 </body>
 </html>
