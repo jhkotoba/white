@@ -79,7 +79,14 @@ $(document).ready(function(){
 	<input id="sideUrl" name="sideUrl" type="hidden" value="${sideUrl}"></input>
 </form>
 
-<div id="login" class="login" style="display: none;">	
+<div id="login" class="login" style="display: none;">
+	<h5>Login</h5>
+	<div>
+		<h6>Id</h6>
+		<input class="input-md" type="text">
+		<h6>Password</h6>
+		<input class="input-md" type="text">
+	</div>		
 </div>	
 <div class="blind" style="display: none;"></div>
 </body>
