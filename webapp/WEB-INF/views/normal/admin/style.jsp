@@ -6,23 +6,16 @@
 <h4>input</h4>
 
 <h6>input-sm</h6>
-<input class="input-sm gray1" type="text" placeholder="input-sm">
+<input class="input-sm" type="text" placeholder="input-sm">
 
 <h6>input-md</h6>
-<input class="input-md gray1" type="text" placeholder="input-md">
-
-<h6>input-lg</h6>
-<input class="input-lg gray2" type="text" placeholder="input-lg">
+<input class="input-md" type="text" placeholder="input-md">
 
 <br>
 
-<h6>btn-sm</h6>
-<button class="btn-sm">btn-sm</button>
+<h6>btn btn-sm</h6>
+<button class="btn-gray btn-sm">button</button>
 
-<h6>btn-md</h6>
-<button class="btn-md">btn-md</button>
-
-<h6>btn-lg</h6>
-<button class="btn-lg">btn-lg</button>
-<button>btn</button>
+<h6>boot</h6>
+<button class="btn btn-sm">button</button>
 
