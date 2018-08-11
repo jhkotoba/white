@@ -9,14 +9,13 @@
 <meta charset=UTF-8>
 <title>whiteHome</title>
 
-<link rel="stylesheet" href="${contextPath}/resources/bootstrap-4.1.1/css/bootstrap.min.css" type="text/css" />
+
 <link rel="stylesheet" href="${contextPath}/resources/air-datepicker/css/datepicker.min.css" type="text/css"/>
 <link rel="stylesheet" href="${contextPath}/resources/jsgrid-1.5.3/css/jsgrid.css" type="text/css"/>
 <link rel="stylesheet" href="${contextPath}/resources/jsgrid-1.5.3/css/jsgrid-theme.css" type="text/css"/>
 <link rel="stylesheet" href="${contextPath}/resources/common/css/common.css" type="text/css" />
 
 <script type="text/javascript" src="${contextPath}/resources/jquery/js/jquery-3.2.1.min.js"></script>
-<script type="text/javascript" src="${contextPath}/resources/bootstrap-4.1.1/js/bootstrap.bundle.min.js"></script>
 <script type="text/javascript" src="${contextPath}/resources/air-datepicker/js/datepicker.min.js"></script>
 <script type="text/javascript" src="${contextPath}/resources/air-datepicker/js/i18n/datepicker.ko.js"></script>
 <script type="text/javascript" src="${contextPath}/resources/jsgrid-1.5.3/js/jsgrid.js"></script>
@@ -25,18 +24,53 @@
 <script type="text/javascript" src="${contextPath}/resources/common/js/common.js"></script>
 </head>
 <body>
+<c:if test="${sessionScope.userId eq null}">
 <script type="text/javascript">
-$(document).ready(function(){
+$(document).ready(function(){	
+	//로그인창 보이기
 	$("#loginBtn").on("click", function(){		
 		$(".blind").show(800);
-		$("#login").fadeIn("slow", function(e){
-			console.log(e);
+		$("#loginForm").fadeIn("slow", function(e){
+			
 		});
-		
-		
+	});
+	//외부창 클릭시 로그인창 닫기
+	$(document).mouseup(function (e){
+		let container = $("#loginForm");
+		if( container.has(e.target).length === 0){
+			$(".blind").hide(600);
+			$("#loginForm").fadeOut("slow", function(e){
+				
+			});
+		}
 	});	
+	//사용자 체크, 로그인
+	$("#loginSmt").on("click", function(e){
+		let param = {};
+		param.userId = $("#loginForm #userId").val();
+		param.passwd = $("#loginForm #passwd").val();
+		
+		$.ajax({		
+			type: 'POST',
+			url: common.path()+'/main/loginCheck.ajax',
+			dataType: 'json',
+			data : param,
+		    success : function(data) {
+		    	if(data){		    		
+		    		$(".blind").hide(200);
+					$("#loginForm").fadeOut(200);
+		    		
+		    		$("#loginForm").attr("method", "post").attr("onsubmit", "")
+		    			.attr("action", common.path()+"/main/login").submit();
+		    	}else{
+		    	
+		    	}
+		    }
+		});		
+	});
 });
 </script>
+</c:if>
 <nav class="nav">
 	<a class="nav-brand" href="${contextPath}/main">white</a>
 	<ul>
@@ -54,17 +88,17 @@ $(document).ready(function(){
 				</div>
 			</li>
 		</c:forEach>
-	</ul>
-	<a href="javascript:void(0)" id="loginBtn" style="margin-left: 50%;"><img title="login" alt="login" src="${contextPath}/resources/common/img/login.png"></a>
+	</ul>	
 	<div class="user">
-		<c:if test="${sessionScope.userId eq null}">				
-			<a href="${contextPath}/login/login.do"><img title="login" alt="login" src="${contextPath}/resources/common/img/login.png"></a>			
+		<c:if test="${sessionScope.userId eq null}">
+			<a href="javascript:void(0)"><img title="register" alt="login" src="${contextPath}/resources/common/img/user.png"></a>
+			<a href="javascript:void(0)" id="loginBtn"><img title="login" alt="login" src="${contextPath}/resources/common/img/login.png"></a>						
 		</c:if>	
 		<c:if test="${sessionScope.userId ne null}">
 			<span>${sessionScope.userId}</span>			
 			<a href="${contextPath}/login/logoutProcess.do"><img title="logout" alt="logout" src="${contextPath}/resources/common/img/logout.png"></a>
 		</c:if>
-	</div>					
+	</div>			
 </nav>	
 <section>
 	<main role="main" class="main">
@@ -74,20 +108,28 @@ $(document).ready(function(){
 <footer>		
 </footer>
 
+<c:if test="${sessionScope.userId eq null}">
+<form id="loginForm" class="login" onsubmit="return false;" style="display: none;">
+	<h5>Login</h5>
+	<div class="center">
+		<h6>Id</h6>
+		<input id="userId" name="userId" class="input-gray w100" type="text">
+		<h6>Password</h6>
+		<input id="passwd" name="passwd" class="input-gray w100" type="password">
+		<div>
+			<button id="loginSmt" class="btn-gray">Login</button>
+			<button class="btn-gray">Sign up</button>
+		</div>
+	</div>
+</form>
+</c:if>
+
+<c:if test="${sessionScope.userId ne null}">
 <form id="moveForm" action="">
 	<input id="navUrl" name="navUrl" type="hidden" value="${navUrl}"></input>
 	<input id="sideUrl" name="sideUrl" type="hidden" value="${sideUrl}"></input>
 </form>
-
-<div id="login" class="login" style="display: none;">
-	<h5>Login</h5>
-	<div>
-		<h6>Id</h6>
-		<input class="input-md" type="text">
-		<h6>Password</h6>
-		<input class="input-md" type="text">
-	</div>		
-</div>	
+</c:if>
 <div class="blind" style="display: none;"></div>
 </body>
 </html>

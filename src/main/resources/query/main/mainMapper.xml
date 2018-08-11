@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+
+<mapper namespace="mainMapper">
+	
+	<!--  userCheck -->
+	<select id="selectUserPasswd" parameterType="WhiteMap" resultType="String">
+		SELECT					
+			user_passwd userPasswd
+		FROM white_user		
+		WHERE user_id = #{userId}				
+	</select>		
+	
+	<!--  getUserAuthority -->
+	<!-- <select id="getUserAuthority" resultType="Map" parameterType="String" >
+		SELECT 
+		    a.authority AS authority,
+		    w.user_seq AS userSeq
+  		FROM 
+		    authority a, 
+		    white_user w
+		WHERE 1=1
+		AND a.authority_no = w.authority_no
+		AND user_id = #{userId}			
+	</select> -->
+	
+	<select id="getUserSeq" resultType="int" parameterType="String" >
+		SELECT 
+	  		user_seq AS userSeq
+		FROM white_user
+		WHERE user_id = #{userId}
+	</select>
+	
+	<select id="userIdCheck" resultType="int" parameterType="String" >
+		SELECT COUNT(1)
+		FROM white_user
+		WHERE user_id = #{userId}
+	</select>
+		
+	<select id="selectUserAuthority" resultType="WhiteMap" parameterType="int" >
+		SELECT 
+		  n.auth_nm AS authNm,
+		  IF(
+				(
+					SELECT a.auth_seq FROM authority a
+					WHERE a.auth_nm_seq = n.auth_nm_seq
+					AND user_seq = #{userSeq}
+					LIMIT 1
+				) IS NULL, 0, 1
+		  ) AS auth
+		FROM auth_name n
+	</select>
+	
+	<select id="selectNavMenuList" resultType="whiteMap" parameterType="whiteMap">		
+		SELECT					
+			nm.nav_seq AS navSeq,
+	  		nm.nav_nm AS navNm,
+	 		nm.nav_url AS navUrl,
+	 		nm.nav_order AS navOrder,
+			nm.nav_auth_nm_seq AS navAuthNmSeq
+			<choose>
+				<when test="userId == 'leedev'">
+				,1 AS auth
+				</when>
+				<otherwise>
+				,IF(
+					(
+						SELECT a.auth_seq FROM authority a
+						WHERE a.auth_nm_seq = nm.nav_auth_nm_seq
+						AND a.user_seq = #{userSeq}
+						LIMIT 1
+					) IS NULL, 0, 1
+				) AS auth
+				</otherwise>
+			</choose>			
+		FROM nav_menu nm
+		<if test="userId != 'leedev'">
+			WHERE nm.nav_show_yn = 'Y'
+		</if>		
+		ORDER BY nm.nav_order
+	</select>
+	
+	<select id="selectSideMenuList" resultType="whiteMap" parameterType="whiteMap">		
+		SELECT					
+			sm.side_seq AS sideSeq,
+			sm.nav_seq AS navSeq,
+	  		sm.side_nm AS sideNm,
+	 		sm.side_url AS sideUrl,
+	 		sm.side_order AS sideOrder,
+			sm.side_auth_nm_seq AS sideAuthNmSeq
+			<choose>
+				<when test="userId == 'leedev'">
+				,1 AS auth
+				</when>
+					<otherwise>
+					,IF(
+						(
+							SELECT a.auth_seq FROM authority a
+							WHERE a.auth_nm_seq = sm.side_auth_nm_seq
+							AND a.user_seq = #{userSeq}
+							LIMIT 1
+						) IS NULL, 0, 1
+					) AS auth
+				</otherwise>
+			</choose>	
+		FROM side_menu sm
+		<if test="userId != 'leedev'">
+			WHERE sm.side_show_yn = 'Y'
+		</if>
+		ORDER BY sm.side_order
+	</select>
+	
+	<!-- 사용자 등록 -->
+	<insert id="insertSignUp" parameterType="WhiteMap" useGeneratedKeys="true" keyProperty="user_seq">
+		INSERT INTO white_user
+			(user_id, user_name, user_passwd)
+		VALUES 
+			(#{userId}, #{userName}, #{passwd})
+	</insert>
+	
+	<!-- 사용자 초기 권한 등록 -->
+	<insert id="insertUserAuth" parameterType="String">
+		INSERT INTO authority
+			(user_seq, auth_nm_seq)
+		VALUES 
+			(#{user_seq}, (SELECT auth_nm_seq FROM auth_name WHERE auth_nm = 'user'))
+	</insert>
+</mapper>

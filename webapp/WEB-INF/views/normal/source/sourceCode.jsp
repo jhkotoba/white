@@ -251,11 +251,11 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
         	fnView(args.item.sourceSeq);
         }, 
         fields: [
-			{ title:"번호",	name:"sourceSeq",	type:"text", width:"4%"},
-			{ title:"언어",	name:"codeNm",		type:"text", width:"8%"},
+			{ title:"번호",	name:"sourceSeq",	type:"text", width:"4%", align:"center"},
+			{ title:"언어",	name:"codeNm",		type:"text", width:"8%", align:"center"},
 			{ title:"글제목",	name:"title",		type:"text", width:"70%"},
-			{ title:"작성자",	name:"userId",		type:"text", width:"8%"},
-			{ title:"날짜",	name:"regDate",		type:"text", width:"10%"}
+			{ title:"작성자",	name:"userId",		type:"text", width:"8%", align:"center"},
+			{ title:"날짜",	name:"regDate",		type:"text", width:"10%", align:"center"}
         ]
     });
 }
@@ -375,33 +375,33 @@ function fnWriteEmpty(){
 <input id="text" type="hidden" value="">
 
 <!-- 글쓰기  -->
-<div id="sourceWrite" class="form-control updown-spacing hide">
+<div id="sourceWrite" class="updown-spacing hide">
 	<div>
 		<span>타입</span>
 		<select id="langCd">	
 		</select>
 		<span>제목</span>
-		<input id="title" type="text" maxlength="50" style="width:70%;">		
+		<input class="input-gray" id="title" type="text" maxlength="50" style="width:70%;">		
 	</div>	
 	<div class="updown-spacing">
 		<textarea id="content" class="code-textarea" maxlength="4000" style="height:50%; width:100%; background-color: balck">		
 		</textarea>		
 	</div>
 	<div>
-		<button id="save">저장</button>
-		<button id="close">닫기</button>
+		<button class="btn-gray" id="save">저장</button>
+		<button class="btn-gray" id="close">닫기</button>
 	</div>
 </div>
 
 <!-- 글수정 -->
-<div id="sourceEdit" class="form-control updown-spacing hide">
+<div id="sourceEdit" class="updown-spacing hide">
 	<input id="sourceSeq" type="hidden" value="">
 	<div>
 		<span>타입</span>
 		<select id="langCd">	
 		</select>
 		<span>제목</span>
-		<input id="title" type="text" maxlength="50" style="width:70%;">
+		<input class="input-gray" id="title" type="text" maxlength="50" style="width:70%;">
 	</div>
 	<div>
 		<span>사용자</span>
@@ -414,19 +414,19 @@ function fnWriteEmpty(){
 		</textarea>		
 	</div>
 	<div>
-		<button id="save">저장</button>
-		<button id="close">닫기</button>
+		<button class="btn-gray" id="save">저장</button>
+		<button class="btn-gray" id="close">닫기</button>
 	</div>
 </div>
 
 <!-- 글보기 -->
-<div id="sourceView" class="form-control updown-spacing hide">	
+<div id="sourceView" class="updown-spacing hide">	
 	<input id="sourceSeq" type="hidden" value="">
 	<div class="right">
-		<button id="edit" class="hide">수정</button>	
-		<button id="delete" class="hide">삭제</button>	
-		<button name="write">글쓰기</button>
-		<button id="close">닫기</button>
+		<button class="btn-gray" id="edit" class="hide">수정</button>	
+		<button class="btn-gray" id="delete" class="hide">삭제</button>	
+		<button class="btn-gray" name="write">글쓰기</button>
+		<button class="btn-gray" id="close">닫기</button>
 	</div>
 
 	<div>
@@ -447,21 +447,18 @@ function fnWriteEmpty(){
 	</div>		
 </div>
 
-<!-- 검색 -->
-<div id="sourceSearch" class="left">
-	<select id="langCd">				
+<div id="sourceSearch" class="search-bar">
+	<select id="langCd" class="select-gray">				
 	</select>
-	<select id="type">
+	<select class="select-gray" id="type">
 		<option value="">선택</option>
 		<option value="id">아이디</option>		
 		<option value="title">제목</option>
 		<option value="content">내용</option>
 	</select>
-	<input id="text" type="text" disabled="disabled">
-	<button id="search">조회</button>
-</div>
-<div class="right">
-	<button name="write">글쓰기</button>
+	<input class="input-gray w3" id="text" type="text">
+	<button class="btn-gray" id="search">조회</button>
+	<button class="btn-gray pull-right" name="write">글쓰기</button>
 </div>
 
 <!-- 게시물 리스트 -->

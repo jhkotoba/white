@@ -22,6 +22,8 @@
 			<mvc:exclude-mapping path="/login/loginProcess.do"/>
 			<mvc:exclude-mapping path="/login/logoutProcess.do"/>
 			<mvc:exclude-mapping path="/login/signUp.do"/>
+			
+			<mvc:exclude-mapping path="/main/login"/>
 	               
 	     	<!-- 회원가입 -->			 
 			<mvc:exclude-mapping path="/login/insertSignUp.do"/>
