@@ -46,6 +46,7 @@ $(document).ready(function(){
 	$("button[name=write]").on("click", function(){
 		let tag = "";
 		$("#sourceWrite #langCd").empty();
+		tag += "<option value=''>타입</option>";
 		for(let i=0; i<codeList.length; i++){
 			tag += "<option value="+codeList[i].code+">"+codeList[i].codeNm+"</option>";	    		
 		}
@@ -375,14 +376,19 @@ function fnWriteEmpty(){
 <input id="text" type="hidden" value="">
 
 <!-- 글쓰기  -->
-<div id="sourceWrite" class="updown-spacing hide">
-	<div>
-		<span>타입</span>
-		<select id="langCd">	
-		</select>
-		<span>제목</span>
-		<input class="input-gray" id="title" type="text" maxlength="50" style="width:70%;">		
-	</div>	
+<div id="sourceWrite" class="updown-spacing hide">	
+	<div class="flex">		
+		<div class="flex-left">			
+			<select id="langCd" class="select-gray">	
+			</select>				
+		</div>		
+		<div class="flex-right">					
+			<input class="input-gray w100" id="title" type="text" maxlength="50" placeholder="제목 입력">
+		</div>
+		<button class="btn-gray" id="save">저장</button>
+		<button class="btn-gray" id="close">닫기</button>
+	</div>
+	
 	<div class="updown-spacing">
 		<textarea id="content" class="code-textarea" maxlength="4000" style="height:50%; width:100%; background-color: balck">		
 		</textarea>		
