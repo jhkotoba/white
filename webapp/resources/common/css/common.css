@@ -21,10 +21,11 @@ body{background: #363636; font-size: 12px; color: rgba(246, 246, 246, .8);}
 .login > div > input{margin-bottom: 10px;}
 .login > div > div{margin: 13px 0px 0px 0px;}
 .login > div > div > button{margin: 0px 0px 0px 35px;}
+.login-text{text-align: center;}
 
 /* nav */
 .nav{margin: 0 auto; max-width: 100%; min-height: 45px; background: #4C4C4C; box-shadow:0 3px 15px rgba(0,0,0,.35); font-size: 1.2em;}
-.nav .nav-brand{width: 100px; display: block; color: rgba(246, 246, 246, .9); text-decoration: none; font-weight:700; padding: 10px 10px; float:left; text-align: center;}
+.nav .nav-brand{width: 100px; display: block; color: rgba(246, 246, 246, .9); text-decoration: none; font-weight:700; padding: 10px; float:left; text-align: center;}
 .nav .user{ float:right; right: 10px;  color: rgba(246, 246, 246, .9); padding: 8px 10px 0px 0px;}
 .nav .user a{margin:0px 8px 0px 0px;}
 .nav .user span{margin-right: 10px;}
@@ -49,7 +50,7 @@ body{background: #363636; font-size: 12px; color: rgba(246, 246, 246, .8);}
 .main{padding: 10px;}
 .center{position: relative; width: 80%; left: 10%;}
 
-.input-gray{background: #5E5E5E; color:#C6C6C6; height: 30px; border: 1px solid #646464; border-radius: 2px; vertical-align: middle;}
+.input-gray{background: #5E5E5E; color:#C6C6C6; height: 30px; border: 1px solid #646464; border-radius: 2px; vertical-align: middle; margin-top: 1px;}
 .select-gray{background: #5E5E5E; color:#C6C6C6; height: 30px; border: 1px solid #646464; border-radius: 2px; padding: .25rem .5rem; height: 30px; vertical-align: middle;}
 .btn-gray{background: #4C4C4C; color:#C6C6C6; border: 1px solid #585858; display: inline-block; border-radius: 2px;	font-weight: 400; text-align: center; white-space: nowrap; vertical-align: middle; user-select: none; overflow: visible; margin: 0; cursor: pointer; transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out; font-weight:600; padding: .25rem .5rem; height: 30px;}
 .btn-gray:hover{background: #3A3A3A;}
@@ -77,6 +78,11 @@ body{background: #363636; font-size: 12px; color: rgba(246, 246, 246, .8);}
 .w50{osition:relative; width: 50%;}
 .w90{position:relative; width: 90%;}
 .w100{osition:relative; width: 100%;}
+
+.a-brand{
+	color: rgba(246, 246, 246, .8);
+	text-decoration: none; font-weight:700;
+}
 
 h1, h2, h3, h4, h5, h6 {margin-top: 0; margin-bottom: 0.5rem;}
 h1, .h1 {font-size: 2.5rem;}

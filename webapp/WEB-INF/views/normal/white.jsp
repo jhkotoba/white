@@ -72,7 +72,7 @@ $(document).ready(function(){
 </script>
 </c:if>
 <nav class="nav">
-	<a class="nav-brand" href="${contextPath}/main">white</a>
+	<a class="nav-brand h6" href="${contextPath}/main">white</a>
 	<ul>
 		<c:forEach items="${sessionScope.navList}" var="nav">
 			<li class="dropdown">
@@ -91,12 +91,12 @@ $(document).ready(function(){
 	</ul>	
 	<div class="user">
 		<c:if test="${sessionScope.userId eq null}">
-			<a href="javascript:void(0)"><img title="register" alt="login" src="${contextPath}/resources/common/img/user.png"></a>
-			<a href="javascript:void(0)" id="loginBtn"><img title="login" alt="login" src="${contextPath}/resources/common/img/login.png"></a>						
+			<a class="a-brand h6" href="javascript:void(0)">sign up</a>
+			<a class="a-brand h6" href="javascript:void(0)" id="loginBtn">login</a>						
 		</c:if>	
 		<c:if test="${sessionScope.userId ne null}">
 			<span>${sessionScope.userId}</span>			
-			<a href="${contextPath}/login/logoutProcess.do"><img title="logout" alt="logout" src="${contextPath}/resources/common/img/logout.png"></a>
+			<a class="a-brand h6" href="${contextPath}/login/logoutProcess.do">logout</a>
 		</c:if>
 	</div>			
 </nav>	
@@ -113,9 +113,9 @@ $(document).ready(function(){
 	<h5>Login</h5>
 	<div class="center">
 		<h6>Id</h6>
-		<input id="userId" name="userId" class="input-gray w100" type="text">
+		<input id="userId" name="userId" class="input-gray login-text w100" type="text">
 		<h6>Password</h6>
-		<input id="passwd" name="passwd" class="input-gray w100" type="password">
+		<input id="passwd" name="passwd" class="input-gray login-text w100" type="password">
 		<div>
 			<button id="loginSmt" class="btn-gray">Login</button>
 			<button class="btn-gray">Sign up</button>
