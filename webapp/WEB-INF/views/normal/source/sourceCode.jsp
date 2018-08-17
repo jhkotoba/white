@@ -45,29 +45,29 @@ $(document).ready(function(){
 	//글쓰기 버튼	
 	$("button[name=write]").on("click", function(){
 		let tag = "";
-		$("#sourceWrite #langCd").empty();
+		$("#writeForm #langCd").empty();
 		tag += "<option value=''>타입</option>";
 		for(let i=0; i<codeList.length; i++){
 			tag += "<option value="+codeList[i].code+">"+codeList[i].codeNm+"</option>";	    		
 		}
-		$("#sourceWrite #langCd").append(tag);
-		$("#sourceWrite #langCd").find('option:first').attr('selected', 'selected');
+		$("#writeForm #langCd").append(tag);
+		$("#writeForm #langCd").find('option:first').attr('selected', 'selected');
 		
-		$("#sourceWrite #title").val("");
-		$("#sourceWrite #content").val("");
+		$("#writeForm #title").val("");
+		$("#writeForm #content").val("");
 		
 		fnViewEmpty();
 		fnEditEmpty();
-		$("#sourceWrite").show();
+		$("#writeForm").show();
 		$("body").scrollTop(0);
 	});
 	
 	//글쓰기 - 저장 버튼
-	$("#sourceWrite #save").on("click", function(){
+	$("#writeForm #save").on("click", function(){
 		let param = {};
-		param.langCd = $("#sourceWrite #langCd").val();
-		param.title = $("#sourceWrite #title").val();
-		param.content = $("#sourceWrite #content").val();
+		param.langCd = $("#writeForm #langCd").val();
+		param.title = $("#writeForm #title").val();
+		param.content = $("#writeForm #content").val();
 		
 		if(param.langCd.replace(/^\s+|\s+$/g,"") === ""){
 			alert("타입을 선택해주세요");
@@ -81,11 +81,11 @@ $(document).ready(function(){
 			alert("내용을 입력해주세요.");
 			return;
 		}
-		if($("#sourceWrite #title").val().length > 50){
+		if($("#writeForm #title").val().length > 50){
 			alert("제목 글이 50자를 초과합니다.");
 			return;
 		}
-		if($("#sourceWrite #content").val().length > 4000){
+		if($("#writeForm #content").val().length > 4000){
 			alert("제목 글이 4000자를 초과합니다.");
 			return;
 		}
@@ -101,9 +101,9 @@ $(document).ready(function(){
 		    		alert("새로운 글을 저장하였습니다.");
 		    	}else{
 		    		alert("저장에 실패하였습니다.");
-		    	}
-		    	fnWriteEmpty();		    	
-		    	fnSearchEmpty();			
+		    	}	
+		    	$("#writeForm").clearForm().hide();		    	  	
+		    	$("#paramForm").clearForm();
 				fnJsGrid(1);
 		    },
 		    error : function(request, status, error){
@@ -114,8 +114,8 @@ $(document).ready(function(){
 	});
 	
 	//글쓰기 - 닫기
-	$("#sourceWrite #close").on("click", function(){
-		fnWriteEmpty();
+	$("#writeForm #close").on("click", function(){
+		$("#writeForm").clearForm().hide();
 	});
 	
 	//글수정
@@ -155,7 +155,9 @@ $(document).ready(function(){
 		    	}
 		    	fnViewEmpty();
 		    	fnEditEmpty();		    	
-		    	fnSearchEmpty();			
+		    	
+		    	$("#paramForm").clearForm();
+		    	
 				fnJsGrid(1);
 		    },
 		    error : function(request, status, error){
@@ -192,7 +194,9 @@ $(document).ready(function(){
 		    	}
 		    	fnViewEmpty();
 		    	fnEditEmpty();
-		    	fnSearchEmpty();				
+		    	
+		    	$("#paramForm").clearForm();
+		    	
 				fnJsGrid(1);
 		    },
 		    error : function(request, status, error){
@@ -266,7 +270,8 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
 }
 
 function fnView(sourceSeq){
-	fnWriteEmpty();
+	$("#writeForm").clearForm().hide();
+	
 	$("#sourceView").show();
 	$("#sourceView #edit").addClass("hide");
 	$("#sourceView #delete").addClass("hide");	
@@ -358,15 +363,6 @@ function fnEditEmpty(){
 	$("#sourceEdit").hide();
 }
 
-//글쓰기정보 비우기
-function fnWriteEmpty(){
-	$("#sourceWrite #no").val("");
-	$("#sourceWrite #title").val("");
-	$("#sourceWrite #langCd").find('option:first').attr('selected', 'selected');
-	$("#sourceWrite #content").val("");
-	$("#sourceWrite").hide();
-}
-
 </script>
 
 <div class="article">
@@ -375,12 +371,14 @@ function fnWriteEmpty(){
 	</div>	
 </div>
 
-<input id="langCd" type="hidden" value="">
-<input id="type" type="hidden" value="">
-<input id="text" type="hidden" value="">
+<form id="paramForm" name="paramForm" onsubmit="return false;">
+	<input id="langCd" type="hidden" value="">
+	<input id="type" type="hidden" value="">
+	<input id="text" type="hidden" value="">
+</form>
 
 <!-- 글쓰기  -->
-<div id="sourceWrite" class="updown-spacing hide">	
+<form id="writeForm" class="updown-spacing hide" onsubmit="return false;">	
 	<div class="flex">		
 		<div class="flex-left">			
 			<select id="langCd" class="select-gray">	
@@ -398,7 +396,7 @@ function fnWriteEmpty(){
 		<textarea id="content" class="textarea-gray" maxlength="4000" style="height:50%; width:100%;">		
 		</textarea>		
 	</div>
-</div>
+</form>
 
 <!-- 글수정 -->
 <div id="sourceEdit" class="updown-spacing hide">
