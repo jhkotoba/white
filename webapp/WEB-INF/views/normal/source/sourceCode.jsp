@@ -69,6 +69,10 @@ $(document).ready(function(){
 		param.title = $("#sourceWrite #title").val();
 		param.content = $("#sourceWrite #content").val();
 		
+		if(param.langCd.replace(/^\s+|\s+$/g,"") === ""){
+			alert("타입을 선택해주세요");
+			return;
+		}
 		if(param.title.replace(/^\s+|\s+$/g,"") === ""){
 			alert("제목을 입력해주세요.");
 			return;
@@ -385,17 +389,14 @@ function fnWriteEmpty(){
 		<div class="flex-right">					
 			<input class="input-gray w100" id="title" type="text" maxlength="50" placeholder="제목 입력">
 		</div>
-		<button class="btn-gray" id="save">저장</button>
-		<button class="btn-gray" id="close">닫기</button>
-	</div>
-	
-	<div class="updown-spacing">
-		<textarea id="content" class="code-textarea" maxlength="4000" style="height:50%; width:100%; background-color: balck">		
-		</textarea>		
-	</div>
+		<div class="flex-other">
+			<button class="btn-gray" id="save">저장</button>
+			<button class="btn-gray" id="close">닫기</button>
+		</div>		
+	</div>	
 	<div>
-		<button class="btn-gray" id="save">저장</button>
-		<button class="btn-gray" id="close">닫기</button>
+		<textarea id="content" class="textarea-gray" maxlength="4000" style="height:50%; width:100%;">		
+		</textarea>		
 	</div>
 </div>
 
