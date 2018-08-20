@@ -8,57 +8,43 @@
 let codeList;
 $(document).ready(function(){
 
+	//리스트 출력
+	fnJsGrid();
+	
 	//코드 셀렉트박스 조회
 	cmmCode.select("sc").done(function(data){			
 		codeList = data;
-    	let tag = "<option value=''>전체</option>";
+    	let tag = "";
     	for(let i=0; i<data.length; i++){
     		tag += "<option value="+data[i].code+">"+data[i].codeNm+"</option>";	    		
     	}
-    	$("#sourceSearch #langCd").append(tag);	
+    	$("#writeForm #langCd").append("<option value=''>타입</option>"+tag);
+    	$("#sourceSearch #langCd").append("<option value=''>전체</option>"+tag);
+    	$("#sourceEdit #langCd").append(tag);
 	});	
-	
-	//리스트 출력
-	fnJsGrid();
     
   	//조회 버튼
 	$("#sourceSearch #search").on("click", function(){		
-		$("#langCd").val($("#sourceSearch #langCd").val());
-		$("#type").val($("#sourceSearch #type").val());
+		$("#paramForm #langCd").val($("#sourceSearch #langCd").val());
+		$("#paramForm #type").val($("#sourceSearch #type").val());
 		
-		$("#type").val() === "id"? 
-		$("#text").val($("#sourceSearch #text").val()): 
-		$("#text").val("%"+$("#sourceSearch #text").val()+"%");
+		$("#paramForm #type").val() === "id"? 
+		$("#paramForm #text").val($("#sourceSearch #text").val()): 
+		$("#paramForm #text").val("%"+$("#sourceSearch #text").val()+"%");
 		
 		fnJsGrid(1);
 	});
   	
 	//조회타입 전체시 텍스트 비움
 	$("#sourceSearch #type").on("change", function(itme){
-		if(itme.target.value === ""){
-			$("#sourceSearch #text").val("").attr("disabled","disabled");
-		}else{
-			$("#sourceSearch #text").removeAttr("disabled");
-		}		
+		if(itme.target.value === "") $("#sourceSearch #text").val("");
 	});	
 	
 	//글쓰기 버튼	
-	$("button[name=write]").on("click", function(){
-		let tag = "";
-		$("#writeForm #langCd").empty();
-		tag += "<option value=''>타입</option>";
-		for(let i=0; i<codeList.length; i++){
-			tag += "<option value="+codeList[i].code+">"+codeList[i].codeNm+"</option>";	    		
-		}
-		$("#writeForm #langCd").append(tag);
-		$("#writeForm #langCd").find('option:first').attr('selected', 'selected');
-		
-		$("#writeForm #title").val("");
-		$("#writeForm #content").val("");
-		
+	$("button[name=write]").on("click", function(){		
+		$("#writeForm").clearForm().show();		
 		fnViewEmpty();
-		fnEditEmpty();
-		$("#writeForm").show();
+		fnEditEmpty();		
 		$("body").scrollTop(0);
 	});
 	
@@ -337,18 +323,8 @@ function fnEditInit(data){
 	if('${sessionScope.userId}'!== '' && '${sessionScope.userId}' === String(data.userId)){
 		$("#sourceView #edit").removeClass("hide");
 		$("#sourceView #delete").removeClass("hide");
-	}			
-	
-	let tag = "";
-	for(let i=0; i<codeList.length; i++){
-		if(data.codeNm === codeList[i].codeNm){
-			tag += "<option value="+codeList[i].code+" selected='selected'>"+codeList[i].codeNm+"</option>";
-		}else{
-			tag += "<option value="+codeList[i].code+">"+codeList[i].codeNm+"</option>";
-		}
 	}
-	$("#sourceEdit #langCd").empty();
-	$("#sourceEdit #langCd").append(tag);
+	$("#sourceEdit #langCd").val(data.code).prop("selected", true);
 }
 
 

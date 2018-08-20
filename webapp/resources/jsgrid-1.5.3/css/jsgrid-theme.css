@@ -138,6 +138,7 @@
 .jsgrid-selected-row > .jsgrid-cell {
     background: #363636;
     border-color: #363636;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 }
 
 .jsgrid-nodata-row > .jsgrid-cell {

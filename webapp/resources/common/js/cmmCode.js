@@ -4,12 +4,11 @@ let cmmCode = {
 		let deferred = $.Deferred();		
 		$.ajax({		
 			type: 'POST',
-			url: getContextPath()+'/white/selectCodeList.ajax',
+			url: fnContextPath()+'/white/selectCodeList.ajax',
 			data : {
 				codePrt : codePrt.toUpperCase()
 			},
 			dataType: 'json',
-			async : true,
 		    success : function(data) {
 		    	deferred.resolve(data);
 		    },
@@ -21,7 +20,7 @@ let cmmCode = {
 	}	
 }
 
-function getContextPath(){
+function fnContextPath(){
     let offset = location.href.indexOf(location.host)+location.host.length;
     let ctxPath = location.href.substring(offset,location.href.indexOf('/',offset+1));
     return ctxPath;

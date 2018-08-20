@@ -66,7 +66,7 @@ public class MainController {
 	public String white(HttpServletRequest request, Device device){		
 		WhiteMap param = new WhiteMap(request);		
 		
-		String navUrl = param.getString("navUrl");		
+		String navUrl = param.getString("navUrl");
 		String sideUrl = param.getString("sideUrl");				
 		
 		request.setAttribute("navUrl", navUrl);

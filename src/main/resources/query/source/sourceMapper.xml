@@ -29,10 +29,10 @@
 	
 	<select id="selectSourceList" resultType="WhiteMap" parameterType="WhiteMap">	
 		SELECT
-			sb.source_seq AS sourceSeq,
-			cc.code_nm AS codeNm,
-			sb.user_seq AS userSeq,
-			wu.user_id AS userId,
+			sb.source_seq 	AS sourceSeq,
+			cc.code_nm 		AS codeNm,
+			sb.user_seq 	AS userSeq,
+			wu.user_id 		AS userId,
 			sb.title,
 			DATE_FORMAT(sb.reg_date,'%Y-%m-%d %H:%i:%s') AS regDate
 		FROM source_board sb
@@ -61,13 +61,14 @@
 	
 	<select id="selectSourceDtlView" resultType="WhiteMap" parameterType="WhiteMap">	
 		SELECT 
-			sb.source_seq AS sourceSeq,
-			cc.code_nm AS codeNm,
-			sb.user_seq AS userSeq,
-			wu.user_id AS userId,
-			sb.title,
-			sb.content,
-			DATE_FORMAT(sb.reg_date,'%Y-%m-%d %H:%i:%s') AS regDate
+			sb.source_seq 	AS sourceSeq
+			,cc.code_nm 		AS codeNm
+			,cc.code
+			,sb.user_seq 	AS userSeq
+			,wu.user_id 		AS userId
+			,sb.title
+			,sb.content
+			,DATE_FORMAT(sb.reg_date,'%Y-%m-%d %H:%i:%s') AS regDate
 		FROM source_board sb
    		LEFT OUTER JOIN white_user wu
   			ON wu.user_seq = sb.user_seq
