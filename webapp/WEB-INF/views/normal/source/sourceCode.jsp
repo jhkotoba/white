@@ -5,39 +5,37 @@
 <link rel="stylesheet" href="${contextPath}/resources/cAdjust/css/cAdjust.css" type="text/css" />
 <script type="text/javascript" src="${contextPath}/resources/cAdjust/js/cAdjust.js"></script>
 <script type="text/javascript">
-let codeList;
 $(document).ready(function(){
 
 	//리스트 출력
 	fnJsGrid();
 	
 	//코드 셀렉트박스 조회
-	cmmCode.select("sc").done(function(data){			
-		codeList = data;
+	cmmCode.select("sc").done(function(data){		
     	let tag = "";
     	for(let i=0; i<data.length; i++){
     		tag += "<option value="+data[i].code+">"+data[i].codeNm+"</option>";	    		
     	}
     	$("#writeForm #langCd").append("<option value=''>타입</option>"+tag);
-    	$("#sourceSearch #langCd").append("<option value=''>전체</option>"+tag);
+    	$("#searchBar #langCd").append("<option value=''>전체</option>"+tag);
     	$("#sourceEdit #langCd").append(tag);
 	});	
     
   	//조회 버튼
-	$("#sourceSearch #search").on("click", function(){		
-		$("#paramForm #langCd").val($("#sourceSearch #langCd").val());
-		$("#paramForm #type").val($("#sourceSearch #type").val());
+	$("#searchBar #searchBtn").on("click", function(){		
+		$("#searchForm #langCd").val($("#searchBar #langCd").val());
+		$("#searchForm #type").val($("#searchBar #type").val());
 		
-		$("#paramForm #type").val() === "id"? 
-		$("#paramForm #text").val($("#sourceSearch #text").val()): 
-		$("#paramForm #text").val("%"+$("#sourceSearch #text").val()+"%");
+		$("#searchForm #type").val() === "id"? 
+		$("#searchForm #text").val($("#searchBar #text").val()): 
+		$("#searchForm #text").val("%"+$("#searchBar #text").val()+"%");
 		
 		fnJsGrid(1);
 	});
   	
 	//조회타입 전체시 텍스트 비움
-	$("#sourceSearch #type").on("change", function(itme){
-		if(itme.target.value === "") $("#sourceSearch #text").val("");
+	$("#searchBar #type").on("change", function(itme){
+		if(itme.target.value === "") $("#searchBar #text").val("");
 	});	
 	
 	//글쓰기 버튼	
@@ -89,7 +87,7 @@ $(document).ready(function(){
 		    		alert("저장에 실패하였습니다.");
 		    	}	
 		    	$("#writeForm").clearForm().hide();		    	  	
-		    	$("#paramForm").clearForm();
+		    	$("#searchForm").clearForm();
 				fnJsGrid(1);
 		    },
 		    error : function(request, status, error){
@@ -141,9 +139,6 @@ $(document).ready(function(){
 		    	}
 		    	fnViewEmpty();
 		    	fnEditEmpty();		    	
-		    	
-		    	$("#paramForm").clearForm();
-		    	
 				fnJsGrid(1);
 		    },
 		    error : function(request, status, error){
@@ -181,7 +176,7 @@ $(document).ready(function(){
 		    	fnViewEmpty();
 		    	fnEditEmpty();
 		    	
-		    	$("#paramForm").clearForm();
+		    	$("#searchForm").clearForm();
 		    	
 				fnJsGrid(1);
 		    },
@@ -281,13 +276,6 @@ function fnView(sourceSeq){
 	});
 }
 
-//검색정보 삭제
-function fnSearchEmpty(){
-	$("#langCd").val("");
-	$("#type").val("");
-	$("#text").val("");
-}
-
 //뷰 정보 추가
 function fnViewInit(data){
 	$("#sourceView #sourceSeq").val(data.sourceSeq);	    	
@@ -346,12 +334,6 @@ function fnEditEmpty(){
 		<h1 class="h2 nsrb">소스코드</h1>
 	</div>	
 </div>
-
-<form id="paramForm" name="paramForm" onsubmit="return false;">
-	<input id="langCd" type="hidden" value="">
-	<input id="type" type="hidden" value="">
-	<input id="text" type="hidden" value="">
-</form>
 
 <!-- 글쓰기  -->
 <form id="writeForm" class="updown-spacing hide" onsubmit="return false;">	
@@ -428,7 +410,14 @@ function fnEditEmpty(){
 	</div>		
 </div>
 
-<div id="sourceSearch" class="search-bar">
+<!-- 검색 -->
+<form id="searchForm" name="searchForm" onsubmit="return false;">
+	<input id="langCd" type="hidden" value="">
+	<input id="type" type="hidden" value="">
+	<input id="text" type="hidden" value="">
+</form>
+
+<div id="searchBar" class="search-bar">
 	<select id="langCd" class="select-gray">				
 	</select>
 	<select class="select-gray" id="type">
@@ -438,7 +427,7 @@ function fnEditEmpty(){
 		<option value="content">내용</option>
 	</select>
 	<input class="input-gray w3" id="text" type="text">
-	<button class="btn-gray" id="search">조회</button>
+	<button class="btn-gray" id="searchBtn">조회</button>
 	<button class="btn-gray pull-right" name="write">글쓰기</button>
 </div>
 
