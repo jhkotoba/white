@@ -22,20 +22,35 @@ $(document).ajaxComplete(function() {
 	$(".blind").hide();
 });
 
-//form reset
+//form clear
 $.fn.clearForm = function() {
-    return this.each(function() {
-        let type = this.type, tag = this.tagName.toLowerCase();
-        if (tag === 'form'){
-            return $(':input',this).clearForm();
-        }
-        if (type === 'text' || type === 'password' || type === 'hidden' || tag === 'textarea'){
-            this.value = '';
-        }else if (type === 'checkbox' || type === 'radio'){
-            this.checked = false;
-        }else if (tag === 'select'){
-            this.selectedIndex = 0;
-        }
+	return this.each(function() {
+		let type = this.type, tag = this.tagName.toLowerCase();
+		if (tag === 'form'){
+			return $(':input',this).clearForm();
+		}
+		if (type === 'text' || type === 'password' || type === 'hidden' || tag === 'textarea'){
+			this.value = '';
+		}else if (type === 'checkbox' || type === 'radio'){
+			this.checked = false;
+		}else if (tag === 'select'){
+			this.selectedIndex = 0;
+		}
+    });
+};
+
+//form data
+$.fn.getDataForm = function() {  
+	
+    this.each(function(){
+    	let type = this.type, tag = this.tagName.toLowerCase();
+    	console.log(type);
+		if (type === 'form'){
+		    return $(':input',this).getDataForm();
+		}
+		if (type === 'text' || type === 'password' || type === 'hidden' || tag === 'textarea'){
+			console.log(this.value);
+		}
     });
 };
 
