@@ -23,11 +23,11 @@ $(document).ajaxComplete(function() {
 });
 
 //form clear
-$.fn.clearForm = function() {
+$.fn.clear = function() {
 	return this.each(function() {
 		let type = this.type, tag = this.tagName.toLowerCase();
 		if (tag === 'form'){
-			return $(':input',this).clearForm();
+			return $(':input',this).clear();
 		}
 		if (type === 'text' || type === 'password' || type === 'hidden' || tag === 'textarea'){
 			this.value = '';
@@ -39,19 +39,28 @@ $.fn.clearForm = function() {
     });
 };
 
-//form data
-$.fn.getDataForm = function() {  
+//form getParam
+$.fn.getParam = function() {	
+	let param = {};
 	
-    this.each(function(){
-    	let type = this.type, tag = this.tagName.toLowerCase();
-    	console.log(type);
-		if (type === 'form'){
-		    return $(':input',this).getDataForm();
+	this.each(function(){
+		let type = this.type, tag = this.tagName.toLowerCase();		
+		
+		if (tag === "form"){
+			param = $(':input',this).getParam();
 		}
-		if (type === 'text' || type === 'password' || type === 'hidden' || tag === 'textarea'){
-			console.log(this.value);
-		}
-    });
+		
+		if(type === "text" || type === "password" || type === "hidden" || tag === "textarea"  || tag === "select"){			
+			param[this.id] = this.value;			
+		}else if (type === 'checkbox' || type === 'radio'){
+			if(this.checked){
+				param[this.id] = this.value;
+			}else{
+				param[this.id] = "";
+			}			
+		}		
+	});
+	return param;
 };
 
 

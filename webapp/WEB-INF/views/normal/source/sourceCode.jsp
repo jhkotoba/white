@@ -29,7 +29,7 @@ $(document).ready(function(){
 		$("#searchForm #type").val() === "id"? 
 		$("#searchForm #text").val($("#searchBar #text").val()): 
 		$("#searchForm #text").val("%"+$("#searchBar #text").val()+"%");
-		
+
 		fnJsGrid(1);
 	});
   	
@@ -48,10 +48,7 @@ $(document).ready(function(){
 	
 	//글쓰기 - 저장 버튼
 	$("#writeForm #save").on("click", function(){
-		let param = {};
-		param.langCd = $("#writeForm #langCd").val();
-		param.title = $("#writeForm #title").val();
-		param.content = $("#writeForm #content").val();
+		let param = $("#writeForm").getParam();		
 		
 		if(param.langCd.replace(/^\s+|\s+$/g,"") === ""){
 			alert("타입을 선택해주세요");
