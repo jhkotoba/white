@@ -40,7 +40,7 @@ $(document).ready(function(){
 	
 	//글쓰기 버튼	
 	$("button[name=write]").on("click", function(){		
-		$("#writeForm").clearForm().show();		
+		$("#writeForm").clear().show();		
 		fnViewEmpty();
 		fnEditEmpty();		
 		$("body").scrollTop(0);
@@ -83,8 +83,8 @@ $(document).ready(function(){
 		    	}else{
 		    		alert("저장에 실패하였습니다.");
 		    	}	
-		    	$("#writeForm").clearForm().hide();		    	  	
-		    	$("#searchForm").clearForm();
+		    	$("#writeForm").clear().hide();		    	  	
+		    	$("#searchForm").clear();
 				fnJsGrid(1);
 		    },
 		    error : function(request, status, error){
@@ -96,7 +96,7 @@ $(document).ready(function(){
 	
 	//글쓰기 - 닫기
 	$("#writeForm #close").on("click", function(){
-		$("#writeForm").clearForm().hide();
+		$("#writeForm").clear().hide();
 	});
 	
 	//글수정
@@ -173,7 +173,7 @@ $(document).ready(function(){
 		    	fnViewEmpty();
 		    	fnEditEmpty();
 		    	
-		    	$("#searchForm").clearForm();
+		    	$("#searchForm").clear();
 		    	
 				fnJsGrid(1);
 		    },
@@ -248,7 +248,7 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
 }
 
 function fnView(sourceSeq){
-	$("#writeForm").clearForm().hide();
+	$("#writeForm").clear().hide();
 	
 	$("#sourceView").show();
 	$("#sourceView #edit").addClass("hide");
