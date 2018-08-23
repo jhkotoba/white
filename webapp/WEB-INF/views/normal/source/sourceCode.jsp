@@ -48,7 +48,7 @@ $(document).ready(function(){
 	
 	//글쓰기 - 저장 버튼
 	$("#writeForm #save").on("click", function(){
-		let param = $("#writeForm").getParam();		
+		let param = $("#writeForm").getParam();
 		
 		if(param.langCd.replace(/^\s+|\s+$/g,"") === ""){
 			alert("타입을 선택해주세요");

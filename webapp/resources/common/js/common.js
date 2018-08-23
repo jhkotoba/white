@@ -48,6 +48,7 @@ $.fn.getParam = function() {
 		
 		if (tag === "form"){
 			param = $(':input',this).getParam();
+			return param;
 		}
 		
 		if(type === "text" || type === "password" || type === "hidden" || tag === "textarea"  || tag === "select"){			
@@ -62,8 +63,6 @@ $.fn.getParam = function() {
 	});
 	return param;
 };
-
-
 
 //날짜반환함수
 let isDate = {	
