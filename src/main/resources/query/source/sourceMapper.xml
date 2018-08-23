@@ -62,10 +62,10 @@
 	<select id="selectSourceDtlView" resultType="WhiteMap" parameterType="WhiteMap">	
 		SELECT 
 			sb.source_seq 	AS sourceSeq
-			,cc.code_nm 		AS codeNm
-			,cc.code
+			,cc.code_nm 	AS codeNm
+			,cc.code		
 			,sb.user_seq 	AS userSeq
-			,wu.user_id 		AS userId
+			,wu.user_id 	AS userId
 			,sb.title
 			,sb.content
 			,DATE_FORMAT(sb.reg_date,'%Y-%m-%d %H:%i:%s') AS regDate

@@ -18,7 +18,7 @@ $(document).ready(function(){
     	}
     	$("#writeForm #langCd").append("<option value=''>타입</option>"+tag);
     	$("#searchBar #langCd").append("<option value=''>전체</option>"+tag);
-    	$("#sourceEdit #langCd").append(tag);
+    	$("#editForm #langCd").append(tag);
 	});	
     
   	//조회 버튼
@@ -102,16 +102,12 @@ $(document).ready(function(){
 	//글수정
 	$("#sourceView #edit").on("click", function(){
 		$("#sourceView").hide();
-		$("#sourceEdit").show();
+		$("#editForm").show();
 	});
 	
 	//글수정-저장
-	$("#sourceEdit #save").on("click", function(){
-		let param = {};
-		param.sourceSeq = $("#sourceEdit #sourceSeq").val();
-		param.langCd = $("#sourceEdit #langCd").val();
-		param.title = $("#sourceEdit #title").val();
-		param.content = $("#sourceEdit #content").val();
+	$("#editForm #save").on("click", function(){		
+		let param = $("#editForm").getParam();
 		
 		if(param.title.replace(/^\s+|\s+$/g,"") === ""){
 			alert("제목을 입력해주세요.");
@@ -135,7 +131,7 @@ $(document).ready(function(){
 		    		alert("수정에 실패하였습니다.");
 		    	}
 		    	fnViewEmpty();
-		    	fnEditEmpty();		    	
+		    	$("#editForm").clear().hide();
 				fnJsGrid(1);
 		    },
 		    error : function(request, status, error){
@@ -145,8 +141,8 @@ $(document).ready(function(){
 	});
 	
 	//글수정 - 닫기
-	$("#sourceEdit #close").on("click", function(){
-		fnEditEmpty();
+	$("#editForm #close").on("click", function(){
+		$("#editForm").clear().hide();
 	});	
 	
 	//글보기 - 삭제
@@ -171,8 +167,7 @@ $(document).ready(function(){
 		    		alert("삭제에 실패하였습니다.");
 		    	}
 		    	fnViewEmpty();
-		    	fnEditEmpty();
-		    	
+		    	$("#editForm").clear().hide();		    	
 		    	$("#searchForm").clear();
 		    	
 				fnJsGrid(1);
@@ -206,11 +201,7 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
             loadData: function(filter) {
             	let deferred = $.Deferred();
             	
-            	let param = {};
-            	param.langCd = $("#langCd").val();
-            	param.type = $("#type").val();
-            	param.text = $("#text").val();
-            	
+            	let param = $("#searchForm").getParam();            	
             	if(filter !== "" || filter !==undefined || filter !== null){
             		param.pageIndex = filter.pageIndex;
                 	param.pageSize = filter.pageSize;                	
@@ -264,7 +255,8 @@ function fnView(sourceSeq){
 		async : true,
 	    success : function(data) {
 	    	fnViewInit(data);
-	    	fnEditInit(data);			
+	    	fnEditInit(data);
+	    	//$("#editForm").setParam(data);
 			$("body").scrollTop(0);
 	    },
 	    error : function(request, status, error){
@@ -299,29 +291,17 @@ function fnViewEmpty(){
 
 //수정 내용 추가
 function fnEditInit(data){
-	$("#sourceEdit #sourceSeq").val(data.sourceSeq);	    	    	
-	$("#sourceEdit #title").val(data.title);
-	$("#sourceEdit #regDate").text(data.regDate);
-	$("#sourceEdit #userId").text(data.userId);
-	$("#sourceEdit #codeNm").text(data.codeNm);			
-	$("#sourceEdit #content").val(data.content);
+	$("#editForm #sourceSeq").val(data.sourceSeq);	    	    	
+	$("#editForm #title").val(data.title);
+	$("#editForm #regDate").text(data.regDate);
+	$("#editForm #userId").text(data.userId);
+	$("#editForm #codeNm").text(data.codeNm);			
+	$("#editForm #content").val(data.content);
 	if('${sessionScope.userId}'!== '' && '${sessionScope.userId}' === String(data.userId)){
 		$("#sourceView #edit").removeClass("hide");
 		$("#sourceView #delete").removeClass("hide");
 	}
-	$("#sourceEdit #langCd").val(data.code).prop("selected", true);
-}
-
-
-//수정 내용 삭제
-function fnEditEmpty(){
-	$("#sourceEdit #sourceSeq").val("");	    	    	
-	$("#sourceEdit #title").val("");
-	$("#sourceEdit #regDate").text("");
-	$("#sourceEdit #userId").text("");
-	$("#sourceEdit #codeNm").text("");	
-	$("#sourceEdit #content").val("");
-	$("#sourceEdit").hide();
+	$("#editForm #langCd").val(data.code).prop("selected", true);
 }
 
 </script>
@@ -354,7 +334,7 @@ function fnEditEmpty(){
 </form>
 
 <!-- 글수정 -->
-<div id="sourceEdit" class="updown-spacing hide">
+<form id="editForm" class="updown-spacing hide" onsubmit="return false;">
 	<input id="sourceSeq" type="hidden" value="">
 	<div>
 		<span>타입</span>
@@ -377,7 +357,7 @@ function fnEditEmpty(){
 		<button class="btn-gray" id="save">저장</button>
 		<button class="btn-gray" id="close">닫기</button>
 	</div>
-</div>
+</form>
 
 <!-- 글보기 -->
 <div id="sourceView" class="updown-spacing hide">	
