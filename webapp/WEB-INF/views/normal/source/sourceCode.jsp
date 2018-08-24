@@ -40,9 +40,9 @@ $(document).ready(function(){
 	
 	//글쓰기 버튼	
 	$("button[name=write]").on("click", function(){		
-		$("#writeForm").clear().show();		
-		fnViewEmpty();
-		fnEditEmpty();		
+		$("#writeForm").clear().show();
+		$("#viewForm").clear().hide();
+		$("#editForm").clear().hide();	
 		$("body").scrollTop(0);
 	});
 	
@@ -100,8 +100,8 @@ $(document).ready(function(){
 	});
 	
 	//글수정
-	$("#sourceView #edit").on("click", function(){
-		$("#sourceView").hide();
+	$("#viewForm #edit").on("click", function(){
+		$("#viewForm").hide();
 		$("#editForm").show();
 	});
 	
@@ -130,7 +130,7 @@ $(document).ready(function(){
 		    	}else{
 		    		alert("수정에 실패하였습니다.");
 		    	}
-		    	fnViewEmpty();
+		    	$("#viewForm").clear().hide();
 		    	$("#editForm").clear().hide();
 				fnJsGrid(1);
 		    },
@@ -146,7 +146,7 @@ $(document).ready(function(){
 	});	
 	
 	//글보기 - 삭제
-	$("#sourceView #delete").on("click", function(){
+	$("#viewForm #delete").on("click", function(){
 		
 		if(!confirm("삭제하시겠습니까?")){
 			return;
@@ -156,7 +156,7 @@ $(document).ready(function(){
 			type: 'POST',
 			url: common.path()+'/source/deleteSource.ajax',
 			data : {
-				sourceSeq : $("#sourceView #sourceSeq").val()
+				sourceSeq : $("#viewForm #sourceSeq").val()
 			},
 			dataType: 'json',
 			async : true,
@@ -166,7 +166,7 @@ $(document).ready(function(){
 		    	}else{
 		    		alert("삭제에 실패하였습니다.");
 		    	}
-		    	fnViewEmpty();
+		    	$("#viewForm").clear().hide();
 		    	$("#editForm").clear().hide();		    	
 		    	$("#searchForm").clear();
 		    	
@@ -179,8 +179,8 @@ $(document).ready(function(){
 	});
 	
 	//글수정 - 닫기
-	$("#sourceView #close").on("click", function(){
-		fnViewEmpty();
+	$("#viewForm #close").on("click", function(){
+		$("#viewForm").clear().hide();
 	});	
 });
 
@@ -193,7 +193,7 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
         paging: true,
         pageLoading: true,
         pageIndex : isEmpty(pageIdx) === true ? 1 : pageIdx,
-        pageSize : isEmpty(pageSize) === true ? 10 : pageSize,
+        pageSize : isEmpty(pageSize) === true ? 20 : pageSize,
         pageButtonCount : isEmpty(pageBtnCnt) === true ? 10 : pageBtnCnt,
        
         autoload: true,        
@@ -241,9 +241,9 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
 function fnView(sourceSeq){
 	$("#writeForm").clear().hide();
 	
-	$("#sourceView").show();
-	$("#sourceView #edit").addClass("hide");
-	$("#sourceView #delete").addClass("hide");	
+	$("#viewForm").show();
+	$("#viewForm #edit").addClass("hide");
+	$("#viewForm #delete").addClass("hide");	
 	
 	$.ajax({		
 		type: 'POST',
@@ -267,26 +267,15 @@ function fnView(sourceSeq){
 
 //뷰 정보 추가
 function fnViewInit(data){
-	$("#sourceView #sourceSeq").val(data.sourceSeq);	    	
-	$("#sourceView #no").text(data.sourceSeq);	    	
-	$("#sourceView #title").text(data.title);
-	$("#sourceView #regDate").text(data.regDate);
-	$("#sourceView #userId").text(data.userId);
-	$("#sourceView #codeNm").text(data.codeNm);
+	$("#viewForm #sourceSeq").val(data.sourceSeq);	    	
+	$("#viewForm #no").text(data.sourceSeq);	    	
+	$("#viewForm #title").text(data.title);
+	$("#viewForm #regDate").text(data.regDate);
+	$("#viewForm #userId").text(data.userId);
+	$("#viewForm #codeNm").text(data.codeNm);
 	
 	let adjust = cAdjust.adjust(data.codeNm, data.content);	
-	$("#sourceView #cAdjust").empty().append(adjust);
-}
-
-//뷰 정보 비우기
-function fnViewEmpty(){
-	$("#sourceView #no").text("");
-	$("#sourceView #title").text("");
-	$("#sourceView #regDate").text("");
-	$("#sourceView #userId").text("");
-	$("#sourceView #codeNm").text("");	
-	$("#sourceView #content").empty();
-	$("#sourceView").hide();
+	$("#viewForm #cAdjust").empty().append(adjust);
 }
 
 //수정 내용 추가
@@ -298,8 +287,8 @@ function fnEditInit(data){
 	$("#editForm #codeNm").text(data.codeNm);			
 	$("#editForm #content").val(data.content);
 	if('${sessionScope.userId}'!== '' && '${sessionScope.userId}' === String(data.userId)){
-		$("#sourceView #edit").removeClass("hide");
-		$("#sourceView #delete").removeClass("hide");
+		$("#viewForm #edit").removeClass("hide");
+		$("#viewForm #delete").removeClass("hide");
 	}
 	$("#editForm #langCd").val(data.code).prop("selected", true);
 }
@@ -360,7 +349,7 @@ function fnEditInit(data){
 </form>
 
 <!-- 글보기 -->
-<div id="sourceView" class="updown-spacing hide">	
+<div id="viewForm" class="updown-spacing hide">	
 	<input id="sourceSeq" type="hidden" value="">
 	<div class="right">
 		<button class="btn-gray" id="edit" class="hide">수정</button>	
