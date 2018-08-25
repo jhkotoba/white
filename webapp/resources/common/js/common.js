@@ -67,8 +67,9 @@ $.fn.getParam = function() {
 //form setParam
 $.fn.setParam = function(param){
 	this.each(function(){
-		let type = this.type, tag = this.tagName.toLowerCase();		
+		let type = this.type, tag = this.tagName.toLowerCase();	
 		
+		console.log(this);
 		if (tag === "form"){
 			return $(':input',this).setParam(param);
 		}

@@ -254,9 +254,15 @@ function fnView(sourceSeq){
 		dataType: 'json',
 		async : true,
 	    success : function(data) {
-	    	fnViewInit(data);
-	    	fnEditInit(data);
-	    	//$("#editForm").setParam(data);
+	    	//fnViewInit(data);	    	
+	    	$("#viewForm").setParam(data);
+	    	$("#viewForm #cAdjust").empty().append(cAdjust.adjust(data.codeNm, data.content));
+	    	//fnEditInit(data);
+	    	$("#editForm").setParam(data);
+	    	if('${sessionScope.userId}'!== '' && '${sessionScope.userId}' === String(data.userId)){
+	    		$("#viewForm #edit").removeClass("hide");
+	    		$("#viewForm #delete").removeClass("hide");
+	    	}	    	
 			$("body").scrollTop(0);
 	    },
 	    error : function(request, status, error){
@@ -277,22 +283,6 @@ function fnViewInit(data){
 	let adjust = cAdjust.adjust(data.codeNm, data.content);	
 	$("#viewForm #cAdjust").empty().append(adjust);
 }
-
-//수정 내용 추가
-function fnEditInit(data){
-	$("#editForm #sourceSeq").val(data.sourceSeq);	    	    	
-	$("#editForm #title").val(data.title);
-	$("#editForm #regDate").text(data.regDate);
-	$("#editForm #userId").text(data.userId);
-	$("#editForm #codeNm").text(data.codeNm);			
-	$("#editForm #content").val(data.content);
-	if('${sessionScope.userId}'!== '' && '${sessionScope.userId}' === String(data.userId)){
-		$("#viewForm #edit").removeClass("hide");
-		$("#viewForm #delete").removeClass("hide");
-	}
-	$("#editForm #langCd").val(data.code).prop("selected", true);
-}
-
 </script>
 
 <div class="article">
