@@ -50,15 +50,10 @@ $.fn.getParam = function() {
 			param = $(':input',this).getParam();
 			return param;
 		}
-		
 		if(type === "text" || type === "password" || type === "hidden" || tag === "textarea"  || tag === "select"){			
 			param[this.id] = this.value;			
 		}else if (type === 'checkbox' || type === 'radio'){
-			/*if(this.checked){
-				param[this.id] = this.value;
-			}else{
-				param[this.id] = "";
-			}	*/		
+				
 		}		
 	});
 	return param;
@@ -66,24 +61,19 @@ $.fn.getParam = function() {
 
 //form setParam
 $.fn.setParam = function(param){
-	this.each(function(){
-		let type = this.type, tag = this.tagName.toLowerCase();	
-		
-		console.log(this);
-		if (tag === "form"){
-			return $(':input',this).setParam(param);
-		}
-		
-		if(type === "text" || type === "password" || type === "hidden" || tag === "textarea"){			
-			this.value = param[this.id];
-		}else if(tag === "select"){
-			if(param[this.id] === undefined){
-				$(this).val(param.code).prop("selected", true);
-			}else{
+	return this.find("*").each(function(){
+		if(param[this.id] !== undefined){
+			let type = this.type, tag = this.tagName.toLowerCase();	
+			
+			if(type === "text" || type === "password" || type === "hidden" || tag === "textarea"){
+				this.value = param[this.id];
+			}else if(tag === "select"){
 				$(this).val(param[this.id]).prop("selected", true);
+			}else if (type === 'checkbox' || type === 'radio'){
+				
+			}else if(tag === "span"){
+				$(this).text(param[this.id]);
 			}
-		}else if (type === 'checkbox' || type === 'radio'){
-					
 		}		
 	});
 }

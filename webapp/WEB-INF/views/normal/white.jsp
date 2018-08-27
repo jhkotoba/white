@@ -46,15 +46,11 @@ $(document).ready(function(){
 	});	
 	//사용자 체크, 로그인
 	$("#loginSmt").on("click", function(e){
-		let param = {};
-		param.userId = $("#loginForm #userId").val();
-		param.passwd = $("#loginForm #passwd").val();
-		
 		$.ajax({		
 			type: 'POST',
 			url: common.path()+'/main/loginCheck.ajax',
 			dataType: 'json',
-			data : param,
+			data : $("#loginForm").getParam(),
 		    success : function(data) {
 		    	if(data){		    		
 		    		$(".blind").hide(200);

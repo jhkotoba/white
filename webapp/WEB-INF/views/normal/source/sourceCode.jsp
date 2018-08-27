@@ -230,7 +230,7 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
         }, 
         fields: [
 			{ title:"번호",	name:"sourceSeq",	type:"text", width:"4%", align:"center"},
-			{ title:"언어",	name:"codeNm",		type:"text", width:"8%", align:"center"},
+			{ title:"언어",	name:"langNm",		type:"text", width:"8%", align:"center"},
 			{ title:"글제목",	name:"title",		type:"text", width:"70%"},
 			{ title:"작성자",	name:"userId",		type:"text", width:"8%", align:"center"},
 			{ title:"날짜",	name:"regDate",		type:"text", width:"10%", align:"center"}
@@ -240,6 +240,7 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
 
 function fnView(sourceSeq){
 	$("#writeForm").clear().hide();
+	$("#editForm").clear().hide();
 	
 	$("#viewForm").show();
 	$("#viewForm #edit").addClass("hide");
@@ -252,12 +253,10 @@ function fnView(sourceSeq){
 			sourceSeq : sourceSeq
 		},
 		dataType: 'json',
-		async : true,
-	    success : function(data) {
-	    	//fnViewInit(data);	    	
+	    success : function(data) {	    	
 	    	$("#viewForm").setParam(data);
-	    	$("#viewForm #cAdjust").empty().append(cAdjust.adjust(data.codeNm, data.content));
-	    	//fnEditInit(data);
+	    	$("#viewForm #cAdjust").empty().append(cAdjust.adjust(data.langNm, data.content));
+	    	
 	    	$("#editForm").setParam(data);
 	    	if('${sessionScope.userId}'!== '' && '${sessionScope.userId}' === String(data.userId)){
 	    		$("#viewForm #edit").removeClass("hide");
@@ -269,19 +268,6 @@ function fnView(sourceSeq){
 	    	alert("error");
 	    }
 	});
-}
-
-//뷰 정보 추가
-function fnViewInit(data){
-	$("#viewForm #sourceSeq").val(data.sourceSeq);	    	
-	$("#viewForm #no").text(data.sourceSeq);	    	
-	$("#viewForm #title").text(data.title);
-	$("#viewForm #regDate").text(data.regDate);
-	$("#viewForm #userId").text(data.userId);
-	$("#viewForm #codeNm").text(data.codeNm);
-	
-	let adjust = cAdjust.adjust(data.codeNm, data.content);	
-	$("#viewForm #cAdjust").empty().append(adjust);
 }
 </script>
 
@@ -339,7 +325,7 @@ function fnViewInit(data){
 </form>
 
 <!-- 글보기 -->
-<div id="viewForm" class="updown-spacing hide">	
+<form id="viewForm" class="updown-spacing hide" onsubmit="return false;">	
 	<input id="sourceSeq" type="hidden" value="">
 	<div class="right">
 		<button class="btn-gray" id="edit" class="hide">수정</button>	
@@ -352,7 +338,7 @@ function fnViewInit(data){
 		<span>번호</span>
 		<span id="no"></span>
 		<span>타입</span>
-		<span id="codeNm"></span>
+		<span id="langNm"></span>
 		<span>제목</span>
 		<span id="title"></span>		
 	</div>
@@ -364,7 +350,7 @@ function fnViewInit(data){
 	</div>
 	<div id="cAdjust" class="updown-spacing">		
 	</div>		
-</div>
+</form>
 
 <!-- 검색 -->
 <form id="searchForm" name="searchForm" onsubmit="return false;">

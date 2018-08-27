@@ -30,7 +30,7 @@
 	<select id="selectSourceList" resultType="WhiteMap" parameterType="WhiteMap">	
 		SELECT
 			sb.source_seq 	AS sourceSeq,
-			cc.code_nm 		AS codeNm,
+			cc.code_nm 		AS langNm,
 			sb.user_seq 	AS userSeq,
 			wu.user_id 		AS userId,
 			sb.title,
@@ -62,8 +62,8 @@
 	<select id="selectSourceDtlView" resultType="WhiteMap" parameterType="WhiteMap">	
 		SELECT 
 			sb.source_seq 	AS sourceSeq
-			,cc.code_nm 	AS codeNm
-			,cc.code		
+			,cc.code_nm 	AS langNm
+			,cc.code		AS langCd
 			,sb.user_seq 	AS userSeq
 			,wu.user_id 	AS userId
 			,sb.title
