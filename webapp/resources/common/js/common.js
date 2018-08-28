@@ -39,6 +39,33 @@ $.fn.clear = function() {
     });
 };
 
+/*let wVali = {
+		check : function(objData, checkTp){				
+			if(typeof checkTp === "string"){
+				
+			}else if(typeof checkTp === "object"){
+				
+			}		
+		}
+	}*/
+
+$.fn.valiParam = function(ck) {
+	return this.each(function(){
+		let type = this.type, tag = this.tagName.toLowerCase();		
+		
+		if (tag === "form"){
+			
+			
+		}
+		if(type === "text" || type === "password" || type === "hidden" || tag === "textarea"  || tag === "select"){			
+						
+		}else if (type === 'checkbox' || type === 'radio'){
+				
+		}		
+	});
+};
+
+
 //form getParam
 $.fn.getParam = function() {	
 	let param = {};
