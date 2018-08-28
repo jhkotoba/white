@@ -14,12 +14,12 @@ $(document).ready(function(){
 
 //ajax 시작할때 실행되는 영역
 $(document).ajaxSend(function() {
-	 $(".blind").show();
+	 $(".blind").show(100);
 });
 
 //ajax 성공하면 실행되는 영역
 $(document).ajaxComplete(function() {
-	$(".blind").hide();
+	$(".blind").hide(400);
 });
 
 //form clear
@@ -39,59 +39,29 @@ $.fn.clear = function() {
     });
 };
 
-/*let wVali = {
-		check : function(objData, checkTp){				
-			if(typeof checkTp === "string"){
-				
-			}else if(typeof checkTp === "object"){
-				
-			}		
-		}
-	}*/
-
-$.fn.valiParam = function(ck) {
-	return this.each(function(){
-		let type = this.type, tag = this.tagName.toLowerCase();		
-		
-		if (tag === "form"){
-			
-			
-		}
-		if(type === "text" || type === "password" || type === "hidden" || tag === "textarea"  || tag === "select"){			
-						
-		}else if (type === 'checkbox' || type === 'radio'){
-				
-		}		
-	});
-};
-
-
 //form getParam
-$.fn.getParam = function() {	
-	let param = {};
-	
-	this.each(function(){
-		let type = this.type, tag = this.tagName.toLowerCase();		
-		
-		if (tag === "form"){
-			param = $(':input',this).getParam();
-			return param;
-		}
-		if(type === "text" || type === "password" || type === "hidden" || tag === "textarea"  || tag === "select"){			
-			param[this.id] = this.value;			
-		}else if (type === 'checkbox' || type === 'radio'){
+$.fn.getParam = function() {
+	let param = {};	
+	this.find("*").each(function(){
+		if(this.value !== undefined){
+			let type = this.type, tag = this.tagName.toLowerCase();			
+			if(type === "text" || type === "password" || type === "hidden" || tag === "textarea"){
+				param[this.id] = this.value;
+			}else if(tag === "select"){
+				param[this.id] = this.value;
+			}else if (type === 'checkbox' || type === 'radio'){
 				
+			}
 		}		
 	});
-	return param;
+	return param;	
 };
 
 //form setParam
 $.fn.setParam = function(param){
 	return this.find("*").each(function(){
 		if(param[this.id] !== undefined){
-			let type = this.type, tag = this.tagName.toLowerCase();	
-			
+			let type = this.type, tag = this.tagName.toLowerCase();			
 			if(type === "text" || type === "password" || type === "hidden" || tag === "textarea"){
 				this.value = param[this.id];
 			}else if(tag === "select"){

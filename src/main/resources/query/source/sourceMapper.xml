@@ -14,15 +14,16 @@
   			<if test="langCd != '' and langCd != null">
 		  	AND sb.lang_cd = #{langCd}
 		  	</if>
-		  	
-		  	<if test="type == 'id'">
-			AND wu.user_id = #{text}
-		  	</if>
-		  	<if test="type == 'title'">
-			AND sb.title LIKE #{text}
-		  	</if>
-		  	<if test="type == 'content'">
-		  	AND sb.content LIKE #{text}
+		  	<if test="text != '' and text != null">
+			  	<if test="type == 'id'">
+				AND wu.user_id = #{text}
+			  	</if>
+			  	<if test="type == 'title'">
+				AND sb.title LIKE #{text}
+			  	</if>
+			  	<if test="type == 'content'">
+			  	AND sb.content LIKE #{text}
+			  	</if>
 		  	</if>
   		</where> 
 	</select>
@@ -45,14 +46,16 @@
 		  	AND sb.lang_cd = #{langCd}
 		  	</if>
 		  	
-		  	<if test="type == 'id'">
-			AND wu.user_id = #{text}
-		  	</if>
-		  	<if test="type == 'title'">
-			AND sb.title LIKE #{text}
-		  	</if>
-		  	<if test="type == 'content'">
-		  	AND sb.content LIKE #{text}
+		  	<if test="text != '' and text != null">
+			  	<if test="type == 'id'">
+				AND wu.user_id = #{text}
+			  	</if>
+			  	<if test="type == 'title'">
+				AND sb.title LIKE #{text}
+			  	</if>
+			  	<if test="type == 'content'">
+			  	AND sb.content LIKE #{text}
+			  	</if>
 		  	</if>
   		</where>  	
 		ORDER BY sb.source_seq DESC

@@ -202,6 +202,7 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
             	let deferred = $.Deferred();
             	
             	let param = $("#searchForm").getParam();            	
+            	
             	if(filter !== "" || filter !==undefined || filter !== null){
             		param.pageIndex = filter.pageIndex;
                 	param.pageSize = filter.pageSize;                	
