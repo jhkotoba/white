@@ -50,6 +50,14 @@ $(document).ready(function(){
 	$("#writeForm #save").on("click", function(){
 		let param = $("#writeForm").getParam();
 		
+		/* vali.check({
+			param: param,
+			check: ["empty", "mexLen"],
+			parent: "writeForm"
+			});				
+		return;	 */
+		
+		
 		if(param.langCd.replace(/^\s+|\s+$/g,"") === ""){
 			alert("타입을 선택해주세요");
 			return;
