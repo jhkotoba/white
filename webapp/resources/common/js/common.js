@@ -92,52 +92,6 @@ $.fn.setParam = function(param){
 	});
 }
 
-let vali = {	
-	check : function(item){		
-		let set = new Set();		
-		
-		//제외값 set으로 변환 
-		if(item.exclude === undefined || item.exclude === "" || item.exclude === null){		
-		}else if(typeof item.exclude === "string"){
-			item.exclude = set.add(item.exclude);
-		}else if(typeof item.exclude === "object" && item.exclude.length === undefined){			
-			let keys = Object.keys(item.exclude);
-			for(let i=0; i<keys.length; i++) set.add(keys[i]);	
-		}else{
-			for(let i=0; i<item.exclude.length; i++) set.add(item.exclude[i]);
-		}		
-		
-		//체크구분 list로 변환
-		if(item.check === undefined || item.check === "" || item.check === null){
-			item.check = ["empty"];
-		}else if(typeof item.check === "string"){
-			item.check = [item.check];
-		}else if(typeof item.check === "object" && item.check.length === undefined){			
-			let keys = Object.keys(item.check);	let temp = [];
-			for(let i=0; i<keys.length; i++) temp.push(keys[i]);
-			item.check = temp;
-		}		
-		
-		//부모id 체크
-		if(item.parent === undefined) item.parent = "";
-		else if(item.parent.substring(1, item.parent.length) !== "#") item.parent = "#"+item.parent;		
-		
-		//유효성 검사
-		let result = {};		
-		let keys = Object.keys(item.param);		
-		for(let i=0; i<keys.length; i++){
-			if(!set.has(keys[i])){		
-				
-				if(item.param[keys[i]].replace(/^\s+|\s+$/g,"") === "" || item.param[keys[i]] === null || item.param[keys[i]] === undefined){
-					return {vali: false, id: keys[i], cause: "empty"};					
-				}					
-								
-			}		
-		}
-		return {vali: true};
-	}
-}
-
 //날짜반환함수
 let isDate = {	
 	dateProcess : function dateProcess(isMonth, type){	

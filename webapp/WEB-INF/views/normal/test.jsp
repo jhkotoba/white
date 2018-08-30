@@ -147,8 +147,6 @@ $(document).ready(function(){
 	</ul>
 </nav>
 
-
-
 </body>
 </head>
 </html>
