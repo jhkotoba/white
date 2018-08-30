@@ -59,14 +59,14 @@ let wVali = {
 					switch(this._clause[j]){					
 					case "empty":
 						if(param[keys[i]].replace(/^\s+|\s+$/g,"") === "" || param[keys[i]] === null || param[keys[i]] === undefined){
-							return this.alert({parent: this._parent, id: "#"+keys[i], cause: "empty"});
+							return this.alert({parent: this._parent, id: "#"+keys[i], cause: this._clause[j], msg: "값을 넣어 주세요."});
 						}
 						break;
 					case "maxLen":
 						let maxLen = $(this._parent+" #"+keys[i]).attr("maxlength");
 						if(maxLen !== undefined){
 							if($(this._parent+" #"+keys[i]).val().length > maxLen){
-								return this.alert({parent: this._parent, id: "#"+keys[i], cause: "maxLen"});								 
+								return this.alert({parent: this._parent, id: "#"+keys[i], cause: this._clause[j], msg: "글자수가 많습니다. <br> 최대글자수: "+maxLen});								 
 							} 
 						}
 						break;
@@ -91,12 +91,18 @@ let wVali = {
 					}
 				}			
 			}		
-		}		
-		
-		this.init();
-		return {vali: true};
+		}
+		return true;
 	},	
 	alert : function(item){
+		let target = $(item.parent +" "+item.id);
+		$(target).addClass("wVali-border").focus();		
+		
+		let alert = "<div class='wVali-alert'>"+item.msg+"</div>";
+		
+		$(target).on("click keydown", function(){
+			$(target).removeClass("wVali-border").off("click keydown");			
+		});
 		
 		return false;
 	},

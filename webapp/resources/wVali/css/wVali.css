@@ -1,0 +1,11 @@
+.wVali-border{
+	border-color: red !important;
+	background: #363636 !important;
+}
+.wVali-alert{
+	position: absolute;    
+    background-color: rgba(0, 0, 0, 0.8);
+	color: #FFFFFF;
+	font-size: 1.1em;
+	z-index: 9999;
+}
