@@ -1,11 +1,17 @@
 .wVali-border{
-	border-color: red !important;
+	border-color: #FFF !important;
 	background: #363636 !important;
+	animation: fadeIn 0.26s ease-in; 
 }
 .wVali-alert{
-	position: absolute;    
-    background-color: rgba(0, 0, 0, 0.8);
-	color: #FFFFFF;
-	font-size: 1.1em;
-	z-index: 9999;
+	position: absolute;
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 8px;
+    color: rgba(246, 246, 246, .8);
+    box-shadow: 0 3px 15px rgba(0,0,0,.75);
+    animation: fadeIn 0.36s ease-in;    
+    border-radius: 4px;    
+    font-size: 1.3em;
+    z-index: 7999;
+
 }

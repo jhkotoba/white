@@ -50,28 +50,8 @@ $(document).ready(function(){
 	$("#writeForm #save").on("click", function(){
 		let param = $("#writeForm").getParam();
 		
-		if(wVali.parent("writeForm").clause(["empty", "maxLen"]).check(param, true) === false)	return;		
-		
-		if(param.langCd.replace(/^\s+|\s+$/g,"") === ""){
-			alert("타입을 선택해주세요");
-			return;
-		}
-		if(param.title.replace(/^\s+|\s+$/g,"") === ""){
-			alert("제목을 입력해주세요.");
-			return;
-		}
-		if(param.content.replace(/^\s+|\s+$/g,"") === ""){
-			alert("내용을 입력해주세요.");
-			return;
-		}
-		if($("#writeForm #title").val().length > 50){
-			alert("제목 글이 50자를 초과합니다.");
-			return;
-		}
-		if($("#writeForm #content").val().length > 4000){
-			alert("제목 글이 4000자를 초과합니다.");
-			return;
-		}
+		if(wVali.parent("writeForm").clause(["empty", "maxLen"])
+				.check(param, true) === false)	return;
 		
 		$.ajax({		
 			type: 'POST',
@@ -111,14 +91,8 @@ $(document).ready(function(){
 	$("#editForm #save").on("click", function(){		
 		let param = $("#editForm").getParam();
 		
-		if(param.title.replace(/^\s+|\s+$/g,"") === ""){
-			alert("제목을 입력해주세요.");
-			return;
-		}
-		if(param.content.replace(/^\s+|\s+$/g,"") === ""){
-			alert("내용을 입력해주세요.");
-			return;
-		}		
+		if(wVali.parent("editForm").clause(["empty", "maxLen"])
+				.check(param, true) === false)	return;		
 		
 		$.ajax({		
 			type: 'POST',
@@ -228,8 +202,36 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
                 return deferred.promise();
             }
         },
-        rowClick: function(args) {
-        	fnView(args.item.sourceSeq);
+        rowClick: function(args) {        	
+        	$("#writeForm").clear().hide();
+        	$("#editForm").clear().hide();
+        	
+        	$("#viewForm").show();
+        	$("#viewForm #edit").addClass("hide");
+        	$("#viewForm #delete").addClass("hide");	
+        	
+        	$.ajax({		
+        		type: 'POST',
+        		url: common.path()+'/source/selectSourceDtlView.ajax',
+        		data : {
+        			sourceSeq : args.item.sourceSeq
+        		},
+        		dataType: 'json',
+        	    success : function(data) {	    	
+        	    	$("#viewForm").setParam(data);
+        	    	$("#viewForm #cAdjust").empty().append(cAdjust.adjust(data.langNm, data.content));
+        	    	
+        	    	$("#editForm").setParam(data);
+        	    	if('${sessionScope.userId}'!== '' && '${sessionScope.userId}' === String(data.userId)){
+        	    		$("#viewForm #edit").removeClass("hide");
+        	    		$("#viewForm #delete").removeClass("hide");
+        	    	}	    	
+        			$("body").scrollTop(0);
+        	    },
+        	    error : function(request, status, error){
+        	    	alert("error");
+        	    }
+        	});
         }, 
         fields: [
 			{ title:"번호",	name:"sourceSeq",	type:"text", width:"4%", align:"center"},
@@ -239,38 +241,6 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
 			{ title:"날짜",	name:"regDate",		type:"text", width:"10%", align:"center"}
         ]
     });
-}
-
-function fnView(sourceSeq){
-	$("#writeForm").clear().hide();
-	$("#editForm").clear().hide();
-	
-	$("#viewForm").show();
-	$("#viewForm #edit").addClass("hide");
-	$("#viewForm #delete").addClass("hide");	
-	
-	$.ajax({		
-		type: 'POST',
-		url: common.path()+'/source/selectSourceDtlView.ajax',
-		data : {
-			sourceSeq : sourceSeq
-		},
-		dataType: 'json',
-	    success : function(data) {	    	
-	    	$("#viewForm").setParam(data);
-	    	$("#viewForm #cAdjust").empty().append(cAdjust.adjust(data.langNm, data.content));
-	    	
-	    	$("#editForm").setParam(data);
-	    	if('${sessionScope.userId}'!== '' && '${sessionScope.userId}' === String(data.userId)){
-	    		$("#viewForm #edit").removeClass("hide");
-	    		$("#viewForm #delete").removeClass("hide");
-	    	}	    	
-			$("body").scrollTop(0);
-	    },
-	    error : function(request, status, error){
-	    	alert("error");
-	    }
-	});
 }
 </script>
 

@@ -39,6 +39,7 @@ let wVali = {
 	},
 	_parent : "",
 	parent : function(parent){
+		
 		//부모id 체크
 		if(parent === null || parent === undefined || parent === "#") parent = "";
 		else if(parent.substring(1, parent.length) !== "#") parent = "#"+parent;
@@ -46,9 +47,9 @@ let wVali = {
 		this._parent = parent;		
 		return this;
 	},
-	check : function(param, clause){
+	check : function(param, isDefault){
 		
-		if(clause === undefined || clause === false) this.init();
+		if(isDefault === undefined || isDefault === false) this.init();
 		
 		//유효성 검사
 		let result = {};		
@@ -59,14 +60,15 @@ let wVali = {
 					switch(this._clause[j]){					
 					case "empty":
 						if(param[keys[i]].replace(/^\s+|\s+$/g,"") === "" || param[keys[i]] === null || param[keys[i]] === undefined){
-							return this.alert({parent: this._parent, id: "#"+keys[i], cause: this._clause[j], msg: "값을 넣어 주세요."});
+							return this.alert({parent: this._parent, id: "#"+keys[i], cause: this._clause[j], 
+								msg: $(this._parent+" #"+keys[i])[0].nodeName === "SELECT" ? "값을 선택해 주세요." : "값을 입력해 주세요."});
 						}
 						break;
 					case "maxLen":
 						let maxLen = $(this._parent+" #"+keys[i]).attr("maxlength");
 						if(maxLen !== undefined){
 							if($(this._parent+" #"+keys[i]).val().length > maxLen){
-								return this.alert({parent: this._parent, id: "#"+keys[i], cause: this._clause[j], msg: "글자수가 많습니다. <br> 최대글자수: "+maxLen});								 
+								return this.alert({parent: this._parent, id: "#"+keys[i], cause: this._clause[j], msg: "글자수가 많습니다. <br> (최대글자수: "+maxLen+")"});								 
 							} 
 						}
 						break;
@@ -96,12 +98,15 @@ let wVali = {
 	},	
 	alert : function(item){
 		let target = $(item.parent +" "+item.id);
-		$(target).addClass("wVali-border").focus();		
+		$(target).addClass("wVali-border").focus();	
 		
-		let alert = "<div class='wVali-alert'>"+item.msg+"</div>";
+		$("body").append("<div id='wValiAlert' class='wVali-alert'>"+item.msg+"</div>");
+		let offset = $(target).offset();
+		$("#wValiAlert").offset({top: offset.top-50, left: offset.left});
 		
 		$(target).on("click keydown", function(){
-			$(target).removeClass("wVali-border").off("click keydown");			
+			$(target).removeClass("wVali-border").off("click keydown");
+			$("#wValiAlert").remove();
 		});
 		
 		return false;
