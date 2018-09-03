@@ -102,13 +102,12 @@ let wVali = {
 		
 		$("body").append("<div id='wValiAlert' class='wVali-alert'>"+item.msg+"</div>");
 		let offset = $(target).offset();
-		$("#wValiAlert").offset({top: offset.top-50, left: offset.left});
+		$("#wValiAlert").offset({top: offset.top-42, left: offset.left});		
 		
-		$(target).on("click keydown", function(){
-			$(target).removeClass("wVali-border").off("click keydown");
+		$(target).on("focusout", function(){
+			$(target).removeClass("wVali-border").off("focusout");
 			$("#wValiAlert").remove();
 		});
-		
 		return false;
 	},
 	init : function(){
