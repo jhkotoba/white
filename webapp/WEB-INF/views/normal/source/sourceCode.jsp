@@ -53,14 +53,11 @@ $(document).ready(function(){
 		if(wVali.parent("writeForm").clause(["empty", "maxLen"])
 				.check(param, true) === false)	return;
 		
-		$.ajax({		
-			type: 'POST',
+		$.ajax({
 			url: common.path()+'/source/insertSource.ajax',
 			data : param,
-			dataType: 'json',
-			async : true,
 			success : function(data) {
-		    	if(1 === Number(data)){
+		    	if(Number(data) === 1){
 		    		alert("새로운 글을 저장하였습니다.");
 		    	}else{
 		    		alert("저장에 실패하였습니다.");
@@ -68,9 +65,6 @@ $(document).ready(function(){
 		    	$("#writeForm").clear().hide();		    	  	
 		    	$("#searchForm").clear();
 				fnJsGrid(1);
-		    },
-		    error : function(request, status, error){
-		    	alert("error");
 		    }
 		});
 		
@@ -88,18 +82,20 @@ $(document).ready(function(){
 	});
 	
 	//글수정-저장
-	$("#editForm #save").on("click", function(){		
+	$("#editForm #save").on("click", function(){
+		
+		if(!confirm("수정하시겠습니까?")){
+			return;
+		}
+		
 		let param = $("#editForm").getParam();
 		
 		if(wVali.parent("editForm").clause(["empty", "maxLen"])
 				.check(param, true) === false)	return;		
 		
-		$.ajax({		
-			type: 'POST',
+		$.ajax({
 			url: common.path()+'/source/updateSource.ajax',
 			data : param,
-			dataType: 'json',
-			async : true,
 			success : function(data) {
 		    	if(1 === Number(data)){
 		    		alert("수정 하였습니다.");		    		
@@ -109,9 +105,6 @@ $(document).ready(function(){
 		    	$("#viewForm").clear().hide();
 		    	$("#editForm").clear().hide();
 				fnJsGrid(1);
-		    },
-		    error : function(request, status, error){
-		    	alert("error");
 		    }
 		});
 	});
@@ -128,14 +121,11 @@ $(document).ready(function(){
 			return;
 		}
 		
-		$.ajax({		
-			type: 'POST',
+		$.ajax({
 			url: common.path()+'/source/deleteSource.ajax',
 			data : {
 				sourceSeq : $("#viewForm #sourceSeq").val()
 			},
-			dataType: 'json',
-			async : true,
 			success : function(data) {
 		    	if(1 === Number(data)){
 		    		alert("삭제 하였습니다.");		    		
@@ -147,9 +137,6 @@ $(document).ready(function(){
 		    	$("#searchForm").clear();
 		    	
 				fnJsGrid(1);
-		    },
-		    error : function(request, status, error){
-		    	alert("error");
 		    }
 		});
 	});
@@ -188,10 +175,8 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
             	}            	
                
                 $.ajax({
-                	type: 'POST',
                 	data : param,
-                    url: common.path()+'/source/selectSourceList.ajax',
-                    dataType: 'json',
+                    url: common.path()+'/source/selectSourceList.ajax',                   
                     success: function(data){
                         deferred.resolve({
     						data: data.list,    						
@@ -210,13 +195,11 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
         	$("#viewForm #edit").addClass("hide");
         	$("#viewForm #delete").addClass("hide");	
         	
-        	$.ajax({		
-        		type: 'POST',
+        	$.ajax({
         		url: common.path()+'/source/selectSourceDtlView.ajax',
         		data : {
         			sourceSeq : args.item.sourceSeq
         		},
-        		dataType: 'json',
         	    success : function(data) {	    	
         	    	$("#viewForm").setParam(data);
         	    	$("#viewForm #cAdjust").empty().append(cAdjust.adjust(data.langNm, data.content));
@@ -227,9 +210,6 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
         	    		$("#viewForm #delete").removeClass("hide");
         	    	}	    	
         			$("body").scrollTop(0);
-        	    },
-        	    error : function(request, status, error){
-        	    	alert("error");
         	    }
         	});
         }, 
@@ -266,7 +246,7 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
 		</div>		
 	</div>	
 	<div>
-		<textarea id="content" class="textarea-gray" maxlength="4000" style="height:50%; width:100%;">		
+		<textarea id="content" class="textarea-gray" maxlength="4000">		
 		</textarea>		
 	</div>
 </form>
@@ -274,26 +254,28 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
 <!-- 글수정 -->
 <form id="editForm" class="updown-spacing hide" onsubmit="return false;">
 	<input id="sourceSeq" type="hidden" value="">
-	<div>
-		<span>타입</span>
-		<select id="langCd">	
-		</select>
-		<span>제목</span>
-		<input class="input-gray" id="title" type="text" maxlength="50" style="width:70%;">
+	<div class="flex">
+		<div class="flex-left">
+			<span class="span-gray-rt">타입</span>
+			<select id="langCd" class="select-gray">
+			</select>
+			<span class="span-gray-rt">사용자</span>
+			<span id="userId" class="span-gray"></span>
+			<span class="span-gray-rt">제목</span>
+		</div>
+		<div class="flex-right">
+			<input class="input-gray w100" id="title" type="text" maxlength="50" placeholder="제목 입력">
+		</div>
+		<div class="flex-other">
+			<span class="span-gray-rt">날짜</span>
+			<span id="regDate" class="span-gray"></span>
+			<button class="btn-gray" id="save">수정</button>
+			<button class="btn-gray" id="close">닫기</button>
+		</div>
 	</div>
-	<div>
-		<span>사용자</span>
-		<span id="userId"></span>		
-		<span>날짜</span>
-		<span id="regDate"></span>
-	</div>
-	<div class="updown-spacing">
-		<textarea id="content" class="code-textarea" maxlength="4000" style="height:50%; width:100%; background-color: balck">		
+		<div>
+		<textarea id="content" class="textarea-gray" maxlength="4000">		
 		</textarea>		
-	</div>
-	<div>
-		<button class="btn-gray" id="save">저장</button>
-		<button class="btn-gray" id="close">닫기</button>
 	</div>
 </form>
 

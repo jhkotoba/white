@@ -12,6 +12,18 @@ $(document).ready(function(){
 	}
 });
 
+//ajax 셋업
+$.ajaxSetup({
+	type: "post",
+	dataType: "json",
+	async : true,
+	error : function(request, status, error){
+    	console.log(request);
+    	console.log(status);
+    	console.log(error);
+    }
+});
+
 //ajax 시작할때 실행되는 영역
 $(document).ajaxSend(function() {
 	 $(".blind").show(100);
@@ -70,22 +82,7 @@ $.fn.setParam = function(param){
 				
 			}else if(tag === "span"){
 				$(this).text(param[this.id]);
-			}
-		}		
-	});
-}
-
-$.fn.setParam = function(param){
-	return this.find("*").each(function(){
-		if(param[this.id] !== undefined){
-			let type = this.type, tag = this.tagName.toLowerCase();			
-			if(type === "text" || type === "password" || type === "hidden" || tag === "textarea"){
-				this.value = param[this.id];
-			}else if(tag === "select"){
-				$(this).val(param[this.id]).prop("selected", true);
-			}else if (type === 'checkbox' || type === 'radio'){
-				
-			}else if(tag === "span"){
+			}else if(tag === "label"){
 				$(this).text(param[this.id]);
 			}
 		}		

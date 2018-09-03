@@ -104,8 +104,8 @@ let wVali = {
 		let offset = $(target).offset();
 		$("#wValiAlert").offset({top: offset.top-42, left: offset.left});		
 		
-		$(target).on("focusout", function(){
-			$(target).removeClass("wVali-border").off("focusout");
+		$(target).on("focusout click", function(){
+			$(target).removeClass("wVali-border").off("focusout click");
 			$("#wValiAlert").remove();
 		});
 		return false;
