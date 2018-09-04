@@ -233,9 +233,11 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
 <!-- 글쓰기  -->
 <form id="writeForm" class="updown-spacing hide" onsubmit="return false;">	
 	<div class="flex">		
-		<div class="flex-left">			
+		<div class="flex-left">
+			<span class="span-gray-rt">타입</span>		
 			<select id="langCd" class="select-gray">	
-			</select>				
+			</select>
+			<span class="span-gray-rt">제목</span>			
 		</div>		
 		<div class="flex-right">					
 			<input class="input-gray w100" id="title" type="text" maxlength="50" placeholder="제목 입력">

@@ -18,9 +18,14 @@ $.ajaxSetup({
 	dataType: "json",
 	async : true,
 	error : function(request, status, error){
-    	console.log(request);
-    	console.log(status);
-    	console.log(error);
+		if(request.status === 488){
+			alert("세션이 만료되었습니다. 로그인 해주세요.");
+			location.href = getContextPath()+"/main";
+		}else{
+			console.log(request);
+	    	console.log(status);
+	    	console.log(error);
+		}
     }
 });
 

@@ -20,20 +20,20 @@ public class SessionInterceptor extends HandlerInterceptorAdapter {
 		
 		//세션 검사		
 		if(session == null) {
-			response.sendRedirect(path+"/login/login.do");
-			return false;		
+			
+			if(request.getRequestURI().endsWith(".ajax")) {
+				response.sendError(488);
+				return false;
+			}else {
+				response.sendRedirect(path+"/main");
+				return false;	
+			}
 		}else{
 			
 			//비동기 통신일 경우 권한검사 통과
 			if(request.getRequestURI().endsWith(".ajax")) {
 				return true;
-			}else if(request.getRequestURI().endsWith(".xhr")) {
-				return true;
 			}
-			
-			/*if("leedev".equals(session.getAttribute("userId").toString())){
-				return true;
-			}*/
 			
 			//nav 권한 검사
 			String navUrl = "/"+(request.getRequestURI().replaceAll(path, "")).split("/")[1];

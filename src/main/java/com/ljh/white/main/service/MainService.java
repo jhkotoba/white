@@ -57,8 +57,8 @@ public class MainService {
 			List<WhiteMap> sideList = mainMapper.selectSideMenuList(param);		
 			
 			//세션 등록 
-			HttpSession session = request.getSession();		
-			session.setMaxInactiveInterval(60*960); //세션 유효시간			
+			HttpSession session = request.getSession();			
+			session.setMaxInactiveInterval(3600);		
 			session.setAttribute("userId", userId);
 			session.setAttribute("userSeq", userSeq);
 			session.setAttribute("authority", auth);
