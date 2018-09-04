@@ -275,7 +275,7 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
 			<button class="btn-gray" id="close">닫기</button>
 		</div>
 	</div>
-		<div>
+	<div>
 		<textarea id="content" class="textarea-gray" maxlength="4000">		
 		</textarea>		
 	</div>
@@ -284,29 +284,29 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
 <!-- 글보기 -->
 <form id="viewForm" class="updown-spacing hide" onsubmit="return false;">	
 	<input id="sourceSeq" type="hidden" value="">
-	<div class="right">
-		<button class="btn-gray" id="edit" class="hide">수정</button>	
-		<button class="btn-gray" id="delete" class="hide">삭제</button>	
-		<button class="btn-gray" name="write">글쓰기</button>
-		<button class="btn-gray" id="close">닫기</button>
+	
+	<div class="flex">
+		<div class="flex-left">
+			<span class="span-gray-rt">번호</span>
+			<span id="no" class="span-gray">1</span>
+			<span class="span-gray-rt">타입</span>
+			<span id="langNm" class="span-gray"></span>
+			<span class="span-gray-rt">사용자</span>
+			<span id="userId" class="span-gray"></span>
+			<span class="span-gray-rt">제목</span>
+		</div>
+		<div class="flex-right">
+			<span class="span-gray-block" id="title"></span>
+		</div>
+		<div class="flex-other">
+			<span class="span-gray-rt">날짜</span>
+			<span id="regDate" class="span-gray"></span>
+			<button class="btn-gray" id="save">수정</button>
+			<button class="btn-gray" id="close">닫기</button>
+		</div>
 	</div>
-
-	<div>
-		<span>번호</span>
-		<span id="no"></span>
-		<span>타입</span>
-		<span id="langNm"></span>
-		<span>제목</span>
-		<span id="title"></span>		
+	<div id="cAdjust" class="updown-spacing">
 	</div>
-	<div>
-		<span>사용자</span>
-		<span id="userId"></span>		
-		<span>날짜</span>
-		<span id="regDate"></span>
-	</div>
-	<div id="cAdjust" class="updown-spacing">		
-	</div>		
 </form>
 
 <!-- 검색 -->

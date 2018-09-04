@@ -1,7 +1,7 @@
-.cAdjust-line{background: #3D3D3D;color: #FFFFFF; float: left; font-size: 13px; border-right: 4px solid #5D5D5D;}
-.cAdjust-textarea{background: #363636;color: #FFFFFF; font-size: 13px;}
+.cAdjust-line{background: #3D3D3D; color: rgba(246, 246, 246, .8); float: left; font-size: 11px; border-right: 4px solid #5D5D5D;}
+.cAdjust-textarea{background: #323232; color: color: rgba(246, 246, 246, .8); border: 1px solid #585858; font-size: 13px;}
 
-.js-directive{color:#569CF1; font-size:inherit; font-weight: 600;}
-.js-comment{color:#6BA980; font-size:inherit;}
+.js-directive{color:#569CD6; font-size:inherit; font-weight: 600;}
+.js-annotation{color:#6BA980; font-size:inherit;}
 .js-text{color:#CE9178; font-size:inherit;}
 	

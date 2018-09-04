@@ -62,6 +62,7 @@ span, table{font-size: 0.9em; color: rgba(246, 246, 246, .8);}
 
 .span-gray{background: #363636; padding: 6px 10px 7px 10px; line-height: 30px; border-radius: 1px; border: 1px solid #585858; vertical-align: bottom;}
 .span-gray-rt{background: #363636; padding: 6px 10px 7px 10px; line-height: 30px; border-radius: 1px; border: 1px solid #585858; margin-right: -6px; vertical-align: bottom;}
+.span-gray-block{background: #363636; display: block; padding: 6px 10px 7px 10px; border-radius: 1px; border: 1px solid #585858; vertical-align: bottom;}
 
 
 

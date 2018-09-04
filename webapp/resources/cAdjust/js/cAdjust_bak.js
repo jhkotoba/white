@@ -1,6 +1,6 @@
 /**
  * @author JeHoon
- * @version 1.1
+ * @version 1.0
  */
 
 let cAdjust = {
@@ -17,7 +17,7 @@ let cAdjust = {
 			adjustData = this._javascript(data, false);
 			break;
 		default:
-			adjustData = "<div><pre class='cAdjust-textarea'>"+data+"</pre></div>";
+			adjustData = "</div><pre class='cAdjust-textarea'>"+data+"</pre></div>";
 			break;		
 		}
 		return adjustData;
@@ -26,56 +26,6 @@ let cAdjust = {
 	_jsp : function(){
 		
 	},
-	_javascriptCmd : {
-		//추가불가
-		"//" : "js-annotation",
-		"/*" : "js-annotation",
-		'"' : "js-text",
-		"'" : "js-text",
-		//추가가능
-		"default" : "js-directive",
-		"function" : "js-directive",
-		"typeof" : "js-directive",			
-		"true" : "js-directive",
-		"else" : "js-directive",
-		"case" : "js-directive",
-		"if" : "js-directive",
-		"in" : "js-directive",
-		"break" : "js-directive",
-		"switch" : "js-directive",
-		"let" : "js-directive",
-		"return" : "js-directive",
-		"null" : "js-directive",
-		"undefined" : "js-directive",
-		"var" : "js-directive",
-		"false" : "js-directive",
-		"throw" : "js-directive",
-		"new" : "js-directive",
-		"continue" : "js-directive",
-		"finally" : "js-directive",
-		"delete" : "js-directive",
-		"while" : "js-directive",
-		"catch" : "js-directive",
-		"try" : "js-directive",
-		"for" : "js-directive",
-		"this" : "js-directive"	
-	},
-	/*_jsFstCmdList : null,
-	_initJsFstChCmd : function(){		
-		console.log(this._jsCmdKeys);
-		let fstChList = new Array();
-		let fstCmd = "";
-		for(let i=0; i<this._jsCmdKeys.length; i++){
-			fstCmd = this._jsCmdKeys[i].substr(0, 1);
-			
-			if(fstChList[fstCmd] === undefined){
-				
-			}else{
-				
-			}
-		}
-		console.log(fstChList);
-	},*/
 	_javascript : function(data, part){
 		
 		//조합 데이터
@@ -94,12 +44,6 @@ let cAdjust = {
 		//작은따옴표 종료 위치
 		let quotationIdx = 0;
 		
-		//key값 저장
-		//let jsKeyList = Object.keys(this._javascriptCmd);
-		//let fstChList = new Array();
-		
-		
-		
 		
 		let ch = data.split("");
 		for(let i=0; i<ch.length; i++){
@@ -115,56 +59,199 @@ let cAdjust = {
 			}
 			
 			//종료처리
-			if(state !== "none"){
-				switch(state){
-				case "/*":
-					if(ann2Idx == i) {
-						str += "</span>";
-						state = "none";
-						ann2Idx = 0;
-					}
-					break;
-				case "//":
-					if(ch[i] == '\r' || ch[i] == '\n') {
-						for(let j=0; j<annCnt; j++) {
-							str += "</span>";
-						}
-						state = "none";
-						annCnt = 0;
-					}
-					break;
-				case '"':
-					if(dQuotationIdx == i) {
-						str += "</span>";
-						state = "none";
-						dQuotationIdx = 0;
-					}else if(ch[i] == '\r' || ch[i] == '\n') {
-						str += "</span>";
-						state = "none";
-						dQuotationIdx = 0;
-					}
-					break;
-				case "'":
-					if(quotationIdx == i) {
-						str += "</span>";
-						state = "none";
-						quotationIdx = 0;
-					}else if(ch[i] == '\r' || ch[i] == '\n') {
-						str += "</span>";
-						state = "none";
-						quotationIdx = 0;
-					}
-					break;
-				default :
-					if(ch.length-1 > i+1 && this._spCharCheck(ch[i]) && ch[i-1] == state.substr(state.length - 1)){
-						str += "</span>";
-						state = "none";
-					}
-					break;
+			switch(state){
+			case "/*":
+				if(ann2Idx == i) {
+					str += "</span>";
+					state = "none";
+					ann2Idx = 0;
 				}
-			//시작처리 
-			}else{ // state === "none"
-				switch(ch[i]){
+				break;
+			case "//":				
+				if(ch[i] == '\r' || ch[i] == '\n') {					
+					for(let j=0; j<annCnt; j++) {
+						str += "</span>";
+					}					
+					state = "none";
+					annCnt = 0;
+				}
+				break;
+			case '"':
+				if(dQuotationIdx == i) {
+					str += "</span>";
+					state = "none";
+					dQuotationIdx = 0;
+				}else if(ch[i] == '\r' || ch[i] == '\n') {
+					str += "</span>";
+					state = "none";
+					dQuotationIdx = 0;
+				}
+				break;
+			case "'":
+				if(quotationIdx == i) {
+					str += "</span>";
+					state = "none";
+					quotationIdx = 0;
+				}else if(ch[i] == '\r' || ch[i] == '\n') {
+					str += "</span>";
+					state = "none";
+					quotationIdx = 0;
+				}
+				break;
+			case "default" :
+				if(ch.length-1 > i+1 && this._spCharCheck(ch[i]) && ch[i-1]=='t'){
+					str += "</span>";
+					state = "none";
+				}				
+				break;
+			case "function":					
+				if(ch.length-1 > i+1 && this._spCharCheck(ch[i]) && ch[i-1]=='n'){
+					str += "</span>";
+					state = "none";
+				}				
+				break;
+				
+			case "typeof":
+				if(ch.length-1 > i+1 && this._spCharCheck(ch[i]) && ch[i-1]=='f'){
+					str += "</span>";
+					state = "none";
+				}				
+				break;				
+			case "true":
+			case "else":
+			case "case":
+				if(ch.length-1 > i+1 && this._spCharCheck(ch[i]) && ch[i-1]=='e'){
+					str += "</span>";
+					state = "none";
+				}				
+				break;
+			case "if":				
+				if(ch.length-1 > i+1 && this._spCharCheck(ch[i]) && ch[i-1]=='f'){
+					str += "</span>";
+					state = "none";
+				}				
+				break;
+			case "in":
+				if(ch.length-1 > i+1 && this._spCharCheck(ch[i]) && ch[i-1]=='n'){
+					str += "</span>";
+					state = "none";
+				}				
+				break;
+			case "break":
+				if(ch.length-1 > i+1 && this._spCharCheck(ch[i]) && ch[i-1]=='k'){
+					str += "</span>";
+					state = "none";
+				}				
+				break;
+			case "switch":
+				if(ch.length-1 > i+1 && this._spCharCheck(ch[i]) && ch[i-1]=='h'){
+					str += "</span>";
+					state = "none";
+				}				
+				break;
+			case "let":
+				if(ch.length-1 > i+1 && this._spCharCheck(ch[i]) && ch[i-1]=='t'){
+					str += "</span>";
+					state = "none";
+				}				
+				break;
+				
+			case "return":
+				if(ch.length-1 > i+1 && this._spCharCheck(ch[i]) && ch[i-1]=='n'){
+					str += "</span>";
+					state = "none";
+				}				
+				break;
+			case "null":
+				if(ch.length-1 > i+1 && this._spCharCheck(ch[i]) && ch[i-1]=='l'){
+					str += "</span>";
+					state = "none";
+				}				
+				break;
+			case "undefined":
+				if(ch.length-1 > i+1 && this._spCharCheck(ch[i]) && ch[i-1]=='d'){
+					str += "</span>";
+					state = "none";
+				}
+				break;
+			case "var":
+				if(ch.length-1 > i+1 && this._spCharCheck(ch[i]) && ch[i-1]=='r'){
+					str += "</span>";
+					state = "none";
+				}
+				break;
+			case "false":
+				if(ch.length-1 > i+1 && this._spCharCheck(ch[i]) && ch[i-1]=='e'){
+					str += "</span>";
+					state = "none";
+				}
+				break;
+			case "throw":
+				if(ch.length-1 > i+1 && this._spCharCheck(ch[i]) && ch[i-1]=='w'){
+					str += "</span>";
+					state = "none";
+				}
+				break;
+			case "new":
+				if(ch.length-1 > i+1 && this._spCharCheck(ch[i]) && ch[i-1]=='w'){
+					str += "</span>";
+					state = "none";
+				}				
+				break;
+			case "continue":
+				if(ch.length-1 > i+1 && this._spCharCheck(ch[i]) && ch[i-1]=='e'){
+					str += "</span>";
+					state = "none";
+				}				
+				break;
+			case "finally":
+				if(ch.length-1 > i+1 && this._spCharCheck(ch[i]) && ch[i-1]=='y'){
+					str += "</span>";
+					state = "none";
+				}				
+				break;
+			case "delete":
+				if(ch.length-1 > i+1 && this._spCharCheck(ch[i]) && ch[i-1]=='e'){
+					str += "</span>";
+					state = "none";
+				}				
+				break;
+			case "while":
+				if(ch.length-1 > i+1 && this._spCharCheck(ch[i]) && ch[i-1]=='e'){
+					str += "</span>";
+					state = "none";
+				}				
+				break;
+			case "catch":
+				if(ch.length-1 > i+1 && this._spCharCheck(ch[i]) && ch[i-1]=='h'){
+					str += "</span>";
+					state = "none";
+				}
+				break;
+			case "try":
+				if(ch.length-1 > i+1 && this._spCharCheck(ch[i]) && ch[i-1]=='y'){
+					str += "</span>";
+					state = "none";
+				}
+				break;
+			case "for":
+				if(ch.length-1 > i+1 && this._spCharCheck(ch[i]) && ch[i-1]=='r'){
+					str += "</span>";
+					state = "none";
+				}
+				break;
+			case "this":
+				if(ch.length-1 > i+1 && this._spCharCheck(ch[i]) && ch[i-1]=='s'){
+					str += "</span>";
+					state = "none";
+				}
+				break;
+			}
+			
+			//시작처리
+			if(state === "none"){				
+				switch(ch[i]){		
+				
 				//주석
 				case '/':				
 					if(ch.length-1 > i+1 && ch[i+1]==='*'){
@@ -177,18 +264,18 @@ let cAdjust = {
 							}
 						}
 						if(annBool) {
-							str += "<span class='"+this._javascriptCmd["/*"]+"'>";
+							str += "<span class='js-comment'>";
 							state = "/*";
 						}
 					}else if(ch.length-1 >= i+1 && ch[i+1]==='/') {
 						if("/*" !== state) {
-							str += "<span class='"+this._javascriptCmd["//"]+"'>";
+							str += "<span class='js-comment'>";
 							state = "//";
 							annCnt++;
 						}								
 					}				
 					break;
-				//큰따옴표
+					//큰따옴표
 				case '"':						
 					if(ch.length-1 >= i+1 && ch[i]=='"'){
 						let dQuotation = false;
@@ -200,7 +287,7 @@ let cAdjust = {
 							}
 						}
 						if(dQuotation) {
-							str += "<span class='"+this._javascriptCmd['"']+"'>";
+							str += "<span class='js-text'>";
 							state = '"';
 						}
 					}
@@ -217,7 +304,7 @@ let cAdjust = {
 							}
 						}
 						if(quotation) {
-							str += "<span class='"+this._javascriptCmd["'"]+"'>";
+							str += "<span class='js-text'>";
 							state = "'";
 						}
 					}
@@ -655,7 +742,7 @@ let cAdjust = {
 		if("end" === state) {				
 			str += "</span>";
 			state = "none";
-		}
+		}		
 		
 		if(part === false){
 			let result = "<div>";		
@@ -664,12 +751,12 @@ let cAdjust = {
 			for(let i=0; i<line; i++){
 				result += "<div>"+(i+1)+"</div>";
 			}	
-			result +="</div><pre class='cAdjust-textarea'>"+str+"</pre></div>";
+			result +="</div><pre class='cAdjust-textarea'>"+str+"</pre></div>";		
 			return result;
 			
 		}else{
 			return {cotent : str, line : line};
-		}
+		}	
 	},
 	_html : function(){
 		
