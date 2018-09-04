@@ -94,12 +94,22 @@ let cAdjust = {
 		//작은따옴표 종료 위치
 		let quotationIdx = 0;
 		
-		//key값 저장
-		//let jsKeyList = Object.keys(this._javascriptCmd);
-		//let fstChList = new Array();
+		//커맨드값 추출
+		let jsKeyList = Object.keys(this._javascriptCmd);
+		let fstChList = {};
+		let fstCmd = "";
 		
-		
-		
+		//커맨드값 가공
+		for(let i=0; i<jsKeyList.length; i++){
+			fstCmd = jsKeyList[i].substr(0, 1);			
+			if(fstChList[fstCmd] === undefined){
+				fstChList[fstCmd] = new Array();
+				fstChList[fstCmd].push(jsKeyList[i]);
+			}else{
+				fstChList[fstCmd].push(jsKeyList[i]);
+			}
+		}
+		//console.log(fstChList);
 		
 		let ch = data.split("");
 		for(let i=0; i<ch.length; i++){
@@ -115,7 +125,7 @@ let cAdjust = {
 			}
 			
 			//종료처리
-			if(state !== "none"){
+			if(state !== "none"){				
 				switch(state){
 				case "/*":
 					if(ann2Idx == i) {
@@ -222,8 +232,30 @@ let cAdjust = {
 						}
 					}
 				break;
+				
+				default :
+					if(fstChList[ch[i]] !== undefined){
+						let chList = fstChList[ch[i]];						
+						for(let j=0; j<chList.length; j++){
+							
+							
+							if(ch.length-1 >= i+chList[j].length){
+								
+							}
+							
+							
+							/*else if(ch.length-1 >= i+5 && ch[i+1]=='r' && ch[i+2]=='e' && ch[i+3]=='a' && ch[i+4]=='k' && this._spCharCheck(ch[i+5])) {					
+								str += "<span class='js-directive'>";
+								state = "break";
+							}*/
+							
+							
+							
+						}
+					}
+					break;				
 				//break
-				case 'b':						
+				/*case 'b':						
 					if(ch.length-1 < i+5) {
 						for(let j=i; j<ch.length; j++) {
 							temp += ch[j];
@@ -646,7 +678,7 @@ let cAdjust = {
 						str += "<span class='js-directive'>";
 						state = "var";
 					}
-					break;					
+					break;	*/			
 				}			
 			}
 			str += ch[i];
