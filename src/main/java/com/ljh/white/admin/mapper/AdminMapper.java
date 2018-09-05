@@ -19,11 +19,21 @@ public class AdminMapper {
 	@Autowired
 	private SqlSession sqlSession;
 	
+	/**
+	 * 사용자 수 조회
+	 * @param param
+	 * @return
+	 */
 	public int selectUserCount(WhiteMap param) {
 		logger.debug(param);		
 		return sqlSession.selectOne("adminMapper.selectUserCount", param);
 	}
 	
+	/**
+	 * 사용자 정보 리스트 조회
+	 * @param param
+	 * @return
+	 */
 	public List<WhiteMap> selectUserList(WhiteMap param) {
 		logger.debug(param);		
 		return sqlSession.selectList("adminMapper.selectUserList", param);

@@ -33,6 +33,11 @@ $(document).ready(function(){
 		fnJsGrid(1);
 	});
   	
+  	//조회 엔터
+  	$("#searchBar #text").on("keydown", function(e){
+  		if (e.which == 13) $("#searchBar #searchBtn").trigger("click");  		
+  	});
+  	
 	//조회타입 전체시 텍스트 비움
 	$("#searchBar #type").on("change", function(itme){
 		if(itme.target.value === "") $("#searchBar #text").val("");
@@ -318,6 +323,7 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
 	<input id="text" type="hidden" value="">
 </form>
 
+<!-- 조회 입력란 -->
 <div id="searchBar" class="search-bar">
 	<select id="langCd" class="select-gray">				
 	</select>

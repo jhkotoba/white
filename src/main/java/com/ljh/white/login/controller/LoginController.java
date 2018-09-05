@@ -108,7 +108,7 @@ public class LoginController {
 		
 		loginService.insertSignUp(userId, userName, passwd);	
 		
-		return "redirect:/login/login";
+		return "redirect:/main";
 	}
 	
 	//유저 중복 id체크

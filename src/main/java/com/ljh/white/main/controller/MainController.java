@@ -71,10 +71,10 @@ public class MainController {
 	}
 	
 	//가입
-	@RequestMapping(value = "/main/signUp")
-	public String signUp(HttpServletRequest request, Device device){		
-		if(request.getSession(false) == null) {
-			request.setAttribute("sectionPage", "main/signUp.jsp");		
+	@RequestMapping(value = "/main/join")
+	public String signUp(HttpServletRequest request, Device device){	
+		if(request.getSession(false).getAttribute("userId") == null) {
+			request.setAttribute("sectionPage", "main/join.jsp");		
 			return White.device(device)+"/white.jsp";
 		}else {
 			return "redirect:/main";

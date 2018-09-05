@@ -22,17 +22,14 @@ public class AdminController {
 	@Resource(name = "WhiteService")
 	private WhiteService whiteService;	
 	
+	//유저 리스트 조회
 	@RequestMapping(value="/admin/selectUserList.ajax")
 	public WhiteMap selectUserList(HttpServletRequest request) {
-		
 		WhiteMap param = new WhiteMap(request);
 		
-		int count = adminService.selectUserCount(param);
-		List<WhiteMap> list = adminService.selectUserList(param);
-		
-		WhiteMap result = new WhiteMap();		
-		result.put("count", count);
-		result.put("userList", list);		
+		WhiteMap result = new WhiteMap();
+		result.put("itemsCount", adminService.selectUserCount(param));
+		result.put("list", adminService.selectUserList(param));
 		
 		return result;
 	}

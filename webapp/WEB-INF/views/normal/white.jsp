@@ -86,12 +86,12 @@ $(document).ready(function(){
 	</ul>	
 	<div class="user">
 		<c:if test="${sessionScope.userId eq null}">
-			<a class="a-brand h6" href="${contextPath}/main/signUp">sign up</a>
-			<a class="a-brand h6" href="javascript:void(0)" id="loginBtn">login</a>						
+			<a class="a-brand h6" href="${contextPath}/main/join">Join</a>
+			<a class="a-brand h6" href="javascript:void(0)" id="loginBtn">login</a>			
 		</c:if>	
 		<c:if test="${sessionScope.userId ne null}">
 			<span>${sessionScope.userId}</span>			
-			<a class="a-brand h6" href="${contextPath}/main/logout">logout</a>
+			<a class="a-brand h6" href="${contextPath}/main/logout">Logout</a>
 		</c:if>
 	</div>			
 </nav>	

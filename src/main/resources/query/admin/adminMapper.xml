@@ -4,31 +4,35 @@
 
 <mapper namespace="adminMapper">
 	
+	<!-- 사용자 수 조회 -->
 	<select id="selectUserCount" resultType="int" parameterType="WhiteMap">
-		SELECT COUNT(1) FROM white_user
-		WHERE 1=1		
-		<if test="srhSlt == 'id'">
-		AND user_id = #{srhMsg}
-		</if>
-		<if test="srhSlt == 'nm'">
-		AND user_name = #{srhMsg}
-		</if>
+	 	SELECT COUNT(1) FROM white_user
+		<where>
+	 		<if test="type == 'id'">
+			AND user_id = #{text}
+			</if>
+			<if test="type == 'name'">
+			AND user_name = #{text}
+			</if>
+		</where>
 	</select>
 	
+	<!-- 사용자 정보 리스트 조회 -->
 	<select id="selectUserList" resultType="WhiteMap" parameterType="WhiteMap">
 		SELECT 
-			user_seq AS userSeq,
+			user_seq AS no,
 			user_id AS userId,
 			user_name AS userName
  		FROM white_user
- 		WHERE 1=1
- 		<if test="srhSlt == 'id'">
-		AND user_id = #{srhMsg}
-		</if>
-		<if test="srhSlt == 'nm'">
-		AND user_name = #{srhMsg}
-		</if>
- 		Limit ${pagePre}, ${pageCnt}
+ 		<where>
+	 		<if test="type == 'id'">
+			AND user_id = #{text}
+			</if>
+			<if test="type == 'name'">
+			AND user_name = #{text}
+			</if>
+		</where>
+ 		Limit ${pagePre}, ${pageSize}
 	</select>
 	
 	<select id="selectAuthList" resultType="WhiteMap" parameterType="WhiteMap">

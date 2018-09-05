@@ -19,7 +19,7 @@ public class AdminService {
 	
 	
 	/**
-	 * 
+	 * 유저 카운트 조회
 	 * @param param
 	 * @return
 	 */
@@ -28,12 +28,12 @@ public class AdminService {
 	}
 	
 	/**
-	 * 
+	 * 유저 정보 리스트 조회
 	 * @param param
 	 * @return
 	 */
-	public List<WhiteMap> selectUserList(WhiteMap param) {			
-		param.put("pagePre", (param.getInt("pageNum")-1)*param.getInt("pageCnt"));		
+	public List<WhiteMap> selectUserList(WhiteMap param) {
+		param.put("pagePre", (param.getInt("pageIndex")-1)*param.getInt("pageSize"));
 		return adminMapper.selectUserList(param);
 	}
 	

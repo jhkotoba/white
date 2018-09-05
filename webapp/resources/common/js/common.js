@@ -76,7 +76,7 @@ $.fn.getParam = function() {
 
 //form setParam
 $.fn.setParam = function(param){
-	return this.find("*").each(function(){
+	this.find("*").each(function(){
 		if(param[this.id] !== undefined){
 			let type = this.type, tag = this.tagName.toLowerCase();			
 			if(type === "text" || type === "password" || type === "hidden" || tag === "textarea"){
@@ -92,6 +92,7 @@ $.fn.setParam = function(param){
 			}
 		}		
 	});
+	return this;
 }
 
 //날짜반환함수
