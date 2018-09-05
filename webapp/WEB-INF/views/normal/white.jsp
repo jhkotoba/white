@@ -47,10 +47,8 @@ $(document).ready(function(){
 	});	
 	//사용자 체크, 로그인
 	$("#loginSmt").on("click", function(e){
-		$.ajax({		
-			type: 'POST',
-			url: common.path()+'/main/loginCheck.ajax',
-			dataType: 'json',
+		$.ajax({
+			url: common.path()+'/main/loginCheck.ajax',			
 			data : $("#loginForm").getParam(),
 		    success : function(data) {
 		    	if(data){		    		
@@ -88,12 +86,12 @@ $(document).ready(function(){
 	</ul>	
 	<div class="user">
 		<c:if test="${sessionScope.userId eq null}">
-			<a class="a-brand h6" href="javascript:void(0)">sign up</a>
+			<a class="a-brand h6" href="${contextPath}/main/signUp">sign up</a>
 			<a class="a-brand h6" href="javascript:void(0)" id="loginBtn">login</a>						
 		</c:if>	
 		<c:if test="${sessionScope.userId ne null}">
 			<span>${sessionScope.userId}</span>			
-			<a class="a-brand h6" href="${contextPath}/login/logoutProcess.do">logout</a>
+			<a class="a-brand h6" href="${contextPath}/main/logout">logout</a>
 		</c:if>
 	</div>			
 </nav>	
@@ -115,7 +113,7 @@ $(document).ready(function(){
 		<input id="passwd" name="passwd" class="input-gray login-text w100" type="password">
 		<div>
 			<button id="loginSmt" class="btn-gray">Login</button>
-			<button class="btn-gray">Sign up</button>
+			<button class="btn-gray" href="${contextPath}/main/signUp">Sign up</button>
 		</div>
 	</div>
 </form>

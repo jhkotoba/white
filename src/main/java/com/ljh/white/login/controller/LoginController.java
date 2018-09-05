@@ -77,7 +77,7 @@ public class LoginController {
 	}
 	
 	//logoutProcess
-	@RequestMapping(value = "/login/logoutProcess.do")
+	/*@RequestMapping(value = "/login/logoutProcess.do")
 	public String logoutProcess(HttpServletRequest request){
 		//세션정보 삭제
 		HttpSession session = request.getSession();
@@ -90,7 +90,7 @@ public class LoginController {
 		session.invalidate();
 		
 		return "redirect:/main";
-	}
+	}*/
 	
 	//유저등록 페이지
 	@RequestMapping(value="/login/signUp.do")

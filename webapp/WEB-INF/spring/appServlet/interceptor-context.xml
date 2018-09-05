@@ -15,22 +15,21 @@
 			
 	      	<!-- 공개 -->
 			<mvc:exclude-mapping path="/"/>
-			<mvc:exclude-mapping path="/main"/>
-	      
+			<mvc:exclude-mapping path="/main"/> 
+			
 			<!-- 로그인  -->
-			<mvc:exclude-mapping path="/login/login.do"/>
+			<mvc:exclude-mapping path="/main/login"/>
+			<mvc:exclude-mapping path="/main/logout"/>
+			
+			<!-- <mvc:exclude-mapping path="/login/login.do"/>
 			<mvc:exclude-mapping path="/login/loginProcess.do"/>
 			<mvc:exclude-mapping path="/login/logoutProcess.do"/>
-			<mvc:exclude-mapping path="/login/signUp.do"/>
-			
-			<mvc:exclude-mapping path="/main/login"/>
+			<mvc:exclude-mapping path="/login/signUp.do"/> -->
 	               
-	     	<!-- 회원가입 -->			 
-			<mvc:exclude-mapping path="/login/insertSignUp.do"/>
-			<mvc:exclude-mapping path="/login/userIdCheck.ajax"/>
-			
-			<!-- test -->
-			<mvc:exclude-mapping path="/test"/>
+	     	<!-- 회원가입 -->
+	     	<mvc:exclude-mapping path="/main/signUp"/>	 
+			<!-- <mvc:exclude-mapping path="/login/insertSignUp.do"/>
+			<mvc:exclude-mapping path="/login/userIdCheck.ajax"/> -->
 				
 			<beans:bean id="sessionInterceptor"
 			  class="com.ljh.white.common.utility.interceptor.SessionInterceptor"></beans:bean>

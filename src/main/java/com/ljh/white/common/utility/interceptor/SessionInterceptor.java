@@ -20,7 +20,6 @@ public class SessionInterceptor extends HandlerInterceptorAdapter {
 		
 		//세션 검사		
 		if(session == null) {
-			
 			if(request.getRequestURI().endsWith(".ajax")) {
 				response.sendError(488);
 				return false;
@@ -28,8 +27,7 @@ public class SessionInterceptor extends HandlerInterceptorAdapter {
 				response.sendRedirect(path+"/main");
 				return false;	
 			}
-		}else{
-			
+		}else{			
 			//비동기 통신일 경우 권한검사 통과
 			if(request.getRequestURI().endsWith(".ajax")) {
 				return true;

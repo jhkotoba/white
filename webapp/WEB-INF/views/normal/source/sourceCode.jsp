@@ -124,7 +124,7 @@ $(document).ready(function(){
 		$.ajax({
 			url: common.path()+'/source/deleteSource.ajax',
 			data : {
-				sourceSeq : $("#viewForm #sourceSeq").val()
+				no : $("#viewForm #no").val()
 			},
 			success : function(data) {
 		    	if(1 === Number(data)){
@@ -198,7 +198,7 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
         	$.ajax({
         		url: common.path()+'/source/selectSourceDtlView.ajax',
         		data : {
-        			sourceSeq : args.item.sourceSeq
+        			no : args.item.no
         		},
         	    success : function(data) {	    	
         	    	$("#viewForm").setParam(data);
@@ -214,7 +214,7 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
         	});
         }, 
         fields: [
-			{ title:"번호",	name:"sourceSeq",	type:"text", width:"4%", align:"center"},
+			{ title:"번호",	name:"no",			type:"text", width:"4%", align:"center"},
 			{ title:"언어",	name:"langNm",		type:"text", width:"8%", align:"center"},
 			{ title:"글제목",	name:"title",		type:"text", width:"70%"},
 			{ title:"작성자",	name:"userId",		type:"text", width:"8%", align:"center"},
@@ -255,7 +255,7 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
 
 <!-- 글수정 -->
 <form id="editForm" class="updown-spacing hide" onsubmit="return false;">
-	<input id="sourceSeq" type="hidden" value="">
+	<input id="no" type="hidden" value="">
 	<div class="flex">
 		<div class="flex-left">
 			<span class="span-gray-rt">타입</span>
@@ -275,7 +275,7 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
 			<button class="btn-gray" id="close">닫기</button>
 		</div>
 	</div>
-	<div>
+	<div>	
 		<textarea id="content" class="textarea-gray" maxlength="4000">		
 		</textarea>		
 	</div>
@@ -283,12 +283,12 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
 
 <!-- 글보기 -->
 <form id="viewForm" class="updown-spacing hide" onsubmit="return false;">	
-	<input id="sourceSeq" type="hidden" value="">
+	<input id="no" type="hidden" value="">
 	
 	<div class="flex">
 		<div class="flex-left">
 			<span class="span-gray-rt">번호</span>
-			<span id="no" class="span-gray">1</span>
+			<span id="no" class="span-gray"></span>
 			<span class="span-gray-rt">타입</span>
 			<span id="langNm" class="span-gray"></span>
 			<span class="span-gray-rt">사용자</span>
@@ -301,7 +301,9 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
 		<div class="flex-other">
 			<span class="span-gray-rt">날짜</span>
 			<span id="regDate" class="span-gray"></span>
-			<button class="btn-gray" id="save">수정</button>
+			<button class="btn-gray" id="edit">수정</button>
+			<button class="btn-gray" id="delete" class="hide">삭제</button>	
+			<button class="btn-gray" name="write">글쓰기</button>
 			<button class="btn-gray" id="close">닫기</button>
 		</div>
 	</div>

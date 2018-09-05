@@ -1,6 +1,6 @@
 /**
  * @author JeHoon
- * @version 1.1
+ * @version 1.1.0
  */
 
 let cAdjust = {
@@ -58,30 +58,15 @@ let cAdjust = {
 		"catch" : "js-directive",
 		"try" : "js-directive",
 		"for" : "js-directive",
-		"this" : "js-directive"	
-	},
-	/*_jsFstCmdList : null,
-	_initJsFstChCmd : function(){		
-		console.log(this._jsCmdKeys);
-		let fstChList = new Array();
-		let fstCmd = "";
-		for(let i=0; i<this._jsCmdKeys.length; i++){
-			fstCmd = this._jsCmdKeys[i].substr(0, 1);
-			
-			if(fstChList[fstCmd] === undefined){
-				
-			}else{
-				
-			}
-		}
-		console.log(fstChList);
-	},*/
+		"this" : "js-directive"
+	},	
 	_javascript : function(data, part){
 		
 		//조합 데이터
 		let str = "";
 		let temp = "";
 		let line = 1;
+		let chList = null;
 				
 		//반복 상태값
 		let state = "none";		
@@ -109,20 +94,15 @@ let cAdjust = {
 				fstChList[fstCmd].push(jsKeyList[i]);
 			}
 		}
-		//console.log(fstChList);
 		
 		let ch = data.split("");
 		for(let i=0; i<ch.length; i++){
 			
 			//태그문자 변환
-			if(ch[i] === "<"){
-				ch[i] = "&lt;";
-			}
+			if(ch[i] === "<") ch[i] = "&lt;";
 			
 			//라인 수
-			if(ch[i] === '\n'){
-				line++;
-			}
+			if(ch[i] === '\n') line++;
 			
 			//종료처리
 			if(state !== "none"){				
@@ -175,6 +155,7 @@ let cAdjust = {
 			//시작처리 
 			}else{ // state === "none"
 				switch(ch[i]){
+				
 				//주석
 				case '/':				
 					if(ch.length-1 > i+1 && ch[i+1]==='*'){
@@ -198,6 +179,7 @@ let cAdjust = {
 						}								
 					}				
 					break;
+					
 				//큰따옴표
 				case '"':						
 					if(ch.length-1 >= i+1 && ch[i]=='"'){
@@ -215,6 +197,7 @@ let cAdjust = {
 						}
 					}
 				break;
+				
 				//작은따옴표
 				case "'":						
 					if(ch.length-1 >= i+1 && ch[i]=="'"){
@@ -233,463 +216,50 @@ let cAdjust = {
 					}
 				break;
 				
+				//명령어
 				default :
 					if(fstChList[ch[i]] !== undefined){
-						let chList = fstChList[ch[i]];						
+						chList = fstChList[ch[i]];						
 						for(let j=0; j<chList.length; j++){
-							
-							
-							if(ch.length-1 >= i+chList[j].length){
-								
-							}
-							
-							
-							/*else if(ch.length-1 >= i+5 && ch[i+1]=='r' && ch[i+2]=='e' && ch[i+3]=='a' && ch[i+4]=='k' && this._spCharCheck(ch[i+5])) {					
-								str += "<span class='js-directive'>";
-								state = "break";
-							}*/
-							
-							
-							
-						}
-					}
-					break;				
-				//break
-				/*case 'b':						
-					if(ch.length-1 < i+5) {
-						for(let j=i; j<ch.length; j++) {
-							temp += ch[j];
-						}
-						if("break" === temp) {								
-							str += "<span class='js-directive'>";
-							state = "end";
-						}
-						temp === "";						
-					}else if(ch.length-1 >= i+5 && ch[i+1]=='r' && ch[i+2]=='e' && ch[i+3]=='a' && ch[i+4]=='k' && this._spCharCheck(ch[i+5])) {					
-						str += "<span class='js-directive'>";
-						state = "break";
-					}
-					break;
-				//case, continue, catch
-				case 'c':	
-					if(ch.length-1 >= i+2 && ch[i+1]=='a' && ch[i+2]=='s'){
-						//case
-						if(ch.length-1 < i+4) {
-							for(let j=i; j<ch.length; j++) {
-								temp += ch[j];
-							}
-							if("case" === temp) {								
-								str += "<span class='js-directive'>";
-								state = "end";
-							}
-							temp === "";						
-						}else if(ch.length-1 >= i+4 && ch[i+1]=='a' && ch[i+2]=='s' && ch[i+3]=='e' && this._spCharCheck(ch[i+4])) {					
-							str += "<span class='js-directive'>";
-							state = "case";
-						}
-					}else if(ch.length-1 >= i+1 && ch[i+1]=='o'){
-						//continue
-						if(ch.length-1 < i+8) {
-							for(let j=i; j<ch.length; j++) {
-								temp += ch[j];
-							}
-							if("continue" === temp) {								
-								str += "<span class='js-directive'>";
-								state = "end";
-							}
-							temp === "";						
-						}else if(ch.length-1 >= i+8 && ch[i+1]=='o' && ch[i+2]=='n' && ch[i+3]=='t' && 
-								ch[i+4]=='i' && ch[i+5]=='n' && ch[i+6]=='u' && ch[i+7]=='e' && this._spCharCheck(ch[i+8])) {					
-							str += "<span class='js-directive'>";
-							state = "continue";
-						}
-					}else if(ch.length-1 >= i+2 && ch[i+1]=='a' && ch[i+2]=='t'){
-						
-						//catch
-						if(ch.length-1 < i+5) {
-							for(let j=i; j<ch.length; j++) {
-								temp += ch[j];
-							}
-							if("catch" === temp) {								
-								str += "<span class='js-directive'>";
-								state = "end";
-							}
-							temp === "";						
-						}else if(ch.length-1 >= i+5 && ch[i+1]=='a' && ch[i+2]=='t' && ch[i+3]=='c' && ch[i+4]=='h' && this._spCharCheck(ch[i+5])) {					
-							str += "<span class='js-directive'>";
-							state = "catch";
-						}
-					}
-					break;
-				//default, delete
-				case 'd':
-					if(ch.length-1 >= i+2 && ch[i+1]=='e' && ch[i+2]=='f'){
-						if(ch.length-1 < i+7) {
-							for(let j=i; j<ch.length; j++) {
-								temp += ch[j];
-							}
-							if("default" === temp) {								
-								str += "<span class='js-directive'>";
-								state = "end";
-							}
-							temp === "";						
-						}else if(ch.length-1 >= i+7 && ch[i+1]=='e' && ch[i+2]=='f' && ch[i+3]=='a' && ch[i+4]=='u' && ch[i+5]=='l'
-								&& ch[i+6]=='t' && this._spCharCheck(ch[i+7])) {					
-							str += "<span class='js-directive'>";
-							state = "default";
-						}
-					}else if(ch.length-1 >= i+1 && ch[i+1]=='e' && ch[i+2]=='l'){
-						if(ch.length-1 < i+7) {
-							for(let j=i; j<ch.length; j++) {
-								temp += ch[j];
-							}
-							if("delete" === temp) {								
-								str += "<span class='js-directive'>";
-								state = "end";
-							}
-							temp === "";						
-						}else if(ch.length-1 >= i+6 && ch[i+1]=='e' && ch[i+2]=='l' && ch[i+3]=='e' && ch[i+4]=='t' && ch[i+5]=='e'
-								&& this._spCharCheck(ch[i+6])) {					
-							str += "<span class='js-directive'>";
-							state = "delete";
-						}
-					}
-					
-					break;
-				//else
-				case 'e':						
-					if(ch.length-1 < i+4) {
-						for(let j=i; j<ch.length; j++) {
-							temp += ch[j];
-						}
-						if("else" === temp) {								
-							str += "<span class='js-directive'>";
-							state = "end";
-						}
-						temp === "";						
-					}else if(ch.length-1 >= i+4 && ch[i+1]=='l' && ch[i+2]=='s' && ch[i+3]=='e' && this._spCharCheck(ch[i+4])) {					
-						str += "<span class='js-directive'>";
-						state = "else";
-					}
-					break;
-				//function, false, for, finally
-				case 'f':
-					//function
-					if(ch.length-1 >= i+1 && ch[i+1]=='u'){
-						if(ch.length-1 < i+8) {
-							for(let j=i; j<ch.length; j++) {
-								temp += ch[j];
-							}
-							if("function" === temp) {
-								str += "<span class='js-directive'>";
-								state = "end";
-							}
-							temp = "";
-						}else if(ch.length-1 >= i+8 && ch[i+1]=='u' && ch[i+2]=='n' && ch[i+3]=='c' && 
-							ch[i+4]=='t' && ch[i+5]=='i' && ch[i+6]=='o' && ch[i+7]=='n' && this._spCharCheck(ch[i+8])) {					
-							str += "<span class='js-directive'>";
-							state = "function";
-						}
-					}else if(ch.length-1 >= i+1 && ch[i+1]=='a'){
-						//false
-						if(ch.length-1 < i+5) {
-							for(let j=i; j<ch.length; j++) {
-								temp += ch[j];
-							}
-							if("false" === temp) {
-								str += "<span class='js-directive'>";
-								state = "end";
-							}
-							temp = "";
-						}else if(ch.length-1 >= i+8 && ch[i+1]=='a' && ch[i+2]=='l' && ch[i+3]=='s' && 
-								ch[i+4]=='e' && this._spCharCheck(ch[i+5])) {					
-							str += "<span class='js-directive'>";
-							state = "false";
-						}
-					}else if(ch.length-1 >= i+1 && ch[i+1]=='o'){
-						//for
-						if(ch.length-1 < i+3) {
-							for(let j=i; j<ch.length; j++) {
-								temp += ch[j];
-							}
-							if("for" === temp) {
-								str += "<span class='js-directive'>";
-								state = "end";
-							}
-							temp = "";
-						}else if(ch.length-1 >= i+3 && ch[i+1]=='o' && ch[i+2]=='r' && this._spCharCheck(ch[i+3])) {					
-							str += "<span class='js-directive'>";
-							state = "for";
-						}
-					}else if(ch.length-1 >= i+1 && ch[i+1]=='i'){
-						//finally
-						if(ch.length-1 < i+7) {
-							for(let j=i; j<ch.length; j++) {
-								temp += ch[j];
-							}
-							if("finally" === temp) {
-								str += "<span class='js-directive'>";
-								state = "end";
-							}
-							temp = "";
-						}else if(ch.length-1 >= i+7 && ch[i+1]=='i' && ch[i+2]=='n' && ch[i+3]=='a' && ch[i+4]=='l' 
-								&& ch[i+5]=='l' && ch[i+6]=='y' && this._spCharCheck(ch[i+7])) {					
-							str += "<span class='js-directive'>";
-							state = "finally";
-						}
-						
-					}
-					
-					break;
-				//if
-				case 'i':						
-					if(ch.length-1 < i+2) {
-						for(let j=i; j<ch.length; j++) {
-							temp += ch[j];
-						}
-						if("if" === temp || "in" === temp) {								
-							str += "<span class='js-directive'>";
-							state = "end";
-						}
-						temp = "";
-					}else if(ch.length-1 >= i+2 && ch[i+1]=='f' && this._spCharCheck(ch[i+2])) {					
-						str += "<span class='js-directive'>";
-						state = "if";
-					}else if(ch.length-1 >= i+2 && ch[i+1]=='n' && this._spCharCheck(ch[i+2])) {					
-						str += "<span class='js-directive'>";
-						state = "in";
-					}
-					break;
-				//let
-				case 'l':						
-					if(ch.length-1 < i+3) {
-						for(let j=i; j<ch.length; j++) {
-							temp += ch[j];
-						}
-						if("let" === temp) {								
-							str += "<span class='js-directive'>";
-							state = "end";
-						}
-						temp === "";						
-					}else if(ch.length-1 >= i+3 && ch[i+1]=='e' && ch[i+2]=='t' && this._spCharCheck(ch[i+3])) {					
-						str += "<span class='js-directive'>";
-						state = "let";
-					}
-					break;
-				//null, new
-				case 'n':
-					if(ch.length-1 >= i+1 && ch[i+1] == 'u'){
-						//null
-						if(ch.length-1 < i+4) {
-							for(let j=i; j<ch.length; j++) {
-								temp += ch[j];
-							}
-							if("null" === temp) {								
-								str += "<span class='js-directive'>";
-								state = "end";
-							}
-							temp === "";						
-						}else if(ch.length-1 >= i+4 && ch[i+1]=='u' && ch[i+2]=='l' && ch[i+3]=='l' && this._spCharCheck(ch[i+4])) {					
-							str += "<span class='js-directive'>";
-							state = "null";
-						}
-					}else if(ch.length-1 >= i+1 && ch[i+1] == 'e'){
-						//new
-						if(ch.length-1 < i+3) {
-							for(let j=i; j<ch.length; j++) {
-								temp += ch[j];
-							}
-							if("new" === temp) {								
-								str += "<span class='js-directive'>";
-								state = "end";
-							}
-							temp === "";						
-						}else if(ch.length-1 >= i+3 && ch[i+1]=='e' && ch[i+2]=='w' && this._spCharCheck(ch[i+3])) {					
-							str += "<span class='js-directive'>";
-							state = "new";
-						}
-						
-					}
-					break;
-				//return
-				case 'r':						
-					if(ch.length-1 < i+6) {
-						for(let j=i; j<ch.length; j++) {
-							temp += ch[j];
-						}
-						if("return" === temp) {								
-							str += "<span class='js-directive'>";
-							state = "end";
-						}
-						temp === "";						
-					}else if(ch.length-1 >= i+6 && ch[i+1]=='e' && ch[i+2]=='t' && ch[i+3]=='u' && ch[i+4]=='r' && ch[i+5]=='n' 
-							&& this._spCharCheck(ch[i+6])) {					
-						str += "<span class='js-directive'>";
-						state = "return";
-					}
-					break;
-				//switch
-				case 's':						
-					if(ch.length-1 < i+6) {
-						for(let j=i; j<ch.length; j++) {
-							temp += ch[j];
-						}
-						if("switch" === temp) {								
-							str += "<span class='js-directive'>";
-							state = "end";
-						}
-						temp === "";						
-					}else if(ch.length-1 >= i+6 && ch[i+1]=='w' && ch[i+2]=='i' && ch[i+3]=='t' && ch[i+4]=='c' && ch[i+5]=='h' && this._spCharCheck(ch[i+6])) {					
-						str += "<span class='js-directive'>";
-						state = "switch";
-					}
-					break;
-				//true, typeof, throw, try, this
-				case 't':
-					//true, try
-					if(ch.length-1 >= i+1 && ch[i+1] == 'r'){
-						//true
-						if(ch.length-1 >= i+2 && ch[i+2] == 'u'){
-							if(ch.length-1 < i+4) {
-								for(let j=i; j<ch.length; j++) {
-									temp += ch[j];
+							//내용 중간
+							if(ch.length-1 >= i+chList[j].length){								
+								for(let k=0; k<chList[j].length; k++){									
+									if(ch[i+k] === chList[j].substr(k, 1)){
+										temp += ch[i+k];
+									}
 								}
-								if("true" === temp) {								
-									str += "<span class='js-directive'>";
+								if(chList[j] === temp && this._spCharCheck(ch[i+chList[j].length])){
+									str += "<span class='"+this._javascriptCmd[chList[j]]+"'>";
+									state = chList[j];
+								}
+								temp = "";
+							//내용 마지막
+							}else if(ch.length-1 < i+chList[j].length){
+								for(let k=0; k<chList[j].length; k++){									
+									if(ch[i+k] === chList[j].substr(k, 1)){
+										temp += ch[i+k];
+									}
+								}
+								if(chList[j] === temp){
+									str += "<span class='"+this._javascriptCmd[chList[j]]+"'>";
 									state = "end";
 								}
 								temp = "";
-							}else if(ch.length-1 >= i+4 && ch[i+1]=='r' && ch[i+2]=='u' && ch[i+3]=='e' && this._spCharCheck(ch[i+4])) {					
-								str += "<span class='js-directive'>";
-								state = "true";
-							}
-						//try
-						}else if(ch.length-1 >= i+2 && ch[i+2] == 'y'){
-							if(ch.length-1 < i+3) {
-								for(let j=i; j<ch.length; j++) {
-									temp += ch[j];
-								}
-								if("try" === temp) {								
-									str += "<span class='js-directive'>";
-									state = "end";
-								}
-								temp = "";
-							}else if(ch.length-1 >= i+3 && ch[i+1]=='r' && ch[i+2]=='y' && this._spCharCheck(ch[i+3])) {					
-								str += "<span class='js-directive'>";
-								state = "try";
-							}
-						}						
-					}else if(ch.length-1 >= i+1 && ch[i+1] === 'y'){
-						//typeof
-						if(ch.length-1 < i+6) {
-							for(let j=i; j<ch.length; j++) {
-								temp += ch[j];
-							}
-							if("typeof" === temp) {								
-								str += "<span class='js-directive'>";
-								state = "end";
-							}
-							temp = "";
-						}else if(ch.length-1 >= i+5 && ch[i+1]=='y' && ch[i+2]=='p' && ch[i+3]=='e' && ch[i+4]=='o' && ch[i+5]=='f' && this._spCharCheck(ch[i+6])) {					
-							str += "<span class='js-directive'>";
-							state = "typeof";
-						}
-					}else if(ch.length-1 >= i+1 && ch[i+1] === 'h'){
-						
-						//throw
-						if(ch.length-1 >= i+2 && ch[i+2] === 'r'){
-							if(ch.length-1 < i+5) {
-								for(let j=i; j<ch.length; j++) {
-									temp += ch[j];
-								}
-								if("throw" === temp) {								
-									str += "<span class='js-directive'>";
-									state = "end";
-								}
-								temp = "";
-							}else if(ch.length-1 >= i+5 && ch[i+1]=='h' && ch[i+2]=='r' && ch[i+3]=='o' && ch[i+4]=='w' && this._spCharCheck(ch[i+5])) {					
-								str += "<span class='js-directive'>";
-								state = "throw";
-							}
-							
-						//this
-						}else if(ch.length-1 >= i+2 && ch[i+2] === 'i'){
-							if(ch.length-1 < i+4) {
-								for(let j=i; j<ch.length; j++) {
-									temp += ch[j];
-								}
-								if("this" === temp) {								
-									str += "<span class='js-directive'>";
-									state = "end";
-								}
-								temp = "";
-							}else if(ch.length-1 >= i+4 && ch[i+1]=='h' && ch[i+2]=='i' && ch[i+3]=='s' && this._spCharCheck(ch[i+4])) {					
-								str += "<span class='js-directive'>";
-								state = "this";
 							}
 						}
-					}			
-					break;				
-				//undefined
-				case 'u':						
-					if(ch.length-1 < i+9) {
-						for(let j=i; j<ch.length; j++) {
-							temp += ch[j];
-						}
-						if("undefined" === temp) {								
-							str += "<span class='js-directive'>";
-							state = "end";
-						}
-						temp === "";						
-					}else if(ch.length-1 >= i+9 && ch[i+1]=='n' && ch[i+2]=='d' && ch[i+3]=='e' && ch[i+4]=='f' && ch[i+5]=='i' && 
-							ch[i+6]=='n' && ch[i+7]=='e' && ch[i+8]=='d' && this._spCharCheck(ch[i+9])) {					
-						str += "<span class='js-directive'>";
-						state = "undefined";
+						chList = null;
 					}
 					break;
-				case 'w':
-					//while
-					if(ch.length-1 < i+5) {
-						for(let j=i; j<ch.length; j++) {
-							temp += ch[j];
-						}
-						if("while" === temp) {								
-							str += "<span class='js-directive'>";
-							state = "end";
-						}
-						temp === "";						
-					}else if(ch.length-1 >= i+5 && ch[i+1]=='h' && ch[i+2]=='i' && ch[i+3]=='l' && ch[i+4]=='e' && this._spCharCheck(ch[i+5])) {					
-						str += "<span class='js-directive'>";
-						state = "while";
-					}
-					break;
-				//var
-				case 'v':						
-					if(ch.length-1 < i+3) {
-						for(let j=i; j<ch.length; j++) {
-							temp += ch[j];
-						}
-						if("var" === temp) {								
-							str += "<span class='js-directive'>";
-							state = "end";
-						}
-						temp === "";						
-					}else if(ch.length-1 >= i+3 && ch[i+1]=='a' && ch[i+2]=='r' && this._spCharCheck(ch[i+3])) {					
-						str += "<span class='js-directive'>";
-						state = "var";
-					}
-					break;	*/			
 				}			
 			}
 			str += ch[i];
 		}
 		
-		if("end" === state) {				
-			str += "</span>";
-			state = "none";
-		}
+		if("end" === state) str += "</span>";
 		
-		if(part === false){
+		if(part === true){
+			return {cotent : str, line : line};			
+		}else{			
 			let result = "<div>";		
 			result += "<div class='cAdjust-line'>";
 			
@@ -698,9 +268,6 @@ let cAdjust = {
 			}	
 			result +="</div><pre class='cAdjust-textarea'>"+str+"</pre></div>";
 			return result;
-			
-		}else{
-			return {cotent : str, line : line};
 		}
 	},
 	_html : function(){

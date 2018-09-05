@@ -2,6 +2,7 @@ package com.ljh.white.main.controller;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.mobile.device.Device;
 import org.springframework.stereotype.Controller;
@@ -20,14 +21,8 @@ public class MainController {
 	
 	//메인페이지
 	@RequestMapping(value="/")
-	public String white(HttpServletRequest request){			
+	public String white(HttpServletRequest request){
 		return "redirect:/main";
-	}
-	
-	//테스트 페이지
-	@RequestMapping(value="/test")
-	public String test(HttpServletRequest request, Device device){
-		return White.device(device)+"/test.jsp";
 	}
 
 	//메인페이지
@@ -40,8 +35,7 @@ public class MainController {
 	//로그인 유저확인
 	@ResponseBody
 	@RequestMapping(value="/main/loginCheck.ajax")
-	public boolean loginCheck(HttpServletRequest request){
-		
+	public boolean loginCheck(HttpServletRequest request){		
 		WhiteMap param = new WhiteMap();
 		
 		param.put("userId", request.getParameter("userId"));
@@ -51,9 +45,9 @@ public class MainController {
 	
 	//로그인
 	@RequestMapping(value="/main/login")
-	public String login(HttpServletRequest request, Device device){
-		
+	public String login(HttpServletRequest request, Device device){		
 		WhiteMap param = new WhiteMap();
+		
 		param.put("userId", request.getParameter("userId"));
 		param.put("passwd", request.getParameter("passwd"));
 		mainService.login(request, param);
@@ -61,6 +55,32 @@ public class MainController {
 		return "redirect:/main";
 	}
 	
+	//로그아웃
+	@RequestMapping(value = "/main/logout")
+	public String logout(HttpServletRequest request){
+		//세션정보 삭제
+		HttpSession session = request.getSession();
+		session.removeAttribute("userId");
+		session.removeAttribute("userSeq");
+		session.removeAttribute("authority");
+		session.removeAttribute("navList");
+		session.removeAttribute("sideList");
+		session.invalidate();
+		
+		return "redirect:/main";
+	}
+	
+	//가입
+	@RequestMapping(value = "/main/signUp")
+	public String signUp(HttpServletRequest request, Device device){		
+		if(request.getSession(false) == null) {
+			request.setAttribute("sectionPage", "main/signUp.jsp");		
+			return White.device(device)+"/white.jsp";
+		}else {
+			return "redirect:/main";
+		}
+	}
+
 	//화면이동 컨트롤러
 	@RequestMapping(value="{navUrl}")
 	public String white(HttpServletRequest request, Device device){		
