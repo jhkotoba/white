@@ -2,20 +2,20 @@
  * @author jeHoon
  */
 let wVali = {
-	_clause : ["empty"],
-	clause : function(clause){
+	_checkItem : ["empty"],
+	checkItem : function(checkItem){
 		
 		//체크구분 list로 변환
-		if(clause === null || clause === "" || clause === undefined){
-			clause = ["empty"];
-		}else if(typeof clause === "string"){
-			clause = [clause];
-		}else if(typeof clause === "object" && clause.length === undefined){			
-			let keys = Object.keys(clause);	let temp = [];
+		if(checkItem === null || checkItem === "" || checkItem === undefined){
+			checkItem = ["empty"];
+		}else if(typeof checkItem === "string"){
+			checkItem = [checkItem];
+		}else if(typeof checkItem === "object" && checkItem.length === undefined){			
+			let keys = Object.keys(checkItem);	let temp = [];
 			for(let i=0; i<keys.length; i++) push(keys[i]);
-			clause = temp;
+			checkItem = temp;
 		}	
-		this._clause = clause;
+		this._checkItem = checkItem;
 		return this;
 	},
 	_exclude : new Set(),		
@@ -51,16 +51,20 @@ let wVali = {
 		
 		if(isDefault === undefined || isDefault === false) this.init();
 		
-		//유효성 검사
 		let result = {};		
-		let keys = Object.keys(param);		
+		let keys = Object.keys(param);
+		
+		//key수 만큼 유효성 검사
 		for(let i=0; i<keys.length; i++){
-			if(!this._exclude.has(keys[i])){
-				for(let j=0; j<this._clause.length; j++){
-					switch(this._clause[j]){					
+			if(!this._exclude.has(keys[i])){				
+				for(let j=0; j<this._checkItem.length; j++){
+					switch(this._checkItem[j]){					
 					case "empty":
 						if(param[keys[i]].replace(/^\s+|\s+$/g,"") === "" || param[keys[i]] === null || param[keys[i]] === undefined){
-							return this.alert({parent: this._parent, id: "#"+keys[i], cause: this._clause[j], 
+							return this.alert({
+								parent: this._parent,
+								id: "#"+keys[i],
+								cause: this._checkItem[j], 
 								msg: $(this._parent+" #"+keys[i])[0].nodeName === "SELECT" ? "값을 선택해 주세요." : "값을 입력해 주세요."});
 						}
 						break;
@@ -68,7 +72,12 @@ let wVali = {
 						let maxLen = $(this._parent+" #"+keys[i]).attr("maxlength");
 						if(maxLen !== undefined){
 							if($(this._parent+" #"+keys[i]).val().length > maxLen){
-								return this.alert({parent: this._parent, id: "#"+keys[i], cause: this._clause[j], msg: "글자수가 많습니다. <br> (최대글자수: "+maxLen+")"});								 
+								return this.alert({
+										parent: this._parent, 
+										id: "#"+keys[i],
+										cause: this._checkItem[j],
+										msg: "글자수가 많습니다. <br> (최대글자수: "+maxLen+")"
+										});								 
 							} 
 						}
 						break;
@@ -96,7 +105,7 @@ let wVali = {
 		}
 		return true;
 	},	
-	alert : function(item){
+	alert : function(item){		
 		let target = $(item.parent +" "+item.id);
 		$(target).addClass("wVali-border").focus();	
 		
@@ -104,14 +113,14 @@ let wVali = {
 		let offset = $(target).offset();
 		$("#wValiAlert").offset({top: offset.top-42, left: offset.left});		
 		
-		$(target).on("focusout click", function(){
-			$(target).removeClass("wVali-border").off("focusout click");
+		$(target).on("focusout", function(){
+			$(target).removeClass("wVali-border").off("focusout");
 			$("#wValiAlert").remove();
 		});
 		return false;
 	},
 	init : function(){
-		this._clause = ["empty"];
+		this._checkItem = ["empty"];
 		this._exclude = new Set();
 		this._parent = "";
 		return this;

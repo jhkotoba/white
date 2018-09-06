@@ -4,6 +4,18 @@
 <c:set var="contextPath" value="<%=request.getContextPath()%>"></c:set>
 <script type="text/javascript">
 $(document).ready(function(){
+	
+	//권한리스트 조회
+	fnSelectAuth().done(function(data){
+		$("#authList").empty();		
+		let tag = "";
+		for(let i=0; i<data.length; i++){
+			tag += "<label for='"+data[i].authNm+"'>"+data[i].authCmt+"</label>";
+			tag += "<input type='checkbox' name='authChk' id='"+data[i].authNm+"' value=''>";			
+		}			
+		$("#authList").append(tag);
+	});
+	
 	//리스트 출력
 	fnJsGrid();
 	
@@ -39,7 +51,6 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
         autoload: true,        
         controller: {
             loadData: function(filter) {
-            	let deferred = $.Deferred();
             	
             	let param = $("#searchForm").getParam();
             	
@@ -49,29 +60,21 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
             	}else{
             		param.pageIndex = this.pageIndex;
                 	param.pageSize = this.pageSize;
-            	}            	
-               
-                $.ajax({
-                	data : param,
-                    url: common.path()+'/admin/selectUserList.ajax',                   
-                    success: function(data){console.log(data);
-                        deferred.resolve({
-    						data: data.list,    						
-    						itemsCount: data.itemsCount
-    					});
-                    }
-                });                
-                return deferred.promise();
+            	}
+            	
+            	return fnCmmAjax("/admin/selectUserList", param, true);
             }
         },
         rowClick: function(args) {
-        	console.log(args);
-        	$("#viewForm").setParam(args.item).show();        	
+        	$("#viewForm").setParam(args.item).show();
+        	fnSelectAuth(args.item.no).done(function(data){
+        		console.log(data);
+        	});        	
         }, 
         fields: [
-			{ title:"사용자 번호",	name:"no",		type:"text", align:"center"},
+			{ title:"사용자 번호",		name:"no",			type:"text", align:"center"},
 			{ title:"사용자 아이디",	name:"userId",		type:"text", align:"center"},
-			{ title:"사용자 이름",	name:"userName",	type:"text"}
+			{ title:"사용자 이름",		name:"userName",	type:"text"}
         ]
     });
 }
@@ -90,9 +93,13 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
 		<span class="span-gray-rt">이름</span>
 		<span id="userName" class="span-gray"></span>
 	</div>
+	<div>
+		<span class="span-gray">권한설정</span>
+		<div id="authList">
+		</div>
+	</div>
 	
 </form>
-
 
 <!-- 검색 -->
 <form id="searchForm" name="searchForm" onsubmit="return false;">
@@ -104,12 +111,10 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
 <div id="searchBar" class="search-bar">
 	<select class="select-gray" id="type">
 		<option value="id">아이디</option>		
-		<option value="title">제목</option>
+		<option value="name">이름</option>
 	</select>
 	<input class="input-gray w3" id="text" type="text">
 	<button class="btn-gray" id="searchBtn">조회</button>
 </div>
 
-
 <div id="userList"></div>
-

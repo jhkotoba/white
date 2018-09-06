@@ -95,6 +95,44 @@ $.fn.setParam = function(param){
 	return this;
 }
 
+
+
+//ajax 코드 조회
+function fnSelectCode(codePrt){
+	return fnCmmAjax("/white/selectCodeList", {"codePrt" : codePrt});	
+}
+
+//ajax 권한 리스트 조회 - no(유저번호) 없으면 전체 조회
+function fnSelectAuth(no){
+	if(isEmpty(no)){
+		return fnCmmAjax("/admin/selectAuthList");	
+	}else{
+		return fnCmmAjax("/admin/selectUserAuth", {"no" : no});	
+	}
+}
+
+//ajax 공통
+function fnCmmAjax(url, param, isGrid){	
+	let deferred = $.Deferred();
+	$.ajax({
+		url: getContextPath()+url+".ajax",
+		data : isEmpty(param) === true ? null : param,
+	    success : function(data) {
+	    	if(isGrid === true) deferred.resolve({data: data.list, itemsCount: data.itemsCount});
+	    	else deferred.resolve(data);
+	    },
+	    error : function(request, status, error){
+	    	if(request.status === 488){
+				alert("세션이 만료되었습니다. 로그인 해주세요.");
+				location.href = getContextPath()+"/main";
+	    	}else{
+	    		deferred.reject({"request":request, "status":status, "error":status});
+	    	}	    	
+	    }
+	});		
+	return deferred.promise();
+}
+
 //날짜반환함수
 let isDate = {	
 	dateProcess : function dateProcess(isMonth, type){	

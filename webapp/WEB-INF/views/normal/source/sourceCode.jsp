@@ -11,7 +11,7 @@ $(document).ready(function(){
 	fnJsGrid();
 	
 	//코드 셀렉트박스 조회
-	cmmCode.select("sc").done(function(data){		
+	fnSelectCode("sc").done(function(data){		
     	let tag = "";
     	for(let i=0; i<data.length; i++){
     		tag += "<option value="+data[i].code+">"+data[i].codeNm+"</option>";	    		
@@ -53,26 +53,22 @@ $(document).ready(function(){
 	
 	//글쓰기 - 저장 버튼
 	$("#writeForm #save").on("click", function(){
+		
 		let param = $("#writeForm").getParam();
 		
-		if(wVali.parent("writeForm").clause(["empty", "maxLen"])
+		if(wVali.parent("writeForm").checkItem(["empty", "maxLen"])
 				.check(param, true) === false)	return;
 		
-		$.ajax({
-			url: common.path()+'/source/insertSource.ajax',
-			data : param,
-			success : function(data) {
-		    	if(Number(data) === 1){
-		    		alert("새로운 글을 저장하였습니다.");
-		    	}else{
-		    		alert("저장에 실패하였습니다.");
-		    	}	
-		    	$("#writeForm").clear().hide();		    	  	
-		    	$("#searchForm").clear();
-				fnJsGrid(1);
-		    }
-		});
+		if(!confirm("저장 하시겠습니까?")) return;
 		
+		fnCmmAjax("/source/insertSource", param).done(function(data){
+			if(Number(data) === 1) alert("새로운 글을 저장하였습니다.");
+	    	else alert("저장에 실패하였습니다.");
+			
+			$("#writeForm").clear().hide();		    	  	
+	    	$("#searchForm").clear();
+			fnJsGrid(1);
+    	});
 	});
 	
 	//글쓰기 - 닫기
@@ -86,32 +82,24 @@ $(document).ready(function(){
 		$("#editForm").show();
 	});
 	
-	//글수정-저장
+	//글수정 - 저장
 	$("#editForm #save").on("click", function(){
 		
-		if(!confirm("수정하시겠습니까?")){
-			return;
-		}
+		if(!confirm("수정 하시겠습니까?")) return;
 		
 		let param = $("#editForm").getParam();
 		
-		if(wVali.parent("editForm").clause(["empty", "maxLen"])
+		if(wVali.parent("editForm").checkItem(["empty", "maxLen"])
 				.check(param, true) === false)	return;		
 		
-		$.ajax({
-			url: common.path()+'/source/updateSource.ajax',
-			data : param,
-			success : function(data) {
-		    	if(1 === Number(data)){
-		    		alert("수정 하였습니다.");		    		
-		    	}else{
-		    		alert("수정에 실패하였습니다.");
-		    	}
-		    	$("#viewForm").clear().hide();
-		    	$("#editForm").clear().hide();
-				fnJsGrid(1);
-		    }
-		});
+		fnCmmAjax("/source/updateSource", param).done(function(data){
+			if(1 === Number(data)) alert("수정 하였습니다.");
+	    	else alert("수정에 실패하였습니다.");
+			
+	    	$("#viewForm").clear().hide();
+	    	$("#editForm").clear().hide();
+			fnJsGrid(1);
+    	});
 	});
 	
 	//글수정 - 닫기
@@ -122,28 +110,18 @@ $(document).ready(function(){
 	//글보기 - 삭제
 	$("#viewForm #delete").on("click", function(){
 		
-		if(!confirm("삭제하시겠습니까?")){
-			return;
-		}
+		if(!confirm("삭제하시겠습니까?")) return;
 		
-		$.ajax({
-			url: common.path()+'/source/deleteSource.ajax',
-			data : {
-				no : $("#viewForm #no").val()
-			},
-			success : function(data) {
-		    	if(1 === Number(data)){
-		    		alert("삭제 하였습니다.");		    		
-		    	}else{
-		    		alert("삭제에 실패하였습니다.");
-		    	}
-		    	$("#viewForm").clear().hide();
-		    	$("#editForm").clear().hide();		    	
-		    	$("#searchForm").clear();
-		    	
-				fnJsGrid(1);
-		    }
-		});
+		fnCmmAjax("/source/deleteSource", {no : $("#viewForm #no").val()}).done(function(data){
+			if(1 === Number(data)) alert("삭제 하였습니다.");
+	    	else alert("삭제에 실패하였습니다.");
+			
+	    	$("#viewForm").clear().hide();
+	    	$("#editForm").clear().hide();
+	    	$("#searchForm").clear();
+	    	
+			fnJsGrid(1);
+    	});
 	});
 	
 	//글수정 - 닫기
@@ -167,7 +145,6 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
         autoload: true,        
         controller: {
             loadData: function(filter) {
-            	let deferred = $.Deferred();
             	
             	let param = $("#searchForm").getParam();            	
             	
@@ -177,19 +154,9 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
             	}else{
             		param.pageIndex = this.pageIndex;
                 	param.pageSize = this.pageSize;
-            	}            	
-               
-                $.ajax({
-                	data : param,
-                    url: common.path()+'/source/selectSourceList.ajax',                   
-                    success: function(data){
-                        deferred.resolve({
-    						data: data.list,    						
-    						itemsCount: data.itemsCount
-    					});
-                    }
-                });                
-                return deferred.promise();
+            	}
+            	
+            	return fnCmmAjax("/source/selectSourceList", param, true);
             }
         },
         rowClick: function(args) {        	
@@ -198,24 +165,18 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
         	
         	$("#viewForm").show();
         	$("#viewForm #edit").addClass("hide");
-        	$("#viewForm #delete").addClass("hide");	
+        	$("#viewForm #delete").addClass("hide");
         	
-        	$.ajax({
-        		url: common.path()+'/source/selectSourceDtlView.ajax',
-        		data : {
-        			no : args.item.no
-        		},
-        	    success : function(data) {	    	
-        	    	$("#viewForm").setParam(data);
-        	    	$("#viewForm #cAdjust").empty().append(cAdjust.adjust(data.langNm, data.content));
-        	    	
-        	    	$("#editForm").setParam(data);
-        	    	if('${sessionScope.userId}'!== '' && '${sessionScope.userId}' === String(data.userId)){
-        	    		$("#viewForm #edit").removeClass("hide");
-        	    		$("#viewForm #delete").removeClass("hide");
-        	    	}	    	
-        			$("body").scrollTop(0);
-        	    }
+        	fnCmmAjax("/source/selectSourceDtlView", {no : args.item.no}).done(function(data){
+        		$("#viewForm").setParam(data);
+    	    	$("#viewForm #cAdjust").empty().append(cAdjust.adjust(data.langNm, data.content));
+    	    	
+    	    	$("#editForm").setParam(data);
+    	    	if('${sessionScope.userId}'!== '' && '${sessionScope.userId}' === String(data.userId)){
+    	    		$("#viewForm #edit").removeClass("hide");
+    	    		$("#viewForm #delete").removeClass("hide");
+    	    	}  	
+    			$("body").scrollTop(0);
         	});
         }, 
         fields: [
