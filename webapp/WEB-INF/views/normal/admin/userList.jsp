@@ -6,12 +6,12 @@
 $(document).ready(function(){
 	
 	//권한리스트 조회
-	fnSelectAuth().done(function(data){
+	fnSelectAuth().done(function(data){console.log(data);
 		$("#authList").empty();		
 		let tag = "";
-		for(let i=0; i<data.length; i++){
+		for(let i=0; i<data.length; i++){			
+			tag += "<input type='checkbox' name='authChk' id='"+data[i].authNm+"' value='"+data[i].authNmSeq+"'>";
 			tag += "<label for='"+data[i].authNm+"'>"+data[i].authCmt+"</label>";
-			tag += "<input type='checkbox' name='authChk' id='"+data[i].authNm+"' value=''>";			
 		}			
 		$("#authList").append(tag);
 	});
@@ -68,12 +68,15 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
         rowClick: function(args) {
         	$("#viewForm").setParam(args.item).show();
         	fnSelectAuth(args.item.no).done(function(data){
-        		console.log(data);
-        	});        	
+        		$("input:checkbox[name='authChk']").prop("checked", false);
+        		for(let i=0; i<data.length; i++){
+        			$("#authList #"+data[i].authNm).prop("checked", true);
+        		}
+        	});
         }, 
         fields: [
-			{ title:"사용자 번호",		name:"no",			type:"text", align:"center"},
-			{ title:"사용자 아이디",	name:"userId",		type:"text", align:"center"},
+			/* { title:"사용자 번호",		name:"no",			type:"text", align:"center"}, */
+			{ title:"사용자 아이디",		name:"userId",		type:"text", align:"center"},
 			{ title:"사용자 이름",		name:"userName",	type:"text"}
         ]
     });
@@ -95,8 +98,9 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
 	</div>
 	<div>
 		<span class="span-gray">권한설정</span>
-		<div id="authList">
-		</div>
+		<button class="btn-gray" id="save">저장</button>		
+	</div>
+	<div id="authList">
 	</div>
 	
 </form>

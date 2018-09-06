@@ -78,13 +78,13 @@ $.fn.getParam = function() {
 $.fn.setParam = function(param){
 	this.find("*").each(function(){
 		if(param[this.id] !== undefined){
-			let type = this.type, tag = this.tagName.toLowerCase();			
+			let type = this.type, tag = this.tagName.toLowerCase();
 			if(type === "text" || type === "password" || type === "hidden" || tag === "textarea"){
 				this.value = param[this.id];
 			}else if(tag === "select"){
-				$(this).val(param[this.id]).prop("selected", true);
+				$(this).val(param[this.id]).prop("selected", true);			
 			}else if (type === 'checkbox' || type === 'radio'){
-				
+				$(this).prop("checked", true)		
 			}else if(tag === "span"){
 				$(this).text(param[this.id]);
 			}else if(tag === "label"){
