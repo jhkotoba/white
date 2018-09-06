@@ -164,17 +164,17 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
         	$("#editForm").clear().hide();
         	
         	$("#viewForm").show();
-        	$("#viewForm #edit").addClass("hide");
-        	$("#viewForm #delete").addClass("hide");
+        	$("#viewForm #edit").hide();
+        	$("#viewForm #delete").hide();
         	
         	fnCmmAjax("/source/selectSourceDtlView", {no : args.item.no}).done(function(data){
         		$("#viewForm").setParam(data);
     	    	$("#viewForm #cAdjust").empty().append(cAdjust.adjust(data.langNm, data.content));
     	    	
-    	    	$("#editForm").setParam(data);
+    	    	$("#editForm").setParam(data);    	    	
     	    	if('${sessionScope.userId}'!== '' && '${sessionScope.userId}' === String(data.userId)){
-    	    		$("#viewForm #edit").removeClass("hide");
-    	    		$("#viewForm #delete").removeClass("hide");
+    	    		$("#viewForm #edit").show();
+    	    		$("#viewForm #delete").show();
     	    	}  	
     			$("body").scrollTop(0);
         	});
