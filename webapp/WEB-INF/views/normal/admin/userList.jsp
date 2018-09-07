@@ -68,9 +68,9 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
         rowClick: function(args) {
         	$("#viewForm").setParam(args.item).show();
         	fnSelectAuth(args.item.no).done(function(data){
-        		$("input:checkbox[name='authChk']").prop("checked", false);
+        		$("input:checkbox[name='authChk']").data("state", "none").prop("checked", false);
         		for(let i=0; i<data.length; i++){
-        			$("#authList #"+data[i].authNm).prop("checked", true);
+        			$("#authList #"+data[i].authNm).data("state", "select").prop("checked", true);
         		}
         	});
         }, 

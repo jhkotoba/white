@@ -50,8 +50,13 @@ $.fn.clear = function() {
 			this.value = '';
 		}else if (type === 'checkbox' || type === 'radio'){
 			this.checked = false;
+			this.value = '';
 		}else if (tag === 'select'){
 			this.selectedIndex = 0;
+		}else if(tag === "span"){
+			$(this).text("");
+		}else if(tag === "label"){
+			$(this).text("");
 		}
     });
 };
@@ -66,7 +71,9 @@ $.fn.getParam = function() {
 				param[this.id] = this.value;
 			}else if(tag === "select"){
 				param[this.id] = this.value;
-			}else if (type === 'checkbox' || type === 'radio'){
+			}else if (type === 'checkbox'){
+				
+			}else if(type === 'radio'){
 				
 			}
 		}		
@@ -83,8 +90,10 @@ $.fn.setParam = function(param){
 				this.value = param[this.id];
 			}else if(tag === "select"){
 				$(this).val(param[this.id]).prop("selected", true);			
-			}else if (type === 'checkbox' || type === 'radio'){
-				$(this).prop("checked", true)		
+			}else if (type === 'checkbox'){
+				$(this).prop("checked", true).val(param[this.id]);
+			}else if(type === 'radio'){				
+			
 			}else if(tag === "span"){
 				$(this).text(param[this.id]);
 			}else if(tag === "label"){
