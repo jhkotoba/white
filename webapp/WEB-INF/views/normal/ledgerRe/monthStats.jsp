@@ -309,7 +309,7 @@ function monthPStatsDraw(P){
 		<h1 class="h2 nsrb">월별통계</h1>
 	</div>
 
-	<div class="input-group w-25 updown-spacing">
+	<div class="input-group w-25 blank">
 		<input id="chartDate" class="form-control" type="text" value="">
 		<div class="input-group-append">
 			<button class="btn btn-outline-secondary" type="button">Search</button>
@@ -328,7 +328,7 @@ function monthPStatsDraw(P){
 	<%-- <div id="monthCashBankList"></div> 추후 업데이트--%>
 	
 	<!-- 월별 목적별 통계 -->
-	<div class="updown-spacing">		
+	<div class="blank">		
 		<div class="chart-height left width-half form-control" id="monthPurposeP1Chart"></div>
 		<div class="chart-height right width-half form-control" id="monthPurposeP2Chart"></div>
 		<div class="chart-height left width-half form-control" id="monthPurposeP3Chart"></div>

@@ -328,7 +328,7 @@ function monthPStatsDraw(P){
 </script>
 
 <div class="article">
-	<div class="input-group w-25 updown-spacing">
+	<div class="input-group w-25 blank">
 		<input id="chartDate" class="form-control" type="text" value="">
 		<div class="input-group-append">
 			<button class="btn btn-outline-secondary" type="button">Search</button>

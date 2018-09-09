@@ -204,7 +204,7 @@ $(document).ready(function(){
 			</div>
 		</div>	
 		
-		<div class="updown-spacing">
+		<div class="blank">
 			<button id="authClose" type="button" class="btn btn-secondary">Close</button>
 			<button id="authSave" type="button" class="btn btn-secondary">Save changes</button>
 		</div>

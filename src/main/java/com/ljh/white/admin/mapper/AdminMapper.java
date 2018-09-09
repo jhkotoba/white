@@ -48,12 +48,22 @@ public class AdminMapper {
 		return sqlSession.selectList("adminMapper.selectUserAuth", param);
 	}
 	
+	/**
+	 * 사용자 권한 추가
+	 * @param param
+	 * @return
+	 */
 	public int insertAuthList(List<WhiteMap> param) {
 		logger.debug(param);
 		return sqlSession.insert("adminMapper.insertAuthList", param);
 	}
 	
-	public int deleteAuthList(List<WhiteMap> param) {
+	/**
+	 * 사용자 권한 삭제
+	 * @param param
+	 * @return
+	 */
+	public int deleteAuthList(WhiteMap param) {
 		logger.debug(param);
 		return sqlSession.delete("adminMapper.deleteAuthList", param);
 	}

@@ -21,10 +21,10 @@ $.ajaxSetup({
 		if(request.status === 488){
 			alert("세션이 만료되었습니다. 로그인 해주세요.");
 			location.href = getContextPath()+"/main";
-		}else{
-			console.log(request);
-	    	console.log(status);
-	    	console.log(error);
+		}else{			
+			alert("통신에 실패하였습니다.");
+			let deferred = $.Deferred();
+			deferred.reject({"request":request, "status":status, "error":status});			
 		}
     }
 });
@@ -129,15 +129,7 @@ function fnCmmAjax(url, param, isGrid){
 	    success : function(data) {
 	    	if(isGrid === true) deferred.resolve({data: data.list, itemsCount: data.itemsCount});
 	    	else deferred.resolve(data);
-	    },
-	    error : function(request, status, error){
-	    	if(request.status === 488){
-				alert("세션이 만료되었습니다. 로그인 해주세요.");
-				location.href = getContextPath()+"/main";
-	    	}else{
-	    		deferred.reject({"request":request, "status":status, "error":status});
-	    	}	    	
-	    }
+	    }	    
 	});		
 	return deferred.promise();
 }

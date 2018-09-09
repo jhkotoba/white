@@ -64,6 +64,30 @@ span, table{font-size: 0.9em; color: rgba(246, 246, 246, .8);}
 .span-gray-rt{background: #363636; padding: 6px 10px 7px 10px; line-height: 30px; border-radius: 1px; border: 1px solid #585858; margin-right: -6px; vertical-align: bottom;}
 .span-gray-block{background: #363636; display: block; padding: 6px 10px 7px 10px; border-radius: 1px; border: 1px solid #585858; vertical-align: bottom;}
 
+.blank{margin-top: 10px; margin-bottom: 10px;}
+.blank-top{margin-top: 10px;}
+.blank-bottom{margin-bottom: 10px;}
+
+.left-th{
+	
+	width: 100px;
+    text-align: center;
+    display: table-cell;
+    vertical-align: middle;
+    
+   
+}
+
+.border-gray{
+	border: 1px solid #585858;
+	padding: 5px 10px 5px 10px;	
+	vertical-align: bottom;
+}
+
+/* .check-label{
+	margin-right: 15px;
+	white-space: nowrap;
+} */
 
 
 

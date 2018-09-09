@@ -107,12 +107,10 @@
 		</foreach>	
 	</insert>
 	
-	<delete id="deleteAuthList" parameterType="java.util.List">
+	<delete id="deleteAuthList" parameterType="whiteMap">
 		DELETE FROM authority
-		WHERE auth_seq IN 
-		<foreach collection="list" item="item" separator="," open="(" close=")">
-			#{item.authSeq}
-		</foreach>
+		WHERE user_seq = #{userNo}
+		AND auth_seq IN <![CDATA[ (#{remove}) ]]>
 	</delete>
 	
 	<!-- 네비메뉴 insert -->

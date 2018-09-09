@@ -197,7 +197,7 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
 </div>
 
 <!-- 글쓰기  -->
-<form id="writeForm" class="updown-spacing hide" onsubmit="return false;">	
+<form id="writeForm" class="blank hide" onsubmit="return false;">	
 	<div class="flex">		
 		<div class="flex-left">
 			<span class="span-gray-rt">타입</span>		
@@ -220,7 +220,7 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
 </form>
 
 <!-- 글수정 -->
-<form id="editForm" class="updown-spacing hide" onsubmit="return false;">
+<form id="editForm" class="blank hide" onsubmit="return false;">
 	<input id="no" type="hidden" value="">
 	<div class="flex">
 		<div class="flex-left">
@@ -248,7 +248,7 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
 </form>
 
 <!-- 글보기 -->
-<form id="viewForm" class="updown-spacing hide" onsubmit="return false;">	
+<form id="viewForm" class="blank hide" onsubmit="return false;">	
 	<input id="no" type="hidden" value="">
 	
 	<div class="flex">
@@ -273,7 +273,7 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
 			<button class="btn-gray" id="close">닫기</button>
 		</div>
 	</div>
-	<div id="cAdjust" class="updown-spacing">
+	<div id="cAdjust" class="blank">
 	</div>
 </form>
 

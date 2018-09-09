@@ -1,5 +1,6 @@
 package com.ljh.white.admin.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -55,11 +56,41 @@ public class AdminService {
 	}
 	
 	/**
-	 * 
+	 * 수정된 유저권한 적용
 	 * @param param
 	 * @return
 	 */
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
+	public void applyUserAuthList(WhiteMap param) {
+		//권한 추가
+		String add = param.getString("add");
+		if(!"".equals(add) || add != null) {			
+			String[] addArr = add.split(",");
+			List<WhiteMap> addList = new ArrayList<WhiteMap>();
+			WhiteMap map = null;
+			
+			for(int i=0; i<addArr.length; i++) {
+				map = new WhiteMap();
+				map.put("userNo", param.get("userNo"));
+				map.put("authNmSeq", addArr[i]);
+				addList.add(map);
+			}			
+			adminMapper.insertAuthList(addList);
+		}
+		
+		//권한 삭제
+		String remove = param.getString("remove");
+		if(!"".equals(remove) || remove != null) {
+			adminMapper.deleteAuthList(param);
+		}
+	}
+	
+	/**
+	 * 
+	 * @param param
+	 * @return
+	 */
+	/*@Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
 	public WhiteMap inDelAuthList(WhiteMap param) {
 		
 		List<WhiteMap> inList = param.convertListWhiteMap("inList", false);
@@ -79,7 +110,7 @@ public class AdminService {
 		}
 		
 		return resultMap;		
-	}
+	}*/
 	
 	/**
 	 * 

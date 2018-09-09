@@ -34,17 +34,27 @@ public class AdminController {
 		return result;
 	}
 	
+	//유저 권한 조회
 	@RequestMapping(value="/admin/selectUserAuth.ajax")
 	public List<WhiteMap> selectUserAuth(HttpServletRequest request) {		
 		WhiteMap param = new WhiteMap(request);
 		return adminService.selectUserAuth(param);
 	}
 	
-	@RequestMapping(value="/admin/inDelAuthList.ajax")
+	//수정된 유저권한 적용
+	@RequestMapping(value="/admin/applyUserAuthList.ajax")
+	public void applyUserAuthList(HttpServletRequest request) {		
+		WhiteMap param = new WhiteMap(request);		
+		adminService.applyUserAuthList(param);
+	}
+	
+	
+	//사용안함
+	/*@RequestMapping(value="/admin/inDelAuthList.ajax")
 	public WhiteMap inDelAuthList(HttpServletRequest request) {		
 		WhiteMap param = new WhiteMap(request);
 		return adminService.inDelAuthList(param);
-	}
+	}*/
 	
 	@RequestMapping(value="/admin/selectNavSideMenuList.ajax")
 	public WhiteMap selectNavSideMenuList(HttpServletRequest request) {		
