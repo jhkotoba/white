@@ -43,9 +43,9 @@ public class AdminController {
 	
 	//수정된 유저권한 적용
 	@RequestMapping(value="/admin/applyUserAuthList.ajax")
-	public void applyUserAuthList(HttpServletRequest request) {		
+	public WhiteMap applyUserAuthList(HttpServletRequest request) {
 		WhiteMap param = new WhiteMap(request);		
-		adminService.applyUserAuthList(param);
+		return adminService.applyUserAuthList(param);
 	}
 	
 	

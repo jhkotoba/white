@@ -61,10 +61,13 @@ public class AdminService {
 	 * @return
 	 */
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
-	public void applyUserAuthList(WhiteMap param) {
+	public WhiteMap applyUserAuthList(WhiteMap param) {
+		
+		WhiteMap result = new WhiteMap();
+		
 		//권한 추가
 		String add = param.getString("add");
-		if(!"".equals(add) || add != null) {			
+		if(!"".equals(add) && add != null) {	System.out.println("AAAA");		
 			String[] addArr = add.split(",");
 			List<WhiteMap> addList = new ArrayList<WhiteMap>();
 			WhiteMap map = null;
@@ -75,14 +78,16 @@ public class AdminService {
 				map.put("authNmSeq", addArr[i]);
 				addList.add(map);
 			}			
-			adminMapper.insertAuthList(addList);
+			result.put("add", adminMapper.insertAuthList(addList));
 		}
 		
 		//권한 삭제
 		String remove = param.getString("remove");
-		if(!"".equals(remove) || remove != null) {
-			adminMapper.deleteAuthList(param);
+		if(!"".equals(remove) && remove != null) {System.out.println("BBB");
+			result.put("remove", adminMapper.deleteAuthList(param));
 		}
+		
+		return result;
 	}
 	
 	/**

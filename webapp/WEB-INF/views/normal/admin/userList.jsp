@@ -10,9 +10,9 @@ $(document).ready(function(){
 		$("#authList").empty();		
 		let tag = "";
 		for(let i=0; i<data.length; i++){			
-			tag += "<input type='checkbox' name='check' id='"+data[i].authNm+"' value='"+data[i].authNmSeq+"'>";
-			tag += "<label for='"+data[i].authNm+"'>"+data[i].authCmt+"</label>	";
-		}			
+			tag += "<div class='check-item'><input type='checkbox' name='check' id='"+data[i].authNm+"' value='"+data[i].authNmSeq+"'>";
+			tag += "<label for='"+data[i].authNm+"'>"+data[i].authCmt+"</label></div>";
+		}
 		$("#authList").append(tag);
 		
 		//권한 체크
@@ -31,6 +31,7 @@ $(document).ready(function(){
 	
   	//조회 버튼
 	$("#searchBar #searchBtn").on("click", function(){		
+		
 		$("#searchForm #type").val($("#searchBar #type").val());
 		
 		$("#searchForm #type").val() === "id"? 
@@ -48,7 +49,7 @@ $(document).ready(function(){
   	});
 	
 	//권한 저장
-	$("#viewForm #save").on("click", function(){
+	$("#viewForm #save").on("click", function(){		
 		let param = {add : "", remove : ""};
 		$("#authList").find("input").each(function(i){			
 			if($(this).data("state") === "add"){				
@@ -57,11 +58,13 @@ $(document).ready(function(){
 				param.remove += (isEmpty(param.remove)===true?this.value:","+this.value);			
 			}
 		});
-		param.userNo = $("#viewForm #no").val();
+		param.userNo = $("#viewForm #no").val();		
 		
-		if(param.add === "" && param.remove === "") alert("수정할 내용이 없습니다."); return;
+		if(param.add === "" && param.remove === ""){
+			alert("수정할 내용이 없습니다."); return;
+		}
 		
-		fnCmmAjax("/admin/applyUserAuthList", param).done(function(){			
+		fnCmmAjax("/admin/applyUserAuthList", param).done(function(data){
 			fnSelectAuth(param.userNo).done(function(data){
         		$("input:checkbox[name='check']").data("state", "none").prop("checked", false);
         		for(let i=0; i<data.length; i++){
@@ -72,6 +75,11 @@ $(document).ready(function(){
 			
 		});
 	});
+	
+	//닫기
+	$("#viewForm #close").on("click", function(){
+		$("#viewForm").clear().hide();
+	})
 });
 
 //리스트 조회
@@ -115,7 +123,7 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
         fields: [
 			/* { title:"사용자 번호",		name:"no",			type:"text", align:"center"}, */
 			{ title:"사용자 아이디",		name:"userId",		type:"text", align:"center"},
-			{ title:"사용자 이름",		name:"userName",	type:"text"}
+			{ title:"사용자 이름",		name:"userName",	type:"text", align:"center"}
         ]
     });
 }
@@ -133,11 +141,15 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
 		<span id="userId" class="span-gray"></span>
 		<span class="span-gray-rt">이름</span>
 		<span id="userName" class="span-gray"></span>
+		<div class="pull-right">
+			<button id="save" class="btn-gray">저장</button>	
+			<button id="close" class="btn-gray">닫기</button>
+		</div>	
 	</div>
+	
 	<div class="flex blank">
-		<div class="flex-left left-th border-gray">권한설정</div>
-		<div id="authList" class="flex-right border-gray"></div>
-		<button class="btn-gray" id="save">저장</button>		
+		<div class="flex-left wth1 left-head border-gray hht1-li">권한설정</div>
+		<div id="authList" class="flex-right border-gray hht1"></div>			
 	</div>	
 </form>
 
@@ -153,7 +165,7 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
 		<option value="id">아이디</option>		
 		<option value="name">이름</option>
 	</select>
-	<input class="input-gray w3" id="text" type="text">
+	<input class="input-gray wth3" id="text" type="text">
 	<button class="btn-gray" id="searchBtn">조회</button>
 </div>
 

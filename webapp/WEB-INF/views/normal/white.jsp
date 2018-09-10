@@ -108,9 +108,9 @@ $(document).ready(function(){
 	<h5>Login</h5>
 	<div class="center">
 		<h6>Id</h6>
-		<input id="userId" name="userId" class="input-gray login-text w100" type="text">
+		<input id="userId" name="userId" class="input-gray login-text wth100p" type="text">
 		<h6>Password</h6>
-		<input id="passwd" name="passwd" class="input-gray login-text w100" type="password">
+		<input id="passwd" name="passwd" class="input-gray login-text wth100p" type="password">
 		<div>
 			<button id="loginSmt" class="btn-gray">Login</button>
 			<button class="btn-gray" href="${contextPath}/main/signUp">Sign up</button>

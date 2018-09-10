@@ -58,6 +58,7 @@ $.fn.clear = function() {
 		}else if(tag === "label"){
 			$(this).text("");
 		}
+		$(this).removeData();
     });
 };
 
@@ -121,7 +122,7 @@ function fnSelectAuth(no){
 }
 
 //ajax 공통
-function fnCmmAjax(url, param, isGrid){	
+function fnCmmAjax(url, param, isGrid){
 	let deferred = $.Deferred();
 	$.ajax({
 		url: getContextPath()+url+".ajax",

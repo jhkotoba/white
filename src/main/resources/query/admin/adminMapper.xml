@@ -8,11 +8,13 @@
 	<select id="selectUserCount" resultType="int" parameterType="WhiteMap">
 	 	SELECT COUNT(1) FROM white_user
 		<where>
-	 		<if test="type == 'id'">
-			AND user_id = #{text}
-			</if>
-			<if test="type == 'name'">
-			AND user_name = #{text}
+			<if test="text != ''">
+		 		<if test="type == 'id'">
+				AND user_id = #{text}
+				</if>
+				<if test="type == 'name'">
+				AND user_name = #{text}
+				</if>
 			</if>
 		</where>
 	</select>
@@ -25,11 +27,13 @@
 			user_name AS userName
  		FROM white_user
  		<where>
-	 		<if test="type == 'id'">
-			AND user_id = #{text}
-			</if>
-			<if test="type == 'name'">
-			AND user_name = #{text}
+	 		<if test="text != ''">
+		 		<if test="type == 'id'">
+				AND user_id = #{text}
+				</if>
+				<if test="type == 'name'">
+				AND user_name = #{text}
+				</if>
 			</if>
 		</where>
  		Limit ${pagePre}, ${pageSize}
@@ -110,7 +114,7 @@
 	<delete id="deleteAuthList" parameterType="whiteMap">
 		DELETE FROM authority
 		WHERE user_seq = #{userNo}
-		AND auth_seq IN <![CDATA[ (#{remove}) ]]>
+		AND auth_nm_seq IN (${remove})
 	</delete>
 	
 	<!-- 네비메뉴 insert -->

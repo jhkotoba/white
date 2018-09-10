@@ -206,7 +206,7 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
 			<span class="span-gray-rt">제목</span>			
 		</div>		
 		<div class="flex-right">					
-			<input class="input-gray w100" id="title" type="text" maxlength="50" placeholder="제목 입력">
+			<input class="input-gray wth100p" id="title" type="text" maxlength="50" placeholder="제목 입력">
 		</div>
 		<div class="flex-other">
 			<button class="btn-gray" id="save">저장</button>
@@ -232,7 +232,7 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
 			<span class="span-gray-rt">제목</span>
 		</div>
 		<div class="flex-right">
-			<input class="input-gray w100" id="title" type="text" maxlength="50" placeholder="제목 입력">
+			<input class="input-gray wth100p" id="title" type="text" maxlength="50" placeholder="제목 입력">
 		</div>
 		<div class="flex-other">
 			<span class="span-gray-rt">날짜</span>
@@ -294,7 +294,7 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
 		<option value="title">제목</option>
 		<option value="content">내용</option>
 	</select>
-	<input class="input-gray w3" id="text" type="text">
+	<input class="input-gray wth3" id="text" type="text">
 	<button class="btn-gray" id="searchBtn">조회</button>
 	<button class="btn-gray pull-right" name="write">글쓰기</button>
 </div>
