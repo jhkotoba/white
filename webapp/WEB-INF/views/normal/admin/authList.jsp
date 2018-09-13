@@ -15,22 +15,25 @@ function fnJsGrid(data, pageSize){
 	$("#authList").jsGrid({
 		height: "auto",
 		width: "100%",
-        
+		
+		inserting: true,
+		editing: true,
 		paging: true,
-		pageSize: isEmpty(pageSize) === true ? 10 : pageSize,
-       
+		pageSize: isEmpty(pageSize) === true ? 10 : pageSize,       
 		autoload: true,        
 		data: data,
 		fields: [			
-			{ title:"권한명",		name:"authNm",		type:"text", align:"center"},
+			{ title:"권한명",		name:"authNm",	type:"text", align:"center"},
 			{ title:"권한 설명",	name:"authCmt",	type:"text", align:"center"}			
 		]
 	});
 }
 </script>
 
-<div class="search-bar">	
-	<button class="btn-gray pull-right">저장</button>
+<div class="search-bar pull-right">
+	<button class="btn-gray">추가</button>
+	<button class="btn-gray">취소</button>
+	<button class="btn-gray">저장</button>
 </div>
 
 <div id="authList"></div>

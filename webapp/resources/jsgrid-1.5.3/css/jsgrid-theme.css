@@ -127,12 +127,12 @@
     background: #fcfcfc;
 }
 
-.jsgrid-insert-row > .jsgrid-cell {
-    background: #e3ffe5;
+.jsgrid-insert-row > .jsgrid-cell {    
+    background: #4C4C4C;
 }
 
-.jsgrid-edit-row > .jsgrid-cell {
-    background: #fdffe3;
+.jsgrid-edit-row > .jsgrid-cell {   
+    background: #353535;
 }
 
 .jsgrid-selected-row > .jsgrid-cell {
