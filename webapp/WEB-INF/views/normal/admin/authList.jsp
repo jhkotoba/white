@@ -11,16 +11,13 @@ $(document).ready(function(){
 });
 
 //권한 grid
-function fnJsGrid(data, pageIdx, pageSize, pageBtnCnt){
+function fnJsGrid(data, pageSize){
 	$("#authList").jsGrid({
 		height: "auto",
 		width: "100%",
         
 		paging: true,
-		pageLoading: true,
-		pageIndex : isEmpty(pageIdx) === true ? 1 : pageIdx,
-		pageSize : isEmpty(pageSize) === true ? 10 : pageSize,
-		pageButtonCount : isEmpty(pageBtnCnt) === true ? 10 : pageBtnCnt,
+		pageSize: isEmpty(pageSize) === true ? 10 : pageSize,
        
 		autoload: true,        
 		data: data,
@@ -31,4 +28,9 @@ function fnJsGrid(data, pageIdx, pageSize, pageBtnCnt){
 	});
 }
 </script>
+
+<div class="search-bar">	
+	<button class="btn-gray pull-right">저장</button>
+</div>
+
 <div id="authList"></div>
