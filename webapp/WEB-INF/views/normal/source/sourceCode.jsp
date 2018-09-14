@@ -108,7 +108,7 @@ $(document).ready(function(){
 	});	
 	
 	//글보기 - 삭제
-	$("#viewForm #delete").on("click", function(){
+	$("#viewForm #remove").on("click", function(){
 		
 		if(!confirm("삭제하시겠습니까?")) return;
 		
@@ -165,7 +165,7 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
         	
         	$("#viewForm").show();
         	$("#viewForm #edit").hide();
-        	$("#viewForm #delete").hide();
+        	$("#viewForm #remove").hide();
         	
         	fnCmmAjax("/source/selectSourceDtlView", {no : args.item.no}).done(function(data){
         		$("#viewForm").setParam(data);
@@ -174,7 +174,7 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
     	    	$("#editForm").setParam(data);    	    	
     	    	if('${sessionScope.userId}'!== '' && '${sessionScope.userId}' === String(data.userId)){
     	    		$("#viewForm #edit").show();
-    	    		$("#viewForm #delete").show();
+    	    		$("#viewForm #remove").show();
     	    	}  	
     			$("body").scrollTop(0);
         	});
@@ -268,7 +268,7 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
 			<span class="span-gray-rt">날짜</span>
 			<span id="regDate" class="span-gray"></span>
 			<button class="btn-gray" id="edit">수정</button>
-			<button class="btn-gray" id="delete" class="hide">삭제</button>	
+			<button class="btn-gray" id="remove" class="hide">삭제</button>	
 			<button class="btn-gray" name="write">글쓰기</button>
 			<button class="btn-gray" id="close">닫기</button>
 		</div>
