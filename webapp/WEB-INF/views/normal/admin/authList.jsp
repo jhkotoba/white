@@ -20,7 +20,7 @@ function fnJsGrid(data){
 		height: "auto",
 		width: "100%",		
 		
-		editing: true,		       
+		//editing: true,		       
 		autoload: true,        
 		data: authList,
 		
@@ -36,38 +36,39 @@ function fnJsGrid(data){
 					});
                 },
                 itemTemplate: function(_, item) {
-                    return $("<input>").attr("type", "checkbox").attr("name", "check");
-                            /* .prop("checked", $.inArray(item, selectedItems) > -1)
-                            .on("change", function () {
-                                $(this).is(":checked") ? selectItem(item) : unselectItem(item);
-                            }); */
+                    return $("<input>").attr("type", "checkbox").attr("name", "check");                   		
+							/* .prop("checked", $.inArray(item, selectedItems) > -1)
+							.on("change", function () {
+								$(this).is(":checked") ? selectItem(item) : unselectItem(item);
+							}); */
                 }	            
 			},
-			{ title:"권한명",		name:"authNm",	type:"text", align:"center"},
-			{ title:"권한 설명",	name:"authCmt",	type:"text", align:"center"}			
+			{ title:"권한명",		name:"authNm",	type:"text", align:"center"},/* ,
+				itemTemplate: function(value, item){
+					return $("<input>").attr("type", "text").addClass("input-gray").val(value);
+				}
+			}, */
+			{ title:"권한 설명",	name:"authCmt",	type:"text", align:"center"}/* ,
+				itemTemplate: function(value, item){
+					return $("<input>").attr("type", "text").addClass("input-gray").val(value);
+				}
+			} */
 		]
 	});
 	
 	//권한추가
-	$("#search-bar #add").on("click", function(){
-		console.log(authList);
-		console.log(clone);
+	$("#search-bar #add").on("click", function(){		
 		authList.push({authNm:"", authCmt:""});
 		$("#authList").jsGrid("refresh");
 	});
 	
 	//취소
-	$("#search-bar #cancel").on("click", function(){
-		
-		//authList = common.clone(clone);
+	$("#search-bar #cancel").on("click", function(){		
 		authList.splice(0, authList.length);
 		for(let i=0; i<clone.length; i++){
 			authList.push(clone[i]);
 		}
-		$("#authList").jsGrid("refresh");
-		
-		console.log(authList);
-		console.log(clone);
+		$("#authList").jsGrid("refresh");		
 	});
 	
 	//리스트 수
@@ -80,6 +81,14 @@ function fnJsGrid(data){
 			$("#authList").jsGrid("option", "pageSize", Number(pageSize));
 		}
 	});
+	
+	/* $("#authList").on("keydown", function(){
+		console.log(this);
+	}); */
+	
+	
+	
+	
 }
 
 </script>
