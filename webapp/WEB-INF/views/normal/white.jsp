@@ -9,7 +9,9 @@
 <meta charset=UTF-8>
 <title>whiteHome</title>
 
-
+<link rel="stylesheet" href="${contextPath}/resources/jquery/css/jquery-ui.css" type="text/css"/>
+<link rel="stylesheet" href="${contextPath}/resources/jquery/css/jquery-ui.structure.css" type="text/css"/>
+<link rel="stylesheet" href="${contextPath}/resources/jquery/css/jquery-ui.theme.css" type="text/css"/>
 <link rel="stylesheet" href="${contextPath}/resources/air-datepicker/css/datepicker.min.css" type="text/css"/>
 <link rel="stylesheet" href="${contextPath}/resources/jsgrid-1.5.3/css/jsgrid.css" type="text/css"/>
 <link rel="stylesheet" href="${contextPath}/resources/jsgrid-1.5.3/css/jsgrid-theme.css" type="text/css"/>
@@ -17,6 +19,7 @@
 <link rel="stylesheet" href="${contextPath}/resources/common/css/common.css" type="text/css" />
 
 <script type="text/javascript" src="${contextPath}/resources/jquery/js/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="${contextPath}/resources/jquery/js/jquery-ui.js"></script>
 <script type="text/javascript" src="${contextPath}/resources/air-datepicker/js/datepicker.min.js"></script>
 <script type="text/javascript" src="${contextPath}/resources/air-datepicker/js/i18n/datepicker.ko.js"></script>
 <script type="text/javascript" src="${contextPath}/resources/jsgrid-1.5.3/js/jsgrid.js"></script>

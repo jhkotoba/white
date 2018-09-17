@@ -2,6 +2,10 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="contextPath" value="<%=request.getContextPath()%>"></c:set>
+<style>
+.jsgrid-cell {padding: 0 0 0 0;}
+.jsgrid-alt-row > .jsgrid-cell {background: #5A5A5A;}
+</style>
 <script type="text/javascript">
 $(document).ready(function(){	
 	//권한리스트 조회
@@ -18,7 +22,11 @@ function fnJsGrid(data){
 	
 	$("#authList").jsGrid({
 		height: "auto",
-		width: "100%",		
+		width: "100%",	
+		
+		rowClass: function(item, itemIndex) {
+            return "client-" + itemIndex;
+        },
 		
 		//editing: true,		       
 		autoload: true,        
@@ -28,7 +36,7 @@ function fnJsGrid(data){
 		pageSize: 10,
 		
 		fields: [
-			{ align:"center", width: "10px",
+			{ align:"center", width: "5%",
                 headerTemplate: function() {	
                     return $("<input>").attr("type", "checkbox").on("click", function () {
                     	if($(this).is(":checked")) $("input:checkbox[name=check]").prop('checked', true);
@@ -37,23 +45,31 @@ function fnJsGrid(data){
                 },
                 itemTemplate: function(_, item) {
                     return $("<input>").attr("type", "checkbox").attr("name", "check");                   		
-							/* .prop("checked", $.inArray(item, selectedItems) > -1)
-							.on("change", function () {
-								$(this).is(":checked") ? selectItem(item) : unselectItem(item);
-							}); */
+						//	.prop("checked", $.inArray(item, selectedItems) > -1)
+						//	.on("change", function () {
+						//		$(this).is(":checked") ? selectItem(item) : unselectItem(item);
+						//	});
                 }	            
 			},
-			{ title:"권한명",		name:"authNm",	type:"text", align:"center"},/* ,
+			{ title:"순번",	type:"text", align:"center", width: "5%"},
+			{ title:"권한명",	name:"authNm",	type:"text", align:"center", width: "40%", 
 				itemTemplate: function(value, item){
-					return $("<input>").attr("type", "text").addClass("input-gray").val(value);
+					$(this).removeClass("jsgrid-cell");
+					return $("<input>").attr("type", "text").addClass("input-gray wth100p").val(value);
 				}
-			}, */
-			{ title:"권한 설명",	name:"authCmt",	type:"text", align:"center"}/* ,
-				itemTemplate: function(value, item){
-					return $("<input>").attr("type", "text").addClass("input-gray").val(value);
+			},
+			{ title:"권한 설명",	name:"authCmt",	type:"text", align:"center", width: "50%", 
+				itemTemplate: function(value, item){					
+					$(this).removeClass("jsgrid-cell");
+					return $("<input>").attr("type", "text").addClass("input-gray wth100p").val(value);
 				}
-			} */
-		]
+			}		
+		],
+		onRefreshed: function() {
+			let $gridData = $("#authList .jsgrid-grid-body tbody");
+
+			$gridData.sortable();
+		}
 	});
 	
 	//권한추가
@@ -109,3 +125,23 @@ function fnJsGrid(data){
 
 
 <div id="authList"></div>
+
+<!-- onRefreshed: function() {
+            var $gridData = $("#jsGrid .jsgrid-grid-body tbody");
+ 
+            $gridData.sortable({
+                update: function(e, ui) {
+                    // array of indexes
+                    var clientIndexRegExp = /\s*client-(\d+)\s*/;
+                    var indexes = $.map($gridData.sortable("toArray", { attribute: "class" }), function(classes) {
+                        return clientIndexRegExp.exec(classes)[1];
+                    });
+                    alert("Reordered indexes: " + indexes.join(", "));
+ 
+                    // arrays of items
+                    var items = $.map($gridData.find("tr"), function(row) {
+                        return $(row).data("JSGridItem");
+                    });
+                    console && console.log("Reordered items", items);
+                }
+            }); -->

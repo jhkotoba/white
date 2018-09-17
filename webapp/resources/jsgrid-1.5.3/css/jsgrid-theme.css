@@ -116,7 +116,8 @@
 }
 
 .jsgrid-alt-row > .jsgrid-cell {
-    background: #4C4C4C;
+    background: #5A5A5A;
+    /* background: #4C4C4C; */
 }
 
 .jsgrid-header-row > .jsgrid-header-cell {

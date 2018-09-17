@@ -17,7 +17,11 @@
 .jsgrid input,
 .jsgrid textarea,
 .jsgrid select {
-    font-size: 1em; 
+    font-size: 1em;
+    line-height: 1.8em;
+    border: 1px solid #585858;
+    background: #5E5E5E;
+    color:#C6C6C6;
 }
 
 .jsgrid-grid-header {

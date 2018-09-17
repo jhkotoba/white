@@ -121,9 +121,9 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
         	});
         }, 
         fields: [
-			/* { title:"사용자 번호",		name:"no",			type:"text", align:"center"}, */
-			{ title:"사용자 아이디",		name:"userId",		type:"text", align:"center"},
-			{ title:"사용자 이름",		name:"userName",	type:"text", align:"center"}
+			{ title:"사용자 번호",		name:"no",			type:"text", width: "5%",	align:"center"},
+			{ title:"사용자 아이디",		name:"userId",		type:"text", width: "40%",	align:"center"},
+			{ title:"사용자 이름",		name:"userName",	type:"text", width: "55%",	align:"center"}
         ]
     });
 }
@@ -135,8 +135,8 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
 	<input id="no" type="hidden" value="">
 	
 	<div>
-		<!-- <span class="span-gray-rt">번호</span>
-		<span id="no" class="span-gray"></span> -->
+		<span class="span-gray-rt">번호</span>
+		<span id="no" class="span-gray"></span>
 		<span class="span-gray-rt">아이디</span>
 		<span id="userId" class="span-gray"></span>
 		<span class="span-gray-rt">이름</span>
