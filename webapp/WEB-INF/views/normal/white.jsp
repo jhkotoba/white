@@ -9,9 +9,6 @@
 <meta charset=UTF-8>
 <title>whiteHome</title>
 
-<link rel="stylesheet" href="${contextPath}/resources/jquery/css/jquery-ui.css" type="text/css"/>
-<link rel="stylesheet" href="${contextPath}/resources/jquery/css/jquery-ui.structure.css" type="text/css"/>
-<link rel="stylesheet" href="${contextPath}/resources/jquery/css/jquery-ui.theme.css" type="text/css"/>
 <link rel="stylesheet" href="${contextPath}/resources/air-datepicker/css/datepicker.min.css" type="text/css"/>
 <link rel="stylesheet" href="${contextPath}/resources/jsgrid-1.5.3/css/jsgrid.css" type="text/css"/>
 <link rel="stylesheet" href="${contextPath}/resources/jsgrid-1.5.3/css/jsgrid-theme.css" type="text/css"/>
