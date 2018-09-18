@@ -48,8 +48,8 @@ function fnJsGrid(data){
 						//	});
                 }	            
 			},
-			{ title:"순번",	type:"text", align:"center", width: "5%"},
-			{ title:"권한명",	name:"authNm",	type:"text", align:"center", width: "40%", 
+			{ title:"번호",	name:"authNmSeq",	type:"text", align:"center", width: "5%"},
+			{ title:"권한명",	name:"authNm",		type:"text", align:"center", width: "40%", 
 				itemTemplate: function(value, item){
 					$(this).removeClass("jsgrid-cell");
 					return $("<input>").attr("type", "text").attr("name", "sync")
