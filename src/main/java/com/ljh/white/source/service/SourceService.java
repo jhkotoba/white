@@ -37,7 +37,6 @@ public class SourceService {
 	 */
 	public List<WhiteMap> selectSourceList(WhiteMap param){
 		param.put("pagePre", (param.getInt("pageIndex")-1)*param.getInt("pageSize"));
-		System.out.println(param);
 		return sourceMapper.selectSourceList(param);
 	}
 	

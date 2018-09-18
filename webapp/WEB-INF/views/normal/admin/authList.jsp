@@ -9,7 +9,7 @@
 <script type="text/javascript">
 $(document).ready(function(){	
 	//권한리스트 조회
-	fnSelectAuth().done(function(data){
+	cfnSelectAuth().done(function(data){
 		fnJsGrid(data);
 	});
 });
@@ -18,7 +18,8 @@ $(document).ready(function(){
 function fnJsGrid(data){
 	
 	let clone = common.clone(data);
-	let authList = data;	
+	let authList = data;
+	let authObj = cfnNoIdx(authList, "authNmSeq");
 	
 	$("#authList").jsGrid({
 		height: "auto",
@@ -51,13 +52,15 @@ function fnJsGrid(data){
 			{ title:"권한명",	name:"authNm",	type:"text", align:"center", width: "40%", 
 				itemTemplate: function(value, item){
 					$(this).removeClass("jsgrid-cell");
-					return $("<input>").attr("type", "text").addClass("input-gray wth100p").val(value);		
+					return $("<input>").attr("type", "text").attr("name", "sync")
+						.addClass("input-gray wth100p").val(value);		
 				}				
 			},
 			{ title:"권한 설명",	name:"authCmt",	type:"text", align:"center", width: "50%", 
 				itemTemplate: function(value, item){					
 					$(this).removeClass("jsgrid-cell");
-					return $("<input>").attr("type", "text").addClass("input-gray wth100p").val(value);
+					return $("<input>").attr("type", "text").attr("name", "sync")
+						.addClass("input-gray wth100p").val(value);
 				}
 			}		
 		],			
@@ -87,7 +90,7 @@ function fnJsGrid(data){
 	});
 	
 	$("#authList .jsgrid-grid-body tbody").on("change", function(){
-		console.log(this);
+		console.log(this.value);
 	});
 	
 	//권한추가
@@ -118,9 +121,9 @@ function fnJsGrid(data){
 		}
 	});
 	
-	/* $("#authList").on("keydown", function(){
-		console.log(this);
-	}); */
+	$("input[name='sync']").on("keyup", function(){
+		console.log($(this).val());
+	});
 	
 	
 	

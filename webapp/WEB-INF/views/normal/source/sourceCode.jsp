@@ -11,7 +11,7 @@ $(document).ready(function(){
 	fnJsGrid();
 	
 	//코드 셀렉트박스 조회
-	fnSelectCode("sc").done(function(data){		
+	cfnSelectCode("sc").done(function(data){		
     	let tag = "";
     	for(let i=0; i<data.length; i++){
     		tag += "<option value="+data[i].code+">"+data[i].codeNm+"</option>";	    		
@@ -61,7 +61,7 @@ $(document).ready(function(){
 		
 		if(!confirm("저장 하시겠습니까?")) return;
 		
-		fnCmmAjax("/source/insertSource", param).done(function(data){
+		cfnCmmAjax("/source/insertSource", param).done(function(data){
 			if(Number(data) === 1) alert("새로운 글을 저장하였습니다.");
 	    	else alert("저장에 실패하였습니다.");
 			
@@ -92,7 +92,7 @@ $(document).ready(function(){
 		if(wVali.parent("editForm").checkItem(["empty", "maxLen"])
 				.check(param, true) === false)	return;		
 		
-		fnCmmAjax("/source/updateSource", param).done(function(data){
+		cfnCmmAjax("/source/updateSource", param).done(function(data){
 			if(1 === Number(data)) alert("수정 하였습니다.");
 	    	else alert("수정에 실패하였습니다.");
 			
@@ -112,7 +112,7 @@ $(document).ready(function(){
 		
 		if(!confirm("삭제하시겠습니까?")) return;
 		
-		fnCmmAjax("/source/deleteSource", {no : $("#viewForm #no").val()}).done(function(data){
+		cfnCmmAjax("/source/deleteSource", {no : $("#viewForm #no").val()}).done(function(data){
 			if(1 === Number(data)) alert("삭제 하였습니다.");
 	    	else alert("삭제에 실패하였습니다.");
 			
@@ -156,7 +156,7 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
                 	param.pageSize = this.pageSize;
             	}
             	
-            	return fnCmmAjax("/source/selectSourceList", param, true);
+            	return cfnCmmAjax("/source/selectSourceList", param, true);
             }
         },
         rowClick: function(args) {        	
@@ -167,7 +167,7 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
         	$("#viewForm #edit").hide();
         	$("#viewForm #remove").hide();
         	
-        	fnCmmAjax("/source/selectSourceDtlView", {no : args.item.no}).done(function(data){
+        	cfnCmmAjax("/source/selectSourceDtlView", {no : args.item.no}).done(function(data){
         		$("#viewForm").setParam(data);
     	    	$("#viewForm #cAdjust").empty().append(cAdjust.adjust(data.langNm, data.content));
     	    	

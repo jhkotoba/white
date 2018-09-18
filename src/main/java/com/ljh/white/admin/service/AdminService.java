@@ -67,7 +67,7 @@ public class AdminService {
 		
 		//권한 추가
 		String add = param.getString("add");
-		if(!"".equals(add) && add != null) {	System.out.println("AAAA");		
+		if(!"".equals(add) && add != null) {	
 			String[] addArr = add.split(",");
 			List<WhiteMap> addList = new ArrayList<WhiteMap>();
 			WhiteMap map = null;
@@ -83,7 +83,7 @@ public class AdminService {
 		
 		//권한 삭제
 		String remove = param.getString("remove");
-		if(!"".equals(remove) && remove != null) {System.out.println("BBB");
+		if(!"".equals(remove) && remove != null) {
 			result.put("remove", adminMapper.deleteAuthList(param));
 		}
 		

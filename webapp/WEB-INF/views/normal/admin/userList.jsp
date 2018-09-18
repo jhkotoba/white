@@ -6,7 +6,7 @@
 $(document).ready(function(){
 	
 	//권한리스트 조회
-	fnSelectAuth().done(function(data){
+	cfnSelectAuth().done(function(data){
 		$("#authList").empty();		
 		let tag = "";
 		for(let i=0; i<data.length; i++){			
@@ -64,8 +64,8 @@ $(document).ready(function(){
 			alert("수정할 내용이 없습니다."); return;
 		}
 		
-		fnCmmAjax("/admin/applyUserAuthList", param).done(function(data){
-			fnSelectAuth(param.userNo).done(function(data){
+		cfnCmmAjax("/admin/applyUserAuthList", param).done(function(data){
+			cfnSelectAuth(param.userNo).done(function(data){
         		$("input:checkbox[name='check']").data("state", "none").prop("checked", false);
         		for(let i=0; i<data.length; i++){
         			$("#authList #"+data[i].authNm).data("state", "have").prop("checked", true);
@@ -108,12 +108,12 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
                 	param.pageSize = this.pageSize;
             	}
             	
-            	return fnCmmAjax("/admin/selectUserList", param, true);
+            	return cfnCmmAjax("/admin/selectUserList", param, true);
             }
         },
         rowClick: function(args) {
         	$("#viewForm").setParam(args.item).show();
-        	fnSelectAuth(args.item.no).done(function(data){
+        	cfnSelectAuth(args.item.no).done(function(data){
         		$("input:checkbox[name='check']").data("state", "none").prop("checked", false);
         		for(let i=0; i<data.length; i++){
         			$("#authList #"+data[i].authNm).data("state", "have").prop("checked", true);

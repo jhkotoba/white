@@ -105,24 +105,38 @@ $.fn.setParam = function(param){
 	return this;
 }
 
-
+//리스트 번호 idx 맵핑
+function cfnNoIdx(list, noNm){
+	let obj = new Object();
+	
+	if(noNm === undefined){
+		for(let i=0; i<list.length; i++){
+			obj[list[i].no] = i;
+		}
+	}else{
+		for(let i=0; i<list.length; i++){
+			obj[list[i][noNm]] = i;
+		}
+	}
+	return obj;
+}
 
 //ajax 코드 조회
-function fnSelectCode(codePrt){
-	return fnCmmAjax("/white/selectCodeList", {"codePrt" : codePrt});	
+function cfnSelectCode(codePrt){
+	return cfnCmmAjax("/white/selectCodeList", {"codePrt" : codePrt});	
 }
 
 //ajax 권한 리스트 조회 - no(유저번호) 없으면 전체 조회
-function fnSelectAuth(no){
+function cfnSelectAuth(no){
 	if(isEmpty(no)){
-		return fnCmmAjax("/admin/selectAuthList");	
+		return cfnCmmAjax("/admin/selectAuthList");	
 	}else{
-		return fnCmmAjax("/admin/selectUserAuth", {"no" : no});	
+		return cfnCmmAjax("/admin/selectUserAuth", {"no" : no});	
 	}
 }
 
 //ajax 공통
-function fnCmmAjax(url, param, isGrid){
+function cfnCmmAjax(url, param, isGrid){
 	let deferred = $.Deferred();
 	$.ajax({
 		url: getContextPath()+url+".ajax",
