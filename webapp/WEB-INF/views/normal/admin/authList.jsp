@@ -19,7 +19,9 @@ function fnJsGrid(data){
 	
 	let clone = common.clone(data);
 	let authList = data;
-	let authObj = cfnNoIdx(authList, "authNmSeq");
+	let authNoIdx = cfnNoIdx(authList, "authNmSeq");
+	
+	console.log(authList);
 	
 	$("#authList").jsGrid({
 		height: "auto",
@@ -28,6 +30,7 @@ function fnJsGrid(data){
 		//editing: true,		       
 		autoload: true,        
 		data: authList,
+		
 		
 		paging: false,
 		pageSize: 10,
@@ -41,18 +44,20 @@ function fnJsGrid(data){
 					});
                 },
                 itemTemplate: function(_, item) {
-                    return $("<input>").attr("type", "checkbox").attr("name", "check");                   		
+                    return $("<input>").attr("type", "checkbox").attr("name", "check")
+                    	.data("authNmSeq", item.authNmSeq);
 						//	.prop("checked", $.inArray(item, selectedItems) > -1)
 						//	.on("change", function () {
 						//		$(this).is(":checked") ? selectItem(item) : unselectItem(item);
 						//	});
                 }	            
 			},
-			{ title:"번호",	name:"authNmSeq",	type:"text", align:"center", width: "5%"},
+			{ title:"순서",	name:"authOrder",	type:"text", align:"center", width: "5%"},
 			{ title:"권한명",	name:"authNm",		type:"text", align:"center", width: "40%", 
 				itemTemplate: function(value, item){
 					$(this).removeClass("jsgrid-cell");
 					return $("<input>").attr("type", "text").attr("name", "sync")
+						.data("authNmSeq", item.authNmSeq).data("name", "authNm")
 						.addClass("input-gray wth100p").val(value);		
 				}				
 			},
@@ -60,6 +65,7 @@ function fnJsGrid(data){
 				itemTemplate: function(value, item){					
 					$(this).removeClass("jsgrid-cell");
 					return $("<input>").attr("type", "text").attr("name", "sync")
+						.data("authNmSeq", item.authNmSeq).data("name", "authCmt")
 						.addClass("input-gray wth100p").val(value);
 				}
 			}		
@@ -89,8 +95,18 @@ function fnJsGrid(data){
 		}
 	});
 	
-	$("#authList .jsgrid-grid-body tbody").on("change", function(){
-		console.log(this.value);
+	//수정 sync 체크
+	$("input[name='sync']").on("keyup", function(){		
+		if(clone[authNoIdx[$(this).data("authNmSeq")]][$(this).data("name")] === $(this).val()){			
+			$(this).removeClass("sync-blue");
+		}else{
+			$(this).addClass("sync-blue");			
+		}
+	});
+	
+	//삭제 sync 체크
+	$("input[name='check']").on("click", function(){		
+		//$(this).addClass("sync-red");
 	});
 	
 	//권한추가
@@ -120,16 +136,7 @@ function fnJsGrid(data){
 			$("#authList").jsGrid("option", "pageSize", Number(pageSize));
 		}
 	});
-	
-	$("input[name='sync']").on("keyup", function(){
-		console.log($(this).val());
-	});
-	
-	
-	
-	
 }
-
 </script>
 
 <div id="search-bar" class="search-bar">
