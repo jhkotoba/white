@@ -19,7 +19,8 @@ function fnJsGrid(data){
 	
 	let clone = common.clone(data);
 	let authList = data;
-	let authNoIdx = cfnNoIdx(authList, "authNmSeq");	
+	let authNoIdx = cfnNoIdx(authList, "authNmSeq");
+	let cellWth = ["5%", "5%", "40%", "50%"];
 	
 	$("#authList").jsGrid({
 		height: "auto",
@@ -31,11 +32,21 @@ function fnJsGrid(data){
 		paging: false,
 		pageSize: 10,
 		
+		confirmDeleting : false,
+		
+		
 		fields: [
-			{ align:"center", width: "5%",
+			{ align:"center", width: cellWth[0],
                 headerTemplate: function() {	
-                    return $("<input>").attr("type", "checkbox").on("click", function () {
+                    return $("<input>").attr("type", "checkbox").on("change", function () {
                     	if($(this).is(":checked")){
+                    		
+                    		$("input:checkbox[name=check]").each(function(i, e){
+                    			if(isEmpty($(e).data("authNmSeq"))){
+                    				$("#authList").jsGrid("deleteItem", $(e).parent().parent()); 
+                    			}
+                    		});
+
                     		$("input:checkbox[name=check]").prop('checked', true);
                    			$("input[name='sync']").addClass("sync-red");                    		
                     	}else{
@@ -46,19 +57,41 @@ function fnJsGrid(data){
                 },
                 itemTemplate: function(_, item) {
                     return $("<input>").attr("type", "checkbox").attr("name", "check")
-                    	.data("authNmSeq", item.authNmSeq);
+                    	.data("authNmSeq", item.authNmSeq).on("change", function() {
+                    		
+                   		let chkAns = item.authNmSeq; 
+                   		
+                   		if($(this).is(":checked")) {
+                   			$("input[name='sync']").each(function(i, e){				
+                   				if(chkAns === $(e).data("authNmSeq")){
+                   					if(isEmpty(item.authOrder)){
+                   						$("#authList").jsGrid("deleteItem", item);              						
+                   					}else{
+                   						$(e).addClass("sync-red");                   					
+                   					}
+                   				}
+                   			});
+                   		}else{
+                   			$("input[name='sync']").each(function(i, e){				
+                   				if(chkAns === $(e).data("authNmSeq")){
+                   					$(e).removeClass("sync-red");
+                   				}
+                   			});
+                    	}
+                	});
+                    	//.data("authNmSeq", item.authNmSeq);
 						//	.prop("checked", $.inArray(item, selectedItems) > -1)
 						//	.on("change", function () {
 						//		$(this).is(":checked") ? selectItem(item) : unselectItem(item);
 						//	});
                 }	            
 			},
-			{ title:"순서",	name:"authOrder",	type:"text", align:"center", width: "5%",
+			{ title:"순서",	name:"authOrder",	type:"text", align:"center", width: cellWth[1],
 				itemTemplate: function(value, item){
-					return Number(value)-1;
+					return isEmpty(value) ? "" : Number(value)-1;					 
 				}
 			},
-			{ title:"권한명",	name:"authNm",		type:"text", align:"center", width: "40%", 
+			{ title:"권한명",	name:"authNm",		type:"text", align:"center", width: cellWth[2], 
 				itemTemplate: function(value, item){
 					$(this).removeClass("jsgrid-cell");
 					return $("<input>").attr("type", "text").attr("name", "sync")
@@ -66,7 +99,7 @@ function fnJsGrid(data){
 						.addClass("input-gray wth100p").val(value);		
 				}				
 			},
-			{ title:"권한 설명",	name:"authCmt",	type:"text", align:"center", width: "50%", 
+			{ title:"권한 설명",	name:"authCmt",	type:"text", align:"center", width: cellWth[3], 
 				itemTemplate: function(value, item){					
 					$(this).removeClass("jsgrid-cell");
 					return $("<input>").attr("type", "text").attr("name", "sync")
@@ -75,53 +108,51 @@ function fnJsGrid(data){
 				}
 			}		
 		],			
-		rowClass: function(item, itemIndex) {
+		/* rowClass: function(item, itemIndex) {
             return "client-" + itemIndex;
-        },
+        }, */
 		onRefreshed: function() {
 			let $gridData = $("#authList .jsgrid-grid-body tbody");
-
-			$gridData.sortable({
+			$gridData.sortable();
+			/* $gridData.sortable({
                 update: function(e, ui) {
                     console.log(e);
                     console.log(ui);
                 }
-            });
+            }); */
 		}
 	});
 	
 	//수정 sync 체크
-	$("input[name='sync']").on("keyup", function(){		
+	$("input[name='sync']").on("keyup", function(){	
 		if(clone[authNoIdx[$(this).data("authNmSeq")]][$(this).data("name")] === $(this).val()){		
-			$(this).removeClass("sync-blue");
+			$(this).removeClass("sync-blue");			
 		}else{
 			$(this).addClass("sync-blue");			
-		}
-	});
-	
-	//삭제 sync 체크
-	$("input[name='check']").on("click", function(){
-		let chkAns = $(this).data("authNmSeq");
-		if($(this).is(":checked")) {
-			$("input[name='sync']").each(function(i, e){				
-				if(chkAns === $(e).data("authNmSeq")){
-					$(e).addClass("sync-red");					
-				}
-			});
-		}else{
-			$("input[name='sync']").each(function(i, e){				
-				if(chkAns === $(e).data("authNmSeq")){
-					$(e).removeClass("sync-red");
-				}
-			});
-		}
+		}		
 	});
 	
 	//권한추가
 	$("#search-bar #add").on("click", function(){		
 		/* authList.push({authNm:"", authCmt:""});
 		$("#authList").jsGrid("refresh"); */		
-		$("#authList").jsGrid("insertItem", { authNm: "", authCmt: ""});
+		//$("#authList").jsGrid("insertItem");
+		//$("#authList").jsGrid("insertItem", { authOrder: "", authNm: "", authCmt: ""});
+		
+		/* let tr = $("<tr>").addClass("jsgrid-row ui-sortable-handle");
+		tr.append($("<td>").addClass("jsgrid-cell jsgrid-align-center style='width: "+cellWth[0]+";'").append(
+			$("<input>").attr("type", "checkbox").attr("name", "check").addClass("jsgrid-cell jsgrid-align-center")
+		));
+		tr.append($("<td>").addClass("jsgrid-cell jsgrid-align-center style='width: "+cellWth[1]+";'"));
+		tr.append($("<td>").addClass("jsgrid-cell jsgrid-align-center style='width: "+cellWth[2]+";'"));
+		tr.append($("<td>").addClass("jsgrid-cell jsgrid-align-center style='width: "+cellWth[3]+";'"));
+		$("<input>").attr("type", "checkbox").attr("name", "check").addClass("jsgrid-cell jsgrid-align-center");
+		$("<input>").attr("type", "text").addClass("input-gray wth100p");
+		$("<input>").attr("type", "text").addClass("input-gray wth100p");
+		
+		//<input type="checkbox" name="check"></td><td class="jsgrid-cell jsgrid-align-center" style="width: 5%;">7</td><td class="jsgrid-cell jsgrid-align-center" style="width: 40%;"><input type="text" name="sync" class="input-gray wth100p"></td><td class="jsgrid-cell jsgrid-align-center" style="width: 50%;"><input type="text" name="sync" class="input-gray wth100p"></td></tr>';
+		let tag = '<tr class="jsgrid-row ui-sortable-handle"><td class="jsgrid-cell jsgrid-align-center" style="width: 5%;"><input type="checkbox" name="check"></td><td class="jsgrid-cell jsgrid-align-center">7</td><td class="jsgrid-cell jsgrid-align-center" style="width: 40%;"><input type="text" name="sync" class="input-gray wth100p"></td><td class="jsgrid-cell jsgrid-align-center" style="width: 50%;"><input type="text" name="sync" class="input-gray wth100p"></td></tr>';
+		$("#authList .jsgrid-grid-body tbody").append(tag); */
 		
 	});
 	
