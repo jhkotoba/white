@@ -19,18 +19,14 @@ function fnJsGrid(data){
 	
 	let clone = common.clone(data);
 	let authList = data;
-	let authNoIdx = cfnNoIdx(authList, "authNmSeq");
-	
-	console.log(authList);
+	let authNoIdx = cfnNoIdx(authList, "authNmSeq");	
 	
 	$("#authList").jsGrid({
 		height: "auto",
-		width: "100%",		
+		width: "100%",
 		
-		//editing: true,		       
-		autoload: true,        
+		autoload: true,     
 		data: authList,
-		
 		
 		paging: false,
 		pageSize: 10,
@@ -39,8 +35,13 @@ function fnJsGrid(data){
 			{ align:"center", width: "5%",
                 headerTemplate: function() {	
                     return $("<input>").attr("type", "checkbox").on("click", function () {
-                    	if($(this).is(":checked")) $("input:checkbox[name=check]").prop('checked', true);
-                    	else $("input:checkbox[name=check]").prop('checked', false);
+                    	if($(this).is(":checked")){
+                    		$("input:checkbox[name=check]").prop('checked', true);
+                   			$("input[name='sync']").addClass("sync-red");                    		
+                    	}else{
+                    		$("input:checkbox[name=check]").prop('checked', false);
+                    		$("input[name='sync']").removeClass("sync-red");
+                    	}
 					});
                 },
                 itemTemplate: function(_, item) {
@@ -52,7 +53,11 @@ function fnJsGrid(data){
 						//	});
                 }	            
 			},
-			{ title:"순서",	name:"authOrder",	type:"text", align:"center", width: "5%"},
+			{ title:"순서",	name:"authOrder",	type:"text", align:"center", width: "5%",
+				itemTemplate: function(value, item){
+					return Number(value)-1;
+				}
+			},
 			{ title:"권한명",	name:"authNm",		type:"text", align:"center", width: "40%", 
 				itemTemplate: function(value, item){
 					$(this).removeClass("jsgrid-cell");
@@ -78,18 +83,8 @@ function fnJsGrid(data){
 
 			$gridData.sortable({
                 update: function(e, ui) {
-                    // array of indexes
-                    var clientIndexRegExp = /\s*client-(\d+)\s*/;
-                    var indexes = $.map($gridData.sortable("toArray", { attribute: "class" }), function(classes) {
-                        return clientIndexRegExp.exec(classes)[1];
-                    });
-                    console.log("Reordered indexes: " + indexes.join(", "));
- 
-                    // arrays of items
-                    var items = $.map($gridData.find("tr"), function(row) {
-                        return $(row).data("JSGridItem");
-                    });
-                    console && console.log("Reordered items", items);
+                    console.log(e);
+                    console.log(ui);
                 }
             });
 		}
@@ -97,7 +92,7 @@ function fnJsGrid(data){
 	
 	//수정 sync 체크
 	$("input[name='sync']").on("keyup", function(){		
-		if(clone[authNoIdx[$(this).data("authNmSeq")]][$(this).data("name")] === $(this).val()){			
+		if(clone[authNoIdx[$(this).data("authNmSeq")]][$(this).data("name")] === $(this).val()){		
 			$(this).removeClass("sync-blue");
 		}else{
 			$(this).addClass("sync-blue");			
@@ -110,7 +105,7 @@ function fnJsGrid(data){
 		if($(this).is(":checked")) {
 			$("input[name='sync']").each(function(i, e){				
 				if(chkAns === $(e).data("authNmSeq")){
-					$(e).addClass("sync-red");
+					$(e).addClass("sync-red");					
 				}
 			});
 		}else{
@@ -148,6 +143,12 @@ function fnJsGrid(data){
 			$("#authList").jsGrid("option", "paging", true);
 			$("#authList").jsGrid("option", "pageSize", Number(pageSize));
 		}
+	});
+	
+	//저장(반영)
+	$("#search-bar #save").on("click", function(){		
+		
+		
 	});
 }
 </script>
