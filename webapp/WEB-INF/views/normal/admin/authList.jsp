@@ -105,8 +105,21 @@ function fnJsGrid(data){
 	});
 	
 	//삭제 sync 체크
-	$("input[name='check']").on("click", function(){		
-		//$(this).addClass("sync-red");
+	$("input[name='check']").on("click", function(){
+		let chkAns = $(this).data("authNmSeq");
+		if($(this).is(":checked")) {
+			$("input[name='sync']").each(function(i, e){				
+				if(chkAns === $(e).data("authNmSeq")){
+					$(e).addClass("sync-red");
+				}
+			});
+		}else{
+			$("input[name='sync']").each(function(i, e){				
+				if(chkAns === $(e).data("authNmSeq")){
+					$(e).removeClass("sync-red");
+				}
+			});
+		}
 	});
 	
 	//권한추가
