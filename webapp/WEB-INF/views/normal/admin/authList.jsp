@@ -60,10 +60,7 @@ function fnJsGrid(data){
                     let chk = $("<input>").attr("type", "checkbox").attr("name", "check")
                     	.data("authNmSeq", item.authNmSeq).on("change", function() {
                     		
-                    	if(isEmpty(item.authOrder)){
-                    		$("#authList").jsGrid("deleteItem", item);
-                    		return;
-                    	}
+                    	
                     	
                     	fnSync(this, item, "delete");
                     		
@@ -111,16 +108,20 @@ function fnJsGrid(data){
 						.data("authNmSeq", item.authNmSeq).data("name", "authNm")
 						.addClass("input-gray wth100p").val(value);
 					
-					if(isNotEmpty(value)){
-						if(clone[authNoIdx[item.authNmSeq]].authNm === value){
-							$(ipt).removeClass("sync-blue");
-						}else{
-							$(ipt).addClass("sync-blue");
-						}
-					}else{
+					if(item.state === "insert"){
 						ipt.addClass("sync-green");
+					}else{
+						if(isNotEmpty(value)){
+							if(clone[authNoIdx[item.authNmSeq]].authNm === value){
+								ipt.removeClass("sync-blue");
+							}else{
+								ipt.addClass("sync-blue");
+							}
+						}
+							
 					}
-					return ipt;					
+					
+					return ipt;			
 				}
 			},
 			{ title:"권한 설명",	name:"authCmt",	type:"text", align:"center", width: "50%",
@@ -130,15 +131,21 @@ function fnJsGrid(data){
 						.data("authNmSeq", item.authNmSeq).data("name", "authCmt")
 						.addClass("input-gray wth100p").val(value);
 					
-					if(isNotEmpty(value)){						
-						if(clone[authNoIdx[item.authNmSeq]].authCmt === value){
-							$(ipt).removeClass("sync-blue");
-						}else{
-							$(ipt).addClass("sync-blue");
-						}
-					}else{
+					
+					if(item.state === "insert"){
 						ipt.addClass("sync-green");
+					}else{						
+						
+						if(isNotEmpty(value)){						
+							if(clone[authNoIdx[item.authNmSeq]].authCmt === value){
+								ipt.removeClass("sync-blue");
+							}else{
+								ipt.addClass("sync-blue");
+							}
+						}
+						
 					}
+					
 					return ipt;
 				}
 			}
@@ -158,12 +165,33 @@ function fnJsGrid(data){
             
 			//수정 sync 체크
 			$("input[name='sync']").on("keyup", function(){
-				authList[authNoIdx[$(this).data("authNmSeq")]][$(this).data("name")] = $(this).val();
-				if(clone[authNoIdx[$(this).data("authNmSeq")]][$(this).data("name")] === $(this).val()){		
-					$(this).removeClass("sync-blue");
+				
+				//fnSync(this, null, "update");
+				
+				console.log($(this).data("authNmSeq"));
+				console.log($(this).data("name"));
+				console.log($(this).val());
+				
+				
+				
+				
+				
+				
+				if($(this).hasClass("sync-green")){
+					authList[authNoIdx[$(this).data("authNmSeq")]][$(this).data("name")] = $(this).val();
 				}else{
-					$(this).addClass("sync-blue");			
+					authList[authNoIdx[$(this).data("authNmSeq")]][$(this).data("name")] = $(this).val();
+					
+					if(clone[authNoIdx[$(this).data("authNmSeq")]][$(this).data("name")] === $(this).val()){		
+						$(this).removeClass("sync-blue");
+					}else{
+						$(this).addClass("sync-blue");			
+					}
 				}
+				
+				
+				
+				
 			});	
 		}
 	});
@@ -175,8 +203,9 @@ function fnJsGrid(data){
 	$("#search-bar #add").on("click", function(){
 		
 		//let el = $("#authList .jsgrid-grid-body tbody").children().last().html();
-		//$("#authList .jsgrid-grid-body tbody").append(el);
-		authList.push({authOrder: "", authNm:"", authCmt:"", state:"insert"});
+		//$("#authList .jsgrid-grid-body tbody").append(el);		
+		authList.push({authOrder: "", authNm:"", authCmt:"", state:"insert", authNmSeq:new Date().getTime()});
+		authNoIdx = cfnNoIdx(authList, "authNmSeq");
 		$("#authList").jsGrid("refresh"); 
 		//$("#authList").jsGrid("insertItem");
 		//$("#authList").jsGrid("insertItem", { authOrder: "", authNm: "", authCmt: ""});
@@ -232,37 +261,69 @@ function fnJsGrid(data){
 	
 	//저장(반영)
 	$("#search-bar #save").on("click", function(){		
-		
+		console.log(authList);
 		
 	});
 	
 	//authList jsGrid Data 동기화
 	function fnSync(el, item, action){
 		
-		let idx = authNoIdx[item.authNmSeq];
+		
+		
+		if($(el).hasClass("sync-green")) action = "insert";
+		
+		
 		
 		//삭제 체크박스
-		if($(el).is(":checked")) {
-   			$("input[name='sync']").each(function(i, e){				
-   				if(item.authNmSeq  === $(e).data("authNmSeq")){
-   					$(e).addClass("sync-red");
-					authList[idx].state = "delete";   
-   				}
-   			});
-   		}else{
-   			$("input[name='sync']").each(function(i, e){				
-   				if(item.authNmSeq === $(e).data("authNmSeq")){
-   					$(e).removeClass("sync-red");
-   					
-   					if($(e).hasClass("sync-blue") || authList[idx].state === "update"){
-   						authList[idx].state = "update";
-   					}else{   						
-   						authList[idx].state = "select";
-   					}   					
-   				}
-   			});
-    	}
-		console.log(authList);
+		switch(action){
+		
+		case "insert":
+			authList[authNoIdx[$(el).data("authNmSeq")]][$(el).data("name")] = $(el).val();
+			break;
+		
+		case "update":
+			
+			authList[authNoIdx[$(el).data("authNmSeq")]][$(el).data("name")] = $(el).val();
+			if(clone[authNoIdx[$(el).data("authNmSeq")]][$(el).data("name")] === $(el).val()){		
+				$(el).removeClass("sync-blue");
+			}else{
+				$(el).addClass("sync-blue");			
+			}			
+			
+			break;		
+		case "delete":
+			
+			let idx = authNoIdx[item.authNmSeq];
+			
+			if(isEmpty(item.authOrder)){
+	    		$("#authList").jsGrid("deleteItem", item);
+	    		return;
+	    	}
+			
+			if($(el).is(":checked")) {
+	   			$("input[name='sync']").each(function(i, e){				
+	   				if(item.authNmSeq  === $(e).data("authNmSeq")){
+	   					$(e).addClass("sync-red");
+						authList[idx].state = "delete";   
+	   				}
+	   			});
+	   		}else{
+	   			$("input[name='sync']").each(function(i, e){				
+	   				if(item.authNmSeq === $(e).data("authNmSeq")){
+	   					$(e).removeClass("sync-red");
+	   					
+	   					if($(e).hasClass("sync-blue") || authList[idx].state === "update"){
+	   						authList[idx].state = "update";
+	   					}else{   						
+	   						authList[idx].state = "select";
+	   					}   					
+	   				}
+	   			});
+	    	}
+			break;
+		}
+		
+		
 	}
 }
 </script>
