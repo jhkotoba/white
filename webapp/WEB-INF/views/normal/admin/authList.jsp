@@ -45,7 +45,7 @@ function fnJsGrid(data){
                     	if($(this).is(":checked")){                    		
                     		$("input:checkbox[name=check]").each(function(i, e){
                     			if(isEmpty($(e).data("authOrder"))){
-                    				$("#authList").jsGrid("deleteItem", $(e).parent().parent()); 
+                    				$("#authList").jsGrid("deleteItem", $(e).parent().parent());                    				
                     			}
                     		});                    		                 		
                     		$("input:checkbox[name=check]").prop('checked', true);
@@ -67,7 +67,7 @@ function fnJsGrid(data){
                	    		return;
                	    	}
                			
-               			if($(this).is(":checked")) {
+               			/* if($(this).is(":checked")) {
                	   			$("input[name='sync']").each(function(i, e){				
                	   				if(item.authNmSeq  === $(e).data("authNmSeq")){
                	   					$(e).addClass("sync-red");
@@ -85,7 +85,7 @@ function fnJsGrid(data){
                	   					}   					
                	   				}
                	   			});
-               	    	}
+               	    	} */
                 	});
                     return chk;
                 }	            
@@ -101,7 +101,7 @@ function fnJsGrid(data){
 					let el =  $("<input>").attr("type", "text").attr("name", "sync")
 						.data("authNmSeq", item.authNmSeq).data("name", "authNm")
 						.addClass("input-gray wth100p").val(value);					
-					fnRefreshedSync(el, item);
+					//fnRefreshedSync(el, item);
 					return el;			
 				}
 			},
@@ -111,7 +111,7 @@ function fnJsGrid(data){
 					let el = $("<input>").attr("type", "text").attr("name", "sync")
 						.data("authNmSeq", item.authNmSeq).data("name", "authCmt")
 						.addClass("input-gray wth100p").val(value);					
-					fnRefreshedSync(el, item);					
+					//fnRefreshedSync(el, item);					
 					return el;
 				}
 			}
@@ -142,14 +142,17 @@ function fnJsGrid(data){
 			//수정 sync 체크
 			$("input[name='sync']").on("keyup keydown change", function(){
 				
+				
+				authList[authNoIdx[$(this).data("authNmSeq")]][$(this).data("name")] = $(this).val();
+				
 				//fnSync(this, null, "update");
 				
 				
 				
 				
-				authList[authNoIdx[$(this).data("authNmSeq")]][$(this).data("name")] = $(this).val();
 				
-				if(clone[authNoIdx[$(this).data("authNmSeq")]][$(this).data("name")] === $(this).val()){		
+				
+				/* if(clone[authNoIdx[$(this).data("authNmSeq")]][$(this).data("name")] === $(this).val()){		
 					$(this).removeClass("sync-blue");					
 					//if($(this).hasClass("sync-red")){
 					//	authList[authNoIdx[$(this).data("authNmSeq")]][$(this).data("name")].state = "delete";
@@ -160,26 +163,26 @@ function fnJsGrid(data){
 				}else{
 					$(this).addClass("sync-blue");
 					authList[authNoIdx[$(this).data("authNmSeq")]].state = "update";
-				}
-				
-				
-				
-				/* if($(this).hasClass("sync-green")){
-					authList[authNoIdx[$(this).data("authNmSeq")]][$(this).data("name")] = $(this).val();
-				}else{
-					authList[authNoIdx[$(this).data("authNmSeq")]][$(this).data("name")] = $(this).val();
-					
-					if(clone[authNoIdx[$(this).data("authNmSeq")]][$(this).data("name")] === $(this).val()){		
-						$(this).removeClass("sync-blue");
-					}else{
-						$(this).addClass("sync-blue");			
-					}
 				} */
 				
 				
 				
+				//if($(this).hasClass("sync-green")){
+				//	authList[authNoIdx[$(this).data("authNmSeq")]][$(this).data("name")] = $(this).val();
+				//}else{
+				//	authList[authNoIdx[$(this).data("authNmSeq")]][$(this).data("name")] = $(this).val();
+				//	
+				//	if(clone[authNoIdx[$(this).data("authNmSeq")]][$(this).data("name")] === $(this).val()){		
+				//		$(this).removeClass("sync-blue");
+				//	}else{
+				//		$(this).addClass("sync-blue");			
+				//	}
+				//}
+				//
 				
-			});	
+				
+				
+			});
 		}
 	});
 	
@@ -221,7 +224,7 @@ function fnJsGrid(data){
 	});
 	
 	
-	function fnRefreshedSync(el, item){		
+	/* function fnRefreshedSync(el, item){		
 		if(item.state === "insert") el.addClass("sync-green");
 		else if(item.state === "update"){		
 			if(isNotEmpty(item[el.data("name")])){						
@@ -234,9 +237,9 @@ function fnJsGrid(data){
 		}else if(item.state === "delete"){
 			el.addClass("sync-red");
 		}
-	}	
+	}	 */
 	
-	function fnSync(el, item, action){
+	/* function fnSync(el, item, action){
 		
 		
 		
@@ -297,7 +300,7 @@ function fnJsGrid(data){
 		}
 		
 		
-	}
+	} */
 	
 
 	/* function fnStyle(el, action){
