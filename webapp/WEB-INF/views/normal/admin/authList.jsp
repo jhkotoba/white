@@ -36,16 +36,21 @@ function fnJsGrid(data){
 		paging: false,
 		pageSize: 10,
 		
-		confirmDeleting : false,		
+		confirmDeleting : false,
 		
 		fields: [
 			{ align:"center", width: "5%",
                 headerTemplate: function() {	
                     return $("<input>").attr("type", "checkbox").on("change", function () {
+                    	
                     	if($(this).is(":checked")){                    		
                     		$("input:checkbox[name=check]").each(function(i, e){
+                    			//console.log($(e).parent().parent());
+                    			//console.log($(e).data());
                     			if(isEmpty($(e).data("authOrder"))){
-                    				$("#authList").jsGrid("deleteItem", $(e).parent().parent());                    				
+                    				$("#authList").jsGrid("deleteItem", $(e).parent().parent());
+                    				
+                    				
                     			}
                     		});                    		                 		
                     		$("input:checkbox[name=check]").prop('checked', true);
@@ -86,7 +91,7 @@ function fnJsGrid(data){
                	   				}
                	   			});
                	    	} */
-                	});
+                	});                   
                     return chk;
                 }	            
 			},
@@ -142,9 +147,16 @@ function fnJsGrid(data){
 			//수정 sync 체크
 			$("input[name='sync']").on("keyup keydown change", function(){
 				
+				/* console.log($(this).data("authNmSeq"));
+				console.log($(this).data("name"));
+				console.log($(this).val());
+				console.log(authList[authNoIdx[$(this).data("authNmSeq")]]);
+				console.log(authList[authNoIdx[$(this).data("authNmSeq")]][$(this).data("name")]); */
 				
 				authList[authNoIdx[$(this).data("authNmSeq")]][$(this).data("name")] = $(this).val();
 				
+				
+				//$("#authList").jsGrid("updateItem");
 				//fnSync(this, null, "update");
 				
 				
@@ -191,9 +203,10 @@ function fnJsGrid(data){
 	
 	//권한추가
 	$("#search-bar #add").on("click", function(){
-		authList.push({authCmt:"", authOrder: "", authNmSeq:new Date().getTime(), authNm:"", state:"insert", });
+		authList.push({authCmt:"", authOrder: "", authNmSeq:new Date().getTime(), authNm:"", state:"insert"});
 		authNoIdx = cfnNoIdx(authList, "authNmSeq");
-		$("#authList").jsGrid("refresh"); 
+		$("#authList").jsGrid("refresh");
+		//$("#authList").jsGrid("insertItem", {authCmt:"", authOrder: "", authNmSeq:new Date().getTime(), authNm:"", state:"insert"});
 	});
 	
 	//취소
