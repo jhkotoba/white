@@ -40,7 +40,7 @@ function fnJsGrid(data){
 		
 		fields: [
 			{ align:"center", width: "5%",
-                headerTemplate: function() {	
+                /* headerTemplate: function() {	
                     return $("<input>").attr("type", "checkbox").on("change", function () {
                     	
                     	if($(this).is(":checked")){                    		
@@ -60,7 +60,7 @@ function fnJsGrid(data){
                     		$("input[name='sync']").removeClass("sync-red");
                     	}
 					});
-                },
+                }, */
                 itemTemplate: function(value, item) {
                     let chk = $("<input>").attr("type", "checkbox").attr("name", "check")
                     .data("authNmSeq", item.authNmSeq).data("authOrder", item.authOrder).on("change", function() {
@@ -72,7 +72,7 @@ function fnJsGrid(data){
                	    		return;
                	    	}
                			
-               			/* if($(this).is(":checked")) {
+               			if($(this).is(":checked")) {
                	   			$("input[name='sync']").each(function(i, e){				
                	   				if(item.authNmSeq  === $(e).data("authNmSeq")){
                	   					$(e).addClass("sync-red");
@@ -90,7 +90,7 @@ function fnJsGrid(data){
                	   					}   					
                	   				}
                	   			});
-               	    	} */
+               	    	}
                 	});                   
                     return chk;
                 }	            
@@ -106,7 +106,7 @@ function fnJsGrid(data){
 					let el =  $("<input>").attr("type", "text").attr("name", "sync")
 						.data("authNmSeq", item.authNmSeq).data("name", "authNm")
 						.addClass("input-gray wth100p").val(value);					
-					//fnRefreshedSync(el, item);
+					fnRefreshedSync(el, item);
 					return el;			
 				}
 			},
@@ -116,7 +116,7 @@ function fnJsGrid(data){
 					let el = $("<input>").attr("type", "text").attr("name", "sync")
 						.data("authNmSeq", item.authNmSeq).data("name", "authCmt")
 						.addClass("input-gray wth100p").val(value);					
-					//fnRefreshedSync(el, item);					
+					fnRefreshedSync(el, item);					
 					return el;
 				}
 			}
@@ -164,7 +164,7 @@ function fnJsGrid(data){
 				
 				
 				
-				/* if(clone[authNoIdx[$(this).data("authNmSeq")]][$(this).data("name")] === $(this).val()){		
+				if(clone[authNoIdx[$(this).data("authNmSeq")]][$(this).data("name")] === $(this).val()){		
 					$(this).removeClass("sync-blue");					
 					//if($(this).hasClass("sync-red")){
 					//	authList[authNoIdx[$(this).data("authNmSeq")]][$(this).data("name")].state = "delete";
@@ -175,7 +175,7 @@ function fnJsGrid(data){
 				}else{
 					$(this).addClass("sync-blue");
 					authList[authNoIdx[$(this).data("authNmSeq")]].state = "update";
-				} */
+				}
 				
 				
 				
@@ -237,7 +237,7 @@ function fnJsGrid(data){
 	});
 	
 	
-	/* function fnRefreshedSync(el, item){		
+	function fnRefreshedSync(el, item){		
 		if(item.state === "insert") el.addClass("sync-green");
 		else if(item.state === "update"){		
 			if(isNotEmpty(item[el.data("name")])){						
@@ -250,7 +250,7 @@ function fnJsGrid(data){
 		}else if(item.state === "delete"){
 			el.addClass("sync-red");
 		}
-	}	 */
+	}
 	
 	/* function fnSync(el, item, action){
 		
