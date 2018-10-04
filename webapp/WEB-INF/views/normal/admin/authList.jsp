@@ -96,9 +96,13 @@ function fnJsGrid(data){
                     if(item.state === "delete"){
                     	chk.prop('checked', true);
                     	$("input[name='sync']").each(function(i, e){                    		
-                			if(isEmpty($(e).data("authOrder"))){
-                				console.log("delete check");
+                			if(isEmpty($(e).data("authOrder"))){                				
                 				$(e).addClass("sync-red");
+                				
+                				/* if(clone[authNoIdx[$(e).data("authNmSeq")]][$(e).data("name")] !== $(e).val()){
+                					$(e).addClass("sync-blue");
+                				} */
+                				
                 			}
                 		}); 
                     }
