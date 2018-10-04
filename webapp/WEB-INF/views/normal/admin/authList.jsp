@@ -91,7 +91,17 @@ function fnJsGrid(data){
                	   				}
                	   			});
                	    	}
-                	});                   
+                	});
+                    
+                    if(item.state === "delete"){
+                    	chk.prop('checked', true);
+                    	$("input[name='sync']").each(function(i, e){                    		
+                			if(isEmpty($(e).data("authOrder"))){
+                				console.log("delete check");
+                				$(e).addClass("sync-red");
+                			}
+                		}); 
+                    }
                     return chk;
                 }	            
 			},
@@ -166,11 +176,11 @@ function fnJsGrid(data){
 				
 				if(clone[authNoIdx[$(this).data("authNmSeq")]][$(this).data("name")] === $(this).val()){		
 					$(this).removeClass("sync-blue");					
-					//if($(this).hasClass("sync-red")){
-					//	authList[authNoIdx[$(this).data("authNmSeq")]][$(this).data("name")].state = "delete";
-					//}else{
+					if($(this).hasClass("sync-red")){
+						authList[authNoIdx[$(this).data("authNmSeq")]][$(this).data("name")].state = "delete";
+					}else{
 						authList[authNoIdx[$(this).data("authNmSeq")]].state = "select";
-					//}
+					}
 					
 				}else{
 					$(this).addClass("sync-blue");
