@@ -44,13 +44,10 @@ function fnJsGrid(data){
                     return $("<input>").attr("type", "checkbox").on("change", function () {
                     	
                     	if($(this).is(":checked")){                    		
-                    		$("input:checkbox[name=check]").each(function(i, e){
-                    			//console.log($(e).parent().parent());
-                    			//console.log($(e).data());
+                    		$("input:checkbox[name=check]").each(function(i, e){                    			
                     			if(isEmpty($(e).data("authOrder"))){
                     				$("#authList").jsGrid("deleteItem", $(e).parent().parent());
-                    				
-                    				
+                    				//delete authNoIdx[$(e).data("authNmSeq")];                    			
                     			}
                     		});                    		                 		
                     		$("input:checkbox[name=check]").prop('checked', true);
@@ -74,7 +71,7 @@ function fnJsGrid(data){
                    	   			$("input[name='sync']").each(function(i, e){				
                    	   				if(item.authNmSeq  === $(e).data("authNmSeq")){
                    	   					$(e).addClass("sync-red");               	   					
-                   	   					if(clone[authNoIdx[$(e).data("authNmSeq")]][$(e).data("name")] !== $(e).val()){
+                   	   					if(clone[idx][$(e).data("name")] !== $(e).val()){
                    	   						$(e).addClass("sync-blue");
                    	   					}
                    						authList[idx].state = "delete";   
@@ -93,22 +90,8 @@ function fnJsGrid(data){
                    	   			});
                    	    	}
                	    	}
-                	});
-                    
-                    if(item.state === "delete"){
-                    	chk.prop('checked', true);
-                    	
-                    	/* $("input[name='sync']").each(function(i, e){                    		
-                			if(isEmpty($(e).data("authOrder"))){                				
-                				$(e).addClass("sync-red");
-                				
-                				if(clone[authNoIdx[$(e).data("authNmSeq")]][$(e).data("name")] !== $(e).val()){
-                					$(e).addClass("sync-blue");
-                				}
-                				
-                			}
-                		});  */
-                    }
+                	});                    
+                    if(item.state === "delete") chk.prop('checked', true);                    	
                     return chk;
                 }	            
 			},
@@ -119,48 +102,33 @@ function fnJsGrid(data){
 			},
 			{ title:"권한명",	name:"authNm",		type:"text", align:"center", width: "40%", 
 				itemTemplate: function(value, item){
-					$(this).removeClass("jsgrid-cell");
-					let el =  $("<input>").attr("type", "text").attr("name", "sync")
-						.data("authNmSeq", item.authNmSeq).data("name", "authNm")
-						.addClass("input-gray wth100p").val(value);					
-					fnRefreshedSync(el, item);
-					return el;			
+					$(this).removeClass("jsgrid-cell");									
+					return fnRefreshedSync(item, "authNm");
 				}
 			},
 			{ title:"권한 설명",	name:"authCmt",	type:"text", align:"center", width: "50%",
 				itemTemplate: function(value, item){
 					$(this).removeClass("jsgrid-cell");
-					let el = $("<input>").attr("type", "text").attr("name", "sync")
-						.data("authNmSeq", item.authNmSeq).data("name", "authCmt")
-						.addClass("input-gray wth100p").val(value);					
-					fnRefreshedSync(el, item);					
-					return el;
+					return fnRefreshedSync(item, "authCmt");
 				}
 			}
-		],			
-		rowClass: function(item, itemIndex) {
-            return "client-" + itemIndex;
-        },
+		],
 		onRefreshed: function() {
-			let $gridData = $("#authList .jsgrid-grid-body tbody");			
+			let $gridData = $("#authList .jsgrid-grid-body tbody");
 			$gridData.sortable({
-                update: function(e, ui) {
-                    // array of indexes
-                    var clientIndexRegExp = /\s*client-(\d+)\s*/;
-                    var indexes = $.map($gridData.sortable("toArray", { attribute: "class" }), function(classes) {
-                        return clientIndexRegExp.exec(classes)[1];
-                    });
-                    alert("Reordered indexes: " + indexes.join(", "));
- 
-                    // arrays of items
-                    var items = $.map($gridData.find("tr"), function(row) {
-                        return $(row).data("JSGridItem");
-                    });
-                    console && console.log("Reordered items", items);
-                    authList = items;
-                }
-            });
-            
+				update: function(e, ui) {
+					let items = $.map($gridData.find("tr"), function(row) {
+						return $(row).data("JSGridItem");
+					});
+					
+					authList.splice(0, authList.length);
+					for(let i=0; i<items.length; i++){
+						authList.push(items[i]);
+					}
+					$("#authList").jsGrid("refresh");
+				}
+			});
+			
 			//수정 sync 체크
 			let name, idx;
 			$("input[name='sync']").on("keyup keydown change", function(){				
@@ -183,9 +151,6 @@ function fnJsGrid(data){
 			});
 		}
 	});
-	
-	
-	
 	
 	//권한추가
 	$("#searchBar #add").on("click", function(){
@@ -222,9 +187,11 @@ function fnJsGrid(data){
 	});
 	
 	//새로고침 sync
-	function fnRefreshedSync(el, item){
+	function fnRefreshedSync(item, name){
 		
-		let name = $(el).data("name");	
+		let el = $("<input>").attr("type", "text").attr("name", "sync")
+			.data("authNmSeq", item.authNmSeq).data("name", name)
+			.addClass("input-gray wth100p").val(item[name]);
 		
 		if(item.state === "insert") $(el).addClass("sync-green");
 		else if(item.state === "update"){									
@@ -238,7 +205,8 @@ function fnJsGrid(data){
 			if(clone[authNoIdx[item.authNmSeq]][name] !== $(el).val()){
 				$(el).addClass("sync-blue");
 			}
-		}
+		}		
+		return el;
 	}
 }
 </script>
