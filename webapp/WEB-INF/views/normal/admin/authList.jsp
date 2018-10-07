@@ -40,24 +40,6 @@ function fnJsGrid(data){
 		
 		fields: [
 			{ align:"center", width: "5%",
-                /* headerTemplate: function() {	
-                    return $("<input>").attr("type", "checkbox").on("change", function () {
-                    	
-                    	if($(this).is(":checked")){                    		
-                    		$("input:checkbox[name=check]").each(function(i, e){                    			
-                    			if(isEmpty($(e).data("authOrder"))){
-                    				$("#authList").jsGrid("deleteItem", $(e).parent().parent());
-                    				//delete authNoIdx[$(e).data("authNmSeq")];                    			
-                    			}
-                    		});                    		                 		
-                    		$("input:checkbox[name=check]").prop('checked', true);
-                   			$("input[name='sync']").addClass("sync-red");                    		
-                    	}else{
-                    		$("input:checkbox[name=check]").prop('checked', false);
-                    		$("input[name='sync']").removeClass("sync-red");
-                    	}
-					});
-                }, */
                 itemTemplate: function(value, item) {
                     let chk = $("<input>").attr("type", "checkbox").attr("name", "check")
                     .data("authNmSeq", item.authNmSeq).data("authOrder", item.authOrder).on("change", function() {
