@@ -94,11 +94,20 @@ public class AdminController {
 		return adminService.selectAuthList(param);		
 	}
 	
+	//대체 개발중..
 	@RequestMapping(value="/admin/inUpDelAuthNmList.ajax" )
 	public WhiteMap inUpDelauthList(HttpServletRequest request){		
 		
 		WhiteMap param = new WhiteMap(request);		
 		return adminService.inUpDelAuthNmList(param);		
 	}
+	
+	@RequestMapping(value="/admin/applyAuthList.ajax" )
+	public WhiteMap applyAuthList(HttpServletRequest request){		
+		WhiteMap param = new WhiteMap(request);		
+		
+		return null;
+	}
+	
 	
 }

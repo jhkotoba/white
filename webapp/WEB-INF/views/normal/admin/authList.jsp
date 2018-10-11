@@ -24,8 +24,6 @@ function fnJsGrid(data){
 	let authList = data;
 	let authNoIdx = cfnNoIdx(authList, "authNmSeq");
 	
-	console.log(authList);
-	
 	$("#authList").jsGrid({
 		height: "auto",
 		width: "100%",
@@ -166,30 +164,56 @@ function fnJsGrid(data){
 		console.log(authList);
 		console.log(authNoIdx);
 		
-	});
-	
-	//새로고침 sync
-	function fnRefreshedSync(item, name){
-		
-		let el = $("<input>").attr("type", "text").attr("name", "sync")
-			.data("authNmSeq", item.authNmSeq).data("name", name)
-			.addClass("input-gray wth100p").val(item[name]);
-		
-		if(item.state === "insert") $(el).addClass("sync-green");
-		else if(item.state === "update"){									
-			if(clone[authNoIdx[item.authNmSeq]][name] === item[name]){
-				$(el).removeClass("sync-blue");
-			}else{
-				$(el).addClass("sync-blue");
-			}			
-		}else if(item.state === "delete"){
-			$(el).addClass("sync-red");
-			if(clone[authNoIdx[item.authNmSeq]][name] !== $(el).val()){
-				$(el).addClass("sync-blue");
+		let applyList = new Array();
+		for(let i=0; i<authList.length; i++){
+			switch(authList[i]){
+			case "authCmt":
+				break;
+			case "authNm":
+				break;
+			case "authNmSeq":
+				break;
+			case "authOrder":
+				break;
+			case 
 			}
+			
 		}		
-		return el;
-	}
+		
+		let param = {};
+		param.clone = JSON.stringify(clone);
+		param.authList = JSON.stringify(authList);
+		
+		cfnCmmAjax("/admin/applyAuthList", param).done(function(data){
+			cfnSelectAuth().done(function(data){
+				fnJsGrid(data);
+			});
+		});
+		
+	});
+}
+
+//새로고침 sync
+function fnRefreshedSync(item, name){
+	
+	let el = $("<input>").attr("type", "text").attr("name", "sync")
+		.data("authNmSeq", item.authNmSeq).data("name", name)
+		.addClass("input-gray wth100p").val(item[name]);
+	
+	if(item.state === "insert") $(el).addClass("sync-green");
+	else if(item.state === "update"){									
+		if(clone[authNoIdx[item.authNmSeq]][name] === item[name]){
+			$(el).removeClass("sync-blue");
+		}else{
+			$(el).addClass("sync-blue");
+		}			
+	}else if(item.state === "delete"){
+		$(el).addClass("sync-red");
+		if(clone[authNoIdx[item.authNmSeq]][name] !== $(el).val()){
+			$(el).addClass("sync-blue");
+		}
+	}		
+	return el;
 }
 </script>
 
