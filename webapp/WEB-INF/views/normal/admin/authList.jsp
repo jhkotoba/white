@@ -160,60 +160,60 @@ function fnJsGrid(data){
 	});
 	
 	//저장(반영)
-	$("#searchBar #save").on("click", function(){		
-		console.log(authList);
-		console.log(authNoIdx);
+	$("#searchBar #save").on("click", function(){
 		
-		let applyList = new Array();
+		//유효성 검사
+		let checkItem = ["authCmt", "authNm"];
 		for(let i=0; i<authList.length; i++){
-			switch(authList[i]){
-			case "authCmt":
-				break;
-			case "authNm":
-				break;
-			case "authNmSeq":
-				break;
-			case "authOrder":
-				break;
-			case 
+			for(let j=0; j<checkItem.length; j++){
+				if(isEmpty(authList[i][checkItem[j]])){						
+					$("input[name='sync']").each(function(idx, e){						
+       	   				if(authList[i].authNmSeq === $(e).data("authNmSeq") && checkItem[j] === $(e).data("name")){
+	       	   				wVali.alert({
+	       	   					element : $(e),
+	    						checkItem: checkItem[j], 
+	    						msg: "값을 입력해 주세요."
+	    					});	       	   				
+       	   				}
+       	   			});
+					return;
+				}
 			}
-			
-		}		
+		}
 		
 		let param = {};
 		param.clone = JSON.stringify(clone);
 		param.authList = JSON.stringify(authList);
 		
-		cfnCmmAjax("/admin/applyAuthList", param).done(function(data){
+		cfnCmmAjax("/admin/applyAuthList", param).done(function(){
 			cfnSelectAuth().done(function(data){
 				fnJsGrid(data);
 			});
 		});
 		
 	});
-}
+	
+	//새로고침 sync
+	function fnRefreshedSync(item, name){	
+		let el = $("<input>").attr("type", "text").attr("name", "sync")
+			.data("authNmSeq", item.authNmSeq).data("name", name)
+			.addClass("input-gray wth100p").val(item[name]);
 
-//새로고침 sync
-function fnRefreshedSync(item, name){
-	
-	let el = $("<input>").attr("type", "text").attr("name", "sync")
-		.data("authNmSeq", item.authNmSeq).data("name", name)
-		.addClass("input-gray wth100p").val(item[name]);
-	
-	if(item.state === "insert") $(el).addClass("sync-green");
-	else if(item.state === "update"){									
-		if(clone[authNoIdx[item.authNmSeq]][name] === item[name]){
-			$(el).removeClass("sync-blue");
-		}else{
-			$(el).addClass("sync-blue");
-		}			
-	}else if(item.state === "delete"){
-		$(el).addClass("sync-red");
-		if(clone[authNoIdx[item.authNmSeq]][name] !== $(el).val()){
-			$(el).addClass("sync-blue");
-		}
-	}		
-	return el;
+		if(item.state === "insert") $(el).addClass("sync-green");	
+		else if(item.state === "update"){									
+			if(clone[authNoIdx[item.authNmSeq]][name] === item[name]){
+				$(el).removeClass("sync-blue");
+			}else{
+				$(el).addClass("sync-blue");
+			}			
+		}else if(item.state === "delete"){
+			$(el).addClass("sync-red");
+			if(clone[authNoIdx[item.authNmSeq]][name] !== $(el).val()){
+				$(el).addClass("sync-blue");
+			}
+		}		
+		return el;
+	}
 }
 </script>
 

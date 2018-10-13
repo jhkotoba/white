@@ -62,9 +62,10 @@ let wVali = {
 					case "empty":
 						if(param[keys[i]].replace(/^\s+|\s+$/g,"") === "" || param[keys[i]] === null || param[keys[i]] === undefined){
 							return this.alert({
-								parent: this._parent,
-								id: "#"+keys[i],
-								cause: this._checkItem[j], 
+								/*parent: this._parent,
+								id: "#"+keys[i],*/
+								element: $(this._parent + " " + "#"+keys[i]),
+								checkItem: this._checkItem[j], 
 								msg: $(this._parent+" #"+keys[i])[0].nodeName === "SELECT" ? "값을 선택해 주세요." : "값을 입력해 주세요."});
 						}
 						break;
@@ -73,9 +74,10 @@ let wVali = {
 						if(maxLen !== undefined){
 							if($(this._parent+" #"+keys[i]).val().length > maxLen){
 								return this.alert({
-										parent: this._parent, 
-										id: "#"+keys[i],
-										cause: this._checkItem[j],
+										/*parent: this._parent, 
+										id: "#"+keys[i],*/
+										element: $(this._parent + " " + "#"+keys[i]),
+										checkItem: this._checkItem[j],
 										msg: "글자수가 많습니다. <br> (최대글자수: "+maxLen+")"
 										});								 
 							} 
@@ -105,16 +107,18 @@ let wVali = {
 		}
 		return true;
 	},	
-	alert : function(item){		
-		let target = $(item.parent +" "+item.id);
-		$(target).addClass("wVali-border").focus();	
+	alert : function(item){
+		let $target = item.element;		
+		//let target = $(item.parent +" "+item.id);
 		
-		$("body").append("<div id='wValiAlert' class='wVali-alert'>"+item.msg+"</div>");
-		let offset = $(target).offset();
+		$target.addClass("wVali-border").focus();	
+		
+		$("body").append($("<div>").attr("id", "wValiAlert").addClass("wVali-alert").text(item.msg));
+		let offset = $target.offset();
 		$("#wValiAlert").offset({top: offset.top-42, left: offset.left});		
 		
-		$(target).on("focusout", function(){
-			$(target).removeClass("wVali-border").off("focusout");
+		$target.on("focusout", function(){
+			$target.removeClass("wVali-border").off("focusout");
 			$("#wValiAlert").remove();
 		});
 		return false;
