@@ -160,7 +160,7 @@ let isDate = {
 		
 		let isYear = 0;
 
-		if(emptyCheck.isNotEmpty(isMonth)){
+		if(isNotEmpty(isMonth)){
 			isYear = parseInt(isMonth/12);
 			isMonth = isMonth%12;
 			
@@ -253,7 +253,7 @@ let isTime = {
 		minute = minute < 10 ? '0' + minute : '' + minute;
 		
 		let second = "";
-		if(emptyCheck.isNotEmpty(secondData)){
+		if(isNotEmpty(secondData)){
 			let second = date.getSeconds() + secondData;
 			if(second<0){
 				second = Math.abs(second) % 60;			
@@ -277,24 +277,24 @@ let isTime = {
 	},
 	//현재시간 반환  (hh+hour):mm:ss
 	addCurHour : function(hour){
-		emptyCheck.isEmpty(hour) ? hour = 0 : hour; 				
+		isEmpty(hour) ? hour = 0 : hour; 				
 		return this.timeProcess(hour,0,0);
 	},
 	//현재시간 반환  hh:(mm+minute):ss
 	addCurMin : function(minute){
-		emptyCheck.isEmpty(minute) ? minute = 0 : minute; 
+		isEmpty(minute) ? minute = 0 : minute; 
 		return this.timeProcess(0,minute,0);
 	},
 	//현재시간 반환  hh:mm:(ss+second)
 	addCurSec : function(second){
-		emptyCheck.isEmpty(second) ? second = 0 : second;  
+		isEmpty(second) ? second = 0 : second;  
 		return this.timeProcess(0,0,second);
 	},
 	//현재시간 반환  (hh+hour):(mm+minute):(ss+second)
 	addCurHMS : function(hour, minute, second){
-		emptyCheck.isEmpty(second) ? second = 0 : second;
-		emptyCheck.isEmpty(minute) ? minute = 0 : minute;
-		emptyCheck.isEmpty(hour) ? hour = 0 : hour;
+		isEmpty(second) ? second = 0 : second;
+		isEmpty(minute) ? minute = 0 : minute;
+		isEmpty(hour) ? hour = 0 : hour;
 		return this.timeProcess(hour,minute,second);
 	}	
 }
@@ -396,19 +396,28 @@ function isNotEmpty(_str){
 	else return true;
 }
 
-let emptyCheck = {
-	//데이터가 있으면 true 데이터가 없으면 false
-	isNotEmpty : function(_str){
-		let obj = String(_str);
-		if(obj == null || obj == undefined || obj == 'null' || obj == 'undefined' || obj == '' ) return false;
-		else return true;
-	},
-	//데이터가 있으면 false 데이터가 없으면 true
-	isEmpty : function(_str){
-		return !emptyCheck.isNotEmpty(_str);
+//영문자, 숫자만 있는지 체크
+function isOnlyAlphaNum(_str){
+	if(isEmpty(_str)){
+		return false;
+	}else{
+		return /^[A-Za-z0-9+]*$/.test(String(_str));
+	}
+}
+//한글, 영문자, 숫자만 있는지 체크
+function isOnlyHanAlphaNum(_str){
+	if(isEmpty(_str)){
+		return false;
+	}else{
+		return /^[ㄱ-ㅎ|가-힣|a-z|A-Z|0-9|\*]+$/.test(String(_str));
 	}
 }
 
+
+//특수문자가 있는지 체크
+function isSpChar(_str){	
+	return /[~!@\#$%<>^&*\()\-=+_\’]/gi.test(String(_str));
+}
 
 //문자열 관련
 let str = {

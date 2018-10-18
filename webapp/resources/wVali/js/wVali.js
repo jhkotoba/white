@@ -65,7 +65,7 @@ let wVali = {
 								/*parent: this._parent,
 								id: "#"+keys[i],*/
 								element: $(this._parent + " " + "#"+keys[i]),
-								checkItem: this._checkItem[j], 
+								/*checkItem: this._checkItem[j], */
 								msg: $(this._parent+" #"+keys[i])[0].nodeName === "SELECT" ? "값을 선택해 주세요." : "값을 입력해 주세요."});
 						}
 						break;
@@ -77,7 +77,7 @@ let wVali = {
 										/*parent: this._parent, 
 										id: "#"+keys[i],*/
 										element: $(this._parent + " " + "#"+keys[i]),
-										checkItem: this._checkItem[j],
+										/*checkItem: this._checkItem[j],*/
 										msg: "글자수가 많습니다. <br> (최대글자수: "+maxLen+")"
 										});								 
 							} 

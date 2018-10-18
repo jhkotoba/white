@@ -162,24 +162,28 @@ function fnJsGrid(data){
 	//저장(반영)
 	$("#searchBar #save").on("click", function(){
 		
-		//유효성 검사
-		let checkItem = ["authCmt", "authNm"];
-		for(let i=0; i<authList.length; i++){
-			for(let j=0; j<checkItem.length; j++){
-				if(isEmpty(authList[i][checkItem[j]])){						
-					$("input[name='sync']").each(function(idx, e){						
-       	   				if(authList[i].authNmSeq === $(e).data("authNmSeq") && checkItem[j] === $(e).data("name")){
-	       	   				wVali.alert({
-	       	   					element : $(e),
-	    						checkItem: checkItem[j], 
-	    						msg: "값을 입력해 주세요."
-	    					});	       	   				
-       	   				}
-       	   			});
-					return;
-				}
+		//유효성 검사		
+		$("input[name='sync']").each(function(i, e){
+			if(isEmpty($(e).val())){
+				wVali.alert({element : $(e), msg: "값을 입력해 주세요."});	 return;
 			}
-		}
+			switch($(e).data("name")){
+			case "authNm":
+				if(!isOnlyAlphaNum($(e).val())){
+					wVali.alert({element : $(e), msg: "영문자, 숫자를 입력해 주세요."}); return;
+				}else if($(e).val().length > 20){
+					wVali.alert({element : $(e), msg: "최대 글자수 20자 까지 입력할 수 있습니다."}); return;
+				}
+				break;
+			case "authCmt":
+				if(!isOnlyHanAlphaNum($(e).val())){
+					wVali.alert({element : $(e), msg: "한글, 영문자, 숫자를 입력해 주세요."}); return;
+				}else if($(e).val().length > 50){
+					wVali.alert({element : $(e), msg: "최대 글자수 50자 까지 입력할 수 있습니다."}); return;
+				}
+				break;			
+			}
+		});
 		
 		let param = {};
 		param.clone = JSON.stringify(clone);
@@ -190,7 +194,6 @@ function fnJsGrid(data){
 				fnJsGrid(data);
 			});
 		});
-		
 	});
 	
 	//새로고침 sync
