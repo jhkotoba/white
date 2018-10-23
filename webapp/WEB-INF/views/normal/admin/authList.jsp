@@ -162,45 +162,55 @@ function fnJsGrid(data){
 	//저장(반영)
 	$("#searchBar #save").on("click", function(){
 		
-		console.log(clone);
-		console.log(authList);		
 		for(let i=0; i<authList.length; i++){			
 			authList[i].authOrder = (i+2);			
 		}
-		console.log(authList);
-		
-		//유효성 검사		
+		//유효성 검사
+		let isVali = true;
 		$("input[name='sync']").each(function(i, e){
 			if(isEmpty($(e).val())){
-				wVali.alert({element : $(e), msg: "값을 입력해 주세요."});	 return;
+				isVali = false;
+				wVali.alert({element : $(e), msg: "값을 입력해 주세요."}); return false;
 			}
 			switch($(e).data("name")){
 			case "authNm":
 				if(!isOnlyAlphaNum($(e).val())){
-					wVali.alert({element : $(e), msg: "영문자, 숫자를 입력해 주세요."}); return;
+					isVali = false;
+					wVali.alert({element : $(e), msg: "영문자, 숫자를 입력해 주세요."}); return false;
 				}else if($(e).val().length > 20){
-					wVali.alert({element : $(e), msg: "최대 글자수 20자 까지 입력할 수 있습니다."}); return;
+					isVali = false;
+					wVali.alert({element : $(e), msg: "최대 글자수 20자 까지 입력할 수 있습니다."}); return false;
 				}
 				break;
 			case "authCmt":
 				if(!isOnlyHanAlphaNum($(e).val())){
-					wVali.alert({element : $(e), msg: "한글, 영문자, 숫자를 입력해 주세요."}); return;
+					isVali = false;
+					wVali.alert({element : $(e), msg: "한글, 영문자, 숫자를 입력해 주세요."}); return false;
 				}else if($(e).val().length > 50){
-					wVali.alert({element : $(e), msg: "최대 글자수 50자 까지 입력할 수 있습니다."}); return;
+					isVali = false;
+					wVali.alert({element : $(e), msg: "최대 글자수 50자 까지 입력할 수 있습니다."}); return false;
 				}
 				break;			
 			}
+			
 		});
 		
-		let param = {};
-		param.clone = JSON.stringify(clone);
-		param.authList = JSON.stringify(authList);
-		
-		cfnCmmAjax("/admin/applyAuthList", param).done(function(){
-			cfnSelectAuth().done(function(data){
-				fnJsGrid(data);
+		alert(isVali);
+		if(isVali){
+			let param = {};
+			param.clone = JSON.stringify(clone);
+			param.authList = JSON.stringify(authList);
+			
+			cfnCmmAjax("/admin/applyAuthList", param).done(function(res){
+				alert(res);
+				if(Number(res)<0){
+					alert("수정하려는 데이터가 이미 수정되어 수정할 수 없습니다.");
+				}
+				/* cfnSelectAuth().done(function(data){					
+					fnJsGrid(data);
+				});	 */			
 			});
-		});
+		}
 	});
 	
 	//새로고침 sync
@@ -229,13 +239,7 @@ function fnJsGrid(data){
 
 <div id="searchBar" class="search-bar">
 	<button id="add" class="btn-gray">추가</button>
-	<div class="pull-right">		
-		<!-- <select id="pageSize" class="select-gray">
-			<option value="all">전체</option>
-			<option value="20">20개</option>
-			<option value="10">10개</option>
-			<option value="5">5개</option>
-		</select> -->	
+	<div class="pull-right">	
 		<button id="save" class="btn-gray">저장</button>
 		<button id="cancel" class="btn-gray">취소</button>
 	</div>

@@ -28,7 +28,8 @@ public class White {
 		if(device.isNormal()) {
 			return "normal";
 		}else {
-			return "mobile";
+			//return "mobile";
+			return "normal";
 		}
 	}
 

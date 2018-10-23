@@ -499,8 +499,8 @@ let side = {
     	return this;
 	},
 	
-	add : function(){console.log(this.navSeq);
-		if(emptyCheck.isNotEmpty(this.navSeq)){
+	add : function(){
+		if(isNotEmpty(this.navSeq)){
 			if(this.sideList.length === 0){
 				this.sideList.push({navSeq : this.navSeq, sideUrl : '', sideAuthNmSeq : '', sideNm : '', sideShowYn : 'Y', sideOrder : 1, state: 'insert'});
 			}else{
@@ -521,7 +521,7 @@ let side = {
 	},
 	
 	view : function(navSeq, navUrl){
-		if(emptyCheck.isNotEmpty(navSeq)){
+		if(isNotEmpty(navSeq)){
 			this.navSeq = navSeq;
 			this.navUrl = navUrl;
 		}

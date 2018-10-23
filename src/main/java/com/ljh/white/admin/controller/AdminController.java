@@ -64,7 +64,7 @@ public class AdminController {
 		WhiteMap result = new WhiteMap();		
 		result.put("navList", adminService.selectNavMenuList(param));			
 		result.put("sideList", adminService.selectSideMenuList(param));			
-		result.put("authList", adminService.selectAuthList(param));			
+		result.put("authList", adminService.selectAuthList());			
 		
 		return result;
 	}
@@ -87,11 +87,10 @@ public class AdminController {
 		return result;
 	}
 	
+	//권한 조회
 	@RequestMapping(value="/admin/selectAuthList.ajax" )
 	public List<WhiteMap> selectAuthList(HttpServletRequest request){		
-		
-		WhiteMap param = new WhiteMap(request);
-		return adminService.selectAuthList(param);		
+		return adminService.selectAuthList();		
 	}
 	
 	//대체 개발중..
@@ -102,11 +101,11 @@ public class AdminController {
 		return adminService.inUpDelAuthNmList(param);		
 	}
 	
+	//권한설정
 	@RequestMapping(value="/admin/applyAuthList.ajax" )
-	public WhiteMap applyAuthList(HttpServletRequest request){		
-		WhiteMap param = new WhiteMap(request);		
-		
-		return null;
+	public int applyAuthList(HttpServletRequest request){		
+		WhiteMap param = new WhiteMap(request);
+		return adminService.applyAuthList(param);
 	}
 	
 	

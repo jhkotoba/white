@@ -39,7 +39,7 @@
  		Limit ${pagePre}, ${pageSize}
 	</select>
 	
-	<select id="selectAuthList" resultType="WhiteMap" parameterType="WhiteMap">
+	<select id="selectAuthList" resultType="WhiteMap">
 		SELECT
 			<if test="mode == 'select'">
 			'select' AS state,

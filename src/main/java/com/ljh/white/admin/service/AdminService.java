@@ -42,8 +42,8 @@ public class AdminService {
 	 * 
 	 * @return
 	 */
-	public List<WhiteMap> selectAuthList(WhiteMap param) {			
-		return adminMapper.selectAuthList(param);
+	public List<WhiteMap> selectAuthList() {			
+		return adminMapper.selectAuthList();
 	}
 	
 	/**
@@ -211,7 +211,7 @@ public class AdminService {
 	}
 	
 	
-	/**
+	/**리뉴얼중..
 	 * 권한 insert, update, delete
 	 * @param list
 	 * @return
@@ -248,6 +248,67 @@ public class AdminService {
 			resultMap.put("upCnt", 0);	
 		}		
 		return resultMap;
+	}
+	
+	
+	/**
+	 * 권한 적용
+	 * @param param
+	 * @return -1: 반영전 수정할 데이터가 수정하기전에 바뀜, 0:삭제대상이 사용되는 시퀀스 삭제불가, 1:성공
+	 */
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
+	public int applyAuthList(WhiteMap param) {
+		
+		List<WhiteMap> authList = param.convertListWhiteMap("clone", false);
+		List<WhiteMap> list = adminMapper.selectAuthList();
+		
+		//수정전 수정되었는지 체크
+		if(authList.size() != list.size()) {
+			return -1;
+		}else {
+			for(int i=0; i<authList.size(); i++) {
+				if(!authList.get(i).get("authCmt").equals(list.get(i).get("authCmt"))) {
+					return -1;
+				}else if(!authList.get(i).get("authOrder").equals(list.get(i).get("authOrder"))) {
+					return -1;
+				}else if(!authList.get(i).get("authNmSeq").equals(list.get(i).get("authNmSeq"))) {
+					return -1;
+				}else if(!authList.get(i).get("authNm").equals(list.get(i).get("authNm"))) {
+					return -1;
+				}
+			}			
+		}
+		
+		authList = param.convertListWhiteMap("authList", false);		
+		List<WhiteMap> deleteList = new ArrayList<WhiteMap>();
+		List<WhiteMap> insertList = new ArrayList<WhiteMap>();
+		List<WhiteMap> updateList = new ArrayList<WhiteMap>();
+		
+		System.out.println(authList);
+		System.out.println(authList.get(0).get("state"));
+		System.out.println(authList.get(1).get("state"));
+		
+		for(int i=0; i<authList.size(); i++) {
+			if("delete".equals(authList.get(i).get("state"))) {
+				deleteList.add(authList.get(i));
+			}else if("insert".equals(authList.get(i).get("state"))) {
+				insertList.add(authList.get(i));
+			}else {
+				updateList.add(authList.get(i));
+			}
+		}
+		
+		System.out.println(insertList);
+		
+		
+		if(deleteList.size()>0 && adminMapper.selectIsUsedAuthNm(deleteList)>0) {
+			return 0;
+		}else {
+			if(deleteList.size()>0) adminMapper.deleteAuthNmList(deleteList);
+			if(insertList.size()>0) adminMapper.insertAuthNmList(insertList);	
+			if(updateList.size()>0) adminMapper.updateAuthNmList(updateList);
+			return 1;
+		}
 	}
 	
 }
