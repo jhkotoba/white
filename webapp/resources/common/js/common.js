@@ -12,6 +12,14 @@ $(document).ready(function(){
 	}
 });
 
+//jsGrid 페이징
+$(document).on("click", ".jsgrid-pager-page", function(e){	
+	$(this).children("a").get(0).click();
+});
+$(document).on("click", ".jsgrid-pager-nav-button", function(e){	
+	$(this).children("a").get(0).click();
+});
+
 //ajax 셋업
 $.ajaxSetup({
 	type: "post",

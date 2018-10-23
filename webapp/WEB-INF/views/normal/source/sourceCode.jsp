@@ -4,45 +4,6 @@
 <c:set var="contextPath" value="<%=request.getContextPath()%>"></c:set>
 <link rel="stylesheet" href="${contextPath}/resources/cAdjust/css/cAdjust.css" type="text/css" />
 
-<style>
-.external-pager {
-    margin: 10px 0;
-}
-.external-pager .jsgrid-pager-current-page {
-    background: #4C4C4C;
-    border: 1px solid #BDBDBD;
-}
-.jsgrid-pager-page, .jsgrid-pager-nav-button{
-	background: #5E5E5E;
-	border: 1px solid #646464;
-    color: rgba(246, 246, 246, .8);
-    margin: 0px 5px 0px 5px;
-}
-.jsgrid-pager-page:hover{
-	border: 1px solid #A6A6A6;
-	cursor: pointer;
-}
-.jsgrid-pager-page > a, .jsgrid-pager-page > a:hover, .jsgrid-pager-page > a:link, .jsgrid-pager-page > a:visited{
-	text-decoration:none;
-	color: rgba(246, 246, 246, .8);
-}
-
-.jsgrid-pager-nav-button:hover{
-	border: 1px solid #A6A6A6;
-	cursor: pointer;
-}
-.jsgrid-pager-nav-button > a, .jsgrid-pager-nav-button > a:hover, .jsgrid-pager-nav-button > a:link, .jsgrid-pager-nav-button > a:visited{
-	text-decoration:none;
-	color: rgba(246, 246, 246, .8);
-}
-
-
-
-
- </style>
- 
- 
-
 <script type="text/javascript" src="${contextPath}/resources/cAdjust/js/cAdjust.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
@@ -182,17 +143,14 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
         pageSize : isEmpty(pageSize) === true ? 20 : pageSize,
         pageButtonCount : isEmpty(pageBtnCnt) === true ? 10 : pageBtnCnt,
         		
-        		
-        		
-        		pagerContainer: "#externalPager",
-                pagerFormat: "current page: {pageIndex} &nbsp;&nbsp; {first} {prev} {pages} {next} {last} &nbsp;&nbsp; total pages: {pageCount} total items: {itemCount}",
-                pagePrevText: "<",
-                pageNextText: ">",
-                pageFirstText: "<<",
-                pageLastText: ">>",
-                pageNavigatorNextText: "&#8230;",
-                pageNavigatorPrevText: "&#8230;",
-        		
+		pagerContainer: "#externalPager",
+		pagerFormat: "{first} {prev} {pages} {next} {last}",
+		pagePrevText: "Prev",
+		pageNextText: "Next",
+		pageFirstText: "First",
+		pageLastText: "Last",
+		pageNavigatorNextText: "&#8230;",
+		pageNavigatorPrevText: "&#8230;",        		
        
         autoload: true,        
         controller: {
@@ -242,10 +200,8 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
 }
 </script>
 
-<div class="article">
-	<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-		<h1 class="h2 nsrb">소스코드</h1>
-	</div>	
+<div class="article">	
+	<h1 class="h2 nsrb">소스코드</h1>	
 </div>
 
 <!-- 글쓰기  -->

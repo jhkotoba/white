@@ -149,7 +149,7 @@ function fnJsGrid(data){
 	});
 	
 	//리스트 수
-	$("#searchBar #pageSize").on("change", function(){
+	/* $("#searchBar #pageSize").on("change", function(){
 		let pageSize = String(this.value);
 		if(pageSize === "all"){
 			$("#authList").jsGrid("option", "paging", false);
@@ -157,10 +157,17 @@ function fnJsGrid(data){
 			$("#authList").jsGrid("option", "paging", true);
 			$("#authList").jsGrid("option", "pageSize", Number(pageSize));
 		}
-	});
+	}); */
 	
 	//저장(반영)
 	$("#searchBar #save").on("click", function(){
+		
+		console.log(clone);
+		console.log(authList);		
+		for(let i=0; i<authList.length; i++){			
+			authList[i].authOrder = (i+2);			
+		}
+		console.log(authList);
 		
 		//유효성 검사		
 		$("input[name='sync']").each(function(i, e){
@@ -223,12 +230,12 @@ function fnJsGrid(data){
 <div id="searchBar" class="search-bar">
 	<button id="add" class="btn-gray">추가</button>
 	<div class="pull-right">		
-		<select id="pageSize" class="select-gray">
+		<!-- <select id="pageSize" class="select-gray">
 			<option value="all">전체</option>
 			<option value="20">20개</option>
 			<option value="10">10개</option>
 			<option value="5">5개</option>
-		</select>	
+		</select> -->	
 		<button id="save" class="btn-gray">저장</button>
 		<button id="cancel" class="btn-gray">취소</button>
 	</div>
