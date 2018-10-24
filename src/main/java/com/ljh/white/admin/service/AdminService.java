@@ -211,12 +211,12 @@ public class AdminService {
 	}
 	
 	
-	/**리뉴얼중..
+	/**applyAuthList로 대체
 	 * 권한 insert, update, delete
 	 * @param list
 	 * @return
 	 */
-	@Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
+	/*@Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
 	public WhiteMap inUpDelAuthNmList(WhiteMap param) {
 		
 		List<WhiteMap> inList = param.convertListWhiteMap("inList", false);
@@ -248,13 +248,13 @@ public class AdminService {
 			resultMap.put("upCnt", 0);	
 		}		
 		return resultMap;
-	}
+	}*/
 	
 	
 	/**
 	 * 권한 적용
 	 * @param param
-	 * @return -1: 반영전 수정할 데이터가 수정하기전에 바뀜, 0:삭제대상이 사용되는 시퀀스 삭제불가, 1:성공
+	 * @return -1: 반영전 수정할 데이터가 수정하기전에 바뀜, 0:삭제대상이 사용되는 시퀀스. 삭제불가, 1:성공
 	 */
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
 	public int applyAuthList(WhiteMap param) {
@@ -282,12 +282,8 @@ public class AdminService {
 		authList = param.convertListWhiteMap("authList", false);		
 		List<WhiteMap> deleteList = new ArrayList<WhiteMap>();
 		List<WhiteMap> insertList = new ArrayList<WhiteMap>();
-		List<WhiteMap> updateList = new ArrayList<WhiteMap>();
-		
-		System.out.println(authList);
-		System.out.println(authList.get(0).get("state"));
-		System.out.println(authList.get(1).get("state"));
-		
+		List<WhiteMap> updateList = new ArrayList<WhiteMap>();	
+	
 		for(int i=0; i<authList.size(); i++) {
 			if("delete".equals(authList.get(i).get("state"))) {
 				deleteList.add(authList.get(i));
@@ -297,9 +293,6 @@ public class AdminService {
 				updateList.add(authList.get(i));
 			}
 		}
-		
-		System.out.println(insertList);
-		
 		
 		if(deleteList.size()>0 && adminMapper.selectIsUsedAuthNm(deleteList)>0) {
 			return 0;

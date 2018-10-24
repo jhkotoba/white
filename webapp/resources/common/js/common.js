@@ -463,9 +463,12 @@ function getContextPath(){
 
 //moveForm
 let mf = {	
-	 submit : function(navUrl, sideUrl){
+	 submit : function(navUrl, sideUrl, navNm, sideNm){
 		$("#moveForm #navUrl").attr("value", navUrl);
-		$("#moveForm #sideUrl").attr("value", sideUrl);				
+		$("#moveForm #sideUrl").attr("value", sideUrl);		
+		$("#moveForm #navNm").attr("value", navNm);
+		$("#moveForm #sideNm").attr("value", sideNm);		
+		
 		$("#moveForm").attr("method", "post");
 		$("#moveForm").attr("action", common.path()+navUrl).submit();
 	}

@@ -93,13 +93,13 @@ public class AdminController {
 		return adminService.selectAuthList();		
 	}
 	
-	//대체 개발중..
-	@RequestMapping(value="/admin/inUpDelAuthNmList.ajax" )
+	//applyAuthList로 대체
+	/*@RequestMapping(value="/admin/inUpDelAuthNmList.ajax" )
 	public WhiteMap inUpDelauthList(HttpServletRequest request){		
 		
 		WhiteMap param = new WhiteMap(request);		
 		return adminService.inUpDelAuthNmList(param);		
-	}
+	}*/
 	
 	//권한설정
 	@RequestMapping(value="/admin/applyAuthList.ajax" )

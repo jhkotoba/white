@@ -66,6 +66,7 @@ $(document).ready(function(){
 });
 </script>
 </c:if>
+
 <nav class="nav">
 	<a class="nav-brand h6" href="${contextPath}/main">white</a>
 	<ul>
@@ -76,7 +77,7 @@ $(document).ready(function(){
 					<c:forEach items="${sessionScope.sideList}" var="side">									
 						<c:if test="${nav.navSeq eq side.navSeq }">
 							<c:if test="${side.auth eq 1 }">
-								<a class="sideHeight" href="javascript:mf.submit('${nav.navUrl}', '${side.sideUrl}')">${side.sideNm}</a>
+								<a class="sideHeight" href="javascript:mf.submit('${nav.navUrl}', '${side.sideUrl}', '${nav.navNm}', '${side.sideNm}')">${side.sideNm}</a>
 							</c:if>
 						</c:if>
 					</c:forEach>
@@ -97,6 +98,9 @@ $(document).ready(function(){
 </nav>	
 <section>
 	<main role="main" class="main">
+		<c:if test="${navNm != ''}">
+			<p>${navNm} > ${sideNm}</p>
+		</c:if>
 		<jsp:include page="${requestScope.sectionPage}" flush="false" />
 	</main>
 </section>	
@@ -123,6 +127,8 @@ $(document).ready(function(){
 <form id="moveForm" action="">
 	<input id="navUrl" name="navUrl" type="hidden" value="${navUrl}"></input>
 	<input id="sideUrl" name="sideUrl" type="hidden" value="${sideUrl}"></input>
+	<input id="navNm" name="navNm" type="hidden"></input>
+	<input id="sideNm" name="sideNm" type="hidden"></input>		
 </form>
 </c:if>
 <div class="blind" style="display: none;"></div>

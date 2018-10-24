@@ -49,7 +49,10 @@ $(document).ready(function(){
   	});
 	
 	//권한 저장
-	$("#viewForm #save").on("click", function(){		
+	$("#viewForm #save").on("click", function(){
+		
+		if(!confirm("저장하시겠습니까?")) return;
+		
 		let param = {add : "", remove : ""};
 		$("#authList").find("input").each(function(i){			
 			if($(this).data("state") === "add"){				
@@ -93,6 +96,15 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
         pageIndex : isEmpty(pageIdx) === true ? 1 : pageIdx,
         pageSize : isEmpty(pageSize) === true ? 10 : pageSize,
         pageButtonCount : isEmpty(pageBtnCnt) === true ? 10 : pageBtnCnt,
+        		
+   		pagerContainer: "#userPager",
+   		pagerFormat: "{first} {prev} {pages} {next} {last}",
+   		pagePrevText: "Prev",
+   		pageNextText: "Next",
+   		pageFirstText: "First",
+   		pageLastText: "Last",
+   		pageNavigatorNextText: "&#8230;",
+   		pageNavigatorPrevText: "&#8230;",
        
         autoload: true,        
         controller: {
@@ -130,6 +142,7 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
 </script>
 
 
+
 <!-- 글보기 -->
 <form id="viewForm" class="blank hide" onsubmit="return false;">	
 	<input id="no" type="hidden" value="">
@@ -141,9 +154,9 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
 		<span id="userId" class="span-gray"></span>
 		<span class="span-gray-rt">이름</span>
 		<span id="userName" class="span-gray"></span>
-		<div class="pull-right">
-			<button id="close" class="btn-gray">닫기</button>
-			<button id="save" class="btn-gray">저장</button>	
+		<div class="pull-right">			
+			<button id="save" class="btn-gray">저장</button>
+			<button id="close" class="btn-gray">닫기</button>	
 		</div>	
 	</div>
 	
@@ -170,3 +183,4 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
 </div>
 
 <div id="userList"></div>
+<div id="userPager" class="pager"></div>

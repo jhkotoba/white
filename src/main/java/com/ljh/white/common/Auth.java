@@ -14,7 +14,7 @@ public class Auth {
 	private static WhiteMap navAuth = null;
 	private static WhiteMap sideAuth = null;
 
-	public static WhiteMap getNavAuthList() {
+	public static WhiteMap getNavAuth() {
 		return navAuth;
 	}
 
@@ -29,7 +29,7 @@ public class Auth {
 		Auth.setNavAuth(navAuth);
 	}
 	
-	public static WhiteMap getSideAuthList() {
+	public static WhiteMap getSideAuth() {
 		return sideAuth;
 	}
 

@@ -143,7 +143,7 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
         pageSize : isEmpty(pageSize) === true ? 20 : pageSize,
         pageButtonCount : isEmpty(pageBtnCnt) === true ? 10 : pageBtnCnt,
         		
-		pagerContainer: "#externalPager",
+		pagerContainer: "#sourcePager",
 		pagerFormat: "{first} {prev} {pages} {next} {last}",
 		pagePrevText: "Prev",
 		pageNextText: "Next",
@@ -309,4 +309,4 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
 
 <!-- 게시물 리스트 -->
 <div id="sourceList"></div>
-<div id="externalPager" class="external-pager"></div>
+<div id="sourcePager" class="pager"></div>

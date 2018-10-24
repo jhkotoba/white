@@ -31,6 +31,15 @@ function fnJsGrid(data){
 		autoload: true,     
 		data: authList,
 		
+		pagerContainer: "#authPager",
+		pagerFormat: "{first} {prev} {pages} {next} {last}",
+		pagePrevText: "Prev",
+		pageNextText: "Next",
+		pageFirstText: "First",
+		pageLastText: "Last",
+		pageNavigatorNextText: "&#8230;",
+		pageNavigatorPrevText: "&#8230;",
+		
 		paging: false,
 		pageSize: 10,
 		
@@ -106,6 +115,7 @@ function fnJsGrid(data){
 						authList.push(items[i]);
 					}
 					$("#authList").jsGrid("refresh");
+					authNoIdx = cfnNoIdx(authList, "authNmSeq");
 				}
 			});
 			
@@ -195,20 +205,21 @@ function fnJsGrid(data){
 			
 		});
 		
-		alert(isVali);
-		if(isVali){
+		if(isVali && confirm("저장하시겠습니까?")){
+			
 			let param = {};
 			param.clone = JSON.stringify(clone);
 			param.authList = JSON.stringify(authList);
 			
 			cfnCmmAjax("/admin/applyAuthList", param).done(function(res){
-				alert(res);
-				if(Number(res)<0){
-					alert("수정하려는 데이터가 이미 수정되어 수정할 수 없습니다.");
+				if(Number(res)===-1){
+					alert("수정하려는 데이터가 이미 수정되어 수정할 수 없습니다. 반영이 취소됩니다.");
+				}else if(Number(res)===0){
+					alert("삭제하려는 권한이 사용중입니다. 반영이 취소됩니다.");
+				}else{
+					alert("반영되었습니다.");
 				}
-				/* cfnSelectAuth().done(function(data){					
-					fnJsGrid(data);
-				});	 */			
+				mf.submit('${navUrl}', '${sideUrl}');				
 			});
 		}
 	});
@@ -245,3 +256,4 @@ function fnJsGrid(data){
 	</div>
 </div>
 <div id="authList"></div>
+<div id="authPager" class="pager"></div>

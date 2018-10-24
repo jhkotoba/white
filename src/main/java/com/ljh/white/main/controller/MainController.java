@@ -84,13 +84,16 @@ public class MainController {
 	//화면이동 컨트롤러
 	@RequestMapping(value="{navUrl}")
 	public String white(HttpServletRequest request, Device device){		
-		WhiteMap param = new WhiteMap(request);		
+		WhiteMap param = new WhiteMap(request);	
 		
 		String navUrl = param.getString("navUrl");
-		String sideUrl = param.getString("sideUrl");				
+		String sideUrl = param.getString("sideUrl");			
 		
 		request.setAttribute("navUrl", navUrl);
-		request.setAttribute("sideUrl", sideUrl);		
+		request.setAttribute("sideUrl", sideUrl);
+		request.setAttribute("navNm", param.getString("navNm"));
+		request.setAttribute("sideNm", param.getString("sideNm"));
+		
 		request.setAttribute("sectionPage", navUrl.replace("/", "")+sideUrl+".jsp");
 		return White.device(device)+"/white.jsp";
 	}
