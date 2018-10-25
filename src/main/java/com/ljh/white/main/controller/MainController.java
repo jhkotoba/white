@@ -1,5 +1,7 @@
 package com.ljh.white.main.controller;
 
+import java.io.UnsupportedEncodingException;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -83,11 +85,13 @@ public class MainController {
 
 	//화면이동 컨트롤러
 	@RequestMapping(value="{navUrl}")
-	public String white(HttpServletRequest request, Device device){		
+	public String white(HttpServletRequest request, Device device) throws UnsupportedEncodingException{		
 		WhiteMap param = new WhiteMap(request);	
 		
 		String navUrl = param.getString("navUrl");
-		String sideUrl = param.getString("sideUrl");			
+		String sideUrl = param.getString("sideUrl");	
+		
+		request.setCharacterEncoding("UTF-8");
 		
 		request.setAttribute("navUrl", navUrl);
 		request.setAttribute("sideUrl", sideUrl);

@@ -97,9 +97,9 @@ $(document).ready(function(){
 	</div>			
 </nav>	
 <section>
-	<main role="main" class="main">
-		<c:if test="${navNm != ''}">
-			<p>${navNm} > ${sideNm}</p>
+	<main role="main" class="main">	
+		<c:if test="${navNm ne null}">
+			<span class="path">${navNm} > ${sideNm}</span>
 		</c:if>
 		<jsp:include page="${requestScope.sectionPage}" flush="false" />
 	</main>

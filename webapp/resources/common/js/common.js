@@ -467,7 +467,7 @@ let mf = {
 		$("#moveForm #navUrl").attr("value", navUrl);
 		$("#moveForm #sideUrl").attr("value", sideUrl);		
 		$("#moveForm #navNm").attr("value", navNm);
-		$("#moveForm #sideNm").attr("value", sideNm);		
+		$("#moveForm #sideNm").attr("value", sideNm);
 		
 		$("#moveForm").attr("method", "post");
 		$("#moveForm").attr("action", common.path()+navUrl).submit();
