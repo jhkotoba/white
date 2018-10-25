@@ -219,7 +219,7 @@ function fnJsGrid(data){
 				}else{
 					alert("반영되었습니다.");
 				}
-				mf.submit('${navUrl}', '${sideUrl}');				
+				mf.submit('${navUrl}', '${sideUrl}', '${navNm}', '${sideNm}');				
 			});
 		}
 	});

@@ -208,48 +208,7 @@ public class AdminService {
 		}
 		
 		return resultMap;
-	}
-	
-	
-	/**applyAuthList로 대체
-	 * 권한 insert, update, delete
-	 * @param list
-	 * @return
-	 */
-	/*@Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
-	public WhiteMap inUpDelAuthNmList(WhiteMap param) {
-		
-		List<WhiteMap> inList = param.convertListWhiteMap("inList", false);
-		List<WhiteMap> upList = param.convertListWhiteMap("upList", false);
-		List<WhiteMap> delList = param.convertListWhiteMap("delList", false);
-		
-		WhiteMap resultMap = new WhiteMap();
-		
-		if(delList.size() > 0) {
-			if(adminMapper.selectIsUsedAuthNm(delList)>0) {
-				resultMap.put("msg", "used");
-				return resultMap;			
-			}else {
-				resultMap.put("delCnt", adminMapper.deleteAuthNmList(delList));
-			}					
-		}else {
-			resultMap.put("delCnt", 0);	
-		}
-		
-		if(inList.size() > 0 ) {
-			resultMap.put("inCnt", adminMapper.insertAuthNmList(inList));	
-		}else {
-			resultMap.put("inCnt", 0);	
-		}
-		
-		if(upList.size() > 0 ) {			
-			resultMap.put("upCnt", adminMapper.updateAuthNmList(upList));	
-		}else {
-			resultMap.put("upCnt", 0);	
-		}		
-		return resultMap;
-	}*/
-	
+	}	
 	
 	/**
 	 * 권한 적용
@@ -262,7 +221,7 @@ public class AdminService {
 		List<WhiteMap> authList = param.convertListWhiteMap("clone", false);
 		List<WhiteMap> list = adminMapper.selectAuthList();
 		
-		//수정전 수정되었는지 체크
+		//반영전 수정되었는지 체크
 		if(authList.size() != list.size()) {
 			return -1;
 		}else {
