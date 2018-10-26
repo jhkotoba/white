@@ -4,7 +4,9 @@
 <c:set var="contextPath" value="<%=request.getContextPath()%>"></c:set>
 <script type="text/javascript">
 $(document).ready(function(){
-	
+	cfnCmmAjax("/admin/applyAuthList").done(function(res){
+					
+	});
 });
 </script>
 menuList.jsp

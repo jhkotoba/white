@@ -56,6 +56,8 @@ public class AdminController {
 		return adminService.inDelAuthList(param);
 	}*/
 	
+
+	//구 메뉴리스트
 	@RequestMapping(value="/admin/selectNavSideMenuList.ajax")
 	public WhiteMap selectNavSideMenuList(HttpServletRequest request) {		
 				
