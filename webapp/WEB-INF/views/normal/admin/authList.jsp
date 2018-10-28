@@ -8,9 +8,7 @@
 <script type="text/javascript">
 $(document).ready(function(){
 	//권한리스트 조회
-	cfnSelectAuth().done(function(data){
-		fnJsGrid(data);
-	});
+	cfnSelectAuth().done(fnJsGrid);
 });
 
 //권한 grid
@@ -29,17 +27,7 @@ function fnJsGrid(data){
 		width: "100%",
 		
 		autoload: true,     
-		data: authList,
-		
-		pagerContainer: "#authPager",
-		pagerFormat: "{first} {prev} {pages} {next} {last}",
-		pagePrevText: "Prev",
-		pageNextText: "Next",
-		pageFirstText: "First",
-		pageLastText: "Last",
-		pageNavigatorNextText: "&#8230;",
-		pageNavigatorPrevText: "&#8230;",
-		
+		data: authList,		
 		paging: false,
 		pageSize: 10,
 		

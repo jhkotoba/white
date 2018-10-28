@@ -46,15 +46,22 @@ public class AdminController {
 	public WhiteMap applyUserAuthList(HttpServletRequest request) {
 		WhiteMap param = new WhiteMap(request);		
 		return adminService.applyUserAuthList(param);
+	}	
+	
+	//메뉴리스트 조회
+	@RequestMapping(value="/admin/selectMenuList.ajax")
+	public WhiteMap selectMenuList(HttpServletRequest request) {		
+				
+		WhiteMap param = new WhiteMap(request);	
+		
+		WhiteMap result = new WhiteMap();		
+		result.put("navList", adminService.selectNavMenuList(param));			
+		result.put("sideList", adminService.selectSideMenuList(param));			
+		result.put("authList", adminService.selectAuthList());			
+		
+		return result;
 	}
 	
-	
-	//사용안함
-	/*@RequestMapping(value="/admin/inDelAuthList.ajax")
-	public WhiteMap inDelAuthList(HttpServletRequest request) {		
-		WhiteMap param = new WhiteMap(request);
-		return adminService.inDelAuthList(param);
-	}*/
 	
 
 	//구 메뉴리스트

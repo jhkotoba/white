@@ -200,10 +200,6 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
 }
 </script>
 
-<div class="article">	
-	<h1 class="h2 nsrb">소스코드</h1>	
-</div>
-
 <!-- 글쓰기  -->
 <form id="writeForm" class="blank hide" onsubmit="return false;">	
 	<div class="flex">		
