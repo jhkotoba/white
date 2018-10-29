@@ -2,6 +2,9 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="contextPath" value="<%=request.getContextPath()%>"></c:set>
+
+
+
 <script type="text/javascript">
 $(document).ready(function(){
 	cfnCmmAjax("/admin/selectMenuList").done(fnNavJsGrid);
@@ -11,6 +14,8 @@ $(document).ready(function(){
 function fnNavJsGrid(data){
 	
 	console.log(data);
+	let navNoIdx = cfnNoIdx(data.navList, "navSeq");
+	console.log(navNoIdx);
 	
 	$("#navMenuList").jsGrid({
 		height: "auto",
@@ -28,15 +33,16 @@ function fnNavJsGrid(data){
 		
 		fields: [			
 			{ title:"순서",	name:"navOrder",	type:"text", align:"center", width: "10%"},
-			{ title:"이름",	name:"navNm",		type:"text", align:"center", width: "21%"},
-			{ title:"URL",	name:"navUrl",		type:"text", align:"center", width: "35%"},
+			{ title:"상위 이름",	name:"navNm",		type:"text", align:"center", width: "24%"},
+			{ title:"상위 URL",	name:"navUrl",		type:"text", align:"center", width: "37%"},
 			{ title:"권한",	align:"center", width: "22%"},
-			{ title:"표시",	name:"navShowYn",		type:"text", align:"center", width: "12%"}			
+			{ title:"표시",	name:"navShowYn",		type:"text", align:"center", width: "7%",
+				itemTemplate: function(value, item){
+					return $("<button>").addClass("btn-gray sm").text(value);
+				}
+			}
 		]
 	});
-	
-	
-	
 	
 }
 function fnSideJsGrid(data){
@@ -54,10 +60,14 @@ function fnSideJsGrid(data){
 		
 		fields: [			
 			{ title:"순서",	name:"sideOrder",	type:"text", align:"center", width: "10%"},
-			{ title:"이름",	name:"sideNm",		type:"text", align:"center", width: "21%"},
-			{ title:"URL",	name:"sideUrl",		type:"text", align:"center", width: "35%"},
+			{ title:"하위 이름",	name:"sideNm",		type:"text", align:"center", width: "24%"},
+			{ title:"하위 URL",	name:"sideUrl",		type:"text", align:"center", width: "37%"},
 			{ title:"권한",	align:"center", width: "22%"},
-			{ title:"표시",	name:"sideShowYn",		type:"text", align:"center", width: "12%"}
+			{ title:"표시",	name:"sideShowYn",		type:"text", align:"center", width: "7%",
+				itemTemplate: function(value, item){
+					return $("<button>").addClass("btn-gray sm").text(value);
+				}
+			}
 		]
 	});
 	
