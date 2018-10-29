@@ -244,4 +244,3 @@ function fnJsGrid(data){
 	</div>
 </div>
 <div id="authList"></div>
-<div id="authPager" class="pager"></div>
