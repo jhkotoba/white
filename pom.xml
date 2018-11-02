@@ -145,6 +145,13 @@
 	    <artifactId>commons-io</artifactId>
 	    <version>2.5</version>
 	</dependency>
+	
+	<!-- Lucy XSS Filter -->
+	<dependency>
+		<groupId>com.navercorp.lucy</groupId>
+		<artifactId>lucy-xss</artifactId>
+		<version>1.6.3</version>
+	</dependency>
 
 	
   </dependencies> 

@@ -135,7 +135,7 @@ function cfnSelectCode(codePrt){
 }
 
 //ajax 권한 리스트 조회 - no(유저번호) 없으면 전체 조회
-function cfnSelectAuth(no){
+function cfnSelectAuth(no, async){
 	if(isEmpty(no)){
 		return cfnCmmAjax("/admin/selectAuthList");	
 	}else{
@@ -155,6 +155,20 @@ function cfnCmmAjax(url, param, isGrid){
 	    }	    
 	});		
 	return deferred.promise();
+}
+
+//동기 ajax
+function cfnCmmSyncAjax(url, param){
+	let result = null;
+	$.ajax({
+		url: getContextPath()+url+".ajax",
+		async : false,
+		data : isEmpty(param) === true ? null : param,
+	    success : function(data) {
+	    	result = data;
+	    }
+	});
+	return result;
 }
 
 //날짜반환함수

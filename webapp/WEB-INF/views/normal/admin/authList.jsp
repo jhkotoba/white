@@ -78,14 +78,12 @@ function fnJsGrid(data){
 				}
 			},
 			{ title:"권한명",	name:"authNm",		type:"text", align:"center", width: "40%", 
-				itemTemplate: function(value, item){
-					$(this).removeClass("jsgrid-cell");									
+				itemTemplate: function(value, item){													
 					return fnRefreshedSync(item, "authNm");
 				}
 			},
 			{ title:"권한 설명",	name:"authCmt",	type:"text", align:"center", width: "50%",
-				itemTemplate: function(value, item){
-					$(this).removeClass("jsgrid-cell");
+				itemTemplate: function(value, item){					
 					return fnRefreshedSync(item, "authCmt");
 				}
 			}
