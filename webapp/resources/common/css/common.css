@@ -1,6 +1,23 @@
 
 /*jsGrid ¼³Á¤ */
 .jsgrid-grid-header, .jsgrid-grid-body{overflow: auto;}
+.jsgrid-cell > select { width: 100%; padding: .6em .5em;}
+/* jsGrid paging */
+.pager {margin: 10px 0; text-align: center;}
+.pager .jsgrid-pager-current-page {background: #4C4C4C; border: 1px solid #BDBDBD;}
+.jsgrid-pager-page{background: #5E5E5E; border: 1px solid #646464; color: rgba(246, 246, 246, .8); margin: 0px 2px 0px 2px;}
+.jsgrid-pager-nav-button{background: #5E5E5E; border: 1px solid #646464; color: rgba(246, 246, 246, .8);}
+.jsgrid-pager-page:hover{border: 1px solid #A6A6A6;	cursor: pointer;}
+.jsgrid-pager-page > a, 
+.jsgrid-pager-page > a:hover, 
+.jsgrid-pager-page > a:link,
+.jsgrid-pager-page > a:visited{text-decoration:none; color: rgba(246, 246, 246, .8);}
+.jsgrid-pager-nav-button:hover{border: 1px solid #A6A6A6; cursor: pointer;}
+.jsgrid-pager-nav-button > a, 
+.jsgrid-pager-nav-button > a:hover, 
+.jsgrid-pager-nav-button > a:link, 
+.jsgrid-pager-nav-button > a:visited{text-decoration:none; color: rgba(246, 246, 246, .8);}
+
 
 /* font */
 @font-face { font-family: 'NanumSquareB'; src: url(../ttf/NanumSquareB.ttf) format('truetype'); }
@@ -140,23 +157,6 @@ h6, .h6 {font-size: 1rem;}
 .sync-red{color:#FF5A5A !important;}
 .sync-green{color:#86E57F !important;}
 .sync-gray{color:#C6C6C6 !important;}
-
-/* jsGrid paging */
-.pager {margin: 10px 0; text-align: center;}
-.pager .jsgrid-pager-current-page {background: #4C4C4C; border: 1px solid #BDBDBD;}
-.jsgrid-pager-page{background: #5E5E5E; border: 1px solid #646464; color: rgba(246, 246, 246, .8); margin: 0px 2px 0px 2px;}
-.jsgrid-pager-nav-button{background: #5E5E5E; border: 1px solid #646464; color: rgba(246, 246, 246, .8);}
-.jsgrid-pager-page:hover{border: 1px solid #A6A6A6;	cursor: pointer;}
-.jsgrid-pager-page > a, 
-.jsgrid-pager-page > a:hover, 
-.jsgrid-pager-page > a:link,
-.jsgrid-pager-page > a:visited{text-decoration:none; color: rgba(246, 246, 246, .8);}
-.jsgrid-pager-nav-button:hover{border: 1px solid #A6A6A6; cursor: pointer;}
-.jsgrid-pager-nav-button > a, 
-.jsgrid-pager-nav-button > a:hover, 
-.jsgrid-pager-nav-button > a:link, 
-.jsgrid-pager-nav-button > a:visited{text-decoration:none; color: rgba(246, 246, 246, .8);}
-
 
 .path{
 	display: block;

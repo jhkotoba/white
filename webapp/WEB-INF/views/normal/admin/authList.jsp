@@ -48,7 +48,7 @@ function fnJsGrid(data){
                    	   			$("input[name='sync']").each(function(i, e){				
                    	   				if(item.authNmSeq  === $(e).data("authNmSeq")){
                    	   					$(e).addClass("sync-red");               	   					
-                   	   					if(clone[idx][$(e).data("name")] !== $(e).val()){
+                   	   					if(String(clone[idx][$(e).data("name")]) !== String($(e).val())){
                    	   						$(e).addClass("sync-blue");
                    	   					}
                    						authList[idx].state = "delete";   
@@ -116,7 +116,7 @@ function fnJsGrid(data){
 				
 					authList[idx][name] = $(this).val();
 					
-					if(clone[idx][name] === $(this).val()){		
+					if(String(clone[idx][name]) === String($(this).val())){		
 						$(this).removeClass("sync-blue");
 						if(!$(this).hasClass("sync-red")) authList[idx].state = "select";
 					}else{

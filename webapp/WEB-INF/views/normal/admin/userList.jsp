@@ -133,9 +133,9 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
         	});
         }, 
         fields: [
-			{ title:"사용자 번호",		name:"no",			type:"text", width: "5%",	align:"center"},
-			{ title:"사용자 아이디",		name:"userId",		type:"text", width: "40%",	align:"center"},
-			{ title:"사용자 이름",		name:"userName",	type:"text", width: "55%",	align:"center"}
+			{ title:"번호",		name:"no",			type:"text", width: "5%",	align:"center"},
+			{ title:"아이디",		name:"userId",		type:"text", width: "40%",	align:"center"},
+			{ title:"이름",		name:"userName",	type:"text", width: "55%",	align:"center"}
         ]
     });
 }
