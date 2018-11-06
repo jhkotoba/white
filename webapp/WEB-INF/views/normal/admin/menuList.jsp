@@ -14,14 +14,15 @@ function fnJsGrid(data){
 	
 	
 	
-	for(let i=0; i<data.length; i++){
-		data[i].state = "select";
+	for(let i=0; i<data.navList.length; i++){
+		data.navList[i].state = "select";
 	}
 	
 	console.log(data);
 	let clone = common.clone(data);
 	let navMenuList = data;
 	let navNoIdx = cfnNoIdx(data.navList, "navSeq");
+	let navCloneNoIdx = cfnNoIdx(clone.navList, "navSeq");
 	console.log(navNoIdx);
 	
 	$("#navMenuList").jsGrid({
@@ -46,6 +47,7 @@ function fnJsGrid(data){
                     let chk = $("<input>").attr("type", "checkbox").attr("name", "check")
                     .data("navSeq", item.navSeq).data("navOrder", item.navOrder).on("change", function() {
                     	let idx = navNoIdx[item.navSeq];
+                    	let cIdx = navCloneNoIdx[item.navSeq];
                 			
                			if(isEmpty(item.navOrder)){
                	    		$("#navMenuList").jsGrid("deleteItem", item);
@@ -56,7 +58,7 @@ function fnJsGrid(data){
                    	   				if(item.navSeq  === $(e).data("navSeq")){
                    	   					$(e).addClass("sync-red");
                    	   					
-                   	   					if(String(clone.navList[idx][$(e).data("name")]) !== String($(e).val())){
+                   	   					if(String(clone.navList[cIdx][$(e).data("name")]) !== String($(e).val())){
                    	   						$(e).addClass("sync-blue");
                    	   					}
                    	   					data.navList[idx].state = "delete";   
@@ -84,37 +86,22 @@ function fnJsGrid(data){
 			{ title:"순서",	name:"navOrder",	type:"text", align:"center", width: "8%"},
 			{ title:"상위 이름",	name:"navNm",		type:"text", align:"center", width: "21%",
 				itemTemplate: function(value, item){													
-					return fnRefreshedNavSync(item, "navNm", "navList", "input");
+					return fnRefreshedSync(item, "navNm", "navList", "input");
 				}
 			},
 			{ title:"상위 URL",	name:"navUrl",		type:"text", align:"center", width: "34%",
 				itemTemplate: function(value, item){													
-					return fnRefreshedNavSync(item, "navUrl", "navList", "input");
+					return fnRefreshedSync(item, "navUrl", "navList", "input");
 				}
 			},
 			{ title:"권한",	name:"navAuthNmSeq", align:"center", width: "20%",
 				itemTemplate: function(value, item){
-					//return fnRefreshedNavSync(item, "navAuthNmSeq", "navList", "select");
-					
-					$select = $("<select>").attr("name", "sync")
-					.data("navSeq", item.navSeq).data("name", "navAuthNmSeq");
-					
-					let $option = null;
-					for(let i=0; i<data.authList.length; i++){
-						$option = $("<option>").text(data.authList[i].authNm).val(data.authList[i].authNmSeq);
-						if(value === data.authList[i].authNmSeq){
-							$select.append($option.attr("selected","selected"));
-						}
-						$select.append($option);
-					}
-					return $select; 
+					return fnRefreshedSync(item, "navAuthNmSeq", "navList", "select");
 				}
 			},
 			{ title:"표시",	name:"navShowYn",		type:"text", align:"center", width: "6%",
 				itemTemplate: function(value, item){
-					//return fnRefreshedNavSync(item, "navShowYn", "navList", "button");
-					return $("<button>").attr("name", "sync").addClass("btn-gray sm")
-						.data("navSeq", item.navSeq).data("name", "navShowYn").val(value).text(value);
+					return fnRefreshedSync(item, "navShowYn", "navList", "button");					
 				}
 			},
 			{ title:"보기", align:"center", width: "6%",
@@ -167,10 +154,11 @@ function fnJsGrid(data){
 		}else{
 			let name = $(obj).data("name");
 			let idx = navNoIdx[$(obj).data("navSeq")];
+			let cIdx = navCloneNoIdx[$(obj).data("navSeq")];
 			
 			data.navList[idx][name] = $(obj).val();			
 			
-			if(String(clone.navList[idx][name]) === String($(obj).val())){
+			if(String(clone.navList[cIdx][name]) === String($(obj).val())){
 				$(obj).removeClass("sync-blue");
 				if(!$(obj).hasClass("sync-red")) data.navList[idx].state = "select";
 			}else{
@@ -181,7 +169,7 @@ function fnJsGrid(data){
 	}
 	
 	//새로고침 sync			
-	function fnRefreshedNavSync(item, name, listName, tag){
+	function fnRefreshedSync(item, name, listName, tag){
 		
 		let $el = null;
 		switch(tag){
@@ -190,20 +178,6 @@ function fnJsGrid(data){
 			$el = $("<input>").attr("type", "text").addClass("input-gray wth100p").val(item[name]);
 			break;
 		case "select" : 
-			
-			/* $select = $("<select>").attr("type", "text").attr("name", "sync")
-			.data("navSeq", item.navSeq).data("name", "navAuthNmSeq");
-			
-			let $option = null;
-			for(let i=0; i<data.authList.length; i++){
-				$option = $("<option>").text(data.authList[i].authNm).val(data.authList[i].authNmSeq);
-				if(value === data.authList[i].authNmSeq){
-					$select.append($option.attr("selected","selected"));
-				}
-				$select.append($option);
-			}
-			return $select; */
-			
 			$el = $("<select>").addClass("select-gray");
 			let $option = null;
 			for(let i=0; i<data.authList.length; i++){
@@ -215,7 +189,7 @@ function fnJsGrid(data){
 			}
 			break;			
 		case "button" :			
-			$el = $("<button>").addClass("btn-gray sm").val(item[name]);
+			$el = $("<button>").addClass("btn-gray sm").val(item[name]).text(item[name]);
 			break;
 		}
 		$el.attr("name", "sync").data("navSeq", item.navSeq).data("name", name);
@@ -223,14 +197,14 @@ function fnJsGrid(data){
 
 		if(item.state === "insert") $el.addClass("sync-green");	
 		else if(item.state === "update"){									
-			if(clone[listName][navNoIdx[item.navSeq]][name] === item[name]){
+			if(clone[listName][navCloneNoIdx[item.navSeq]][name] === item[name]){
 				$el.removeClass("sync-blue");
 			}else{
 				$el.addClass("sync-blue");
 			}			
 		}else if(item.state === "delete"){
 			$el.addClass("sync-red");
-			if(clone[listName][navNoIdx[item.navSeq]][name] !== $el.val()){
+			if(clone[listName][navCloneNoIdx[item.navSeq]][name] !== $el.val()){
 				$el.addClass("sync-blue");
 			}
 		}		

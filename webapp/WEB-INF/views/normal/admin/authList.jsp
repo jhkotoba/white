@@ -21,6 +21,7 @@ function fnJsGrid(data){
 	let clone = common.clone(data);
 	let authList = data;
 	let authNoIdx = cfnNoIdx(authList, "authNmSeq");
+	let cloneNoIdx = cfnNoIdx(clone, "authNmSeq");
 	
 	$("#authList").jsGrid({
 		height: "auto",
@@ -39,6 +40,7 @@ function fnJsGrid(data){
                     let chk = $("<input>").attr("type", "checkbox").attr("name", "check")
                     .data("authNmSeq", item.authNmSeq).data("authOrder", item.authOrder).on("change", function() {
                     	let idx = authNoIdx[item.authNmSeq];
+                    	let cIdx = cloneNoIdx[item.authNmSeq];
                 			
                			if(isEmpty(item.authOrder)){
                	    		$("#authList").jsGrid("deleteItem", item);
@@ -48,7 +50,7 @@ function fnJsGrid(data){
                    	   			$("input[name='sync']").each(function(i, e){				
                    	   				if(item.authNmSeq  === $(e).data("authNmSeq")){
                    	   					$(e).addClass("sync-red");               	   					
-                   	   					if(String(clone[idx][$(e).data("name")]) !== String($(e).val())){
+                   	   					if(String(clone[cIdx][$(e).data("name")]) !== String($(e).val())){
                    	   						$(e).addClass("sync-blue");
                    	   					}
                    						authList[idx].state = "delete";   
@@ -106,17 +108,18 @@ function fnJsGrid(data){
 			});
 			
 			//수정 sync 체크
-			let name, idx;
+			let name, idx, cIdx;
 			$("input[name='sync']").on("keyup keydown change", function(){				
 				if($(this).hasClass("sync-green")){
 					authList[authNoIdx[$(this).data("authNmSeq")]][$(this).data("name")] = $(this).val();
 				}else{					
 					name = $(this).data("name");
 					idx = authNoIdx[$(this).data("authNmSeq")];
+					cIdx = cloneNoIdx[$(this).data("authNmSeq")];
 				
 					authList[idx][name] = $(this).val();
 					
-					if(String(clone[idx][name]) === String($(this).val())){		
+					if(String(clone[cIdx][name]) === String($(this).val())){		
 						$(this).removeClass("sync-blue");
 						if(!$(this).hasClass("sync-red")) authList[idx].state = "select";
 					}else{
@@ -218,14 +221,14 @@ function fnJsGrid(data){
 
 		if(item.state === "insert") $(el).addClass("sync-green");	
 		else if(item.state === "update"){									
-			if(clone[authNoIdx[item.authNmSeq]][name] === item[name]){
+			if(clone[cloneNoIdx[item.authNmSeq]][name] === item[name]){
 				$(el).removeClass("sync-blue");
 			}else{
 				$(el).addClass("sync-blue");
 			}			
 		}else if(item.state === "delete"){
 			$(el).addClass("sync-red");
-			if(clone[authNoIdx[item.authNmSeq]][name] !== $(el).val()){
+			if(clone[cloneNoIdx[item.authNmSeq]][name] !== $(el).val()){
 				$(el).addClass("sync-blue");
 			}
 		}		
