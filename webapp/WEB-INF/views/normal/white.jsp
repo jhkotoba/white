@@ -128,7 +128,8 @@ $(document).ready(function(){
 	<input id="navUrl" name="navUrl" type="hidden" value="${navUrl}"></input>
 	<input id="sideUrl" name="sideUrl" type="hidden" value="${sideUrl}"></input>
 	<input id="navNm" name="navNm" type="hidden"></input>
-	<input id="sideNm" name="sideNm" type="hidden"></input>		
+	<input id="sideNm" name="sideNm" type="hidden"></input>
+	<input id="param" name="param" type="hidden"></input>
 </form>
 </c:if>
 <div class="blind" style="display: none;"></div>

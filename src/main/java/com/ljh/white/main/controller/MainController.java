@@ -97,6 +97,7 @@ public class MainController {
 		request.setAttribute("sideUrl", sideUrl);
 		request.setAttribute("navNm", param.getString("navNm"));
 		request.setAttribute("sideNm", param.getString("sideNm"));
+		request.setAttribute("prevParam", param.getString("param"));
 		
 		request.setAttribute("sectionPage", navUrl.replace("/", "")+sideUrl+".jsp");
 		return White.device(device)+"/white.jsp";
