@@ -9,7 +9,7 @@ $(document).ready(function(){
 });
 
 function fnNavJsGrid(data){
-	
+	console.log(data);
 	for(let i=0; i<data.navList.length; i++){
 		data.navList[i].state = "select";
 	}
@@ -98,22 +98,27 @@ function fnNavJsGrid(data){
 			},
 			{ title:"보기", align:"center", width: "6%",
 				itemTemplate: function(value, item){					
-					return $("<button>").addClass("btn-gray sm").text(">")
-						.attr("name", "svb").on("click", function(){						
-						
-						$("button[name='svb']").each(function(i, e){
-							$(e).removeClass("btn-selected-gray");
+					if(item.state === "insert"){
+						return "";
+					}else{
+						return $("<button>").addClass("btn-gray sm").text(">")
+							.attr("name", "svb").on("click", function(){						
+							
+							$("button[name='svb']").each(function(i, e){
+								$(e).removeClass("btn-selected-gray");
+							});
+							$(this).addClass("btn-selected-gray");
+							
+							$("#searchBar #sideAdd").data("selectNavSeq", item.navSeq);
+							data.sideList = new Array();
+							for(let i=0; i<clone.sideList.length; i++){
+								if(item.navSeq === clone.sideList[i].navSeq){
+									data.sideList.push(common.clone(clone.sideList[i]));
+								}							
+							}
+							fnSideJsGrid();
 						});
-						$(this).addClass("btn-selected-gray");
-						
-						data.sideList = new Array();
-						for(let i=0; i<clone.sideList.length; i++){
-							if(item.navSeq === clone.sideList[i].navSeq){
-								data.sideList.push(common.clone(clone.sideList[i]));
-							}							
-						}
-						fnSideJsGrid();
-					});
+					}
 				}
 			}
 		],
@@ -155,6 +160,7 @@ function fnNavJsGrid(data){
 			data.sideList = new Array();
 			if(clone.sideList.length > 0){
 				let refreshNavSeq = clone.sideList[0].navSeq;
+				$("#searchBar #sideAdd").data("selectNavSeq", refreshNavSeq);
 				
 				for(let i=0; i<clone.sideList.length; i++){
 					if(refreshNavSeq === clone.sideList[i].navSeq){
@@ -167,7 +173,7 @@ function fnNavJsGrid(data){
 				});
 			}
 			fnSideJsGrid();
-		}
+		}	
 	});	
 	
 	function fnSideJsGrid(){		
@@ -296,7 +302,7 @@ function fnNavJsGrid(data){
 		if(listName === "navList"){
 			
 			if($(obj).hasClass("sync-green")){
-				data.navList[navNoIdx[$(obj).data("navSeq")]].navShowYn = $(obj).val();
+				data.navList[navNoIdx[$(obj).data("navSeq")]][$(obj).data("name")] = $(obj).val();
 			}else{
 				let name = $(obj).data("name");
 				let idx = navNoIdx[$(obj).data("navSeq")];
@@ -315,7 +321,7 @@ function fnNavJsGrid(data){
 		}else if(listName === "sideList"){
 			
 			if($(obj).hasClass("sync-green")){
-				data.navList[sideNoIdx[$(obj).data("sideSeq")]].sideShowYn = $(obj).val();
+				data.navList[sideNoIdx[$(obj).data("sideSeq")]][$(obj).data("name")] = $(obj).val();
 			}else{
 				let name = $(obj).data("name");
 				let idx = sideNoIdx[$(obj).data("sideSeq")];
@@ -346,6 +352,9 @@ function fnNavJsGrid(data){
 		case "select" : 
 			$el = $("<select>").addClass("select-gray");
 			let $option = null;
+			if(item.state === "insert"){
+				$el.append($("<option>").text("").val(""));
+			}			
 			for(let i=0; i<data.authList.length; i++){
 				$option = $("<option>").text(data.authList[i].authNm).val(data.authList[i].authNmSeq);
 				if(String(item[name]) === String(data.authList[i].authNmSeq)){
@@ -354,7 +363,7 @@ function fnNavJsGrid(data){
 				$el.append($option);
 			}
 			break;			
-		case "button" :			
+		case "button" :
 			$el = $("<button>").addClass("btn-gray sm").val(item[name]).text(item[name]);
 			break;
 		}
@@ -397,9 +406,29 @@ function fnNavJsGrid(data){
 		return $el;
 	}
 	
-	//저장(반영)
-	$("#searchBar #save").on("click", function(){
+	
+	//nav 메뉴추가
+	$("#searchBar #navAdd").on("click", function(){
+		data.navList.push({navAuthNmSeq: "", navNm: "", navOrder:"", navSeq: new Date().getTime(), navShowYn:"N", navUrl:"", state:"insert"});		
+		navNoIdx = cfnNoIdx(data.navList, "navSeq");
+		$("#navMenuList").jsGrid("refresh");
+	});
+	
+	//side 메뉴추가
+	$("#searchBar #sideAdd").on("click", function(){
+		//data.sideList.push({sideAuthNmSeq: "", sideNm: "", sideOrder:"", sideSeq: new Date().getTime(), navShowYn:"N", navUrl:"", state:"insert"});		
+		//navNoIdx = cfnNoIdx(data.navList, "navSeq");
+		//$("#navMenuList").jsGrid("refresh");
+	});
+	
+	//nav 저장(반영)
+	$("#searchBar #navSave").on("click", function(){
 		console.log(data.navList);
+	});
+	
+	//side 저장(반영)
+	$("#searchBar #sideSave").on("click", function(){
+		console.log(data.sideList);
 	});
 	
 	
