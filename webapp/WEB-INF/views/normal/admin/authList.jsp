@@ -161,8 +161,10 @@ function fnJsGrid(data){
 	//저장(반영)
 	$("#searchBar #save").on("click", function(){
 		
-		for(let i=0; i<authList.length; i++){			
-			authList[i].authOrder = (i+2);			
+		for(let i=0, j=2; i<authList.length; i++){
+			if(authList[i].state !== "delete"){
+				authList[i].authOrder = (j++);	
+			}
 		}
 		//유효성 검사
 		let isVali = true;
@@ -204,7 +206,7 @@ function fnJsGrid(data){
 				if(Number(res)===-1){
 					alert("수정하려는 데이터가 이미 수정되어 수정할 수 없습니다. 반영이 취소됩니다.");
 				}else if(Number(res)===0){
-					alert("삭제하려는 권한이 사용중입니다. 반영이 취소됩니다.");
+					alert("삭제하려는 권한이 사용중 입니다. 반영이 취소됩니다.");
 				}else{
 					alert("반영되었습니다.");
 				}

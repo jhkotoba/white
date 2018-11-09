@@ -44,7 +44,7 @@ public class AdminMapper {
 	 * @return
 	 */
 	public List<WhiteMap> selectAuthList() {
-		logger.debug("");
+		logger.debug("no data");
 		return sqlSession.selectList("adminMapper.selectAuthList");
 	}
 	
@@ -83,9 +83,9 @@ public class AdminMapper {
 	 * @param param
 	 * @return
 	 */
-	public List<WhiteMap> selectNavMenuList(WhiteMap param) {
-		logger.debug(param);
-		return sqlSession.selectList("adminMapper.selectNavMenuList", param);
+	public List<WhiteMap> selectNavMenuList() {
+		logger.debug("no data");
+		return sqlSession.selectList("adminMapper.selectNavMenuList");
 	}
 	
 	/**
@@ -93,9 +93,9 @@ public class AdminMapper {
 	 * @param param
 	 * @return
 	 */
-	public List<WhiteMap> selectSideMenuList(WhiteMap param) {
-		logger.debug(param);
-		return sqlSession.selectList("adminMapper.selectSideMenuList", param);
+	public List<WhiteMap> selectSideMenuList() {
+		logger.debug("no data");
+		return sqlSession.selectList("adminMapper.selectSideMenuList");
 	}
 	
 	/**

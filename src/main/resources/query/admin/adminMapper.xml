@@ -67,11 +67,8 @@
 	
 	
 	<!--  -->
-	<select id="selectNavMenuList" resultType="whiteMap" parameterType="whiteMap">		
+	<select id="selectNavMenuList" resultType="whiteMap">		
 		SELECT
-			<if test="mode == 'select'">
-			'select' AS state,
-			</if>			
 			nm.nav_seq AS navSeq,
 	  		nm.nav_nm AS navNm,
 	 		nm.nav_url AS navUrl,
@@ -83,11 +80,8 @@
 	</select>
 	
 	<!--  -->
-	<select id="selectSideMenuList" resultType="whiteMap" parameterType="whiteMap">
+	<select id="selectSideMenuList" resultType="whiteMap">
 		SELECT
-			<if test="mode == 'select'">
-			'select' AS state,
-			</if>
 			sm.side_seq AS sideSeq,
 			sm.nav_seq AS navSeq,
 			sm.side_nm AS sideNm,

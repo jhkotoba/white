@@ -423,15 +423,28 @@ function isOnlyAlphaNum(_str){
 	if(isEmpty(_str)){
 		return false;
 	}else{
-		return /^[A-Za-z0-9+]*$/.test(String(_str));
+		return /^[A-Za-z0-9+]*$/.test(String(_str).replace(/\s/gi, ""));
 	}
 }
-//한글, 영문자, 숫자만 있는지 체크
+
+//URL 체크
+function isOnlyOneURL(_str){	
+	if(isEmpty(_str)){
+		return false;
+	}else{
+		if(_str.indexOf("/") !== 0){
+			return false;
+		}else{
+			return /^[A-Za-z0-9+]*$/.test(String(_str.split("/")[1]).replace(/\s/gi, ""));
+		}
+	}
+}
+//한글, 영문자, 숫자, 가로만 있는지 체크
 function isOnlyHanAlphaNum(_str){
 	if(isEmpty(_str)){
 		return false;
 	}else{
-		return /^[ㄱ-ㅎ|가-힣|a-z|A-Z|0-9|\*]+$/.test(String(_str));
+		return /^[ㄱ-ㅎ|가-힣|a-z|A-Z|0-9|()]+$/.test(String(_str).replace(/\s/gi, ""));
 	}
 }
 
