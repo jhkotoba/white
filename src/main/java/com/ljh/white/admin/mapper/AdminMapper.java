@@ -88,14 +88,24 @@ public class AdminMapper {
 		return sqlSession.selectList("adminMapper.selectNavMenuList");
 	}
 	
+	
+	/**
+	 * 사이드 메뉴 리스트 전체 조회
+	 * @param param
+	 * @return
+	 */
+	public List<WhiteMap> selectSideMenuList() {
+		return this.selectSideMenuList(null);
+	}
+	
 	/**
 	 * 사이드 메뉴 리스트 조회
 	 * @param param
 	 * @return
 	 */
-	public List<WhiteMap> selectSideMenuList() {
-		logger.debug("no data");
-		return sqlSession.selectList("adminMapper.selectSideMenuList");
+	public List<WhiteMap> selectSideMenuList(String navSeq) {
+		logger.debug(navSeq);
+		return sqlSession.selectList("adminMapper.selectSideMenuList", navSeq);
 	}
 	
 	/**

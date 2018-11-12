@@ -436,18 +436,16 @@ function fnNavJsGrid(data){
 	});
 	
 	//저장(반영)
-	$("#searchBar #save").on("click", function(){
-		
+	$("#searchBar #navSave").on("click", function(){		
 		//유효성 검사
 		let isVali = true;
-		$("[name^='sync']").each(function(i, e){
+		$("[name='syncNav']").each(function(i, e){
 			if(isEmpty($(e).val())){
 				isVali = false;
 				wVali.alert({element : $(e), msg: "값을 입력해 주세요."}); return false;
 			}
 			switch($(e).data("name")){
-			case "navNm":	
-			case "sideNm":
+			case "navNm":			
 				if(!isOnlyHanAlphaNum($(e).val())){
 					isVali = false;
 					wVali.alert({element : $(e), msg: "한글, 영문자, 숫자를 입력해 주세요."}); return false;
@@ -456,7 +454,62 @@ function fnNavJsGrid(data){
 					wVali.alert({element : $(e), msg: "최대 글자수 20자 까지 입력할 수 있습니다."}); return false;
 				}
 				break;
-			case "navUrl":
+			case "navUrl":		
+				if(!isOnlyOneURL($(e).val())){
+					isVali = false;
+					wVali.alert({element : $(e), msg: "첫번째 문자에 /, 영문자, 숫자를 입력해 주세요."}); return false;
+				}else if($(e).val().length > 40){
+					isVali = false;
+					wVali.alert({element : $(e), msg: "최대 글자수 40자 까지 입력할 수 있습니다."}); return false;
+				}
+				break;
+			}			
+		});
+		
+		if(isVali && confirm("저장하시겠습니까?")){
+			
+			for(let i=0, j=1; i<data.navList.length; i++){
+				if(data.navList[i].state !== "delete"){
+					data.navList[i].navOrder = (j++);	
+				}
+			}
+			
+			let param = {};
+			param.navClone = JSON.stringify(clone.navList);
+			param.navList = JSON.stringify(data.navList);
+			
+			cfnCmmAjax("/admin/applyNavMenuList", param).done(function(res){
+				if(Number(res)===-1){
+					alert("수정하려는 데이터가 이미 수정되어 수정할 수 없습니다. 반영이 취소됩니다.");
+				}else if(Number(res)===0){
+					alert("삭제하려는 상위메뉴가 하위메뉴에서 사용중 입니다. 반영이 취소됩니다.");
+				}else{
+					alert("반영되었습니다.");
+				}
+				mf.submit('${navUrl}', '${sideUrl}', '${navNm}', '${sideNm}', navSeq);			
+			});
+		}
+	});
+	
+	//side 저장(반영)
+	$("#searchBar #sideSave").on("click", function(){
+		//유효성 검사
+		let isVali = true;
+		$("[name='syncSide']").each(function(i, e){
+			if(isEmpty($(e).val())){
+				isVali = false;
+				wVali.alert({element : $(e), msg: "값을 입력해 주세요."}); return false;
+			}
+			switch($(e).data("name")){		
+			case "sideNm":
+				if(!isOnlyHanAlphaNum($(e).val())){
+					isVali = false;
+					wVali.alert({element : $(e), msg: "한글, 영문자, 숫자를 입력해 주세요."}); return false;
+				}else if($(e).val().length > 20){
+					isVali = false;
+					wVali.alert({element : $(e), msg: "최대 글자수 20자 까지 입력할 수 있습니다."}); return false;
+				}
+				break;			
 			case "sideUrl":
 				if(!isOnlyOneURL($(e).val())){
 					isVali = false;
@@ -472,23 +525,15 @@ function fnNavJsGrid(data){
 		
 		if(isVali && confirm("저장하시겠습니까?")){
 			
-			for(let i=0, j=1; i<data.navList.length; i++){
-				if(data.navList[i].state !== "delete"){
-					data.navList[i].navOrder = (j++);	
-				}
-			}
-			
 			for(let i=0, j=1; i<data.sideList.length; i++){
 				if(data.sideList[i].state !== "delete"){
 					data.sideList[i].sideOrder = (j++);	
 				}
 			}
 			
-			let param = {};
-			param.navClone = JSON.stringify(clone.navList);
-			param.navList = JSON.stringify(data.navList);
+			let param = {};			
 			
-			let navSeq = $("#searchBar #sideAdd").data("selectNavSeq");
+			param.navSeq = $("#searchBar #sideAdd").data("selectNavSeq");
 			let cloneSideList = new Array();
 			
 			for(let i=0; i<clone.sideList.length; i++){
@@ -500,7 +545,7 @@ function fnNavJsGrid(data){
 			param.sideClone = JSON.stringify(cloneSideList);
 			param.sideList = JSON.stringify(data.sideList);
 			
-			cfnCmmAjax("/admin/applyMenuList", param).done(function(res){
+			cfnCmmAjax("/admin/applySideMenuList", param).done(function(res){
 				if(Number(res)===-1){
 					alert("수정하려는 데이터가 이미 수정되어 수정할 수 없습니다. 반영이 취소됩니다.");
 				}else if(Number(res)===0){
@@ -511,11 +556,6 @@ function fnNavJsGrid(data){
 				mf.submit('${navUrl}', '${sideUrl}', '${navNm}', '${sideNm}', navSeq);			
 			});
 		}
-	});
-	
-	//side 저장(반영)
-	$("#searchBar #sideSave").on("click", function(){
-		console.log(data.sideList);
 	});
 	
 	//취소
@@ -538,7 +578,7 @@ function fnNavJsGrid(data){
 	<button id="navAdd" class="btn-gray">상위메뉴 추가</button>
 	<button id="sideAdd" class="btn-gray">하위메뉴 추가</button>
 	<div class="pull-right">
-		<button id="save" class="btn-gray">저장</button>
+		<button id="navSave" class="btn-gray">저장</button>
 		<button id="cancel" class="btn-gray">취소</button>
 	</div>
 </div>

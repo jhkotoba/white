@@ -126,17 +126,16 @@ public class AdminController {
 	}
 	
 	/**
-	 * 메뉴리스트 적용
+	 * 네비 메뉴리스트 적용
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value="/admin/applyMenuList.ajax" )
+	@RequestMapping(value="/admin/applyNavMenuList.ajax" )
 	public int applyNavMenuList(HttpServletRequest request){		
 		
 		WhiteMap param = new WhiteMap(request);	
-		int result = adminService.applyMenuList(param);
+		int result = adminService.applyNavMenuList(param);
 		whiteService.setNavAuth();
-		whiteService.setSideAuth();
 		return result;
 	}
 	

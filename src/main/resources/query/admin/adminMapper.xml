@@ -90,6 +90,9 @@
 			sm.side_show_yn AS sideShowYn,
 			sm.side_order AS sideOrder
 		FROM side_menu AS sm
+		<if test="navSeq == null and navSeq == ''">
+		WHERE navSeq = #{navSeq}
+		</if>
 		ORDER BY side_order	
 	</select>	
 	

@@ -183,7 +183,7 @@ public class AdminService {
 	 * @return -1: 반영전 수정할 데이터가 수정하기전에 바뀜, 0:삭제대상이 사용되는 시퀀스. 삭제불가, 1:성공
 	 */
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
-	public int applyMenuList(WhiteMap param) {
+	public int applyNavMenuList(WhiteMap param) {
 	
 		List<WhiteMap> menuList = param.convertListWhiteMap("navClone", false);
 		List<WhiteMap> list = adminMapper.selectNavMenuList();
