@@ -486,7 +486,7 @@ function fnNavJsGrid(data){
 				}else{
 					alert("반영되었습니다.");
 				}
-				mf.submit('${navUrl}', '${sideUrl}', '${navNm}', '${sideNm}', navSeq);			
+				mf.submit('${navUrl}', '${sideUrl}', '${navNm}', '${sideNm}', Number($("#searchBar #sideAdd").data("selectNavSeq")));			
 			});
 		}
 	});
@@ -559,8 +559,8 @@ function fnNavJsGrid(data){
 	});
 	
 	//취소
-	$("#searchBar #cancel").on("click", function(){		
-		initSide = true;
+	$("#searchBar #navCancel").on("click", function(){		
+		initSide = false;
 		data.navList.splice(0, data.navList.length);
 		for(let i=0; i<clone.navList.length; i++){
 			data.navList.push(clone.navList[i]);
@@ -574,12 +574,14 @@ function fnNavJsGrid(data){
 }
 </script>
 
-<div id="searchBar" class="search-bar">
-	<button id="navAdd" class="btn-gray">상위메뉴 추가</button>
-	<button id="sideAdd" class="btn-gray">하위메뉴 추가</button>
-	<div class="pull-right">
-		<button id="navSave" class="btn-gray">저장</button>
-		<button id="cancel" class="btn-gray">취소</button>
+<div id="searchBar" class="search-bar">	
+	<button id="navAdd" class="btn-gray">추가</button>
+	<button id="navSave" class="btn-gray">저장</button>
+	<button id="navCancel" class="btn-gray">취소</button>
+		<div class="pull-right">
+		<button id="sideAdd" class="btn-gray">추가</button>
+		<button id="sideSave" class="btn-gray">저장</button>
+		<button id="sideCancel" class="btn-gray">취소</button>
 	</div>
 </div>
 
