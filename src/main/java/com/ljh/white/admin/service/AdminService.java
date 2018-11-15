@@ -178,17 +178,17 @@ public class AdminService {
 	}
 	
 	/**
-	 * 메뉴리스트 적용
+	 * 네비(상위) 메뉴리스트 적용
 	 * @param param
-	 * @return -1: 반영전 수정할 데이터가 수정하기전에 바뀜, 0:삭제대상이 사용되는 시퀀스. 삭제불가, 1:성공
+	 * @return -1: 반영전 수정할 데이터가 수정하기전에 바뀜, -2:삭제대상이 사용되는 시퀀스. 삭제불가, 1:성공
 	 */
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
 	public int applyNavMenuList(WhiteMap param) {
-	
-		List<WhiteMap> menuList = param.convertListWhiteMap("navClone", false);
-		List<WhiteMap> list = adminMapper.selectNavMenuList();
 		
 		//반영전 수정되었는지 체크
+		List<WhiteMap> menuList = param.convertListWhiteMap("navClone", false);
+		List<WhiteMap> list = adminMapper.selectNavMenuList();		
+		
 		if(menuList.size() != list.size()) {
 			return -1;
 		}else {
@@ -223,7 +223,7 @@ public class AdminService {
 		}
 		
 		if(deleteList.size()>0 && adminMapper.selectIsUsedSideUrl(deleteList)>0) {
-			return 0;
+			return -2;
 		}else {
 			if(deleteList.size()>0) adminMapper.deleteNavMenuList(deleteList);
 			if(insertList.size()>0) adminMapper.insertNavMenuList(insertList);	
@@ -236,6 +236,59 @@ public class AdminService {
 	
 	
 	/**
+	 * 사이드(하위) 메뉴리스트 적용
+	 * @param param
+	 * @return -1: 반영전 수정할 데이터가 수정하기전에 바뀜, 1:성공
+	 */
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
+	public int applySideMenuList(WhiteMap param) {
+		
+		//반영전 수정되었는지 체크
+		List<WhiteMap> menuList = param.convertListWhiteMap("sideClone", false);		
+		List<WhiteMap> list = adminMapper.selectSideMenuList(param.getString("navSeq")); //error		
+		
+		if(menuList.size() != list.size()) {
+			return -1;
+		}else {
+			for(int i=0; i<menuList.size(); i++) {
+				if(!menuList.get(i).get("sideNm").equals(list.get(i).get("sideNm"))) {
+					return -1;
+				}else if(!menuList.get(i).get("sideUrl").equals(list.get(i).get("sideUrl"))) {
+					return -1;
+				}else if(!menuList.get(i).get("sideAuthNmSeq").equals(list.get(i).get("sideAuthNmSeq"))) {
+					return -1;
+				}else if(!menuList.get(i).get("sideShowYn").equals(list.get(i).get("sideShowYn"))) {
+					return -1;
+				}else if(!menuList.get(i).get("sideOrder").equals(list.get(i).get("sideOrder"))) {
+					return -1;
+				}
+			}			
+		}
+		
+		menuList = param.convertListWhiteMap("sideList", false);		
+		List<WhiteMap> deleteList = new ArrayList<WhiteMap>();
+		List<WhiteMap> insertList = new ArrayList<WhiteMap>();
+		List<WhiteMap> updateList = new ArrayList<WhiteMap>();
+		
+		for(int i=0; i<menuList.size(); i++) {
+			if("delete".equals(menuList.get(i).get("state"))) {
+				deleteList.add(menuList.get(i));
+			}else if("insert".equals(menuList.get(i).get("state"))) {
+				insertList.add(menuList.get(i));
+			}else {
+				updateList.add(menuList.get(i));
+			}
+		}
+		
+		if(deleteList.size()>0) adminMapper.deleteSideMenuList(deleteList);
+		if(insertList.size()>0) adminMapper.insertSideMenuList(insertList);	
+		if(updateList.size()>0) adminMapper.updateSideMenuList(updateList);
+		return 1;
+	}
+	
+	
+	/**@deprecated
+	 * 구버전
 	 * 사이드메뉴 insert, update, delete
 	 * @param list
 	 * @return

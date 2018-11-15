@@ -240,10 +240,10 @@ function fnJsGrid(data){
 </script>
 
 <div id="searchBar" class="search-bar">
-	<button id="add" class="btn-gray">추가</button>
+	<button id="add" class="btn-gray trs">추가</button>
 	<div class="pull-right">	
-		<button id="save" class="btn-gray">저장</button>
-		<button id="cancel" class="btn-gray">취소</button>
+		<button id="save" class="btn-gray trs">저장</button>
+		<button id="cancel" class="btn-gray trs">취소</button>
 	</div>
 </div>
 <div id="authList"></div>

@@ -16,14 +16,14 @@
 
 <h4>button</h4>
 
-<h6>btn-gray sm</h6>
-<button class="btn-gray sm">button</button>
+<h6>btn-gray trs sm</h6>
+<button class="btn-gray trs sm">button</button>
 
-<h6>btn-gray</h6>
-<button class="btn-gray">button</button>
+<h6>btn-gray trs</h6>
+<button class="btn-gray trs">button</button>
 
-<h6>btn-gray lg</h6>
-<button class="btn-gray lg">button</button>
+<h6>btn-gray trs lg</h6>
+<button class="btn-gray trs lg">button</button>
 
 <h4>selectbox</h4>
 

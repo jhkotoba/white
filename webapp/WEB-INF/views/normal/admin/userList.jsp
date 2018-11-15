@@ -155,8 +155,8 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
 		<span class="span-gray-rt">이름</span>
 		<span id="userName" class="span-gray"></span>
 		<div class="pull-right">			
-			<button id="save" class="btn-gray">저장</button>
-			<button id="close" class="btn-gray">닫기</button>	
+			<button id="save" class="btn-gray trs">저장</button>
+			<button id="close" class="btn-gray trs">닫기</button>	
 		</div>	
 	</div>
 	
@@ -179,7 +179,7 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
 		<option value="name">이름</option>
 	</select>
 	<input class="input-gray wth3" id="text" type="text">
-	<button class="btn-gray" id="searchBtn">조회</button>
+	<button class="btn-gray trs" id="searchBtn">조회</button>
 </div>
 
 <div id="userList"></div>

@@ -135,7 +135,21 @@ public class AdminController {
 		
 		WhiteMap param = new WhiteMap(request);	
 		int result = adminService.applyNavMenuList(param);
-		whiteService.setNavAuth();
+		whiteService.setNavAuth();		
+		return result;
+	}
+	
+	/**
+	 * 사이드 메뉴리스트 적용
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="/admin/applySideMenuList.ajax" )
+	public int applySideMenuList(HttpServletRequest request){		
+		
+		WhiteMap param = new WhiteMap(request);	
+		int result = adminService.applySideMenuList(param);
+		whiteService.setNavAuth();		
 		return result;
 	}
 	

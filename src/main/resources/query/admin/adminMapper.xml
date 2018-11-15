@@ -80,7 +80,7 @@
 	</select>
 	
 	<!--  -->
-	<select id="selectSideMenuList" resultType="whiteMap">
+	<select id="selectSideMenuList" parameterType="String" resultType="whiteMap">
 		SELECT
 			sm.side_seq AS sideSeq,
 			sm.nav_seq AS navSeq,
@@ -90,10 +90,10 @@
 			sm.side_show_yn AS sideShowYn,
 			sm.side_order AS sideOrder
 		FROM side_menu AS sm
-		<if test="navSeq == null and navSeq == ''">
-		WHERE navSeq = #{navSeq}
+		<if test="value != null and value != ''">
+		WHERE sm.nav_seq = #{navSeq}
 		</if>
-		ORDER BY side_order	
+		ORDER BY sm.side_order	
 	</select>	
 	
 	

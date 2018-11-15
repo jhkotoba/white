@@ -213,8 +213,8 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
 			<input class="input-gray wth100p" id="title" type="text" maxlength="50" placeholder="제목 입력">
 		</div>
 		<div class="flex-other">
-			<button class="btn-gray" id="save">저장</button>
-			<button class="btn-gray" id="close">닫기</button>
+			<button class="btn-gray trs trs" id="save">저장</button>
+			<button class="btn-gray trs" id="close">닫기</button>
 		</div>		
 	</div>	
 	<div>
@@ -241,8 +241,8 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
 		<div class="flex-other">
 			<span class="span-gray-rt">날짜</span>
 			<span id="regDate" class="span-gray"></span>
-			<button class="btn-gray" id="save">수정</button>
-			<button class="btn-gray" id="close">닫기</button>
+			<button class="btn-gray trs" id="save">수정</button>
+			<button class="btn-gray trs" id="close">닫기</button>
 		</div>
 	</div>
 	<div>	
@@ -271,10 +271,10 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
 		<div class="flex-other">
 			<span class="span-gray-rt">날짜</span>
 			<span id="regDate" class="span-gray"></span>
-			<button class="btn-gray" id="edit">수정</button>
-			<button class="btn-gray" id="remove" class="hide">삭제</button>	
-			<button class="btn-gray" name="write">글쓰기</button>
-			<button class="btn-gray" id="close">닫기</button>
+			<button class="btn-gray trs" id="edit">수정</button>
+			<button class="btn-gray trs" id="remove" class="hide">삭제</button>	
+			<button class="btn-gray trs" name="write">글쓰기</button>
+			<button class="btn-gray trs" id="close">닫기</button>
 		</div>
 	</div>
 	<div id="cAdjust" class="blank">
@@ -299,8 +299,8 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
 		<option value="content">내용</option>
 	</select>
 	<input class="input-gray wth3" id="text" type="text">
-	<button class="btn-gray" id="searchBtn">조회</button>
-	<button class="btn-gray pull-right" name="write">글쓰기</button>
+	<button class="btn-gray trs" id="searchBtn">조회</button>
+	<button class="btn-gray trs pull-right" name="write">글쓰기</button>
 </div>
 
 <!-- 게시물 리스트 -->
