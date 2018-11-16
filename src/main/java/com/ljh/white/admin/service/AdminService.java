@@ -125,15 +125,18 @@ public class AdminService {
 	public List<WhiteMap> selectNavMenuList() {		
 		return adminMapper.selectNavMenuList();		
 		
-	}	
+	}
+		
 	/**
 	 * 하위메뉴 조회
 	 * @param param
 	 * @return
 	 */
 	public List<WhiteMap> selectSideMenuList() {		
-		return adminMapper.selectSideMenuList();		
-		
+		return this.selectSideMenuList(null);
+	}
+	public List<WhiteMap> selectSideMenuList(WhiteMap param) {
+		return adminMapper.selectSideMenuList(param);
 	}
 	
 	/**
@@ -245,7 +248,10 @@ public class AdminService {
 		
 		//반영전 수정되었는지 체크
 		List<WhiteMap> menuList = param.convertListWhiteMap("sideClone", false);		
-		List<WhiteMap> list = adminMapper.selectSideMenuList(param.getString("navSeq")); //error		
+		List<WhiteMap> list = adminMapper.selectSideMenuList(param.createKeyNewMap("navSeq")); 
+		
+		System.out.println("menuList.size():"+menuList.size());
+		System.out.println("list.size():"+list.size());
 		
 		if(menuList.size() != list.size()) {
 			return -1;
@@ -279,7 +285,7 @@ public class AdminService {
 				updateList.add(menuList.get(i));
 			}
 		}
-		
+		System.out.println(insertList);
 		if(deleteList.size()>0) adminMapper.deleteSideMenuList(deleteList);
 		if(insertList.size()>0) adminMapper.insertSideMenuList(insertList);	
 		if(updateList.size()>0) adminMapper.updateSideMenuList(updateList);

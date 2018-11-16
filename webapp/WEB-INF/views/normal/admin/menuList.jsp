@@ -149,8 +149,8 @@ function fnNavJsGrid(data){
 			});
 			
 			//수정 intpu sync 체크			
-			$("input[name='syncNav']").on("keyup keydown change", function(){				
-				fnOnSync(this, "navList");	
+			$("input[name='syncNav']").on("keyup keydown change", function(){		
+				fnOnSync(this, "navList");
 			});
 			
 			//수정 select sync 체크
@@ -159,11 +159,11 @@ function fnNavJsGrid(data){
 			});
 			
 			//수정 button sync 체크
-			$("button[name='syncNav']").on("click", function(){				
+			$("button[name='syncNav']").on("click", function(){
 				if($(this).val() === "Y")	$(this).val("N").text("N");
 				else						$(this).val("Y").text("Y");
 				
-				fnOnSync(this, "navList");	
+				fnOnSync(this, "navList");
 			});
 			
 			if(initSide){
@@ -218,8 +218,7 @@ function fnNavJsGrid(data){
 				{ align:"center", width: "7%",
 					headerTemplate : function(){
 						return $("<button>").attr("id", "sideAdd").addClass("btn-gray trs sm").text("+").on("click", function(){
-							data.sideList.push({navSeq: Number($("#sideAdd").data("selectNavSeq")), sideAuthNmSeq:"", 
-								sideNm:"", sideOrder:"", sideSeq: new Date().getTime(), sideShowYn:"N", sideUrl:"", state:"insert"});		
+							data.sideList.push({navSeq: refNavSeq, sideAuthNmSeq:"", sideNm:"", sideOrder:"", sideSeq: new Date().getTime(), sideShowYn:"N", sideUrl:"", state:"insert"});		
 							sideNoIdx = cfnNoIdx(data.sideList, "sideSeq");
 							$("#sideMenuList").jsGrid("refresh");
 						});					
@@ -242,7 +241,7 @@ function fnNavJsGrid(data){
 	                   	   					if(String(clone.sideList[cIdx][$(e).data("name")]) !== String($(e).val())){
 	                   	   						$(e).addClass("sync-blue");
 	                   	   					}
-	                   	   					data.sideList[idx].state = "delete";   
+	                   	   					data.sideList[idx].state = "delete";
 	                   	   				}
 	                   	   			});
 	                   	   		}else{
@@ -252,17 +251,17 @@ function fnNavJsGrid(data){
 	                   	   					
 	                   	   					if($(e).hasClass("sync-blue") || data.sideList[idx].state === "update" ){
 	                   	   						data.sideList[idx].state = "update";
-	                   	   					}else{   						
+	                   	   					}else{
 	                   	   						data.sideList[idx].state = "select";
 	                   	   					}   					
 	                   	   				}
 	                   	   			});
 	                   	    	}
 	               	    	}
-	                	});                    
-	                    if(item.state === "delete") chk.prop('checked', true);                    	
+	                	});
+	                    if(item.state === "delete") chk.prop('checked', true);
 	                    return chk;
-	                }	            
+	                }
 				},
 				{ title:"순서",	name:"sideOrder",	type:"text", align:"center", width: "9%"},
 				{ title:"하위 이름",	name:"sideNm",		type:"text", align:"center", width: "20%",
@@ -303,22 +302,22 @@ function fnNavJsGrid(data){
 					}
 				});
 				
-				//수정 intpu sync 체크			
-				$("input[name='syncSide']").on("keyup keydown change", function(){				
-					fnOnSync(this, "sideList");	
+				//수정 intpu sync 체크
+				$("input[name='syncSide']").on("keyup keydown change", function(){	
+					fnOnSync(this, "sideList");
 				});
 				
 				//수정 select sync 체크
-				$("select[name='syncSide']").on("change", function(){				
-					fnOnSync(this, "sideList");	
+				$("select[name='syncSide']").on("change", function(){			
+					fnOnSync(this, "sideList");
 				});
 				
 				//수정 button sync 체크
-				$("button[name='syncSide']").on("click", function(){				
+				$("button[name='syncSide']").on("click", function(){			
 					if($(this).val() === "Y")	$(this).val("N").text("N");
 					else						$(this).val("Y").text("Y");
 					
-					fnOnSync(this, "sideList");	
+					fnOnSync(this, "sideList");
 				});
 			}
 		});
@@ -335,7 +334,7 @@ function fnNavJsGrid(data){
 				let idx = navNoIdx[$(obj).data("navSeq")];
 				let cIdx = navCloneNoIdx[$(obj).data("navSeq")];
 				
-				data.navList[idx][name] = $(obj).val();			
+				data.navList[idx][name] = $(obj).val();
 				
 				if(String(clone.navList[cIdx][name]) === String($(obj).val())){
 					$(obj).removeClass("sync-blue");
@@ -433,22 +432,6 @@ function fnNavJsGrid(data){
 		return $el;
 	}
 	
-	
-	/* //nav 메뉴추가
-	$("#searchBar #navAdd").on("click", function(){
-		data.navList.push({navAuthNmSeq: "", navNm: "", navOrder:"", navSeq: new Date().getTime(), navShowYn:"N", navUrl:"", state:"insert"});		
-		navNoIdx = cfnNoIdx(data.navList, "navSeq");
-		$("#navMenuList").jsGrid("refresh");
-	}); */
-	
-	/* //side 메뉴추가
-	$("#searchBar #sideAdd").on("click", function(){
-		data.sideList.push({navSeq: Number($("#searchBar #sideAdd").data("selectNavSeq")), sideAuthNmSeq:"", 
-			sideNm:"", sideOrder:"", sideSeq: new Date().getTime(), sideShowYn:"N", sideUrl:"", state:"insert"});		
-		sideNoIdx = cfnNoIdx(data.sideList, "sideSeq");
-		$("#sideMenuList").jsGrid("refresh");
-	}); */
-	
 	//저장(반영)
 	$("#searchBar #navSave").on("click", function(){		
 		//유효성 검사
@@ -492,15 +475,6 @@ function fnNavJsGrid(data){
 			param.navClone = JSON.stringify(clone.navList);
 			param.navList = JSON.stringify(data.navList);
 			
-			//let cloneSideList = new Array();
-			//for(let i=0; i<clone.sideList.length; i++){
-			//	if(refNavSeq === clone.sideList[i].navSeq){
-			//		cloneSideList.push(common.clone(clone.sideList[i]));
-			//	}							
-			//}			
-			//param.sideClone = JSON.stringify(cloneSideList);
-			//param.sideList = JSON.stringify(data.sideList);			
-			
 			cfnCmmAjax("/admin/applyNavMenuList", param).done(function(res){
 				
 				if(Number(res)===-1){
@@ -522,8 +496,7 @@ function fnNavJsGrid(data){
 						navCloneNoIdx = cfnNoIdx(clone.navList, "navSeq");
 					});
 					alert("반영되었습니다.");
-				}				
-				//mf.submit('${navUrl}', '${sideUrl}', '${navNm}', '${sideNm}', refNavSeq);
+				}
 			});
 		}
 	});
@@ -584,22 +557,21 @@ function fnNavJsGrid(data){
 			cfnCmmAjax("/admin/applySideMenuList", param).done(function(res){
 				if(Number(res)===-1){
 					alert("수정하려는 데이터가 이미 수정되어 수정할 수 없습니다. 반영이 취소됩니다.");				
-				}else{
-					cfnCmmAjax("/admin/selectSideMenuList", param).done(function(result){						
+				}else{					
+					cfnCmmAjax("/admin/selectSideMenuList").done(function(result){						
 						clone.sideList = common.clone(result);
-						data.sideList.splice(0, data.sideList.length);
-						
-						for(let i=0; i<result.length; i++){
-							data.sideList.push(result[i]);
-						}
-						
-						$("#navMenuList").jsGrid("refresh");
+						data.sideList.splice(0, data.sideList.length);						
+						for(let i=0; i<clone.sideList.length; i++){
+							if(refNavSeq === clone.sideList[i].navSeq){
+								data.sideList.push(common.clone(clone.sideList[i]));
+							}
+						}						
+						$("#sideMenuList").jsGrid("refresh");
 						sideNoIdx = cfnNoIdx(data.sideList, "sideSeq");
 						sideCloneNoIdx = cfnNoIdx(clone.sideList, "sideSeq");
 					});
 					alert("반영되었습니다.");
 				}
-				//mf.submit('${navUrl}', '${sideUrl}', '${navNm}', '${sideNm}', navSeq);			
 			});
 		}
 	});
@@ -613,12 +585,6 @@ function fnNavJsGrid(data){
 		}
 		$("#navMenuList").jsGrid("refresh");		
 	});
-	
-	
-	
-	
-	
-	
 }
 </script>
 
@@ -626,23 +592,9 @@ function fnNavJsGrid(data){
 	<button id="navSave" class="btn-gray trs ">상위메뉴 저장</button>
 	<button id="sideSave" class="btn-gray trs ">하위메뉴 저장</button>
 	<button id="cancel" class="btn-gray trs">취소</button>
-	
-	
-
-	<!-- <button id="navAdd" class="btn-gray trs">추가</button> -->
-	<!-- <button id="navSave" class="btn-gray trs">저장</button>
-	<button id="navCancel" class="btn-gray trs">취소</button> -->
-	<!-- 	<div class="pull-right">
-		<button id="sideAdd" class="btn-gray trs">추가</button>
-		<button id="sideSave" class="btn-gray trs">저장</button>
-		<button id="sideCancel" class="btn-gray trs">취소</button>
-	</div> -->
 </div>
 
 <div style="margin-top: 50px;">
 	<div id="navMenuList" class="pull-left"></div>
 	<div id="sideMenuList"  class="pull-right"></div>
 </div>
-
-
-

@@ -131,6 +131,12 @@ public class WhiteMap extends HashMap<String, Object> {
 		}		
 		return copyMap;
 	}
+	
+	public WhiteMap createKeyNewMap(String key) {
+		WhiteMap map = new WhiteMap();
+		map.put(key, this.get(key));
+		return map; 
+	}
 }
 
 

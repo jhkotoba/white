@@ -77,7 +77,8 @@ public class AdminController {
 	 */
 	@RequestMapping(value="/admin/selectSideMenuList.ajax")
 	public List<WhiteMap> selectSideMenuList(HttpServletRequest request) {
-		return adminService.selectSideMenuList();	
+		WhiteMap param = new WhiteMap(request);
+		return adminService.selectSideMenuList(param);	
 	}
 	
 	/**

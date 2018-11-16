@@ -94,18 +94,9 @@ public class AdminMapper {
 	 * @param param
 	 * @return
 	 */
-	public List<WhiteMap> selectSideMenuList() {
-		return this.selectSideMenuList(null);
-	}
-	
-	/**
-	 * 사이드 메뉴 리스트 조회
-	 * @param param
-	 * @return
-	 */
-	public List<WhiteMap> selectSideMenuList(String navSeq) {
-		logger.debug(navSeq);
-		return sqlSession.selectList("adminMapper.selectSideMenuList", navSeq);
+	public List<WhiteMap> selectSideMenuList(WhiteMap param) {
+		logger.debug(param);
+		return sqlSession.selectList("adminMapper.selectSideMenuList", param);
 	}
 	
 	/**

@@ -80,8 +80,8 @@
 	</select>
 	
 	<!--  -->
-	<select id="selectSideMenuList" parameterType="String" resultType="whiteMap">
-		SELECT
+	<select id="selectSideMenuList" parameterType="whiteMap" resultType="whiteMap">
+		SELECT			
 			sm.side_seq AS sideSeq,
 			sm.nav_seq AS navSeq,
 			sm.side_nm AS sideNm,
@@ -90,12 +90,26 @@
 			sm.side_show_yn AS sideShowYn,
 			sm.side_order AS sideOrder
 		FROM side_menu AS sm
-		<if test="value != null and value != ''">
+		<if test="navSeq != null and navSeq != ''">
 		WHERE sm.nav_seq = #{navSeq}
-		</if>
+		</if>		
+		ORDER BY sm.side_order		
+	</select>
+	
+	<!--  -->
+	<select id="selectNSideMenuList" parameterType="String" resultType="whiteMap">
+		SELECT			
+			sm.side_seq AS sideSeq,
+			sm.nav_seq AS navSeq,
+			sm.side_nm AS sideNm,
+			sm.side_url AS sideUrl,
+			sm.side_auth_nm_seq AS sideAuthNmSeq,
+			sm.side_show_yn AS sideShowYn,
+			sm.side_order AS sideOrder
+		FROM side_menu AS sm		
+		WHERE sm.nav_seq = #{navSeq}		
 		ORDER BY sm.side_order	
 	</select>	
-	
 	
 	<insert id="insertAuthList" parameterType="java.util.List">
 		INSERT INTO authority(		
