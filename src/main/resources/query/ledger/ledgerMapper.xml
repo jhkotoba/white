@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+
+<mapper namespace="ledgerMapper">
+
+	<!-- 해당 유저 목적 리스트 조회 -->
+	<select id="selectPurList" resultType="whiteMap" parameterType="whiteMap">
+		SELECT			
+			pur_seq AS purSeq,
+	  		pur_order AS purOrder,
+	 		purpose AS purpose,
+	 		pur_type AS purType
+		FROM purpose
+		WHERE user_seq = #{userSeq}
+		ORDER BY pur_order
+	</select>
+	
+	<!-- 해당 유저 상세목적 리스트 조회 -->
+	<select id="selectPurDtlList" resultType="whiteMap" parameterType="whiteMap">
+		SELECT			
+			pur_dtl_seq AS purDtlSeq,
+			pur_seq AS purSeq,
+			pur_dtl_order AS purDtlOrder,
+			pur_detail AS purDetail			
+		FROM purpose_detail
+		WHERE user_seq = #{userSeq}
+		ORDER BY pur_dtl_order	
+	</select>
+	
+</mapper>

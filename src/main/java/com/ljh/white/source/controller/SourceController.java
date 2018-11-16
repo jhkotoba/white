@@ -4,8 +4,6 @@ package com.ljh.white.source.controller;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,16 +13,12 @@ import com.ljh.white.source.service.SourceService;
 
 @RestController
 public class SourceController {
-			
-	private static Logger logger = LogManager.getLogger(SourceController.class);
 	
 	@Resource(name = "SourceService")
-	private SourceService sourceService;	
+	private SourceService sourceService;
 	
 	@RequestMapping(value="/source/selectSourceList.ajax" )
-	public WhiteMap selectSourceList(HttpServletRequest request){
-		logger.debug("selectSourceList Start");
-		
+	public WhiteMap selectSourceList(HttpServletRequest request){		
 		WhiteMap param = new WhiteMap(request);
 		
 		WhiteMap result = new WhiteMap();
@@ -36,8 +30,6 @@ public class SourceController {
 	
 	@RequestMapping(value="/source/selectSourceDtlView.ajax")
 	public WhiteMap selectSourceDtlView(HttpServletRequest request) {
-		logger.debug("selectSourceDtlView Start");
-		
 		WhiteMap param = new WhiteMap(request);
 		return sourceService.selectSourceDtlView(param);
 		
@@ -45,8 +37,6 @@ public class SourceController {
 	
 	@RequestMapping(value="/source/insertSource.ajax" )
 	public int insertSourceCode(HttpServletRequest request){
-		logger.debug("insertSource Start");
-		
 		WhiteMap param = new WhiteMap(request);
 		return sourceService.insertSource(param);
 	
@@ -54,16 +44,12 @@ public class SourceController {
 	
 	@RequestMapping(value="/source/updateSource.ajax" )
 	public int updateSource(HttpServletRequest request){
-		logger.debug("updateSource Start");
-		
 		WhiteMap param = new WhiteMap(request);		
 		return sourceService.updateSource(param);	
 	}
 	
 	@RequestMapping(value="/source/deleteSource.ajax" )
 	public int deleteSource(HttpServletRequest request){
-		logger.debug("deleteSource Start");
-		
 		WhiteMap param = new WhiteMap(request);		
 		return sourceService.deleteSource(param);	
 	}

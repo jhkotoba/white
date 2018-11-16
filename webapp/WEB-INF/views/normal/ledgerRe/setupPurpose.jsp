@@ -382,7 +382,7 @@ let purDtl = {
 	
 	add : function(){
 		
-		if(emptyCheck.isNotEmpty(this.purSeq)){
+		if(isNotEmpty(this.purSeq)){
 			if(this.purDtlList.length === 0){
 				this.purDtlList.push({purSeq: this.purSeq, purDtlOrder: 1, purDetail: '', state: 'insert'});
 			}else{
@@ -403,7 +403,7 @@ let purDtl = {
 	},
 	
 	view : function(purSeq, purpose){
-		if(emptyCheck.isNotEmpty(purSeq)){
+		if(isNotEmpty(purSeq)){
 			this.purSeq = purSeq;
 			this.purpose = purpose;
 		}
@@ -413,7 +413,7 @@ let purDtl = {
 		let tag = "<table class='table table-striped table-sm table-bordered'>";
 			tag	+= "<tr>";
 			tag += "<th colspan='2'>순서</th>";
-			tag	+= "<th>"+ (emptyCheck.isEmpty(this.purpose)===true?"":"\""+this.purpose+"\"") +" 상세목적 내용</th>";
+			tag	+= "<th>"+ (isEmpty(this.purpose)===true?"":"\""+this.purpose+"\"") +" 상세목적 내용</th>";
 			tag	+= "<th>순서설정</th>";
 			tag += "</tr>";
 		

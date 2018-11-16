@@ -42,6 +42,7 @@ public class WhiteMap extends HashMap<String, Object> {
 				this.put(key, values);			
 			}	
 		}
+		logger.debug("url: "+request.getRequestURI());
 		logger.debug("new WhiteMap(request): "+this);
 	}
 	

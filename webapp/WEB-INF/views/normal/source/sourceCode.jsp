@@ -12,7 +12,7 @@ $(document).ready(function(){
 	fnJsGrid();
 	
 	//코드 셀렉트박스 조회
-	cfnSelectCode("sc").done(function(data){		
+	cfnSelectCode("sc").done(function(data){
     	let tag = "";
     	for(let i=0; i<data.length; i++){
     		tag += "<option value="+data[i].code+">"+data[i].codeNm+"</option>";	    		
