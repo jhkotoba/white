@@ -197,7 +197,7 @@ function fnPurGrid(data){
 			pageSize: 10,
 			
 			fields: [
-				{ align:"center", width: "7%",
+				{ align:"center", width: "8%",
 					headerTemplate : function(){
 						return $("<button>").attr("id", "purDtlAdd").addClass("btn-gray trs sm").text("+").on("click", function(){
 							data.purDtlList.push({purSeq: refPurSeq, purDetail:"", purDtlOrder:"", purDtlSeq: new Date().getTime(), state:"insert"});		
@@ -245,8 +245,8 @@ function fnPurGrid(data){
 	                    return chk;
 	                }
 				},
-				{ title:"순서",	name:"purDtlOrder",	type:"text", align:"center", width: "9%"},
-				{ title:"상세목적",	name:"purDetail",		type:"text", align:"center", width: "20%",
+				{ title:"순서",	name:"purDtlOrder",	type:"text", align:"center", width: "12%"},
+				{ title:"상세목적",	name:"purDetail",		type:"text", align:"center", width: "80%",
 					itemTemplate: function(value, item){													
 						return fnRefreshedSync(item, "purDetail", "purDtlList", "input");
 					}
@@ -271,19 +271,6 @@ function fnPurGrid(data){
 				
 				//수정 intpu sync 체크
 				$("input[name='syncPurDtl']").on("keyup keydown change", function(){	
-					fnOnSync(this, "purDtlList");
-				});
-				
-				//수정 select sync 체크
-				$("select[name='syncPurDtl']").on("change", function(){			
-					fnOnSync(this, "purDtlList");
-				});
-				
-				//수정 button sync 체크
-				$("button[name='syncPurDtl']").on("click", function(){			
-					if($(this).val() === "Y")	$(this).val("N").text("N");
-					else						$(this).val("Y").text("Y");
-					
 					fnOnSync(this, "purDtlList");
 				});
 			}
@@ -377,7 +364,7 @@ function fnPurGrid(data){
 			}		
 		}else if(listName === "purDtlList"){
 			
-			$el.attr("name", "syncSide").data("purDtlSeq", item.purDtlSeq).data("name", name);		
+			$el.attr("name", "syncPurDtl").data("purDtlSeq", item.purDtlSeq).data("name", name);		
 
 			if(item.state === "insert") $el.addClass("sync-green");	
 			else if(item.state === "update"){									
@@ -395,6 +382,75 @@ function fnPurGrid(data){
 		}		
 		return $el;
 	}
+	
+	//저장(반영)
+	$("#searchBar #purSave").on("click", function(){		
+		//유효성 검사
+		let isVali = true;
+		$("[name='syncPur']").each(function(i, e){
+			if(isEmpty($(e).val())){
+				isVali = false;
+				wVali.alert({element : $(e), msg: "값을 입력해 주세요."}); return false;
+			}
+			switch($(e).data("name")){
+			case "navNm":			
+				if(!isOnlyHanAlphaNum($(e).val())){
+					isVali = false;
+					wVali.alert({element : $(e), msg: "한글, 영문자, 숫자를 입력해 주세요."}); return false;
+				}else if($(e).val().length > 20){
+					isVali = false;
+					wVali.alert({element : $(e), msg: "최대 글자수 20자 까지 입력할 수 있습니다."}); return false;
+				}
+				break;
+			case "navUrl":			
+				if(!isOnlyOneURL($(e).val())){
+					isVali = false;
+					wVali.alert({element : $(e), msg: "첫번째 문자에 /, 영문자, 숫자를 입력해 주세요."}); return false;
+				}else if($(e).val().length > 40){
+					isVali = false;
+					wVali.alert({element : $(e), msg: "최대 글자수 40자 까지 입력할 수 있습니다."}); return false;
+				}
+				break;
+			}			
+		});
+		
+		if(isVali && confirm("저장하시겠습니까?")){
+			
+			for(let i=0, j=1; i<data.navList.length; i++){
+				if(data.navList[i].state !== "delete"){
+					data.navList[i].navOrder = (j++);	
+				}
+			}
+			
+			let param = {};
+			param.purClone = JSON.stringify(clone.purList);
+			param.purList = JSON.stringify(data.purList);
+			
+			cfnCmmAjax("/admin/applyPurList", param).done(function(res){
+				
+				if(Number(res)===-1){
+					alert("수정하려는 데이터가 이미 수정되어 수정할 수 없습니다. 반영이 취소됩니다.");
+				}else if(Number(res)===-2){
+					alert("삭제하려는 상위메뉴가 하위메뉴에서 사용중 입니다. 반영이 취소됩니다.");
+				}else{					
+					cfnCmmAjax("/admin/selectPurList", param).done(function(result){
+						initSide = false;
+						clone.purList = common.clone(result);
+						data.purList.splice(0, data.purList.length);
+						
+						for(let i=0; i<result.length; i++){
+							data.purList.push(result[i]);
+						}
+						
+						$("#purList").jsGrid("refresh");
+						purNoIdx = cfnNoIdx(data.purList, "purSeq");
+						purCloneNoIdx = cfnNoIdx(clone.purList, "purSeq");
+					});
+					alert("반영되었습니다.");
+				}
+			});
+		}
+	});
 	
 	//취소
 	$("#searchBar #cancel").on("click", function(){		

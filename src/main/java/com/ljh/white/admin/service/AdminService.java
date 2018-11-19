@@ -233,8 +233,6 @@ public class AdminService {
 			if(updateList.size()>0) adminMapper.updateNavMenuList(updateList);
 			return 1;
 		}
-		
-		
 	}
 	
 	
