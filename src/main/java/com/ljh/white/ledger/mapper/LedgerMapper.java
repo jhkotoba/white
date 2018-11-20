@@ -31,4 +31,113 @@ public class LedgerMapper {
 	public List<WhiteMap> selectPurDtlList(WhiteMap param) {
 		return sqlSession.selectList("ledgerMapper.selectPurDtlList", param);
 	}
+	
+	/**
+	 * 해당 유저 목적 반영하기전 목적 시퀀스 검증
+	 * @param list
+	 * @return
+	 */
+	public int selectVerifyPurSeqStrList(WhiteMap param) {
+		return sqlSession.selectOne("ledgerMapper.selectVerifyPurSeqStrList", param);
+	}
+	
+	/**
+	 * 거래내역에 목적이 사용되는지 확인
+	 * @param list
+	 * @return
+	 */
+	public int selectIsUsedPurposeRec(List<WhiteMap> list) {
+		return sqlSession.selectOne("ledgerMapper.selectIsUsedPurposeRec", list);		 
+	}
+	
+	/**
+	 * 목적 삭제시 상세목적에 부모로써 사용되는지 확인 
+	 * @param list
+	 * @return
+	 */
+	public int selectIsUsedPurposePurDtl(List<WhiteMap> list) {		
+		return sqlSession.selectOne("ledgerMapper.selectIsUsedPurposePurDtl", list);		 
+	}	
+	
+	/**
+	 * 목적 리스트 delete
+	 * @param list
+	 * @return
+	 */
+	public int deletePurList(List<WhiteMap> list) {		
+		return sqlSession.delete("ledgerMapper.deletePurList", list);		 
+	}
+	
+	/**
+	 * 목적 리스트 insert
+	 * @param list
+	 * @return
+	 */
+	public int insertPurList(List<WhiteMap> list) {		
+		return sqlSession.insert("ledgerMapper.insertPurList", list);		 
+	}	
+	
+	/**
+	 * 목적 리스트 update
+	 * @param list
+	 * @return
+	 */
+	public int updatePurList(List<WhiteMap> list) {		
+		return sqlSession.update("ledgerMapper.updatePurList", list);		 
+	}
+	
+	/**
+	 * 해당 유저 상세목적 반영하기전 상세목적 시퀀스 검증
+	 * @param list
+	 * @return
+	 */
+	public int selectVerifyPurDtlSeqStrList(WhiteMap param) {
+		return sqlSession.selectOne("ledgerMapper.selectVerifyPurDtlSeqStrList", param);
+	}
+	
+	/**
+	 * 해당유저 상세목적 반영하기전 목적 시퀀스 검증
+	 * @param list
+	 * @return 1: OK, 1이외숫자 NO
+	 */
+	public int selectVerifyPurSeq(WhiteMap param) {
+		return sqlSession.selectOne("ledgerMapper.selectVerifyPurSeq", param);
+	}
+	
+	
+	/**
+	 * 거래내역에 상세목적이 사용되는지 확인
+	 * @param list
+	 * @return
+	 */
+	public int selectIsUsedPurDtlRec(List<WhiteMap> list) {		
+		return sqlSession.selectOne("ledgerMapper.selectIsUsedPurDtlRec", list);		 
+	}
+	
+	/**
+	 * 상세목적 리스트 delete
+	 * @param list
+	 * @return
+	 */
+	public int deletePurDtlList(List<WhiteMap> list) {		
+		return sqlSession.delete("ledgerMapper.deletePurDtlList", list);		 
+	}
+	
+	/**
+	 * 상세목적 리스트 update
+	 * @param list
+	 * @return
+	 */
+	public int updatePurDtlList(List<WhiteMap> list) {		
+		return sqlSession.update("ledgerMapper.updatePurDtlList", list);		 
+	}
+	
+	/**
+	 * 상세목적 리스트 insert
+	 * @param list
+	 * @return
+	 */
+	public int insertPurDtlList(List<WhiteMap> list) {		
+		return sqlSession.insert("ledgerMapper.insertPurDtlList", list);		 
+	}
 }

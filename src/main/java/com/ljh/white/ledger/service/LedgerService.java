@@ -38,59 +38,91 @@ public class LedgerService {
 	}
 	
 	/**
-	 * 목적리스트 적용
+	 * 목적리스트 반영
 	 * @param param
-	 * @return -1: 반영전 수정할 데이터가 수정하기전에 바뀜, -2:삭제대상이 사용되는 시퀀스. 삭제불가, 1:성공
+	 * @return -1: 목적 시퀀스 불일치 -2:삭제대상이 상세목적에 사용되는 시퀀스. 삭제불가 -3:삭제대상이 거래내역에 사용되는 시퀀스. 삭제불가, 1:성공
 	 */
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
 	public int applyPurList(WhiteMap param) {
 		
-		//반영전 수정되었는지 체크
-		List<WhiteMap> menuList = param.convertListWhiteMap("purClone", false);
-		List<WhiteMap> list = ledgerMapper.selectPurList(param);		
+		List<WhiteMap> purList = param.convertListWhiteMap("purList", true);
 		
-		if(menuList.size() != list.size()) {
-			return -1;
-		}else {
-			for(int i=0; i<menuList.size(); i++) {
-				if(!menuList.get(i).get("navNm").equals(list.get(i).get("navNm"))) {
-					return -1;
-				}else if(!menuList.get(i).get("navUrl").equals(list.get(i).get("navUrl"))) {
-					return -1;
-				}else if(!menuList.get(i).get("navAuthNmSeq").equals(list.get(i).get("navAuthNmSeq"))) {
-					return -1;
-				}else if(!menuList.get(i).get("navShowYn").equals(list.get(i).get("navShowYn"))) {
-					return -1;
-				}else if(!menuList.get(i).get("navOrder").equals(list.get(i).get("navOrder"))) {
-					return -1;
-				}
-			}			
-		}
-		
-		menuList = param.convertListWhiteMap("navList", false);		
 		List<WhiteMap> deleteList = new ArrayList<WhiteMap>();
 		List<WhiteMap> insertList = new ArrayList<WhiteMap>();
 		List<WhiteMap> updateList = new ArrayList<WhiteMap>();
+		StringBuffer sb = new StringBuffer();
 		
-		for(int i=0; i<menuList.size(); i++) {
-			if("delete".equals(menuList.get(i).get("state"))) {
-				deleteList.add(menuList.get(i));
-			}else if("insert".equals(menuList.get(i).get("state"))) {
-				insertList.add(menuList.get(i));
+		for(int i=0; i<purList.size(); i++) {			
+			sb.append(purList.get(i).get("purSeq")).append(",");
+			
+			if("delete".equals(purList.get(i).get("state"))) {
+				deleteList.add(purList.get(i));
+			}else if("insert".equals(purList.get(i).get("state"))) {
+				insertList.add(purList.get(i));
 			}else {
-				updateList.add(menuList.get(i));
+				updateList.add(purList.get(i));
 			}
 		}
 		
-		/*if(deleteList.size()>0 && ledgerMapper.selectIsUsedSideUrl(deleteList)>0) {
+		sb.setLength(sb.length() - 1);
+		param.put("verifyPurSeqList", sb.toString());		
+		
+		if(ledgerMapper.selectVerifyPurSeqStrList(param)>0) {
+			return -1;
+		}else if(deleteList.size()>0 && ledgerMapper.selectIsUsedPurposePurDtl(deleteList)>0) {				
+			return -2;
+		}else if(deleteList.size()>0 && ledgerMapper.selectIsUsedPurposeRec(deleteList)>0) {				
+			return -3;
+		}else {
+			if(deleteList.size()>0) ledgerMapper.deletePurList(deleteList);
+			if(insertList.size()>0) ledgerMapper.insertPurList(insertList);	
+			if(updateList.size()>0) ledgerMapper.updatePurList(updateList);
+			return 1;
+		}
+	}
+	
+	
+	/**
+	 * 상세목적 리스트 반영
+	 * @param param
+	 * @return -1: 상세목적 시퀀스 불일치 -2:삭제대상이 거래내역에 사용되는 시퀀스. 삭제불가, 1:성공
+	 */
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
+	public int applyPurDtlList(WhiteMap param) {
+		
+		List<WhiteMap> purDtlList = param.convertListWhiteMap("purDtlList", true);
+		
+		List<WhiteMap> deleteList = new ArrayList<WhiteMap>();
+		List<WhiteMap> insertList = new ArrayList<WhiteMap>();
+		List<WhiteMap> updateList = new ArrayList<WhiteMap>();
+		StringBuffer sb = new StringBuffer();
+		
+		for(int i=0; i<purDtlList.size(); i++) {
+			sb.append(purDtlList.get(i).get("purDtlSeq")).append(",");
+			
+			if("delete".equals(purDtlList.get(i).get("state"))) {
+				deleteList.add(purDtlList.get(i));
+			}else if("insert".equals(purDtlList.get(i).get("state"))) {
+				insertList.add(purDtlList.get(i));
+			}else {
+				updateList.add(purDtlList.get(i));
+			}
+		}
+		
+		sb.setLength(sb.length() - 1);
+		param.put("verifyPurDtlSeqList", sb.toString());		
+		
+		if(ledgerMapper.selectVerifyPurDtlSeqStrList(param)>0) {
+			return -1;
+		}else if(ledgerMapper.selectVerifyPurSeq(param)!=1) {
+			return -1;
+		}else if(deleteList.size()>0 && ledgerMapper.selectIsUsedPurDtlRec(deleteList)>0) {				
 			return -2;
 		}else {
-			if(deleteList.size()>0) ledgerMapper.deleteNavMenuList(deleteList);
-			if(insertList.size()>0) ledgerMapper.insertNavMenuList(insertList);	
-			if(updateList.size()>0) ledgerMapper.updateNavMenuList(updateList);
+			if(deleteList.size()>0) ledgerMapper.deletePurDtlList(deleteList);
+			if(insertList.size()>0) ledgerMapper.insertPurDtlList(insertList);	
+			if(updateList.size()>0) ledgerMapper.updatePurDtlList(updateList);
 			return 1;
-		}*/
-		
-		return 0;
+		}
 	}
 }

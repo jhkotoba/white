@@ -253,7 +253,7 @@ function fnPurGrid(data){
 				}				
 			],
 			onRefreshed: function() {
-				let $gridData = $("#sideMenuList .jsgrid-grid-body tbody");
+				let $gridData = $("#purDtlList .jsgrid-grid-body tbody");
 				$gridData.sortable({
 					update: function(e, ui) {
 						let items = $.map($gridData.find("tr"), function(row) {
@@ -383,7 +383,7 @@ function fnPurGrid(data){
 		return $el;
 	}
 	
-	//저장(반영)
+	//목적 저장(반영)
 	$("#searchBar #purSave").on("click", function(){		
 		//유효성 검사
 		let isVali = true;
@@ -393,7 +393,7 @@ function fnPurGrid(data){
 				wVali.alert({element : $(e), msg: "값을 입력해 주세요."}); return false;
 			}
 			switch($(e).data("name")){
-			case "navNm":			
+			case "purpose":			
 				if(!isOnlyHanAlphaNum($(e).val())){
 					isVali = false;
 					wVali.alert({element : $(e), msg: "한글, 영문자, 숫자를 입력해 주세요."}); return false;
@@ -402,39 +402,31 @@ function fnPurGrid(data){
 					wVali.alert({element : $(e), msg: "최대 글자수 20자 까지 입력할 수 있습니다."}); return false;
 				}
 				break;
-			case "navUrl":			
-				if(!isOnlyOneURL($(e).val())){
-					isVali = false;
-					wVali.alert({element : $(e), msg: "첫번째 문자에 /, 영문자, 숫자를 입력해 주세요."}); return false;
-				}else if($(e).val().length > 40){
-					isVali = false;
-					wVali.alert({element : $(e), msg: "최대 글자수 40자 까지 입력할 수 있습니다."}); return false;
-				}
-				break;
-			}			
+			}
 		});
 		
 		if(isVali && confirm("저장하시겠습니까?")){
 			
-			for(let i=0, j=1; i<data.navList.length; i++){
-				if(data.navList[i].state !== "delete"){
-					data.navList[i].navOrder = (j++);	
+			for(let i=0, j=1; i<data.purList.length; i++){
+				if(data.purList[i].state !== "delete"){
+					data.purList[i].purOrder = (j++);	
 				}
 			}
 			
 			let param = {};
-			param.purClone = JSON.stringify(clone.purList);
 			param.purList = JSON.stringify(data.purList);
 			
-			cfnCmmAjax("/admin/applyPurList", param).done(function(res){
+			cfnCmmAjax("/ledger/applyPurList", param).done(function(res){
 				
 				if(Number(res)===-1){
-					alert("수정하려는 데이터가 이미 수정되어 수정할 수 없습니다. 반영이 취소됩니다.");
+					alert("데이터가 정상적이지 않아 반영이 취소됩니다.");
 				}else if(Number(res)===-2){
-					alert("삭제하려는 상위메뉴가 하위메뉴에서 사용중 입니다. 반영이 취소됩니다.");
+					alert("삭제하려는 목적이 상세목적에서 사용중 입니다. 반영이 취소됩니다.");
+				}else if(Number(res)===-3){
+					alert("삭제하려는 목적이 거래내역에서 사용중 입니다. 반영이 취소됩니다.");
 				}else{					
-					cfnCmmAjax("/admin/selectPurList", param).done(function(result){
-						initSide = false;
+					cfnCmmAjax("/ledger/selectPurList", param).done(function(result){
+						initPurDtl = false;
 						clone.purList = common.clone(result);
 						data.purList.splice(0, data.purList.length);
 						
@@ -445,6 +437,64 @@ function fnPurGrid(data){
 						$("#purList").jsGrid("refresh");
 						purNoIdx = cfnNoIdx(data.purList, "purSeq");
 						purCloneNoIdx = cfnNoIdx(clone.purList, "purSeq");
+					});
+					alert("반영되었습니다.");
+				}
+			});
+		}
+	});
+	
+	//상세목적 저장(반영)
+	$("#searchBar #purDtlSave").on("click", function(){
+		//유효성 검사
+		let isVali = true;
+		$("[name='syncPurDtl']").each(function(i, e){
+			if(isEmpty($(e).val())){
+				isVali = false;
+				wVali.alert({element : $(e), msg: "값을 입력해 주세요."}); return false;
+			}
+			switch($(e).data("name")){
+			case "purDetail":
+				if(!isOnlyHanAlphaNum($(e).val())){
+					isVali = false;
+					wVali.alert({element : $(e), msg: "한글, 영문자, 숫자를 입력해 주세요."}); return false;
+				}else if($(e).val().length > 20){
+					isVali = false;
+					wVali.alert({element : $(e), msg: "최대 글자수 20자 까지 입력할 수 있습니다."}); return false;
+				}
+				break;
+			}			
+		});
+		
+		if(isVali && confirm("저장하시겠습니까?")){
+			
+			for(let i=0, j=1; i<data.purDtlList.length; i++){
+				if(data.purDtlList[i].state !== "delete"){
+					data.purDtlList[i].purDtlOrder = (j++);	
+				}
+			}
+			
+			let param = {};			
+			param.purSeq = refPurSeq;			
+			param.purDtlList = JSON.stringify(data.purDtlList);
+			
+			cfnCmmAjax("/ledger/applyPurDtlList", param).done(function(res){
+				if(Number(res)===-1){
+					alert("데이터가 정상적이지 않아 반영이 취소됩니다.");
+				}else if(Number(res)===-2){
+					alert("삭제하려는 상세목적이 거래내역에서 사용중 입니다. 반영이 취소됩니다.");		
+				}else{					
+					cfnCmmAjax("/ledger/selectPurDtlList").done(function(result){						
+						clone.purDtlList = common.clone(result);
+						data.purDtlList.splice(0, data.purDtlList.length);						
+						for(let i=0; i<clone.purDtlList.length; i++){
+							if(refPurSeq === clone.purDtlList[i].purSeq){
+								data.purDtlList.push(common.clone(clone.purDtlList[i]));
+							}
+						}						
+						$("#purDtlList").jsGrid("refresh");
+						purDtlNoIdx = cfnNoIdx(data.purDtlList, "purDtlSeq");
+						purDtlCloneNoIdx = cfnNoIdx(clone.purDtlList, "purDtlSeq");
 					});
 					alert("반영되었습니다.");
 				}

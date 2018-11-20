@@ -28,4 +28,151 @@
 		ORDER BY pur_dtl_order	
 	</select>
 	
+	<!-- 해당 유저 목적 반영하기전 목적 시퀀스 검증 -->
+	<select id="selectVerifyPurSeqStrList" resultType="int" parameterType="java.util.List">
+		SELECT COUNT(1)	FROM purpose
+		WHERE user_seq <![CDATA[ <> ]]> #{userSeq}
+		AND pur_seq IN (${verifyPurSeqList})
+	</select>
+	
+	<!-- 거래내역에 목적이 사용되는지 확인 -->
+	<select id="selectIsUsedPurposeRec" resultType="int" parameterType="java.util.List">
+		SELECT COUNT(1) FROM money_record_re
+		WHERE pur_seq IN
+		<foreach collection="list" item="item" separator="," open="(" close=")">
+			#{item.purSeq}
+		</foreach>
+	</select>
+	
+	<!-- 목적 삭제시 상세목적에 부모로써 사용되는지 확인 -->
+	<select id="selectIsUsedPurposePurDtl" resultType="int" parameterType="java.util.List">
+		SELECT COUNT(1) FROM purpose_detail
+		WHERE pur_seq IN
+		<foreach collection="list" item="item" separator="," open="(" close=")">
+			#{item.purSeq}
+		</foreach>
+	</select>
+	
+	<!-- 목적 list 삭제 -->
+	<delete id="deletePurList" parameterType="java.util.List">
+		DELETE FROM purpose
+		WHERE pur_seq IN 
+		<foreach collection="list" item="item" separator="," open="(" close=")">
+			#{item.purSeq}
+		</foreach>
+	</delete>
+	
+	<!-- 목적 리스트 insert -->
+	<insert id="insertPurList" parameterType="java.util.List">
+		INSERT INTO purpose(		
+			user_seq,	
+			pur_order,
+			purpose,
+			pur_type
+		)VALUES
+		<foreach collection="list" item="item" separator="),(" open="(" close=")">
+			#{item.userSeq},
+			#{item.purOrder},
+			#{item.purpose},
+			#{item.purType}
+		</foreach>	
+	</insert>
+	
+	<!-- 목적 list 수정 -->
+	<update id="updatePurList" parameterType="java.util.List">		
+		UPDATE purpose
+		SET pur_order = 
+		CASE		
+		<foreach collection="list" item="item">
+			WHEN pur_seq = #{item.purSeq} THEN #{item.purOrder}
+		</foreach>		
+		END,	
+		purpose = 
+		CASE		
+		<foreach collection="list" item="item">
+			WHEN pur_seq = #{item.purSeq} THEN #{item.purpose}
+		</foreach>		
+		END,
+		pur_type = 
+		CASE		
+		<foreach collection="list" item="item">
+			WHEN pur_seq = #{item.purSeq} THEN #{item.purType}
+		</foreach>		
+		END
+		WHERE pur_seq IN 
+		<foreach collection="list" item="item" separator="," open="(" close=")">
+			#{item.purSeq}
+		</foreach>		
+	</update>
+	
+	
+	<!-- 해당 유저 상세목적 반영하기전 상세목적 시퀀스 검증 -->
+	<select id="selectVerifyPurDtlSeqStrList" resultType="int" parameterType="java.util.List">
+		SELECT COUNT(1)	FROM purpose_detail
+		WHERE user_seq <![CDATA[ <> ]]> #{userSeq}
+		AND pur_dtl_seq IN (${verifyPurDtlSeqList})
+	</select>
+	
+	<!-- 해당 유저 상세목적반영하기전 목적 시퀀스 검증 -->
+	<select id="selectVerifyPurSeq" resultType="int" parameterType="whiteMap">
+		SELECT COUNT(1) FROM purpose
+		WHERE user_seq = #{userSeq}
+		AND pur_seq = #{purSeq}
+	</select>
+	
+	<!-- 거래내역에 상세목적이 사용되는지 확인 -->
+	<select id="selectIsUsedPurDtlRec" resultType="int" parameterType="java.util.List">
+		SELECT COUNT(1) FROM money_record_re
+		WHERE pur_dtl_seq IN
+		<foreach collection="list" item="item" separator="," open="(" close=")">
+			#{item.purDtlSeq}
+		</foreach>
+	</select>
+	
+	<!-- 상세목적 list 삭제 -->
+	<delete id="deletePurDtlList" parameterType="java.util.List">
+		DELETE FROM purpose_detail
+		WHERE pur_dtl_seq IN 
+		<foreach collection="list" item="item" separator="," open="(" close=")">
+			#{item.purDtlSeq}
+		</foreach>
+	</delete>
+	
+	<!-- 상세목적 list 수정 -->
+	<update id="updatePurDtlList" parameterType="java.util.List">		
+		UPDATE purpose_detail
+		SET	pur_dtl_order = 
+		CASE		
+		<foreach collection="list" item="item">
+			WHEN pur_dtl_seq = #{item.purDtlSeq} THEN #{item.purDtlOrder}
+		</foreach>		
+		END,	
+		pur_detail = 
+		CASE		
+		<foreach collection="list" item="item">
+			WHEN pur_dtl_seq = #{item.purDtlSeq} THEN #{item.purDetail}
+		</foreach>		
+		END
+		WHERE pur_dtl_seq IN 
+		<foreach collection="list" item="item" separator="," open="(" close=")">
+			#{item.purDtlSeq}
+		</foreach>
+	</update>
+	
+	<!-- 상세목적 리스트 insert -->
+	<insert id="insertPurDtlList" parameterType="java.util.List">
+		INSERT INTO purpose_detail(		
+			pur_seq,	
+			user_seq,	
+			pur_dtl_order,
+			pur_detail
+		)VALUES
+		<foreach collection="list" item="item" separator="),(" open="(" close=")">
+			#{item.purSeq}, 
+			#{item.userSeq}, 
+			#{item.purDtlOrder},
+			#{item.purDetail}			
+		</foreach>	
+	</insert>
+	
 </mapper>

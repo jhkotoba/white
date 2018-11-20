@@ -61,4 +61,27 @@ public class LedgerController {
 		return ledgerService.applyPurList(param);
 	}
 	
+	/**
+	 * 해당유저 상세목적 조회
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="/ledger/selectPurDtlList.ajax" )
+	public List<WhiteMap> selectPurDtlList(HttpServletRequest request){		
+		WhiteMap param = new WhiteMap(request);		
+		return ledgerService.selectPurDtlList(param);
+	}
+	
+	/**
+	 * 해당유저 상세목적 반영
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="/ledger/applyPurDtlList.ajax" )
+	public int applyPurDtlList(HttpServletRequest request){		
+		WhiteMap param = new WhiteMap(request);		
+		return ledgerService.applyPurDtlList(param);
+	}
+	
+	
 }
