@@ -125,4 +125,13 @@ public class LedgerService {
 			return 1;
 		}
 	}
+	
+	/**
+	 * 해당 유저 은행리스트
+	 * @param param
+	 * @return
+	 */
+	public List<WhiteMap> selectBankList(WhiteMap param){		
+		return ledgerMapper.selectBankList(param);	
+	}
 }

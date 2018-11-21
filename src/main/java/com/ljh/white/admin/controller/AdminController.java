@@ -136,7 +136,7 @@ public class AdminController {
 		
 		WhiteMap param = new WhiteMap(request);	
 		int result = adminService.applyNavMenuList(param);
-		whiteService.setNavAuth();		
+		whiteService.setNavAuth();	
 		return result;
 	}
 	
@@ -150,7 +150,7 @@ public class AdminController {
 		
 		WhiteMap param = new WhiteMap(request);	
 		int result = adminService.applySideMenuList(param);
-		whiteService.setNavAuth();		
+		whiteService.setSideAuth();		
 		return result;
 	}
 	

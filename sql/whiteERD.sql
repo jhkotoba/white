@@ -6,6 +6,7 @@ DROP TABLE IF EXISTS authority;
 DROP TABLE IF EXISTS side_menu;
 DROP TABLE IF EXISTS nav_menu;
 DROP TABLE IF EXISTS auth_name;
+DROP TABLE IF EXISTS bank;
 DROP TABLE IF EXISTS cmm_code;
 DROP TABLE IF EXISTS memo;
 DROP TABLE IF EXISTS money_record_re;
@@ -36,6 +37,20 @@ CREATE TABLE auth_name
 	auth_order int NOT NULL,
 	PRIMARY KEY (auth_nm_seq),
 	UNIQUE (auth_nm)
+);
+
+
+CREATE TABLE bank
+(
+	bank_seq int NOT NULL AUTO_INCREMENT,
+	user_seq int NOT NULL,
+	bank_name varchar(20) NOT NULL,
+	bank_account varchar(60) NOT NULL,
+	bank_show_yn varchar(1) NOT NULL,
+	bank_use_yn varchar(1) NOT NULL,
+	bank_order int NOT NULL,
+	PRIMARY KEY (bank_seq),
+	UNIQUE (bank_seq)
 );
 
 
@@ -205,6 +220,14 @@ ALTER TABLE purpose_detail
 
 
 ALTER TABLE authority
+	ADD FOREIGN KEY (user_seq)
+	REFERENCES white_user (user_seq)
+	ON UPDATE RESTRICT
+	ON DELETE RESTRICT
+;
+
+
+ALTER TABLE bank
 	ADD FOREIGN KEY (user_seq)
 	REFERENCES white_user (user_seq)
 	ON UPDATE RESTRICT

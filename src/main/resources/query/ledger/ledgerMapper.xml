@@ -175,4 +175,18 @@
 		</foreach>	
 	</insert>
 	
+	<!-- 은행 조회 -->
+	<select id="selectBankList" resultType="whiteMap" parameterType="whiteMap">
+		SELECT			
+			bank_seq AS bankSeq,
+			bank_name AS bankName,
+			bank_account AS bankAccount,
+			bank_show_yn AS bankShowYn,
+			bank_use_yn AS bankUseYn,
+			bank_order AS bankOrder
+		FROM bank
+		WHERE user_seq = #{userSeq}		
+		ORDER BY bank_order ASC
+	</select>
+	
 </mapper>

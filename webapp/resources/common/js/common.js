@@ -454,6 +454,15 @@ function isSpChar(_str){
 	return /[~!@\#$%<>^&*\()\-=+_\’]/gi.test(String(_str));
 }
 
+//숫자, 하이픈만 있는지 체크
+function isOnlyNumHyphen(_str){
+	if(isEmpty(_str)){
+		return false;
+	}else{
+		return /^[0-9|-]+$/.test(String(_str));
+	}
+}
+
 //문자열 관련
 let str = {
 	//첫번째 글자를 대문자

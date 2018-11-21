@@ -83,5 +83,16 @@ public class LedgerController {
 		return ledgerService.applyPurDtlList(param);
 	}
 	
+	/**
+	 * 해당유저 은행목록 조회
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="/ledger/selectBankList.ajax" )
+	public List<WhiteMap> selectBankList(HttpServletRequest request){		
+		WhiteMap param = new WhiteMap(request);		
+		return ledgerService.selectBankList(param);
+	}
+	
 	
 }

@@ -140,4 +140,13 @@ public class LedgerMapper {
 	public int insertPurDtlList(List<WhiteMap> list) {		
 		return sqlSession.insert("ledgerMapper.insertPurDtlList", list);		 
 	}
+	
+	/**
+	 * 해당 유저 은행 리스트 조회
+	 * @param paramMap
+	 * @return
+	 */
+	public List<WhiteMap> selectBankList(WhiteMap param) {
+		return sqlSession.selectList("ledgerMapper.selectBankList", param);
+	}
 }
