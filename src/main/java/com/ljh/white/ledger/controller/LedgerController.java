@@ -94,5 +94,15 @@ public class LedgerController {
 		return ledgerService.selectBankList(param);
 	}
 	
+	/**
+	 * 해당유저 은행목록 반영
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="/ledger/applybankList.ajax" )
+	public int applybankList(HttpServletRequest request){		
+		WhiteMap param = new WhiteMap(request);		
+		return ledgerService.applybankList(param);
+	}
 	
 }

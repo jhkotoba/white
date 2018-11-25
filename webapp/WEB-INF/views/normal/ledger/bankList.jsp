@@ -32,6 +32,13 @@ function fnGrid(data){
 		
 		fields: [
 			{ align:"center", width: "5%",
+				headerTemplate : function(){
+					return $("<button>").attr("id", "bankAdd").addClass("btn-gray trs sm").text("+").on("click", function(){
+						bankList.push({bankAccount:"", bankOrder: "", bankSeq:new Date().getTime(), bankName:"", bankShowYn:"N", bankUseYn:"N", state:"insert"});		
+						bankNoIdx = cfnNoIdx(bankList, "bankSeq");
+						$("#bankList").jsGrid("refresh");
+					});					
+				},				
                 itemTemplate: function(value, item) {
                     let chk = $("<input>").attr("type", "checkbox").attr("name", "check")
                     .data("bankSeq", item.bankSeq).data("bankOrder", item.bankOrder).on("change", function() {
@@ -147,11 +154,11 @@ function fnGrid(data){
 	});
 	
 	//권한추가
-	$("#searchBar #add").on("click", function(){
+	/* $("#searchBar #add").on("click", function(){
 		bankList.push({bankAccount:"", bankOrder: "", bankSeq:new Date().getTime(), bankName:"", bankShowYn:"N", bankUseYn:"N", state:"insert"});
 		bankNoIdx = cfnNoIdx(bankList, "bankSeq");
 		$("#bankList").jsGrid("refresh");
-	});
+	}); */
 	
 	//취소
 	$("#searchBar #cancel").on("click", function(){		
@@ -179,9 +186,9 @@ function fnGrid(data){
 			}
 			switch($(e).data("name")){
 			case "bankName":
-				if(!isOnlyAlphaNum($(e).val())){
+				if(!isOnlyHanAlphaNum($(e).val())){
 					isVali = false;
-					wVali.alert({element : $(e), msg: "영문자, 숫자를 입력해 주세요."}); return false;
+					wVali.alert({element : $(e), msg: "한글, 영문자, 숫자를 입력해 주세요."}); return false;
 				}else if($(e).val().length > 20){
 					isVali = false;
 					wVali.alert({element : $(e), msg: "최대 글자수 20자 까지 입력할 수 있습니다."}); return false;
@@ -202,11 +209,10 @@ function fnGrid(data){
 		
 		if(isVali && confirm("저장하시겠습니까?")){
 			
-			let param = {};
-			param.clone = JSON.stringify(clone);
+			let param = {};			
 			param.bankList = JSON.stringify(bankList);
 			
-			/* cfnCmmAjax("/admin/applybankList", param).done(function(res){
+			cfnCmmAjax("/ledger/applybankList", param).done(function(res){
 				if(Number(res)===-1){
 					alert("수정하려는 데이터가 이미 수정되어 수정할 수 없습니다. 반영이 취소됩니다.");
 				}else if(Number(res)===0){
@@ -215,7 +221,7 @@ function fnGrid(data){
 					alert("반영되었습니다.");
 				}
 				mf.submit('${navUrl}', '${sideUrl}', '${navNm}', '${sideNm}');				
-			}); */
+			});
 		}
 	});
 	
@@ -272,11 +278,8 @@ function fnGrid(data){
 }
 </script>
 
-<div id="searchBar" class="search-bar">
-	<button id="add" class="btn-gray trs">추가</button>
-	<div class="pull-right">	
-		<button id="save" class="btn-gray trs">저장</button>
-		<button id="cancel" class="btn-gray trs">취소</button>
-	</div>
+<div id="searchBar" class="search-bar pull-right">	
+	<button id="save" class="btn-gray trs">저장</button>
+	<button id="cancel" class="btn-gray trs">취소</button>
 </div>
 <div id="bankList"></div>

@@ -134,4 +134,44 @@ public class LedgerService {
 	public List<WhiteMap> selectBankList(WhiteMap param){		
 		return ledgerMapper.selectBankList(param);	
 	}
+	
+	/**
+	 * 해당 유저 은행 리스트 반영
+	 * @param parma
+	 * @return
+	 */
+	public int applybankList(WhiteMap param) {
+		List<WhiteMap> bankList = param.convertListWhiteMap("bankList", true);
+		
+		List<WhiteMap> deleteList = new ArrayList<WhiteMap>();
+		List<WhiteMap> insertList = new ArrayList<WhiteMap>();
+		List<WhiteMap> updateList = new ArrayList<WhiteMap>();
+		StringBuffer sb = new StringBuffer();
+		
+		for(int i=0; i<bankList.size(); i++) {
+			sb.append(bankList.get(i).get("bankSeq")).append(",");
+			
+			if("delete".equals(bankList.get(i).get("state"))) {
+				deleteList.add(bankList.get(i));
+			}else if("insert".equals(bankList.get(i).get("state"))) {
+				insertList.add(bankList.get(i));
+			}else {
+				updateList.add(bankList.get(i));
+			}
+		}
+		
+		sb.setLength(sb.length() - 1);
+		param.put("verifyBankSeqList", sb.toString());		
+		
+		if(ledgerMapper.selectVerifyBankSeqStrList(param)>0) {
+			return -1;
+		}else if(deleteList.size()>0 && ledgerMapper.selectIsUsedBankRec(deleteList)>0) {				
+			return -2;
+		}else {
+			if(deleteList.size()>0) ledgerMapper.deleteBankList(deleteList);
+			if(insertList.size()>0) ledgerMapper.insertBankList(insertList);	
+			if(updateList.size()>0) ledgerMapper.updateBankList(updateList);
+			return 1;
+		}
+	}
 }

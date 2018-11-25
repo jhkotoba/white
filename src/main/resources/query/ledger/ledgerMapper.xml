@@ -189,4 +189,72 @@
 		ORDER BY bank_order ASC
 	</select>
 	
+	<!-- 해당 유저 은행 반영하기전 상세목적 시퀀스 검증 -->
+	<select id="selectVerifyBankSeqStrList" resultType="int" parameterType="java.util.List">
+		SELECT COUNT(1)	FROM bank
+		WHERE user_seq <![CDATA[ <> ]]> #{userSeq}
+		AND bank_seq IN (${verifyBankSeqList})
+	</select>
+	
+	<!-- 은행 사용되는지 확인 -->
+	<select id="selectIsUsedBankRec" resultType="int" parameterType="java.util.List">
+		SELECT COUNT(1) FROM money_record_re
+		WHERE bank_seq IN
+		<foreach collection="list" item="item" separator="," open="(" close=")">
+			#{item.bankSeq}
+		</foreach>
+	</select>
+	
+	<!-- 은행 리스트 insert -->
+	<insert id="insertBankList" parameterType="java.util.List">
+		INSERT INTO user_bank(		
+			user_seq,	
+			bank_name,
+			bank_account,
+			bank_use_yn			
+		)VALUES
+		<foreach collection="list" item="item" separator="),(" open="(" close=")">
+			#{item.userSeq}, 
+			#{item.bankName},
+			#{item.bankAccount},		
+			#{item.bankUseYn}	
+		</foreach>	
+	</insert>
+	
+		<!-- 은행 list 수정 -->
+	<update id="updateBankList" parameterType="java.util.List">		
+		UPDATE user_bank		
+		SET bank_name = 
+		CASE		
+		<foreach collection="list" item="item">
+			WHEN bank_seq = #{item.bankSeq} THEN #{item.bankName}
+		</foreach>		
+		END,	
+		bank_account = 
+		CASE		
+		<foreach collection="list" item="item">
+			WHEN bank_seq = #{item.bankSeq} THEN #{item.bankAccount}
+		</foreach>		
+		END,
+		bank_use_yn = 
+		CASE		
+		<foreach collection="list" item="item">
+			WHEN bank_seq = #{item.bankSeq} THEN #{item.bankUseYn}
+		</foreach>		
+		END
+		WHERE bank_seq IN 
+		<foreach collection="list" item="item" separator="," open="(" close=")">
+			#{item.bankSeq}
+		</foreach>
+	</update>
+	
+	<!-- 은행 list 삭제 -->
+	<delete id="deleteBankList" parameterType="java.util.List">
+		DELETE FROM user_bank
+		WHERE bank_seq IN 
+		<foreach collection="list" item="item" separator="," open="(" close=")">
+			#{item.bankSeq}
+		</foreach>
+	</delete>
+	
 </mapper>

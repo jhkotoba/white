@@ -149,4 +149,50 @@ public class LedgerMapper {
 	public List<WhiteMap> selectBankList(WhiteMap param) {
 		return sqlSession.selectList("ledgerMapper.selectBankList", param);
 	}
+	
+	/**
+	 * 해당 유저 은행리스트 반영하기전 상세목적 시퀀스 검증
+	 * @param list
+	 * @return
+	 */
+	public int selectVerifyBankSeqStrList(WhiteMap param) {
+		return sqlSession.selectOne("ledgerMapper.selectVerifyBankSeqStrList", param);
+	}
+	
+	/**
+	 * 은행 사용되는지 확인
+	 * @param list
+	 * @return
+	 */
+	public int selectIsUsedBankRec(List<WhiteMap> list) {		
+		return sqlSession.selectOne("ledgerMapper.selectIsUsedBankRec", list);		 
+	}
+	
+	/**
+	 * 은행 List insert
+	 * @param list
+	 * @return
+	 */
+	public int insertBankList(List<WhiteMap> list) {
+		return sqlSession.insert("ledgerMapper.insertBankList", list);
+	}
+	
+	/**
+	 * 은행 List update
+	 * @param list
+	 * @return
+	 */
+	public int updateBankList(List<WhiteMap> list) {		
+		return sqlSession.update("ledgerMapper.updateBankList", list);		
+	}
+	
+	/**
+	 * 은행 List delete
+	 * @param list
+	 * @return
+	 */
+	public int deleteBankList(List<WhiteMap> list) {		
+		return sqlSession.delete("ledgerMapper.deleteBankList", list);		 
+	}	
+	
 }
