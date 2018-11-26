@@ -114,29 +114,7 @@ function fnGrid(data){
 					$("#bankList").jsGrid("refresh");
 					bankNoIdx = cfnNoIdx(bankList, "bankSeq");
 				}
-			});
-			
-			//수정 sync 체크
-			/* let name, idx, cIdx;
-			$("input[name='sync']").on("keyup keydown change", function(){				
-				if($(this).hasClass("sync-green")){
-					bankList[bankNoIdx[$(this).data("bankSeq")]][$(this).data("name")] = $(this).val();
-				}else{					
-					name = $(this).data("name");
-					idx = bankNoIdx[$(this).data("bankSeq")];
-					cIdx = cloneNoIdx[$(this).data("bankSeq")];
-				
-					bankList[idx][name] = $(this).val();
-					
-					if(String(clone[cIdx][name]) === String($(this).val())){		
-						$(this).removeClass("sync-blue");
-						if(!$(this).hasClass("sync-red")) bankList[idx].state = "select";
-					}else{
-						$(this).addClass("sync-blue");
-						if(!$(this).hasClass("sync-red")) bankList[idx].state = "update";
-					}
-				}
-			}); */
+			});			
 			
 			//수정 intpu sync 체크
 			$("input[name='sync']").on("keyup keydown change", function(){	
@@ -153,13 +131,6 @@ function fnGrid(data){
 		}
 	});
 	
-	//권한추가
-	/* $("#searchBar #add").on("click", function(){
-		bankList.push({bankAccount:"", bankOrder: "", bankSeq:new Date().getTime(), bankName:"", bankShowYn:"N", bankUseYn:"N", state:"insert"});
-		bankNoIdx = cfnNoIdx(bankList, "bankSeq");
-		$("#bankList").jsGrid("refresh");
-	}); */
-	
 	//취소
 	$("#searchBar #cancel").on("click", function(){		
 		bankList.splice(0, bankList.length);
@@ -172,7 +143,7 @@ function fnGrid(data){
 	//저장(반영)
 	$("#searchBar #save").on("click", function(){
 		
-		for(let i=0, j=2; i<bankList.length; i++){
+		for(let i=0, j=1; i<bankList.length; i++){
 			if(bankList[i].state !== "delete"){
 				bankList[i].bankOrder = (j++);	
 			}

@@ -207,23 +207,27 @@
 	
 	<!-- 은행 리스트 insert -->
 	<insert id="insertBankList" parameterType="java.util.List">
-		INSERT INTO user_bank(		
+		INSERT INTO bank(		
 			user_seq,	
 			bank_name,
 			bank_account,
-			bank_use_yn			
+			bank_show_yn,
+			bank_use_yn,
+			bank_order	
 		)VALUES
 		<foreach collection="list" item="item" separator="),(" open="(" close=")">
 			#{item.userSeq}, 
 			#{item.bankName},
-			#{item.bankAccount},		
-			#{item.bankUseYn}	
+			#{item.bankAccount},	
+			#{item.bankShowYn},	
+			#{item.bankUseYn},
+			#{item.bankOrder}	
 		</foreach>	
 	</insert>
 	
 		<!-- 은행 list 수정 -->
 	<update id="updateBankList" parameterType="java.util.List">		
-		UPDATE user_bank		
+		UPDATE bank		
 		SET bank_name = 
 		CASE		
 		<foreach collection="list" item="item">
@@ -236,11 +240,23 @@
 			WHEN bank_seq = #{item.bankSeq} THEN #{item.bankAccount}
 		</foreach>		
 		END,
+		bank_show_yn = 
+		CASE		
+		<foreach collection="list" item="item">
+			WHEN bank_seq = #{item.bankSeq} THEN #{item.bankShowYn}
+		</foreach>
+		END,
 		bank_use_yn = 
 		CASE		
 		<foreach collection="list" item="item">
 			WHEN bank_seq = #{item.bankSeq} THEN #{item.bankUseYn}
-		</foreach>		
+		</foreach>
+		END,
+		bank_order = 
+		CASE		
+		<foreach collection="list" item="item">
+			WHEN bank_seq = #{item.bankSeq} THEN #{item.bankOrder}
+		</foreach>
 		END
 		WHERE bank_seq IN 
 		<foreach collection="list" item="item" separator="," open="(" close=")">
@@ -250,7 +266,7 @@
 	
 	<!-- 은행 list 삭제 -->
 	<delete id="deleteBankList" parameterType="java.util.List">
-		DELETE FROM user_bank
+		DELETE FROM bank
 		WHERE bank_seq IN 
 		<foreach collection="list" item="item" separator="," open="(" close=")">
 			#{item.bankSeq}
