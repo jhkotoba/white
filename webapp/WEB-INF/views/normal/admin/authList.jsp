@@ -33,9 +33,16 @@ function fnJsGrid(data){
 		pageSize: 10,
 		
 		confirmDeleting : false,
-		
+				
 		fields: [
 			{ align:"center", width: "5%",
+				headerTemplate : function(){
+					return $("<button>").attr("id", "add").addClass("btn-gray trs sm").text("+").on("click", function(){
+						authList.push({authCmt:"", authOrder: "", authNmSeq:new Date().getTime(), authNm:"", state:"insert"});
+						authNoIdx = cfnNoIdx(authList, "authNmSeq");
+						$("#authList").jsGrid("refresh");
+					});			
+				},				
                 itemTemplate: function(value, item) {
                     let chk = $("<input>").attr("type", "checkbox").attr("name", "check")
                     .data("authNmSeq", item.authNmSeq).data("authOrder", item.authOrder).on("change", function() {
@@ -132,11 +139,11 @@ function fnJsGrid(data){
 	});
 	
 	//권한추가
-	$("#searchBar #add").on("click", function(){
+	/* $("#searchBar #add").on("click", function(){
 		authList.push({authCmt:"", authOrder: "", authNmSeq:new Date().getTime(), authNm:"", state:"insert"});
 		authNoIdx = cfnNoIdx(authList, "authNmSeq");
 		$("#authList").jsGrid("refresh");
-	});
+	}); */
 	
 	//취소
 	$("#searchBar #cancel").on("click", function(){		
@@ -239,11 +246,8 @@ function fnJsGrid(data){
 }
 </script>
 
-<div id="searchBar" class="search-bar">
-	<button id="add" class="btn-gray trs">추가</button>
-	<div class="pull-right">	
-		<button id="save" class="btn-gray trs">저장</button>
-		<button id="cancel" class="btn-gray trs">취소</button>
-	</div>
+<div id="searchBar" class="search-bar pull-right">		
+	<button id="save" class="btn-gray trs">저장</button>
+	<button id="cancel" class="btn-gray trs">취소</button>	
 </div>
 <div id="authList"></div>
