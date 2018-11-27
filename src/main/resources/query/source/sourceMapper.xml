@@ -24,6 +24,9 @@
 			  	<if test="type == 'content'">
 			  	AND sb.content LIKE #{text}
 			  	</if>
+			  	<if test="type == 'sourceSeq'">
+			  	AND sb.source_seq = #{text}
+			  	</if>
 		  	</if>
   		</where> 
 	</select>
@@ -56,6 +59,10 @@
 			  	<if test="type == 'content'">
 			  	AND sb.content LIKE #{text}
 			  	</if>
+			  	<if test="type == 'sourceSeq'">
+			  	AND sb.source_seq = #{text}
+			  	</if>
+			  	
 		  	</if>
   		</where>  	
 		ORDER BY sb.source_seq DESC

@@ -27,9 +27,14 @@ $(document).ready(function(){
 		$("#searchForm #langCd").val($("#searchBar #langCd").val());
 		$("#searchForm #type").val($("#searchBar #type").val());
 		
-		$("#searchForm #type").val() === "id"? 
-		$("#searchForm #text").val($("#searchBar #text").val()): 
-		$("#searchForm #text").val("%"+$("#searchBar #text").val()+"%");
+		let type =  $("#searchForm #type").val();
+		console.log(type);
+		if(type === "id" || type === "sourceSeq"){
+			$("#searchForm #text").val($("#searchBar #text").val());
+		}else{
+			$("#searchForm #text").val("%"+$("#searchBar #text").val()+"%");
+		}
+	
 
 		fnJsGrid(1);
 	});
@@ -297,6 +302,7 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
 		<option value="id">아이디</option>		
 		<option value="title">제목</option>
 		<option value="content">내용</option>
+		<option value="sourceSeq">번호</option>
 	</select>
 	<input class="input-gray wth3" id="text" type="text">
 	<button class="btn-gray trs" id="searchBtn">조회</button>
