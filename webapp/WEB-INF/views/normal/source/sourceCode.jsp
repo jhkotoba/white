@@ -113,7 +113,7 @@ $(document).ready(function(){
 		
 		if(!confirm("삭제하시겠습니까?")) return;
 		
-		cfnCmmAjax("/source/deleteSource", {no : $("#viewForm #no").val()}).done(function(data){
+		cfnCmmAjax("/source/deleteSource", {sourceSeq : $("#viewForm #sourceSeq").val()}).done(function(data){
 			if(1 === Number(data)) alert("삭제 하였습니다.");
 	    	else alert("삭제에 실패하였습니다.");
 			
@@ -177,7 +177,7 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
         	$("#viewForm #edit").hide();
         	$("#viewForm #remove").hide();
         	
-        	cfnCmmAjax("/source/selectSourceDtlView", {no : args.item.no}).done(function(data){
+        	cfnCmmAjax("/source/selectSourceDtlView", {sourceSeq : args.item.sourceSeq}).done(function(data){
         		$("#viewForm").setParam(data);
     	    	$("#viewForm #cAdjust").empty().append(cAdjust.adjust(data.langNm, data.content));
     	    	
@@ -190,7 +190,7 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
         	});
         }, 
         fields: [
-			{ title:"번호",	name:"no",			type:"text", width:"4%", align:"center"},
+			{ title:"번호",	name:"sourceSeq",	type:"text", width:"4%", align:"center"},
 			{ title:"언어",	name:"langNm",		type:"text", width:"8%", align:"center"},
 			{ title:"글제목",	name:"title",		type:"text", width:"70%"},
 			{ title:"작성자",	name:"userId",		type:"text", width:"8%", align:"center"},
@@ -225,7 +225,7 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
 
 <!-- 글수정 -->
 <form id="editForm" class="blank hide" onsubmit="return false;">
-	<input id="no" type="hidden" value="">
+	<input id="sourceSeq" type="hidden" value="">
 	<div class="flex">
 		<div class="flex-left">
 			<span class="span-gray-rt">타입</span>
@@ -253,12 +253,12 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
 
 <!-- 글보기 -->
 <form id="viewForm" class="blank hide" onsubmit="return false;">	
-	<input id="no" type="hidden" value="">
+	<input id="sourceSeq" type="hidden" value="">
 	
 	<div class="flex">
 		<div class="flex-left">
 			<span class="span-gray-rt">번호</span>
-			<span id="no" class="span-gray"></span>
+			<span id="sourceSeq" class="span-gray"></span>
 			<span class="span-gray-rt">타입</span>
 			<span id="langNm" class="span-gray"></span>
 			<span class="span-gray-rt">사용자</span>

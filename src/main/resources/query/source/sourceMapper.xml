@@ -30,7 +30,7 @@
 	
 	<select id="selectSourceList" resultType="WhiteMap" parameterType="WhiteMap">	
 		SELECT
-			sb.source_seq 	AS no,
+			sb.source_seq 	AS sourceSeq,
 			cc.code_nm 		AS langNm,
 			sb.user_seq 	AS userSeq,
 			wu.user_id 		AS userId,
@@ -64,7 +64,7 @@
 	
 	<select id="selectSourceDtlView" resultType="WhiteMap" parameterType="WhiteMap">	
 		SELECT 
-			sb.source_seq 	AS no
+			sb.source_seq 	AS sourceSeq
 			,cc.code_nm 	AS langNm
 			,cc.code		AS langCd
 			,sb.user_seq 	AS userSeq
@@ -77,7 +77,7 @@
   			ON wu.user_seq = sb.user_seq
   		LEFT OUTER JOIN cmm_code cc
 	    	ON sb.lang_cd = cc.code   
-		WHERE sb.source_seq = #{no}
+		WHERE sb.source_seq = #{sourceSeq}
 	</select>
 	
 	<insert id="insertSource" parameterType="WhiteMap">
@@ -98,13 +98,13 @@
 			lang_cd = #{langCd},
 			content = #{content}
 		WHERE user_seq = #{userSeq}
-		AND source_seq = #{no}
+		AND source_seq = #{sourceSeq}
 	</update>
 	
 	<delete id="deleteSource" parameterType="WhiteMap">
 		DELETE FROM source_board
 		WHERE user_seq = #{userSeq}
-		AND source_seq = #{no}	
+		AND source_seq = #{sourceSeq}	
 	</delete>
 </mapper>
 
