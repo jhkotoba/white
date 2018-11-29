@@ -479,6 +479,10 @@ let str = {
 	}
 }
 
+function cfnGetContextPath(){
+	return getContextPath();
+}
+
 function getContextPath(){
     let offset = location.href.indexOf(location.host)+location.host.length;
     let ctxPath = location.href.substring(offset,location.href.indexOf('/',offset+1));

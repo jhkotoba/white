@@ -589,8 +589,8 @@ function fnNavJsGrid(data){
 </script>
 
 <div id="searchBar" class="search-bar pull-right">	
-	<button id="navSave" class="btn-gray trs ">상위메뉴 저장</button>
-	<button id="sideSave" class="btn-gray trs ">하위메뉴 저장</button>
+	<button id="navSave" class="btn-gray trs">상위메뉴 저장</button>
+	<button id="sideSave" class="btn-gray trs">하위메뉴 저장</button>
 	<button id="cancel" class="btn-gray trs">취소</button>
 </div>
 

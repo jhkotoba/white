@@ -105,4 +105,19 @@ public class LedgerController {
 		return ledgerService.applybankList(param);
 	}
 	
+	/**
+	 * 해당유저 목적, 상세목적, 은행 리스트 조회
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="/ledger/selectPurBankList.ajax" )
+	public WhiteMap selectPurBankList(HttpServletRequest request){		
+		WhiteMap param = new WhiteMap(request);
+		WhiteMap result = new WhiteMap();		
+		result.put("purList", ledgerService.selectPurList(param));
+		result.put("purDtlList", ledgerService.selectPurDtlList(param));
+		result.put("bankList", ledgerService.selectBankList(param));
+		return result;
+	}
+	
 }

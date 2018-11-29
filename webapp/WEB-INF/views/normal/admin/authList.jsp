@@ -138,13 +138,6 @@ function fnJsGrid(data){
 		}
 	});
 	
-	//권한추가
-	/* $("#searchBar #add").on("click", function(){
-		authList.push({authCmt:"", authOrder: "", authNmSeq:new Date().getTime(), authNm:"", state:"insert"});
-		authNoIdx = cfnNoIdx(authList, "authNmSeq");
-		$("#authList").jsGrid("refresh");
-	}); */
-	
 	//취소
 	$("#searchBar #cancel").on("click", function(){		
 		authList.splice(0, authList.length);
