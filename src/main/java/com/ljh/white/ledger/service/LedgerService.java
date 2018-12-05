@@ -174,4 +174,19 @@ public class LedgerService {
 			return 1;
 		}
 	}
+	
+	/**
+	 * 금전기록List insert
+	 * @param list
+	 * @return
+	 */
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
+	public int insertRecordList(WhiteMap param) {		
+		
+		List<WhiteMap> list = param.convertListWhiteMap("insertList", true);
+		return 0;
+		
+		
+		//return ledgerReMapper.insertRecordList(list);
+	}
 }

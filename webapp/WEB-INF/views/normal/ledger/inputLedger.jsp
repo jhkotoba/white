@@ -3,7 +3,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="contextPath" value="<%=request.getContextPath()%>"></c:set>
 <script type="text/javascript">
-$(document).ready(function(){
+$(document).ready(function(){	
+	
 	cfnCmmAjax("/ledger/selectPurBankList").done(function(data){
 		recIn.init(data.purList, data.purDtlList, data.bankList).add().view();	
 	});	
@@ -157,7 +158,7 @@ let recIn = {
 		}		
 		return check;
 	},
-	/*
+	
 	insert : function(){
 		
 		//moveMoney 마이너스 수정
@@ -188,15 +189,15 @@ let recIn = {
 			    }
 			});
 		}			
-	}, */	
+	},
 	view : function(){
 		
 		$("#ledgerList").empty();
 		let selected = "";
 		let tag = "";
-		
-		tag += "<table class='table table-striped table-sm table-bordered'>";
-		tag	+= "<tr>";
+		//#4C4C4C
+		tag += "<table>";
+		tag	+= "<tr class='table-head'>";
 		tag += "<th style='width:3%;'>순서</th>";
 		tag	+= "<th style='width:13%;'>날짜*</th>";
 		tag	+= "<th style='width:12%;'>위치</th>";
