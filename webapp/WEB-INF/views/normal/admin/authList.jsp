@@ -2,9 +2,6 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="contextPath" value="<%=request.getContextPath()%>"></c:set>
-<style>
-.jsgrid-cell {padding: 0 0 0 0;}
-</style>
 <script type="text/javascript">
 $(document).ready(function(){
 	//권한리스트 조회

@@ -162,9 +162,11 @@ h6, .h6 {font-size: 1rem;}
 }
 
 
-.table-head{background: #4C4C4C; border-collapse: collapse; border-spacing: 0;}
-.table-head > th {border-bottom: 0; border-top: 0; border: 1px solid #363636; padding: .5em .5em; text-align: center; border-collapse: collapse; border-spacing: 0;}
+.table-header{background: #4C4C4C; border-collapse: collapse; border-spacing: 0; width: 100%;}
+.table-header th {border-bottom: 0; border-top: 0; border: 1px solid #363636; padding: .5em .5em; text-align: center; border-collapse: collapse; border-spacing: 0;}
 
+.table-body{background: #5A5A5A; border-collapse: collapse; border-spacing: 0; width: 100%;}
+.table-body td {border-bottom: 0; border-top: 0; border: 1px solid #363636; padding: .5em .5em; text-align: center; border-collapse: collapse; border-spacing: 0;}
 
 
 
