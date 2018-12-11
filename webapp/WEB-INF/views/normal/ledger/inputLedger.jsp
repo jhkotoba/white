@@ -30,7 +30,7 @@ function inputLedger(data){
 	let bankList = data.bankList;
 	
 	let fieldList = [
-		{title : "",		name:"", width : "3%",
+		{title : "",		name:"", width : "3%", align:"center",
 			headerTemplate: function(){				
 				return $("<button>").attr("id", "add")
 					.addClass("btn-gray trs sm")
@@ -38,18 +38,54 @@ function inputLedger(data){
 					.on("click", function(){
 						alert(111);
 					});			
-			}		
+			},
+			itemTemplate: function(item){
+				return $("<input>").attr("type","checkbox");
+			}
 		},
-		{title : "날짜*",		name:"recordDate",	width : "12%"},
-		{title : "위치",		name:"position", 	width : "12%"},
-		{title : "내용*",		name:"content", 	width : "12%"},
-		{title : "목적*",		name:"purSeq", 		width : "12%"},
-		{title : "상세목적",	name:"purDtlSeq", 	width : "12%"},
-		{title : "사용수단*",	name:"bankSeq", 	width : "12%"},
-		{title : "이동대상",	name:"moveSeq", 	width : "12%"},
-		{title : "수입 지출*",	name:"money", 		width : "12%"}			
+		{title : "날짜*",		name:"recordDate",	width : "10%", align:"center",
+			itemTemplate: function(item){
+				return $("<input>").addClass("input-gray wth100p").val(item.recordDate);
+			}
+		},
+		{title : "위치",		name:"position", 	width : "12%", align:"center",
+			itemTemplate: function(item){
+				return $("<input>").addClass("input-gray wth100p");
+			}
+		},		
+		{title : "내용*",		name:"content", 	width : "14%", align:"center",
+			itemTemplate: function(item){
+				return $("<input>").addClass("input-gray wth100p");
+			}
+		},
+		{title : "목적*",		name:"purSeq", 		width : "12%", align:"center",
+			itemTemplate: function(item){
+				return $("<select>").addClass("select-gray");
+			}
+		},		
+		{title : "상세목적",	name:"purDtlSeq", 	width : "12%", align:"center",
+			itemTemplate: function(item){
+				return $("<select>").addClass("select-gray");
+			}
+		},		
+		{title : "사용수단*",	name:"bankSeq", 	width : "12%", align:"center",
+			itemTemplate: function(item){
+				return $("<select>").addClass("select-gray");
+			}
+		},		
+		{title : "이동대상",	name:"moveSeq", 	width : "12%", align:"center",
+			itemTemplate: function(item){
+				return $("<select>").addClass("select-gray");
+			}
+		},		
+		{title : "수입 지출*",	name:"money", 		width : "12%", align:"center",
+			itemTemplate: function(item){
+				return $("<input>").addClass("input-gray wth100p");
+			}
+		}		
 	]
-	let $header = $("<div>").append(fnCreateHeader(fieldList));	
+	
+	let $header = $("<div>").append(fnCreateHeader());	
 	
 	let $tbody = $("<div>").append(fnCreateRow());	
 	$("#ledgerList").append($header);
@@ -61,13 +97,11 @@ function inputLedger(data){
 		let $tb = $("<table>").addClass("table-header");
 		let $tr = $("<tr>");
 		let $th = null;
-		let hdtp = null;	
 		
 		for(let i=0; i<fieldList.length; i++){			
 			$th = $("<th>").attr("style", "width:"+fieldList[i].width);			
 			if(isNotEmpty(fieldList[i].headerTemplate)){
-				hdtp = fieldList[i].headerTemplate();
-				$th.append(hdtp);
+				$th.append(fieldList[i].headerTemplate());
 			}else{
 				$th.text(fieldList[i].title);
 			}
@@ -80,76 +114,27 @@ function inputLedger(data){
 	//새로운 행 생성
 	function fnCreateRow(){
 		let $tb = $("<table>").addClass("table-body");
-		let $tr = $("<tr>");
+		let $tr = null;
 		let $td = null;
 		
 		console.log(insertList);
 		
 		for(let i=0; i<insertList.length; i++){
-			
-			$tr.append(
-				$("<td>").append(
-					$("<input>").attr("type", "checkbox")
-				)
-			)
-			
-			$tr.append(
-				$("<td>").append(
-					$("<input>").val(insertList[i].recordDate)
-						.addClass("input-gray wth100p")
-				)
-			)
-			
-			$tr.append(
-				$("<td>").append(
-					$("<input>").val(insertList[i].position)
-						.addClass("input-gray wth100p")
-				)
-			)
-			
-			$tr.append(
-				$("<td>").append(
-					$("<input>").val(insertList[i].content)
-						.addClass("input-gray wth100p")
-				)
-			)
-			
-			$tr.append(
-				$("<td>").append(
-					$("<input>").val(insertList[i].purSeq)
-						.addClass("input-gray wth100p")
-				)
-			)
-			
-			$tr.append(
-				$("<td>").append(
-					$("<input>").val(insertList[i].purDtlSeq)
-						.addClass("input-gray wth100p")
-				)
-			)
-			
-			$tr.append(
-				$("<td>").append(
-					$("<input>").val(insertList[i].bankSeq)
-						.addClass("input-gray wth100p")
-				)
-			)
-			
-			$tr.append(
-				$("<td>").append(
-					$("<input>").val(insertList[i].moveSeq)
-						.addClass("input-gray wth100p")
-				)
-			)
-			
-			$tr.append(
-				$("<td>").append(
-					$("<input>").val(insertList[i].money)
-						.addClass("input-gray wth100p")
-				)
-			)
-		}
-		$tb.append($tr);
+			$tr = $("<tr>");
+			for(let j=0; j<fieldList.length; j++){
+				$td = $("<td>").attr("style", "width:"+fieldList[j].width);
+				if(isNotEmpty(fieldList[j].itemTemplate)){
+					$td.append(fieldList[j].itemTemplate(insertList[i]).attr("style", "text-align:"+fieldList[j].align));
+				}else{
+					$td.text(insertList[i][fieldList[j].name]);
+				}
+				
+				//.attr("style", "text-align:"+fieldList[j].align)
+				
+				$tr.append($td);
+			}
+			$tb.append($tr);			
+		}		
 		return $tb;
 	}
 }
@@ -158,7 +143,6 @@ function inputLedger(data){
 </script>
 	
 <div id="searchBar" class="search-bar pull-right">	
-	<button id="recAddBtn" type="button" class="btn-gray trs">추가</button>	
 	<button id="recInsertBtn" type="button" class="btn-gray trs">저장</button>
 </div>
 <div id="ledgerList"></div>
