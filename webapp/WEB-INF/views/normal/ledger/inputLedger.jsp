@@ -8,7 +8,7 @@ $(document).ready(function(){
 });
 
 function inputLedger(data){
-	
+	console.log(data);
 	let insertList = new Array();
 	
 	insertList.push(
@@ -25,9 +25,7 @@ function inputLedger(data){
 		}
 	);
 	
-	let purList = data.purList;
-	let purDtlList = data.purDtlList;
-	let bankList = data.bankList;
+	
 	
 	let fieldList = [
 		{title : "",		name:"", width : "3%", align:"center",
@@ -43,39 +41,60 @@ function inputLedger(data){
 				return $("<input>").attr("type","checkbox");
 			}
 		},
-		{title : "날짜*",		name:"recordDate",	width : "10%", align:"center",
+		{title : "날짜*",		name:"recordDate",	width : "10%", align:"center", button:true,
 			itemTemplate: function(item){
-				return $("<input>").addClass("input-gray wth100p").val(item.recordDate);
+				return $("<input>").addClass("input-gray wth80p").val(item.recordDate);
 			}
 		},
-		{title : "위치",		name:"position", 	width : "12%", align:"center",
+		{title : "위치",		name:"position", 	width : "12%", align:"center", button:true,
 			itemTemplate: function(item){
-				return $("<input>").addClass("input-gray wth100p");
+				return $("<input>").addClass("input-gray wth80p");
 			}
 		},		
-		{title : "내용*",		name:"content", 	width : "14%", align:"center",
+		{title : "내용*",		name:"content", 	width : "14%", align:"center", button:true,
 			itemTemplate: function(item){
-				return $("<input>").addClass("input-gray wth100p");
+				return $("<input>").addClass("input-gray wth80p");
 			}
 		},
-		{title : "목적*",		name:"purSeq", 		width : "12%", align:"center",
-			itemTemplate: function(item){
-				return $("<select>").addClass("select-gray");
+		{title : "목적*",		name:"purSeq", 		width : "12%", align:"center", button:true,
+			itemTemplate: function(item){				
+				$select = $("<select>").addClass("select-gray wth80p");
+				$option = null;
+				for(let i=0; i<data.purList.length; i++){
+					$option = $("<option>").val(data.purList[i].purSeq)
+						.text(data.purList[i].purpose)
+						.data("purType", data.purList[i].purType);
+					
+					$select.append($option)
+				}
+				return $select;
 			}
 		},		
 		{title : "상세목적",	name:"purDtlSeq", 	width : "12%", align:"center",
 			itemTemplate: function(item){
-				return $("<select>").addClass("select-gray");
+				
+				
+				
+				return $("<select>").addClass("select-gray wth100p");
 			}
 		},		
-		{title : "사용수단*",	name:"bankSeq", 	width : "12%", align:"center",
+		{title : "사용수단*",	name:"bankSeq", 	width : "12%", align:"center", button:true,
 			itemTemplate: function(item){
-				return $("<select>").addClass("select-gray");
+				
+				$select = $("<select>").addClass("select-gray wth80p");
+				$option = null;
+				for(let i=0; i<data.bankList.length; i++){
+					$option = $("<option>").val(data.bankList[i].bankSeq)
+						.text(data.bankList[i].bankName);
+					
+					$select.append($option)
+				}
+				return $select;
 			}
 		},		
 		{title : "이동대상",	name:"moveSeq", 	width : "12%", align:"center",
 			itemTemplate: function(item){
-				return $("<select>").addClass("select-gray");
+				return $("<select>").addClass("select-gray wth100p");
 			}
 		},		
 		{title : "수입 지출*",	name:"money", 		width : "12%", align:"center",
@@ -125,6 +144,7 @@ function inputLedger(data){
 				$td = $("<td>").attr("style", "width:"+fieldList[j].width);
 				if(isNotEmpty(fieldList[j].itemTemplate)){
 					$td.append(fieldList[j].itemTemplate(insertList[i]).attr("style", "text-align:"+fieldList[j].align));
+					if(fieldList[j].button === true)$td.append($("<button>").addClass("btn-gray trs").text("↓"));
 				}else{
 					$td.text(insertList[i][fieldList[j].name]);
 				}
