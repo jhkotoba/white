@@ -84,14 +84,14 @@ function inputLedger(data){
 							$dtlSelect.append($option)
 						}
 					}
-					$(this).children().each(function(idx, el){						
-						if(Number(item.purSeq) === Number(el.value)){
-							
-							$moveSp = $(this).closest("td").next().next().children().first();
+					
+					$(this).children().each(function(idx, el){
+						if(Number(item.purSeq) === Number(el.value)){							
+							let $moveSp = $(this).closest("td").next().next().children().first();
 							$moveSp.empty().removeClass();
 							
-							if($(el).data("purType") === "LP003"){
-								$select = $("<select>").addClass("select-gray wth50p");								
+							if($(el).data("purType") === "LP003"){								
+								let $select = $("<select>").addClass("select-gray wth50p");								
 								$select.append($("<option>").text("보낸곳 선택").val(""));								
 								$select = fnCreateOptionList($select, data.bankList, item, "bankSeq", "bankSeq", "bankName");
 								
@@ -109,8 +109,9 @@ function inputLedger(data){
 									item.moveSeq = this.value;
 								});
 								$moveSp.append($select).addClass("wth90p inbk");
-							}else{								
-								$select = $("<select>").addClass("select-gray wth90p");								
+							}else{
+								//사용수단
+								let $select = $("<select>").addClass("select-gray wth90p");								
 								$select.append($("<option>").text("사용수단 선택").val(""));								
 								$select = fnCreateOptionList($select, data.bankList, item, "bankSeq", "bankSeq", "bankName");
 								
@@ -118,8 +119,12 @@ function inputLedger(data){
 									item.bankSeq = this.value;
 								});	
 								item.moveSeq = "";
-								$moveSp.append($select).addClass("wth90p");
+								$moveSp.append($select).addClass("wth90p");								
 							}
+							
+							let $moneySp = $(this).closest("td").next().next().next().children().first();
+							$moneySp.empty().removeClass();
+							fnCreateMoney($moneySp, $(el).data("purType"), item);
 							return false;
 						}
 					});
@@ -155,7 +160,7 @@ function inputLedger(data){
 					for(let i=0; i<data.purList.length; i++){						
 						if(Number(item.purSeq) === Number(data.purList[i].purSeq)){
 							if(data.purList[i].purType === "LP003"){
-								$select = $("<select>").addClass("select-gray wth50p");
+								let $select = $("<select>").addClass("select-gray wth50p");
 								$select.append($("<option>").text("보낸곳 선택").val(""));								
 								$select = fnCreateOptionList($select, data.bankList, item, "bankSeq", "bankSeq", "bankName");								
 								$select.on("change", function(){
@@ -172,7 +177,7 @@ function inputLedger(data){
 								});
 								$span.append($select).addClass("wth90p inbk");
 							}else{								
-								$select = $("<select>").addClass("select-gray wth90p");								
+								let $select = $("<select>").addClass("select-gray wth90p");								
 								$select.append($("<option>").text("사용수단 선택").val(""));								
 								$select = fnCreateOptionList($select, data.bankList, item, "bankSeq", "bankSeq","bankName");
 								
@@ -186,7 +191,7 @@ function inputLedger(data){
 						}
 					}
 				}else{		
-					$select = $("<select>").addClass("select-gray wth90p");					
+					let $select = $("<select>").addClass("select-gray wth90p");					
 					$select.append($("<option>").text("사용수단 선택").val(""));
 									
 					$select = fnCreateOptionList($select, data.bankList, item, "bankSeq", "bankSeq", "bankName");
@@ -207,7 +212,13 @@ function inputLedger(data){
 		}, */		
 		{title : "수입 지출*",	name:"money", 		width : "12%", align:"center",
 			itemTemplate: function(item){
-				return $("<input>").addClass("input-gray wth100p");
+				let $span = $("<span>");				
+				let $input = $("<input>").addClass("onlynum");			
+				$input.addClass("input-gray wth100p").on("keyup keydown change", function(){
+					item.money = this.value;
+				});				
+				$span.append($input);
+				return $span;
 			}
 		}		
 	]
@@ -279,6 +290,35 @@ function fnCreateOptionList($select, list, item, seqNm1, seqNm2, name){
 		$select.append($option)
 	}
 	return $select;
+}
+
+function fnCreateMoney($moneySp, code, item){
+	
+	let $input = $("<input>").addClass("onlynum");
+	$input.addClass("input-gray").on("keyup keydown change", function(){
+		item.money = this.value;
+	});	
+	let $strong = $("<strong>");	
+	switch(code){
+	case "LP001":					
+		$input.addClass("wth80p sync-red");		
+		$strong.text("+").addClass("pm-mark sync-red");
+		break;
+	case "LP002":
+		$input.addClass("wth80p sync-blue");		
+		$strong.text("-").addClass("pm-mark sync-blue");		
+		break;		
+	case "LP003":
+		$input.addClass("wth80p sync-green");		
+		$strong.text(">").addClass("pm-mark sync-green");		
+		break;
+	default:
+		$input.addClass("wth100p");
+		break;
+	
+	}	
+	$moneySp.append($strong);
+	$moneySp.append($input);
 }
 </script>
 
