@@ -23,7 +23,7 @@ function inputLedger(data){
 		{title : "",		name:"", width : "3%", align:"center",
 			headerTemplate: function(){				
 				return $("<button>").attr("id", "add")
-					.addClass("btn-gray trs sm")
+					.addClass("btn-gray trs")
 					.text("+")
 					.on("click", function(){
 						insertList.push({recordDate: isDate.today()+" "+isTime.curTime(), position:"",
@@ -34,11 +34,21 @@ function inputLedger(data){
 						);
 					});			
 			},
-			itemTemplate: function(item){
-				return $("<input>").attr("type","checkbox");
+			itemTemplate: function(item, idx){
+				return $("<button>")
+				.addClass("btn-gray trs")
+				.text("-")
+				.on("click", function(){
+					if(confirm("삭제 하시겠습니까?")){
+						insertList.splice(idx,1);
+						$tbody.empty().append(
+							$("<div>").append(fnCreateRow())
+						);
+					}		
+				});				
 			}
 		},
-		{title : "날짜*",		name:"recordDate",	width : "10%", align:"center", button:true,
+		{title : "날짜*",		name:"recordDate",	width : "11%", align:"center", button:true,
 			itemTemplate: function(item){
 				return $("<input>").addClass("input-gray wth80p").val(item.recordDate);
 			}
@@ -54,7 +64,7 @@ function inputLedger(data){
 			}
 		},
 		{title : "목적*",		name:"purSeq", 		width : "13%", align:"center", button:true,
-			itemTemplate: function(item){				
+			itemTemplate: function(item){
 				$select = $("<select>").addClass("select-gray wth80p");
 				$option = $("<option>").text("목적선택").val("");
 				$select.append($option);
@@ -204,13 +214,8 @@ function inputLedger(data){
 				}				
 				return $span;
 			}
-		},		
-		/* {title : "이동대상",	name:"moveSeq", 	width : "12%", align:"center",
-			itemTemplate: function(item){
-				return $("<select>").addClass("select-gray wth100p");
-			}
-		}, */		
-		{title : "수입 지출*",	name:"money", 		width : "12%", align:"center",
+		},	
+		{title : "수입 지출*",	name:"money", 		width : "11%", align:"center",
 			itemTemplate: function(item){
 				let $span = $("<span>");				
 				let $input = $("<input>").addClass("onlynum");			
@@ -254,71 +259,88 @@ function inputLedger(data){
 		let $tb = $("<table>").addClass("table-body");
 		let $tr = null;
 		let $td = null;
-		
-		console.log(insertList);
-		
+				
 		for(let i=0; i<insertList.length; i++){
 			$tr = $("<tr>");
 			for(let j=0; j<fieldList.length; j++){
 				$td = $("<td>").attr("style", "width:"+fieldList[j].width);
 				if(isNotEmpty(fieldList[j].itemTemplate)){
-					$td.append(fieldList[j].itemTemplate(insertList[i]).attr("style", "text-align:"+fieldList[j].align));
-					if(fieldList[j].button === true)$td.append($("<button>").addClass("btn-gray trs").text("↓"));
+					$td.append(fieldList[j].itemTemplate(insertList[i], i).attr("style", "text-align:"+fieldList[j].align));
+					if(fieldList[j].button === true){
+						$button = $("<button>").addClass("btn-gray trs").text("↓")
+							//마우스 오버 이벤트
+							.on("mouseenter", function(){								
+								for(let k=i; k<insertList.length; k++){									
+									$(this).closest("table").children().eq(k).children().eq(j).children().eq(0).addClass("dncp");																					
+								}
+							//마우스 아웃 이벤트
+							}).on("mouseleave", function(){								
+								for(let k=i; k<insertList.length; k++){									
+									$(this).closest("table").children().eq(k).children().eq(j).children().eq(0).removeClass("dncp");																					
+								}
+							//클릭 이벤트 - 해당란부터 마지막란까지 일괄 변경
+							}).on("click", function(){								
+								let value = $(this).prev().val();
+								for(let k=i; k<insertList.length; k++){									
+									$(this).closest("table").children().eq(k).children().eq(j).children().eq(0).val(value).trigger('change');;									
+								}
+							});				
+						$td.append($button);
+					}
 				}else{
 					$td.text(insertList[i][fieldList[j].name]);
-				}
-				
-				//.attr("style", "text-align:"+fieldList[j].align)
-				
+				}				
 				$tr.append($td);
 			}
 			$tb.append($tr);			
 		}		
 		return $tb;
 	}
-}
-
-function fnCreateOptionList($select, list, item, seqNm1, seqNm2, name){
-	let $option = $("<option>");
-	for(let i=0; i<list.length; i++){
-		$option = $("<option>").val(list[i][seqNm1])
-			.text(list[i][name]);		
-		if(String(item[seqNm2]) === String(list[i][seqNm1])){
-			
-			$option.prop("selected", true);
+	
+	//셀렉트박스 옵션리스트 생성
+	function fnCreateOptionList($select, list, item, seqNm1, seqNm2, name){
+		let $option = $("<option>");
+		for(let i=0; i<list.length; i++){
+			$option = $("<option>").val(list[i][seqNm1])
+				.text(list[i][name]);		
+			if(String(item[seqNm2]) === String(list[i][seqNm1])){
+				
+				$option.prop("selected", true);
+			}
+			$select.append($option)
 		}
-		$select.append($option)
+		return $select;
 	}
-	return $select;
-}
-
-function fnCreateMoney($moneySp, code, item){
 	
-	let $input = $("<input>").addClass("onlynum");
-	$input.addClass("input-gray").on("keyup keydown change", function(){
-		item.money = this.value;
-	});	
-	let $strong = $("<strong>");	
-	switch(code){
-	case "LP001":					
-		$input.addClass("wth80p sync-red");		
-		$strong.text("+").addClass("pm-mark sync-red");
-		break;
-	case "LP002":
-		$input.addClass("wth80p sync-blue");		
-		$strong.text("-").addClass("pm-mark sync-blue");		
-		break;		
-	case "LP003":
-		$input.addClass("wth80p sync-green");		
-		$strong.text(">").addClass("pm-mark sync-green");		
-		break;
-	default:
-		$input.addClass("wth100p");
-		break;
-	
-	}	
-	$moneySp.append($strong);
-	$moneySp.append($input);
+	//수입지출란 수입, 지출, 이동구분해서 생성
+	function fnCreateMoney($moneySp, code, item){
+		
+		let $input = $("<input>").addClass("onlynum");
+		$input.addClass("input-gray").on("keyup keydown change", function(){
+			item.money = this.value;
+		});	
+		let $strong = $("<strong>");	
+		switch(code){
+		case "LP001":					
+			$input.addClass("wth80p sync-red");		
+			$strong.text("+").addClass("pm-mark sync-red");
+			break;
+		case "LP002":
+			$input.addClass("wth80p sync-blue");		
+			$strong.text("-").addClass("pm-mark sync-blue");		
+			break;		
+		case "LP003":
+			$input.addClass("wth80p sync-green");		
+			$strong.text(">").addClass("pm-mark sync-green");		
+			break;
+		default:
+			$input.addClass("wth100p");
+			break;
+		
+		}	
+		$moneySp.append($strong);
+		$moneySp.append($input);
+	}
 }
 </script>
 
