@@ -14,6 +14,11 @@ function inputLedger(data){
 		console.log(insertList);
 	})
 	
+	let purLp = {};
+	for(let i=0; i<data.purList.length; i++){
+		purLp[data.purList[i].purSeq] = data.purList[i].purType;
+	}
+	
 	data.bankList.unshift({bankAccount: "", bankName: "현금", bankOrder: 0, bankSeq: 0, bankShowYn: "N",	bankUseYn: "N"});	
 	insertList.push({recordDate: isDate.today()+" "+isTime.curTime(), position:"", content:"",
 		purSeq: "", purDtlSeq: "", bankSeq: "", moveSeq: "", money: ""}
@@ -134,7 +139,7 @@ function inputLedger(data){
 							
 							let $moneySp = $(this).closest("td").next().next().next().children().first();
 							$moneySp.empty().removeClass();
-							fnCreateMoney($moneySp, $(el).data("purType"), item);
+							fnCreateMoney($moneySp, purLp[item.purSeq], item);
 							return false;
 						}
 					});
@@ -216,14 +221,9 @@ function inputLedger(data){
 			}
 		},	
 		{title : "수입 지출*",	name:"money", 		width : "11%", align:"center",
-			itemTemplate: function(item){
+			itemTemplate: function(item){				
 				let $span = $("<span>");				
-				let $input = $("<input>").addClass("onlynum");			
-				$input.addClass("input-gray wth100p").on("keyup keydown change", function(){
-					item.money = this.value;
-				});				
-				$span.append($input);
-				return $span;
+				return fnCreateMoney($span, purLp[item.purSeq], item);
 			}
 		}		
 	]
@@ -259,6 +259,7 @@ function inputLedger(data){
 		let $tb = $("<table>").addClass("table-body");
 		let $tr = null;
 		let $td = null;
+		let obj = null;
 				
 		for(let i=0; i<insertList.length; i++){
 			$tr = $("<tr>");
@@ -270,19 +271,25 @@ function inputLedger(data){
 						$button = $("<button>").addClass("btn-gray trs").text("↓")
 							//마우스 오버 이벤트
 							.on("mouseenter", function(){								
-								for(let k=i; k<insertList.length; k++){									
-									$(this).closest("table").children().eq(k).children().eq(j).children().eq(0).addClass("dncp");																					
+								for(let k=i; k<insertList.length; k++){
+									obj = $(this).closest("table").children().eq(k).children().eq(j).children().eq(0);
+									if(obj[0].tagName === "SPAN")	obj.children().eq(0).addClass("dncp");
+									else	obj.addClass("dncp");
 								}
 							//마우스 아웃 이벤트
 							}).on("mouseleave", function(){								
 								for(let k=i; k<insertList.length; k++){									
-									$(this).closest("table").children().eq(k).children().eq(j).children().eq(0).removeClass("dncp");																					
+									obj = $(this).closest("table").children().eq(k).children().eq(j).children().eq(0)
+									if(obj[0].tagName === "SPAN")	obj.children().eq(0).removeClass("dncp");
+									else	obj.removeClass("dncp");
 								}
 							//클릭 이벤트 - 해당란부터 마지막란까지 일괄 변경
 							}).on("click", function(){								
 								let value = $(this).prev().val();
-								for(let k=i; k<insertList.length; k++){									
-									$(this).closest("table").children().eq(k).children().eq(j).children().eq(0).val(value).trigger('change');;									
+								for(let k=i; k<insertList.length; k++){
+									obj = $(this).closest("table").children().eq(k).children().eq(j).children().eq(0)
+									if(obj[0].tagName === "SPAN")	obj.children().eq(0).val(value).trigger('change');
+									else	obj.val(value).trigger('change');
 								}
 							});				
 						$td.append($button);
@@ -340,6 +347,7 @@ function inputLedger(data){
 		}	
 		$moneySp.append($strong);
 		$moneySp.append($input);
+		return $moneySp;
 	}
 }
 </script>
