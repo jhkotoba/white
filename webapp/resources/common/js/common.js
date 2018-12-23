@@ -47,6 +47,14 @@ $(document).ajaxComplete(function() {
 	$(".blind").hide(400);
 });
 
+//금액 입력란 설정
+$(document).on("keyup", ".only-currency", function(){
+	cfnGetNumber(this);
+});
+$(document).on("change", ".only-currency", function(){
+	cfnSetComma(this);
+});
+
 //form clear
 $.fn.clear = function() {
 	return this.each(function() {
@@ -169,6 +177,25 @@ function cfnCmmSyncAjax(url, param){
 	    }
 	});
 	return result;
+}
+
+//통화 입력 - 숫제만
+function cfnGetNumber(obj){	
+	let num01;
+	let num02;
+	num01 = obj.value;
+	num02 = num01.replace(/\D/g,"");
+	num01 = cfnSetComma(num02);
+	obj.value =  num01;
+}
+//통화 입력 - 콤마추가
+function cfnSetComma(inNum){     
+	let outNum;
+	outNum = inNum; 
+	while (/(\d+)(\d{3})/.test(outNum)) {
+		outNum = outNum.replace(/(\d+)(\d{3})/, '$1' + ',' + '$2');
+	}
+	return outNum;
 }
 
 //날짜반환함수

@@ -120,7 +120,11 @@ public class LedgerController {
 		return result;
 	}
 	
-	
+	/**
+	 * 해당유저 가계부 기업
+	 * @param request
+	 * @return
+	 */
 	@RequestMapping(value="/ledger/insertRecordList.ajax" )
 	public int insertRecordList(HttpServletRequest request){		
 		WhiteMap param = new WhiteMap(request);
