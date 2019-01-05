@@ -490,6 +490,21 @@ function isOnlyNumHyphen(_str){
 	}
 }
 
+//숫자만 있는지 체크
+function isOnlyNum(_str){
+	if(isEmpty(_str)){
+		return false;
+	}else{
+		return /^[0-9|]+$/.test(String(_str));
+	}
+}
+
+//날짜 형식 체크 ex) 2019-01-01 08:00
+function isRecordDatePattern(date){	
+	let date_pattern = /^(19|20)\d{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[0-1]) (0[0-9]|1[0-9]|2[0-3]):([0-5][0-9])$/;
+	return date_pattern.test(date);
+}
+
 //문자열 관련
 let str = {
 	//첫번째 글자를 대문자

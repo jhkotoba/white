@@ -390,7 +390,7 @@ function fnPurGrid(data){
 		$("[name='syncPur']").each(function(i, e){
 			if(isEmpty($(e).val())){
 				isVali = false;
-				wVali.alert({element : $(e), msg: "값을 입력해 주세요."}); return false;
+				wVali.alert({element : $(e), msg: $(e)[0].nodeName === "SELECT" ? "값을 선택해 주세요." : "값을 입력해 주세요."}); return false;
 			}
 			switch($(e).data("name")){
 			case "purpose":			
