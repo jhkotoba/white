@@ -121,7 +121,7 @@ public class LedgerController {
 	}
 	
 	/**
-	 * 해당유저 가계부 기업
+	 * 해당유저 가계부 기입
 	 * @param request
 	 * @return
 	 */

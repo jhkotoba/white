@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ljh.white.common.Constant;
+import com.ljh.white.common.White;
 import com.ljh.white.common.collection.WhiteMap;
 import com.ljh.white.ledger.mapper.LedgerMapper;
 
@@ -178,15 +180,82 @@ public class LedgerService {
 	/**
 	 * 금전기록List insert
 	 * @param list
-	 * @return
+	 * @return 
+	 * -1 : 날짜값이 정상적이지 않는 경우
+	 * -2 : 위치값 길이 오버 (20자)
+	 * -3 : 내용값 널값이거나 빈값
+	 * -4 : 내용값 길이 오버 (50자)
+	 * -5 : 사용수단 seq값 널값인 경우
+	 * -6 : 목적 seq값 널인 경우
+	 * -7 : 목적타입이 이동인 경우에서 받는곳이 널값인 경우
+	 * -8 : 목적타입이 이동인 경우에서 보내는곳과 받는곳이 같은 경우
+	 * -9 : 목적타입이 이동이 아닌 경우에서 받는곳의 값이 있는 경우
+	 * -10 : 상세목적이 목적의 하위그룹에 속하지 않는 경우
+	 * -11 : 금액값이 정상적이지 않는 경우
+	 * 0:데이터없어서 insert실행 하지 않음
+	 * 1 이상 : 정상(등록 개수)
 	 */
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
 	public int insertRecordList(WhiteMap param) {		
+		List<WhiteMap> list = param.convertListWhiteMap("insertList", true);		
 		
-		List<WhiteMap> list = param.convertListWhiteMap("insertList", true);
-		return 0;
+		List<WhiteMap> purList = this.selectPurList(param);
 		
+		WhiteMap purSeqMap = White.convertListToMap(purList, "purSeq", "purpose");	
+		WhiteMap purTypeMap = White.convertListToMap(purList, "purSeq", "purType");	
+		WhiteMap purDtlSeqMap = White.convertListToMap(this.selectPurDtlList(param), "purDtlSeq", "purSeq");
+		WhiteMap bankSeqMap = White.convertListToMap(this.selectBankList(param), "bankSeq", "bankName");
+		bankSeqMap.put("0", "cash");
 		
-		//return ledgerReMapper.insertRecordList(list);
+		String str = null;
+		
+		if(list.size() == 0) return 0;		
+		for(int i=0; i<list.size(); i++) {			
+			//날짜 검사
+			str = list.get(i).getString("recordDate");
+			if(!White.dateCheck(str, "yyyy-MM-dd hh:mm")) return -1;
+			
+			//위치 검사
+			str = list.get(i).getString("position");			
+			if(str.length() > Constant.POSITION_LENGTH)	return -2;
+			
+			//내용 검사
+			str = list.get(i).getString("content");	
+			if(str == null || "".equals(str)) return -3;
+			else if(str.length() > Constant.CONTENT_LENGTH) return -4;
+			
+			//사용수단 검사
+			str = list.get(i).getString("bankSeq");			
+			if(bankSeqMap.get(str) == null) return -5;			
+			
+			//목적 검사
+			str = list.get(i).getString("purSeq");			
+			if(purSeqMap.get(str) == null) return -6;
+			
+			//목적타입이 이동인 경우 검사
+			if("LP003".equals(purTypeMap.get(str))) {
+				String moveSeq = list.get(i).getString("moveSeq");
+				if(bankSeqMap.get(moveSeq) == null) return -7;				
+				if(moveSeq.equals(list.get(i).getString("bankSeq"))) return -8;
+			//목적타입이 이동이 아닌 경우 검사
+			}else {				
+				if(!"".equals(list.get(i).getString("moveSeq"))) return -9;
+			}
+			
+			//상세목적 검사
+			str = list.get(i).getString("purDtlSeq");			
+			if(!"".equals(str)) {
+				if(!list.get(i).getString("purSeq").equals(purDtlSeqMap.get(str))) return -10;
+			}		
+			
+			//금액 검사
+			str = list.get(i).getString("money");
+			try {
+				Integer.parseInt(str);
+			}catch (NumberFormatException e) {
+				return -11;
+			}
+		}
+		return ledgerMapper.insertRecordList(list);
 	}
 }

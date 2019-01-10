@@ -273,4 +273,46 @@
 		</foreach>
 	</delete>
 	
+	<!-- 가게부 기입 list insert -->
+	<insert id="insertRecordList" parameterType="java.util.List">
+		INSERT INTO money_record_re(		
+			user_seq,	
+			record_date,
+			position,	
+			content,	
+			pur_seq,
+			pur_dtl_seq,
+			bank_seq,
+			move_seq,
+			money,
+			reg_date
+		)VALUES
+		<foreach collection="list" item="item" separator="),(" open="(" close=")">
+			#{item.userSeq}, 
+			#{item.recordDate},
+			#{item.position},
+			#{item.content}, 
+			#{item.purSeq},	
+			<choose>
+				<when test="item.purDtlSeq == ''">
+					NULL,
+				</when>
+				<otherwise>				
+					#{item.purDtlSeq},
+				</otherwise>
+			</choose>
+			#{item.bankSeq}, 
+			<choose>
+				<when test="item.moveSeq == ''">
+					NULL,
+				</when>
+				<otherwise>				
+					#{item.moveSeq},
+				</otherwise>
+			</choose>			 
+			#{item.money},		
+			now()
+		</foreach>	
+	</insert>
+	
 </mapper>

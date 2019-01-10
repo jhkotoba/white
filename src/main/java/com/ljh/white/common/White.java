@@ -74,6 +74,7 @@ public class White {
 	 */
 	static public boolean dateCheck(String date, String type) {
 		
+		if(date == null) return false;
 		if("".equals(type) || type == null) {
 			type = "yyyy-MM-dd";
 		}

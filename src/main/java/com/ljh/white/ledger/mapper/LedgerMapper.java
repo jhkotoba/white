@@ -193,6 +193,15 @@ public class LedgerMapper {
 	 */
 	public int deleteBankList(List<WhiteMap> list) {		
 		return sqlSession.delete("ledgerMapper.deleteBankList", list);		 
-	}	
+	}
+	
+	/**
+	 * 금전기록List insert
+	 * @param list
+	 * @return
+	 */
+	public int insertRecordList(List<WhiteMap> list) {
+		return sqlSession.insert("ledgerMapper.insertRecordList", list);
+	}
 	
 }
