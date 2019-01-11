@@ -13,82 +13,7 @@ function inputLedger(data){
 	let purLp = {};
 	for(let i=0; i<data.purList.length; i++){
 		purLp[data.purList[i].purSeq] = data.purList[i].purType;
-	}
-	
-	$("#test").on("click", function(){
-		//유효성 검사
-		let isVali = true;
-		$("[name='sync']").each(function(i, e){
-			if(isEmpty($(e).val())){
-				isVali = false;
-				wVali.alert({element : $(e), msg: $(e)[0].nodeName === "SELECT" ? "값을 선택해 주세요." : "값을 입력해 주세요."}); return false;
-			}
-			
-			switch($(e).data("name")){			
-			case "recordDate":
-				if(!isRecordDatePattern($(e).val())){
-					isVali = false;
-					wVali.alert({element : $(e), msg: "ex)2019-01-01 08:00의 형식으로 입력할 수 있습니다."}); return false;
-				}
-				break;
-			case "position" :
-				if($(e).val().length > 20){
-					isVali = false;
-					wVali.alert({element : $(e), msg: "최대 글자수 20자 까지 입력할 수 있습니다."}); return false;
-				}
-				break;
-			case "content" :
-				if($(e).val().length > 50){
-					isVali = false;
-					wVali.alert({element : $(e), msg: "최대 글자수 50자 까지 입력할 수 있습니다."}); return false;
-				}
-				break;
-			case "money" :
-				if(!isOnlyNum($(e).val().replace(/,/gi, ""))){
-					isVali = false;
-					wVali.alert({element : $(e), msg: "숫자를 입력해 주세요."}); return false;
-				}
-				break;
-			case "bankSeq" :				
-				if(String($(e).val()) === String($($(e)[0]).next().val())){
-					isVali = false;
-					wVali.alert({element : $(e), msg: "보내는 곳과 받는곳이 일치합니다."}); return false;
-				}
-				break;
-			}
-		});
-		
-		if(isVali && confirm("입력한 내용을 저장 하시겠습니까?")){			
-			for(let i=0; i<insertList.length; i++){
-				insertList[i].money =  insertList[i].money.replace(/,/gi, "");
-				switch(purLp[insertList[i].purSeq]){
-				case "LP001":
-				case "LP003":
-					insertList[i].money = Number(insertList[i].money);
-					break;
-				case "LP002":
-					insertList[i].money = Number("-"+insertList[i].money);				
-					break;					
-				}
-			}
-			
-			let param = {};			
-			param.insertList = JSON.stringify(insertList);
-			
-			cfnCmmAjax("/ledger/insertRecordList", param).done(function(data){				
-				if(Number(data) > 0){
-					alert(data + "행이 저장되었습니다.");
-					mf.submit('${navUrl}', '${sideUrl}', '${navNm}', '${sideNm}');	
-				}else{
-					alert("저장에 실패하였습니다. error:"+data);
-					console.log("error:"+data);					
-					for(let i=0; i<insertList.length; i++){						
-						insertList[i].money = cfnSetComma(String(Math.abs(Number(insertList[i].money))));
-					}					
-				}
-			});
-		}
-	});	
+	}	
 	
 	data.bankList.unshift({bankAccount: "", bankName: "현금", bankOrder: 0, bankSeq: 0, bankShowYn: "N",	bankUseYn: "N"});	
 	insertList.push({recordDate: isDate.today()+" "+isTime.curTime(), position:"", content:"",
@@ -167,6 +92,86 @@ function inputLedger(data){
 	
 	$("#ledgerList").append($header);
 	$("#ledgerList").append($tbody);
+	
+	$("#test").on("click", function(){
+		//유효성 검사
+		let isVali = true;
+		$("[name='sync']").each(function(i, e){
+			if(isEmpty($(e).val())){
+				isVali = false;
+				wVali.alert({element : $(e), msg: $(e)[0].nodeName === "SELECT" ? "값을 선택해 주세요." : "값을 입력해 주세요."}); return false;
+			}
+			
+			switch($(e).data("name")){			
+			case "recordDate":
+				if(!isRecordDatePattern($(e).val())){
+					isVali = false;
+					wVali.alert({element : $(e), msg: "ex)2019-01-01 08:00의 형식으로 입력할 수 있습니다."}); return false;
+				}
+				break;
+			case "position" :
+				if($(e).val().length > 20){
+					isVali = false;
+					wVali.alert({element : $(e), msg: "최대 글자수 20자 까지 입력할 수 있습니다."}); return false;
+				}
+				break;
+			case "content" :
+				if($(e).val().length > 50){
+					isVali = false;
+					wVali.alert({element : $(e), msg: "최대 글자수 50자 까지 입력할 수 있습니다."}); return false;
+				}
+				break;
+			case "money" :
+				if(!isOnlyNum($(e).val().replace(/,/gi, ""))){
+					isVali = false;
+					wVali.alert({element : $(e), msg: "숫자를 입력해 주세요."}); return false;
+				}
+				break;
+			case "bankSeq" :				
+				if(String($(e).val()) === String($($(e)[0]).next().val())){
+					isVali = false;
+					wVali.alert({element : $(e), msg: "보내는 곳과 받는곳이 일치합니다."}); return false;
+				}
+				break;
+			}
+		});
+		
+		if(isVali && confirm("입력한 내용을 저장 하시겠습니까?")){			
+			for(let i=0; i<insertList.length; i++){
+				insertList[i].money =  insertList[i].money.replace(/,/gi, "");
+				switch(purLp[insertList[i].purSeq]){
+				case "LP001":
+				case "LP003":
+					insertList[i].money = Number(insertList[i].money);
+					break;
+				case "LP002":
+					insertList[i].money = Number("-"+insertList[i].money);				
+					break;					
+				}
+			}
+			
+			let param = {};			
+			param.insertList = JSON.stringify(insertList);
+			
+			cfnCmmAjax("/ledger/insertRecordList", param).done(function(data){				
+				if(Number(data) > 0){
+					alert(data + "행이 저장되었습니다.");
+
+					insertList = new Array();
+					insertList.push({recordDate: isDate.today()+" "+isTime.curTime(), position:"", content:"",
+						purSeq: "", purDtlSeq: "", bankSeq: "", moveSeq: "", money: ""}
+					);						
+					$tbody.empty().append($("<div>").append(fnCreateRow()));					
+				}else{
+					alert("저장에 실패하였습니다. error:"+data);
+					console.log("error:"+data);					
+					for(let i=0; i<insertList.length; i++){						
+						insertList[i].money = cfnSetComma(String(Math.abs(Number(insertList[i].money))));
+					}					
+				}
+			});
+		}
+	});	
 	
 	//해더 생성
 	function fnCreateHeader(){
@@ -251,8 +256,6 @@ function inputLedger(data){
 	
 	//기본 select 생성
 	function fnCreateCmmSelect($select, name, item){		
-		//$select;
-		
 		switch(name){	
 		case "purSeq" : 
 			$option = $("<option>").text("목적선택").val("");

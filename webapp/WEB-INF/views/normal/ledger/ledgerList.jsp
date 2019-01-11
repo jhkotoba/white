@@ -19,19 +19,19 @@ $(document).ready(function(){
 	    	for(let i=0; i<data.purList.length; i++){		
 	    		tag += "<option value='"+data.purList[i].purSeq+"'>"+data.purList[i].purpose+"</option>";
 	    	}
-	    	$("#srhPur").append(tag);
+	    	$("#searchBar #purpose").append(tag);
 	    	
 	    	tag = "";
 	    	for(let i=0; i<data.purDtlList.length; i++){		
 	    		tag += "<option name='pSeq_"+data.purDtlList[i].purSeq+"' value='"+data.purDtlList[i].purDtlSeq+"' style='display:none;'>"+data.purDtlList[i].purDetail+"</option>";
 	    	}
-	    	$("#srhPurDtl").append(tag);
+	    	$("#searchBar #purDtl").append(tag);
 	    	
 	    	tag = "";
 	    	for(let i=0; i<data.bankList.length; i++){		
 	    		tag += "<option value='"+data.bankList[i].bankSeq+"'>"+data.bankList[i].bankName+"("+data.bankList[i].bankAccount+")</option>";
 	    	}
-	    	$("#srhBank").append(tag);
+	    	$("#searchBar #bank").append(tag);
 	    	
 	    	rec.initPB(data.purList, data.purDtlList, data.bankList);			
 	    },
@@ -621,25 +621,24 @@ let rec = {
 	<span> ~ </span>
 	<input id="endDate" value="" type="text" class="input-gray wth1 datepicker-here" data-language='ko'>
 	
-	<select id="srhPur" class="select-gray">
-		<option value=''>목적 검색</option>	
-		<option value='0'>금액이동</option>
+	<select id="purpose" class="select-gray">
+		<option value=''>목적 검색</option>		
 	</select>
-	<select id="srhPurDtl" class="select-gray">
+	<select id="purDtl" class="select-gray">
 		<option value=''>상세 검색</option>
 	</select>
-	<select id="srhBank" class="select-gray">
+	<select id="bank" class="select-gray">
 		<option value=''>은행 검색</option>			
 		<option value='0'>현금</option>	
 	</select>
 	
 	<div class="pull-right">	
-		<button id="recShBtn" class="btn-gray trs">조회</button>
-		<button id="recEditBtn"  class="btn-gray trs" disabled="disabled">편집</button>
-		<button id="recSaveBtn"  class="btn-gray trs" disabled="disabled">저장</button>
-		<button id="recCelBtn" class="btn-gray trs">초기화</button>	
+		<button id="searchBtn" class="btn-gray trs">조회</button>
+		<button id="editBtn"  class="btn-gray trs">편집</button>
+		<button id="saveBtn"  class="btn-gray trs">저장</button>
+		<button id="cancelBtn" class="btn-gray trs">초기화</button>	
 	</div>
 </div>
 
-<div id="ledgerReList">		
+<div id="ledgerList">		
 </div>
