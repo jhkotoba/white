@@ -131,5 +131,14 @@ public class LedgerController {
 		return ledgerService.insertRecordList(param);
 	}
 	
-	
+	/**
+	 * 가계부 조회
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="/ledger/selectRecordList.ajax" )
+	public List<WhiteMap> selectRecordList(HttpServletRequest request){
+		WhiteMap param = new WhiteMap(request);
+		return ledgerService.selectRecordList(param);		
+	}
 }

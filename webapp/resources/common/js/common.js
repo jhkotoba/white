@@ -500,8 +500,20 @@ function isOnlyNum(_str){
 }
 
 //날짜 형식 체크 ex) 2019-01-01 08:00
-function isRecordDatePattern(date){	
-	let date_pattern = /^(19|20)\d{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[0-1]) (0[0-9]|1[0-9]|2[0-3]):([0-5][0-9])$/;
+function isRecordDatePattern(date, patten){
+	let date_pattern = null;
+	switch(patten){	
+	case "time":
+		date_pattern = /^([1-9]|[01][0-9]|2[0-3]):([0-5][0-9])$/;
+		break;		
+	case "datetime":
+		date_pattern = /^(19|20)\d{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[0-1]) (0[0-9]|1[0-9]|2[0-3]):([0-5][0-9])$/;
+		break;	
+	case "date" :
+	default :
+		date_pattern = /^(19|20)\d{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[0-1])$/;	
+		break;
+	}
 	return date_pattern.test(date);
 }
 

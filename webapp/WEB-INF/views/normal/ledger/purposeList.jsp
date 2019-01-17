@@ -22,7 +22,18 @@ function fnPurGrid(data){
 	let purDtlNoIdx = null;
 	let purDtlCloneNoIdx = null;
 	let initPurDtl = true;
-	let refPurSeq = isEmpty("${prevParam}")?clone.purList[0].purSeq:Number("${prevParam}");
+	//let refPurSeq = isEmpty("${prevParam}")?clone.purList[0].purSeq:Number("${prevParam}");
+	let refPurSeq;
+	console.log(clone);
+	
+	if(clone.purList.length === 0){
+		refPurSeq = 0;
+	}else if(isEmpty("${prevParam}")){
+		refPurSeq = clone.purList[0].purSeq;
+	}else{
+		refPurSeq = Number("${prevParam}");
+	}
+	
 	
 	$("#purList").jsGrid({
 		height: "auto",

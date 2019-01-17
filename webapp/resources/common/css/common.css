@@ -69,9 +69,14 @@ th,td{height:38px;}
 
 /* main */
 .main{padding: 10px;}
-.center{position: relative; width: 80%; left: 10%;}
+.login-center{position: relative; width: 80%; left: 10%;}
 
 .trs{transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;}
+
+.input-center{text-align: center; text-indent: 0px !important;}
+.input-right{text-align: right; text-indent: 0px !important;}
+.input-left{text-align: left; text-indent: 0px !important;}
+
 .input-gray{background: #545454;; color:#C6C6C6; font-size: 1em; height: 30px; border: 1px solid #646464; border-radius: 2px; vertical-align: bottom; text-indent: 5px;}
 .select-gray{background: #4C4C4C; color:#C6C6C6; font-size: 1em; height: 30px; border: 1px solid #585858; border-radius: 2px; padding: .25rem .5rem; vertical-align: bottom; }
 .btn-gray{background: #4C4C4C; color:#C6C6C6; border: 1px solid #585858; display: inline-block; border-radius: 2px;	text-align: center; white-space: nowrap; vertical-align: bottom; user-select: none; overflow: visible; margin: 0; cursor: pointer; font-weight:600; padding: .25rem .5rem; height: 30px;}

@@ -27,8 +27,7 @@ $(document).ready(function(){
 		$("#searchForm #langCd").val($("#searchBar #langCd").val());
 		$("#searchForm #type").val($("#searchBar #type").val());
 		
-		let type =  $("#searchForm #type").val();
-		console.log(type);
+		let type =  $("#searchForm #type").val();		
 		if(type === "id" || type === "sourceSeq"){
 			$("#searchForm #text").val($("#searchBar #text").val());
 		}else{
@@ -58,8 +57,7 @@ $(document).ready(function(){
 	});
 	
 	//글쓰기 - 저장 버튼
-	$("#writeForm #save").on("click", function(){
-		
+	$("#writeForm #save").on("click", function(){		
 		let param = $("#writeForm").getParam();
 		
 		if(wVali.parent("writeForm").checkItem(["empty", "maxLen"])

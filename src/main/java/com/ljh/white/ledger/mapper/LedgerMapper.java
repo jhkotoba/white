@@ -204,4 +204,23 @@ public class LedgerMapper {
 		return sqlSession.insert("ledgerMapper.insertRecordList", list);
 	}
 	
+	/**
+	 * 금전기록 해당날짜 이전 각각(현금, 은행등등) 금액 합산 조회
+	 * @param pastRec
+	 * @return
+	 */
+	public WhiteMap selectCalPastRecord(List<WhiteMap> list) {
+		return sqlSession.selectOne("ledgerMapper.selectCalPastRecord", list);
+	}	
+	
+	/**
+	 * 해당 유저 가계부 조회
+	 * @param list
+	 * @return
+	 */
+	public List<WhiteMap> selectRecordList(WhiteMap param) {		
+		return sqlSession.selectList("ledgerMapper.selectRecordList", param);		 
+	}
+	
+	
 }

@@ -213,7 +213,7 @@ public class LedgerService {
 		for(int i=0; i<list.size(); i++) {			
 			//날짜 검사
 			str = list.get(i).getString("recordDate");
-			if(!White.dateCheck(str, "yyyy-MM-dd hh:mm")) return -1;
+			if(!White.dateCheck(str, "yyyy-MM-dd HH:mm")) return -1;
 			
 			//위치 검사
 			str = list.get(i).getString("position");			
@@ -251,11 +251,103 @@ public class LedgerService {
 			//금액 검사
 			str = list.get(i).getString("money");
 			try {
-				Integer.parseInt(str);
+				int money = Integer.parseInt(str);
+				switch(purTypeMap.get(str).toString()) {
+				case "LP001":
+					if(money <= 0) return -11; break;
+				case "LP002":
+				case "LP003":
+					if(money >= 0) return -11; break;
+				default:
+					return -11;				
+				}
+				
 			}catch (NumberFormatException e) {
 				return -11;
 			}
 		}
 		return ledgerMapper.insertRecordList(list);
 	}
+	
+	/**
+	 * 해당 유저 가계부 조회
+	 * @param param
+	 * @return
+	 */
+	public List<WhiteMap> selectRecordList(WhiteMap param){
+		
+		List<WhiteMap> bankList = this.selectBankList(param);
+		//금전기록 기간 조회시 기간 이전  각각(현금, 은행등등) 금액 데이터 합산
+		List<WhiteMap> pastRecList = new ArrayList<WhiteMap>();
+		WhiteMap map = null;
+		for(int i=0; i<bankList.size()+1; i++) {
+			map = new WhiteMap();
+			if(i==0) {
+				map.put("bankName", "cash");
+				map.put("bankSeq", 0);				
+				map.put("userSeq", param.getInt("userSeq"));
+				map.put("startDate", param.getString("startDate"));
+			}else {
+				map.put("bankName", "bank"+(i-1));
+				map.put("bankSeq", bankList.get(i-1).getInt("bankSeq"));
+				map.put("userSeq", param.getInt("userSeq"));
+				map.put("startDate", param.getString("startDate"));
+			}
+			pastRecList.add(map);
+		}		
+		WhiteMap pastRec = ledgerMapper.selectCalPastRecord(pastRecList);
+		
+		//금전기록 조회
+		List<WhiteMap> recList = ledgerMapper.selectRecordList(param);
+		
+		//총계 변수에 금액 증감
+		int amount = 0;	
+		
+		//현금,은행별금액  금액증감
+		int m = 0;
+		WhiteMap moneyMap = new WhiteMap();
+		m = pastRec == null ? 0 : pastRec.getInt("cash");
+		moneyMap.put("0", m);
+		amount += m;
+		for(int i=0; i<bankList.size(); i++) {
+			m = pastRec == null ? 0 : pastRec.getInt("bank"+i);
+			moneyMap.put(bankList.get(i).getString("bankSeq"), m );			
+			amount += m;
+		}
+		for(int i=0; i<recList.size(); i++) {			
+			//현금이동일때는 금액증감 제외, purSeq가 0인값은 금액이동
+			if("LP003".equals(recList.get(i).getString("purType"))) {
+				recList.get(i).put("amount", amount);
+			}else {
+				amount += recList.get(i).getInt("money");
+				recList.get(i).put("amount", amount);
+			}
+			//현금쪽 각 행마다 money 증감
+			if("0".equals(recList.get(i).getString("bankSeq"))) {				
+				int cash = moneyMap.getInt("0");
+				cash += recList.get(i).getInt("money");
+				moneyMap.put("0", cash);
+			//각각은행 money 증감
+			}else{				
+				String bankSeq = recList.get(i).getString("bankSeq");
+				int bankMoney = moneyMap.getInt(bankSeq);
+				bankMoney += recList.get(i).getInt("money");
+				moneyMap.put(bankSeq, bankMoney);				
+			}			
+			//현금이동시 받는쪽 추가
+			if(!("".equals(recList.get(i).getString("moveSeq")) || recList.get(i).getString("moveSeq")==null)){				
+				int addMoveMoney = moneyMap.getInt(recList.get(i).getString("moveSeq"));
+				addMoveMoney += Math.abs(recList.get(i).getInt("money"));
+				moneyMap.put(recList.get(i).getString("moveSeq"), addMoveMoney);
+			}			
+			//현금금액 증감 map추가
+			recList.get(i).put("cash", moneyMap.getInt("0"));
+			//은행별 추가 map추가
+			recList.get(i).put("bankIdxLen", bankList.size()-1);
+			for(int j=0; j<bankList.size(); j++) {
+				recList.get(i).put("bank"+j, moneyMap.getInt(bankList.get(j).getString("bankSeq")));
+			}						
+		}		
+		return recList;			
+	}	
 }

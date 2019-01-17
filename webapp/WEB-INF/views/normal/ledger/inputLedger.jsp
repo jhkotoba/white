@@ -93,7 +93,7 @@ function inputLedger(data){
 	$("#ledgerList").append($header);
 	$("#ledgerList").append($tbody);
 	
-	$("#test").on("click", function(){
+	$("#save").on("click", function(){
 		//유효성 검사
 		let isVali = true;
 		$("[name='sync']").each(function(i, e){
@@ -104,7 +104,7 @@ function inputLedger(data){
 			
 			switch($(e).data("name")){			
 			case "recordDate":
-				if(!isRecordDatePattern($(e).val())){
+				if(!isRecordDatePattern($(e).val(), "datetime")){
 					isVali = false;
 					wVali.alert({element : $(e), msg: "ex)2019-01-01 08:00의 형식으로 입력할 수 있습니다."}); return false;
 				}
@@ -140,11 +140,11 @@ function inputLedger(data){
 			for(let i=0; i<insertList.length; i++){
 				insertList[i].money =  insertList[i].money.replace(/,/gi, "");
 				switch(purLp[insertList[i].purSeq]){
-				case "LP001":
-				case "LP003":
+				case "LP001":				
 					insertList[i].money = Number(insertList[i].money);
-					break;
+					break;				
 				case "LP002":
+				case "LP003":
 					insertList[i].money = Number("-"+insertList[i].money);				
 					break;					
 				}
@@ -266,7 +266,7 @@ function inputLedger(data){
 				if(Number(item.purSeq) === Number(data.purList[i].purSeq)){
 					$option.prop("selected", true);
 				}			
-				$select.append($option)
+				$select.append($option);
 			}
 			return $select.on("change", function(e){
 				item.purSeq = this.value;
@@ -280,7 +280,7 @@ function inputLedger(data){
 					if(Number(data.purDtlList[i].purSeq) === Number(item.purSeq)){
 						$option = $("<option>").val(data.purDtlList[i].purDtlSeq)
 							.text(data.purDtlList[i].purDetail);		
-						$dtlSelect.append($option)
+						$dtlSelect.append($option);
 					}
 				}
 				
@@ -456,6 +456,6 @@ function inputLedger(data){
 </script>
 
 <div id="searchBar" class="search-bar pull-right">	
-	<button id="test" type="button" class="btn-gray trs">저장</button>
+	<button id="save" type="button" class="btn-gray trs">저장</button>
 </div>
 <div id="ledgerList"></div>

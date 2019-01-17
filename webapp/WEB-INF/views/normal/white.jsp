@@ -110,7 +110,7 @@ $(document).ready(function(){
 <c:if test="${sessionScope.userId eq null}">
 <form id="loginForm" class="login" onsubmit="return false;" style="display: none;">
 	<h5>Login</h5>
-	<div class="center">
+	<div class="login-center">
 		<h6>Id</h6>
 		<input id="userId" name="userId" class="input-gray login-text wth100p" type="text">
 		<h6>Password</h6>
