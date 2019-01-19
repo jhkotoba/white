@@ -187,9 +187,9 @@ function inputLedger(data){
 			}else{
 				$th.text(fieldList[i].title);
 			}
-			$tb.append($tr.append($th));			
+			$tr.append($th);			
 		}
-		
+		$tb.append($tr);
 		return $tb;		
 	}
 	

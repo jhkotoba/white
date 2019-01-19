@@ -252,7 +252,7 @@ public class LedgerService {
 			str = list.get(i).getString("money");
 			try {
 				int money = Integer.parseInt(str);
-				switch(purTypeMap.get(str).toString()) {
+				switch(purTypeMap.get(list.get(i).getString("purSeq")).toString()) {
 				case "LP001":
 					if(money <= 0) return -11; break;
 				case "LP002":

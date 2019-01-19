@@ -6,6 +6,7 @@
 $(document).ready(function(){	
 	$("#searchBar #startDate").val(isDate.firstDay());
 	$("#searchBar #endDate").val(isDate.lastDay());
+	$("#detail").data("detail", false);
 	cfnCmmAjax("/ledger/selectPurBankList").done(ledgerList);
 });
 
@@ -63,6 +64,9 @@ function ledgerList(data){
 		cfnCmmAjax("/ledger/selectRecordList", param).done(function(data){
 			
 			console.log(data);
+			
+			fnCreateLedgerList(data);
+			
 		});
 		
 		
@@ -92,10 +96,82 @@ function ledgerList(data){
 	//data.purList
 	//data.bankList
 	
+	//가계부 리스트 생성
+	function fnCreateLedgerList(list){
+		$("#ledgerList").empty();
+		
+		let $tb = $("<table>");
+		let $tr = $("<tr>");
+		let $th = null;
+		
+		//간편보기 상세보기              *             *      *                         *       *
+		//let titleList = ["날짜", "위치", "내용", "목적", 상세목적 "사용수단", "수입/지출", "소지금액", "현금"];
+		let titleList = [
+			{name: "날짜", 		detail: false},
+			{name: "위치", 		detail: true},
+			{name: "내용", 		detail: false},
+			{name: "목적", 		detail: false},
+			{name: "상세목적", 	detail: true},
+			{name: "사용수단", 	detail: true},
+			{name: "수입/지출", 	detail: false},
+			{name: "소지금액", 	detail: false},
+			{name: "현금", 		detail: true}
+		];
+		
+		for(let i=0; i<data.bankList.length; i++){			
+			titleList.push({name:data.bankList[i].bankName+"<br>("+data.bankList[i].bankAccount+")", detail:true});			
+		}
+		
+		
+		console.log(titleList);
+		
+		//titleList.push({title:"날짜", detail:true});
+		
+		
+		/* for(let i=0; i<titleArr.length; i++){			
+			$th = $("<th>").text(fieldList[i].title);
+			$tr.append($th);						
+		}
+		$tb.append($tr); */
+		
+		/* for(let i=0; i<fieldList.length; i++){			
+			$th = $("<th>").attr("style", "width:"+fieldList[i].width);			
+			if(isNotEmpty(fieldList[i].headerTemplate)){
+				$th.append(fieldList[i].headerTemplate());
+			}else{
+				$th.text(fieldList[i].title);
+			}
+			$tb.append($tr.append($th));			
+		} */
+		
+		
+		/* tag += "<table class='table table-striped table-bordered table-sm'>";
+		tag	+= "<tr>";			
+		tag	+= "<th>날짜</th>";
+		tag	+= "<th>위치</th>";
+		tag	+= "<th>내용</th>";
+		tag	+= "<th>목적</th>";
+		tag	+= "<th>상세목적</th>";
+		tag	+= "<th>사용수단</th>";
+		tag	+= "<th>수입/지출</th>";			
+		tag	+= "<th>소지금액</th>";
+		
+		//index화면일 경우 간략화(금액은 +-금액과 총액만 출력)
+		if(this.mode === "select"){
+			tag	+= "<th>현금</th>";
+			for(let i=0; i<this.bankList.length; i++){
+				tag += "<th>"+this.bankList[i].bankName+"<br>("+(this.bankList[i].bankAccount==="cash" ? "":this.bankList[i].bankAccount) +")</th>";
+			}
+		}	
+		tag += "</tr>";	 */
+		
 	
+	}
 	
-	
-	
+	//가계부 리스트 편집 생성
+	function fnCreateLedgerEditList(){
+		
+	}
 	
 	
 	
@@ -131,7 +207,8 @@ function ledgerList(data){
 		<button id="search" class="btn-gray trs">조회</button>
 		<button id="edit"  class="btn-gray trs">편집</button>
 		<button id="save"  class="btn-gray trs">저장</button>
-		<button id="cancel" class="btn-gray trs">초기화</button>	
+		<button id="cancel" class="btn-gray trs">초기화</button>
+		<button id="detail" class="btn-gray trs">상세보기</button>
 	</div>
 </div>
 
