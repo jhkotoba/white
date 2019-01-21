@@ -289,7 +289,6 @@ public class LedgerService {
 				map.put("startDate", param.getString("startDate"));
 			}else {
 				map.put("bankName", "bank"+(i-1));
-				//map.put("bankName", bankList.get(i).getString("bankAccount"));
 				map.put("bankSeq", bankList.get(i-1).getInt("bankSeq"));
 				map.put("userSeq", param.getInt("userSeq"));
 				map.put("startDate", param.getString("startDate"));

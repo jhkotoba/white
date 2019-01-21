@@ -14,9 +14,13 @@ $(document).ready(function(){
 		if($(this).data("detail")){			
 			$("[name=detail]").hide();
 			$(this).data("detail", false);
+			$("#ledgerList").removeClass("overflow-x-scroll");
+			
+			
 		}else{
 			$("[name=detail]").show();
 			$(this).data("detail", true);
+			$("#ledgerList").addClass("overflow-x-scroll");
 		}
 	});
 	
@@ -110,7 +114,7 @@ function ledgerList(data){
 	function fnCreateLedgerList(list){
 		$("#ledgerList").empty();
 		
-		let $tb = $("<table>");
+		let $tb = $("<table>").addClass("table-header");
 		let $tr = $("<tr>");
 		let $th = null;
 		
@@ -118,14 +122,14 @@ function ledgerList(data){
 		//let titleList = ["날짜", "위치", "내용", "목적", 상세목적 "사용수단", "수입/지출", "소지금액", "현금"];
 		let titleList = [
 			{title: "날짜", 		name: "recordDate", detail: false},
-			{title: "위치", 		name: "position", detail: true},
-			{title: "내용", 		name: "content", detail: false},
-			{title: "목적", 		name: "purSeq", detail: false},
-			{title: "상세목적", 	name: "purDtlSeq", detail: true},
-			{title: "사용수단", 	name: "bankSeq", detail: true},
-			{title: "수입/지출", 	name: "money", detail: false},
-			{title: "소지금액", 	name: "amount", detail: false},
-			{title: "현금", 		name: "cash", detail: true}
+			{title: "위치", 		name: "position", 	detail: true},
+			{title: "내용", 		name: "content", 	detail: false},
+			{title: "목적", 		name: "purSeq", 	detail: false},
+			{title: "상세목적", 	name: "purDtlSeq", 	detail: true},
+			{title: "사용수단", 	name: "bankSeq",	detail: true},
+			{title: "수입/지출", 	name: "money", 		detail: false},
+			{title: "소지금액", 	name: "amount",		detail: false},
+			{title: "현금", 		name: "cash", 		detail: true}
 		];
 		
 		for(let i=0; i<data.bankList.length; i++){			
@@ -239,4 +243,5 @@ function ledgerList(data){
 </div>
 
 <div id="ledgerList">		
+<!-- <div id="ledgerList" style="overflow: scroll; width: 100px;"> -->		
 </div>
