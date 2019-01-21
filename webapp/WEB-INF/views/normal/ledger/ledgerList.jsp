@@ -8,6 +8,18 @@ $(document).ready(function(){
 	$("#searchBar #endDate").val(isDate.lastDay());
 	$("#detail").data("detail", false);
 	cfnCmmAjax("/ledger/selectPurBankList").done(ledgerList);
+	
+	//상세보기 버튼
+	$("#searchBar #button #detail").on("click", function(){
+		if($(this).data("detail")){			
+			$("[name=detail]").hide();
+			$(this).data("detail", false);
+		}else{
+			$("[name=detail]").show();
+			$(this).data("detail", true);
+		}
+	});
+	
 });
 
 function ledgerList(data){
@@ -89,9 +101,7 @@ function ledgerList(data){
 				}					
 			}
 		}); */
-	});
-	
-
+	}).trigger("click");
 		
 	//data.purList
 	//data.bankList
@@ -107,23 +117,39 @@ function ledgerList(data){
 		//간편보기 상세보기              *             *      *                         *       *
 		//let titleList = ["날짜", "위치", "내용", "목적", 상세목적 "사용수단", "수입/지출", "소지금액", "현금"];
 		let titleList = [
-			{name: "날짜", 		detail: false},
-			{name: "위치", 		detail: true},
-			{name: "내용", 		detail: false},
-			{name: "목적", 		detail: false},
-			{name: "상세목적", 	detail: true},
-			{name: "사용수단", 	detail: true},
-			{name: "수입/지출", 	detail: false},
-			{name: "소지금액", 	detail: false},
-			{name: "현금", 		detail: true}
+			{title: "날짜", 		name: "recordDate", detail: false},
+			{title: "위치", 		name: "position", detail: true},
+			{title: "내용", 		name: "content", detail: false},
+			{title: "목적", 		name: "purSeq", detail: false},
+			{title: "상세목적", 	name: "purDtlSeq", detail: true},
+			{title: "사용수단", 	name: "bankSeq", detail: true},
+			{title: "수입/지출", 	name: "money", detail: false},
+			{title: "소지금액", 	name: "amount", detail: false},
+			{title: "현금", 		name: "cash", detail: true}
 		];
 		
 		for(let i=0; i<data.bankList.length; i++){			
-			titleList.push({name:data.bankList[i].bankName+"<br>("+data.bankList[i].bankAccount+")", detail:true});			
+			titleList.push({title:data.bankList[i].bankName+"<br>("+data.bankList[i].bankAccount+")", name:data.bankList[i].bankAccount, detail:true});			
 		}
 		
 		
+		
 		console.log(titleList);
+		
+		
+		
+		for(let i=0; i<titleList.length; i++){
+			$th = $("<th>").html(titleList[i].title);
+			if(titleList[i].detail){
+				$th.attr("name", "detail").hide();
+			}
+			$tr.append($th);				
+		}
+		$tb.append($tr);
+		
+		console.log(list);
+		
+		$("#ledgerList").append($tb);
 		
 		//titleList.push({title:"날짜", detail:true});
 		
