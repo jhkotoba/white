@@ -191,7 +191,7 @@ function cfnGetNumber(obj){
 //통화 입력 - 콤마추가
 function cfnSetComma(inNum){     
 	let outNum;
-	outNum = inNum; 
+	outNum = String(inNum); 
 	while (/(\d+)(\d{3})/.test(outNum)) {
 		outNum = outNum.replace(/(\d+)(\d{3})/, '$1' + ',' + '$2');
 	}

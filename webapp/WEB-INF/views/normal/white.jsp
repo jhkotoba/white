@@ -71,18 +71,20 @@ $(document).ready(function(){
 	<a class="nav-brand h6" href="${contextPath}/main">white</a>
 	<ul>
 		<c:forEach items="${sessionScope.navList}" var="nav">
-			<li class="dropdown">
-				<a href="javascript:void(0);">${nav.navNm}</a>
-				<div class="dropdown-content">								
-					<c:forEach items="${sessionScope.sideList}" var="side">									
-						<c:if test="${nav.navSeq eq side.navSeq }">
-							<c:if test="${side.auth eq 1 }">
-								<a class="sideHeight" href="javascript:mf.submit('${nav.navUrl}', '${side.sideUrl}', '${nav.navNm}', '${side.sideNm}')">${side.sideNm}</a>
+			<c:if test="${nav.auth eq 1 }">
+				<li class="dropdown">
+					<a href="javascript:void(0);">${nav.navNm}</a>
+					<div class="dropdown-content">								
+						<c:forEach items="${sessionScope.sideList}" var="side">									
+							<c:if test="${nav.navSeq eq side.navSeq }">
+								<c:if test="${side.auth eq 1 }">
+									<a class="sideHeight" href="javascript:mf.submit('${nav.navUrl}', '${side.sideUrl}', '${nav.navNm}', '${side.sideNm}')">${side.sideNm}</a>
+								</c:if>
 							</c:if>
-						</c:if>
-					</c:forEach>
-				</div>
-			</li>
+						</c:forEach>
+					</div>
+				</li>
+			</c:if>
 		</c:forEach>
 	</ul>	
 	<div class="user">
