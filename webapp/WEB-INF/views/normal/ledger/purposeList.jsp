@@ -24,7 +24,6 @@ function fnPurGrid(data){
 	let initPurDtl = true;
 	//let refPurSeq = isEmpty("${prevParam}")?clone.purList[0].purSeq:Number("${prevParam}");
 	let refPurSeq;
-	console.log(clone);
 	
 	if(clone.purList.length === 0){
 		refPurSeq = 0;
