@@ -92,67 +92,88 @@ function ledgerList(data){
 		});
 	}).trigger("click");
 	
-	//가계부 리스트 생성
-	function fnCreateLedgerList(list){
-		$("#ledgerList").empty();
-		
-		let fieldList = [
-			{title: "날짜", 		name: "recordDate", minWidth: 200, detail: false, edit: true,				
-				itemTemplate: function(item){
-					return item.recordDate;
-				}
-			},
-			{title: "위치", 		name: "position", 	minWidth: 250, detail: true,  edit: true,				
-				itemTemplate: function(item){
-					return item.position;
-				}
-			},
-			{title: "내용", 		name: "content", 	minWidth: 500, detail: false, edit: true,				
-				itemTemplate: function(item){
-					return item.content;
-				}
-			},
-			{title: "목적", 		name: "purSeq", 	minWidth: 200, detail: false, edit: true,				
-				itemTemplate: function(item){
-					return purMap[Number(item.purSeq)];
-				}
-			},
-			{title: "상세목적", 	name: "purDtlSeq", 	minWidth: 200, detail: true,  edit: true,				
-				itemTemplate: function(item){
-					return purDtlMap[Number(item.purDtlSeq)];
-				}
-			},
-			{title: "사용수단", 	name: "bankSeq",	minWidth: 200, detail: true,  edit: true,				
-				itemTemplate: function(item){
-					if(Number(item.bankSeq) === 0){
-						return "현급";
-					}else{
-						return bankMap[Number(item.bankSeq)];
-					}
-				}
-			},
-			{title: "수입/지출", 	name: "money", 		minWidth: 150, detail: false, edit: true,				
-				itemTemplate: function(item){
-					return cfnSetComma(item.money);
-				}
-			},
-			{title: "소지금액", 	name: "amount",		minWidth: 200, detail: false, edit: false,				
-				itemTemplate: function(item){
-					return cfnSetComma(item.amount);
-				}
-			},
-			{title: "현금", 		name: "cash", 		minWidth: 200, detail: true,  edit: false,				
-				itemTemplate: function(item){
-					return cfnSetComma(item.cash);
+	let fieldList = [
+		{title: "날짜", 		name: "recordDate", minWidth: 200, detail: false, edit: true,				
+			itemTemplate: function(item){
+				return item.recordDate;
+			}
+		},
+		{title: "위치", 		name: "position", 	minWidth: 250, detail: true,  edit: true,				
+			itemTemplate: function(item){
+				return item.position;
+			}
+		},
+		{title: "내용", 		name: "content", 	minWidth: 500, detail: false, edit: true,				
+			itemTemplate: function(item){
+				return item.content;
+			}
+		},
+		{title: "목적", 		name: "purSeq", 	minWidth: 200, detail: false, edit: true,				
+			itemTemplate: function(item){
+				return purMap[Number(item.purSeq)];
+			}
+		},
+		{title: "상세목적", 	name: "purDtlSeq", 	minWidth: 200, detail: true,  edit: true,				
+			itemTemplate: function(item){
+				return purDtlMap[Number(item.purDtlSeq)];
+			}
+		},
+		{title: "사용수단", 	name: "bankSeq",	minWidth: 200, detail: true,  edit: true,				
+			itemTemplate: function(item){
+				if(Number(item.bankSeq) === 0){
+					return "현급";
+				}else{
+					return bankMap[Number(item.bankSeq)];
 				}
 			}
-		];
+		},
+		{title: "수입/지출", 	name: "money", 		minWidth: 150, detail: false, edit: true,				
+			itemTemplate: function(item){
+				return cfnSetComma(item.money);
+			}
+		},
+		{title: "소지금액", 	name: "amount",		minWidth: 200, detail: false, edit: false,				
+			itemTemplate: function(item){
+				return cfnSetComma(item.amount);
+			}
+		},
+		{title: "현금", 		name: "cash", 		minWidth: 200, detail: true,  edit: false,				
+			itemTemplate: function(item){
+				return cfnSetComma(item.cash);
+			}
+		}
+	];
+	
+	
+	//가계부 리스트 생성
+	function fnCreateLedgerList(list){
+		$("#ledgerList").empty();	
 		
 		let $header = $("<div>").append(fnCreateHeader());	
 		let $tbody = $("<div>").append(fnCreateRow());
 		
-		$("#ledgerList").append($header);
-		$("#ledgerList").append($tbody);
+		let curDown = false;
+		let curXPos = 0;
+		let pos = 0;
+		
+		$("#ledgerList").append($header)
+		.append($tbody)
+		.mousedown(function(m){		
+			curDown = true;		
+			curXPos = m.pageX;
+		}).mouseup(function(){
+			curDown = false;
+		}).mousemove(function(m){		    
+			if(curDown === true){		
+				pos = curXPos - m.pageX;
+				if(pos > 25){
+					pos = 25;
+				}else if(pos < -25){
+					pos = -25;
+				}			
+				$("#ledgerList").scrollLeft($("#ledgerList").scrollLeft() + pos);
+			}
+		});
 		
 		//해더 생성
 		function fnCreateHeader(){
@@ -217,8 +238,6 @@ function ledgerList(data){
 	
 	
 	
-	
-	
 }
 
 </script>
@@ -254,6 +273,6 @@ function ledgerList(data){
 	</div>
 </div>
 
-<div id="ledgerList">		
+<div id="ledgerList" class="text-drag-block">		
 <!-- <div id="ledgerList" style="overflow: scroll; width: 100px;"> -->		
 </div>

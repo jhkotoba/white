@@ -133,6 +133,7 @@ h4, .h4 {font-size: 1.5rem;}
 h5, .h5 {font-size: 1.25rem;}
 h6, .h6 {font-size: 1rem;}
 
+
 /* .btn-sm{background: #4C4C4C; color:#C6C6C6; height: 20px; border: 1px solid #585858; border-radius: 2px; cursor: pointer;}
 .btn-sm:hover{background: #3A3A3A;}
 .btn-md{background: #4C4C4C; color:#C6C6C6; height: 30px; border: 1px solid #585858; border-radius: 2px; cursor: pointer;}
@@ -186,6 +187,14 @@ h6, .h6 {font-size: 1rem;}
     transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 } */
 
+
+.text-drag-block{
+	-ms-user-select: none; 
+   -moz-user-select: -moz-none;
+   -khtml-user-select: none;
+   -webkit-user-select: none;
+   user-select: none;
+}
 
 .inbk{display: inline-block;}
 
