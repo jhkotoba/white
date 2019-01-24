@@ -170,8 +170,10 @@ h6, .h6 {font-size: 1rem;}
 .overflow-x-scroll{	overflow-x:scroll;}
 .overflow-x-scroll::-webkit-scrollbar {border: 1px solid #363636;}
 .overflow-x-scroll::-webkit-scrollbar-button:start:decrement,::-webkit-scrollbar-button:end:increment {display: none;}
-.overflow-x-scroll::-webkit-scrollbar-track {background: #4C4C4C;}
-.overflow-x-scroll::-webkit-scrollbar-thumb {background: #5A5A5A;}
+.overflow-x-scroll::-webkit-scrollbar-track {background: #5A5A5A;}
+.overflow-x-scroll::-webkit-scrollbar-thumb {background: #4C4C4C;}
+
+
 
 
 .table-header{background: #4C4C4C; border-collapse: collapse; border-spacing: 0; width: 100%;}

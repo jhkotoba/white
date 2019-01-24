@@ -99,90 +99,80 @@ function ledgerList(data){
 			$("#right #cancel").on("click", function(){
 				$("#searchBar #right #detail").data("detail", false).text("상세보기");
 				$(".detail-view").each(function(e){$(this).hide();});
+				$(".edit-view").each(function(e){$(this).hide();});
 				$("#searchBar #right #detail").show();
 				fnCreateLedgerList(data);
+			});
+			
+			//편집버튼
+			$("#right #edit").on("click", function(){
+				$(".edit-view").each(function(e){$(this).show();});
+				$(".detail-view").each(function(e){$(this).show();});
+				$("#searchBar #right #detail").hide();
+				fnCreateLedgerEditList(data);
+				
 			});
 		});
 		
 		
-	}).trigger("click");	
+	}).trigger("click");
 	
-	function fnSetFontColor(purType, data){
-		let $span = $("<span>");
-		switch(purType){
-		case "LP001":
-			return $span.addClass("sync-blue").text(data);
-		case "LP002":
-			return $span.addClass("sync-red").text(data);
-		case "LP003":
-			return $span.addClass("sync-green").text(data);
-		default:
-			return data;
+	let fieldList = [
+		{title: "날짜", 		name: "recordDate", minWidth: 200, detail: false, edit: true,				
+			itemTemplate: function(item){
+				return item.recordDate;
+			}
+		},
+		{title: "위치", 		name: "position", 	minWidth: 250, detail: true,  edit: true,				
+			itemTemplate: function(item){
+				return item.position;
+			}
+		},
+		{title: "내용", 		name: "content", 	minWidth: 500, detail: false, edit: true,				
+			itemTemplate: function(item){
+				return item.content;
+			}
+		},
+		{title: "목적", 		name: "purSeq", 	minWidth: 200, detail: false, edit: true,				
+			itemTemplate: function(item){
+				return purMap[Number(item.purSeq)];
+			}
+		},
+		{title: "상세목적", 	name: "purDtlSeq", 	minWidth: 200, detail: true,  edit: true,				
+			itemTemplate: function(item){
+				return purDtlMap[Number(item.purDtlSeq)];
+			}
+		},
+		{title: "사용수단", 	name: "bankSeq",	minWidth: 200, detail: true,  edit: true,				
+			itemTemplate: function(item){
+				if(Number(item.bankSeq) === 0){
+					return "현급";
+				}else{
+					return bankMap[Number(item.bankSeq)];
+				}
+			}
+		},
+		{title: "수입/지출", 	name: "money", 		minWidth: 150, detail: false, edit: true,				
+			itemTemplate: function(item){
+				return cfnSetComma(item.money);
+			}
+		},
+		{title: "소지금액", 	name: "amount",		minWidth: 200, detail: false, edit: false,				
+			itemTemplate: function(item){
+				return cfnSetComma(item.amount);
+			}
+		},
+		{title: "현금", 		name: "cash", 		minWidth: 200, detail: true,  edit: false,				
+			itemTemplate: function(item){
+				return cfnSetComma(item.cash);
+			}
 		}
-	}	
+	];
+	
 	
 	//가계부 리스트 생성
 	function fnCreateLedgerList(list){
-		$("#ledgerList").empty();
-		
-		let fieldList = [
-			{title: "날짜", 		name: "recordDate", minWidth: 200, detail: false, edit: true, bankSeq:null,			
-				itemTemplate: function(item){
-					return item.recordDate;
-				}
-			},
-			{title: "위치", 		name: "position", 	minWidth: 250, detail: true,  edit: true, bankSeq:null,				
-				itemTemplate: function(item){
-					return item.position;
-				}
-			},
-			{title: "내용", 		name: "content", 	minWidth: 500, detail: false, edit: true, bankSeq:null,				
-				itemTemplate: function(item){
-					return item.content;
-				}
-			},
-			{title: "목적", 		name: "purSeq", 	minWidth: 200, detail: false, edit: true, bankSeq:null,				
-				itemTemplate: function(item){
-					return purMap[Number(item.purSeq)];
-				}
-			},
-			{title: "상세목적", 	name: "purDtlSeq", 	minWidth: 200, detail: true,  edit: true, bankSeq:null,				
-				itemTemplate: function(item){
-					return purDtlMap[Number(item.purDtlSeq)];
-				}
-			},
-			{title: "사용수단", 	name: "bankSeq",	minWidth: 200, detail: true,  edit: true, bankSeq:null,				
-				itemTemplate: function(item){
-					let $span = $("<span>");					
-					if(Number(item.bankSeq) === 0){
-						return $span.text("현금").data("bankSeq", 0);
-					}else{
-						return $span.text(bankMap[Number(item.bankSeq)]).data("bankSeq", item.bankSeq);						
-					}
-				}
-			},
-			{title: "수입/지출", 	name: "money", 		minWidth: 150, detail: false, edit: true, bankSeq:null,				
-				itemTemplate: function(item){				
-					return fnSetFontColor(item.purType, cfnSetComma(item.money));
-				}
-			},
-			{title: "소지금액", 	name: "amount",		minWidth: 200, detail: false, edit: false, bankSeq:null,				
-				itemTemplate: function(item){
-					return fnSetFontColor(item.purType, cfnSetComma(item.amount));
-				}
-			},
-			{title: "현금", 		name: "cash", 		minWidth: 200, detail: true,  edit: false, bankSeq:null,
-				itemTemplate: function(item){
-					if(Number(item.bankSeq) === 0){
-						return fnSetFontColor(item.purType, cfnSetComma(item.cash));
-					}else{
-						return cfnSetComma(item.cash);
-					}
-					
-									
-				}
-			}
-		];		
+		$("#ledgerList").empty();	
 		
 		let $header = $("<div>").append(fnCreateHeader());	
 		let $tbody = $("<div>").append(fnCreateRow());
@@ -201,14 +191,14 @@ function ledgerList(data){
 		}).mousemove(function(m){		    
 			if(curDown === true){		
 				pos = curXPos - m.pageX;
-				if(pos > 15){
-					pos = 15;
-				}else if(pos < -15){
-					pos = -15;
+				if(pos > 25){
+					pos = 25;
+				}else if(pos < -25){
+					pos = -25;
 				}			
 				$("#ledgerList").scrollLeft($("#ledgerList").scrollLeft() + pos);
 			}
-		});		
+		});
 		
 		//해더 생성
 		function fnCreateHeader(){
@@ -224,26 +214,8 @@ function ledgerList(data){
 						minWidth: 200, 
 						detail:true,
 						edit:false,
-						bankSeq:data.bankList.bankSeq,
-						itemTemplate: function(item, bankSeq){
-							console.log(bankSeq);
-							
-							if(Number(item.bankSeq) === Number(bankSeq)){
-								return fnSetFontColor(item.purType, cfnSetComma(item[data.bankList[i].bankAccount]));
-							}else{
-								return cfnSetComma(item.cash);
-							}
-							
-							/* console.log(item);
-							
-							if(Number(item.bankSeq) === 0){
-								return fnSetFontColor(item.purType, cfnSetComma(item.cash));
-							}else{
-								return cfnSetComma(item.cash);
-							}
-							
-							return fnSetFontColor(item.purType, cfnSetComma(item[data.bankList[i].bankAccount])); */
-							//return cfnSetComma(item[data.bankList[i].bankAccount]);
+						itemTemplate: function(item){
+							return cfnSetComma(item["bank"+i]);
 						}
 					}
 				);
@@ -287,7 +259,7 @@ function ledgerList(data){
 					if(fieldList[j].detail){
 						$td.attr("name", "detail").hide();
 					}
-					console.log(fieldList[j]);
+					
 					$td.append(fieldList[j].itemTemplate(list[i]));
 					$tr.append($td);
 				}
@@ -296,6 +268,14 @@ function ledgerList(data){
 			return $tb;
 		}
 	}
+	
+	//가계부 리스트 편집 생성
+	function fnCreateLedgerEditList(list){
+		
+	}
+	
+	
+	
 }
 
 </script>
@@ -316,11 +296,11 @@ function ledgerList(data){
 	</select>
 	<button id="search" class="btn-gray trs">조회</button>
 	
-	<div id="right" class="pull-right">
+	<div id="right" class="pull-right">		
+		<button id="edit"  class="btn-gray trs">편집</button>
 		<button id="save"  class="btn-gray trs edit-view" style="display: none;">저장</button>
 		<button id="cancel" class="btn-gray trs">초기화</button>
 		<button id="detail" class="btn-gray trs">상세보기</button>
-		<button id="excel" class="btn-gray trs">엑셀</button>
 	</div>
 </div>
 

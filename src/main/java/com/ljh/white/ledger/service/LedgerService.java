@@ -345,7 +345,8 @@ public class LedgerService {
 			//은행별 추가 map추가
 			recList.get(i).put("bankIdxLen", bankList.size()-1);
 			for(int j=0; j<bankList.size(); j++) {
-				recList.get(i).put("bank"+j, moneyMap.getInt(bankList.get(j).getString("bankSeq")));
+				//recList.get(i).put("bank"+j, moneyMap.getInt(bankList.get(j).getString("bankSeq")));
+				recList.get(i).put(bankList.get(j).getString("bankAccount"), moneyMap.getInt(bankList.get(j).getString("bankSeq")));
 			}						
 		}		
 		return recList;			
