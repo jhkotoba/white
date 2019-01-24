@@ -32,6 +32,8 @@ function ledgerList(data){
 	let purDtlMap = {};
 	let bankMap = {};
 	
+	console.log(data);
+	
 	//목적
 	for(let i=0; i<data.purList.length; i++){
 		$option = $("<option>").val(data.purList[i].purSeq)
@@ -107,17 +109,25 @@ function ledgerList(data){
 		
 	}).trigger("click");	
 	
-	function fnSetFontColor(purType, data){
+	function fnSetFontColor(purType, data, name, from, to){
 		let $span = $("<span>");
 		switch(purType){
 		case "LP001":
-			return $span.addClass("sync-blue").text(data);
+			return $span.addClass("sync-blue").text(cfnSetComma(data));
 		case "LP002":
-			return $span.addClass("sync-red").text(data);
+			return $span.addClass("sync-red").text(cfnSetComma(data));
 		case "LP003":
-			return $span.addClass("sync-green").text(data);
+			if(name === "money"){
+				return $span.addClass("sync-green").text(cfnSetComma(Math.abs(data)));
+			}else if(from){
+				return $span.addClass("sync-red").text(cfnSetComma(data));
+			}else if(to){
+				return $span.addClass("sync-blue").text(cfnSetComma(data));
+			}else{
+				return cfnSetComma(data);
+			}
 		default:
-			return data;
+			return cfnSetComma(data);
 		}
 	}	
 	
@@ -126,55 +136,58 @@ function ledgerList(data){
 		$("#ledgerList").empty();
 		
 		let fieldList = [
-			{title: "날짜", 		name: "recordDate", minWidth: 200, detail: false, edit: true, bankSeq:null,			
+			{title: "날짜", 		name: "recordDate", minWidth: 200, detail: false, bankSeq:null,			
 				itemTemplate: function(item){
 					return item.recordDate;
 				}
 			},
-			{title: "위치", 		name: "position", 	minWidth: 250, detail: true,  edit: true, bankSeq:null,				
+			{title: "위치", 		name: "position", 	minWidth: 250, detail: true, bankSeq:null,				
 				itemTemplate: function(item){
 					return item.position;
 				}
 			},
-			{title: "내용", 		name: "content", 	minWidth: 500, detail: false, edit: true, bankSeq:null,				
+			{title: "내용", 		name: "content", 	minWidth: 500, detail: false, bankSeq:null,				
 				itemTemplate: function(item){
 					return item.content;
 				}
 			},
-			{title: "목적", 		name: "purSeq", 	minWidth: 200, detail: false, edit: true, bankSeq:null,				
+			{title: "목적", 		name: "purSeq", 	minWidth: 200, detail: false, bankSeq:null,				
 				itemTemplate: function(item){
 					return purMap[Number(item.purSeq)];
 				}
 			},
-			{title: "상세목적", 	name: "purDtlSeq", 	minWidth: 200, detail: true,  edit: true, bankSeq:null,				
+			{title: "상세목적", 	name: "purDtlSeq", 	minWidth: 200, detail: true, bankSeq:null,				
 				itemTemplate: function(item){
 					return purDtlMap[Number(item.purDtlSeq)];
 				}
 			},
-			{title: "사용수단", 	name: "bankSeq",	minWidth: 200, detail: true,  edit: true, bankSeq:null,				
-				itemTemplate: function(item){
-					let $span = $("<span>");					
+			{title: "사용수단", 	name: "bankSeq",	minWidth: 200, detail: true, bankSeq:null,				
+				itemTemplate: function(item){										
 					if(Number(item.bankSeq) === 0){
-						return $span.text("현금").data("bankSeq", 0);
+						return "현금";
 					}else{
-						return $span.text(bankMap[Number(item.bankSeq)]).data("bankSeq", item.bankSeq);						
+						return bankMap[Number(item.bankSeq)];						
 					}
 				}
 			},
-			{title: "수입/지출", 	name: "money", 		minWidth: 150, detail: false, edit: true, bankSeq:null,				
-				itemTemplate: function(item){				
-					return fnSetFontColor(item.purType, cfnSetComma(item.money));
+			{title: "수입/지출", 	name: "money", 		minWidth: 150, detail: false, bankSeq:null,
+				itemTemplate: function(item){
+					return fnSetFontColor(item.purType, item.money, "money", false, false);
 				}
 			},
-			{title: "소지금액", 	name: "amount",		minWidth: 200, detail: false, edit: false, bankSeq:null,				
+			{title: "소지금액", 	name: "amount",		minWidth: 200, detail: false, bankSeq:null,				
 				itemTemplate: function(item){
-					return fnSetFontColor(item.purType, cfnSetComma(item.amount));
+					return fnSetFontColor(item.purType, item.amount, "amount", false, false);
 				}
 			},
-			{title: "현금", 		name: "cash", 		minWidth: 200, detail: true,  edit: false, bankSeq:null,
-				itemTemplate: function(item){
-					if(Number(item.bankSeq) === 0){
-						return fnSetFontColor(item.purType, cfnSetComma(item.cash));
+			{title: "현금", 		name: "cash", 		minWidth: 200, detail: true, bankSeq:0,
+				itemTemplate: function(item, bankSeq){
+					//console.log(item.bankSeq);
+					//console.log(bankSeq);
+					if(Number(item.bankSeq) === Number(bankSeq)){						
+						return fnSetFontColor(item.purType, item.cash, "cash", true, false);
+					//}else if(Number(item.moveSeq) === Number(bankSeq)){
+					//	return fnSetFontColor(item.purType, item.cash, "cash", false, true);
 					}else{
 						return cfnSetComma(item.cash);
 					}
@@ -224,26 +237,15 @@ function ledgerList(data){
 						minWidth: 200, 
 						detail:true,
 						edit:false,
-						bankSeq:data.bankList.bankSeq,
+						bankSeq:data.bankList[i].bankSeq,
 						itemTemplate: function(item, bankSeq){
-							console.log(bankSeq);
-							
 							if(Number(item.bankSeq) === Number(bankSeq)){
-								return fnSetFontColor(item.purType, cfnSetComma(item[data.bankList[i].bankAccount]));
+								return fnSetFontColor(item.purType, item[data.bankList[i].bankAccount], data.bankList[i].bankAccount, true, false);
+							}else if(Number(item.moveSeq) === Number(bankSeq)){
+								return fnSetFontColor(item.purType, item[data.bankList[i].bankAccount], data.bankList[i].bankAccount, false, true);
 							}else{
-								return cfnSetComma(item.cash);
+								return item[data.bankList[i].bankAccount];
 							}
-							
-							/* console.log(item);
-							
-							if(Number(item.bankSeq) === 0){
-								return fnSetFontColor(item.purType, cfnSetComma(item.cash));
-							}else{
-								return cfnSetComma(item.cash);
-							}
-							
-							return fnSetFontColor(item.purType, cfnSetComma(item[data.bankList[i].bankAccount])); */
-							//return cfnSetComma(item[data.bankList[i].bankAccount]);
 						}
 					}
 				);
@@ -287,8 +289,8 @@ function ledgerList(data){
 					if(fieldList[j].detail){
 						$td.attr("name", "detail").hide();
 					}
-					console.log(fieldList[j]);
-					$td.append(fieldList[j].itemTemplate(list[i]));
+					
+					$td.append(fieldList[j].itemTemplate(list[i], fieldList[j].bankSeq));
 					$tr.append($td);
 				}
 				$tb.append($tr);
