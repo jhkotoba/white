@@ -80,9 +80,8 @@ function inputLedger(data){
 			}
 		},	
 		{title : "수입 지출*",	name:"money", 		width : "11%", align:"center",
-			itemTemplate: function(item){				
-				let $span = $("<span>");				
-				return fnCreateMoney($span, purLp[item.purSeq], item);
+			itemTemplate: function(item){
+				return fnCreateMoney($("<span>"), purLp[item.purSeq], item);
 			}
 		}		
 	]

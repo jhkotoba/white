@@ -13,7 +13,11 @@ import com.ljh.white.common.collection.WhiteMap;
 import com.ljh.white.common.utility.cryptolect.BCrypt;
 import com.ljh.white.common.vo.WhiteUesrVO;
 
-
+/**
+ * @deprecated
+ * @author JeHoon
+ *
+ */
 @Repository("LoginMapper")
 public class LoginMapper {
 	

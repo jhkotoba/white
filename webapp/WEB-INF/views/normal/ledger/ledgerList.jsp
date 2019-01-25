@@ -23,7 +23,6 @@ $(document).ready(function(){
 			$(".detail-view").each(function(e){$(this).show();});
 		}
 	});
-	
 });
 
 function ledgerList(data){
@@ -31,8 +30,6 @@ function ledgerList(data){
 	let purMap = {};
 	let purDtlMap = {};
 	let bankMap = {};
-	
-	console.log(data);
 	
 	//목적
 	for(let i=0; i<data.purList.length; i++){
@@ -97,18 +94,18 @@ function ledgerList(data){
 			$("#searchBar #right #detail").show();
 			fnCreateLedgerList(data);
 			
-			//초기화 버튼
-			$("#right #cancel").on("click", function(){
-				$("#searchBar #right #detail").data("detail", false).text("상세보기");
-				$(".detail-view").each(function(e){$(this).hide();});
-				$("#searchBar #right #detail").show();
-				fnCreateLedgerList(data);
+			//excel 버튼
+			$("#right #excel").off().on("click", function(){
+				$("#downloadForm #filename").val("가계부 검색 리스트.xlsx");
+				$("#downloadForm #data").val(JSON.stringify(data));
+				$("#downloadForm").attr("method", "post").attr("action", common.path()+"/white/excelPrint.print").submit();
+				$("#downloadForm input").each(function(){this.value = ""});
 			});
+
 		});
-		
-		
 	}).trigger("click");	
 	
+	//목적타입별 폰트 색상 적용
 	function fnSetFontColor(purType, data, name, from, to){
 		let $span = $("<span>");
 		switch(purType){
@@ -182,17 +179,13 @@ function ledgerList(data){
 			},
 			{title: "현금", 		name: "cash", 		minWidth: 200, detail: true, bankSeq:0,
 				itemTemplate: function(item, bankSeq){
-					//console.log(item.bankSeq);
-					//console.log(bankSeq);
-					if(Number(item.bankSeq) === Number(bankSeq)){						
+					if(String(item.bankSeq) === String(bankSeq)){						
 						return fnSetFontColor(item.purType, item.cash, "cash", true, false);
-					//}else if(Number(item.moveSeq) === Number(bankSeq)){
-					//	return fnSetFontColor(item.purType, item.cash, "cash", false, true);
+					}else if(String(item.moveSeq) === String(bankSeq)){
+						return fnSetFontColor(item.purType, item.cash, "cash", false, true);
 					}else{
 						return cfnSetComma(item.cash);
 					}
-					
-									
 				}
 			}
 		];		
@@ -240,11 +233,11 @@ function ledgerList(data){
 						bankSeq:data.bankList[i].bankSeq,
 						itemTemplate: function(item, bankSeq){
 							if(Number(item.bankSeq) === Number(bankSeq)){
-								return fnSetFontColor(item.purType, item[data.bankList[i].bankAccount], data.bankList[i].bankAccount, true, false);
+								return fnSetFontColor(item.purType, item["bank"+i], data.bankList[i].bankAccount, true, false);
 							}else if(Number(item.moveSeq) === Number(bankSeq)){
-								return fnSetFontColor(item.purType, item[data.bankList[i].bankAccount], data.bankList[i].bankAccount, false, true);
+								return fnSetFontColor(item.purType, item["bank"+i], data.bankList[i].bankAccount, false, true);
 							}else{
-								return item[data.bankList[i].bankAccount];
+								return cfnSetComma(item["bank"+i]);
 							}
 						}
 					}
@@ -267,11 +260,8 @@ function ledgerList(data){
 			let $tb = $("<table>").addClass("table-body");
 			let $tr = null;
 			let $td = null;
-			let obj = null;
 			
 			for(let i=list.length-1; i>=0; i--){
-				
-				
 				if(isNotEmpty($("#searchBar #purSeq").val()) && String($("#searchBar #purSeq").val()) !== String(list[i].purSeq)){
 					continue;				
 				}
@@ -280,8 +270,7 @@ function ledgerList(data){
 				}
 				if(isNotEmpty($("#searchBar #bankSeq").val()) && String($("#searchBar #bankSeq").val()) !== String(list[i].bankSeq)){
 					continue;				
-				}			
-				
+				}
 				
 				$tr = $("<tr>");
 				for(let j=0; j<fieldList.length; j++){
@@ -299,7 +288,6 @@ function ledgerList(data){
 		}
 	}
 }
-
 </script>
 
 <div id="searchBar" class="search-bar">	
@@ -319,8 +307,6 @@ function ledgerList(data){
 	<button id="search" class="btn-gray trs">조회</button>
 	
 	<div id="right" class="pull-right">
-		<button id="save"  class="btn-gray trs edit-view" style="display: none;">저장</button>
-		<button id="cancel" class="btn-gray trs">초기화</button>
 		<button id="detail" class="btn-gray trs">상세보기</button>
 		<button id="excel" class="btn-gray trs">엑셀</button>
 	</div>

@@ -31,6 +31,9 @@ public class SessionInterceptor extends HandlerInterceptorAdapter {
 			//비동기 통신일 경우 권한검사 통과
 			if(request.getRequestURI().endsWith(".ajax")) {
 				return true;
+			//엑셀 다운로드일 경우 권한검사 통과
+			}else if(request.getRequestURI().endsWith(".print")) {
+				return true;
 			}
 			
 			//nav 권한 검사

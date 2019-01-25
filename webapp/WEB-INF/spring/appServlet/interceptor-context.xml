@@ -29,9 +29,9 @@
 	     	<!-- 회원가입 -->
 	     	<mvc:exclude-mapping path="/main/join"/>
 	     	<!-- 임시  -->
-	     	<mvc:exclude-mapping path="/login/signUp.do"/>
+	     	<!-- <mvc:exclude-mapping path="/login/signUp.do"/>
 			<mvc:exclude-mapping path="/login/insertSignUp.do"/>
-			<mvc:exclude-mapping path="/login/userIdCheck.ajax"/>
+			<mvc:exclude-mapping path="/login/userIdCheck.ajax"/> -->
 				
 			<beans:bean id="sessionInterceptor"
 			  class="com.ljh.white.common.utility.interceptor.SessionInterceptor"></beans:bean>

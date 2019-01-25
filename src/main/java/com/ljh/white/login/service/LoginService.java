@@ -12,7 +12,11 @@ import com.ljh.white.common.collection.WhiteMap;
 import com.ljh.white.common.utility.cryptolect.BCrypt;
 import com.ljh.white.common.vo.WhiteUesrVO;
 import com.ljh.white.login.mapper.LoginMapper;
-
+/**
+ * @deprecated
+ * @author JeHoon
+ *
+ */
 @Service("LoginService")
 public class LoginService{	
 	

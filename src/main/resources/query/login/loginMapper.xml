@@ -5,13 +5,13 @@
 <mapper namespace="LoginMapper">
 	
 	<!--  userCheck -->
-	<select id="userCheck" parameterType="WhiteUesrVO" resultType="String">
+	<!-- <select id="userCheck" parameterType="WhiteUesrVO" resultType="String">
 		SELECT					
 			user_passwd userPasswd
 		FROM white_user
 		WHERE 1=1
 		AND user_id = #{userId}				
-	</select>		
+	</select> -->		
 	
 	<!--  getUserAuthority -->
 	<!-- <select id="getUserAuthority" resultType="Map" parameterType="String" >
@@ -26,20 +26,20 @@
 		AND user_id = #{userId}			
 	</select> -->
 	
-	<select id="getUserSeq" resultType="int" parameterType="String" >
+	<!-- <select id="getUserSeq" resultType="int" parameterType="String" >
 		SELECT 
 	  		user_seq AS userSeq
 		FROM white_user
 		WHERE user_id = #{userId}
-	</select>
+	</select> -->
 	
-	<select id="userIdCheck" resultType="int" parameterType="String" >
+	<!-- <select id="userIdCheck" resultType="int" parameterType="String" >
 		SELECT COUNT(1)
 		FROM white_user
 		WHERE user_id = #{userId}
-	</select>
+	</select> -->
 		
-	<select id="selectUserAuthority" resultType="WhiteMap" parameterType="int" >
+	<!-- <select id="selectUserAuthority" resultType="WhiteMap" parameterType="int" >
 		SELECT 
 		  n.auth_nm AS authNm,
 		  IF(
@@ -51,9 +51,9 @@
 				) IS NULL, 0, 1
 		  ) AS auth
 		FROM auth_name n
-	</select>
+	</select> -->
 	
-	<select id="selectNavMenuList" resultType="whiteMap" parameterType="whiteMap">		
+	<!-- <select id="selectNavMenuList" resultType="whiteMap" parameterType="whiteMap">		
 		SELECT					
 			nm.nav_seq AS navSeq,
 	  		nm.nav_nm AS navNm,
@@ -80,9 +80,9 @@
 			WHERE nm.nav_show_yn = 'Y'
 		</if>		
 		ORDER BY nm.nav_order
-	</select>
+	</select> -->
 	
-	<select id="selectSideMenuList" resultType="whiteMap" parameterType="whiteMap">		
+	<!-- <select id="selectSideMenuList" resultType="whiteMap" parameterType="whiteMap">		
 		SELECT					
 			sm.side_seq AS sideSeq,
 			sm.nav_seq AS navSeq,
@@ -110,21 +110,21 @@
 			WHERE sm.side_show_yn = 'Y'
 		</if>
 		ORDER BY sm.side_order
-	</select>
+	</select> -->
 	
 	<!-- 사용자 등록 -->
-	<insert id="insertSignUp" parameterType="WhiteMap" useGeneratedKeys="true" keyProperty="user_seq">
+	<!-- <insert id="insertSignUp" parameterType="WhiteMap" useGeneratedKeys="true" keyProperty="user_seq">
 		INSERT INTO white_user
 			(user_id, user_name, user_passwd)
 		VALUES 
 			(#{userId}, #{userName}, #{passwd})
-	</insert>
+	</insert> -->
 	
 	<!-- 사용자 초기 권한 등록 -->
-	<insert id="insertUserAuth" parameterType="String">
+	<!-- <insert id="insertUserAuth" parameterType="String">
 		INSERT INTO authority
 			(user_seq, auth_nm_seq)
 		VALUES 
 			(#{user_seq}, (SELECT auth_nm_seq FROM auth_name WHERE auth_nm = 'user'))
-	</insert>
+	</insert> -->
 </mapper>

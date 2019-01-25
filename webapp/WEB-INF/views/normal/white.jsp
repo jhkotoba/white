@@ -133,6 +133,10 @@ $(document).ready(function(){
 	<input id="sideNm" name="sideNm" type="hidden"></input>
 	<input id="param" name="param" type="hidden"></input>
 </form>
+<form id="downloadForm">
+	<input id="filename" name="filename" type="hidden"></input>
+	<input id="data" name="data" type="hidden"></input>
+</form>
 </c:if>
 <div class="blind" style="display: none;"></div>
 </body>

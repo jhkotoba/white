@@ -21,6 +21,11 @@ import com.ljh.white.common.collection.WhiteMap;
 import com.ljh.white.common.utility.cryptolect.BCrypt;
 import com.ljh.white.login.service.LoginService;
 
+/**
+ * @deprecated
+ * @author JeHoon
+ *
+ */
 @Controller
 public class LoginController {
 	
