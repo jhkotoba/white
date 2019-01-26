@@ -33,7 +33,7 @@ function fnGrid(data){
 			{ align:"center", width: "5%",
 				headerTemplate : function(){
 					return $("<button>").attr("id", "bankAdd").addClass("btn-gray trs sm").text("+").on("click", function(){
-						bankList.push({bankAccount:"", bankOrder: "", bankSeq:new Date().getTime(), bankName:"", bankShowYn:"N", bankUseYn:"N", state:"insert"});		
+						bankList.push({bankAccount:"", bankOrder: "", bankSeq:new Date().getTime(), bankName:"", bankUseYn:"N", state:"insert"});		
 						bankNoIdx = cfnNoIdx(bankList, "bankSeq");
 						$("#bankList").jsGrid("refresh");
 					});					
@@ -77,19 +77,14 @@ function fnGrid(data){
                 }
 			},
 			{ title:"순서",	name:"bankOrder",	type:"text", align:"center", width: "5%"},
-			{ title:"은행명",	name:"bankName",		type:"text", align:"center", width: "35%", 
+			{ title:"은행명",	name:"bankName",		type:"text", align:"center", width: "33%", 
 				itemTemplate: function(value, item){													
 					return fnRefreshedSync(item, "bankName", "input");
 				}
 			},
-			{ title:"계좌번호",	name:"bankAccount",	type:"text", align:"center", width: "45%",
+			{ title:"계좌번호",	name:"bankAccount",	type:"text", align:"center", width: "47%",
 				itemTemplate: function(value, item){					
 					return fnRefreshedSync(item, "bankAccount", "input");
-				}
-			},
-			{ title:"표시여부", name:"bankShowYn", align:"center", width: "5%",
-				itemTemplate: function(value, item){
-					return fnRefreshedSync(item, "bankShowYn", "button");
 				}
 			},
 			{ title:"사용여부", name:"bankUseYn", align:"center", width: "5%",

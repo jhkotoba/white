@@ -57,7 +57,7 @@ function ledgerList(data){
 		//은행seq 맵 생성
 		bankMap[data.bankList[i].bankSeq] = data.bankList[i].bankName+"("+data.bankList[i].bankAccount+")";
 	}
-	data.bankList.unshift({bankAccount: "", bankName: "현금", bankOrder: 0, bankSeq: 0, bankShowYn: "N",	bankUseYn: "N"});
+	data.bankList.unshift({bankAccount: "", bankName: "현금", bankOrder: 0, bankSeq: 0, bankUseYn: "N"});
 	
 	//조회버튼
 	$("#search").on("click", function(){

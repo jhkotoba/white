@@ -181,7 +181,6 @@
 			bank_seq AS bankSeq,
 			bank_name AS bankName,
 			bank_account AS bankAccount,
-			bank_show_yn AS bankShowYn,
 			bank_use_yn AS bankUseYn,
 			bank_order AS bankOrder
 		FROM bank
@@ -211,21 +210,19 @@
 			user_seq,	
 			bank_name,
 			bank_account,
-			bank_show_yn,
 			bank_use_yn,
 			bank_order	
 		)VALUES
 		<foreach collection="list" item="item" separator="),(" open="(" close=")">
 			#{item.userSeq}, 
 			#{item.bankName},
-			#{item.bankAccount},	
-			#{item.bankShowYn},	
+			#{item.bankAccount},
 			#{item.bankUseYn},
 			#{item.bankOrder}	
 		</foreach>	
 	</insert>
 	
-		<!-- 은행 list 수정 -->
+	<!-- 은행 list 수정 -->
 	<update id="updateBankList" parameterType="java.util.List">		
 		UPDATE bank		
 		SET bank_name = 
@@ -239,12 +236,6 @@
 		<foreach collection="list" item="item">
 			WHEN bank_seq = #{item.bankSeq} THEN #{item.bankAccount}
 		</foreach>		
-		END,
-		bank_show_yn = 
-		CASE		
-		<foreach collection="list" item="item">
-			WHEN bank_seq = #{item.bankSeq} THEN #{item.bankShowYn}
-		</foreach>
 		END,
 		bank_use_yn = 
 		CASE		

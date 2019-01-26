@@ -14,12 +14,12 @@ $(document).ready(function(){
 		if($(this).data("detail")){			
 			$("[name=detail]").hide();
 			$(this).data("detail", false).text("상세보기");
-			$("#ledgerList").removeClass("overflow-x-scroll");			
+			$("#ledgerList").removeClass("overflow-x-scroll");
 			$(".detail-view").each(function(e){$(this).hide();});			
 		}else{
 			$("[name=detail]").show();
 			$(this).data("detail", true).text("간편보기");
-			$("#ledgerList").addClass("overflow-x-scroll");			
+			$("#ledgerList").addClass("overflow-x-scroll");
 			$(".detail-view").each(function(e){$(this).show();});
 		}
 	});
@@ -49,7 +49,8 @@ function ledgerList(data){
 	
 	//목적-상세목적
 	$("#searchBar #purSeq").on("change", function(e){
-		$("#purDtl").empty();
+		$("#purDtlSeq").empty();
+		$("#searchBar #purDtlSeq").append($("<option>").text("상세목적 검색").val(""));
 		for(let i=0; i<data.purDtlList.length; i++){
 			if(Number(data.purDtlList[i].purSeq) === Number(this.value)){
 				$option = $("<option>").val(data.purDtlList[i].purDtlSeq)
@@ -89,17 +90,15 @@ function ledgerList(data){
 		
 		cfnCmmAjax("/ledger/selectRecordList", param).done(function(data){
 			$("#ledgerList").removeClass("overflow-x-scroll");
-			$("#searchBar #right #detail").data("detail", false).text("상세보기");
-			$(".detail-view").each(function(e){$(this).hide();});
-			$("#searchBar #right #detail").show();
 			fnCreateLedgerList(data);
 			
 			//excel 버튼
 			$("#right #excel").off().on("click", function(){
-				$("#downloadForm #filename").val("가계부 검색 리스트.xlsx");
+				alert("나중에~");
+				/* $("#downloadForm #filename").val("가계부 검색 리스트.xlsx");
 				$("#downloadForm #data").val(JSON.stringify(data));
 				$("#downloadForm").attr("method", "post").attr("action", common.path()+"/white/excelPrint.print").submit();
-				$("#downloadForm input").each(function(){this.value = ""});
+				$("#downloadForm input").each(function(){this.value = ""}); */
 			});
 
 		});
@@ -221,6 +220,7 @@ function ledgerList(data){
 			let $tb = $("<table>").addClass("table-header");
 			let $tr = $("<tr>");
 			let $th = null;
+			let detail = $("#right #detail").data("detail");
 			
 			for(let i=0; i<data.bankList.length; i++){			
 				fieldList.push(
@@ -233,22 +233,27 @@ function ledgerList(data){
 						bankSeq:data.bankList[i].bankSeq,
 						itemTemplate: function(item, bankSeq){
 							if(Number(item.bankSeq) === Number(bankSeq)){
-								return fnSetFontColor(item.purType, item["bank"+i], data.bankList[i].bankAccount, true, false);
+								return fnSetFontColor(item.purType, item[data.bankList[i].bankAccount], data.bankList[i].bankAccount, true, false);
 							}else if(Number(item.moveSeq) === Number(bankSeq)){
-								return fnSetFontColor(item.purType, item["bank"+i], data.bankList[i].bankAccount, false, true);
+								return fnSetFontColor(item.purType, item[data.bankList[i].bankAccount], data.bankList[i].bankAccount, false, true);
 							}else{
-								return cfnSetComma(item["bank"+i]);
+								return cfnSetComma(item[data.bankList[i].bankAccount]);
 							}
 						}
 					}
 				);
-			}
+			}			
 			
 			for(let i=0; i<fieldList.length; i++){
 				$th = $("<th>").html(fieldList[i].title).attr("style", "min-width:"+fieldList[i].minWidth);
 				if(fieldList[i].detail){
-					$th.attr("name", "detail").hide();
-				}
+					$th.attr("name", "detail");
+					if(detail === false){
+						$th.hide();
+					}else{
+						$("#ledgerList").addClass("overflow-x-scroll");
+					}
+				}				
 				$tr.append($th);				
 			}
 			$tb.append($tr);
@@ -261,6 +266,7 @@ function ledgerList(data){
 			let $tr = null;
 			let $td = null;
 			
+			let detail = $("#right #detail").data("detail");
 			for(let i=list.length-1; i>=0; i--){
 				if(isNotEmpty($("#searchBar #purSeq").val()) && String($("#searchBar #purSeq").val()) !== String(list[i].purSeq)){
 					continue;				
@@ -276,9 +282,13 @@ function ledgerList(data){
 				for(let j=0; j<fieldList.length; j++){
 					$td = $("<td>").attr("style", "min-width:"+fieldList[j].minWidth);
 					if(fieldList[j].detail){
-						$td.attr("name", "detail").hide();
-					}
-					
+						$td.attr("name", "detail");
+						if(detail === false){
+							$td.hide();
+						}else{
+							$("#ledgerList").addClass("overflow-x-scroll");
+						}
+					}					
 					$td.append(fieldList[j].itemTemplate(list[i], fieldList[j].bankSeq));
 					$tr.append($td);
 				}

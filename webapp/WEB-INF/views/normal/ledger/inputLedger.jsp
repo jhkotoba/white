@@ -15,7 +15,7 @@ function inputLedger(data){
 		purLp[data.purList[i].purSeq] = data.purList[i].purType;
 	}	
 	
-	data.bankList.unshift({bankAccount: "", bankName: "현금", bankOrder: 0, bankSeq: 0, bankShowYn: "N",	bankUseYn: "N"});	
+	data.bankList.unshift({bankAccount: "", bankName: "현금", bankOrder: 0, bankSeq: 0, bankUseYn: "N"});	
 	insertList.push({recordDate: isDate.today()+" "+isTime.curTime(), position:"", content:"",
 		purSeq: "", purDtlSeq: "", bankSeq: "", moveSeq: "", money: ""}
 	);
@@ -51,7 +51,14 @@ function inputLedger(data){
 		},
 		{title : "날짜*",		name:"recordDate",	width : "11%", align:"center", button:true,
 			itemTemplate: function(item){
-				return fnCreateCmmInput($("<input>"), "recordDate", item);				
+				let $input = $("<input>");
+				return fnCreateCmmInput($input, "recordDate", item).datepicker({
+					language: 'ko',
+					timepicker: true,
+					onSelect: function() {
+						item.recordDate = $input.val();
+					}
+				});
 			}
 		},
 		{title : "위치",		name:"position", 	width : "14%", align:"center", button:true,
@@ -408,7 +415,7 @@ function inputLedger(data){
 			
 			if(isNotEmpty(useNm)){
 				$option = $("<option>").val(opList[i][dataSeqNm])
-				.text(opList[i][dataNm] + (isEmpty(opList[i][useNm]) ? "" : "(" + opList[i][dataNm] + ")"));
+				.text(opList[i][dataNm] + (isEmpty(opList[i][useNm]) ? "" : "(" + opList[i][useNm] + ")"));
 			}else{
 				$option = $("<option>").val(opList[i][dataSeqNm])
 					.text(list[i][dataNm]);
