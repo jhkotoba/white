@@ -354,7 +354,7 @@
     		ON rec.bank_seq = bank.bank_seq
 		WHERE rec.user_seq = #{userSeq}		
 		AND rec.record_date <![CDATA[ >= ]]> #{startDate}
-		AND rec.record_date <![CDATA[ <  ]]> #{endDate}			 	
+		AND rec.record_date <![CDATA[ <= ]]> #{endDate}			 	
 		ORDER BY rec.record_date ASC,  rec.record_seq ASC				
 	</select>
 	

@@ -88,6 +88,9 @@ function ledgerList(data){
 			return;
 		}
 		
+		param.startDate = param.startDate + " 00:00";
+		param.endDate = param.endDate + " 23:59";
+		
 		cfnCmmAjax("/ledger/selectRecordList", param).done(function(data){
 			$("#ledgerList").removeClass("overflow-x-scroll");
 			fnCreateLedgerList(data);
