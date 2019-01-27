@@ -222,5 +222,23 @@ public class LedgerMapper {
 		return sqlSession.selectList("ledgerMapper.selectRecordList", param);		 
 	}
 	
+	/**
+	 * 금전기록 update
+	 * @param list
+	 * @return
+	 */
+	public int updateRecordList(List<WhiteMap> list) {
+		return sqlSession.update("ledgerMapper.updateRecordList", list);
+	}
+	
+	/**
+	 * 금전기록 delete
+	 * @param list
+	 * @return
+	 */
+	public int deleteRecordList(List<WhiteMap> list) {
+		return sqlSession.delete("ledgerMapper.deleteRecordList", list);
+	}
+	
 	
 }

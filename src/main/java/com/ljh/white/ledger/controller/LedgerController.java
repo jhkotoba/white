@@ -139,6 +139,21 @@ public class LedgerController {
 	@RequestMapping(value="/ledger/selectRecordList.ajax" )
 	public List<WhiteMap> selectRecordList(HttpServletRequest request){
 		WhiteMap param = new WhiteMap(request);
-		return ledgerService.selectRecordList(param);		
+		if(param.getInt("isEdit") == 1){
+			return ledgerService.selectRecordList(param);
+		}else {
+			return ledgerService.selectRecordSumList(param);
+		}		
+	}
+	
+	/**
+	 * 금전기록 수정 및 삭제
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="/ledger/applyRecordList.ajax")
+	public int applyRecordList(HttpServletRequest request) {
+		WhiteMap param = new WhiteMap(request);
+		return ledgerService.applyRecordList(param);
 	}
 }

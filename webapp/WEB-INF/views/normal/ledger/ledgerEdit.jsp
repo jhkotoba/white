@@ -13,7 +13,7 @@ function ledgerList(data){
 	let $option = null;
 	let purMap = {};
 	let purDtlMap = {};
-	let bankMap = {};
+	let bankMap = {};	
 	
 	let purLp = {};
 	for(let i=0; i<data.purList.length; i++){
@@ -38,7 +38,7 @@ function ledgerList(data){
 	
 	//목적-상세목적
 	$("#searchBar #purSeq").on("change", function(e){
-		$("#purDtl").empty();
+		$("#purDtlSeq").empty();
 		for(let i=0; i<data.purDtlList.length; i++){
 			if(Number(data.purDtlList[i].purSeq) === Number(this.value)){
 				$option = $("<option>").val(data.purDtlList[i].purDtlSeq)
@@ -67,6 +67,7 @@ function ledgerList(data){
 		param.purSeq = $("#searchBar #purSeq").val();
 		param.purDtlSeq = $("#searchBar #purDtlSeq").val();
 		param.bankSeq = $("#searchBar #bankSeq").val();
+		param.isEdit = 1;
 		
 		if(!isRecordDatePattern(param.startDate, "date")){			
 			wVali.alert({element : $("#searchBar #startDate"), msg: "ex)2019-01-01의 형식으로 입력할 수 있습니다."});
@@ -77,21 +78,34 @@ function ledgerList(data){
 			return;
 		}
 		
-		cfnCmmAjax("/ledger/selectRecordList", param).done(function(data){
-			fnCreateLedgerEditList(data);
+		param.startDate = param.startDate + " 00:00";
+		param.endDate = param.endDate + " 23:59";
+		
+		cfnCmmAjax("/ledger/selectRecordList", param).done(function(data){			
+			//데이터 초기 세팅
+			for(let i=0; i<data.length; i++){
+				data[i].type = "select";
+				data[i].money = cfnSetComma(Math.abs(data[i].money));
+			}
+			
+			//편집리스트 생성
+			cloneList = common.clone(data);
+			fnCreateLedgerEditList(common.clone(data));
 			
 			//초기화 버튼
 			$("#right #cancel").off().on("click", function(){
-				fnCreateLedgerEditList(data);
+				fnCreateLedgerEditList(common.clone(data));
 			});
 		});
 	}).trigger("click");
 	
 	//가계부 리스트 생성
 	function fnCreateLedgerEditList(list){
-		$("#ledgerList").empty();
-				
+		$("#ledgerList").empty();		
 		
+		$("#right #save").off().on("click", function(){
+			console.log(list);
+		});
 		
 		let fieldList = [
 			{title : "",		name:"", width : "3%",
@@ -100,50 +114,54 @@ function ledgerList(data){
 					.addClass("btn-gray trs")
 					.text("-")
 					.on("click", function(){
-						if(confirm("삭제 하시겠습니까?")){
-							alert("나중에~");
-							/* insertList.splice(idx,1);
-							$tbody.empty().append(
-								$("<div>").append(fnCreateRow())
-							); */
+						switch(item.type){
+						case "select": item.type = "delete"; break;
+						case "update": item.type = "delete"; break;
+						case "delete": 
+							if(fnCompareData(item, idx)){
+								item.type = "select";
+							}else{
+								item.type = "update";
+							}
+							break;
 						}
 					});
 				}
 			},
 			{title: "날짜", 		name: "recordDate", width: "10%",
-				itemTemplate: function(item){
-					return fnCreateCmmInput($("<input>"), "recordDate", item);
+				itemTemplate: function(item, idx){
+					return fnCreateCmmInput($("<input>"), "recordDate", item, idx);
 				}
 			},
 			{title: "위치", 		name: "position", 	width: "17%",
-				itemTemplate: function(item){
-					return fnCreateCmmInput($("<input>"), "position", item);
+				itemTemplate: function(item, idx){
+					return fnCreateCmmInput($("<input>"), "position", item, idx);
 				}
 			},
 			{title: "내용", 		name: "content", 	width: "21%",
-				itemTemplate: function(item){
-					return fnCreateCmmInput($("<input>"), "content", item);
+				itemTemplate: function(item, idx){
+					return fnCreateCmmInput($("<input>"), "content", item, idx);
 				}
 			},
 			{title: "목적", 		name: "purSeq", 	width: "12%",
-				itemTemplate: function(item){					
-					return fnCreateSelectBox($("<select>"), data.purList, item, "purSeq", "purpose");
+				itemTemplate: function(item, idx){					
+					return fnCreateSelectBox($("<select>"), data.purList, item, "purSeq", "purpose", idx);
 				}
 			},
 			{title: "상세목적", 	name: "purDtlSeq", 	width: "12%",
-				itemTemplate: function(item){
-					return fnCreateSelectBox($("<select>"), data.purDtlList, item, "purDtlSeq", "purDetail");
+				itemTemplate: function(item, idx){
+					return fnCreateSelectBox($("<select>"), data.purDtlList, item, "purDtlSeq", "purDetail", idx);
 				}
 			},
 			{title: "사용수단", 	name: "bankSeq",	width: "15%",
-				itemTemplate: function(item){
-					return fnCreateSelectBox($("<select>"), data.bankList, item, "bankSeq", "bankName");
+				itemTemplate: function(item, idx){
+					return fnCreateSelectBox($("<select>"), data.bankList, item, "bankSeq", "bankName", idx);
 					}
 			},
 			{title: "수입/지출", 	name: "money", 		width: "10%",
-				itemTemplate: function(item){
+				itemTemplate: function(item, idx){
 					//return $("<input>").val(item.money).addClass("input-gray only-currency");
-					return fnCreateMoney($("<span>"), purLp[item.purSeq], item);
+					return fnCreateMoney($("<span>"), purLp[item.purSeq], item, idx);
 				}
 			}
 		];
@@ -174,8 +192,7 @@ function ledgerList(data){
 			let $td = null;
 			let $input = null;
 			
-			for(let i=list.length-1; i>=0; i--){
-				
+			for(let i=list.length-1; i>=0; i--){								
 				if(isNotEmpty($("#searchBar #purSeq").val()) && String($("#searchBar #purSeq").val()) !== String(list[i].purSeq)){
 					continue;				
 				}
@@ -195,19 +212,48 @@ function ledgerList(data){
 				$tb.append($tr);
 			}
 			return $tb;
-		}		
+		}
+	}
+	
+	//데이터 비교
+	function fnCompareData(item, idx){		
+		if(item.recordDate !== cloneList[idx].recordDate){				
+			return false;
+		}else if(item.position !== cloneList[idx].position){
+			return false;
+		}else if(item.content !== cloneList[idx].content){
+			return false;
+		}else if(String(item.purSeq) !== String(cloneList[idx].purSeq)){
+			return false;
+		}else if(String(item.purDtlSeq) !== String(cloneList[idx].purDtlSeq)){
+			return false;
+		}else if(String(item.bankSeq) !== String(cloneList[idx].bankSeq)){
+			return false;
+		}else if(String(item.money).replace(/,/g,"") !== String(cloneList[idx].money).replace(/,/g,"")){
+			return false;
+		}else if(item.purType === "LP003"){
+			if(String(item.moveSeq) !== String(cloneList[idx].moveSeq)){
+				return false;
+			}
+		}else{
+			return true;
+		}			
 	}
 	
 	//input 생성
-	function fnCreateCmmInput($input, name, item){		
+	function fnCreateCmmInput($input, name, item, idx){		
 		/* return $input.addClass("input-gray wth80p").attr("name", "sync").data("name", name).on("change", function(){
 			item[name] = this.value;
 		}).val(item[name]); */
-		return $input.addClass("input-gray input-center wth100p").val(item[name]);
+		//return $input.addClass("input-gray input-center wth100p").val(item[name]);
+		return $input.addClass("input-gray wth80p").attr("name","sync"+idx).off().on("keyup change", function(){
+			item[name] = this.value;
+			fnTypeSync(this, item, idx);
+		}).val(item[name]);
 	}
 	
 	//select box 생성
-	function fnCreateSelectBox($select, opList, item, valNm, textNm){
+	function fnCreateSelectBox($select, opList, item, valNm, textNm, idx){
 		let $option = null;
 		for(let i=0; i<opList.length; i++){
 			switch(valNm){			
@@ -230,17 +276,24 @@ function ledgerList(data){
 				break;
 			}
 		}
-		return $select.addClass("select-gray wth100p");
+		return $select.addClass("select-gray wth100p").attr("name","sync"+idx).off().on("change", function(){			
+			item[valNm] = this.value;
+			fnTypeSync(this, item, idx);
+		});
 	}
 	
 	//수입지출란 수입, 지출, 이동구분해서 생성
-	function fnCreateMoney($moneySp, code, item){
+	function fnCreateMoney($moneySp, code, item, idx){
 		
-		let $input = $("<input>").addClass("only-currency").attr("name", "sync").data("name", "money");
+		//let $input = $("<input>").addClass("only-currency").attr("name", "sync").data("name", "money");
 		//$input.addClass("input-gray").off().on("keyup keydown change", function(){
 		//	item.money = this.value;
 		//}).val(item.money); 
-		$input.addClass("input-gray").val(cfnSetComma(Math.abs(item.money)));
+		let $input = $("<input>").addClass("only-currency");
+		$input.addClass("input-gray").val(cfnSetComma(item.money)).attr("name","sync"+idx).on("keyup change", function(){
+			item.money = this.value;
+			fnTypeSync(this, item, idx);
+		});
 		
 		let $strong = $("<strong>");	
 		switch(code){
@@ -263,6 +316,18 @@ function ledgerList(data){
 		$moneySp.append($strong);
 		$moneySp.append($input);
 		return $moneySp;
+	}
+	
+	//타입, sync 체크
+	function fnTypeSync(obj, item, idx){
+		let isbool = fnCompareData(item, idx);
+		if(item.type !== "delete" && isbool){
+			item.type = "select";
+			$(obj).removeClass("sync-blue");
+		}else if(item.type !== "delete" && isbool === false){
+			item.type = "update";
+			$(obj).addClass("sync-blue");
+		}
 	}
 }
 

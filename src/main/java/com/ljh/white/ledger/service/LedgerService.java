@@ -275,6 +275,15 @@ public class LedgerService {
 	 * @return
 	 */
 	public List<WhiteMap> selectRecordList(WhiteMap param){
+		return ledgerMapper.selectRecordList(param);
+	}
+	
+	/**
+	 * 해당 유저 가계부 조회(금액 합산)
+	 * @param param
+	 * @return
+	 */
+	public List<WhiteMap> selectRecordSumList(WhiteMap param){
 		
 		List<WhiteMap> bankList = this.selectBankList(param);
 		//금전기록 기간 조회시 기간 이전  각각(현금, 은행등등) 금액 데이터 합산
@@ -350,5 +359,19 @@ public class LedgerService {
 			}						
 		}		
 		return recList;			
-	}	
+	}
+	
+	/**
+	 * 금전기록 수정 및 삭제
+	 * @param param
+	 * @return
+	 */
+	public int applyRecordList(WhiteMap param) {
+		
+		
+		
+		
+		
+		return 0;
+	}
 }
