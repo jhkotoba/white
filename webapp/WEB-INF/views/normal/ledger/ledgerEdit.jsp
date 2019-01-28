@@ -115,14 +115,14 @@ function ledgerList(data){
 					.text("-")
 					.on("click", function(){
 						switch(item.type){
-						case "select": item.type = "delete"; break;
-						case "update": item.type = "delete"; break;
-						case "delete": 
-							if(fnCompareData(item, idx)){
-								item.type = "select";
-							}else{
-								item.type = "update";
-							}
+						case "select": 
+						case "update": 
+							item.type = "delete";
+							$("[name='sync"+idx+"']").addClass("sync-red").prop("disabled", true);
+							break;
+						case "delete":
+							fnCompareData(item, idx) ? item.type = "select" : item.type = "update";							
+							$("[name='sync"+idx+"']").removeClass("sync-red").prop("disabled", false);
 							break;
 						}
 					});
@@ -145,7 +145,11 @@ function ledgerList(data){
 			},
 			{title: "목적", 		name: "purSeq", 	width: "12%",
 				itemTemplate: function(item, idx){					
-					return fnCreateSelectBox($("<select>"), data.purList, item, "purSeq", "purpose", idx);
+					return fnCreateSelectBox($("<select>"), data.purList, item, "purSeq", "purpose", idx)
+					.on("change", function(){
+						console.log(this.value);
+						//purLp[]
+					});
 				}
 			},
 			{title: "상세목적", 	name: "purDtlSeq", 	width: "12%",
@@ -246,7 +250,7 @@ function ledgerList(data){
 			item[name] = this.value;
 		}).val(item[name]); */
 		//return $input.addClass("input-gray input-center wth100p").val(item[name]);
-		return $input.addClass("input-gray wth80p").attr("name","sync"+idx).off().on("keyup change", function(){
+		return $input.addClass("input-gray wth100p").attr("name","sync"+idx).off().on("keyup change", function(){
 			item[name] = this.value;
 			fnTypeSync(this, item, idx);
 		}).val(item[name]);
