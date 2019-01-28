@@ -57,7 +57,7 @@ function ledgerList(data){
 		//은행seq 맵 생성
 		bankMap[data.bankList[i].bankSeq] = data.bankList[i].bankName+"("+data.bankList[i].bankAccount+")";
 	}
-	data.bankList.unshift({bankAccount: "", bankName: "현금", bankOrder: 0, bankSeq: 0, bankUseYn: "N"});
+	//data.bankList.unshift({bankAccount: "", bankName: "현금", bankOrder: 0, bankSeq: 0, bankUseYn: "N"});
 	
 	//조회버튼
 	$("#search").on("click", function(){
@@ -143,23 +143,49 @@ function ledgerList(data){
 					return fnCreateCmmInput($("<input>"), "content", item, idx);
 				}
 			},
-			{title: "목적", 		name: "purSeq", 	width: "12%",
+			{title: "목적", 		name: "purSeq", 	width: "11%",
 				itemTemplate: function(item, idx){					
-					return fnCreateSelectBox($("<select>"), data.purList, item, "purSeq", "purpose", idx)
+					return fnCreateSelectBox($("<select>"), data.purList, item, "purSeq", idx)
 					.on("change", function(){
-						console.log(this.value);
-						//purLp[]
+						
+						//상세목적 셀렉트박스 변경
+						let $option = null;
+						let $nextSelect = $($(this).closest("td").next().children().first()[0]).empty();
+						for(let i=0; i<data.purDtlList.length; i++){
+							if(String(this.value) === String(data.purDtlList[i].purSeq)){
+								$option = $("<option>").val(data.purDtlList[i].purDtlSeq).text(data.purDtlList[i].purDetail);								
+								$nextSelect.append($option);								
+							}
+						}
+						//상세목적 셀렉트박스 색상변경
+						if(String(item.purDtlSeq) === String($nextSelect.val())){
+							$nextSelect.removeClass("sync-blue");
+						}else{
+							$nextSelect.addClass("sync-blue");
+						}					
+						
+						//수입지출 기호 변경, 목적이 금액이동일 경우 사용수단 변경 아닐경우 원복
+						//let $bank = $($(this).closest("td").next().next().children().first()[0]);
+						let $sign = $($(this).closest("td").next().next().next().children().children().first()[0]);
+						switch(purLp[this.value]){						
+						case "LP001": $sign.text("+"); break;
+						case "LP002": $sign.text("-"); break;
+						case "LP003": 
+							$sign.text(">"); 
+						
+						break;						
+						}							
 					});
 				}
 			},
-			{title: "상세목적", 	name: "purDtlSeq", 	width: "12%",
+			{title: "상세목적", 	name: "purDtlSeq", 	width: "11%",
 				itemTemplate: function(item, idx){
-					return fnCreateSelectBox($("<select>"), data.purDtlList, item, "purDtlSeq", "purDetail", idx);
+					return fnCreateSelectBox($("<select>"), data.purDtlList, item, "purDtlSeq", idx);
 				}
 			},
-			{title: "사용수단", 	name: "bankSeq",	width: "15%",
+			{title: "사용수단", 	name: "bankSeq",	width: "17%",
 				itemTemplate: function(item, idx){
-					return fnCreateSelectBox($("<select>"), data.bankList, item, "bankSeq", "bankName", idx);
+					return fnCreateSelectBox($("<select>").append($("<option>").val("0").text("현금")), data.bankList, item, "bankSeq", idx);
 					}
 			},
 			{title: "수입/지출", 	name: "money", 		width: "10%",
@@ -255,25 +281,31 @@ function ledgerList(data){
 			fnTypeSync(this, item, idx);
 		}).val(item[name]);
 	}
-	
+
 	//select box 생성
-	function fnCreateSelectBox($select, opList, item, valNm, textNm, idx){
+	function fnCreateSelectBox($select, opList, item, name, idx){
 		let $option = null;
 		for(let i=0; i<opList.length; i++){
-			switch(valNm){			
+			switch(name){			
 			case "purDtlSeq":
 				if(String(item.purSeq) === String(opList[i].purSeq)){
-					$option = $("<option>").val(opList[i][valNm]).text(opList[i][textNm]);	
-					if(String(item[valNm]) === String(opList[i][valNm])){				
+					$option = $("<option>").val(opList[i].purDtlSeq).text(opList[i].purDetail);	
+					if(String(item.purDtlSeq) === String(opList[i].purDtlSeq)){				
 						$option.prop("selected", true);
 					}
 					$select.append($option);
 				}
 				break;				
 			case "purSeq":
+				$option = $("<option>").val(opList[i].purSeq).text(opList[i].purpose);	
+				if(String(item.purSeq) === String(opList[i].purSeq)){				
+					$option.prop("selected", true);
+				}
+				$select.append($option);
+				break;
 			case "bankSeq":
-				$option = $("<option>").val(opList[i][valNm]).text(opList[i][textNm]);	
-				if(String(item[valNm]) === String(opList[i][valNm])){				
+				$option = $("<option>").val(opList[i].bankSeq).text(opList[i].bankName+"("+opList[i].bankAccount+")");	
+				if(String(item.bankSeq) === String(opList[i].bankSeq)){				
 					$option.prop("selected", true);
 				}
 				$select.append($option);
@@ -281,7 +313,7 @@ function ledgerList(data){
 			}
 		}
 		return $select.addClass("select-gray wth100p").attr("name","sync"+idx).off().on("change", function(){			
-			item[valNm] = this.value;
+			item[name] = this.value;
 			fnTypeSync(this, item, idx);
 		});
 	}
