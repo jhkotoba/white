@@ -57,7 +57,6 @@ function ledgerList(data){
 		//은행seq 맵 생성
 		bankMap[data.bankList[i].bankSeq] = data.bankList[i].bankName+"("+data.bankList[i].bankAccount+")";
 	}
-	//data.bankList.unshift({bankAccount: "", bankName: "현금", bankOrder: 0, bankSeq: 0, bankUseYn: "N"});
 	
 	//조회버튼
 	$("#search").on("click", function(){
@@ -121,7 +120,7 @@ function ledgerList(data){
 							$("[name='sync"+idx+"']").addClass("sync-red").prop("disabled", true);
 							break;
 						case "delete":
-							fnCompareData(item, idx) ? item.type = "select" : item.type = "update";							
+							fnCompareData(null, item, idx) ? item.type = "select" : item.type = "update";							
 							$("[name='sync"+idx+"']").removeClass("sync-red").prop("disabled", false);
 							break;
 						}
@@ -150,37 +149,34 @@ function ledgerList(data){
 						
 						//상세목적 셀렉트박스 변경
 						let $option = null;
-						let $nextSelect = $($(this).closest("td").next().children().first()[0]).empty();
-						console.log(item.purDtlSeq);
+						let $nextSelect = $($(this).closest("td").next().children().first()[0]).empty();						
 						$nextSelect.append($("<option>").val("").text(""));
 						for(let i=0; i<data.purDtlList.length; i++){
 							if(String(this.value) === String(data.purDtlList[i].purSeq)){
 								$option = $("<option>").val(data.purDtlList[i].purDtlSeq).text(data.purDtlList[i].purDetail);								
 								$nextSelect.append($option);								
 							}
-						}
-						
+						}					
 				
 						//상세목적 셀렉트박스 색상변경						
-						/* if(String(cloneList[idx].purDtlSeq) === ""){
-							
+						if(String(cloneList[idx].purDtlSeq) === ""){
+							//no
 						}else if(String(cloneList[idx].purDtlSeq) === String($nextSelect.val())){
 							$nextSelect.removeClass("sync-blue");
 						}else{
 							$nextSelect.addClass("sync-blue");
-						}	 */				
+						}				
 						
 						//수입지출 기호 변경, 목적이 금액이동일 경우 사용수단 변경 아닐경우 원복
-						//let $bank = $($(this).closest("td").next().next().children().first()[0]);
+						let $bank = $($(this).closest("td").next().next()[0]);
 						let $sign = $($(this).closest("td").next().next().next().children().children().first()[0]);
 						switch(purLp[this.value]){						
 						case "LP001": $sign.text("+"); break;
 						case "LP002": $sign.text("-"); break;
-						case "LP003": 
-							$sign.text(">"); 
-						
-						break;
-						}							
+						case "LP003": $sign.text(">"); break;
+						}
+						item.moveSeq = "";
+						$bank.empty().append(fnCreateBankSelectBox($("<span>"), data.bankList, item, idx));
 					});
 				}
 			},
@@ -191,12 +187,11 @@ function ledgerList(data){
 			},
 			{title: "사용수단", 	name: "bankSeq",	width: "17%",
 				itemTemplate: function(item, idx){
-					return fnCreateSelectBox($("<select>").append($("<option>").val("0").text("현금")), data.bankList, item, "bankSeq", idx);
-					}
+					return fnCreateBankSelectBox($("<span>"), data.bankList, item, idx);
+				}
 			},
 			{title: "수입/지출", 	name: "money", 		width: "10%",
 				itemTemplate: function(item, idx){
-					//return $("<input>").val(item.money).addClass("input-gray only-currency");
 					return fnCreateMoney($("<span>"), purLp[item.purSeq], item, idx);
 				}
 			}
@@ -252,43 +247,47 @@ function ledgerList(data){
 	}
 	
 	//데이터 비교
-	function fnCompareData(item, idx){		
-		if(item.recordDate !== cloneList[idx].recordDate){				
-			return false;
-		}else if(item.position !== cloneList[idx].position){
-			return false;
-		}else if(item.content !== cloneList[idx].content){
-			return false;
-		}else if(String(item.purSeq) !== String(cloneList[idx].purSeq)){
-			return false;
-		}else if(String(item.purType) !== String(cloneList[idx].purType)){
-			return false;	
-		}else if(String(item.purDtlSeq) !== String(cloneList[idx].purDtlSeq)){
-			return false;
-		}else if(String(item.bankSeq) !== String(cloneList[idx].bankSeq)){
-			return false;
-		}else if(String(item.money).replace(/,/g,"") !== String(cloneList[idx].money).replace(/,/g,"")){
-			return false;
-		/* }else if(item.purType === "LP003"){
-			console.log("item.moveSeq:"+item.moveSeq);
-			console.log("cloneList[idx].moveSeq:"+cloneList[idx].moveSeq);
-			if(String(item.moveSeq) !== String(cloneList[idx].moveSeq)){
+	function fnCompareData(name, item, idx){
+		if(isEmpty(name)){
+			if(item.recordDate !== cloneList[idx].recordDate){				
 				return false;
-			} */
-		}else{
-			return true;
-		}			
+			}else if(item.position !== cloneList[idx].position){
+				return false;
+			}else if(item.content !== cloneList[idx].content){
+				return false;
+			}else if(String(item.purSeq) !== String(cloneList[idx].purSeq)){
+				return false;
+			}else if(String(item.purType) !== String(cloneList[idx].purType)){
+				return false;	
+			}else if(String(item.purDtlSeq) !== String(cloneList[idx].purDtlSeq)){
+				return false;
+			}else if(String(item.bankSeq) !== String(cloneList[idx].bankSeq)){
+				return false;
+			}else if(String(item.money).replace(/,/g,"") !== String(cloneList[idx].money).replace(/,/g,"")){
+				return false;
+			}else if(String(item.moveSeq) !== String(cloneList[idx].moveSeq)){
+				return false;
+			}else if(isNotEmpty(item.moveSeq)){
+				if(String(item.moveSeq) !== String(cloneList[idx].moveSeq)){
+					return false;
+				}
+			}else{
+				return true;
+			}
+		}else{			
+			if(String(item[name]).replace(/,/g,"") !== String(cloneList[idx][name]).replace(/,/g,"")){
+				return false;			
+			}else{
+				return true;
+			}
+		}
 	}
 	
 	//input 생성
 	function fnCreateCmmInput($input, name, item, idx){		
-		/* return $input.addClass("input-gray wth80p").attr("name", "sync").data("name", name).on("change", function(){
-			item[name] = this.value;
-		}).val(item[name]); */
-		//return $input.addClass("input-gray input-center wth100p").val(item[name]);
 		return $input.addClass("input-gray wth100p").attr("name","sync"+idx).off().on("keyup change", function(){
 			item[name] = this.value;
-			fnTypeSync(this, item, idx);
+			fnTypeSync(this, name, item, idx);
 		}).val(item[name]);
 	}
 
@@ -319,33 +318,75 @@ function ledgerList(data){
 				$select.append($option);
 				
 				break;
-			case "bankSeq":
-				$option = $("<option>").val(opList[i].bankSeq).text(opList[i].bankName+"("+opList[i].bankAccount+")");	
-				if(String(item.bankSeq) === String(opList[i].bankSeq)){				
-					$option.prop("selected", true);
-				}
-				$select.append($option);
-				break;
 			}
 		}		
+		
 		return $select.addClass("select-gray wth100p").attr("name","sync"+idx).off().on("change", function(){			
 			item[name] = this.value;
 			if(name === "purSeq") item.purType = purLp[this.value];
-			fnTypeSync(this, item, idx);
+			fnTypeSync(this, name, item, idx);
 		});
+	}
+	
+	//사용수단 생성
+	function fnCreateBankSelectBox($span, bankList, item, idx){		
+		
+		let $select = $("<select>").append($("<option>").val("0").text("현금"));
+		for(let i=0; i<bankList.length; i++){
+			$option = $("<option>").val(bankList[i].bankSeq).text(bankList[i].bankName+"("+bankList[i].bankAccount+")");	
+			if(String(cloneList[idx].bankSeq) === String(bankList[i].bankSeq)){				
+				$option.prop("selected", true);
+			}
+			$select.append($option);
+		}
+		
+		$select.addClass("select-gray")
+			.addClass(item.purType==="LP003"?"wth50p":"wth100p")
+			.attr("name","sync"+idx)
+			.off().on("change", function(){			
+				item.bankSeq = this.value;
+				fnTypeSync(this, "bankSeq", item, idx);
+			});		
+		$span.append($select);
+		
+		if(item.purType==="LP003"){
+			$select = $("<select>").append($("<option>").val("0").text("현금"));
+			for(let i=0; i<bankList.length; i++){
+				$option = $("<option>").val(bankList[i].bankSeq).text(bankList[i].bankName+"("+bankList[i].bankAccount+")");	
+				if(String(cloneList[idx].moveSeq) === String(bankList[i].bankSeq)){				
+					$option.prop("selected", true);
+				}
+				$select.append($option);
+			}
+			$select.addClass("select-gray")
+			.addClass(item.purType==="LP003"?"wth50p":"wth100p")
+			.attr("name","sync"+idx)
+			.off().on("change", function(){			
+				item.moveSeq = this.value;
+				fnTypeSync(this, "moveSeq", item, idx);
+			});			
+			
+			if(cloneList[idx].purType !== "LP003"){
+				$select.addClass("sync-blue");
+			//}else if(String(cloneList[idx].moveSeq) !== String(item.moveSeq)){
+			//	$select.addClass("sync-blue");
+			}else{
+				$select.removeClass("sync-blue");
+			}
+			
+			$span.append($select);
+			item.moveSeq = "0";
+		}		
+		return $span;
 	}
 	
 	//수입지출란 수입, 지출, 이동구분해서 생성
 	function fnCreateMoney($moneySp, code, item, idx){
 		
-		//let $input = $("<input>").addClass("only-currency").attr("name", "sync").data("name", "money");
-		//$input.addClass("input-gray").off().on("keyup keydown change", function(){
-		//	item.money = this.value;
-		//}).val(item.money); 
 		let $input = $("<input>").addClass("only-currency");
 		$input.addClass("input-gray").val(cfnSetComma(item.money)).attr("name","sync"+idx).on("keyup change", function(){
 			item.money = this.value;
-			fnTypeSync(this, item, idx);
+			fnTypeSync(this, "money", item, idx);
 		});
 		
 		let $strong = $("<strong>");	
@@ -372,16 +413,14 @@ function ledgerList(data){
 	}
 	
 	//타입, sync 체크
-	function fnTypeSync(obj, item, idx){
-		let isbool = fnCompareData(item, idx);
+	function fnTypeSync(obj, name, item, idx){
+		let isbool = fnCompareData(name, item, idx);
 		if(item.type !== "delete" && isbool){
 			item.type = "select";
 			$(obj).removeClass("sync-blue");
-			//$("[name='sync"+idx+"']").removeClass("sync-blue");			
 		}else if(item.type !== "delete" && !isbool){
 			item.type = "update";
 			$(obj).addClass("sync-blue");
-			//$("[name='sync"+idx+"']").addClass("sync-blue");y
 		}
 	}
 }

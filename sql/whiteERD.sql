@@ -46,7 +46,6 @@ CREATE TABLE bank
 	user_seq int NOT NULL,
 	bank_name varchar(20) NOT NULL,
 	bank_account varchar(60) NOT NULL,
-	bank_show_yn varchar(1) NOT NULL,
 	bank_use_yn varchar(1) NOT NULL,
 	bank_order int NOT NULL,
 	PRIMARY KEY (bank_seq),
