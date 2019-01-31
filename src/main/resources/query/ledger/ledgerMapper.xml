@@ -358,4 +358,92 @@
 		ORDER BY rec.record_date ASC,  rec.record_seq ASC				
 	</select>
 	
+	<!-- 금전기록 list 수정 -->
+	<update id="updateRecordList" parameterType="java.util.List">		
+		UPDATE money_record_re
+		SET record_date = 
+		CASE		
+		<foreach collection="list" item="item">
+			WHEN record_seq = #{item.recordSeq} THEN #{item.recordDate}
+		</foreach>		
+		END,	
+		content = 
+		CASE		
+		<foreach collection="list" item="item">
+			WHEN record_seq = #{item.recordSeq} THEN #{item.content}
+		</foreach>		
+		END,	
+		position = 
+		CASE		
+		<foreach collection="list" item="item">
+			WHEN record_seq = #{item.recordSeq} THEN #{item.position}
+		</foreach>		
+		END,		
+		pur_seq = 
+		CASE		
+		<foreach collection="list" item="item">
+			WHEN record_seq = #{item.recordSeq} THEN #{item.purSeq}
+		</foreach>		
+		END,		
+		pur_dtl_seq = 
+		CASE		
+		<foreach collection="list" item="item">
+			<choose>
+				<when test="item.purDtlSeq == ''">
+					WHEN record_seq = #{item.recordSeq} THEN null
+				</when>				
+				<otherwise>
+					WHEN record_seq = #{item.recordSeq} THEN #{item.purDtlSeq}
+				</otherwise>
+			</choose>			
+		</foreach>		
+		END,
+		bank_seq = 
+		CASE		
+		<foreach collection="list" item="item">
+			WHEN record_seq = #{item.recordSeq} THEN #{item.bankSeq}					
+		</foreach>		
+		END,		
+		move_seq = 
+		CASE		
+		<foreach collection="list" item="item">
+			<choose>				
+				<when test="item.moveSeq == ''">
+					WHEN record_seq = #{item.recordSeq} THEN NULL
+				</when>				
+				<otherwise>
+					WHEN record_seq = #{item.recordSeq} THEN #{item.moveSeq}
+				</otherwise>
+			</choose>			
+		</foreach>		
+		END,		
+		money = 
+		CASE		
+		<foreach collection="list" item="item">
+			WHEN record_seq = #{item.recordSeq} THEN #{item.money}
+		</foreach>		
+		END		
+		WHERE record_seq IN 
+		<foreach collection="list" item="item" separator="," open="(" close=")">
+			#{item.recordSeq}
+		</foreach>
+		AND user_seq IN 
+		<foreach collection="list" item="item" separator="," open="(" close=")">
+			#{item.userSeq}
+		</foreach>
+	</update>
+	
+	<!-- 금전기록 list 삭제 -->
+	<delete id="deleteRecordList" parameterType="java.util.List">
+		DELETE FROM money_record_re
+		WHERE record_seq IN 
+		<foreach collection="list" item="item" separator="," open="(" close=")">
+			#{item.recordSeq}
+		</foreach>
+		AND user_seq IN 
+		<foreach collection="list" item="item" separator="," open="(" close=")">
+			#{item.userSeq}
+		</foreach>
+	</delete>
+	
 </mapper>

@@ -142,6 +142,7 @@ public class LedgerService {
 	 * @param parma
 	 * @return
 	 */
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
 	public int applybankList(WhiteMap param) {
 		List<WhiteMap> bankList = param.convertListWhiteMap("bankList", true);
 		
@@ -366,12 +367,14 @@ public class LedgerService {
 	 * @param param
 	 * @return
 	 */
-	public int applyRecordList(WhiteMap param) {
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
+	public WhiteMap applyRecordList(WhiteMap param) {		
+		List<WhiteMap> updateList = param.convertListWhiteMap("updateList", true);
+		List<WhiteMap> deleteList = param.convertListWhiteMap("deleteList", true);
 		
-		
-		
-		
-		
-		return 0;
+		WhiteMap result = new WhiteMap();
+		if(deleteList.size()!=0) result.put("deleteCnt", ledgerMapper.deleteRecordList(deleteList));
+		if(updateList.size()!=0) result.put("updateCnt", ledgerMapper.updateRecordList(updateList));
+		return result;
 	}
 }

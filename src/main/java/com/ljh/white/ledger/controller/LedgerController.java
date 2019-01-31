@@ -152,7 +152,7 @@ public class LedgerController {
 	 * @return
 	 */
 	@RequestMapping(value="/ledger/applyRecordList.ajax")
-	public int applyRecordList(HttpServletRequest request) {
+	public WhiteMap applyRecordList(HttpServletRequest request) {
 		WhiteMap param = new WhiteMap(request);
 		return ledgerService.applyRecordList(param);
 	}

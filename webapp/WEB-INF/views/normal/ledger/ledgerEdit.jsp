@@ -13,7 +13,8 @@ function ledgerList(data){
 	let $option = null;
 	let purMap = {};
 	let purDtlMap = {};
-	let bankMap = {};	
+	let bankMap = {};
+	let cloneList = null;
 	
 	let purLp = {};
 	for(let i=0; i<data.purList.length; i++){
@@ -59,7 +60,7 @@ function ledgerList(data){
 	}
 	
 	//조회버튼
-	$("#search").on("click", function(){
+	$("#search").off().on("click", function(){
 		let param = {};			
 		param.startDate = $("#searchBar #startDate").val();
 		param.endDate = $("#searchBar #endDate").val();
@@ -102,8 +103,122 @@ function ledgerList(data){
 	function fnCreateLedgerEditList(list){
 		$("#ledgerList").empty();		
 		
+		//저장버튼 이벤트
 		$("#right #save").off().on("click", function(){
-			console.log(list);
+			
+			let name = null;
+			let isVali = true;
+			$("[name^='sync']").each(function(i, e){
+				if($(e).data("name") !== "purDtlSeq" && $(e).data("name") !== "position"){
+					if(isEmpty($(e).val())){
+						isVali = false;
+						wVali.alert({element : $(e), msg: $(e)[0].nodeName === "SELECT" ? "값을 선택해 주세요." : "값을 입력해 주세요."}); return false;
+					}
+				}
+				
+				switch($(e).data("name")){
+				case "recordDate":
+					if(!isRecordDatePattern($(e).val(), "datetime")){
+						isVali = false;
+						wVali.alert({element : $(e), msg: "ex)2019-01-01 08:00의 형식으로 입력할 수 있습니다."}); return false;
+					}
+					break;
+				case "position" :
+					if($(e).val().length > 20){
+						isVali = false;
+						wVali.alert({element : $(e), msg: "최대 글자수 20자 까지 입력할 수 있습니다."}); return false;
+					}
+					break;
+				case "content" :
+					if($(e).val().length > 50){
+						isVali = false;
+						wVali.alert({element : $(e), msg: "최대 글자수 50자 까지 입력할 수 있습니다."}); return false;
+					}
+					break;
+				case "money" :
+					if(!isOnlyNum($(e).val().replace(/,/gi, ""))){
+						isVali = false;
+						wVali.alert({element : $(e), msg: "숫자를 입력해 주세요."}); return false;
+					}
+					break;
+				case "bankSeq" :
+					if(String($(e).val()) === String($($(e)[0]).next().val())){
+						isVali = false;
+						wVali.alert({element : $(e), msg: "보내는 곳과 받는곳이 일치합니다."}); return false;
+					}
+					break;
+				}
+			});
+		
+			let updateList = new Array();
+			let deleteList = new Array();
+			
+			if(isVali && confirm("수정한 내용을 저장 하시겠습니까?")){	
+				for(let i=0; i<list.length; i++){
+					switch(list[i].type){
+					case "delete":
+						deleteList.push(common.clone(list[i])); 
+						break;
+					case "update": 
+						updateList.push(common.clone(list[i]));
+						break;
+					}
+				}
+				
+				if(deleteList.length === 0 && updateList.length === 0){
+					alert("수정 및 삭제할 내용이 없습니다.");
+					updateList = null;
+					deleteList = null;
+					return;
+				}
+				
+				for(let i=0; i<deleteList.length; i++){
+					deleteList[i].money =  deleteList[i].money.replace(/,/gi, "");
+					switch(purLp[deleteList[i].purSeq]){
+					case "LP001":
+						deleteList[i].money = Number(deleteList[i].money);
+						break;
+					case "LP002":
+					case "LP003":
+						deleteList[i].money = Number("-"+deleteList[i].money);				
+						break;
+					}
+				}	
+				for(let i=0; i<updateList.length; i++){
+					updateList[i].money =  updateList[i].money.replace(/,/gi, "");
+					switch(purLp[updateList[i].purSeq]){
+					case "LP001":
+						updateList[i].money = Number(updateList[i].money);
+						break;
+					case "LP002":
+					case "LP003":
+						updateList[i].money = Number("-"+updateList[i].money);
+						break;
+					}
+				}
+				
+				let param = {};
+				param.updateList = JSON.stringify(updateList);
+				param.deleteList = JSON.stringify(deleteList);
+				
+				cfnCmmAjax("/ledger/applyRecordList", param).done(function(data){
+					if(isEmpty(data.updateCnt) && isEmpty(data.deleteCnt)){
+						alert("데이터 수정에 실패하였습니다");
+					}else{
+						let msg = "";
+						if(isEmpty(data.updateCnt)){
+							msg = data.deleteCnt + "개의 데이터가 삭제 되었습니다.";
+						}else if(isEmpty(data.deleteCnt)){
+							msg = data.updateCnt + "개의 데이터가 수정 되었습니다.";
+						}else{
+							msg = data.updateCnt + "개의 데이터가 수정, " + data.deleteCnt + "개의 데이터가 삭제 되었습니다.";
+						}
+						
+						alert(msg);
+						$("#search").trigger("click");
+					}
+				});
+			}
 		});
 		
 		let fieldList = [
@@ -129,22 +244,22 @@ function ledgerList(data){
 			},
 			{title: "날짜", 		name: "recordDate", width: "10%",
 				itemTemplate: function(item, idx){
-					return fnCreateCmmInput($("<input>"), "recordDate", item, idx);
+					return fnCreateCmmInput($("<input>").data("name", "recordDate"), "recordDate", item, idx);
 				}
 			},
 			{title: "위치", 		name: "position", 	width: "17%",
 				itemTemplate: function(item, idx){
-					return fnCreateCmmInput($("<input>"), "position", item, idx);
+					return fnCreateCmmInput($("<input>").data("name", "position"), "position", item, idx);
 				}
 			},
 			{title: "내용", 		name: "content", 	width: "21%",
 				itemTemplate: function(item, idx){
-					return fnCreateCmmInput($("<input>"), "content", item, idx);
+					return fnCreateCmmInput($("<input>").data("name", "content"), "content", item, idx);
 				}
 			},
 			{title: "목적", 		name: "purSeq", 	width: "11%",
 				itemTemplate: function(item, idx){					
-					return fnCreateSelectBox($("<select>"), data.purList, item, "purSeq", idx)
+					return fnCreateSelectBox($("<select>").data("name", "purSeq"), data.purList, item, "purSeq", idx)
 					.on("change", function(){
 						
 						//상세목적 셀렉트박스 변경
@@ -182,7 +297,7 @@ function ledgerList(data){
 			},
 			{title: "상세목적", 	name: "purDtlSeq", 	width: "11%",
 				itemTemplate: function(item, idx){
-					return fnCreateSelectBox($("<select>"), data.purDtlList, item, "purDtlSeq", idx);
+					return fnCreateSelectBox($("<select>").data("name", "purDtlSeq"), data.purDtlList, item, "purDtlSeq", idx);
 				}
 			},
 			{title: "사용수단", 	name: "bankSeq",	width: "17%",
@@ -315,8 +430,7 @@ function ledgerList(data){
 				if(String(item.purSeq) === String(opList[i].purSeq)){				
 					$option.prop("selected", true);
 				}
-				$select.append($option);
-				
+				$select.append($option);				
 				break;
 			}
 		}		
@@ -331,7 +445,7 @@ function ledgerList(data){
 	//사용수단 생성
 	function fnCreateBankSelectBox($span, bankList, item, idx){		
 		
-		let $select = $("<select>").append($("<option>").val("0").text("현금"));
+		let $select = $("<select>").data("name", "bankSeq").append($("<option>").val("0").text("현금"));
 		for(let i=0; i<bankList.length; i++){
 			$option = $("<option>").val(bankList[i].bankSeq).text(bankList[i].bankName+"("+bankList[i].bankAccount+")");	
 			if(String(cloneList[idx].bankSeq) === String(bankList[i].bankSeq)){				
@@ -350,7 +464,7 @@ function ledgerList(data){
 		$span.append($select);
 		
 		if(item.purType==="LP003"){
-			$select = $("<select>").append($("<option>").val("0").text("현금"));
+			$select = $("<select>").data("name", "moveSeq").append($("<option>").val("0").text("현금"));
 			for(let i=0; i<bankList.length; i++){
 				$option = $("<option>").val(bankList[i].bankSeq).text(bankList[i].bankName+"("+bankList[i].bankAccount+")");	
 				if(String(cloneList[idx].moveSeq) === String(bankList[i].bankSeq)){				
@@ -368,14 +482,11 @@ function ledgerList(data){
 			
 			if(cloneList[idx].purType !== "LP003"){
 				$select.addClass("sync-blue");
-			//}else if(String(cloneList[idx].moveSeq) !== String(item.moveSeq)){
-			//	$select.addClass("sync-blue");
 			}else{
 				$select.removeClass("sync-blue");
 			}
 			
-			$span.append($select);
-			item.moveSeq = "0";
+			$span.append($select);			
 		}		
 		return $span;
 	}
@@ -383,7 +494,7 @@ function ledgerList(data){
 	//수입지출란 수입, 지출, 이동구분해서 생성
 	function fnCreateMoney($moneySp, code, item, idx){
 		
-		let $input = $("<input>").addClass("only-currency");
+		let $input = $("<input>").addClass("only-currency").data("name", "money");
 		$input.addClass("input-gray").val(cfnSetComma(item.money)).attr("name","sync"+idx).on("keyup change", function(){
 			item.money = this.value;
 			fnTypeSync(this, "money", item, idx);
