@@ -1,5 +1,5 @@
 .cAdjust-line{background: #3D3D3D; color: rgba(246, 246, 246, .8); float: left; font-size: 11px; border-right: 4px solid #5D5D5D;}
-.cAdjust-textarea{background: #323232; color: rgba(246, 246, 246, .8); border: 1px solid #585858; font-size: 13px; overflow: auto;}
+.cAdjust-textarea{background: #323232; color: rgba(246, 246, 246, .8); border: 1px solid #585858; font-size: 13px; min-height:400px; overflow: auto;}
 
 .js-directive{color:#569CD6; font-size:inherit; font-weight: 600;}
 .js-annotation{color:#6BA980; font-size:inherit;}

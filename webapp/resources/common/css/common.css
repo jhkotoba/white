@@ -83,7 +83,9 @@ th,td{height:38px;}
 .btn-gray:hover{background: #3A3A3A;}
 .btn-gray:active{background: #5E5E5E;}
 .btn-selected-gray{background: #3A3A3A; border: 1px solid #7A7A7A;}
-.textarea-gray{background: #5E5E5E; color:#C6C6C6; border: 1px solid #646464; height:50%; width:100%;}
+.tx-pre{white-space: pre !important;}
+.textarea-gray{background: #5E5E5E; color:#C6C6C6; border: 1px solid #646464; resize:none;}
+.pre-gray{background: #323232; color: rgba(246, 246, 246, .8); border: 1px solid #585858; font-size: 13px; overflow: auto; }
 
 .span-gray{background: #363636; padding: 6px 10px 7px 10px; line-height: 30px; border-radius: 1px; border: 1px solid #585858; vertical-align: bottom;}
 .span-gray-rt{background: #363636; padding: 6px 10px 7px 10px; line-height: 30px; border-radius: 1px; border: 1px solid #585858; margin-right: -6px; vertical-align: bottom;}
@@ -106,8 +108,10 @@ th,td{height:38px;}
 .wth3{width: 300px;}
 .wth4{width: 400px;}
 .wth5{width: 500px;}
+.wth10p{position:relative; width: 10%;}
 .wth50p{position:relative; width: 50%;}
 .wth80p{position:relative; width: 80%;}
+.wth89p{position:relative; width: 89%;}
 .wth90p{position:relative; width: 90%;}
 .wth100p{position:relative; width: 100%;}
 
@@ -116,6 +120,10 @@ th,td{height:38px;}
 .hht3{height: 300px;}
 .hht4{height: 400px;}
 .hht5{height: 500px;}
+.hht50p{position:relative; width: 50%;}
+.hht80p{position:relative; width: 80%;}
+.hht90p{position:relative; width: 90%;}
+.hht100p{position:relative; width: 100%;}
 
 .hht1-li{height: 100px; line-height:100px;}
 .hht2-li{height: 200px; line-height:200px;}
@@ -163,15 +171,19 @@ h6, .h6 {font-size: 1rem;}
 }
 
 
-.menuTree{
-	
-	
-}
 .overflow-x-scroll{	overflow-x:scroll;}
 .overflow-x-scroll::-webkit-scrollbar {border: 1px solid #363636;}
 .overflow-x-scroll::-webkit-scrollbar-button:start:decrement,::-webkit-scrollbar-button:end:increment {display: none;}
 .overflow-x-scroll::-webkit-scrollbar-track {background: #5A5A5A;}
 .overflow-x-scroll::-webkit-scrollbar-thumb {background: #4C4C4C;}
+.overflow-x-scroll::-webkit-scrollbar-corner{background: #4C4C4C;}
+
+.gray-scroll::-webkit-scrollbar {border: 1px solid #363636;}
+.gray-scroll::-webkit-scrollbar-button:start:decrement,::-webkit-scrollbar-button:end:increment {display: none;}
+.gray-scroll::-webkit-scrollbar-track {background: #5A5A5A;}
+.gray-scroll::-webkit-scrollbar-thumb {background: #4C4C4C;}
+.gray-scroll::-webkit-scrollbar-corner{background: #4C4C4C;}
+
 
 
 

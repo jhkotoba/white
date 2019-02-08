@@ -8,6 +8,8 @@ DROP TABLE IF EXISTS nav_menu;
 DROP TABLE IF EXISTS auth_name;
 DROP TABLE IF EXISTS bank;
 DROP TABLE IF EXISTS cmm_code;
+DROP TABLE IF EXISTS free_board_comment;
+DROP TABLE IF EXISTS free_board;
 DROP TABLE IF EXISTS memo;
 DROP TABLE IF EXISTS money_record_re;
 DROP TABLE IF EXISTS purpose_detail;
@@ -26,7 +28,8 @@ CREATE TABLE authority
 	auth_seq int NOT NULL AUTO_INCREMENT,
 	user_seq int NOT NULL,
 	auth_nm_seq int NOT NULL,
-	PRIMARY KEY (auth_seq)
+	PRIMARY KEY (auth_seq),
+	UNIQUE (auth_seq)
 );
 
 
@@ -36,6 +39,7 @@ CREATE TABLE auth_name
 	auth_nm varchar(20) NOT NULL,
 	auth_order int NOT NULL,
 	PRIMARY KEY (auth_nm_seq),
+	UNIQUE (auth_nm_seq),
 	UNIQUE (auth_nm)
 );
 
@@ -59,6 +63,31 @@ CREATE TABLE cmm_code
 	code_prt varchar(5) NOT NULL,
 	code_nm varchar(20) NOT NULL,
 	PRIMARY KEY (code)
+);
+
+
+CREATE TABLE free_board
+(
+	board_seq int NOT NULL AUTO_INCREMENT,
+	user_seq int NOT NULL,
+	title varchar(50) NOT NULL,
+	content varchar(4000) NOT NULL,
+	edit_date datetime NOT NULL,
+	reg_date datetime NOT NULL,
+	PRIMARY KEY (board_seq),
+	UNIQUE (board_seq)
+);
+
+
+CREATE TABLE free_board_comment
+(
+	comment_seq int NOT NULL AUTO_INCREMENT,
+	board_seq int NOT NULL,
+	user_seq int NOT NULL,
+	comment varchar(1000) NOT NULL,
+	reg_date datetime NOT NULL,
+	PRIMARY KEY (comment_seq),
+	UNIQUE (comment_seq)
 );
 
 
@@ -99,7 +128,8 @@ CREATE TABLE nav_menu
 	nav_auth_nm_seq int NOT NULL,
 	nav_show_yn varchar(1) NOT NULL,
 	nav_order int NOT NULL,
-	PRIMARY KEY (nav_seq)
+	PRIMARY KEY (nav_seq),
+	UNIQUE (nav_seq)
 );
 
 
@@ -122,7 +152,8 @@ CREATE TABLE purpose_detail
 	user_seq int NOT NULL,
 	pur_dtl_order int NOT NULL,
 	pur_detail varchar(20) NOT NULL,
-	PRIMARY KEY (pur_dtl_seq)
+	PRIMARY KEY (pur_dtl_seq),
+	UNIQUE (pur_dtl_seq)
 );
 
 
@@ -135,7 +166,8 @@ CREATE TABLE side_menu
 	side_auth_nm_seq int NOT NULL,
 	side_show_yn varchar(1) NOT NULL,
 	side_order int NOT NULL,
-	PRIMARY KEY (side_seq)
+	PRIMARY KEY (side_seq),
+	UNIQUE (side_seq)
 );
 
 
@@ -147,7 +179,8 @@ CREATE TABLE source_board
 	title varchar(50) NOT NULL,
 	content varchar(4000) NOT NULL,
 	reg_date datetime NOT NULL,
-	PRIMARY KEY (source_seq)
+	PRIMARY KEY (source_seq),
+	UNIQUE (source_seq)
 );
 
 
@@ -202,6 +235,14 @@ ALTER TABLE side_menu
 ;
 
 
+ALTER TABLE free_board_comment
+	ADD FOREIGN KEY (board_seq)
+	REFERENCES free_board (board_seq)
+	ON UPDATE RESTRICT
+	ON DELETE RESTRICT
+;
+
+
 ALTER TABLE side_menu
 	ADD FOREIGN KEY (nav_seq)
 	REFERENCES nav_menu (nav_seq)
@@ -227,6 +268,22 @@ ALTER TABLE authority
 
 
 ALTER TABLE bank
+	ADD FOREIGN KEY (user_seq)
+	REFERENCES white_user (user_seq)
+	ON UPDATE RESTRICT
+	ON DELETE RESTRICT
+;
+
+
+ALTER TABLE free_board
+	ADD FOREIGN KEY (user_seq)
+	REFERENCES white_user (user_seq)
+	ON UPDATE RESTRICT
+	ON DELETE RESTRICT
+;
+
+
+ALTER TABLE free_board_comment
 	ADD FOREIGN KEY (user_seq)
 	REFERENCES white_user (user_seq)
 	ON UPDATE RESTRICT

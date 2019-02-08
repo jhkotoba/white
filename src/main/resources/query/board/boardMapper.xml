@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+
+<mapper namespace="boardMapper">
+
+	<!-- 게시판 카운트 조회 -->
+	<select id="selectBoardCount" resultType="int" parameterType="WhiteMap">
+		SELECT COUNT(1) FROM ${board}_board b		
+	    LEFT OUTER JOIN white_user wu
+  			ON wu.user_seq = b.user_seq
+		<where>	  
+		  	<if test="type == 'id'">
+			AND wu.user_id = #{text}
+		  	</if>
+		  	<if test="type == 'title'">
+			AND b.title LIKE #{text}
+		  	</if>
+		  	<if test="type == 'content'">
+		  	AND b.content LIKE #{text}
+		  	</if>
+		  	<if test="type == 'boardSeq'">
+		  	AND b.boardSeq = #{text}
+		  	</if>		  	
+  		</where> 
+	</select>
+	
+	<!-- 게시판 리스트 조회 -->
+	<select id="selectBoardList" resultType="WhiteMap" parameterType="WhiteMap">	
+		SELECT
+			b.board_seq 	AS boardSeq,
+			b.user_seq 		AS userSeq,
+			wu.user_id 		AS userId,
+			b.title,
+			DATE_FORMAT(b.edit_date,'%Y-%m-%d %H:%i:%s') AS editDate,
+			DATE_FORMAT(b.reg_date,'%Y-%m-%d %H:%i:%s') AS regDate
+		FROM ${board}_board b	   
+	    LEFT OUTER JOIN white_user wu
+  			ON wu.user_seq = b.user_seq
+  		<where>  			
+		  	<if test="type == 'id'">
+			AND wu.user_id = #{text}
+		  	</if>
+		  	<if test="type == 'title'">
+			AND b.title LIKE #{text}
+		  	</if>
+		  	<if test="type == 'content'">
+		  	AND b.content LIKE #{text}
+		  	</if>
+		  	<if test="type == 'boardSeq'">
+		  	AND b.boardSeq = #{text}
+		  	</if>			  
+  		</where>  	
+		ORDER BY b.board_seq DESC
+		Limit ${pagePre}, ${pageSize}
+	</select>
+	
+	<!-- 게시판 상세조회 -->
+	<select id="selectBoardDtlView" resultType="WhiteMap" parameterType="WhiteMap">	
+		SELECT 
+			b.board_seq 	AS boardSeq
+			,b.user_seq 	AS userSeq
+			,wu.user_id 	AS userId
+			,b.title
+			,b.content
+			,DATE_FORMAT(b.edit_date,'%Y-%m-%d %H:%i:%s') AS editDate
+			,DATE_FORMAT(b.reg_date,'%Y-%m-%d %H:%i:%s') AS regDate
+		FROM ${board}_board b
+   		LEFT OUTER JOIN white_user wu
+  			ON wu.user_seq = b.user_seq
+		WHERE b.board_seq = #{boardSeq}
+	</select>
+	
+	<!-- 게시판 저장 -->
+	<insert id="insertBoard" parameterType="WhiteMap">
+		INSERT
+		INTO ${board}_board(user_seq, title, content, edit_date, reg_date)
+		VALUES(
+			#{userSeq},
+			#{title},
+			#{content},
+			NOW(),
+			NOW()
+		)
+	</insert>
+	
+	<!-- 게시판 수장 -->
+	<update id="updateBoard" parameterType="WhiteMap">
+		UPDATE ${board}_board
+		SET	title = #{title},
+			content = #{content},
+			edit_date = NOW()
+		WHERE user_seq = #{userSeq}
+		AND board_seq = #{boardSeq}
+	</update>
+	
+	<!-- 게시판 삭제 -->
+	<delete id="deleteBoard" parameterType="WhiteMap">
+		DELETE FROM ${board}_board
+		WHERE user_seq = #{userSeq}
+		AND board_seq = #{boardSeq}
+	</delete>
+</mapper>
