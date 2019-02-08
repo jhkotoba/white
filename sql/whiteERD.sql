@@ -2,6 +2,8 @@ SET SESSION FOREIGN_KEY_CHECKS=0;
 
 /* Drop Tables */
 
+DROP TABLE IF EXISTS admin_board_comment;
+DROP TABLE IF EXISTS admin_board;
 DROP TABLE IF EXISTS authority;
 DROP TABLE IF EXISTS side_menu;
 DROP TABLE IF EXISTS nav_menu;
@@ -22,6 +24,34 @@ DROP TABLE IF EXISTS white_user;
 
 
 /* Create Tables */
+
+CREATE TABLE admin_board
+(
+	board_seq int NOT NULL AUTO_INCREMENT,
+	user_seq int NOT NULL,
+	title varchar(50) NOT NULL,
+	content varchar(4000) NOT NULL,
+	edit_date datetime NOT NULL,
+	reg_date datetime NOT NULL,
+	PRIMARY KEY (board_seq),
+	UNIQUE (board_seq),
+	UNIQUE (user_seq)
+);
+
+
+CREATE TABLE admin_board_comment
+(
+	comment_seq int NOT NULL AUTO_INCREMENT,
+	board_seq int NOT NULL,
+	user_seq int NOT NULL,
+	comment varchar(1000) NOT NULL,
+	reg_date datetime NOT NULL,
+	PRIMARY KEY (comment_seq),
+	UNIQUE (comment_seq),
+	UNIQUE (board_seq),
+	UNIQUE (user_seq)
+);
+
 
 CREATE TABLE authority
 (
@@ -211,6 +241,14 @@ CREATE TABLE white_user
 
 /* Create Foreign Keys */
 
+ALTER TABLE admin_board_comment
+	ADD FOREIGN KEY (board_seq)
+	REFERENCES admin_board (board_seq)
+	ON UPDATE RESTRICT
+	ON DELETE RESTRICT
+;
+
+
 ALTER TABLE authority
 	ADD FOREIGN KEY (auth_nm_seq)
 	REFERENCES auth_name (auth_nm_seq)
@@ -254,6 +292,22 @@ ALTER TABLE side_menu
 ALTER TABLE purpose_detail
 	ADD FOREIGN KEY (pur_seq)
 	REFERENCES purpose (pur_seq)
+	ON UPDATE RESTRICT
+	ON DELETE RESTRICT
+;
+
+
+ALTER TABLE admin_board
+	ADD FOREIGN KEY (user_seq)
+	REFERENCES white_user (user_seq)
+	ON UPDATE RESTRICT
+	ON DELETE RESTRICT
+;
+
+
+ALTER TABLE admin_board_comment
+	ADD FOREIGN KEY (user_seq)
+	REFERENCES white_user (user_seq)
 	ON UPDATE RESTRICT
 	ON DELETE RESTRICT
 ;
