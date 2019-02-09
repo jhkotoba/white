@@ -35,7 +35,7 @@
 		SELECT
 			sb.source_seq 	AS sourceSeq,
 			cc.code_nm 		AS langNm,
-			sb.user_seq 	AS userSeq,
+			<!-- sb.user_seq 	AS userSeq, -->
 			wu.user_id 		AS userId,
 			sb.title,
 			DATE_FORMAT(sb.reg_date,'%Y-%m-%d %H:%i:%s') AS regDate
@@ -74,7 +74,7 @@
 			sb.source_seq 	AS sourceSeq
 			,cc.code_nm 	AS langNm
 			,cc.code		AS langCd
-			,sb.user_seq 	AS userSeq
+			<!-- ,sb.user_seq 	AS userSeq -->
 			,wu.user_id 	AS userId
 			,sb.title
 			,sb.content

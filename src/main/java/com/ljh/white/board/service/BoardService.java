@@ -43,7 +43,7 @@ public class BoardService {
 	 */
 	public WhiteMap selectBoardDtlView(WhiteMap param) {		
 		return boardMapper.selectBoardDtlView(param);		
-	}
+	}	
 	
 	/**
 	 * 게시판 상세화면 댓글 조회
@@ -52,6 +52,26 @@ public class BoardService {
 	 */
 	public List<WhiteMap> selectBoardCommentList(WhiteMap param) {		
 		return boardMapper.selectBoardCommentList(param);	
+	}
+	
+	/**
+	 * 게시판 상세화면 댓글 저장
+	 * @param param
+	 * @return
+	 */
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
+	public int insertBoardComment(WhiteMap param) {		
+		return boardMapper.insertBoardComment(param);	
+	}
+	
+	/**
+	 * 게시판 상세화면 댓글 삭제(수정)
+	 * @param param
+	 * @return
+	 */
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
+	public int updateDelComment(WhiteMap param) {
+		return boardMapper.updateDelComment(param);	
 	}
 	
 	/**
@@ -80,8 +100,12 @@ public class BoardService {
 	 * @return
 	 */
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
-	public int deleteBoard(WhiteMap param) {		
-		return boardMapper.deleteBoard(param);
+	public int deleteBoard(WhiteMap param) {
+		
+		int cnt = boardMapper.selectBoardCommentCount(param);
+		System.out.println(cnt);
+		return 0;
+		//return boardMapper.deleteBoard(param);
 	}
 	
 }

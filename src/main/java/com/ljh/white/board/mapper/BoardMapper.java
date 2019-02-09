@@ -42,12 +42,39 @@ public class BoardMapper {
 	}
 	
 	/**
+	 * 게시판 상세화면 댓글 개수 조회
+	 * @param param
+	 * @return
+	 */
+	public int selectBoardCommentCount(WhiteMap param) {
+		return sqlSession.selectOne("boardMapper.selectBoardCommentCount", param);
+	}
+	
+	/**
 	 * 게시판 상세화면 댓글 조회
 	 * @param param
 	 * @return
 	 */
 	public List<WhiteMap> selectBoardCommentList(WhiteMap param) {
 		return sqlSession.selectList("boardMapper.selectBoardCommentList", param);
+	}
+	
+	/**
+	 * 게시판 상세화면 댓글 삭제(수정)
+	 * @param param
+	 * @return
+	 */
+	public int updateDelComment(WhiteMap param) {
+		return sqlSession.insert("boardMapper.updateDelComment", param);
+	}
+	
+	/**
+	 * 게시판 상세화면 댓글 저장
+	 * @param param
+	 * @return
+	 */
+	public int insertBoardComment(WhiteMap param) {
+		return sqlSession.insert("boardMapper.insertBoardComment", param);
 	}
 	
 	/**

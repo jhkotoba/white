@@ -41,10 +41,7 @@ public class BoardController {
 	@RequestMapping(value="/board/selectBoardDtlView.ajax")
 	public WhiteMap selectBoardDtlView(HttpServletRequest request) {
 		WhiteMap param = new WhiteMap(request);
-		WhiteMap result = new WhiteMap();
-		result.put("detail", boardService.selectBoardDtlView(param));
-		result.put("commentList", boardService.selectBoardCommentList(param));		
-		return result;
+		return boardService.selectBoardDtlView(param);
 	}
 	
 	/**
@@ -59,7 +56,29 @@ public class BoardController {
 	}
 	
 	/**
-	 * 소스코드 저장
+	 * 게시판 상세화면 댓글 저장
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="/board/insertBoardComment.ajax")
+	public int insertBoardComment(HttpServletRequest request) {
+		WhiteMap param = new WhiteMap(request);
+		return boardService.insertBoardComment(param);
+	}
+	
+	/**
+	 * 게시판 상세화면 댓글 삭제(수정)
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="/board/updateDelComment.ajax")
+	public int updateDelComment(HttpServletRequest request) {
+		WhiteMap param = new WhiteMap(request);
+		return boardService.updateDelComment(param);
+	}	
+	
+	/**
+	 * 게시판 글 저장
 	 * @param request
 	 * @return
 	 */
@@ -71,7 +90,7 @@ public class BoardController {
 	}
 	
 	/**
-	 * 소스코드 수정
+	 * 게시판 글 수정
 	 * @param request
 	 * @return
 	 */
@@ -82,13 +101,13 @@ public class BoardController {
 	}
 	
 	/**
-	 * 소스코드 삭제
+	 * 게시판 글 삭제
 	 * @param request
 	 * @return
 	 */
 	@RequestMapping(value="/board/deleteBoard.ajax" )
 	public int deleteBoard(HttpServletRequest request){
-		WhiteMap param = new WhiteMap(request);		
+		WhiteMap param = new WhiteMap(request);	
 		return boardService.deleteBoard(param);	
 	}
 }

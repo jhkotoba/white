@@ -326,5 +326,5 @@ function ledgerList(data){
 	</div>
 </div>
 
-<div id="ledgerList" class="text-drag-block">
+<div id="ledgerList">
 </div>

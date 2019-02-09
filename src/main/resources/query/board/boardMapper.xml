@@ -28,12 +28,12 @@
 	<!-- 게시판 리스트 조회 -->
 	<select id="selectBoardList" resultType="WhiteMap" parameterType="WhiteMap">	
 		SELECT
-			b.board_seq 	AS boardSeq,
-			b.user_seq 		AS userSeq,
+			b.board_seq 	AS boardSeq,			
 			wu.user_id 		AS userId,
 			b.title,
 			DATE_FORMAT(b.edit_date,'%Y-%m-%d %H:%i:%s') AS editDate,
-			DATE_FORMAT(b.reg_date,'%Y-%m-%d %H:%i:%s') AS regDate
+			DATE_FORMAT(b.reg_date,'%Y-%m-%d %H:%i:%s') AS regDate,			
+			(SELECT COUNT(1) FROM ${board}_board_comment WHERE board_seq = b.board_seq) AS commentCnt			
 		FROM ${board}_board b	   
 	    LEFT OUTER JOIN white_user wu
   			ON wu.user_seq = b.user_seq
@@ -58,8 +58,7 @@
 	<!-- 게시판 상세조회 -->
 	<select id="selectBoardDtlView" resultType="WhiteMap" parameterType="WhiteMap">	
 		SELECT 
-			b.board_seq 	AS boardSeq
-			,b.user_seq 	AS userSeq
+			b.board_seq 	AS boardSeq			
 			,wu.user_id 	AS userId
 			,b.title
 			,b.content
@@ -74,13 +73,43 @@
 	<!-- 게시판 상세화면 댓글 조회 -->
 	<select id="selectBoardCommentList" resultType="WhiteMap" parameterType="WhiteMap">	
 		SELECT
-			bc.board_seq		AS boardSeq
-			,bc.user_seq		AS userSeq
+			bc.comment_seq		AS commentSeq
+			,bc.board_seq		AS boardSeq
+			,wu.user_id			AS userId
 			,bc.comment
-			,bc.reg_date		AS regDate
+			,DATE_FORMAT(bc.reg_date,'%Y-%m-%d %H:%i:%s') AS regDate		
 		FROM ${board}_board_comment bc
+		LEFT OUTER JOIN white_user wu
+			ON wu.user_seq = bc.user_seq
+		WHERE bc.board_seq = #{boardSeq}
+		ORDER BY bc.reg_date ASC, bc.board_seq ASC
+	</select>
+	
+	<!-- 게시판 상세화면 댓글 개수 조회 -->
+	<select id="selectBoardCommentCount" resultType="int" parameterType="WhiteMap">	
+		SELECT COUNT(1)	FROM ${board}_board_comment bc		
 		WHERE bc.board_seq = #{boardSeq}
 	</select>
+		
+	<!-- 게시판 상세화면 댓글 저장 -->
+	<insert id="insertBoardComment" parameterType="WhiteMap">
+		INSERT
+		INTO ${board}_board_comment(board_seq, user_seq, comment, reg_date)
+		VALUES(
+			#{boardSeq},
+			#{userSeq},
+			#{comment},
+			NOW()
+		)
+	</insert>
+	
+	<!-- 게시판 상세화면 댓글 삭제(수정) -->
+	<update id="updateDelComment" parameterType="WhiteMap">
+		UPDATE ${board}_board_comment
+		SET	comment = ''
+		WHERE user_seq = #{userSeq}
+		AND comment_seq = #{commentSeq}
+	</update>
 	
 	<!-- 게시판 저장 -->
 	<insert id="insertBoard" parameterType="WhiteMap">

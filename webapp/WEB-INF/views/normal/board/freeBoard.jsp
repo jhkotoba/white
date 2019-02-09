@@ -162,44 +162,53 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
         	//댓글 저장 이벤트
         	$("#viewForm #comment #save").off().on("click", function(){       		
         	
-    			let isVali = true;   			
-				if(isEmpty($("#viewForm #comment #content").val())){
+    			let isVali = true;
+    			let $obj = $("#cmtContent");
+				if(isEmpty($obj.val())){
 					isVali = false;
-					wVali.alert({element : $(e), msg: $(e)[0].nodeName === "SELECT" ? "값을 선택해 주세요." : "값을 입력해 주세요."}); return false;
+					wVali.alert({element : $obj, msg:"댓글을 입력해 주세요."}); return false;
 				}	  				
-  				if($("#viewForm #comment #content").val().length > 500){
+  				if($obj.val().length > 500){
 					isVali = false;
-					wVali.alert({element : $(e), msg: "최대 글자수 500자 까지 입력할 수 있습니다."}); return false;
+					wVali.alert({element : $obj, msg: "최대 글자수 500자 까지 입력할 수 있습니다."}); return false;
 				}
   				
   				if(isVali && confirm("댓글을 저장 하시겠습니까?")){
   					let param = {};
-  	        		param.content = $("#viewForm #comment #content").val();
+  	        		param.comment = $("#viewForm #comment #cmtContent").val();
   	        		param.board = "${board}";
   	        		param.boardSeq = args.item.boardSeq;    		
   	        		
 	  	        	cfnCmmAjax("/board/insertBoardComment", param).done(function(data){
-	  	        		createCommentList($("#viewForm #commentlist"), data);
+	  	        		alert("저장되었습니다.");
+	  	        		$("#viewForm #comment #cmtContent").val("");
+	  	        		createCommentList($("#viewForm #commentlist"), param.boardSeq);
 	  	          	});
   				}
         	});       	
         	
         	cfnCmmAjax("/board/selectBoardDtlView", {boardSeq : args.item.boardSeq, board : "${board}"}).done(function(data){
-        		$("#viewForm").setParam(data.detail);
-    	    	$("#viewForm #content").text(data.detail.content);
+        		$("#viewForm").setParam(data);
+    	    	$("#viewForm #content").text(data.content);
     	    	
-    	    	$("#editForm").setParam(data.detail);    	    	
-    	    	if('${sessionScope.userId}'!== '' && '${sessionScope.userId}' === String(data.detail.userId)){
+    	    	$("#editForm").setParam(data);    	    	
+    	    	if('${sessionScope.userId}'!== '' && '${sessionScope.userId}' === String(data.userId)){
     	    		$("#viewForm #edit").show();
     	    		$("#viewForm #remove").show();
     	    	}  	
     			$("body").scrollTop(0);
+    			createCommentList($("#viewForm #commentlist"), args.item.boardSeq);
         	});        	
-        	createCommentList($("#viewForm #commentlist"), data.commentList);
+        	
         }, 
         fields: [
 			{ title:"번호",	name:"boardSeq",	type:"text", width:"5%", align:"center"},
-			{ title:"글제목",	name:"title",		type:"text", width:"70%"},
+			{ title:"글제목",	name:"title",		type:"text", width:"70%",
+				itemTemplate: function(value, item) {
+					let $span = $("<span>").text(value);
+					return item.commentCnt === 0 ? $span : $span.append($("<span>").text(" ["+item.commentCnt+"]").addClass("deepgray"));
+				}
+			},			
 			{ title:"작성자",	name:"userId",		type:"text", width:"10%", align:"center"},
 			{ title:"작성날짜",name:"regDate",		type:"text", width:"15%", align:"center"}			
         ]
@@ -207,10 +216,55 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
 	
 	
 	//댓글 리스트 생성
-	function createCommentList($div, list){
-		$div.empty();
+	function createCommentList($div, boardSeq){
 		
-	}
+		let param = {};  		
+  		param.board = "${board}";
+  		param.boardSeq = boardSeq;
+  		
+  		$div.empty();
+		
+		cfnCmmAjax("/board/selectCommentList", param).done(function(data){
+			console.log(data);			
+			console.log("${sessionScope.userId}");
+			if(data.length > 0){
+				$div.jsGrid({
+			        height: "auto",
+			        width: "100%",
+			        data: data,	
+			        selecting: false,
+			        paging: true,			        						
+			        autoload: true,
+			        pageSize : 50,
+			        pagerContainer: "#commentPager",
+			        fields: [
+			        	{ title:"번호",	name:"commentSeq",	type:"text", width:"3%", align:"center"},
+			        	{ title:"작성자",	name:"userId",	type:"text", width:"8%", align:"center"},
+						{ title:"댓글 내용",	name:"comment",		type:"text", width:"79%",
+			        		itemTemplate: function(value, item) {
+			        			if(isEmpty(item.comment)){
+			        				let $span = $("<span>").addClass("deepgray").text("삭제된 내용입니다.");
+			        				return $("<div>").addClass("comment-content").append($span);
+			        			}else{
+			        				let $div = $("<div>").addClass("comment-content").text(item.comment);
+			        				if(item.userId === "${sessionScope.userId}"){
+			        					let $a = $("<a>").addClass("fsize03 cs-ptr deepgray").text("[삭제]").on("click", function(){
+				        					cfnCmmAjax("/board/updateDelComment", {commentSeq : item.commentSeq, board : "${board}"}).done(function(data){							        		
+								    			createCommentList($("#viewForm #commentlist"), boardSeq);
+								        	});		        					
+				        				});
+			        					$div.append($a);
+			        				}			        				
+			        				return $div;
+			        			}								
+			        		}
+						},				
+						{ title:"작성날짜",name:"regDate",		type:"text", width:"10%", align:"center"}
+			        ]
+			    });
+			}			
+		});		
+	}	
 }
 </script>
 
@@ -291,10 +345,11 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
 		<pre id="content" class='pre-gray hht4 gray-scroll'></pre>
 	</div>
 	
-	<div id="commentlist"></div>
+	<div id="commentPager"></div>
+	<div id="commentlist" class="mgupdown5"></div>
 	<div id="comment">
-		<button id="save" class="btn-gray trs wth10p hht1">댓글 등록</button>
-		<textarea id="cmtContent" class="textarea-gray hht1 gray-scroll wth89p pull-right" maxlength="500"></textarea>
+		<button id="save" class="btn-gray trs wth10p hht1">댓글 등록</button>		
+		<textarea id="cmtContent" class="textarea-gray hht1 gray-scroll wth90p pull-right" maxlength="500"></textarea>
 	</div>
 </form>
 

@@ -159,7 +159,35 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
         	$("#viewForm #edit").hide();
         	$("#viewForm #remove").hide();
         	
-        	cfnCmmAjax("/board/selectBoardDtlView", {boardSeq : args.item.boardSeq, board : "free"}).done(function(data){
+        	//댓글 저장 이벤트
+        	$("#viewForm #comment #save").off().on("click", function(){       		
+        	
+    			let isVali = true;
+    			let $obj = $("#cmtContent");
+				if(isEmpty($obj.val())){
+					isVali = false;
+					wVali.alert({element : $obj, msg:"댓글을 입력해 주세요."}); return false;
+				}	  				
+  				if($obj.val().length > 500){
+					isVali = false;
+					wVali.alert({element : $obj, msg: "최대 글자수 500자 까지 입력할 수 있습니다."}); return false;
+				}
+  				
+  				if(isVali && confirm("댓글을 저장 하시겠습니까?")){
+  					let param = {};
+  	        		param.comment = $("#viewForm #comment #cmtContent").val();
+  	        		param.board = "${board}";
+  	        		param.boardSeq = args.item.boardSeq;    		
+  	        		
+	  	        	cfnCmmAjax("/board/insertBoardComment", param).done(function(data){
+	  	        		alert("저장되었습니다.");
+	  	        		$("#viewForm #comment #cmtContent").val("");
+	  	        		createCommentList($("#viewForm #commentlist"), param.boardSeq);
+	  	          	});
+  				}
+        	});       	
+        	
+        	cfnCmmAjax("/board/selectBoardDtlView", {boardSeq : args.item.boardSeq, board : "${board}"}).done(function(data){
         		$("#viewForm").setParam(data);
     	    	$("#viewForm #content").text(data.content);
     	    	
@@ -169,7 +197,9 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
     	    		$("#viewForm #remove").show();
     	    	}  	
     			$("body").scrollTop(0);
-        	});
+    			createCommentList($("#viewForm #commentlist"), args.item.boardSeq);
+        	});        	
+        	
         }, 
         fields: [
 			{ title:"번호",	name:"boardSeq",	type:"text", width:"5%", align:"center"},
@@ -178,6 +208,35 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
 			{ title:"작성날짜",name:"regDate",		type:"text", width:"15%", align:"center"}			
         ]
     });
+	
+	
+	//댓글 리스트 생성
+	function createCommentList($div, boardSeq){
+		
+		let param = {};  		
+  		param.board = "${board}";
+  		param.boardSeq = boardSeq;
+  		
+  		$div.empty();
+		
+		cfnCmmAjax("/board/selectCommentList", param).done(function(data){
+			if(data.length > 0){
+				$div.jsGrid({
+			        height: "auto",
+			        width: "100%",
+			        data: data,		        
+			        rowRenderer: function(item) {		        	
+			        	let $userId = $("<div>").addClass("comment-userid").text(item.userId);
+			        	let $comment = $("<div>").addClass("comment-content").text(item.comment);		        
+			        	return $("<tr>").append($("<td>").append($userId).append($comment));
+			        },
+			        fields: [
+						{title: "comment"}		
+			        ]
+			    });
+			}			
+		});		
+	}	
 }
 </script>
 
@@ -259,9 +318,9 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
 	</div>
 	
 	<div id="commentlist"></div>
-	<div id="commentReg">
-		<button class="btn-gray trs wth10p hht1">댓글 등록</button>
-		<textarea class="textarea-gray hht1 gray-scroll wth89p pull-right" maxlength="500"></textarea>
+	<div id="comment">
+		<button id="save" class="btn-gray trs wth10p hht1">댓글 등록</button>
+		<textarea id="cmtContent" class="textarea-gray hht1 gray-scroll wth89p pull-right" maxlength="500"></textarea>
 	</div>
 </form>
 
