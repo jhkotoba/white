@@ -159,17 +159,43 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
         	$("#viewForm #edit").hide();
         	$("#viewForm #remove").hide();
         	
-        	cfnCmmAjax("/board/selectBoardDtlView", {boardSeq : args.item.boardSeq, board : "free"}).done(function(data){
-        		$("#viewForm").setParam(data);
-    	    	$("#viewForm #content").text(data.content);
+        	//댓글 저장 이벤트
+        	$("#viewForm #comment #save").off().on("click", function(){       		
+        	
+    			let isVali = true;   			
+				if(isEmpty($("#viewForm #comment #content").val())){
+					isVali = false;
+					wVali.alert({element : $(e), msg: $(e)[0].nodeName === "SELECT" ? "값을 선택해 주세요." : "값을 입력해 주세요."}); return false;
+				}	  				
+  				if($("#viewForm #comment #content").val().length > 500){
+					isVali = false;
+					wVali.alert({element : $(e), msg: "최대 글자수 500자 까지 입력할 수 있습니다."}); return false;
+				}
+  				
+  				if(isVali && confirm("댓글을 저장 하시겠습니까?")){
+  					let param = {};
+  	        		param.content = $("#viewForm #comment #content").val();
+  	        		param.board = "${board}";
+  	        		param.boardSeq = args.item.boardSeq;    		
+  	        		
+	  	        	cfnCmmAjax("/board/insertBoardComment", param).done(function(data){
+	  	        		createCommentList($("#viewForm #commentlist"), data);
+	  	          	});
+  				}
+        	});       	
+        	
+        	cfnCmmAjax("/board/selectBoardDtlView", {boardSeq : args.item.boardSeq, board : "${board}"}).done(function(data){
+        		$("#viewForm").setParam(data.detail);
+    	    	$("#viewForm #content").text(data.detail.content);
     	    	
-    	    	$("#editForm").setParam(data);    	    	
-    	    	if('${sessionScope.userId}'!== '' && '${sessionScope.userId}' === String(data.userId)){
+    	    	$("#editForm").setParam(data.detail);    	    	
+    	    	if('${sessionScope.userId}'!== '' && '${sessionScope.userId}' === String(data.detail.userId)){
     	    		$("#viewForm #edit").show();
     	    		$("#viewForm #remove").show();
     	    	}  	
     			$("body").scrollTop(0);
-        	});
+        	});        	
+        	createCommentList($("#viewForm #commentlist"), data.commentList);
         }, 
         fields: [
 			{ title:"번호",	name:"boardSeq",	type:"text", width:"5%", align:"center"},
@@ -178,6 +204,13 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
 			{ title:"작성날짜",name:"regDate",		type:"text", width:"15%", align:"center"}			
         ]
     });
+	
+	
+	//댓글 리스트 생성
+	function createCommentList($div, list){
+		$div.empty();
+		
+	}
 }
 </script>
 
@@ -259,9 +292,9 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
 	</div>
 	
 	<div id="commentlist"></div>
-	<div id="commentReg">
-		<button class="btn-gray trs wth10p hht1">댓글 등록</button>
-		<textarea class="textarea-gray hht1 gray-scroll wth89p pull-right" maxlength="500"></textarea>
+	<div id="comment">
+		<button id="save" class="btn-gray trs wth10p hht1">댓글 등록</button>
+		<textarea id="cmtContent" class="textarea-gray hht1 gray-scroll wth89p pull-right" maxlength="500"></textarea>
 	</div>
 </form>
 

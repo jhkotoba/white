@@ -1,5 +1,7 @@
 package com.ljh.white.board.controller;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
@@ -39,8 +41,21 @@ public class BoardController {
 	@RequestMapping(value="/board/selectBoardDtlView.ajax")
 	public WhiteMap selectBoardDtlView(HttpServletRequest request) {
 		WhiteMap param = new WhiteMap(request);
-		return boardService.selectBoardDtlView(param);
-		
+		WhiteMap result = new WhiteMap();
+		result.put("detail", boardService.selectBoardDtlView(param));
+		result.put("commentList", boardService.selectBoardCommentList(param));		
+		return result;
+	}
+	
+	/**
+	 * 게시판 상세화면 댓글 리스트 조회
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="/board/selectCommentList.ajax")
+	public List<WhiteMap> selectBoardCommentList(HttpServletRequest request) {
+		WhiteMap param = new WhiteMap(request);
+		return boardService.selectBoardCommentList(param);
 	}
 	
 	/**

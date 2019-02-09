@@ -71,6 +71,17 @@
 		WHERE b.board_seq = #{boardSeq}
 	</select>
 	
+	<!-- 게시판 상세화면 댓글 조회 -->
+	<select id="selectBoardCommentList" resultType="WhiteMap" parameterType="WhiteMap">	
+		SELECT
+			bc.board_seq		AS boardSeq
+			,bc.user_seq		AS userSeq
+			,bc.comment
+			,bc.reg_date		AS regDate
+		FROM ${board}_board_comment bc
+		WHERE bc.board_seq = #{boardSeq}
+	</select>
+	
 	<!-- 게시판 저장 -->
 	<insert id="insertBoard" parameterType="WhiteMap">
 		INSERT

@@ -46,6 +46,15 @@ public class BoardService {
 	}
 	
 	/**
+	 * 게시판 상세화면 댓글 조회
+	 * @param param
+	 * @return
+	 */
+	public List<WhiteMap> selectBoardCommentList(WhiteMap param) {		
+		return boardMapper.selectBoardCommentList(param);	
+	}
+	
+	/**
 	 * 게시판 새글 저장
 	 * @param param
 	 * @return
