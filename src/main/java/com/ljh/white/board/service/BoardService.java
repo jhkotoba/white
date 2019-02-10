@@ -102,10 +102,13 @@ public class BoardService {
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
 	public int deleteBoard(WhiteMap param) {
 		
-		int cnt = boardMapper.selectBoardCommentCount(param);
-		System.out.println(cnt);
-		return 0;
-		//return boardMapper.deleteBoard(param);
+		param.put("delCheck", true);
+		int checkCnt = boardMapper.selectBoardCommentCount(param);
+		if(checkCnt == 0) {
+			return boardMapper.deleteBoard(param);
+		}else {		
+			return -1;
+		}
 	}
 	
 }

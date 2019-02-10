@@ -89,7 +89,10 @@
 	<select id="selectBoardCommentCount" resultType="int" parameterType="WhiteMap">	
 		SELECT COUNT(1)	FROM ${board}_board_comment bc		
 		WHERE bc.board_seq = #{boardSeq}
-	</select>
+		<if test="delCheck == true">
+		AND bc.user_seq != #{userSeq}
+		</if>
+	</select> 
 		
 	<!-- 게시판 상세화면 댓글 저장 -->
 	<insert id="insertBoardComment" parameterType="WhiteMap">

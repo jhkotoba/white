@@ -96,14 +96,18 @@ $(document).ready(function(){
 		if(!confirm("삭제하시겠습니까?")) return;
 		
 		cfnCmmAjax("/board/deleteBoard", {boardSeq : $("#viewForm #boardSeq").val(), board : "free"}).done(function(data){
-			if(1 === Number(data)) alert("삭제 하였습니다.");
-	    	else alert("삭제에 실패하였습니다.");
-			
-	    	$("#viewForm").clear().hide();
-	    	$("#editForm").clear().hide();
-	    	$("#searchForm").clear();
-	    	
-			fnJsGrid(1);
+			if(Number(data) === 1){
+				alert("삭제 하였습니다.");
+				$("#viewForm").clear().hide();
+		    	$("#editForm").clear().hide();
+		    	$("#searchForm").clear();		    	
+				fnJsGrid(1);
+			}
+			else if(Number(data) === -1){
+				alert("다른 사용자의 댓글이 존재하여 삭제 할 수 없습니다.");
+			}else{
+				alert("삭제에 실패하였습니다.");
+			}
     	});
 	});
 	
@@ -114,7 +118,7 @@ $(document).ready(function(){
 });
 
 //리스트 조회
-function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
+function fnJsGrid(pageIdx, pageSize, pageBtnCnt){	
 	$("#boardList").jsGrid({
         height: "auto",
         width: "100%",
@@ -218,7 +222,8 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
 	//댓글 리스트 생성
 	function createCommentList($div, boardSeq){
 		
-		let param = {};  		
+		let param = {};
+		let number = 1;
   		param.board = "${board}";
   		param.boardSeq = boardSeq;
   		
@@ -238,7 +243,11 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
 			        pageSize : 50,
 			        pagerContainer: "#commentPager",
 			        fields: [
-			        	{ title:"번호",	name:"commentSeq",	type:"text", width:"3%", align:"center"},
+			        	{ title:"번호",	name:"commentSeq",	type:"text", width:"3%", align:"center",
+			        		itemTemplate: function(value, item) {
+			        			return number++;
+			        		}			        		
+			        	},
 			        	{ title:"작성자",	name:"userId",	type:"text", width:"8%", align:"center"},
 						{ title:"댓글 내용",	name:"comment",		type:"text", width:"79%",
 			        		itemTemplate: function(value, item) {
