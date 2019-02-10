@@ -90,6 +90,7 @@
 		SELECT COUNT(1)	FROM ${board}_board_comment bc		
 		WHERE bc.board_seq = #{boardSeq}
 		<if test="delCheck == true">
+		AND bc.comment != ''
 		AND bc.user_seq != #{userSeq}
 		</if>
 	</select> 
@@ -113,6 +114,12 @@
 		WHERE user_seq = #{userSeq}
 		AND comment_seq = #{commentSeq}
 	</update>
+	
+	<!-- 게시판 삭제 -->
+	<delete id="deleteComment" parameterType="WhiteMap">
+		DELETE FROM ${board}_board_comment		
+		WHERE board_seq = #{boardSeq}
+	</delete>
 	
 	<!-- 게시판 저장 -->
 	<insert id="insertBoard" parameterType="WhiteMap">

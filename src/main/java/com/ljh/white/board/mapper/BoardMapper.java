@@ -65,7 +65,16 @@ public class BoardMapper {
 	 * @return
 	 */
 	public int updateDelComment(WhiteMap param) {
-		return sqlSession.insert("boardMapper.updateDelComment", param);
+		return sqlSession.update("boardMapper.updateDelComment", param);
+	}
+	
+	/**
+	 * 게시판 상세화면 댓글 삭제
+	 * @param param
+	 * @return
+	 */
+	public int deleteComment(WhiteMap param) {
+		return sqlSession.delete("boardMapper.deleteComment", param);
 	}
 	
 	/**

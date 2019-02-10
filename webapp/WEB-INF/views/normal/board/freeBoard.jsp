@@ -258,9 +258,11 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
 			        				let $div = $("<div>").addClass("comment-content").text(item.comment);
 			        				if(item.userId === "${sessionScope.userId}"){
 			        					let $a = $("<a>").addClass("fsize03 cs-ptr deepgray").text("[삭제]").on("click", function(){
-				        					cfnCmmAjax("/board/updateDelComment", {commentSeq : item.commentSeq, board : "${board}"}).done(function(data){							        		
-								    			createCommentList($("#viewForm #commentlist"), boardSeq);
-								        	});		        					
+			        						if(confirm("댓글을 삭제하시겠습니까?")){
+			        							cfnCmmAjax("/board/updateDelComment", {commentSeq : item.commentSeq, board : "${board}"}).done(function(data){							        		
+									    			createCommentList($("#viewForm #commentlist"), boardSeq);
+									        	});
+			        						}		        					
 				        				});
 			        					$div.append($a);
 			        				}			        				

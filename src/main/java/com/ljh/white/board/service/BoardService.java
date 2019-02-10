@@ -104,11 +104,11 @@ public class BoardService {
 		
 		param.put("delCheck", true);
 		int checkCnt = boardMapper.selectBoardCommentCount(param);
+		
 		if(checkCnt == 0) {
+			boardMapper.deleteComment(param);
 			return boardMapper.deleteBoard(param);
-		}else {		
-			return -1;
-		}
+		}else return -1;		
 	}
 	
 }
