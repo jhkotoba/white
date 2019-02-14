@@ -192,6 +192,8 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
         	});       	
         	
         	cfnCmmAjax("/board/selectBoardDtlView", {boardSeq : args.item.boardSeq, board : "${board}"}).done(function(data){
+        		
+        		data.content = cAdjust.restore(data.content);
         		$("#viewForm").setParam(data);
     	    	$("#viewForm #content").text(data.content);
     	    	

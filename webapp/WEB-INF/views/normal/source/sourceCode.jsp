@@ -2,9 +2,6 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="contextPath" value="<%=request.getContextPath()%>"></c:set>
-<link rel="stylesheet" href="${contextPath}/resources/cAdjust/css/cAdjust.css" type="text/css" />
-
-<script type="text/javascript" src="${contextPath}/resources/cAdjust/js/cAdjust.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
 
@@ -181,8 +178,10 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
         	$("#viewForm #remove").hide();
         	
         	cfnCmmAjax("/source/selectSourceDtlView", {sourceSeq : args.item.sourceSeq}).done(function(data){
-        		$("#viewForm").setParam(data);
-    	    	$("#viewForm #cAdjust").empty().append(cAdjust.adjust(data.langNm, data.content));
+        		
+        		$("#viewForm #cAdjust").empty().append(cAdjust.adjust(data.langNm, data.content));
+        		data.content = cAdjust.restore(data.content);
+        		$("#viewForm").setParam(data);    	    	
     	    	
     	    	$("#editForm").setParam(data);    	    	
     	    	if('${sessionScope.userId}'!== '' && '${sessionScope.userId}' === String(data.userId)){

@@ -4,7 +4,7 @@
  */
 
 let cAdjust = {
-	
+		
 	adjust : function(type, data){
 		let adjustData;
 		
@@ -21,6 +21,10 @@ let cAdjust = {
 			break;		
 		}
 		return adjustData;
+	},
+	
+	restore : function(text){
+		return text.replace(/&lt;/gi, "<").replace(/&gt;/gi, ">");
 	},
 	
 	_jsp : function(){

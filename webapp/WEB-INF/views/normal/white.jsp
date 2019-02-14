@@ -14,6 +14,7 @@
 <link rel="stylesheet" href="${contextPath}/resources/jsgrid-1.5.3/css/jsgrid-theme.css" type="text/css"/>
 <link rel="stylesheet" href="${contextPath}/resources/wVali/css/wVali.css" type="text/css"/>
 <link rel="stylesheet" href="${contextPath}/resources/common/css/common.css" type="text/css" />
+<link rel="stylesheet" href="${contextPath}/resources/cAdjust/css/cAdjust.css" type="text/css" />
 
 <script type="text/javascript" src="${contextPath}/resources/jquery/js/jquery-3.2.1.min.js"></script>
 <script type="text/javascript" src="${contextPath}/resources/jquery/js/jquery-ui.js"></script>
@@ -23,6 +24,7 @@
 <script type="text/javascript" src="${contextPath}/resources/wVali/js/wVali.js"></script>
 <script type="text/javascript" src="${contextPath}/resources/common/js/cmmCode.js"></script>
 <script type="text/javascript" src="${contextPath}/resources/common/js/common.js"></script>
+<script type="text/javascript" src="${contextPath}/resources/cAdjust/js/cAdjust.js"></script>
 </head>
 <body>
 <c:if test="${sessionScope.userId eq null}">
