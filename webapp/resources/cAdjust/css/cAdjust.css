@@ -4,4 +4,9 @@
 .js-directive{color:#569CD6; font-size:inherit; font-weight: 600;}
 .js-annotation{color:#6BA980; font-size:inherit;}
 .js-text{color:#CE9178; font-size:inherit;}
-	
+
+.xml-annotation{color:#626262; font-size:inherit;}
+.xml-tag{color:#0080FF; font-size:inherit;}
+.xml-tagName{color:#03A8D8; font-size:inherit; font-weight: 600;}
+.xml-tagAttr{color:#A7EC24; font-size:inherit;}
+.xml-equal{color:#17C6A3; font-size:inherit;}

@@ -9,18 +9,28 @@ let cAdjust = {
 		let adjustData;
 		
 		type = type.replace(/^\s+|\s+$/g,"").toLowerCase();
+		console.log(type);
 		
 		switch(type){		
 		case "javascript":	
 		case "jquery":	
 		case "jsgrid":
-			adjustData = this._javascript(data, false);
+			adjustData = this._javascript(this.restore(data), false);
+			break;
+		case "xml":
+		case "mybatis":
+			adjustData = this._xml(this.restore(data), false);
+			console.log(adjustData);
 			break;
 		default:
 			adjustData = "<div><pre class='cAdjust-textarea'>"+data+"</pre></div>";
 			break;		
 		}
 		return adjustData;
+	},
+	
+	conversion : function(text){
+		return text.replace(/</gi, "&lt;").replace(/>/gi, "&gt;");
 	},
 	
 	restore : function(text){
@@ -73,7 +83,7 @@ let cAdjust = {
 		let chList = null;
 				
 		//반복 상태값
-		let state = "none";		
+		let state = "none";
 		//개행문자 오기 전까지 주석 개수
 		let annCnt = 0;
 		// /*형식의 주석종료 위치
@@ -203,7 +213,7 @@ let cAdjust = {
 				break;
 				
 				//작은따옴표
-				case "'":						
+				case "'":	
 					if(ch.length-1 >= i+1 && ch[i]=="'"){
 						let quotation  = false;
 						for(let j=i+1; j<ch.length; j++) {
@@ -277,9 +287,201 @@ let cAdjust = {
 	_html : function(){
 		
 	},
-	_xml : function(){
+	
+	_xmlCmd : {		
+		"<!--" : "xml-annotation"
 		
 	},
+	_xml : function(data, part){
+		console.log("XML");
+		let state = "none";		
+		let annotationIdx = 0;
+		let tagOpen = false;
+		let tagClose = false;
+		let tagName = false;
+		let tagAttr = false;
+		let tagText = false;
+		
+		let line = 1;
+		let str = "";
+		
+		//data = this.restore(data);
+		
+		//data = this.conversion()
+		
+		
+		let ch = data.split("");
+		console.log(ch);
+		
+		//커맨드값 추출
+		//let xmlKeyList = Object.keys(this._xmlCmd);
+		//let fstChList = {};
+		//let fstCmd = "";
+		
+		//커맨드값 가공
+		/*for(let i=0; i<xmlKeyList.length; i++){
+			fstCmd = xmlKeyList[i].substr(0, 1);			
+			if(fstChList[fstCmd] === undefined){
+				fstChList[fstCmd] = new Array();
+				fstChList[fstCmd].push(xmlKeyList[i]);
+			}else{
+				fstChList[fstCmd].push(xmlKeyList[i]);
+			}
+		}
+		*/
+		
+		
+		
+		for(let i=0; i<ch.length; i++){
+			
+			//태그문자 변환
+			//if(ch[i] === "<") ch[i] = "&lt;";
+			//<![CDATA[      ]]>
+			//라인 수
+			if(ch[i] === '\n') line++;
+			
+			if(state === "none"){
+				console.log(ch[i]);
+				if(tagName){
+					str += "<span class='xml-tagName'>";
+					state = "tagName";
+					tagName = false;
+				}else if(tagAttr){
+					str += "<span class='xml-tagAttr'>";
+					state = "tagAttr";
+					tagAttr = false;				
+				}else{
+					switch(ch[i]){				
+					case "<":					
+						if(this._compare(ch, i, "<!--", false)){						
+							str += "<span class='xml-annotation'>";
+							state = "<!--";
+						}else{
+							str += "<span class='xml-tag'>";
+							tagOpen = true;
+						}
+					
+					
+					
+					
+						break;
+					case ">":
+						str += "<span class='xml-tag'>";
+						tagClose = true;
+						break;
+						
+					case "='":
+						str += "<span class='xml-equal'>";
+						state = "equal-quotation";
+						break;
+					case '="':
+						str += "<span class='xml-equal'>";
+						state = "equal-dQuotation";
+						break;
+					}
+				
+				
+					
+				}
+				
+				
+				
+							
+			}else{
+				switch(state){
+				case "<!--":
+					if(this._compare(ch, i, "-->", true)){
+						str += "</span>";
+						state = "none";
+					}
+					break;
+				case "tagName" :				
+					if(this._compare(ch, i, " ", false)){
+						str += "</span>";
+						state = "none";
+						tagAttr = true;
+					}
+					break;
+				case "tagAttr" : 
+					if(this._compare(ch, i, ">", false)){
+						str += "</span>";
+						state = "none";
+					}
+					break;
+				case "equal-quotation":
+					if(this._compare(ch, i, '" ', false)){
+						str += "</span>";
+						state = "none";
+					}
+					break;
+				case "equal-dQuotation":
+					if(this._compare(ch, i, "' ", false)){
+						str += "</span>";
+						state = "none";
+					}
+					break;
+				}
+			}
+			
+			str += ch[i] === "<" ? "&lt;" : ch[i];
+			//if(tagOpen)	str += "</span>";
+			if(tagOpen){
+				str += "</span>";
+				tagOpen = false;
+				tagName = true;
+			}else if(tagClose){
+				str += "</span>";
+				tagClose = false;
+			}
+			
+			/*if(tagOpen){
+				str += "</span>";
+				tagOpen = false;
+				tagName = true;
+			}else if(tagName){
+				
+			}else{
+				
+			}*/
+				
+			
+			
+			
+		}		
+		
+		//console.log(str);
+		if(part === true){
+			return {cotent : str, line : line};			
+		}else{			
+			let result = "<div>";		
+			result += "<div class='cAdjust-line'>";
+			
+			for(let i=0; i<line; i++){
+				result += "<div>"+(i+1)+"</div>";
+			}	
+			result +="</div><pre class='cAdjust-textarea'>"+str+"</pre></div>";
+			
+			return result;
+		}		
+	},
+	
+	_compare : function(char, idx, word, isPrefix, _cnt){
+		if(char === null || char === undefined || idx === null || idx === undefined ||
+		   word === null || word === undefined || isPrefix === null || isPrefix ===	undefined) return false;		
+		if(_cnt === undefined || _cnt === null){
+			if(isPrefix){
+				if(idx - word.length < 0) return false;
+				idx = idx - word.length;
+			}
+			_cnt = 0;
+		}
+		if(char.length > (idx+word.length) && char[idx+_cnt] === word[_cnt]){			
+			_cnt = _cnt+1;
+			if(word.length === _cnt) return true;
+			else return this._compare(char, idx, word, isPrefix, _cnt);
+		}else return false;
+	},
+	
 	_java : function(){
 		
 	},

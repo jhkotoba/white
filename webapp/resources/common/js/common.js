@@ -499,6 +499,8 @@ function isOnlyNum(_str){
 	}
 }
 
+
+
 //날짜 형식 체크 ex) 2019-01-01 08:00
 function isRecordDatePattern(date, patten){
 	let date_pattern = null;
