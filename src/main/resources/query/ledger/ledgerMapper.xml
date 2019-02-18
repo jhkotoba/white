@@ -10,7 +10,8 @@
 			pur_seq AS purSeq,
 	  		pur_order AS purOrder,
 	 		purpose AS purpose,
-	 		pur_type AS purType
+	 		pur_type AS purType,
+	 		stats_yn AS statsYn
 		FROM purpose
 		WHERE user_seq = #{userSeq}
 		ORDER BY pur_order
@@ -22,7 +23,8 @@
 			pur_dtl_seq AS purDtlSeq,
 			pur_seq AS purSeq,
 			pur_dtl_order AS purDtlOrder,
-			pur_detail AS purDetail			
+			pur_detail AS purDetail,
+			stats_yn AS statsYn		
 		FROM purpose_detail
 		WHERE user_seq = #{userSeq}
 		ORDER BY pur_dtl_order	
@@ -68,13 +70,15 @@
 			user_seq,	
 			pur_order,
 			purpose,
-			pur_type
+			pur_type,
+			stats_yn
 		)VALUES
 		<foreach collection="list" item="item" separator="),(" open="(" close=")">
 			#{item.userSeq},
 			#{item.purOrder},
 			#{item.purpose},
-			#{item.purType}
+			#{item.purType},
+			#{item.statsYn}
 		</foreach>	
 	</insert>
 	
@@ -98,6 +102,12 @@
 		<foreach collection="list" item="item">
 			WHEN pur_seq = #{item.purSeq} THEN #{item.purType}
 		</foreach>		
+		END,
+		stats_yn = 
+		CASE		
+		<foreach collection="list" item="item">
+			WHEN pur_seq = #{item.purSeq} THEN #{item.statsYn}
+		</foreach>
 		END
 		WHERE pur_seq IN 
 		<foreach collection="list" item="item" separator="," open="(" close=")">
@@ -152,6 +162,12 @@
 		<foreach collection="list" item="item">
 			WHEN pur_dtl_seq = #{item.purDtlSeq} THEN #{item.purDetail}
 		</foreach>		
+		END,
+		stats_yn = 
+		CASE		
+		<foreach collection="list" item="item">
+			WHEN pur_seq = #{item.purSeq} THEN #{item.statsYn}
+		</foreach>
 		END
 		WHERE pur_dtl_seq IN 
 		<foreach collection="list" item="item" separator="," open="(" close=")">
@@ -165,13 +181,15 @@
 			pur_seq,	
 			user_seq,	
 			pur_dtl_order,
-			pur_detail
+			pur_detail,
+			stats_yn
 		)VALUES
 		<foreach collection="list" item="item" separator="),(" open="(" close=")">
 			#{item.purSeq}, 
 			#{item.userSeq}, 
 			#{item.purDtlOrder},
-			#{item.purDetail}			
+			#{item.purDetail},			
+			#{item.statsYn},			
 		</foreach>	
 	</insert>
 	

@@ -12,6 +12,9 @@ let cAdjust = {
 		
 		
 		switch(type){
+		case "java":
+			adjustData = this._java(this.restore(data), false);
+			break;		
 		case "javascript":
 		case "jquery":
 		case "jsgrid":
@@ -36,9 +39,35 @@ let cAdjust = {
 		return text.replace(/&lt;/gi, "<").replace(/&gt;/gi, ">");
 	},
 	
+	
+	_javaCmd : {
+		
+	},
+	
+	_java : function(data, part){
+		
+		
+		
+		
+		
+		if(part === true){
+			return {cotent : str, line : line};
+		}else{
+			let result = "<div>";
+			result += "<div class='cAdjust-line'>";
+			
+			for(let i=0; i<line; i++){
+				result += "<div>"+(i+1)+"</div>";
+			}
+			result +="</div><pre class='cAdjust-textarea'>"+str+"</pre></div>";
+			return result;
+		}
+	},
+	
 	_jsp : function(){
 		
 	},
+	
 	_javascriptCmd : {
 		//추가불가
 		"rowannotation" : "js-annotation",
@@ -303,7 +332,10 @@ let cAdjust = {
 			if(state === "none"){
 				switch(ch[i]){
 				case "<":
-					if(this._compare(ch, i, "<!--", false)){
+					if(this._compare(ch, i, "<![CDATA[", false)){
+						str += "<span class='xml-tagArea'>";
+						state = "cdata";
+					}else if(this._compare(ch, i, "<!--", false)){
 						str += "<span class='xml-annotation'>";
 						state = "annotation";
 					}else if(this._compare(ch, i, "</", false)){
@@ -345,6 +377,22 @@ let cAdjust = {
 				}		
 			}else{
 				switch(state){
+				
+				case "cdata":
+					if(this._compare(ch, i, "<![CDATA[", true)){
+						str += "</span><span class='xml-cdataText'>";
+						state = "cdatatext";
+					}else if(this._compare(ch, i, "]]>", true)){
+						str += "</span>";
+						state = "none";
+					}
+					break;
+				case "cdatatext":
+					if(this._compare(ch, i, "]]>", false)){
+						str += "</span><span class='xml-tagArea'>";
+						state = "cdata";
+					}
+					break;
 				case "annotation":
 					if(this._compare(ch, i, "-->", true)){
 						str += "</span>";
@@ -475,11 +523,7 @@ let cAdjust = {
 			if(word.length === _cnt) return true;
 			else return this._compare(char, idx, word, isPrefix, _cnt);
 		}else return false;
-	},
-	
-	_java : function(){
-		
-	},
+	},	
 	
 	_isSpecial : function(ch){
 		switch(ch) {

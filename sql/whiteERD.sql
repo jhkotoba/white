@@ -17,7 +17,6 @@ DROP TABLE IF EXISTS money_record_re;
 DROP TABLE IF EXISTS purpose_detail;
 DROP TABLE IF EXISTS purpose;
 DROP TABLE IF EXISTS source_board;
-DROP TABLE IF EXISTS user_bank;
 DROP TABLE IF EXISTS white_user;
 
 
@@ -170,6 +169,7 @@ CREATE TABLE purpose
 	pur_order int NOT NULL,
 	purpose varchar(20) NOT NULL,
 	pur_type varchar(5) NOT NULL,
+	stats_yn varchar(1) NOT NULL,
 	PRIMARY KEY (pur_seq),
 	UNIQUE (pur_seq)
 );
@@ -182,6 +182,7 @@ CREATE TABLE purpose_detail
 	user_seq int NOT NULL,
 	pur_dtl_order int NOT NULL,
 	pur_detail varchar(20) NOT NULL,
+	stats_yn varchar(1) NOT NULL,
 	PRIMARY KEY (pur_dtl_seq),
 	UNIQUE (pur_dtl_seq)
 );
@@ -211,18 +212,6 @@ CREATE TABLE source_board
 	reg_date datetime NOT NULL,
 	PRIMARY KEY (source_seq),
 	UNIQUE (source_seq)
-);
-
-
-CREATE TABLE user_bank
-(
-	bank_seq int NOT NULL AUTO_INCREMENT,
-	user_seq int NOT NULL,
-	bank_name varchar(20) NOT NULL,
-	bank_account varchar(60) NOT NULL,
-	bank_use_yn varchar(1) NOT NULL,
-	PRIMARY KEY (bank_seq),
-	UNIQUE (bank_seq)
 );
 
 
@@ -370,14 +359,6 @@ ALTER TABLE purpose
 
 
 ALTER TABLE source_board
-	ADD FOREIGN KEY (user_seq)
-	REFERENCES white_user (user_seq)
-	ON UPDATE RESTRICT
-	ON DELETE RESTRICT
-;
-
-
-ALTER TABLE user_bank
 	ADD FOREIGN KEY (user_seq)
 	REFERENCES white_user (user_seq)
 	ON UPDATE RESTRICT

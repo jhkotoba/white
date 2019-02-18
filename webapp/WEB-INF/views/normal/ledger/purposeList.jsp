@@ -22,7 +22,6 @@ function fnPurGrid(data){
 	let purDtlNoIdx = null;
 	let purDtlCloneNoIdx = null;
 	let initPurDtl = true;
-	//let refPurSeq = isEmpty("${prevParam}")?clone.purList[0].purSeq:Number("${prevParam}");
 	let refPurSeq;
 	
 	if(clone.purList.length === 0){
@@ -95,15 +94,20 @@ function fnPurGrid(data){
                 }	            
 			},
 			{ title:"순서",	name:"purOrder",	type:"text", align:"center", width: "10%"},
-			{ title:"목적",	name:"purpose",		type:"text", align:"center", width: "54%",
+			{ title:"목적",	name:"purpose",		type:"text", align:"center", width: "50%",
 				itemTemplate: function(value, item){													
 					return fnRefreshedSync(item, "purpose", "purList", "input");
 				}
 			},
-			{ title:"목적 종류",	name:"purType",		type:"text", align:"center", width: "20%",
+			{ title:"목적 종류",	name:"purType",		type:"text", align:"center", width: "16%",
 				itemTemplate: function(value, item){													
 					return fnRefreshedSync(item, "purType", "purList", "select");
 				}
+			},
+			{ title:"통계포함",	name:"statsYn",	type:"text", align:"center", width: "8%",
+				itemTemplate: function(value, item){
+					return value;
+				}				
 			},
 			{ title:"보기", align:"center", width: "8%",
 				itemTemplate: function(value, item){					
@@ -256,11 +260,16 @@ function fnPurGrid(data){
 	                }
 				},
 				{ title:"순서",	name:"purDtlOrder",	type:"text", align:"center", width: "12%"},
-				{ title:"상세목적",	name:"purDetail",		type:"text", align:"center", width: "80%",
+				{ title:"상세목적",	name:"purDetail",		type:"text", align:"center", width: "72%",
 					itemTemplate: function(value, item){													
 						return fnRefreshedSync(item, "purDetail", "purDtlList", "input");
 					}
-				}				
+				},
+				{ title:"통계포함",	name:"statsYn",	type:"text", align:"center", width: "8%",
+					itemTemplate: function(value, item){
+						return value;
+					}				
+				},
 			],
 			onRefreshed: function() {
 				let $gridData = $("#purDtlList .jsgrid-grid-body tbody");
