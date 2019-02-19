@@ -185,8 +185,8 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
         		
         		$("#viewForm #cAdjust").empty().append(cAdjust.adjust(data.langNm, data.content));
         		data.content = cAdjust.restore(data.content);
-        		$("#viewForm").setParam(data);    	    	
-    	    	z
+        		$("#viewForm").setParam(data);   	    	
+    	    	
     	    	$("#editForm").setParam(data);    	    	
     	    	if('${sessionScope.userId}'!== '' && '${sessionScope.userId}' === String(data.userId)){
     	    		$("#viewForm #edit").show();
