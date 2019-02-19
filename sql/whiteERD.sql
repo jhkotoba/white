@@ -169,7 +169,6 @@ CREATE TABLE purpose
 	pur_order int NOT NULL,
 	purpose varchar(20) NOT NULL,
 	pur_type varchar(5) NOT NULL,
-	stats_yn varchar(1) NOT NULL,
 	PRIMARY KEY (pur_seq),
 	UNIQUE (pur_seq)
 );

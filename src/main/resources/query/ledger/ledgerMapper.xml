@@ -10,8 +10,7 @@
 			pur_seq AS purSeq,
 	  		pur_order AS purOrder,
 	 		purpose AS purpose,
-	 		pur_type AS purType,
-	 		stats_yn AS statsYn
+	 		pur_type AS purType
 		FROM purpose
 		WHERE user_seq = #{userSeq}
 		ORDER BY pur_order
@@ -70,15 +69,13 @@
 			user_seq,	
 			pur_order,
 			purpose,
-			pur_type,
-			stats_yn
+			pur_type
 		)VALUES
 		<foreach collection="list" item="item" separator="),(" open="(" close=")">
 			#{item.userSeq},
 			#{item.purOrder},
 			#{item.purpose},
-			#{item.purType},
-			#{item.statsYn}
+			#{item.purType}
 		</foreach>	
 	</insert>
 	
@@ -102,12 +99,6 @@
 		<foreach collection="list" item="item">
 			WHEN pur_seq = #{item.purSeq} THEN #{item.purType}
 		</foreach>		
-		END,
-		stats_yn = 
-		CASE		
-		<foreach collection="list" item="item">
-			WHEN pur_seq = #{item.purSeq} THEN #{item.statsYn}
-		</foreach>
 		END
 		WHERE pur_seq IN 
 		<foreach collection="list" item="item" separator="," open="(" close=")">
@@ -166,7 +157,7 @@
 		stats_yn = 
 		CASE		
 		<foreach collection="list" item="item">
-			WHEN pur_seq = #{item.purSeq} THEN #{item.statsYn}
+			WHEN pur_dtl_seq = #{item.purDtlSeq} THEN #{item.statsYn}
 		</foreach>
 		END
 		WHERE pur_dtl_seq IN 

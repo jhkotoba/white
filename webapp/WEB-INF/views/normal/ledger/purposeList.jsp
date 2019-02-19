@@ -104,11 +104,6 @@ function fnPurGrid(data){
 					return fnRefreshedSync(item, "purType", "purList", "select");
 				}
 			},
-			{ title:"통계포함",	name:"statsYn",	type:"text", align:"center", width: "8%",
-				itemTemplate: function(value, item){
-					return value;
-				}				
-			},
 			{ title:"보기", align:"center", width: "8%",
 				itemTemplate: function(value, item){					
 					if(item.state === "insert"){
@@ -267,7 +262,7 @@ function fnPurGrid(data){
 				},
 				{ title:"통계포함",	name:"statsYn",	type:"text", align:"center", width: "8%",
 					itemTemplate: function(value, item){
-						return value;
+						return fnRefreshedSync(item, "statsYn", "purDtlList", "button");
 					}				
 				},
 			],
@@ -291,6 +286,14 @@ function fnPurGrid(data){
 				//수정 intpu sync 체크
 				$("input[name='syncPurDtl']").on("keyup keydown change", function(){	
 					fnOnSync(this, "purDtlList");
+				});
+				
+				//수정 button sync 체크
+				$("button[name='syncPurDtl']").on("click", function(){
+					if($(this).val() === "Y")	$(this).val("N").text("N");
+					else						$(this).val("Y").text("Y");
+					fnOnSync(this, "purDtlList");
+					
 				});
 			}
 		});
@@ -339,7 +342,7 @@ function fnPurGrid(data){
 		}
 	}
 	
-	//새로고침 sync			
+	//새로고침 sync
 	function fnRefreshedSync(item, name, listName, tag){
 		
 		let $el = null;
@@ -362,6 +365,9 @@ function fnPurGrid(data){
 				$el.append($option);
 			}		
 			break;
+		case "button":			
+			$el = $("<button>").addClass("btn-gray trs sm").val(item[name]).text(item[name]);
+			break;
 		}
 		
 		if(listName === "purList"){
@@ -382,7 +388,6 @@ function fnPurGrid(data){
 				}
 			}		
 		}else if(listName === "purDtlList"){
-			
 			$el.attr("name", "syncPurDtl").data("purDtlSeq", item.purDtlSeq).data("name", name);		
 
 			if(item.state === "insert") $el.addClass("sync-green");	
@@ -434,7 +439,6 @@ function fnPurGrid(data){
 			
 			let param = {};
 			param.purList = JSON.stringify(data.purList);
-			
 			cfnCmmAjax("/ledger/applyPurList", param).done(function(res){
 				
 				if(Number(res)===-1){
@@ -484,7 +488,7 @@ function fnPurGrid(data){
 				break;
 			}			
 		});
-		
+				
 		if(isVali && confirm("저장하시겠습니까?")){
 			
 			for(let i=0, j=1; i<data.purDtlList.length; i++){
