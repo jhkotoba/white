@@ -8,25 +8,24 @@
 
 <script type="text/javascript">
 $(document).ready(function(){
+	//cfnCmmAjax("/ledger/selectLedgerStats", {type:"monthIEA"}).done(function(data){
+	//	fnMonthStats(data);
+	//});
 	fnMonthStats();
-	
-
-	
-	
 });
 
 function fnMonthStats(data){
 	let container = document.getElementById('chart-area');
 	let statsData = {
-	    categories: ['June, 2015', 'July, 2015', 'August, 2015', 'September, 2015', 'October, 2015', 'November, 2015', 'December, 2015'],
+	    categories: ['11111','June, 2015', 'July, 2015', 'August, 2015', 'September, 2015', 'October, 2015', 'November, 2015', 'December, 2015'],
 	    series: [
 	        {
 	            name: '수입',
-	            data: [5000, 3000, 5000, 7000, 6000, 4000, 1000]
+	            data: [5000,5000, 3000, 5000, 7000, 6000, 4000, 1000]
 	        },
 	        {
 	            name: '지출',
-	            data: [8000, 1000, 7000, 2000, 6000, 3000, 5000]
+	            data: [5000,8000, 1000, 7000, 2000, 6000, 3000, 5000]
 	        }
 	    ]
 	};

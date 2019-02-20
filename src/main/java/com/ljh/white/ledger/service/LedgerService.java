@@ -377,4 +377,24 @@ public class LedgerService {
 		if(updateList.size()!=0) result.put("updateCnt", ledgerMapper.updateRecordList(updateList));
 		return result;
 	}
+	
+	/**
+	 * 가계부 통계
+	 * @param param
+	 * @return
+	 */
+	public List<WhiteMap> selectLedgerStats(WhiteMap param) {
+
+		List<WhiteMap> list = null;
+
+		switch(param.getString("type")) {
+		case "monthIE":
+			list = ledgerMapper.selectLedgermonthIEStats(param);		
+			break;
+		}
+		
+		
+		return list;
+		
+	}
 }

@@ -33,12 +33,12 @@
 	
 	<select id="selectSourceList" resultType="WhiteMap" parameterType="WhiteMap">	
 		SELECT
-			sb.source_seq 	AS sourceSeq,
-			cc.code_nm 		AS langNm,
-			<!-- sb.user_seq 	AS userSeq, -->
-			wu.user_id 		AS userId,
-			sb.title,
-			DATE_FORMAT(sb.reg_date,'%Y-%m-%d %H:%i:%s') AS regDate
+			sb.source_seq 		AS sourceSeq
+			,cc.code_nm 		AS langNm
+			,wu.user_id 		AS userId
+			,sb.title
+			,DATE_FORMAT(sb.edit_date,'%Y-%m-%d %H:%i:%s') AS editDate
+			,DATE_FORMAT(sb.reg_date,'%Y-%m-%d %H:%i:%s')  AS regDate
 		FROM source_board sb
 	    LEFT OUTER JOIN cmm_code cc
 	    	ON sb.lang_cd = cc.code
@@ -74,10 +74,10 @@
 			sb.source_seq 	AS sourceSeq
 			,cc.code_nm 	AS langNm
 			,cc.code		AS langCd
-			<!-- ,sb.user_seq 	AS userSeq -->
 			,wu.user_id 	AS userId
 			,sb.title
 			,sb.content
+			,DATE_FORMAT(sb.edit_date,'%Y-%m-%d %H:%i:%s') AS editDate
 			,DATE_FORMAT(sb.reg_date,'%Y-%m-%d %H:%i:%s') AS regDate
 		FROM source_board sb
    		LEFT OUTER JOIN white_user wu
@@ -89,12 +89,13 @@
 	
 	<insert id="insertSource" parameterType="WhiteMap">
 		INSERT
-		INTO source_board(user_seq, lang_cd, title, content, reg_date)
+		INTO source_board(user_seq, lang_cd, title, content, edit_date, reg_date)
 		VALUES(
 			#{userSeq},
 			#{langCd},
 			#{title},
 			#{content},
+			NOW(),
 			NOW()
 		)
 	</insert>
@@ -103,7 +104,8 @@
 		UPDATE source_board
 		SET	title = #{title},
 			lang_cd = #{langCd},
-			content = #{content}
+			content = #{content},
+			edit_date = NOW()
 		WHERE user_seq = #{userSeq}
 		AND source_seq = #{sourceSeq}
 	</update>

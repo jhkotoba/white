@@ -198,6 +198,10 @@ function cfnSetComma(inNum){
 	return outNum;
 }
 
+function cfnRestore(text){
+	return text.replace(/&lt;/gi, "<").replace(/&gt;/gi, ">");
+}
+
 //날짜반환함수
 let isDate = {	
 	dateProcess : function dateProcess(isMonth, type){	

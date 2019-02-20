@@ -46,8 +46,18 @@ let cAdjust = {
 	
 	_java : function(data, part){
 		
+		let line = 1;		
+		let ch = data.split("");
+		let str = "";
 		
-		
+		for(let i=0; i<ch.length; i++){
+			
+			//라인 수
+			if(ch[i] === '\n') line++;
+			
+			
+			str += ch[i];
+		}
 		
 		
 		if(part === true){

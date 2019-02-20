@@ -240,5 +240,12 @@ public class LedgerMapper {
 		return sqlSession.delete("ledgerMapper.deleteRecordList", list);
 	}
 	
-	
+	/**
+	 * 가계부 통계 월별 수입지출
+	 * @param list
+	 * @return
+	 */
+	public List<WhiteMap> selectLedgermonthIEStats(WhiteMap param) {
+		return sqlSession.selectList("ledgerMapper.selectLedgermonthIEStats", param);
+	}
 }

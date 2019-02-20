@@ -208,6 +208,7 @@ CREATE TABLE source_board
 	lang_cd varchar(5) NOT NULL,
 	title varchar(50) NOT NULL,
 	content varchar(4000) NOT NULL,
+	edit_date datetime NOT NULL,
 	reg_date datetime NOT NULL,
 	PRIMARY KEY (source_seq),
 	UNIQUE (source_seq)

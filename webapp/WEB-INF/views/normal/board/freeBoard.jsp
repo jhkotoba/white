@@ -193,7 +193,7 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
         	
         	cfnCmmAjax("/board/selectBoardDtlView", {boardSeq : args.item.boardSeq, board : "${board}"}).done(function(data){
         		
-        		data.content = cAdjust.restore(data.content);
+        		data.content = cfnRestore(data.content);
         		$("#viewForm").setParam(data);
     	    	$("#viewForm #content").text(data.content);
     	    	
@@ -232,8 +232,6 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
   		$div.empty();
 		
 		cfnCmmAjax("/board/selectCommentList", param).done(function(data){
-			console.log(data);			
-			console.log("${sessionScope.userId}");
 			if(data.length > 0){
 				$div.jsGrid({
 			        height: "auto",

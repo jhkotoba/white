@@ -455,4 +455,23 @@
 		</foreach>
 	</delete>
 	
+	<!-- ing.. -->
+	<select id="selectLedgermonthIEStats" resultType="whiteMap" parameterType="whiteMap">
+	
+		SELECT 
+		p.pur_type  AS purTypeCd
+		,cc.code_nm  AS purTypeNm
+		,SUM(mr.money) AS amount
+		FROM money_record_re mr
+		INNER JOIN purpose p
+		ON p.pur_seq = mr.pur_seq
+		LEFT OUTER JOIN cmm_code cc
+		ON cc.code = p.pur_type
+		WHERE mr.record_date <![CDATA[ >= ]]> (SELECT LAST_DAY(DATE_ADD(NOW(), INTERVAL -7 MONTH)) AS START_DATE)
+		AND mr.record_date <![CDATA[ <= ]]> (SELECT NOW() AS END_DATE)
+		GROUP BY p.pur_type;
+	
+	</select>
+	
+	
 </mapper>

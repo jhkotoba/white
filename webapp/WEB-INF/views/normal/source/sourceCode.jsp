@@ -275,7 +275,9 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
 			<span class="span-gray-block" id="title"></span>
 		</div>
 		<div class="flex-other">
-			<span class="span-gray-rt">날짜</span>
+			<span class="span-gray-rt">수정 날짜</span>
+			<span id="editDate" class="span-gray"></span>
+			<span class="span-gray-rt">작성날짜</span>
 			<span id="regDate" class="span-gray"></span>
 			<button class="btn-gray trs" id="edit">수정</button>
 			<button class="btn-gray trs" id="remove" class="hide">삭제</button>	

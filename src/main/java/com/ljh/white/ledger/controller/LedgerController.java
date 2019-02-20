@@ -156,4 +156,15 @@ public class LedgerController {
 		WhiteMap param = new WhiteMap(request);
 		return ledgerService.applyRecordList(param);
 	}
+	
+	/**
+	 * 
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="/ledger/selectLedgerStats.ajax")
+	public List<WhiteMap> selectLedgerStats(HttpServletRequest request) {
+		WhiteMap param = new WhiteMap(request);
+		return ledgerService.selectLedgerStats(param);
+	}
 }
