@@ -33,8 +33,7 @@ CREATE TABLE admin_board
 	edit_date datetime NOT NULL,
 	reg_date datetime NOT NULL,
 	PRIMARY KEY (board_seq),
-	UNIQUE (board_seq),
-	UNIQUE (user_seq)
+	UNIQUE (board_seq)
 );
 
 
@@ -46,9 +45,7 @@ CREATE TABLE admin_board_comment
 	comment varchar(1000) NOT NULL,
 	reg_date datetime NOT NULL,
 	PRIMARY KEY (comment_seq),
-	UNIQUE (comment_seq),
-	UNIQUE (board_seq),
-	UNIQUE (user_seq)
+	UNIQUE (comment_seq)
 );
 
 
