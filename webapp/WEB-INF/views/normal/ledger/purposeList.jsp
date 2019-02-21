@@ -209,7 +209,7 @@ function fnPurGrid(data){
 				{ align:"center", width: "8%",
 					headerTemplate : function(){
 						return $("<button>").attr("id", "purDtlAdd").addClass("btn-gray trs sm").text("+").on("click", function(){
-							data.purDtlList.push({purSeq: refPurSeq, purDetail:"", purDtlOrder:"", purDtlSeq: new Date().getTime(), state:"insert"});		
+							data.purDtlList.push({purSeq: refPurSeq, purDetail:"", purDtlOrder:"", purDtlSeq: new Date().getTime(), statsYn:"Y", state:"insert"});	
 							purDtlNoIdx = cfnNoIdx(data.purDtlList, "purDtlSeq");
 							$("#purDtlList").jsGrid("refresh");
 						});					
@@ -219,7 +219,7 @@ function fnPurGrid(data){
 	                    .data("purDtlSeq", item.purDtlSeq).data("purDtlOrder", item.purDtlOrder).on("change", function() {
 	                    	let idx = purDtlNoIdx[item.purDtlSeq];
 	                    	let cIdx = purDtlCloneNoIdx[item.purDtlSeq];
-	                			
+	                	
 	               			if(isEmpty(item.purDtlOrder)){
 	               	    		$("#purDtlList").jsGrid("deleteItem", item);
 	               	    		delete purDtlNoIdx[item.purDtlSeq];               	    		
@@ -270,26 +270,35 @@ function fnPurGrid(data){
 				let $gridData = $("#purDtlList .jsgrid-grid-body tbody");
 				$gridData.sortable({
 					update: function(e, ui) {
-						let items = $.map($gridData.find("tr"), function(row) {
+						let items = $.map($gridData.find("tr"), function(row) {							
 							return $(row).data("JSGridItem");
-						});
+						});				
 						
 						data.purDtlList.splice(0, data.purDtlList.length);
 						for(let i=0; i<items.length; i++){
+							/* if(i !== items[i].purDtlOrder-1){								
+								if(items[i].state === "select"){
+									items[i].state = "update"
+								}
+							}else{
+								if(items[i].state === "update"){
+									items[i].state = "select"
+								}
+							} */
 							data.purDtlList.push(items[i]);
 						}
-						$("#purDtlList").jsGrid("refresh");
-						purDtlNoIdx = cfnNoIdx(data.purDtlList, "purDtlSeq");
+						$("#purDtlList").jsGrid("refresh");						
+						purDtlNoIdx = cfnNoIdx(data.purDtlList, "purDtlSeq");						
 					}
 				});
 				
 				//수정 intpu sync 체크
-				$("input[name='syncPurDtl']").on("keyup keydown change", function(){	
+				$("input[name='syncPurDtl']").off().on("keyup keydown change", function(){	
 					fnOnSync(this, "purDtlList");
 				});
 				
 				//수정 button sync 체크
-				$("button[name='syncPurDtl']").on("click", function(){
+				$("button[name='syncPurDtl']").off().on("click", function(){
 					if($(this).val() === "Y")	$(this).val("N").text("N");
 					else						$(this).val("Y").text("Y");
 					fnOnSync(this, "purDtlList");
@@ -429,8 +438,7 @@ function fnPurGrid(data){
 			}
 		});
 		
-		if(isVali && confirm("저장하시겠습니까?")){
-			
+		if(isVali && confirm("저장하시겠습니까?")){			
 			for(let i=0, j=1; i<data.purList.length; i++){
 				if(data.purList[i].state !== "delete"){
 					data.purList[i].purOrder = (j++);	
@@ -439,6 +447,7 @@ function fnPurGrid(data){
 			
 			let param = {};
 			param.purList = JSON.stringify(data.purList);
+			
 			cfnCmmAjax("/ledger/applyPurList", param).done(function(res){
 				
 				if(Number(res)===-1){
@@ -488,8 +497,9 @@ function fnPurGrid(data){
 				break;
 			}			
 		});
-				
-		if(isVali && confirm("저장하시겠습니까?")){
+		console.log(data.purDtlList);
+				return;
+		if(isVali && confirm("저장하시겠습니까?")){			
 			
 			for(let i=0, j=1; i<data.purDtlList.length; i++){
 				if(data.purDtlList[i].state !== "delete"){

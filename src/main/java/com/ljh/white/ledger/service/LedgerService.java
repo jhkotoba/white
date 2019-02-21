@@ -110,7 +110,7 @@ public class LedgerService {
 				updateList.add(purDtlList.get(i));
 			}
 		}
-		System.out.println(updateList);
+		
 		sb.setLength(sb.length() - 1);
 		param.put("verifyPurDtlSeqList", sb.toString());		
 		
