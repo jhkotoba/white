@@ -40,6 +40,7 @@ function ledgerList(data){
 	//목적-상세목적
 	$("#searchBar #purSeq").on("change", function(e){
 		$("#purDtlSeq").empty();
+		$("#searchBar #purDtlSeq").append($("<option>").val("").text(""));
 		for(let i=0; i<data.purDtlList.length; i++){
 			if(Number(data.purDtlList[i].purSeq) === Number(this.value)){
 				$option = $("<option>").val(data.purDtlList[i].purDtlSeq)
@@ -409,11 +410,7 @@ function ledgerList(data){
 	//select box 생성
 	function fnCreateSelectBox($select, opList, item, name, idx){
 		let $option = null;	
-		
-		if(name === "purDtlSeq"){
-			$select.append($("<option>").val("").text(""));
-		}
-		
+
 		for(let i=0; i<opList.length; i++){
 			switch(name){			
 			case "purDtlSeq":				

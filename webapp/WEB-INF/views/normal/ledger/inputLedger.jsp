@@ -76,7 +76,7 @@ function inputLedger(data){
 				return fnCreateCmmSelect($("<select>"), "purSeq", item);
 			}
 		},		
-		{title : "상세목적",	name:"purDtlSeq", 	width : "11%", align:"center",
+		{title : "상세목적*",	name:"purDtlSeq", 	width : "11%", align:"center",
 			itemTemplate: function(item){
 				return fnCreateCmmSelect($("<select>"), "purDtlSeq", item);
 			}
@@ -337,7 +337,7 @@ function inputLedger(data){
 			break;
 		case "purDtlSeq":			
 			$option = $("<option>").text("상세목적 선택").val("");
-			$select.addClass("select-gray wth80p").append($option);
+			$select.addClass("select-gray wth80p").attr("name", "sync").append($option);
 			for(let i=0; i<data.purDtlList.length; i++){
 				if(Number(data.purDtlList[i].purSeq) === Number(item.purSeq)){
 					$option = $("<option>").val(data.purDtlList[i].purDtlSeq)

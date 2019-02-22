@@ -497,8 +497,7 @@ function fnPurGrid(data){
 				break;
 			}			
 		});
-		console.log(data.purDtlList);
-				return;
+		
 		if(isVali && confirm("저장하시겠습니까?")){			
 			
 			for(let i=0, j=1; i<data.purDtlList.length; i++){
