@@ -3,30 +3,42 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="contextPath" value="<%=request.getContextPath()%>"></c:set>
 
+<link rel="stylesheet" href="${contextPath}/resources/jqplot/css/jquery.jqplot.css" type="text/css" />
 <link rel="stylesheet" href="${contextPath}/resources/tui.chart/css/tui-chart.css" type="text/css" />
 <script type="text/javascript" src="${contextPath}/resources/tui.chart/js/tui-chart-all.js"></script>
+<script type="text/javascript" src="${contextPath}/resources/jqplot/js/jquery.jqplot.js"></script>
 
 <script type="text/javascript">
 $(document).ready(function(){
-	//cfnCmmAjax("/ledger/selectLedgerStats", {type:"monthIEA"}).done(function(data){
-	//	fnMonthStats(data);
-	//});
-	fnMonthStats();
+	cfnCmmAjax("/ledger/selectLedgerStats", {type:"monthIE"}).done(function(data){
+		fnMonthStats(data);
+	});	
 });
 
-function fnMonthStats(data){
-	let container = document.getElementById('chart-area');
+function fnMonthStats(data){	
+	
+	let categories = new Array();
+	let income = new Array();
+	let expense = new Array();
+	let maxAmount = 0;
+	
+	for(let i=0; i<data.length; i++){
+		if(i!==0 && i%2===0) categories.push(data[i].startDate.split(" ")[0].substr(0,7));
+		
+		if(data[i].purTypeCd === "LP001") income.push(data[i].amount);
+		else if(data[i].purTypeCd === "LP002") expense.push(Math.abs(data[i].amount));	
+		
+		maxAmount = maxAmount > Math.abs(data[i].amount) ? maxAmount : Math.abs(data[i].amount);
+	}
+	
+	
+	
+	let container = document.getElementById("chart");
 	let statsData = {
-	    categories: ['11111','June, 2015', 'July, 2015', 'August, 2015', 'September, 2015', 'October, 2015', 'November, 2015', 'December, 2015'],
+	    categories: categories,
 	    series: [
-	        {
-	            name: '수입',
-	            data: [5000,5000, 3000, 5000, 7000, 6000, 4000, 1000]
-	        },
-	        {
-	            name: '지출',
-	            data: [5000,8000, 1000, 7000, 2000, 6000, 3000, 5000]
-	        }
+	        {name: '수입', data: income},
+	        {name: '지출', data: expense}
 	    ]
 	};
 	let options = {
@@ -34,18 +46,18 @@ function fnMonthStats(data){
 	        width: 1350,
 	        height: 550,
 	        title: '월단위 수입지출..(개발중)',
-	        format: '1,000'
+	        format: '1,000,000'
 	    },
 	    yAxis: {
 	        title: 'Amount',
 	        min: 0,
-	        max: 9000
+	        max: maxAmount
 	    },
 	    xAxis: {
 	        title: 'Month'
 	    },
 	    legend: {
-	        align: 'top'
+	        align: 'right'
 	    }
 	};
 	
@@ -101,7 +113,4 @@ function fnMonthStats(data){
 	let chart = tui.chart.columnChart(container, statsData, options);
 }
 </script>
-
-
-
-<div id="chart-area"></div> 
+<div id="chart"></div> 

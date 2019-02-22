@@ -3,6 +3,8 @@ package com.ljh.white.common;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -30,31 +32,6 @@ public class White {
 		}else {
 			//return "mobile";
 			return "normal";
-		}
-	}
-
-	/**
-	 * html태그 삭제 (String)
-	 * @param data
-	 * @return
-	 */
-	static public String htmlReplace(String str) {
-		return str.replaceAll("<(/)?([a-zA-Z0-6]*)(\\s[a-zA-Z]*=[^>]*)?(\\s)*(/)?>", "");
-	}
-	
-	/**
-	 * html태그 삭제 (WhiteMap)
-	 * @param data
-	 * @return
-	 */
-	static public void htmlReplace(WhiteMap map) {
-		
-		Set<String> keys= map.keySet();		
-		Iterator<String> ite = keys.iterator();
-		
-		while(ite.hasNext()) {				
-			String key = ite.next();				
-			map.put(key, White.htmlReplace(map.getString(key)));
 		}
 	}
 	
@@ -128,6 +105,91 @@ public class White {
 		while(ite.hasNext()) {				
 			String key = ite.next();				
 			map.put(key, White.nullDelete(map.getString(key)));
+		}
+	}
+	
+	/**
+	 * 오늘날짜 yyyy-MM-dd
+	 * @return
+	 */
+	static public String getTodayDate() {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Calendar cal = Calendar.getInstance();
+        return sdf.format(cal.getTime());
+	}
+	
+	/**
+	 * 오늘날짜 yyyy-MM-dd HH:mm:ss
+	 * @return
+	 */
+	static public String getTodayDateTime() {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Calendar cal = Calendar.getInstance();
+        return sdf.format(cal.getTime());
+	}
+	
+	/**
+	 * 입력받은 날짜에서 받은숫자만큼 월 감소
+	 * @param fromDate
+	 * @param addMonth
+	 * @return
+	 */
+	static public String dateMonthCalculate(String fromDate, int addMonth) {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Calendar cal = Calendar.getInstance();
+		String result = null;
+		try {			
+			cal.setTime(sdf.parse(fromDate));
+			cal.add(Calendar.MONTH, addMonth);
+			result = sdf.format(cal.getTime());
+		} catch (ParseException e) {			
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	/**
+	 * 현재시간 HH:mm:ss
+	 * @return
+	 */
+	static public String getNowTime() {
+		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+        Calendar c1 = Calendar.getInstance();
+        return sdf.format(c1.getTime());
+	}
+	
+	/**
+	 * 입력받은 날짜를 첫날로 반환
+	 * @param date
+	 * @return
+	 */
+	static public String getFirstDate(String date) {
+		String[] split = date.split("-");
+		if(split.length == 3) {
+			return split[0]+"-"+split[1]+"-"+"01";
+		}else {
+			return null;
+		}
+	}
+	
+	/**
+	 * 입력받은 날짜를 마지막날로 반환
+	 * @param date
+	 * @return
+	 */
+	static public String getLastDate(String date) {		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Calendar cal = Calendar.getInstance();        
+        try {			
+			String[] split = date.split("-");
+			
+			cal.setTime(sdf.parse(date));
+			int lastDay = cal.getActualMaximum(Calendar.DATE);
+			
+			return split[0]+"-"+split[1]+"-"+(lastDay < 10 ? lastDay+"0":lastDay);
+		} catch (ParseException e) {			
+			e.printStackTrace();
+			return null;
 		}
 	}
 }

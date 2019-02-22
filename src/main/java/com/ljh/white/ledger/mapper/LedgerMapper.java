@@ -245,7 +245,7 @@ public class LedgerMapper {
 	 * @param list
 	 * @return
 	 */
-	public List<WhiteMap> selectLedgermonthIEStats(WhiteMap param) {
-		return sqlSession.selectList("ledgerMapper.selectLedgermonthIEStats", param);
+	public List<WhiteMap> selectLedgermonthIEStats(List<WhiteMap> list) {
+		return sqlSession.selectList("ledgerMapper.selectLedgermonthIEStats", list);
 	}
 }

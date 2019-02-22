@@ -456,21 +456,24 @@
 	</delete>
 	
 	<!-- ing.. -->
-	<select id="selectLedgermonthIEStats" resultType="whiteMap" parameterType="whiteMap">
-	
-		SELECT 
-		p.pur_type  AS purTypeCd
-		,cc.code_nm  AS purTypeNm
-		,SUM(mr.money) AS amount
-		FROM money_record_re mr
-		INNER JOIN purpose p
-		ON p.pur_seq = mr.pur_seq
-		LEFT OUTER JOIN cmm_code cc
-		ON cc.code = p.pur_type
-		WHERE mr.record_date <![CDATA[ >= ]]> (SELECT LAST_DAY(DATE_ADD(NOW(), INTERVAL -7 MONTH)) AS START_DATE)
-		AND mr.record_date <![CDATA[ <= ]]> (SELECT NOW() AS END_DATE)
-		GROUP BY p.pur_type;
-	
+	<select id="selectLedgermonthIEStats" resultType="whiteMap" parameterType="java.util.List">	
+		<foreach collection="list" item="item" separator="UNION ALL" >
+			SELECT
+				#{item.startDate} 	AS startDate	
+				,p.pur_type  		AS purTypeCd
+				,SUM(mr.money) 		AS amount
+			FROM money_record_re mr
+			INNER JOIN purpose p
+				ON p.pur_seq = mr.pur_seq
+	    	INNER JOIN purpose_detail pd
+	      		ON pd.pur_dtl_seq = mr.pur_dtl_seq			
+	    	WHERE mr.user_seq = #{item.userSeq}    
+	    	AND pd.stats_yn = 'Y'
+	    	AND p.pur_type != 'LP003'   
+			AND mr.record_date  <![CDATA[ >= ]]> #{item.startDate}
+			AND mr.record_date  <![CDATA[ <= ]]> #{item.endDate}
+			GROUP BY p.pur_type
+		</foreach>
 	</select>
 	
 	
