@@ -10,7 +10,7 @@
 $(document).ready(function(){	
 	let stats;
 	
-	cfnCmmAjax("/ledger/selectLedgerStats", {type:"monthIE", monthCnt:12}).done(function(data){
+	cfnCmmAjax("/ledger/selectLedgerStats", {type:"monthIE", monthCnt:12, stdate:cfnToday()}).done(function(data){
 		stats = data;
 		fnMonthStats(data, window.outerWidth-45 < 1400 ? 1370 : window.outerWidth-45);
 	});
@@ -29,7 +29,7 @@ $(document).ready(function(){
 
 
 function fnMonthStats(data, width){	
-	
+	console.log(data);
 	let categories = new Array();
 	let income = new Array();
 	let expense = new Array();

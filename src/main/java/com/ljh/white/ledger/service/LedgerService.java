@@ -386,19 +386,22 @@ public class LedgerService {
 	public List<WhiteMap> selectLedgerStats(WhiteMap param) {
 
 		List<WhiteMap> list = null;
-		System.out.println(param);
 		switch(param.getString("type")) {
-		case "monthIE": //8개월 전부터 현재 월까지 월간 수입 지출 통계 그래프
+		case "monthIE":
 			
 			List<WhiteMap> dateList = new ArrayList<WhiteMap>();			
 			WhiteMap stendDate = null;
 			int monCnt = param.getInt("monthCnt");
+			String stdate = param.getString("stdate");
+			System.out.println(param);
+			System.out.println(stdate);
+			if("".equals(stdate)) stdate = null;
 			
 			for(int i=0, j=(monCnt-1)*-1; i<monCnt; i++, j++) {			
 				stendDate = new WhiteMap();
 				stendDate.put("userSeq", param.get("userSeq"));
-				stendDate.put("startDate", White.getFirstDate(White.dateMonthCalculate(White.getTodayDate(), j))+" 00:00:00");
-				stendDate.put("endDate", White.getLastDate(White.dateMonthCalculate(White.getTodayDate(), j))+" 23:59:59");
+				stendDate.put("startDate", White.getFirstDate(White.dateMonthCalculate(stdate == null ? White.getTodayDate() : stdate, j))+" 00:00:00");
+				stendDate.put("endDate", White.getLastDate(White.dateMonthCalculate(stdate == null ? White.getTodayDate() : stdate, j))+" 23:59:59");
 				dateList.add(stendDate);			
 			}
 			System.out.println(dateList);

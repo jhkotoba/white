@@ -202,6 +202,39 @@ function cfnRestore(text){
 	return text.replace(/&lt;/gi, "<").replace(/&gt;/gi, ">");
 }
 
+//현재 날짜 구하기 false 날짜만 true 날짜 + 시간
+function cfnToday(isTime){
+	if(isTime) return _cfnDateProcess("todaytime", true);
+	else return _cfnDateProcess("today");
+}
+
+function _cfnDateProcess(type, isTime){
+	
+	let date = new Date();		
+	let year = date.getFullYear();
+	let month = (date.getMonth() + 1);	
+	let day = date.getDate();
+	let time = null;
+	
+	if(year < 0) year = "0001";
+	else if(year < 10) year = "0" + year;
+	else if(year < 100) year = "00" + year;
+	else year = String(year);
+		
+	
+	month = month < 10 ? '0' + month : '' + month;
+	day = day < 10 ? '0' + day : '' + day;	
+
+	switch(type){
+	case "today" : 
+		return year + "-" + month + "-" + day;
+	case "todaytime" :
+		return year + "-" + month + "-" + day + " " + time;
+
+	}
+}
+
+
 //날짜반환함수
 let isDate = {	
 	dateProcess : function dateProcess(isMonth, type){	
