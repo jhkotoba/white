@@ -163,7 +163,7 @@ public class LedgerController {
 	 * @return
 	 */
 	@RequestMapping(value="/ledger/selectLedgerStats.ajax")
-	public List<WhiteMap> selectLedgerStats(HttpServletRequest request) {
+	public WhiteMap selectLedgerStats(HttpServletRequest request) {
 		WhiteMap param = new WhiteMap(request);
 		return ledgerService.selectLedgerStats(param);
 	}

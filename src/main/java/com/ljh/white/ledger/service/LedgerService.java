@@ -383,18 +383,16 @@ public class LedgerService {
 	 * @param param
 	 * @return
 	 */
-	public List<WhiteMap> selectLedgerStats(WhiteMap param) {
+	public WhiteMap selectLedgerStats(WhiteMap param) {
 
-		List<WhiteMap> list = null;
+		WhiteMap result = new WhiteMap();
 		switch(param.getString("type")) {
 		case "monthIE":
 			
 			List<WhiteMap> dateList = new ArrayList<WhiteMap>();			
 			WhiteMap stendDate = null;
 			int monCnt = param.getInt("monthCnt");
-			String stdate = param.getString("stdate");
-			System.out.println(param);
-			System.out.println(stdate);
+			String stdate = param.getString("stdate");			
 			if("".equals(stdate)) stdate = null;
 			
 			for(int i=0, j=(monCnt-1)*-1; i<monCnt; i++, j++) {			
@@ -404,13 +402,12 @@ public class LedgerService {
 				stendDate.put("endDate", White.getLastDate(White.dateMonthCalculate(stdate == null ? White.getTodayDate() : stdate, j))+" 23:59:59");
 				dateList.add(stendDate);			
 			}
-			System.out.println(dateList);
-			list = ledgerMapper.selectLedgermonthIEStats(dateList);		
+			
+			result.put("amount", ledgerMapper.selectPrevAmount(dateList.get(0)));
+			result.put("list", ledgerMapper.selectLedgerMonthIEStats(dateList));		
 			break;
 		}
-		
-		
-		return list;
+		return result;
 		
 	}
 }

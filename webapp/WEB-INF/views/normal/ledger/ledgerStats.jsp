@@ -4,15 +4,23 @@
 <c:set var="contextPath" value="<%=request.getContextPath()%>"></c:set>
 
 <link rel="stylesheet" href="${contextPath}/resources/tui.chart/css/tui-chart.css" type="text/css" />
+<link rel="stylesheet" href="${contextPath}/resources/jqplot/css/jquery.jqplot.css" type="text/css" />
+<style>
+.jqplot-target {color: rgba(246, 246, 246, .7); font-size: 1.2em;}
+</style>
 <script type="text/javascript" src="${contextPath}/resources/tui.chart/js/tui-chart-all.js"></script>
-
+<script type="text/javascript" src="${contextPath}/resources/jqplot/js/jquery.jqplot.js"></script>
+<script type="text/javascript" src="${contextPath}/resources/jqplot/js/plugins/jqplot.barRenderer.js"></script>
+<script type="text/javascript" src="${contextPath}/resources/jqplot/js/plugins/jqplot.categoryAxisRenderer.js"></script>
+<script type="text/javascript" src="${contextPath}/resources/jqplot/js/plugins/jqplot.pointLabels.js"></script>
+<script type="text/javascript" src="${contextPath}/resources/jqplot/js/plugins/jqplot.highlighter.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){	
 	let stats;
 	
-	cfnCmmAjax("/ledger/selectLedgerStats", {type:"monthIE", monthCnt:12, stdate:cfnToday()}).done(function(data){
-		stats = data;
-		fnMonthStats(data, window.outerWidth-45 < 1400 ? 1370 : window.outerWidth-45);
+	cfnCmmAjax("/ledger/selectLedgerStats", {type:"monthIE", monthCnt:12, stdate:cfnToday()}).done(function(list){
+		stats = list;
+		fnMonthStats(list, window.outerWidth-45 < 1400 ? 1370 : window.outerWidth-45);		
 	});
 	
 	let timer = null;
@@ -20,95 +28,151 @@ $(document).ready(function(){
 	    clearTimeout(timer);
 	    timer = setTimeout(function(){
 	    	if(window.outerWidth > 1400){
-				fnMonthStats(stats, window.outerWidth-45);
+	    		fnMonthStats(stats, window.outerWidth-45);
 			}
 	    }, 300);
 	});
 });
 
-
-
-function fnMonthStats(data, width){	
-	console.log(data);
+function fnMonthStats(data, width){
+	
+	$("#monthChart").empty();
+	
+	let list = data.list;
+	let prevAmount = data.amount;
+	
 	let categories = new Array();
 	let income = new Array();
 	let expense = new Array();
-	let maxAmount = 0;
+	let amount = new Array();
+	let maxAmount = 0;	
 	
-	for(let i=0; i<data.length; i++){
+	for(let i=0; i<list.length; i++){
 		
-		if(data[i].purTypeCd === "LP001"){
-			income.push(data[i].amount);
-			categories.push(data[i].startDate.split(" ")[0].substr(0,7));
-		}else if(data[i].purTypeCd === "LP002") expense.push(Math.abs(data[i].amount));	
+		if(list[i].purTypeCd === "LP001"){
+			income.push(list[i].money);
+			categories.push(list[i].startDate.split(" ")[0].substr(0,7));
+			prevAmount += list[i].money;
+		}else if(list[i].purTypeCd === "LP002"){
+			expense.push(Math.abs(list[i].money));
+			prevAmount += list[i].money;
+			amount.push(prevAmount);
+		}
 		
-		maxAmount = maxAmount > Math.abs(data[i].amount) ? maxAmount : Math.abs(data[i].amount);
+		maxAmount = maxAmount > Math.abs(list[i].money) ? maxAmount : Math.abs(list[i].money);
 	}
 	
-	$("#chart").empty();
-	let container = document.getElementById("chart");
-	let statsData = {
-	    categories: categories,
-	    series: [{name: "수입", data: income}, {name: "지출", data: expense}]
-	};
-	
-	let options = {
-	    chart: {
-	        width: width,
-	        height: 550,
-	        title: "월단위 수입지출",
-	        format: "1,000,000"
-	    },
-	    yAxis: {	       
-	        min: 0,
-	        max: maxAmount
-	    },
-	    series: {showLabel: true},
-	    legend: {align: "right"}
-	};
-	
-	let color = "rgba(246, 246, 246, .8)";
-	let theme = {
-		title:{
-			fontSize: 18,
-			fontFamily: "Verdana",
-			fontWeight: "bold",
-	        color: color			
-		},
-		xAxis: {
-			title: {color: color},
-	        label: {color: color},
-	        tickColor: color
-	    },
-	    yAxis: {
-	    	title: {color: color},
-	        label: {color: color},
-	    	tickColor: color
-	    },
-		chart:{
-			background:{
-				color: "#4C4C4C",
-	            opacity: 0.9
-			}
-		},
-		plot: {
-	        lineColor: color,
-	        background: "#efefef"
-	    },	    
-	    series: {	    	
-	        colors: ["#4374D9", "#CC3D3D"]
-	    },	    
-	    legend : { 
-	        label : { 
-	            fontSize :  13,	            
-	            color: color 
-	        } 
-	    }	    
-	};
-	
-	tui.chart.registerTheme("theme", theme);
-	options.theme = "theme";
-	let chart = tui.chart.columnChart(container, statsData, options);
+    let plot = $.jqplot('monthChart', [income, expense, amount], {
+    	width: width,
+    	height: 550,
+    	
+    	animate: true,
+    	animateReplot: true,
+    	legend: {
+    		show: true,
+    		placement: "outsideGrid",
+    		location: "ne",
+    		labels: ["수입", "지출", "자금"]    
+    	},
+    	seriesColors:["#4374D9", "#CC3D3D", "#9FC93C"],       
+        series:
+        	[
+				{
+				    pointLabels: {
+				        show: true
+				    },
+				    renderer: $.jqplot.BarRenderer,
+				    showHighlight: false,
+				    yaxis: 'yaxis',
+				    rendererOptions: {                   
+				        animation: {
+				            speed: 1500
+				        },
+				        barWidth: 28,				        
+				        highlightMouseOver: true
+				    }
+				},
+	            {
+	                pointLabels: {
+	                    show: true
+	                },
+	                renderer: $.jqplot.BarRenderer,
+	                showHighlight: false,
+	                yaxis: 'y2axis',
+	                rendererOptions: {                   
+	                    animation: {
+	                        speed: 1500
+	                    },
+	                    barWidth: 28,
+	                    highlightMouseOver: true
+	                }
+	            },
+	            {
+	                pointLabels: {
+	                    show: false
+	                },	                
+	                showHighlight: true,
+	                yaxis: 'y3axis',
+	                rendererOptions: {                   
+	                    animation: {
+	                        speed: 1500,	                        
+	                    },	                   
+	                    highlightMouseOver: true
+	                }
+	            }
+	   	],
+        grid: {
+            drawBorder: true,           
+            background: "rgba(76, 76, 76, .3)",
+            shadow: false,
+            borderWidth: 1,
+            drawGridlines:true,
+            gridLineColor:"rgba(76, 76, 76, .5)"
+        },       
+        axes: {
+            xaxis: {
+                renderer: $.jqplot.CategoryAxisRenderer,
+                ticks: categories
+            },                      
+            yaxis:{
+            	min:0,
+            	tickOptions: {
+                	formatString: "%'d"
+                }
+            },
+            y2axis:{
+            	min:0,
+            	tickOptions: {            		
+            		show:false,
+                	formatString: "%'d"
+                }
+            },
+            y3axis:{
+            	min:0,
+            	tickOptions: {
+                	formatString: "%'d"
+                }
+            }
+            
+        },
+        highlighter: {
+            show: true, 
+            showLabel: true, 
+            tooltipAxes: 'y',
+            sizeAdjust: 7.5 , tooltipLocation : 'ne'
+        },
+        markerOptions:{
+        	show: true,
+        	
+        }
+    });
+    
+    $('#monthChart').off().on('jqplotDataClick', function(ev, seriesIndex, pointIndex, list) {
+         
+         
+         
+    });
+      
 }
 </script>
-<div id="chart"></div> 
+<div id="monthChart"></div>

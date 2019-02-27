@@ -241,11 +241,20 @@ public class LedgerMapper {
 	}
 	
 	/**
+	 * 가계부 통계 월별 수입지출 이전 합계
+	 * @param list
+	 * @return
+	 */
+	public int selectPrevAmount(WhiteMap param) {
+		return sqlSession.selectOne("ledgerMapper.selectPrevAmount", param);
+	}
+	
+	/**
 	 * 가계부 통계 월별 수입지출
 	 * @param list
 	 * @return
 	 */
-	public List<WhiteMap> selectLedgermonthIEStats(List<WhiteMap> list) {
-		return sqlSession.selectList("ledgerMapper.selectLedgermonthIEStats", list);
+	public List<WhiteMap> selectLedgerMonthIEStats(List<WhiteMap> list) {
+		return sqlSession.selectList("ledgerMapper.selectLedgerMonthIEStats", list);
 	}
 }
