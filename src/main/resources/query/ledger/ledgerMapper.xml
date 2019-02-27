@@ -462,11 +462,11 @@
 		FROM money_record_re mr
 		INNER JOIN purpose p
 			ON p.pur_seq = mr.pur_seq
-    	INNER JOIN purpose_detail pd
-      		ON pd.pur_dtl_seq = mr.pur_dtl_seq			
-    	WHERE mr.user_seq = #{userSeq}
-    	AND pd.stats_yn = 'Y'
-    	AND p.pur_type != 'LP003'   
+		INNER JOIN purpose_detail pd
+			ON pd.pur_dtl_seq = mr.pur_dtl_seq
+		WHERE mr.user_seq = #{userSeq}
+		AND pd.stats_yn = 'Y'
+		AND p.pur_type != 'LP003'   
 		AND mr.record_date  <![CDATA[ < ]]> #{startDate}
 	</select>
 	
