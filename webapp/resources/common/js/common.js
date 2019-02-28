@@ -202,42 +202,40 @@ function cfnRestore(text){
 	return text.replace(/&lt;/gi, "<").replace(/&gt;/gi, ">");
 }
 
-//현재 날짜 구하기 false 날짜만 true 날짜 + 시간
-function cfnToday(isTime){
-	if(isTime) return _cfnDateProcess("todaytime", true);
-	else return _cfnDateProcess("today");
+//날짜 계산
+function cfnDateCalc(dateString, form, value, patten){
+	if(isDatePattern(dateString, isEmpty(patten) === true ? "yyyy-MM-dd" : patten )){
+		if(isNotEmpty(form) && isNotEmpty(value)){
+			let date = new Date(dateString).getTime();
+			let number = 0;		
+			
+			switch(form){			
+			case "year": 	date += (31557600000*value);	break;
+			case "month":	date += (2629800000*value); 	break;				
+			case "day":		date += (86400000*value);		break;				
+			case "hour":    date += (3600000*value);		break;				
+			case "minute":  date += (60000*value); 			break;				
+			case "second":  date += (1000*value);			break;				
+			default :		return null;
+			}
+			
+			date = new Date(date);
+			
+			switch(patten){
+			default :
+			case "yyyy-MM-dd" :
+				return date.getFullYear() + "-" + 
+					(date.getMonth()+1 < 10 ? "0"+(date.getMonth()+1) : date.getMonth()+1) + "-" + 
+					(date.getDate() < 10 ? "0"+date.getDate() : date.getDate());			
+			}
+			
+		}else return null;
+	}else return null;
 }
-
-function _cfnDateProcess(type, isTime){
-	
-	let date = new Date();		
-	let year = date.getFullYear();
-	let month = (date.getMonth() + 1);	
-	let day = date.getDate();
-	let time = null;
-	
-	if(year < 0) year = "0001";
-	else if(year < 10) year = "0" + year;
-	else if(year < 100) year = "00" + year;
-	else year = String(year);
-		
-	
-	month = month < 10 ? '0' + month : '' + month;
-	day = day < 10 ? '0' + day : '' + day;	
-
-	switch(type){
-	case "today" : 
-		return year + "-" + month + "-" + day;
-	case "todaytime" :
-		return year + "-" + month + "-" + day + " " + time;
-
-	}
-}
-
 
 //날짜반환함수
 let isDate = {	
-	dateProcess : function dateProcess(isMonth, type){	
+		_dateProcess : function(isMonth, type){	
 		
 		let date = new Date();		
 		let year = date.getFullYear();
@@ -281,43 +279,39 @@ let isDate = {
 	},
 	//현재날짜 반환 yyyy-MM-dd
 	today : function(){
-		return this.dateProcess(0, "today");
-	},
-	//현재날짜 반환 yyyy-MM-(dd+day)
-	/*todayAddDay : function(isDay){
-		
-	},*/
+		return this._dateProcess(0, "today");
+	},	
 	//현재날짜 반환 yyyy-(MM+isMonth)-dd
 	addMonToday : function(isMonth){
-		return this.dateProcess(isMonth, "today");
+		return this._dateProcess(isMonth, "today");
 	},
 	//현재날짜 반환 yyyy-MM-lastDay
 	lastDay : function(){                       
-		return this.dateProcess(0, "last");
+		return this._dateProcess(0, "last");
 	},
 	//현재날짜 반환 yyyy-(MM+isMonth)-lastDay
 	addMonLastDay : function(isMonth){                       
-		return this.dateProcess(isMonth, "last");
+		return this._dateProcess(isMonth, "last");
 	},
 	//현재날짜 반환 yyyy-MM-01
 	firstDay : function(){                      
-		return this.dateProcess(0, "first");
+		return this._dateProcess(0, "first");
 	},
 	//현재날짜 반환 yyyy-(MM+isMonth)-01
 	addMonfirstDay : function(isMonth){                      
-		return this.dateProcess(isMonth, "first");
+		return this._dateProcess(isMonth, "first");
 	},
 	//현재날짜 시간 반환 yyyy-MM-dd hh:mm:ss
 	curDate : function(){	
-		let date = this.dateProcess(0, "today");
-		let time = isTime.timeProcess(0,0,0);
+		let date = this._dateProcess(0, "today");
+		let time = isTime._timeProcess(0,0,0);
 		
 		return date + " " + time;
 	}
 }
 //시간반환함수
 let isTime = {
-	timeProcess : function timeProcess(hourData, minuteData, secondData){
+	_timeProcess : function(hourData, minuteData, secondData){
 		let date = new Date();
 		
 		let hour = date.getHours() + hourData;
@@ -355,33 +349,33 @@ let isTime = {
 	},
 	//현재시간 반환  hh:mm:ss
 	curTime : function(){		
-		return this.timeProcess(0,0,0);
+		return this._timeProcess(0,0,0);
 	},
 	//현재시간 반환(시분)  hh:mm
 	curTime : function(){		
-		return this.timeProcess(0,0);
+		return this._timeProcess(0,0);
 	},
 	//현재시간 반환  (hh+hour):mm:ss
 	addCurHour : function(hour){
 		isEmpty(hour) ? hour = 0 : hour; 				
-		return this.timeProcess(hour,0,0);
+		return this._timeProcess(hour,0,0);
 	},
 	//현재시간 반환  hh:(mm+minute):ss
 	addCurMin : function(minute){
 		isEmpty(minute) ? minute = 0 : minute; 
-		return this.timeProcess(0,minute,0);
+		return this._timeProcess(0,minute,0);
 	},
 	//현재시간 반환  hh:mm:(ss+second)
 	addCurSec : function(second){
 		isEmpty(second) ? second = 0 : second;  
-		return this.timeProcess(0,0,second);
+		return this._timeProcess(0,0,second);
 	},
 	//현재시간 반환  (hh+hour):(mm+minute):(ss+second)
 	addCurHMS : function(hour, minute, second){
 		isEmpty(second) ? second = 0 : second;
 		isEmpty(minute) ? minute = 0 : minute;
 		isEmpty(hour) ? hour = 0 : hour;
-		return this.timeProcess(hour,minute,second);
+		return this._timeProcess(hour,minute,second);
 	}	
 }
 
@@ -539,21 +533,23 @@ function isOnlyNum(_str){
 
 
 //날짜 형식 체크 ex) 2019-01-01 08:00
-function isRecordDatePattern(date, patten){
-	let date_pattern = null;
+function isDatePattern(date, patten){
+	let datePattern = null;
 	switch(patten){	
-	case "time":
-		date_pattern = /^([1-9]|[01][0-9]|2[0-3]):([0-5][0-9])$/;
-		break;		
-	case "datetime":
-		date_pattern = /^(19|20)\d{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[0-1]) (0[0-9]|1[0-9]|2[0-3]):([0-5][0-9])$/;
+	case "HH:mm:ss":
+		datePattern = /^([1-9]|[01][0-9]|2[0-3]):([0-5][0-9])$/;
 		break;	
-	case "date" :
-	default :
-		date_pattern = /^(19|20)\d{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[0-1])$/;	
+	case "yyyy-MM-dd":	
+		datePattern = /^(19|20)\d{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[0-1])$/;	
+		break;
+	case "yyyy-MM-dd HH:mm":
+		datePattern = /^(19|20)\d{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[0-1]) (0[0-9]|1[0-9]|2[0-3]):([0-5][0-9])$/;
+		break;	
+	case "yyyy-MM-dd HH:mm:ss":
+		datePattern = /^(19|20)\d{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[0-1]) (0[0-9]|1[0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])$/;	
 		break;
 	}
-	return date_pattern.test(date);
+	return datePattern.test(date);
 }
 
 //문자열 관련

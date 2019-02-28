@@ -110,7 +110,7 @@ function inputLedger(data){
 			
 			switch($(e).data("name")){			
 			case "recordDate":
-				if(!isRecordDatePattern($(e).val(), "datetime")){
+				if(!isDatePattern($(e).val(), "yyyy-MM-dd HH:mm")){
 					isVali = false;
 					wVali.alert({element : $(e), msg: "ex)2019-01-01 08:00의 형식으로 입력할 수 있습니다."}); return false;
 				}

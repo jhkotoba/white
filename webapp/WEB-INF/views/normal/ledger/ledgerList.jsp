@@ -80,11 +80,11 @@ function ledgerList(data){
 		param.bankSeq = $("#searchBar #bankSeq").val();
 		param.isEdit = 0;
 		
-		if(!isRecordDatePattern(param.startDate, "date")){			
+		if(!isDatePattern(param.startDate, "yyyy-MM-dd")){			
 			wVali.alert({element : $("#searchBar #startDate"), msg: "ex)2019-01-01의 형식으로 입력할 수 있습니다."});
 			return;
 		}
-		if(!isRecordDatePattern(param.endDate, "date")){			
+		if(!isDatePattern(param.endDate, "yyyy-MM-dd")){			
 			wVali.alert({element : $("#searchBar #endDate"), msg: "ex)2019-01-01의 형식으로 입력할 수 있습니다."});
 			return;
 		}

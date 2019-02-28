@@ -16,26 +16,13 @@
 <script type="text/javascript" src="${contextPath}/resources/jqplot/js/plugins/jqplot.highlighter.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){	
-	let stats;
+	cfnCmmAjax("/ledger/selectLedgerStats", {type:"monthIE", monthCnt:12, stdate:isDate.today()}).done(function(data){		
+		fnMonthStats(data, window.outerWidth-45 < 1400 ? 1370 : window.outerWidth-45);
 	
-	cfnCmmAjax("/ledger/selectLedgerStats", {type:"monthIE", monthCnt:12, stdate:cfnToday()}).done(function(list){
-		stats = list;
-		fnMonthStats(list, window.outerWidth-45 < 1400 ? 1370 : window.outerWidth-45);		
-	});
-	
-	let timer = null;
-	$(window).on("resize", function(){
-	    clearTimeout(timer);
-	    timer = setTimeout(function(){
-	    	if(window.outerWidth > 1400){
-	    		fnMonthStats(stats, window.outerWidth-45);
-			}
-	    }, 300);
 	});
 });
 
 function fnMonthStats(data, width){
-	
 	$("#monthChart").empty();
 	
 	let list = data.list;
@@ -76,50 +63,49 @@ function fnMonthStats(data, width){
     	},
     	seriesColors:["#4374D9", "#CC3D3D", "#9FC93C"],       
         series:
-        	[
-				{
-				    pointLabels: {
-				        show: true
-				    },
-				    renderer: $.jqplot.BarRenderer,
-				    showHighlight: false,
-				    yaxis: 'yaxis',
-				    rendererOptions: {                   
-				        animation: {
-				            speed: 1500
-				        },
-				        barWidth: 28,				        
-				        highlightMouseOver: true
-				    }
-				},
-	            {
-	                pointLabels: {
-	                    show: true
-	                },
-	                renderer: $.jqplot.BarRenderer,
-	                showHighlight: false,
-	                yaxis: 'y2axis',
-	                rendererOptions: {                   
-	                    animation: {
-	                        speed: 1500
-	                    },
-	                    barWidth: 28,
-	                    highlightMouseOver: true
-	                }
-	            },
-	            {
-	                pointLabels: {
-	                    show: false
-	                },	                
-	                showHighlight: true,
-	                yaxis: 'y3axis',
-	                rendererOptions: {                   
-	                    animation: {
-	                        speed: 1500,	                        
-	                    },	                   
-	                    highlightMouseOver: true
-	                }
-	            }
+        	[{
+			    pointLabels: {
+			        show: true
+			    },
+			    renderer: $.jqplot.BarRenderer,
+			    showHighlight: false,
+			    yaxis: 'yaxis',
+			    rendererOptions: {                   
+			        animation: {
+			            speed: 1500
+			        },
+			        barWidth: 28,				        
+			        highlightMouseOver: false
+				}			    
+        	},					
+			{
+                pointLabels: {
+                    show: true
+                },
+                renderer: $.jqplot.BarRenderer,
+                showHighlight: false,
+                yaxis: 'y2axis',
+                rendererOptions: {                   
+                    animation: {
+                        speed: 1500
+                    },
+                    barWidth: 28,
+                    highlightMouseOver: false
+                }
+			},
+			{
+                pointLabels: {
+                    show: false
+                },	                
+                showHighlight: true,
+                yaxis: 'y3axis',
+                rendererOptions: {                   
+                    animation: {
+                        speed: 1500,	                        
+                    },	                   
+                    highlightMouseOver: false
+				}
+			}
 	   	],
         grid: {
             drawBorder: true,           
@@ -162,17 +148,32 @@ function fnMonthStats(data, width){
             sizeAdjust: 7.5 , tooltipLocation : 'ne'
         },
         markerOptions:{
-        	show: true,
-        	
+        	show: true
         }
     });
     
-    $('#monthChart').off().on('jqplotDataClick', function(ev, seriesIndex, pointIndex, list) {
-         
-         
-         
+    
+    $("#monthChart").off().on("jqplotClick", function(ev, gridpos, datapos, neighbor, plot){    	
+    	let param = {};
+    	param.type = "monthIE";
+    	param.monthCnt = 12;
+    	param.stdate = cfnDateCalc(categories[neighbor.pointIndex]+"-01", "month", 6);
+    	
+    	cfnCmmAjax("/ledger/selectLedgerStats", param).done(function(list){
+    		stats = list;
+    		fnMonthStats(list, window.outerWidth-45 < 1400 ? 1370 : window.outerWidth-45);		
+    	});
     });
-      
+    
+    let timer = null;
+	$(window).off().on("resize", function(){
+	    clearTimeout(timer);
+	    timer = setTimeout(function(){
+	    	if(window.outerWidth > 1400){
+	    		fnMonthStats(data, window.outerWidth-45);
+			}
+	    }, 300);
+	});
 }
 </script>
-<div id="monthChart"></div>
+<div id="monthIEChart"></div>
