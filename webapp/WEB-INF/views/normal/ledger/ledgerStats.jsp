@@ -17,13 +17,25 @@
 <script type="text/javascript">
 $(document).ready(function(){	
 	cfnCmmAjax("/ledger/selectLedgerStats", {type:"monthIE", monthCnt:12, stdate:isDate.today()}).done(function(data){		
-		fnMonthStats(data, window.outerWidth-45 < 1400 ? 1370 : window.outerWidth-45);
+		fnMonthIEChart(data, window.outerWidth-45 < 1400 ? 1370 : window.outerWidth-45);
 	
 	});
+	monthPurChart();
 });
 
-function fnMonthStats(data, width){
-	$("#monthChart").empty();
+//월별 수입지출 누적 통계
+function fnMonthIEChart(data, width){	
+	$("#monthIEChart").empty();
+	
+	let timer = null;
+	$(window).off().on("resize", function(){
+	    clearTimeout(timer);
+	    timer = setTimeout(function(){
+	    	if(window.outerWidth > 1400){
+	    		fnMonthStats(data, window.outerWidth-45);
+			}
+	    }, 300);
+	});
 	
 	let list = data.list;
 	let prevAmount = data.amount;
@@ -48,8 +60,8 @@ function fnMonthStats(data, width){
 		
 		maxAmount = maxAmount > Math.abs(list[i].money) ? maxAmount : Math.abs(list[i].money);
 	}
-	
-    let plot = $.jqplot('monthChart', [income, expense, amount], {
+		
+    let plot = $.jqplot('monthIEChart', [income, expense, amount], {
     	width: width,
     	height: 550,
     	
@@ -61,7 +73,8 @@ function fnMonthStats(data, width){
     		location: "ne",
     		labels: ["수입", "지출", "자금"]    
     	},
-    	seriesColors:["#4374D9", "#CC3D3D", "#9FC93C"],       
+    	//seriesColors:["#4374D9", "#CC3D3D", "#9FC93C"],    	
+    	seriesColors:["rgba(67, 116, 217, .73)", "rgba(204, 61, 61, .73)", "#8DB72A"],
         series:
         	[{
 			    pointLabels: {
@@ -75,8 +88,8 @@ function fnMonthStats(data, width){
 			            speed: 1500
 			        },
 			        barWidth: 28,				        
-			        highlightMouseOver: false
-				}			    
+			        highlightMouseOver: true
+				}
         	},					
 			{
                 pointLabels: {
@@ -90,7 +103,7 @@ function fnMonthStats(data, width){
                         speed: 1500
                     },
                     barWidth: 28,
-                    highlightMouseOver: false
+                    highlightMouseOver: true
                 }
 			},
 			{
@@ -140,7 +153,7 @@ function fnMonthStats(data, width){
                 }
             }
             
-        },
+        },        
         highlighter: {
             show: true, 
             showLabel: true, 
@@ -153,7 +166,7 @@ function fnMonthStats(data, width){
     });
     
     
-    $("#monthChart").off().on("jqplotClick", function(ev, gridpos, datapos, neighbor, plot){    	
+    $("#monthIEChart").off().on("jqplotClick", function(ev, gridpos, datapos, neighbor, plot){    	
     	let param = {};
     	param.type = "monthIE";
     	param.monthCnt = 12;
@@ -161,19 +174,49 @@ function fnMonthStats(data, width){
     	
     	cfnCmmAjax("/ledger/selectLedgerStats", param).done(function(list){
     		stats = list;
-    		fnMonthStats(list, window.outerWidth-45 < 1400 ? 1370 : window.outerWidth-45);		
+    		fnMonthIEChart(list, window.outerWidth-45 < 1400 ? 1370 : window.outerWidth-45);		
     	});
     });
-    
-    let timer = null;
-	$(window).off().on("resize", function(){
-	    clearTimeout(timer);
-	    timer = setTimeout(function(){
-	    	if(window.outerWidth > 1400){
-	    		fnMonthStats(data, window.outerWidth-45);
-			}
-	    }, 300);
-	});
+}
+
+//월별 목적별 통계
+function monthPurChart(){
+	$("#monthPurChart").empty();
+	
+    // A Bar chart from a single series will have all the bar colors the same.
+    var line1 = [['Nissan', 4],['Porche', 6],['Acura', 2],['Aston Martin', 5],['Rolls Royce', 6]];
+ 
+    $('#monthPurChart').jqplot([line1], {
+        title:'Default Bar Chart',
+        seriesDefaults:{
+            renderer:$.jqplot.BarRenderer
+        },
+        animate: true,
+    	animateReplot: true,
+        axes:{
+            xaxis:{
+                renderer: $.jqplot.CategoryAxisRenderer
+            }
+        },
+        grid: {
+            drawBorder: true,           
+            background: "rgba(76, 76, 76, .3)",
+            shadow: false,
+            borderWidth: 1,
+            drawGridlines:true,
+            gridLineColor:"rgba(76, 76, 76, .5)"
+        }, 
+        highlighter: {
+            show: true, 
+            showLabel: true, 
+            tooltipAxes: 'y',
+            sizeAdjust: 7.5 , tooltipLocation : 'ne'
+        },
+        markerOptions:{
+        	show: true
+        }
+    });
 }
 </script>
 <div id="monthIEChart"></div>
+<div id="monthPurChart"></div>
