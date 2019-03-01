@@ -72,8 +72,7 @@ function fnMonthIEChart(data, width){
     		placement: "outsideGrid",
     		location: "ne",
     		labels: ["수입", "지출", "자금"]    
-    	},
-    	//seriesColors:["#4374D9", "#CC3D3D", "#9FC93C"],    	
+    	},    	
     	seriesColors:["rgba(67, 116, 217, .73)", "rgba(204, 61, 61, .73)", "#8DB72A"],
         series:
         	[{
@@ -135,12 +134,14 @@ function fnMonthIEChart(data, width){
             },                      
             yaxis:{
             	min:0,
+            	max:cfnNumRaise(maxAmount),
             	tickOptions: {
                 	formatString: "%'d"
                 }
             },
             y2axis:{
             	min:0,
+            	max:cfnNumRaise(maxAmount),
             	tickOptions: {            		
             		show:false,
                 	formatString: "%'d"
@@ -183,39 +184,7 @@ function fnMonthIEChart(data, width){
 function monthPurChart(){
 	$("#monthPurChart").empty();
 	
-    // A Bar chart from a single series will have all the bar colors the same.
-    var line1 = [['Nissan', 4],['Porche', 6],['Acura', 2],['Aston Martin', 5],['Rolls Royce', 6]];
- 
-    $('#monthPurChart').jqplot([line1], {
-        title:'Default Bar Chart',
-        seriesDefaults:{
-            renderer:$.jqplot.BarRenderer
-        },
-        animate: true,
-    	animateReplot: true,
-        axes:{
-            xaxis:{
-                renderer: $.jqplot.CategoryAxisRenderer
-            }
-        },
-        grid: {
-            drawBorder: true,           
-            background: "rgba(76, 76, 76, .3)",
-            shadow: false,
-            borderWidth: 1,
-            drawGridlines:true,
-            gridLineColor:"rgba(76, 76, 76, .5)"
-        }, 
-        highlighter: {
-            show: true, 
-            showLabel: true, 
-            tooltipAxes: 'y',
-            sizeAdjust: 7.5 , tooltipLocation : 'ne'
-        },
-        markerOptions:{
-        	show: true
-        }
-    });
+   
 }
 </script>
 <div id="monthIEChart"></div>

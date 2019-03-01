@@ -1,4 +1,4 @@
-package com.ljh.white.ledgerRe.service;
+package com.ljh.white._old.ledgerRe;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ljh.white.common.collection.WhiteMap;
 import com.ljh.white.common.Constant;
 import com.ljh.white.common.White;
-import com.ljh.white.ledgerRe.mapper.LedgerReMapper;
 
 
 

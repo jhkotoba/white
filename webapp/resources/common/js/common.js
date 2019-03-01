@@ -233,6 +233,16 @@ function cfnDateCalc(dateString, form, value, patten){
 	}else return null;
 }
 
+//숫자 앞자리 1증가 2번째 자리부터 0으로 초기화
+function cfnNumRaise(number){
+	if(!isOnlyNum(number)) return null;
+	let numStr = String(number);	
+	let result = Number(numStr.substring(0, 1));
+	result++;	
+	for(let i=0; i<numStr.substring(1, numStr.length).length; i++)	result+="0";
+	return Number(result);
+} 
+
 //날짜반환함수
 let isDate = {	
 		_dateProcess : function(isMonth, type){	
@@ -469,6 +479,7 @@ let common = {
 function isEmpty(_str){
 	return !isNotEmpty(_str);
 }
+
 //비어있지 않는지 체크
 function isNotEmpty(_str){
 	let obj = String(_str);
