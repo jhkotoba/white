@@ -88,7 +88,7 @@ th,td{height:38px;}
 .btn-gray:hover{background: #3A3A3A;}
 .btn-gray:active{background: #5E5E5E;}
 .btn-selected-gray{background: #3A3A3A; border: 1px solid #7A7A7A;}
-.btn-gray-icon{background: #4C4C4C; color:#C6C6C6; border: 1px solid #585858; display: inline-block; border-radius: 2px;	text-align: center; white-space: nowrap; vertical-align: bottom; user-select: none; overflow: visible; margin: 0; cursor: pointer; font-weight:600; width:30px; height: 30px; font-size: 1.4em;}
+.btn-gray-icon{background: #4C4C4C; color:#C6C6C6; border: 1px solid #585858; display: inline-block; border-radius: 2px; text-align: center; white-space: nowrap; vertical-align: bottom; user-select: none; overflow: visible; padding: 0; margin: 0; cursor: pointer; font-weight:600; width:30px; height: 30px; font-size: 1.4em;}
 .btn-gray-icon:hover{background: #3A3A3A;}
 .btn-gray-icon:active{background: #5E5E5E;}
 .btn-gray-icon-rfh{background: #4C4C4C;  background-image:url("../svg/sync-alt-solid.svg"); width:30px; height: 30px; background-size: 70%; background-repeat: no-repeat; background-position: center; border: 1px solid #585858; display: inline-block; border-radius: 2px; cursor: pointer;}

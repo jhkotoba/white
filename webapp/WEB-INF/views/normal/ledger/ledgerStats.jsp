@@ -264,8 +264,25 @@ function fnMonthIEChartDraw(data, width){
 	//이후으로가기 버튼
     let $nextBtn = $("<button>").addClass("btn-gray-icon trs mgbottom3").text(">").attr("title", data.categories[data.categories.length-1] + "월 이후 통계");
 	
-	//그래프 감소
-    let $plusBtn = $("<button>").addClass("btn-gray-icon trs mgbottom3").text("+").off().on("click", function(){    	
+  	//이전으로가기 버튼
+    let $prevMaxBtn = $("<button>").addClass("btn-gray-icon trs mgbottom3").text("<<");
+	
+	//이후으로가기 버튼
+    let $nextMaxBtn = $("<button>").addClass("btn-gray-icon trs mgbottom3").text(">>");
+	
+	//그래프 범위 증가
+    let $plusBtn = $("<button>").addClass("btn-gray-icon trs mgbottom3").text("+").off().on("click", function(){
+    	if(mIE.firstDate < data.categories[0]){
+	   		mIE.lineCnt += 4;
+	   		cfnCmmAjax("/ledger/selectLedgerStats", {type:"monthIE", monthCnt: mIE.lineCnt, stdate:mIE.selectedDate}).done(function(data){    			
+	   			mIE.chartData = fnMonthIEChartProcess(data);
+	   			fnMonthIEChartDraw(mIE.chartData, width);    			
+	   		});
+    	}
+    }).attr("title", "그래프 범위 증가");
+	
+	//그래프 범위 감소
+    let $minusBtn = $("<button>").addClass("btn-gray-icon trs mgbottom3").text("-").off().on("click", function(){    	
     	if(mIE.lineCnt > mIE.minLineCnt){
     		mIE.lineCnt -= 4;
     		cfnCmmAjax("/ledger/selectLedgerStats", {type:"monthIE", monthCnt: mIE.lineCnt, stdate:mIE.selectedDate}).done(function(data){    			
@@ -275,19 +292,14 @@ function fnMonthIEChartDraw(data, width){
     	}
     }).attr("title", "그래프 범위 감소");	
 	
-	//그래프 증가
-    let $minusBtn = $("<button>").addClass("btn-gray-icon trs mgbottom3").text("-").off().on("click", function(){
-    	if(mIE.firstDate < data.categories[0]){
-	   		mIE.lineCnt += 4;
-	   		cfnCmmAjax("/ledger/selectLedgerStats", {type:"monthIE", monthCnt: mIE.lineCnt, stdate:mIE.selectedDate}).done(function(data){    			
-	   			mIE.chartData = fnMonthIEChartProcess(data);
-	   			fnMonthIEChartDraw(mIE.chartData, width);    			
-	   		});
-    	}
-    }).attr("title", "그래프 범위 증가");
+  	//그래프 범위 증가
+    let $plusMaxBtn = $("<button>").addClass("btn-gray-icon trs mgbottom3").text("++");
+  	//그래프 범위 감소
+    let $minusMaxBtn = $("<button>").addClass("btn-gray-icon trs mgbottom3").text("--");
     
     let $btns = $("<div>").addClass("monthIEBtns");
-    $btns.append($refreshBtn).append($prevBtn).append($nextBtn).append($plusBtn).append($minusBtn);    
+    $btns.append($refreshBtn).append($prevBtn).append($nextBtn).append($prevMaxBtn).append($nextMaxBtn)
+    	.append($plusBtn).append($minusBtn).append($plusMaxBtn).append($minusMaxBtn);    
     $("#monthIEChart").append($btns);
     
     //포인터라이블 기울기 설정(그래프 생생후 조정)
