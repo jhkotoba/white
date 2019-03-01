@@ -147,6 +147,17 @@ public class LedgerController {
 	}
 	
 	/**
+	 * 가게구 첫 입력날짜 조회
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="/ledger/selectFirstRecordDate.ajax")
+	public WhiteMap selectFirstRecordDate(HttpServletRequest request) {
+		WhiteMap param = new WhiteMap(request);
+		return ledgerService.selectFirstRecordDate(param);
+	}
+	
+	/**
 	 * 금전기록 수정 및 삭제
 	 * @param request
 	 * @return
@@ -158,7 +169,7 @@ public class LedgerController {
 	}
 	
 	/**
-	 * 
+	 * 가게구 통계 데이터 조회
 	 * @param request
 	 * @return
 	 */

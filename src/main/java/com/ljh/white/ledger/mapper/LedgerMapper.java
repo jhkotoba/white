@@ -238,11 +238,20 @@ public class LedgerMapper {
 	 */
 	public int deleteRecordList(List<WhiteMap> list) {
 		return sqlSession.delete("ledgerMapper.deleteRecordList", list);
+	}	
+	
+	/**
+	 * 가계부 첫 입력 날짜 조회
+	 * @param param
+	 * @return
+	 */
+	public WhiteMap selectFirstRecordDate(WhiteMap param) {
+		return sqlSession.selectOne("ledgerMapper.selectFirstRecordDate", param);
 	}
 	
 	/**
 	 * 가계부 통계 월별 수입지출 이전 합계
-	 * @param list
+	 * @param param
 	 * @return
 	 */
 	public int selectPrevAmount(WhiteMap param) {

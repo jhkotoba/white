@@ -363,6 +363,21 @@ public class LedgerService {
 	}
 	
 	/**
+	 * 가계부 첫 입력 날짜 조회
+	 * @param param
+	 * @return
+	 */
+	public WhiteMap selectFirstRecordDate(WhiteMap param) {
+		WhiteMap result = ledgerMapper.selectFirstRecordDate(param);
+		if(result == null) {
+			result = new WhiteMap();
+			result.put("firstDate", White.getTodayDate());
+		}		
+		return result;			
+	}
+	
+	
+	/**
 	 * 금전기록 수정 및 삭제
 	 * @param param
 	 * @return
@@ -379,7 +394,7 @@ public class LedgerService {
 	}
 	
 	/**
-	 * 가계부 통계
+	 * 가계부 통계 조회
 	 * @param param
 	 * @return
 	 */

@@ -455,10 +455,20 @@
 		</foreach>
 	</delete>
 	
+	<!-- 가계부 첫 시작날짜 조회 -->
+	<select id="selectFirstRecordDate" resultType="whiteMap" parameterType="whiteMap">
+		SELECT
+			DATE_FORMAT(mr.record_date,'%Y-%m-%d') AS firstDate
+		FROM money_record_re mr		
+		WHERE mr.user_seq = #{userSeq}
+	    ORDER BY mr.record_date ASC
+	    Limit 1
+	</select>	
+	
 	<!-- 가계부 통계 월별 수입지출 이전 합계 -->
 	<select id="selectPrevAmount" resultType="int" parameterType="whiteMap">
 		SELECT
-			SUM(mr.money) 		AS amount
+			IFNULL(SUM(mr.money), 0) AS amount
 		FROM money_record_re mr
 		INNER JOIN purpose p
 			ON p.pur_seq = mr.pur_seq
@@ -469,7 +479,6 @@
 		AND p.pur_type != 'LP003'   
 		AND mr.record_date  <![CDATA[ < ]]> #{startDate}
 	</select>
-	
 	
 	<!-- 가계부 통계 월별 수입지출 -->
 	<select id="selectLedgerMonthIEStats" resultType="whiteMap" parameterType="java.util.List">	
