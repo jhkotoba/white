@@ -404,7 +404,7 @@ function ledgerList(data){
 		return $input.addClass("input-gray wth100p").attr("name","sync"+idx).off().on("keyup change", function(){
 			item[name] = this.value;
 			fnTypeSync(this, name, item, idx);
-		}).val(item[name]);
+		}).val( cfnRestore(item[name]) );
 	}
 
 	//select box 생성

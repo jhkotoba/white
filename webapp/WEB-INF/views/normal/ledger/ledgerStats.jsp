@@ -65,7 +65,8 @@ function fnMonthIEChart(data){
     	param.type = "monthIE";
     	param.monthCnt = mIE.lineCnt;
     	param.stdate = cfnDateCalc(mIE.chartData.categories[neighbor.pointIndex]+"-01", "month", (mIE.lineCnt/2));
-    	mIE.selectedDate = param.stdate;    	
+    	mIE.selectedDate = param.stdate;
+    	mIE.lineCnt = 12;
     	
     	cfnCmmAjax("/ledger/selectLedgerStats", param).done(function(data){    
     		mIE.chartData = fnMonthIEChartProcess(data);
@@ -106,11 +107,15 @@ function fnMonthIEChartProcess(data){
 function fnMonthIEChartDraw(data, width){
 	$("#monthIEChart").empty();
 	
-	let ic = common.clone(data.income);
-	let ex = common.clone(data.expense);
-	for(let i=0; i<ic.length; i++){
-		if(ic[i]>1000) ic[i] = Math.floor(ic[i]/1000);
-		if(ex[i]>1000) ex[i] = Math.floor(ex[i]/1000);
+	let icM = common.clone(data.income);
+	let exM = common.clone(data.expense);
+	for(let i=0; i<icM.length; i++){
+		if(icM[i]>10000){
+			icM[i] = Math.floor(icM[i]/10000);
+		}else icM[i] = 0;
+		if(exM[i]>10000){
+			exM[i] = Math.floor(exM[i]/10000)
+		}else exM[i] = 0;
 	}
 	
 	//그래프바 굻기 설정
@@ -152,7 +157,7 @@ function fnMonthIEChartDraw(data, width){
         	[{
 			    pointLabels: {
 			        show: true,
-			        labels: xAngle < 30 ? data.income : ic,
+			        labels: xAngle < 30 ? data.income : icM,
 			        hideZeros : true,
 			        fillToZero : false
 			    },
@@ -170,7 +175,7 @@ function fnMonthIEChartDraw(data, width){
 			{
                 pointLabels: {
                     show: true,
-                    labels: xAngle < 30 ? data.expense : ex,
+                    labels: xAngle < 30 ? data.expense : exM,
                 	hideZeros : true,
     			    fillToZero : false
                 },
@@ -271,7 +276,7 @@ function fnMonthIEChartDraw(data, width){
     let $nextMaxBtn = $("<button>").addClass("btn-gray-icon trs mgbottom3").text(">>");
 	
 	//그래프 범위 증가
-    let $plusBtn = $("<button>").addClass("btn-gray-icon trs mgbottom3").text("+").off().on("click", function(){
+    let $minusBtn = $("<button>").addClass("btn-gray-icon trs mgbottom3").text("-").off().on("click", function(){
     	if(mIE.firstDate < data.categories[0]){
 	   		mIE.lineCnt += 4;
 	   		cfnCmmAjax("/ledger/selectLedgerStats", {type:"monthIE", monthCnt: mIE.lineCnt, stdate:mIE.selectedDate}).done(function(data){    			
@@ -282,7 +287,7 @@ function fnMonthIEChartDraw(data, width){
     }).attr("title", "그래프 범위 증가");
 	
 	//그래프 범위 감소
-    let $minusBtn = $("<button>").addClass("btn-gray-icon trs mgbottom3").text("-").off().on("click", function(){    	
+    let $plusBtn = $("<button>").addClass("btn-gray-icon trs mgbottom3").text("+").off().on("click", function(){    	
     	if(mIE.lineCnt > mIE.minLineCnt){
     		mIE.lineCnt -= 4;
     		cfnCmmAjax("/ledger/selectLedgerStats", {type:"monthIE", monthCnt: mIE.lineCnt, stdate:mIE.selectedDate}).done(function(data){    			
@@ -298,8 +303,8 @@ function fnMonthIEChartDraw(data, width){
     let $minusMaxBtn = $("<button>").addClass("btn-gray-icon trs mgbottom3").text("--");
     
     let $btns = $("<div>").addClass("monthIEBtns");
-    $btns.append($refreshBtn).append($prevBtn).append($nextBtn).append($prevMaxBtn).append($nextMaxBtn)
-    	.append($plusBtn).append($minusBtn).append($plusMaxBtn).append($minusMaxBtn);    
+    $btns.append($refreshBtn).append($prevBtn).append($prevMaxBtn).append($nextBtn).append($nextMaxBtn)
+    	.append($plusBtn).append($plusMaxBtn).append($minusBtn).append($minusMaxBtn);    
     $("#monthIEChart").append($btns);
     
     //포인터라이블 기울기 설정(그래프 생생후 조정)
