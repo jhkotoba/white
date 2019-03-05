@@ -415,7 +415,7 @@ public class LedgerService {
 				stendDate.put("userSeq", param.get("userSeq"));
 				stendDate.put("startDate", White.getFirstDate(White.dateMonthCalculate(stdate == null ? White.getTodayDate() : stdate, j))+" 00:00:00");
 				stendDate.put("endDate", White.getLastDate(White.dateMonthCalculate(stdate == null ? White.getTodayDate() : stdate, j))+" 23:59:59");
-				dateList.add(stendDate);			
+				dateList.add(stendDate);
 			}
 			
 			result.put("amount", ledgerMapper.selectPrevAmount(dateList.get(0)));

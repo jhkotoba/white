@@ -25,7 +25,7 @@ let mIE = {
 	orgData : null,
 	lineCnt : 12,
 	minLineCnt : 8,
-	selectedDate : isDate.today()
+	stdDate : isDate.today()
 }
 
 $(document).ready(function(){	
@@ -61,17 +61,17 @@ function fnMonthIEChart(data){
     
 	//그래프바 클릭 이벤트
     $("#monthIEChart").off().on("jqplotClick", function(ev, gridpos, datapos, neighbor, plot){    	
-    	let param = {};
+    	/* let param = {};
     	param.type = "monthIE";
     	param.monthCnt = mIE.lineCnt;
     	param.stdate = cfnDateCalc(mIE.chartData.categories[neighbor.pointIndex]+"-01", "month", (mIE.lineCnt/2));
-    	mIE.selectedDate = param.stdate;
+    	mIE.stdDate = param.stdate;
     	mIE.lineCnt = 12;
     	
     	cfnCmmAjax("/ledger/selectLedgerStats", param).done(function(data){    
     		mIE.chartData = fnMonthIEChartProcess(data);
     		fnMonthIEChartDraw(mIE.chartData, width);		
-    	});
+    	}); */
     });
 }
 
@@ -258,53 +258,45 @@ function fnMonthIEChartDraw(data, width){
     });
 	
 	//초기화 버튼
-	let $refreshBtn = $("<button>").addClass("btn-gray-icon-rfh trs mgbottom3").off().on("click", function(){    	
+	let $refreshBtn = $("<button>").addClass("btn-gray-icon-rfh trs mgbottom3").off().on("click", function(){		
+		mIE.lineCnt = 12;
+		mIE.stdDate = isDate.today();
 		mIE.chartData = fnMonthIEChartProcess(mIE.orgData);
     	fnMonthIEChartDraw(mIE.chartData, width);    	
     }).attr("title", "그래프 새로고침");
     
 	//이전으로가기 버튼
-    let $prevBtn = $("<button>").addClass("btn-gray-icon trs mgbottom3").text("<").attr("title", data.categories[0] + "월 이전 통계");
+    let $prevBtn = $("<button>").addClass("btn-gray-icon trs mgbottom3").text("<").off().on("click", function(){
+    	fnChangeChartDraw(width, 0, data.categories[0]+"-01");
+    }).attr("title", data.categories[0] + "월 이전 통계");
 	
 	//이후으로가기 버튼
-    let $nextBtn = $("<button>").addClass("btn-gray-icon trs mgbottom3").text(">").attr("title", data.categories[data.categories.length-1] + "월 이후 통계");
-	
-  	//이전으로가기 버튼
-    let $prevMaxBtn = $("<button>").addClass("btn-gray-icon trs mgbottom3").text("<<");
-	
-	//이후으로가기 버튼
-    let $nextMaxBtn = $("<button>").addClass("btn-gray-icon trs mgbottom3").text(">>");
+    let $nextBtn = $("<button>").addClass("btn-gray-icon trs mgbottom3").text(">").off().on("click", function(){
+    	fnChangeChartDraw(width, 0, cfnDateCalc(data.categories[data.categories.length-1]+"-01", "month", mIE.lineCnt-1));
+    }).attr("title", data.categories[data.categories.length-1] + "월 이후 통계");  	
 	
 	//그래프 범위 증가
     let $minusBtn = $("<button>").addClass("btn-gray-icon trs mgbottom3").text("-").off().on("click", function(){
-    	if(mIE.firstDate < data.categories[0]){
-	   		mIE.lineCnt += 4;
-	   		cfnCmmAjax("/ledger/selectLedgerStats", {type:"monthIE", monthCnt: mIE.lineCnt, stdate:mIE.selectedDate}).done(function(data){    			
-	   			mIE.chartData = fnMonthIEChartProcess(data);
-	   			fnMonthIEChartDraw(mIE.chartData, width);    			
-	   		});
-    	}
+    	if(mIE.firstDate < data.categories[0]) fnChangeChartDraw(width, 12);
     }).attr("title", "그래프 범위 증가");
 	
+  	//그래프 범위 증가
+    let $minusMaxBtn = $("<button>").addClass("btn-gray-icon trs mgbottom3").text("--").off().on("click", function(){
+    	if(mIE.firstDate < data.categories[0]) fnChangeChartDraw(width, 12);
+    }).attr("title", "그래프 범위 증가");
+  	
 	//그래프 범위 감소
-    let $plusBtn = $("<button>").addClass("btn-gray-icon trs mgbottom3").text("+").off().on("click", function(){    	
-    	if(mIE.lineCnt > mIE.minLineCnt){
-    		mIE.lineCnt -= 4;
-    		cfnCmmAjax("/ledger/selectLedgerStats", {type:"monthIE", monthCnt: mIE.lineCnt, stdate:mIE.selectedDate}).done(function(data){    			
-    			mIE.chartData = fnMonthIEChartProcess(data);
-    			fnMonthIEChartDraw(mIE.chartData, width);    			
-    		});
-    	}
+    let $plusBtn = $("<button>").addClass("btn-gray-icon trs mgbottom3").text("+").off().on("click", function(){
+    	if(mIE.lineCnt > mIE.minLineCnt) fnChangeChartDraw(width, -4);    	
     }).attr("title", "그래프 범위 감소");	
 	
-  	//그래프 범위 증가
-    let $plusMaxBtn = $("<button>").addClass("btn-gray-icon trs mgbottom3").text("++");
   	//그래프 범위 감소
-    let $minusMaxBtn = $("<button>").addClass("btn-gray-icon trs mgbottom3").text("--");
+    let $plusMaxBtn = $("<button>").addClass("btn-gray-icon trs mgbottom3").text("++").off().on("click", function(){
+    	if(mIE.lineCnt > mIE.minLineCnt) fnChangeChartDraw(width, -12);    	
+    }).attr("title", "그래프 범위 감소");  	
     
     let $btns = $("<div>").addClass("monthIEBtns");
-    $btns.append($refreshBtn).append($prevBtn).append($prevMaxBtn).append($nextBtn).append($nextMaxBtn)
-    	.append($plusBtn).append($plusMaxBtn).append($minusBtn).append($minusMaxBtn);    
+    $btns.append($refreshBtn).append($prevBtn).append($nextBtn).append($plusBtn).append($plusMaxBtn).append($minusBtn).append($minusMaxBtn);    
     $("#monthIEChart").append($btns);
     
     //포인터라이블 기울기 설정(그래프 생생후 조정)
@@ -312,11 +304,20 @@ function fnMonthIEChartDraw(data, width){
     else if(xAngle === 90) $(".jqplot-point-label").css("transform", "rotate(80deg)");
 }
 
+function fnChangeChartDraw(width, count, stdDate){
+	
+	if(stdDate !== null || stdDate !== undefined) mIE.stdDate = stdDate;	
+	
+	mIE.lineCnt += count;
+	cfnCmmAjax("/ledger/selectLedgerStats", {type:"monthIE", monthCnt: mIE.lineCnt, stdate:mIE.stdDate}).done(function(data){    			
+		mIE.chartData = fnMonthIEChartProcess(data);
+		fnMonthIEChartDraw(mIE.chartData, width);    			
+	});
+}
+
 //월별 목적별 통계
 function monthPurChart(){
 	$("#monthPurChart").empty();
-	
-   
 }
 </script>
 <div id="monthIEChart"></div>
