@@ -9,6 +9,7 @@
 .monthIEBtns{position: absolute; right: 23px; top: 162px; width: 30px;}
 table.jqplot-table-legend, table.jqplot-cursor-legend {background-color: rgba(255,255,255,0); border: 0px solid rgba(204,204,204,0);}
 div.jqplot-table-legend-swatch-outline {border: 1px solid #585858;}
+.selected-month{border: 2px solid rgba(94,94,94,0.5); border-radius: 3px; background-color: rgba(94,94,94,0.5);}
 </style>
 <script type="text/javascript" src="${contextPath}/resources/jqplot/js/jquery.jqplot.js"></script>
 <script type="text/javascript" src="${contextPath}/resources/jqplot/js/plugins/jqplot.barRenderer.js"></script>
@@ -38,7 +39,7 @@ $(document).ready(function(){
 	});
 });
 
-//월별 수입지출 누적 통계
+/*월별 수입지출 누적 통계*/
 function fnMonthIEChart(data){
 
 	//데이터 가공
@@ -60,18 +61,15 @@ function fnMonthIEChart(data){
 	fnMonthIEChartDraw(mIE.chartData, width);    
     
 	//그래프바 클릭 이벤트
-    $("#monthIEChart").off().on("jqplotClick", function(ev, gridpos, datapos, neighbor, plot){    	
-    	/* let param = {};
-    	param.type = "monthIE";
-    	param.monthCnt = mIE.lineCnt;
-    	param.stdate = cfnDateCalc(mIE.chartData.categories[neighbor.pointIndex]+"-01", "month", (mIE.lineCnt/2));
-    	mIE.stdDate = param.stdate;
-    	mIE.lineCnt = 12;
-    	
-    	cfnCmmAjax("/ledger/selectLedgerStats", param).done(function(data){    
-    		mIE.chartData = fnMonthIEChartProcess(data);
-    		fnMonthIEChartDraw(mIE.chartData, width);		
-    	}); */
+    $("#monthIEChart").off().on("jqplotClick", function(ev, gridpos, datapos, neighbor, plot){    
+    	if(neighbor !== null){
+    		fnSelectMonth(neighbor.pointIndex);    		
+    		//fneighbor.seriesIndex 0:수입, 1:지출
+    		//mIE.chartData.categories[neighbor.pointIndex]); :월  ex)2011-01
+    		//cfnCmmAjax("/ledger/selectMonthPurStats", {type:"monthPur"}).done(function(data){    			
+    		//	fnMonthPurChart(data);
+    		//});	
+    	}
     });
 }
 
@@ -302,10 +300,18 @@ function fnMonthIEChartDraw(data, width){
     //포인터라이블 기울기 설정(그래프 생생후 조정)
     if(xAngle === 70) $(".jqplot-point-label").css("transform", "rotate(35deg)");
     else if(xAngle === 90) $(".jqplot-point-label").css("transform", "rotate(80deg)");
+    
+    fnSelectMonth(mIE.lineCnt-1);
 }
 
-function fnChangeChartDraw(width, count, stdDate){
-	
+//선택 월  표시
+function fnSelectMonth(idx){
+	$(".jqplot-xaxis-tick").removeClass("selected-month");
+	$($(".jqplot-xaxis-tick")[idx]).addClass("selected-month");
+}
+
+//그래프 재 생성
+function fnChangeChartDraw(width, count, stdDate){	
 	if(stdDate !== null || stdDate !== undefined) mIE.stdDate = stdDate;	
 	
 	mIE.lineCnt += count;
@@ -315,11 +321,17 @@ function fnChangeChartDraw(width, count, stdDate){
 	});
 }
 
-//월별 목적별 통계
-function monthPurChart(){
-	$("#monthPurChart").empty();
+
+/*월별 목적별 통계*/
+function fnMonthPurChart(data){	
+	//데이터 가공	
+	
+	//리사이즈 설정	
+	
+	//그래프 그리기	 
+    
+	//그래프바 클릭 이벤트    
 }
 </script>
 <div id="monthIEChart"></div>
-
 <div id="monthPurChart"></div>
