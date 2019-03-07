@@ -402,8 +402,7 @@ public class LedgerService {
 
 		WhiteMap result = new WhiteMap();
 		switch(param.getString("type")) {
-		case "monthIE":
-			
+		case "monthIE":			
 			List<WhiteMap> dateList = new ArrayList<WhiteMap>();			
 			WhiteMap stendDate = null;
 			int monCnt = param.getInt("monthCnt");
@@ -421,8 +420,16 @@ public class LedgerService {
 			result.put("amount", ledgerMapper.selectPrevAmount(dateList.get(0)));
 			result.put("list", ledgerMapper.selectLedgerMonthIEStats(dateList));		
 			break;
+		case "monthPur":
+			
+			param.put("endDate", White.getLastDate(param.getString("startDate")));
+			
+			if(param.getInt("inEx") == 0) param.put("purType", "LP001");
+			else param.put("purType", "LP002");
+			
+			result.put("list", ledgerMapper.selectLedgerMonthPurStats(param));			
+			break;
 		}
-		return result;
-		
+		return result;		
 	}
 }

@@ -266,4 +266,14 @@ public class LedgerMapper {
 	public List<WhiteMap> selectLedgerMonthIEStats(List<WhiteMap> list) {
 		return sqlSession.selectList("ledgerMapper.selectLedgerMonthIEStats", list);
 	}
+	
+	/**
+	 * 가계부 통계 월 목적별 수입지출
+	 * @param list
+	 * @return
+	 */
+	public List<WhiteMap> selectLedgerMonthPurStats(WhiteMap param) {
+		return sqlSession.selectList("ledgerMapper.selectLedgerMonthPurStats", param);
+	}
+	
 }

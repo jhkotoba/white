@@ -61,14 +61,13 @@ function fnMonthIEChart(data){
 	fnMonthIEChartDraw(mIE.chartData, width);    
     
 	//그래프바 클릭 이벤트
-    $("#monthIEChart").off().on("jqplotClick", function(ev, gridpos, datapos, neighbor, plot){    
+    $("#monthIEChart").off().on("jqplotClick", function(ev, gridpos, datapos, neighbor, plot){
     	if(neighbor !== null){
-    		fnSelectMonth(neighbor.pointIndex);    		
-    		//fneighbor.seriesIndex 0:수입, 1:지출
-    		//mIE.chartData.categories[neighbor.pointIndex]); :월  ex)2011-01
-    		//cfnCmmAjax("/ledger/selectMonthPurStats", {type:"monthPur"}).done(function(data){    			
-    		//	fnMonthPurChart(data);
-    		//});	
+    		fnSelectMonth(neighbor.pointIndex);
+    		let param = {type:"monthPur", startDate:mIE.chartData.categories[neighbor.pointIndex]+"-01", inEx:neighbor.seriesIndex};
+    		cfnCmmAjax("/ledger/selectLedgerStats", param).done(function(data){    			
+    			fnMonthPurChart(data);
+    		});	
     	}
     });
 }
@@ -323,7 +322,10 @@ function fnChangeChartDraw(width, count, stdDate){
 
 
 /*월별 목적별 통계*/
-function fnMonthPurChart(data){	
+function fnMonthPurChart(data){
+	
+	console.log(data);
+	
 	//데이터 가공	
 	
 	//리사이즈 설정	
