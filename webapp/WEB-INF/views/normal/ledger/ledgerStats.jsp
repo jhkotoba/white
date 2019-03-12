@@ -18,6 +18,7 @@ div.jqplot-table-legend-swatch-outline {border: 1px solid #585858;}
 <script type="text/javascript" src="${contextPath}/resources/jqplot/js/plugins/jqplot.highlighter.js"></script>
 <script type="text/javascript" src="${contextPath}/resources/jqplot/js/plugins/jqplot.canvasTextRenderer.js"></script>
 <script type="text/javascript" src="${contextPath}/resources/jqplot/js/plugins/jqplot.canvasAxisTickRenderer.js"></script>
+<script type="text/javascript" src="${contextPath}/resources/jqplot/js/plugins/jqplot.pieRenderer.js"></script>
 <script type="text/javascript">
 /* 전역변수 */
 let mIE = {	
@@ -58,7 +59,7 @@ function fnMonthIEChart(data){
 	});
 	
 	//그래프 그리기
-	fnMonthIEChartDraw(mIE.chartData, width);    
+	fnMonthIEChartDraw(mIE.chartData, width);	
     
 	//그래프바 클릭 이벤트
     $("#monthIEChart").off().on("jqplotClick", function(ev, gridpos, datapos, neighbor, plot){
@@ -324,16 +325,47 @@ function fnChangeChartDraw(width, count, stdDate){
 /*월별 목적별 통계*/
 function fnMonthPurChart(data){
 	
-	console.log(data);
+	$("#monthPurChart").empty();
 	
-	//데이터 가공	
+	//데이터 가공
+	let list = fnMonthPurChartProcess(data);
+	let width = window.outerWidth-45 < 1400 ? 1370 : window.outerWidth-45;
 	
 	//리사이즈 설정	
 	
 	//그래프 그리기	 
-    
-	//그래프바 클릭 이벤트    
+    fnMonthPurChartDraw(list, width);
+	
+	//그래프바 클릭 이벤트   	 
+}
+
+//목적 그래프 데이터 가공
+function fnMonthPurChartProcess(data){	
+	let list = new Array();
+	for(let i=0; i<data.list.length; i++){		
+		list.push([data.list[i].purpose, data.list[i].money]);
+	}
+	return list;
+}
+
+//목적 그래프 그리기
+function fnMonthPurChartDraw(list, width){
+	let plot = jQuery.jqplot("monthPurChart", [list],{
+		title: ' ', 
+		seriesDefaults: {
+			shadow: false,
+			renderer: jQuery.jqplot.PieRenderer,
+			rendererOptions: {
+				sliceMargin: 4,
+				showDataLabels: true 
+			}
+		}, 
+		legend: {
+			show:true,
+			location: 'e'
+		}
+    });		  
 }
 </script>
 <div id="monthIEChart"></div>
-<div id="monthPurChart"></div>
+<div id="monthPurChart" style="    position: absolute;  height: 300px;   bottom: 380px;   width: 50%;"></div>
