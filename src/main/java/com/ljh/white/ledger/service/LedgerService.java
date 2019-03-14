@@ -420,9 +420,9 @@ public class LedgerService {
 			result.put("amount", ledgerMapper.selectPrevAmount(dateList.get(0)));
 			result.put("list", ledgerMapper.selectLedgerMonthIEStats(dateList));		
 			break;
-		case "monthPur":
-			
-			param.put("endDate", White.getLastDate(param.getString("startDate")));
+		case "monthPur":			
+			param.put("startDate", White.getFirstDate(param.getString("stdate")+" 00:00:00"));
+			param.put("endDate", White.getLastDate(param.getString("stdate")+" 23:59:59"));
 			
 			if(param.getInt("inEx") == 0) param.put("purType", "LP001");
 			else param.put("purType", "LP002");

@@ -19,6 +19,7 @@ div.jqplot-table-legend-swatch-outline {border: 1px solid #585858;}
 <script type="text/javascript" src="${contextPath}/resources/jqplot/js/plugins/jqplot.canvasTextRenderer.js"></script>
 <script type="text/javascript" src="${contextPath}/resources/jqplot/js/plugins/jqplot.canvasAxisTickRenderer.js"></script>
 <script type="text/javascript" src="${contextPath}/resources/jqplot/js/plugins/jqplot.pieRenderer.js"></script>
+<script type="text/javascript" src="${contextPath}/resources/jqplot/js/plugins/jqplot.donutRenderer.js"></script>
 <script type="text/javascript">
 /* 전역변수 */
 let mIE = {	
@@ -33,10 +34,18 @@ let mIE = {
 $(document).ready(function(){	
 	cfnCmmAjax("/ledger/selectFirstRecordDate").done(function(data){
 		mIE.firstDate = data.firstDate.substr(0,7);
+		
+		//월별 수입지출 그래프
 		cfnCmmAjax("/ledger/selectLedgerStats", {type:"monthIE", monthCnt: mIE.lineCnt, stdate:isDate.today()}).done(function(data){
 			mIE.orgData = data;
 			fnMonthIEChart(data);
-		});	
+		});		
+		
+		/* //선택월 목적 그래프
+		cfnCmmAjax("/ledger/selectLedgerStats", {type:"monthPur", stdate:isDate.today(), inEx:1}).done(function(data){
+			console.log(data);
+			fnMonthPurChart(data);
+		}); */
 	});
 });
 
@@ -64,8 +73,22 @@ function fnMonthIEChart(data){
 	//그래프바 클릭 이벤트
     $("#monthIEChart").off().on("jqplotClick", function(ev, gridpos, datapos, neighbor, plot){
     	if(neighbor !== null){
-    		fnSelectMonth(neighbor.pointIndex);
-    		let param = {type:"monthPur", startDate:mIE.chartData.categories[neighbor.pointIndex]+"-01", inEx:neighbor.seriesIndex};
+    		fnSelectMonthIE(neighbor.pointIndex);
+    		
+    		console.log(ev);
+    		//pageX: 1221
+    		//pageY: 350
+    		//offsetHeight: 515
+			//offsetLeft: 57
+			//offsetParent: div#monthIEChart.jqplot-target
+			//offsetTop: 10
+			//offsetWidth: 1327
+			console.log("ev.target.offsetTop:"+ev.target.offsetTop);
+			console.log("ev.target.offsetLeft:"+ev.target.offsetLeft);
+    		$("#monthPurChart").offset({top: ev.target.offsetTop+ev.pageY-300, left: ev.target.offsetLeft});
+    		//$target.offset()
+    		
+    		let param = {type:"monthPur", stdate:mIE.chartData.categories[neighbor.pointIndex]+"-01", inEx:neighbor.seriesIndex};
     		cfnCmmAjax("/ledger/selectLedgerStats", param).done(function(data){    			
     			fnMonthPurChart(data);
     		});	
@@ -301,11 +324,11 @@ function fnMonthIEChartDraw(data, width){
     if(xAngle === 70) $(".jqplot-point-label").css("transform", "rotate(35deg)");
     else if(xAngle === 90) $(".jqplot-point-label").css("transform", "rotate(80deg)");
     
-    fnSelectMonth(mIE.lineCnt-1);
+    fnSelectMonthIE(mIE.lineCnt-1);
 }
 
 //선택 월  표시
-function fnSelectMonth(idx){
+function fnSelectMonthIE(idx){
 	$(".jqplot-xaxis-tick").removeClass("selected-month");
 	$($(".jqplot-xaxis-tick")[idx]).addClass("selected-month");
 }
@@ -325,7 +348,8 @@ function fnChangeChartDraw(width, count, stdDate){
 /*월별 목적별 통계*/
 function fnMonthPurChart(data){
 	
-	$("#monthPurChart").empty();
+	//$("#monthIEChart").hide();
+	$("#monthPurChart").empty();	
 	
 	//데이터 가공
 	let list = fnMonthPurChartProcess(data);
@@ -350,22 +374,39 @@ function fnMonthPurChartProcess(data){
 
 //목적 그래프 그리기
 function fnMonthPurChartDraw(list, width){
-	let plot = jQuery.jqplot("monthPurChart", [list],{
-		title: ' ', 
+	let plotPur = jQuery.jqplot("monthPurChart", [list],{
+		width: width,
+    	height: 550,
 		seriesDefaults: {
-			shadow: false,
-			renderer: jQuery.jqplot.PieRenderer,
-			rendererOptions: {
-				sliceMargin: 4,
-				showDataLabels: true 
-			}
+			shadow: true,
+			renderer: $.jqplot.DonutRenderer,
+			rendererOptions:{
+	            sliceMargin: 3,	            
+	            startAngle: -30,
+	            showDataLabels: true,	            
+	            dataLabels: 'value',	            
+	            totalLabel: true          
+	          }
 		}, 
-		legend: {
-			show:true,
-			location: 'e'
-		}
-    });		  
+		grid: {
+            drawBorder: true,           
+            background: "rgba(76, 76, 76, .6)",
+            shadow: false,
+            borderWidth: 1,
+            drawGridlines:true,
+            gridLineColor:"rgba(76, 76, 76, .7)"
+        },       
+        legend: {
+    		show: true,
+    		placement: "insideGrid",
+    		location: "ne"    		   
+    	}
+        
+    });
 }
 </script>
+
 <div id="monthIEChart"></div>
-<div id="monthPurChart" style="    position: absolute;  height: 300px;   bottom: 380px;   width: 50%;"></div>
+<div id="monthPurChart" class="dialog-sm"></div>
+
+
