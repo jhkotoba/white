@@ -6,7 +6,7 @@
 <h4>input</h4>
 
 <h6>input-gray sm</h6>
-<input class="input-gray sm" type="text" placeholder="input">
+<input class="input-gray size-sm" type="text" placeholder="input">
 
 <h6>input-gray</h6>
 <input class="input-gray" type="text" placeholder="input">
@@ -17,7 +17,7 @@
 <h4>button</h4>
 
 <h6>btn-gray trs sm</h6>
-<button class="btn-gray trs sm">button</button>
+<button class="btn-gray trs size-sm">button</button>
 
 <h6>btn-gray trs</h6>
 <button class="btn-gray trs">button</button>
@@ -28,7 +28,7 @@
 <h4>selectbox</h4>
 
 <h6>select-gray sm</h6>
-<select class="select-gray sm">
+<select class="select-gray size-sm">
 	<option>book</option>
 	<option>phone</option>
 </select>

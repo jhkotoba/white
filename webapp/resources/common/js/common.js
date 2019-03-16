@@ -1,7 +1,9 @@
 /**
  *  common.js
  */
-$(document).ready(function(){
+
+$(document).ready(function(){	
+	//플랫폼 확인
 	let filter = "win16|win32|win64|mac|macintel";
 	if(navigator.platform){
 		if(0 > filter.indexOf(navigator.platform.toLowerCase())){
@@ -9,7 +11,7 @@ $(document).ready(function(){
 		}else{
 			common.platform = "pc";
 		}
-	}
+	}	
 });
 
 //jsGrid 페이징
@@ -20,32 +22,7 @@ $(document).on("click", ".jsgrid-pager-nav-button", function(e){
 	$(this).children("a").get(0).click();
 });
 
-//ajax 셋업
-$.ajaxSetup({
-	type: "post",
-	dataType: "json",
-	async : true,
-	error : function(request, status, error){
-		if(request.status === 488){
-			alert("세션이 만료되었습니다. 로그인 해주세요.");
-			location.href = getContextPath()+"/main";
-		}else{			
-			alert("통신에 실패하였습니다.");
-			let deferred = $.Deferred();
-			deferred.reject({"request":request, "status":status, "error":status});			
-		}
-    }
-});
 
-//ajax 시작할때 실행되는 영역
-$(document).ajaxSend(function() {
-	 $(".blind").show(100);
-});
-
-//ajax 성공하면 실행되는 영역
-$(document).ajaxComplete(function() {
-	$(".blind").hide(400);
-});
 
 //금액 입력란 설정
 $(document).on("keyup", ".only-currency", function(){
@@ -55,71 +32,7 @@ $(document).on("change", ".only-currency", function(){
 	cfnSetComma(this);
 });
 
-//form clear
-$.fn.clear = function() {
-	return this.each(function() {
-		let type = this.type, tag = this.tagName.toLowerCase();
-		if (tag === 'form'){
-			return $(':input',this).clear();
-		}
-		if (type === 'text' || type === 'password' || type === 'hidden' || tag === 'textarea'){
-			this.value = '';
-		}else if (type === 'checkbox' || type === 'radio'){
-			this.checked = false;
-			this.value = '';
-		}else if (tag === 'select'){
-			this.selectedIndex = 0;
-		}else if(tag === "span"){
-			$(this).text("");
-		}else if(tag === "label"){
-			$(this).text("");
-		}
-		$(this).removeData();
-    });
-};
 
-//form getParam
-$.fn.getParam = function() {
-	let param = {};	
-	this.find("*").each(function(){
-		if(this.value !== undefined){
-			let type = this.type, tag = this.tagName.toLowerCase();			
-			if(type === "text" || type === "password" || type === "hidden" || tag === "textarea"){
-				param[this.id] = this.value;
-			}else if(tag === "select"){
-				param[this.id] = this.value;
-			}else if (type === 'checkbox'){
-				
-			}else if(type === 'radio'){
-				
-			}
-		}		
-	});
-	return param;	
-};
-
-//form setParam
-$.fn.setParam = function(param){
-	this.find("*").each(function(){
-		if(param[this.id] !== undefined){
-			let type = this.type, tag = this.tagName.toLowerCase();
-			if(type === "text" || type === "password" || type === "hidden" || tag === "textarea"){
-				this.value = param[this.id];
-			}else if(tag === "select"){
-				$(this).val(param[this.id]).prop("selected", true);			
-			}else if (type === 'checkbox'){
-				$(this).prop("checked", true).val(param[this.id]);
-			}else if(type === 'radio'){				
-			
-			}else if(tag === "span"){
-				$(this).text(param[this.id]);
-			}else if(tag === "label"){
-				$(this).text(param[this.id]);
-			}
-		}		
-	});
-	return this;
-}
 
 //리스트 번호 idx 맵핑
 function cfnNoIdx(list, noNm){
@@ -135,48 +48,6 @@ function cfnNoIdx(list, noNm){
 		}
 	}
 	return obj;
-}
-
-//ajax 코드 조회
-function cfnSelectCode(codePrt){
-	return cfnCmmAjax("/white/selectCodeList", {"codePrt" : codePrt});	
-}
-
-//ajax 권한 리스트 조회 - no(유저번호) 없으면 전체 조회
-function cfnSelectAuth(no, async){
-	if(isEmpty(no)){
-		return cfnCmmAjax("/admin/selectAuthList");	
-	}else{
-		return cfnCmmAjax("/admin/selectUserAuth", {"no" : no});	
-	}
-}
-
-//ajax 공통
-function cfnCmmAjax(url, param, isGrid){
-	let deferred = $.Deferred();
-	$.ajax({
-		url: getContextPath()+url+".ajax",
-		data : isEmpty(param) === true ? null : param,
-	    success : function(data) {
-	    	if(isGrid === true) deferred.resolve({data: data.list, itemsCount: data.itemsCount});
-	    	else deferred.resolve(data);
-	    }	    
-	});		
-	return deferred.promise();
-}
-
-//동기 ajax
-function cfnCmmSyncAjax(url, param){
-	let result = null;
-	$.ajax({
-		url: getContextPath()+url+".ajax",
-		async : false,
-		data : isEmpty(param) === true ? null : param,
-	    success : function(data) {
-	    	result = data;
-	    }
-	});
-	return result;
 }
 
 //통화 입력 - 숫제만

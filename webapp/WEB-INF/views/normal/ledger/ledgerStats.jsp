@@ -6,10 +6,11 @@
 <link rel="stylesheet" href="${contextPath}/resources/jqplot/css/jquery.jqplot.css" type="text/css" />
 <style>
 .jqplot-target {color: rgba(246, 246, 246, .7); font-size: 1.2em;}
-.monthIEBtns{position: absolute; right: 23px; top: 162px; width: 30px;}
+.monthIEBtns{position: absolute; right: 23px; top: 90px; width: 30px;}
 table.jqplot-table-legend, table.jqplot-cursor-legend {background-color: rgba(255,255,255,0); border: 0px solid rgba(204,204,204,0);}
 div.jqplot-table-legend-swatch-outline {border: 1px solid #585858;}
 .selected-month{border: 2px solid rgba(94,94,94,0.5); border-radius: 3px; background-color: rgba(94,94,94,0.5);}
+.monthPurCloseBtn{position: relative; margin-top: 10px; margin-left: 450px;}
 </style>
 <script type="text/javascript" src="${contextPath}/resources/jqplot/js/jquery.jqplot.js"></script>
 <script type="text/javascript" src="${contextPath}/resources/jqplot/js/plugins/jqplot.barRenderer.js"></script>
@@ -28,7 +29,8 @@ let mIE = {
 	orgData : null,
 	lineCnt : 12,
 	minLineCnt : 8,
-	stdDate : isDate.today()
+	stdDate : isDate.today(),
+	selectedDate : isDate.today().substring(7,0)
 }
 
 $(document).ready(function(){	
@@ -39,13 +41,7 @@ $(document).ready(function(){
 		cfnCmmAjax("/ledger/selectLedgerStats", {type:"monthIE", monthCnt: mIE.lineCnt, stdate:isDate.today()}).done(function(data){
 			mIE.orgData = data;
 			fnMonthIEChart(data);
-		});		
-		
-		/* //선택월 목적 그래프
-		cfnCmmAjax("/ledger/selectLedgerStats", {type:"monthPur", stdate:isDate.today(), inEx:1}).done(function(data){
-			console.log(data);
-			fnMonthPurChart(data);
-		}); */
+		});
 	});
 });
 
@@ -54,7 +50,7 @@ function fnMonthIEChart(data){
 
 	//데이터 가공
 	mIE.chartData = fnMonthIEChartProcess(data);
-	let width = window.outerWidth-45 < 1400 ? 1370 : window.outerWidth-45;	
+	//let width = window.outerWidth-45 < 1400 ? 1370 : window.outerWidth-45;	
 	
 	//리사이즈 설정
 	let timer = null;
@@ -68,27 +64,17 @@ function fnMonthIEChart(data){
 	});
 	
 	//그래프 그리기
-	fnMonthIEChartDraw(mIE.chartData, width);	
+	fnMonthIEChartDraw(mIE.chartData);	
     
 	//그래프바 클릭 이벤트
     $("#monthIEChart").off().on("jqplotClick", function(ev, gridpos, datapos, neighbor, plot){
     	if(neighbor !== null){
-    		fnSelectMonthIE(neighbor.pointIndex);
+    		fnSelectMonthIE(neighbor.pointIndex);    		
     		
-    		console.log(ev);
-    		//pageX: 1221
-    		//pageY: 350
-    		//offsetHeight: 515
-			//offsetLeft: 57
-			//offsetParent: div#monthIEChart.jqplot-target
-			//offsetTop: 10
-			//offsetWidth: 1327
-			console.log("ev.target.offsetTop:"+ev.target.offsetTop);
-			console.log("ev.target.offsetLeft:"+ev.target.offsetLeft);
-    		$("#monthPurChart").offset({top: ev.target.offsetTop+ev.pageY-300, left: ev.target.offsetLeft});
-    		//$target.offset()
-    		
-    		let param = {type:"monthPur", stdate:mIE.chartData.categories[neighbor.pointIndex]+"-01", inEx:neighbor.seriesIndex};
+    		$("#monthPurChart").offset({top: 127, left: 200});
+
+    		mIE.selectedDate = mIE.chartData.categories[neighbor.pointIndex];   		
+    		let param = {type:"monthPur", stdate:mIE.selectedDate+"-01", inEx:neighbor.seriesIndex};
     		cfnCmmAjax("/ledger/selectLedgerStats", param).done(function(data){    			
     			fnMonthPurChart(data);
     		});	
@@ -125,8 +111,10 @@ function fnMonthIEChartProcess(data){
 }
 
 //그래프 그리기
-function fnMonthIEChartDraw(data, width){
+function fnMonthIEChartDraw(data){
 	$("#monthIEChart").empty();
+	$("#monthPurChart").offset({top: 0, left: 0}).hide().empty();
+	$("#monthPurDtlChart").offset({top: 0, left: 0}).hide().empty();
 	
 	let icM = common.clone(data.income);
 	let exM = common.clone(data.expense);
@@ -141,28 +129,19 @@ function fnMonthIEChartDraw(data, width){
 	
 	//그래프바 굻기 설정
 	let barWidth = 0
-	if(data.income.length <= 20){
-		barWidth = 28;
-	}else{
-		barWidth = 28-(data.income.length/2+1);
-	}
+	if(data.income.length <= 20) barWidth = 28;
+	else barWidth = 28-(data.income.length/2+1);	
 	
 	//기울기 설정
 	let xAngle = 0;
-	if(barWidth > 11){
-		xAngle = 0;
-	}
-	else if(barWidth > 1){
-		xAngle = 30;
-	}else if(barWidth > -3){
-		xAngle = 70;
-	}else{
-		xAngle = 90;
-	}
+	if(barWidth > 11)		xAngle = 0;
+	else if(barWidth > 1)	xAngle = 30;
+	else if(barWidth > -3)	xAngle = 70;
+	else 					xAngle = 90;	
 	if(barWidth <= 3) barWidth = 5;
 	
 	let plot = $.jqplot('monthIEChart', [data.income, data.expense, data.amount], {
-    	width: width,
+    	//width: width,
     	height: 550,
     	
     	animate: true,
@@ -283,37 +262,37 @@ function fnMonthIEChartDraw(data, width){
 		mIE.lineCnt = 12;
 		mIE.stdDate = isDate.today();
 		mIE.chartData = fnMonthIEChartProcess(mIE.orgData);
-    	fnMonthIEChartDraw(mIE.chartData, width);    	
+    	fnMonthIEChartDraw(mIE.chartData);
     }).attr("title", "그래프 새로고침");
     
 	//이전으로가기 버튼
     let $prevBtn = $("<button>").addClass("btn-gray-icon trs mgbottom3").text("<").off().on("click", function(){
-    	fnChangeChartDraw(width, 0, data.categories[0]+"-01");
+    	fnChangeChartDraw(0, data.categories[0]+"-01");
     }).attr("title", data.categories[0] + "월 이전 통계");
 	
 	//이후으로가기 버튼
     let $nextBtn = $("<button>").addClass("btn-gray-icon trs mgbottom3").text(">").off().on("click", function(){
-    	fnChangeChartDraw(width, 0, cfnDateCalc(data.categories[data.categories.length-1]+"-01", "month", mIE.lineCnt-1));
+    	fnChangeChartDraw(0, cfnDateCalc(data.categories[data.categories.length-1]+"-01", "month", mIE.lineCnt-1));
     }).attr("title", data.categories[data.categories.length-1] + "월 이후 통계");  	
 	
 	//그래프 범위 증가
     let $minusBtn = $("<button>").addClass("btn-gray-icon trs mgbottom3").text("-").off().on("click", function(){
-    	if(mIE.firstDate < data.categories[0]) fnChangeChartDraw(width, 12);
+    	if(mIE.firstDate < data.categories[0]) fnChangeChartDraw(12);
     }).attr("title", "그래프 범위 증가");
 	
   	//그래프 범위 증가
     let $minusMaxBtn = $("<button>").addClass("btn-gray-icon trs mgbottom3").text("--").off().on("click", function(){
-    	if(mIE.firstDate < data.categories[0]) fnChangeChartDraw(width, 12);
+    	if(mIE.firstDate < data.categories[0]) fnChangeChartDraw(12);
     }).attr("title", "그래프 범위 증가");
   	
 	//그래프 범위 감소
     let $plusBtn = $("<button>").addClass("btn-gray-icon trs mgbottom3").text("+").off().on("click", function(){
-    	if(mIE.lineCnt > mIE.minLineCnt) fnChangeChartDraw(width, -4);    	
+    	if(mIE.lineCnt > mIE.minLineCnt) fnChangeChartDraw(-4);    	
     }).attr("title", "그래프 범위 감소");	
 	
   	//그래프 범위 감소
     let $plusMaxBtn = $("<button>").addClass("btn-gray-icon trs mgbottom3").text("++").off().on("click", function(){
-    	if(mIE.lineCnt > mIE.minLineCnt) fnChangeChartDraw(width, -12);    	
+    	if(mIE.lineCnt > mIE.minLineCnt) fnChangeChartDraw(-12);    	
     }).attr("title", "그래프 범위 감소");  	
     
     let $btns = $("<div>").addClass("monthIEBtns");
@@ -334,48 +313,63 @@ function fnSelectMonthIE(idx){
 }
 
 //그래프 재 생성
-function fnChangeChartDraw(width, count, stdDate){	
+function fnChangeChartDraw(count, stdDate){	
 	if(stdDate !== null || stdDate !== undefined) mIE.stdDate = stdDate;	
 	
 	mIE.lineCnt += count;
 	cfnCmmAjax("/ledger/selectLedgerStats", {type:"monthIE", monthCnt: mIE.lineCnt, stdate:mIE.stdDate}).done(function(data){    			
 		mIE.chartData = fnMonthIEChartProcess(data);
-		fnMonthIEChartDraw(mIE.chartData, width);    			
+		fnMonthIEChartDraw(mIE.chartData);    			
 	});
 }
 
 
 /*월별 목적별 통계*/
-function fnMonthPurChart(data){
-	
-	//$("#monthIEChart").hide();
-	$("#monthPurChart").empty();	
+function fnMonthPurChart(data){	
+	$("#monthPurChart").empty().show();
 	
 	//데이터 가공
-	let list = fnMonthPurChartProcess(data);
-	let width = window.outerWidth-45 < 1400 ? 1370 : window.outerWidth-45;
-	
-	//리사이즈 설정	
+	let list = fnMonthPurChartProcess(data, "purpose");
 	
 	//그래프 그리기	 
-    fnMonthPurChartDraw(list, width);
+    fnMonthPurChartDraw(list, "monthPurChart");
 	
-	//그래프바 클릭 이벤트   	 
+	//그래프바 클릭 이벤트
+    $("#monthPurChart").off().on("jqplotClick", function(ev, gridpos, datapos, neighbor, plot){
+    	if(neighbor !== null){
+    		$("#monthPurDtlChart").offset({top: 127, left: 700});
+    	
+    		console.log(neighbor.data[2]);
+    		let param = {type:"monthPurDtl", stdate:mIE.selectedDate+"-01", purSeq:neighbor.data[2]};
+    		cfnCmmAjax("/ledger/selectLedgerStats", param).done(function(data){    			
+    			fnMonthPurDtlChart(data);
+    		});	
+    	}
+    });
+}
+
+/*월별 상세 목적별 통계*/
+function fnMonthPurDtlChart(data){	
+	$("#monthPurDtlChart").empty().show();		
+	//데이터 가공
+	let list = fnMonthPurChartProcess(data, "purDetail");	
+	//그래프 그리기	 
+    fnMonthPurChartDraw(list, "monthPurDtlChart");   	 
 }
 
 //목적 그래프 데이터 가공
-function fnMonthPurChartProcess(data){	
+function fnMonthPurChartProcess(data, purpose){
 	let list = new Array();
-	for(let i=0; i<data.list.length; i++){		
-		list.push([data.list[i].purpose, data.list[i].money]);
-	}
+	if(purpose===undefined) purpose = "purpose"
+	for(let i=0; i<data.list.length; i++){
+		list.push([data.list[i][purpose], data.list[i].money, data.list[i].purSeq]);
+	}	
 	return list;
 }
 
 //목적 그래프 그리기
-function fnMonthPurChartDraw(list, width){
-	let plotPur = jQuery.jqplot("monthPurChart", [list],{
-		width: width,
+function fnMonthPurChartDraw(list, target){
+	let plotPur = jQuery.jqplot(target, [list],{		
     	height: 550,
 		seriesDefaults: {
 			shadow: true,
@@ -385,28 +379,32 @@ function fnMonthPurChartDraw(list, width){
 	            startAngle: -30,
 	            showDataLabels: true,	            
 	            dataLabels: 'value',	            
-	            totalLabel: true          
+	            totalLabel: true
 	          }
 		}, 
 		grid: {
             drawBorder: true,           
-            background: "rgba(76, 76, 76, .6)",
+            background: "rgba(76, 76, 76, .8)",
             shadow: false,
             borderWidth: 1,
             drawGridlines:true,
-            gridLineColor:"rgba(76, 76, 76, .7)"
+            gridLineColor:"rgba(76, 76, 76, .9)"
         },       
         legend: {
     		show: true,
     		placement: "insideGrid",
-    		location: "ne"    		   
-    	}
-        
+    		location: "ne",
+    		marginTop: 50
+    	}        
     });
+	
+	$("#"+target).append($("<button>").addClass("btn-gray-icon-close monthPurCloseBtn")
+			.attr("title", "닫기").on("click", function(){
+		$("#"+target).offset({top: 0, left: 0}).hide().empty();
+		if(target === "monthPurChart") $("#monthPurDtlChart").offset({top: 0, left: 0}).hide().empty();
+	}));
 }
 </script>
-
 <div id="monthIEChart"></div>
-<div id="monthPurChart" class="dialog-sm"></div>
-
-
+<div id="monthPurChart" class="dialog wth5 hht5 hide"></div>
+<div id="monthPurDtlChart" class="dialog wth5 hht5 hide"></div>

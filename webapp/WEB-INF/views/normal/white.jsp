@@ -22,6 +22,8 @@
 <script type="text/javascript" src="${contextPath}/resources/jsgrid/js/jsgrid.js"></script>
 <script type="text/javascript" src="${contextPath}/resources/wVali/js/wVali.js"></script>
 <script type="text/javascript" src="${contextPath}/resources/common/js/cmmCode.js"></script>
+<script type="text/javascript" src="${contextPath}/resources/common/js/cmmForm.js"></script>
+<script type="text/javascript" src="${contextPath}/resources/common/js/cmmAjax.js"></script>
 <script type="text/javascript" src="${contextPath}/resources/common/js/common.js"></script>
 
 </head>

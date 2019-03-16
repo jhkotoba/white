@@ -32,7 +32,7 @@ function fnGrid(data){
 		fields: [
 			{ align:"center", width: "5%",
 				headerTemplate : function(){
-					return $("<button>").attr("id", "bankAdd").addClass("btn-gray trs sm").text("+").on("click", function(){
+					return $("<button>").attr("id", "bankAdd").addClass("btn-gray trs size-sm").text("+").on("click", function(){
 						bankList.push({bankAccount:"", bankOrder: "", bankSeq:new Date().getTime(), bankName:"", bankUseYn:"N", state:"insert"});		
 						bankNoIdx = cfnNoIdx(bankList, "bankSeq");
 						$("#bankList").jsGrid("refresh");
@@ -220,7 +220,7 @@ function fnGrid(data){
 			$el = $("<input>").attr("type", "text").addClass("input-gray wth100p").val(item[name]);
 			break;		
 		case "button" :
-			$el = $("<button>").addClass("btn-gray trs sm").val(item[name]).text(item[name]);
+			$el = $("<button>").addClass("btn-gray trs size-sm").val(item[name]).text(item[name]);
 			break;
 		}
 		$el.attr("name", "sync").data("bankSeq", item.bankSeq).data("name", name);

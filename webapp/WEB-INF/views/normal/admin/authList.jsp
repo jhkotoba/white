@@ -34,7 +34,7 @@ function fnJsGrid(data){
 		fields: [
 			{ align:"center", width: "5%",
 				headerTemplate : function(){
-					return $("<button>").attr("id", "add").addClass("btn-gray trs sm").text("+").on("click", function(){
+					return $("<button>").attr("id", "add").addClass("btn-gray trs size-sm").text("+").on("click", function(){
 						authList.push({authCmt:"", authOrder: "", authNmSeq:new Date().getTime(), authNm:"", state:"insert"});
 						authNoIdx = cfnNoIdx(authList, "authNmSeq");
 						$("#authList").jsGrid("refresh");

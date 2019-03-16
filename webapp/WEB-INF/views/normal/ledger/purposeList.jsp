@@ -47,7 +47,7 @@ function fnPurGrid(data){
 		fields: [			
 			{ align:"center", width: "8%",
 				headerTemplate : function(){
-					return $("<button>").attr("id", "purAdd").addClass("btn-gray trs sm").text("+").on("click", function(){
+					return $("<button>").attr("id", "purAdd").addClass("btn-gray trs size-sm").text("+").on("click", function(){
 						data.purList.push({purpose: "", purOrder:"", purSeq: new Date().getTime(), state:"insert"});		
 						purNoIdx = cfnNoIdx(data.purList, "purSeq");
 						$("#purList").jsGrid("refresh");
@@ -109,7 +109,7 @@ function fnPurGrid(data){
 					if(item.state === "insert"){
 						return "";
 					}else{
-						return $("<button>").addClass("btn-gray sm").text(">").data("purSeq", item.purSeq)
+						return $("<button>").addClass("btn-gray size-sm").text(">").data("purSeq", item.purSeq)
 							.attr("name", "svb").on("click", function(){						
 							
 							$("button[name='svb']").each(function(i, e){
@@ -208,7 +208,7 @@ function fnPurGrid(data){
 			fields: [
 				{ align:"center", width: "8%",
 					headerTemplate : function(){
-						return $("<button>").attr("id", "purDtlAdd").addClass("btn-gray trs sm").text("+").on("click", function(){
+						return $("<button>").attr("id", "purDtlAdd").addClass("btn-gray trs size-sm").text("+").on("click", function(){
 							data.purDtlList.push({purSeq: refPurSeq, purDetail:"", purDtlOrder:"", purDtlSeq: new Date().getTime(), statsYn:"Y", state:"insert"});	
 							purDtlNoIdx = cfnNoIdx(data.purDtlList, "purDtlSeq");
 							$("#purDtlList").jsGrid("refresh");
@@ -375,7 +375,7 @@ function fnPurGrid(data){
 			}		
 			break;
 		case "button":			
-			$el = $("<button>").addClass("btn-gray trs sm").val(item[name]).text(item[name]);
+			$el = $("<button>").addClass("btn-gray trs size-sm").val(item[name]).text(item[name]);
 			break;
 		}
 		

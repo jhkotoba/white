@@ -421,13 +421,19 @@ public class LedgerService {
 			result.put("list", ledgerMapper.selectLedgerMonthIEStats(dateList));		
 			break;
 		case "monthPur":			
-			param.put("startDate", White.getFirstDate(param.getString("stdate")+" 00:00:00"));
-			param.put("endDate", White.getLastDate(param.getString("stdate")+" 23:59:59"));
+			param.put("startDate", White.getFirstDate(param.getString("stdate"))+" 00:00:00");
+			param.put("endDate", White.getLastDate(param.getString("stdate"))+" 23:59:59");
 			
 			if(param.getInt("inEx") == 0) param.put("purType", "LP001");
 			else param.put("purType", "LP002");
 			
-			result.put("list", ledgerMapper.selectLedgerMonthPurStats(param));			
+			result.put("list", ledgerMapper.selectLedgerMonthPurStats(param));
+			break;
+		case "monthPurDtl":
+			param.put("startDate", White.getFirstDate(param.getString("stdate"))+" 00:00:00");
+			param.put("endDate", White.getLastDate(param.getString("stdate"))+" 23:59:59");
+			
+			result.put("list", ledgerMapper.selectLedgerMonthPurDtlStats(param));
 			break;
 		}
 		return result;		

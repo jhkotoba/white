@@ -38,7 +38,7 @@ function fnNavJsGrid(data){
 		fields: [			
 			{ align:"center", width: "6%",
 				headerTemplate : function(){
-					return $("<button>").attr("id", "navAdd").addClass("btn-gray trs sm").text("+").on("click", function(){
+					return $("<button>").attr("id", "navAdd").addClass("btn-gray trs size-sm").text("+").on("click", function(){
 						data.navList.push({navAuthNmSeq: "", navNm: "", navOrder:"", navSeq: new Date().getTime(), navShowYn:"N", navUrl:"", state:"insert"});		
 						navNoIdx = cfnNoIdx(data.navList, "navSeq");
 						$("#navMenuList").jsGrid("refresh");
@@ -110,7 +110,7 @@ function fnNavJsGrid(data){
 					if(item.state === "insert"){
 						return "";
 					}else{
-						return $("<button>").addClass("btn-gray sm").text(">").data("navSeq", item.navSeq)
+						return $("<button>").addClass("btn-gray size-sm").text(">").data("navSeq", item.navSeq)
 							.attr("name", "svb").on("click", function(){						
 							
 							$("button[name='svb']").each(function(i, e){
@@ -217,7 +217,7 @@ function fnNavJsGrid(data){
 			fields: [
 				{ align:"center", width: "7%",
 					headerTemplate : function(){
-						return $("<button>").attr("id", "sideAdd").addClass("btn-gray trs sm").text("+").on("click", function(){
+						return $("<button>").attr("id", "sideAdd").addClass("btn-gray trs size-sm").text("+").on("click", function(){
 							data.sideList.push({navSeq: refNavSeq, sideAuthNmSeq:"", sideNm:"", sideOrder:"", sideSeq: new Date().getTime(), sideShowYn:"N", sideUrl:"", state:"insert"});		
 							sideNoIdx = cfnNoIdx(data.sideList, "sideSeq");
 							$("#sideMenuList").jsGrid("refresh");
@@ -390,7 +390,7 @@ function fnNavJsGrid(data){
 			}
 			break;			
 		case "button" :
-			$el = $("<button>").addClass("btn-gray trs sm").val(item[name]).text(item[name]);
+			$el = $("<button>").addClass("btn-gray trs size-sm").val(item[name]).text(item[name]);
 			break;
 		}
 		

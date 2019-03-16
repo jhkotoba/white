@@ -520,6 +520,7 @@
 	<select id="selectLedgerMonthPurStats" resultType="whiteMap" parameterType="whiteMap">
 		SELECT
 			p.purpose         	AS purpose
+			,p.pur_seq          AS purSeq
 			,ABS(SUM(mr.money)) AS money		
 		FROM money_record_re mr
 		INNER JOIN purpose p
@@ -531,9 +532,27 @@
 		AND mr.record_date   <![CDATA[ <= ]]> #{endDate}
 		AND pd.stats_yn = 'Y'
 		AND p.pur_type = #{purType}
-		GROUP BY mr.pur_seq
+		GROUP BY mr.pur_seq, p.pur_seq
 		ORDER BY money DESC
 	</select>
+	
+	<!-- 가계부 통계 월 목적별 수입지출 -->
+	<select id="selectLedgerMonthPurDtlStats" resultType="whiteMap" parameterType="whiteMap">
+		SELECT
+			pd.pur_detail       AS purDetail			
+			,ABS(SUM(mr.money)) AS money		
+		FROM money_record_re mr		
+		INNER JOIN purpose_detail pd
+			ON pd.pur_dtl_seq = mr.pur_dtl_seq	
+		WHERE mr.user_seq = #{userSeq}
+		AND mr.pur_seq = #{purSeq}
+		AND mr.record_date   <![CDATA[ >= ]]> #{startDate}
+		AND mr.record_date   <![CDATA[ <= ]]> #{endDate}
+		AND pd.stats_yn = 'Y'
+		GROUP BY pd.pur_detail
+		ORDER BY money DESC
+	</select>
+	
 	
 
 </mapper>
