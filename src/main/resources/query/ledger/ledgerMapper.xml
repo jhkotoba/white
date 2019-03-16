@@ -22,8 +22,7 @@
 			pur_dtl_seq AS purDtlSeq,
 			pur_seq AS purSeq,
 			pur_dtl_order AS purDtlOrder,
-			pur_detail AS purDetail,
-			stats_yn AS statsYn		
+			pur_detail AS purDetail
 		FROM purpose_detail
 		WHERE user_seq = #{userSeq}
 		ORDER BY pur_dtl_order	
@@ -153,12 +152,6 @@
 		<foreach collection="list" item="item">
 			WHEN pur_dtl_seq = #{item.purDtlSeq} THEN #{item.purDetail}
 		</foreach>		
-		END,
-		stats_yn = 
-		CASE		
-		<foreach collection="list" item="item">
-			WHEN pur_dtl_seq = #{item.purDtlSeq} THEN #{item.statsYn}
-		</foreach>
 		END
 		WHERE pur_dtl_seq IN 
 		<foreach collection="list" item="item" separator="," open="(" close=")">
@@ -172,15 +165,13 @@
 			pur_seq,	
 			user_seq,	
 			pur_dtl_order,
-			pur_detail,
-			stats_yn
+			pur_detail
 		)VALUES
 		<foreach collection="list" item="item" separator="),(" open="(" close=")">
 			#{item.purSeq}, 
 			#{item.userSeq}, 
 			#{item.purDtlOrder},
-			#{item.purDetail},			
-			#{item.statsYn}	
+			#{item.purDetail}
 		</foreach>	
 	</insert>
 	
@@ -285,6 +276,7 @@
 			bank_seq,
 			move_seq,
 			money,
+			stats_yn,
 			reg_date
 		)VALUES
 		<foreach collection="list" item="item" separator="),(" open="(" close=")">
@@ -309,8 +301,9 @@
 				<otherwise>				
 					#{item.moveSeq},
 				</otherwise>
-			</choose>			 
-			#{item.money},		
+			</choose>						 
+			#{item.money},	
+			#{item.statsYn},	
 			now()
 		</foreach>	
 	</insert>	
@@ -349,6 +342,7 @@
 			rec.bank_seq AS bankSeq,
 			IFNULL(rec.move_seq, '') AS moveSeq,
 			rec.money,
+			rec.stats_yn AS statsYn,
 			IFNULL(pur.purpose, 'move')	AS purpose,
 			IFNULL(purDtl.pur_detail,'') AS purDetail,
 			IFNULL(bank.bank_name, 'cash')	AS bankName,
@@ -431,7 +425,13 @@
 		<foreach collection="list" item="item">
 			WHEN record_seq = #{item.recordSeq} THEN #{item.money}
 		</foreach>		
-		END		
+		END,
+		stats_yn = 
+		CASE		
+		<foreach collection="list" item="item">
+			WHEN record_seq = #{item.recordSeq} THEN #{item.statsYn}
+		</foreach>		
+		END			
 		WHERE record_seq IN 
 		<foreach collection="list" item="item" separator="," open="(" close=")">
 			#{item.recordSeq}
@@ -474,8 +474,7 @@
 			ON p.pur_seq = mr.pur_seq
 		INNER JOIN purpose_detail pd
 			ON pd.pur_dtl_seq = mr.pur_dtl_seq
-		WHERE mr.user_seq = #{userSeq}
-		AND pd.stats_yn = 'Y'
+		WHERE mr.user_seq = #{userSeq}		
 		AND p.pur_type != 'LP003'   
 		AND mr.record_date  <![CDATA[ < ]]> #{startDate}
 	</select>
@@ -497,8 +496,8 @@
 					ON p.pur_seq = mr.pur_seq
 		    	INNER JOIN purpose_detail pd
 		      		ON pd.pur_dtl_seq = mr.pur_dtl_seq			
-		    	WHERE mr.user_seq = #{item.userSeq}
-		    	AND pd.stats_yn = 'Y'
+		    	WHERE mr.user_seq = #{item.userSeq}	
+		    	AND mr.stats_yn = 'Y'	    	
 		    	AND p.pur_type != 'LP003'   
 				AND mr.record_date   <![CDATA[ >= ]]>  #{item.startDate}
 				AND mr.record_date   <![CDATA[ <= ]]>  #{item.endDate}
@@ -530,7 +529,7 @@
 		WHERE mr.user_seq = #{userSeq}
 		AND mr.record_date   <![CDATA[ >= ]]> #{startDate}
 		AND mr.record_date   <![CDATA[ <= ]]> #{endDate}
-		AND pd.stats_yn = 'Y'
+		AND mr.stats_yn = 'Y'
 		AND p.pur_type = #{purType}
 		GROUP BY mr.pur_seq, p.pur_seq
 		ORDER BY money DESC
@@ -548,7 +547,7 @@
 		AND mr.pur_seq = #{purSeq}
 		AND mr.record_date   <![CDATA[ >= ]]> #{startDate}
 		AND mr.record_date   <![CDATA[ <= ]]> #{endDate}
-		AND pd.stats_yn = 'Y'
+		AND mr.stats_yn = 'Y'
 		GROUP BY pd.pur_detail
 		ORDER BY money DESC
 	</select>

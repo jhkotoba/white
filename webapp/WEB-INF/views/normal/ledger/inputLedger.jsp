@@ -17,7 +17,7 @@ function inputLedger(data){
 	
 	data.bankList.unshift({bankAccount: "", bankName: "현금", bankOrder: 0, bankSeq: 0, bankUseYn: "N"});	
 	insertList.push({recordDate: isDate.today()+" "+isTime.curTime(), position:"", content:"",
-		purSeq: "", purDtlSeq: "", bankSeq: "", moveSeq: "", money: ""}
+		purSeq: "", purDtlSeq: "", bankSeq: "", moveSeq: "", money: "", statsYn: "Y"}
 	);
 	
 	let fieldList = [
@@ -28,7 +28,7 @@ function inputLedger(data){
 					.text("+")
 					.on("click", function(){
 						insertList.push({recordDate: isDate.today()+" "+isTime.curTime(), position:"",
-							content:"", purSeq: "",purDtlSeq: "", bankSeq: "", moveSeq: "", money: ""}
+							content:"", purSeq: "",purDtlSeq: "", bankSeq: "", moveSeq: "", money: "", statsYn: "Y"}
 						);
 						$tbody.empty().append(
 							$("<div>").append(fnCreateRow())
@@ -66,12 +66,12 @@ function inputLedger(data){
 				return fnCreateCmmInput($("<input>"), "position", item);				
 			}
 		},		
-		{title : "내용*",		name:"content", 	width : "16%", align:"center", button:true,
+		{title : "내용*",		name:"content", 	width : "15%", align:"center", button:true,
 			itemTemplate: function(item){
 				return fnCreateCmmInput($("<input>"), "content", item);
 			}
 		},
-		{title : "목적*",		name:"purSeq", 		width : "13%", align:"center", button:true,
+		{title : "목적*",		name:"purSeq", 		width : "12%", align:"center", button:true,
 			itemTemplate: function(item){
 				return fnCreateCmmSelect($("<select>"), "purSeq", item);
 			}
@@ -81,16 +81,24 @@ function inputLedger(data){
 				return fnCreateCmmSelect($("<select>"), "purDtlSeq", item);
 			}
 		},		
-		{title : "사용수단*",	name:"bankSeq", 	width : "20%", align:"center", button:true,
+		{title : "사용수단*",	name:"bankSeq", 	width : "19%", align:"center", button:true,
 			itemTemplate: function(item){
 				return fnCreateCmmSelect($("<span>"), "bankSeq", item);
 			}
 		},	
-		{title : "수입 지출*",	name:"money", 		width : "11%", align:"center",
+		{title : "수입 지출*",	name:"money", 		width : "10%", align:"center",
 			itemTemplate: function(item){
 				return fnCreateMoney($("<span>"), purLp[item.purSeq], item);
 			}
-		}		
+		},
+		{title : "통계 표시",	name:"statsYn", 		width : "4%", align:"center",
+			itemTemplate: function(item, idx){
+				return $("<button>").addClass("btn-gray trs").text("Y").val("Y").on("click", function(){
+					if($(this).val() === "Y"){ $(this).val("N").text("N"); item.statsYn = this.value;}
+					else{ 					   $(this).val("Y").text("Y"); item.statsYn = this.value;}					
+				});				
+			}
+		}	
 	]
 	
 	let $header = $("<div>").append(fnCreateHeader());	
@@ -140,8 +148,8 @@ function inputLedger(data){
 				}
 				break;
 			}
-		});
-		
+		});	
+	
 		if(isVali && confirm("입력한 내용을 저장 하시겠습니까?")){			
 			for(let i=0; i<insertList.length; i++){
 				insertList[i].money =  insertList[i].money.replace(/,/gi, "");
@@ -165,7 +173,7 @@ function inputLedger(data){
 
 					insertList = new Array();
 					insertList.push({recordDate: isDate.today()+" "+isTime.curTime(), position:"", content:"",
-						purSeq: "", purDtlSeq: "", bankSeq: "", moveSeq: "", money: ""}
+						purSeq: "", purDtlSeq: "", bankSeq: "", moveSeq: "", money: "", statsYn:"Y"}
 					);						
 					$tbody.empty().append($("<div>").append(fnCreateRow()));					
 				}else{

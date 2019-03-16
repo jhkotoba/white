@@ -209,7 +209,7 @@ function fnPurGrid(data){
 				{ align:"center", width: "8%",
 					headerTemplate : function(){
 						return $("<button>").attr("id", "purDtlAdd").addClass("btn-gray trs size-sm").text("+").on("click", function(){
-							data.purDtlList.push({purSeq: refPurSeq, purDetail:"", purDtlOrder:"", purDtlSeq: new Date().getTime(), statsYn:"Y", state:"insert"});	
+							data.purDtlList.push({purSeq: refPurSeq, purDetail:"", purDtlOrder:"", purDtlSeq: new Date().getTime(), state:"insert"});	
 							purDtlNoIdx = cfnNoIdx(data.purDtlList, "purDtlSeq");
 							$("#purDtlList").jsGrid("refresh");
 						});					
@@ -259,12 +259,13 @@ function fnPurGrid(data){
 					itemTemplate: function(value, item){													
 						return fnRefreshedSync(item, "purDetail", "purDtlList", "input");
 					}
-				},
+				}
+				/* ,
 				{ title:"통계포함",	name:"statsYn",	type:"text", align:"center", width: "8%",
 					itemTemplate: function(value, item){
 						return fnRefreshedSync(item, "statsYn", "purDtlList", "button");
 					}				
-				},
+				}, */
 			],
 			onRefreshed: function() {
 				let $gridData = $("#purDtlList .jsgrid-grid-body tbody");

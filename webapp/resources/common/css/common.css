@@ -1,9 +1,14 @@
 
+/*common*/
+.table-header th{ height:38px; }
+.table-body td{ height:38px; }
+
 /*jsGrid ¼³Á¤ */
 .jsgrid-grid-header, .jsgrid-grid-body{overflow: auto;}
 .jsgrid-cell > select { width: 100%; padding: .6em .5em;}
-.table-header th{ height:38px; }
-.table-body td{ height:38px; }
+.jsgrid-header-row > th { height:38px; }
+.jsgrid-row > td { height:38px; }
+.jsgrid-alt-row > td { height:38px; }
 
 /* jsGrid paging */
 .pager {margin: 10px 0; text-align: center;}

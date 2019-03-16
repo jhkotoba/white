@@ -248,12 +248,12 @@ function ledgerList(data){
 					return fnCreateCmmInput($("<input>").data("name", "recordDate"), "recordDate", item, idx);
 				}
 			},
-			{title: "위치", 		name: "position", 	width: "17%",
+			{title: "위치", 		name: "position", 	width: "16%",
 				itemTemplate: function(item, idx){
 					return fnCreateCmmInput($("<input>").data("name", "position"), "position", item, idx);
 				}
 			},
-			{title: "내용", 		name: "content", 	width: "21%",
+			{title: "내용", 		name: "content", 	width: "18%",
 				itemTemplate: function(item, idx){
 					return fnCreateCmmInput($("<input>").data("name", "content"), "content", item, idx);
 				}
@@ -309,6 +309,15 @@ function ledgerList(data){
 			{title: "수입/지출", 	name: "money", 		width: "10%",
 				itemTemplate: function(item, idx){
 					return fnCreateMoney($("<span>"), purLp[item.purSeq], item, idx);
+				}
+			},
+			{title : "통계 표시",	name:"statsYn", 		width : "4%", align:"center",
+				itemTemplate: function(item, idx){
+					return $("<button>").addClass("btn-gray trs").text(item.statsYn).val(item.statsYn).attr("name","sync"+idx)
+						.on("click", function(){
+						if($(this).val() === "Y"){ $(this).val("N").text("N"); item.statsYn = this.value; fnTypeSync(this, "statsYn", item, idx);}
+						else{ 					   $(this).val("Y").text("Y"); item.statsYn = this.value; fnTypeSync(this, "statsYn", item, idx);}					
+					});				
 				}
 			}
 		];
@@ -380,6 +389,8 @@ function ledgerList(data){
 			}else if(String(item.bankSeq) !== String(cloneList[idx].bankSeq)){
 				return false;
 			}else if(String(item.money).replace(/,/g,"") !== String(cloneList[idx].money).replace(/,/g,"")){
+				return false;
+			}else if(String(item.statsYn) !== String(cloneList[idx].statsYn)){
 				return false;
 			}else if(String(item.moveSeq) !== String(cloneList[idx].moveSeq)){
 				return false;

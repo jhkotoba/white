@@ -140,6 +140,7 @@ CREATE TABLE money_record_re
 	bank_seq int,
 	move_seq int,
 	money int NOT NULL,
+	stats_yn varchar(1) DEFAULT 'Y' NOT NULL,
 	reg_date datetime NOT NULL,
 	PRIMARY KEY (record_seq),
 	UNIQUE (record_seq)
@@ -178,7 +179,6 @@ CREATE TABLE purpose_detail
 	user_seq int NOT NULL,
 	pur_dtl_order int NOT NULL,
 	pur_detail varchar(20) NOT NULL,
-	stats_yn varchar(1) NOT NULL,
 	PRIMARY KEY (pur_dtl_seq),
 	UNIQUE (pur_dtl_seq)
 );
