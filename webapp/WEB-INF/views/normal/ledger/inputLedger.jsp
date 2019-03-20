@@ -52,7 +52,7 @@ function inputLedger(data){
 		{title : "날짜*",		name:"recordDate",	width : "11%", align:"center", button:true,
 			itemTemplate: function(item){
 				let $input = $("<input>");
-				return fnCreateCmmInput($input, "recordDate", item).datepicker({
+				return fnCreateInput($input, "recordDate", item).datepicker({
 					language: 'ko',
 					timepicker: true,
 					onSelect: function() {
@@ -63,27 +63,27 @@ function inputLedger(data){
 		},
 		{title : "위치",		name:"position", 	width : "14%", align:"center", button:true,
 			itemTemplate: function(item){
-				return fnCreateCmmInput($("<input>"), "position", item);				
+				return fnCreateInput($("<input>"), "position", item);				
 			}
 		},		
 		{title : "내용*",		name:"content", 	width : "15%", align:"center", button:true,
 			itemTemplate: function(item){
-				return fnCreateCmmInput($("<input>"), "content", item);
+				return fnCreateInput($("<input>"), "content", item);
 			}
 		},
 		{title : "목적*",		name:"purSeq", 		width : "12%", align:"center", button:true,
 			itemTemplate: function(item){
-				return fnCreateCmmSelect($("<select>"), "purSeq", item);
+				return fnCreateSelect($("<select>"), "purSeq", item);
 			}
 		},		
 		{title : "상세목적*",	name:"purDtlSeq", 	width : "11%", align:"center",
 			itemTemplate: function(item){
-				return fnCreateCmmSelect($("<select>"), "purDtlSeq", item);
+				return fnCreateSelect($("<select>"), "purDtlSeq", item);
 			}
 		},		
 		{title : "사용수단*",	name:"bankSeq", 	width : "19%", align:"center", button:true,
 			itemTemplate: function(item){
-				return fnCreateCmmSelect($("<span>"), "bankSeq", item);
+				return fnCreateSelect($("<span>"), "bankSeq", item);
 			}
 		},	
 		{title : "수입 지출*",	name:"money", 		width : "10%", align:"center",
@@ -107,7 +107,7 @@ function inputLedger(data){
 	$("#ledgerList").append($header);
 	$("#ledgerList").append($tbody);
 	
-	$("#save").on("click", function(){
+	$("#saveBtn").on("click", function(){
 		//유효성 검사
 		let isVali = true;
 		$("[name='sync']").each(function(i, e){
@@ -177,8 +177,7 @@ function inputLedger(data){
 					);						
 					$tbody.empty().append($("<div>").append(fnCreateRow()));					
 				}else{
-					alert("저장에 실패하였습니다. error:"+data);
-					console.log("error:"+data);					
+					alert("저장에 실패하였습니다. error:"+data);	
 					for(let i=0; i<insertList.length; i++){						
 						insertList[i].money = cfnSetComma(String(Math.abs(Number(insertList[i].money))));
 					}					
@@ -262,162 +261,162 @@ function inputLedger(data){
 	}
 	
 	//기본 input 생성
-	function fnCreateCmmInput($input, name, item){		
+	function fnCreateInput($input, name, item){		
 		return $input.addClass("input-gray wth80p").attr("name", "sync").data("name", name).on("change", function(){
 			item[name] = this.value;
 		}).val(item[name]);
 	}
 	
 	//기본 select 생성
-	function fnCreateCmmSelect($select, name, item){		
+	function fnCreateSelect($select, name, item){		
 		switch(name){	
-		case "purSeq" : 
-			$option = $("<option>").text("목적선택").val("");
-			$select.addClass("select-gray wth80p").attr("name", "sync").data("name", name).append($option);
-			
-			for(let i=0; i<data.purList.length; i++){
-				$option = $("<option>").val(data.purList[i].purSeq).text(data.purList[i].purpose).data("purType", data.purList[i].purType);			
-				if(Number(item.purSeq) === Number(data.purList[i].purSeq)){
-					$option.prop("selected", true);
-				}			
-				$select.append($option);
-			}
-			return $select.on("change", function(e){
-				item.purSeq = this.value;
-				$dtlSelect = $(this).closest("td").next().children().first();
-				$dtlSelect.empty();					
-				
-				$option = $("<option>").text("상세목적 선택").val("");
-				$dtlSelect.append($option);
-			
-				for(let i=0; i<data.purDtlList.length; i++){
-					if(Number(data.purDtlList[i].purSeq) === Number(item.purSeq)){
-						$option = $("<option>").val(data.purDtlList[i].purDtlSeq)
-							.text(data.purDtlList[i].purDetail);		
-						$dtlSelect.append($option);
-					}
-				}
-				
-				$(this).children().each(function(idx, el){
-					if(Number(item.purSeq) === Number(el.value)){							
-						let $moveSp = $(this).closest("td").next().next().children().first();
-						$moveSp.empty().removeClass();
-						
-						if($(el).data("purType") === "LP003"){								
-							let $select = $("<select>").addClass("select-gray wth50p").attr("name", "sync").data("name", "bankSeq");								
-							$select.append($("<option>").text("보낸곳 선택").val(""));								
-							$select = fnCreateOptionList($select, data.bankList, item, "bankSeq", "bankSeq", "bankName", "bankAccount");
-							
-							$select.on("change", function(){
-								item.bankSeq = this.value;
-							});				
-							$moveSp.append($select);
-							
-							$select = $("<select>").addClass("select-gray wth50p").attr("name", "sync").data("name", "moveSeq");								
-							$select.append($("<option>").text("받는곳 선택").val(""));
-							
-							$select = fnCreateOptionList($select, data.bankList, item, "bankSeq", "moveSeq", "bankName", "bankAccount");
-							
-							$select.on("change", function(){
-								item.moveSeq = this.value;
-							});
-							$moveSp.append($select).addClass("wth90p inbk");
-						}else{
-							//사용수단
-							let $select = $("<select>").addClass("select-gray wth90p").attr("name", "sync").data("name", "bankSeq");								
-							$select.append($("<option>").text("사용수단 선택").val(""));								
-							$select = fnCreateOptionList($select, data.bankList, item, "bankSeq", "bankSeq", "bankName", "bankAccount");
-							
-							$select.on("change", function(){
-								item.bankSeq = this.value;
-							});	
-							item.moveSeq = "";
-							$moveSp.append($select).addClass("wth90p");								
-						}
-						
-						let $moneySp = $(this).closest("td").next().next().next().children().first();
-						$moneySp.empty().removeClass();
-						fnCreateMoney($moneySp, purLp[item.purSeq], item);
-						return false;
-					}
-				});
-			});
-			break;
-		case "purDtlSeq":			
-			$option = $("<option>").text("상세목적 선택").val("");
-			$select.addClass("select-gray wth80p").attr("name", "sync").append($option);
-			for(let i=0; i<data.purDtlList.length; i++){
-				if(Number(data.purDtlList[i].purSeq) === Number(item.purSeq)){
-					$option = $("<option>").val(data.purDtlList[i].purDtlSeq)
-						.text(data.purDtlList[i].purDetail)
-					
-					if(Number(item.purDtlSeq) === Number(data.purDtlList[i].purDtlSeq)){
-						$option.prop("selected", true);
-					}
-				}					
-				$select.append($option)
-			}
-			return $select.on("change", function(){
-				item.purDtlSeq = this.value;
-			});
-			break;
-			
-		case "bankSeq":
-			let $span = $select;
-			
-			if(isNotEmpty(item.purSeq)){
-				for(let i=0; i<data.purList.length; i++){						
-					if(Number(item.purSeq) === Number(data.purList[i].purSeq)){
-						if(data.purList[i].purType === "LP003"){
-							let $select = $("<select>").addClass("select-gray wth50p").attr("name", "sync").data("name", "bankSeq");
-							$select.append($("<option>").text("보낸곳 선택").val(""));								
-							$select = fnCreateOptionList($select, data.bankList, item, "bankSeq", "bankSeq", "bankName", "bankAccount");								
-							$select.on("change", function(){
-								item.bankSeq = this.value;
-							});				
-							$span.append($select);
-							
-							$select = $("<select>").addClass("select-gray wth50p").attr("name", "sync").data("name", "moveSeq");
-							
-							$select.append($("<option>").text("받는곳 선택").val(""));								
-							$select = fnCreateOptionList($select, data.bankList, item, "bankSeq", "moveSeq", "bankName", "bankAccount");								
-							$select.on("change", function(){
-								item.moveSeq = this.value;
-							});
-							$span.append($select).addClass("wth90p inbk");
-						}else{								
-							let $select = $("<select>").addClass("select-gray wth90p").attr("name", "sync").data("name", "bankSeq");								
-							$select.append($("<option>").text("사용수단 선택").val(""));								
-							$select = fnCreateOptionList($select, data.bankList, item, "bankSeq", "bankSeq","bankName", "bankAccount");
-							
-							$select.on("change", function(){
-								item.bankSeq = this.value;
-							});	
-							item.moveSeq = "";
-							$span.append($select).addClass("wth90p");								
-						}
-						break;
-					}
-				}
-			}else{		
-				let $select = $("<select>").addClass("select-gray wth90p");					
-				$select.append($("<option>").text("사용수단 선택").val(""));
-								
-				$select = fnCreateOptionList($select, data.bankList, item, "bankSeq", "bankSeq", "bankName", "bankAccount");
-				
-				$select.on("change", function(){
-					item.bankSeq = this.value;
-				});	
-				item.moveSeq = "";
-				$span.append($select).addClass("wth90p");
-			}				
-			return $span;
-			break;
+		case "purSeq" :		return fnCreatePurpose($select, name, item);
+		case "purDtlSeq":	return fnCreatePurposeDetail($select, name, item);			
+		case "bankSeq":		return fnCreateBank($select, name, item);
 		}
 	}
 	
+	//목적 selectbox 생성
+	function fnCreatePurpose($select, name, item){
+		let $option = $("<option>").text("목적선택").val("");
+		
+		$select.addClass("select-gray wth80p").attr("name", "sync").data("name", name).append($option);
+		
+		for(let i=0; i<data.purList.length; i++){
+			$option = $("<option>").val(data.purList[i].purSeq).text(data.purList[i].purpose).data("purType", data.purList[i].purType);			
+			if(Number(item.purSeq) === Number(data.purList[i].purSeq)){
+				$option.prop("selected", true);
+			}			
+			$select.append($option);
+		}
+		
+		return $select.on("change", function(e){
+			item.purSeq = this.value;			
+			$dtlSelect = $(this).closest("td").next().children().first().empty();
+			
+			fnCreatePurposeDetail($dtlSelect, "purDtlSeq", item);			
+			
+			$(this).children().each(function(idx, el){
+				if(Number(item.purSeq) === Number(el.value)){							
+					let $moveSp = $(this).closest("td").next().next().children().first();
+					$moveSp.empty().removeClass();
+					
+					if($(el).data("purType") === "LP003"){								
+						let $select = $("<select>").addClass("select-gray wth50p").attr("name", "sync").data("name", "bankSeq");								
+						$select.append($("<option>").text("보낸곳 선택").val(""));								
+						$select = fnCreateOption($select, data.bankList, item, "bankSeq", "bankSeq", "bankName", "bankAccount");
+						
+						$select.on("change", function(){
+							item.bankSeq = this.value;
+						});				
+						$moveSp.append($select);
+						
+						$select = $("<select>").addClass("select-gray wth50p").attr("name", "sync").data("name", "moveSeq");								
+						$select.append($("<option>").text("받는곳 선택").val(""));
+						
+						$select = fnCreateOption($select, data.bankList, item, "bankSeq", "moveSeq", "bankName", "bankAccount");
+						
+						$select.on("change", function(){
+							item.moveSeq = this.value;
+						});
+						$moveSp.append($select).addClass("wth90p inbk");
+					}else{
+						//사용수단
+						let $select = $("<select>").addClass("select-gray wth90p").attr("name", "sync").data("name", "bankSeq");								
+						$select.append($("<option>").text("사용수단 선택").val(""));								
+						$select = fnCreateOption($select, data.bankList, item, "bankSeq", "bankSeq", "bankName", "bankAccount");
+						
+						$select.on("change", function(){
+							item.bankSeq = this.value;
+						});	
+						item.moveSeq = "";
+						$moveSp.append($select).addClass("wth90p");								
+					}
+					
+					let $moneySp = $(this).closest("td").next().next().next().children().first();
+					$moneySp.empty().removeClass();
+					fnCreateMoney($moneySp, purLp[item.purSeq], item);
+					return false;
+				}
+			});
+		});
+	}
+	
+	//상세목적 selectbox 생성
+	function fnCreatePurposeDetail($select, name, item){
+		let $option = $("<option>").text("상세목적 선택").val("");
+		$select.addClass("select-gray wth80p").attr("name", "sync").append($option);
+		for(let i=0; i<data.purDtlList.length; i++){
+			if(Number(data.purDtlList[i].purSeq) === Number(item.purSeq)){
+				$option = $("<option>").val(data.purDtlList[i].purDtlSeq)
+					.text(data.purDtlList[i].purDetail)
+				
+				if(Number(item.purDtlSeq) === Number(data.purDtlList[i].purDtlSeq)){
+					$option.prop("selected", true);
+				}
+			}					
+			$select.append($option)
+		}
+		return $select.on("change", function(){
+			item.purDtlSeq = this.value;
+		});
+	}
+	
+	//은행 selectbox 생성
+	function fnCreateBank($select, name, item){
+		let $span = $select;
+		
+		if(isNotEmpty(item.purSeq)){
+			for(let i=0; i<data.purList.length; i++){						
+				if(Number(item.purSeq) === Number(data.purList[i].purSeq)){
+					if(data.purList[i].purType === "LP003"){
+						let $select = $("<select>").addClass("select-gray wth50p").attr("name", "sync").data("name", "bankSeq");
+						$select.append($("<option>").text("보낸곳 선택").val(""));								
+						$select = fnCreateOption($select, data.bankList, item, "bankSeq", "bankSeq", "bankName", "bankAccount");								
+						$select.on("change", function(){
+							item.bankSeq = this.value;
+						});				
+						$span.append($select);
+						
+						$select = $("<select>").addClass("select-gray wth50p").attr("name", "sync").data("name", "moveSeq");
+						
+						$select.append($("<option>").text("받는곳 선택").val(""));								
+						$select = fnCreateOption($select, data.bankList, item, "bankSeq", "moveSeq", "bankName", "bankAccount");								
+						$select.on("change", function(){
+							item.moveSeq = this.value;
+						});
+						$span.append($select).addClass("wth90p inbk");
+					}else{								
+						let $select = $("<select>").addClass("select-gray wth90p").attr("name", "sync").data("name", "bankSeq");								
+						$select.append($("<option>").text("사용수단 선택").val(""));								
+						$select = fnCreateOption($select, data.bankList, item, "bankSeq", "bankSeq","bankName", "bankAccount");
+						
+						$select.on("change", function(){
+							item.bankSeq = this.value;
+						});	
+						item.moveSeq = "";
+						$span.append($select).addClass("wth90p");								
+					}
+					break;
+				}
+			}
+		}else{		
+			let $select = $("<select>").addClass("select-gray wth90p");					
+			$select.append($("<option>").text("사용수단 선택").val(""));
+							
+			$select = fnCreateOption($select, data.bankList, item, "bankSeq", "bankSeq", "bankName", "bankAccount");
+			
+			$select.on("change", function(){
+				item.bankSeq = this.value;
+			});	
+			item.moveSeq = "";
+			$span.append($select).addClass("wth90p");
+		}				
+		return $span;
+	}
+	
 	//셀렉트박스 옵션리스트 생성
-	function fnCreateOptionList($select, opList, item, dataSeqNm, useSeqNm, dataNm, useNm){
+	function fnCreateOption($select, opList, item, dataSeqNm, useSeqNm, dataNm, useNm){
 		let $option = $("<option>");
 		for(let i=0; i<opList.length; i++){
 			
@@ -470,6 +469,6 @@ function inputLedger(data){
 </script>
 
 <div id="searchBar" class="search-bar pull-right">	
-	<button id="save" type="button" class="btn-gray trs">저장</button>
+	<button id="saveBtn" type="button" class="btn-gray trs">저장</button>
 </div>
 <div id="ledgerList"></div>

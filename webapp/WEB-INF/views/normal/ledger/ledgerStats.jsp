@@ -49,8 +49,7 @@ $(document).ready(function(){
 function fnMonthIEChart(data){
 
 	//데이터 가공
-	mIE.chartData = fnMonthIEChartProcess(data);
-	//let width = window.outerWidth-45 < 1400 ? 1370 : window.outerWidth-45;	
+	mIE.chartData = fnMonthIEChartProcess(data);	
 	
 	//리사이즈 설정
 	let timer = null;
@@ -141,7 +140,6 @@ function fnMonthIEChartDraw(data){
 	if(barWidth <= 3) barWidth = 5;
 	
 	let plot = $.jqplot('monthIEChart', [data.income, data.expense, data.amount], {
-    	//width: width,
     	height: 550,
     	
     	animate: true,
@@ -339,7 +337,6 @@ function fnMonthPurChart(data){
     	if(neighbor !== null){
     		$("#monthPurDtlChart").offset({top: 127, left: 700});
     	
-    		console.log(neighbor.data[2]);
     		let param = {type:"monthPurDtl", stdate:mIE.selectedDate+"-01", purSeq:neighbor.data[2]};
     		cfnCmmAjax("/ledger/selectLedgerStats", param).done(function(data){    			
     			fnMonthPurDtlChart(data);
@@ -381,7 +378,7 @@ function fnMonthPurChartDraw(list, target){
 	            dataLabels: 'value',	            
 	            totalLabel: true
 	          }
-		}, 
+		},
 		grid: {
             drawBorder: true,           
             background: "rgba(76, 76, 76, .8)",
