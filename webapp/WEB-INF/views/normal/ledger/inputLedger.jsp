@@ -50,15 +50,16 @@ function inputLedger(data){
 			}
 		},
 		{title : "날짜*",		name:"recordDate",	width : "11%", align:"center", button:true,
-			itemTemplate: function(item){
-				let $input = $("<input>");
-				return fnCreateInput($input, "recordDate", item).datepicker({
+			itemTemplate: function(item){				
+				let $input = fnCreateInput("recordDate", item);
+				$input.datepicker({
 					language: 'ko',
 					timepicker: true,
 					onSelect: function() {
 						item.recordDate = $input.val();
 					}
 				});
+				return $input;
 			}
 		},
 		{title : "위치",		name:"position", 	width : "14%", align:"center", button:true,
@@ -164,7 +165,7 @@ function inputLedger(data){
 				}
 			}
 			
-			let param = {};			
+			let param = {};
 			param.insertList = JSON.stringify(insertList);
 			
 			cfnCmmAjax("/ledger/insertRecordList", param).done(function(data){				
