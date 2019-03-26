@@ -10,6 +10,7 @@ DROP TABLE IF EXISTS nav_menu;
 DROP TABLE IF EXISTS auth_name;
 DROP TABLE IF EXISTS bank;
 DROP TABLE IF EXISTS cmm_code;
+DROP TABLE IF EXISTS commute_record;
 DROP TABLE IF EXISTS free_board_comment;
 DROP TABLE IF EXISTS free_board;
 DROP TABLE IF EXISTS memo;
@@ -89,6 +90,17 @@ CREATE TABLE cmm_code
 	code_prt varchar(5) NOT NULL,
 	code_nm varchar(20) NOT NULL,
 	PRIMARY KEY (code)
+);
+
+
+CREATE TABLE commute_record
+(
+	commute_seq int NOT NULL AUTO_INCREMENT,
+	user_seq int NOT NULL,
+	commute_type varchar(5) NOT NULL,
+	commute_date datetime NOT NULL,
+	comment varchar(1000),
+	PRIMARY KEY (commute_seq)
 );
 
 
@@ -308,6 +320,14 @@ ALTER TABLE authority
 
 
 ALTER TABLE bank
+	ADD FOREIGN KEY (user_seq)
+	REFERENCES white_user (user_seq)
+	ON UPDATE RESTRICT
+	ON DELETE RESTRICT
+;
+
+
+ALTER TABLE commute_record
 	ADD FOREIGN KEY (user_seq)
 	REFERENCES white_user (user_seq)
 	ON UPDATE RESTRICT
