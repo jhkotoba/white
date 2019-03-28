@@ -245,22 +245,22 @@ function ledgerList(data){
 			},
 			{title: "날짜", 		name: "recordDate", width: "10%",
 				itemTemplate: function(item, idx){
-					return fnCreateCmmInput($("<input>").data("name", "recordDate"), "recordDate", item, idx);
+					return fnCreateInput(item, idx, "recordDate");
 				}
 			},
 			{title: "위치", 		name: "position", 	width: "16%",
 				itemTemplate: function(item, idx){
-					return fnCreateCmmInput($("<input>").data("name", "position"), "position", item, idx);
+					return fnCreateInput(item, idx, "position");
 				}
 			},
 			{title: "내용", 		name: "content", 	width: "18%",
 				itemTemplate: function(item, idx){
-					return fnCreateCmmInput($("<input>").data("name", "content"), "content", item, idx);
+					return fnCreateInput(item, idx, "content");
 				}
 			},
 			{title: "목적", 		name: "purSeq", 	width: "11%",
 				itemTemplate: function(item, idx){					
-					return fnCreateSelectBox($("<select>").data("name", "purSeq"), data.purList, item, "purSeq", idx)
+					return fnCreatePurSelect(item, idx, "purSeq")
 					.on("change", function(){
 						
 						//상세목적 셀렉트박스 변경
@@ -292,23 +292,23 @@ function ledgerList(data){
 						case "LP003": $sign.text(">"); break;
 						}
 						item.moveSeq = "";
-						$bank.empty().append(fnCreateBankSelectBox($("<span>"), data.bankList, item, idx));
+						$bank.empty().append(fnCreateBankSelect(item, idx));
 					});
 				}
 			},
 			{title: "상세목적", 	name: "purDtlSeq", 	width: "11%",
 				itemTemplate: function(item, idx){
-					return fnCreateSelectBox($("<select>").data("name", "purDtlSeq"), data.purDtlList, item, "purDtlSeq", idx);
+					return fnCreatePurSelect(item, idx, "purDtlSeq");
 				}
 			},
 			{title: "사용수단", 	name: "bankSeq",	width: "17%",
 				itemTemplate: function(item, idx){
-					return fnCreateBankSelectBox($("<span>"), data.bankList, item, idx);
+					return fnCreateBankSelect(item, idx);
 				}
 			},
 			{title: "수입/지출", 	name: "money", 		width: "10%",
 				itemTemplate: function(item, idx){
-					return fnCreateMoney($("<span>"), purLp[item.purSeq], item, idx);
+					return fnCreateMoney(item, idx);
 				}
 			},
 			{title : "통계 표시",	name:"statsYn", 		width : "4%", align:"center",
@@ -411,49 +411,61 @@ function ledgerList(data){
 	}
 	
 	//input 생성
-	function fnCreateCmmInput($input, name, item, idx){		
-		return $input.addClass("input-gray wth100p").attr("name","sync"+idx).off().on("keyup change", function(){
-			item[name] = this.value;
-			fnTypeSync(this, name, item, idx);
-		}).val( cfnRestore(item[name]) );
+	function fnCreateInput(item, idx, name){
+		let $input = $("<input>").data("name", name);
+		
+		return $input.addClass("input-gray wth100p").attr("name","sync"+idx)
+			.off().on("keyup change", function(){
+				item[name] = this.value;
+				fnTypeSync(this, name, item, idx);
+			}).val( cfnRestore(item[name]) );
 	}
 
 	//select box 생성
-	function fnCreateSelectBox($select, opList, item, name, idx){
-		let $option = null;	
-
-		for(let i=0; i<opList.length; i++){
-			switch(name){			
-			case "purDtlSeq":				
-				if(String(item.purSeq) === String(opList[i].purSeq)){
-					$option = $("<option>").val(opList[i].purDtlSeq).text(opList[i].purDetail);	
-					if(String(item.purDtlSeq) === String(opList[i].purDtlSeq)){				
+	function fnCreatePurSelect(item, idx, name){
+		let $select = $("<select>").data("name", name);
+		let $option = null;
+		let list = null;
+		
+		switch(name){
+		case "purDtlSeq":
+			list = data.purDtlList;
+			for(let i=0; i<list.length; i++){
+				if(String(item.purSeq) === String(list[i].purSeq)){
+					$option = $("<option>").val(list[i].purDtlSeq).text(list[i].purDetail);	
+					if(String(item.purDtlSeq) === String(list[i].purDtlSeq)){				
 						$option.prop("selected", true);
 					}
 					$select.append($option);
 				}
-				break;				
-			case "purSeq":
-				$option = $("<option>").val(opList[i].purSeq).text(opList[i].purpose);	
-				if(String(item.purSeq) === String(opList[i].purSeq)){				
+			}
+			break;
+		case "purSeq":
+			list = data.purList;
+			for(let i=0; i<list.length; i++){
+				$option = $("<option>").val(list[i].purSeq).text(list[i].purpose);	
+				if(String(item.purSeq) === String(list[i].purSeq)){				
 					$option.prop("selected", true);
 				}
-				$select.append($option);				
-				break;
+				$select.append($option);
 			}
-		}		
+			break;
+		}
 		
-		return $select.addClass("select-gray wth100p").attr("name","sync"+idx).off().on("change", function(){			
-			item[name] = this.value;
-			if(name === "purSeq") item.purType = purLp[this.value];
-			fnTypeSync(this, name, item, idx);
-		});
+		return $select.addClass("select-gray wth100p").attr("name","sync"+idx)
+			.off().on("change", function(){
+				item[name] = this.value;
+				if(name === "purSeq") item.purType = purLp[this.value];
+				fnTypeSync(this, name, item, idx);
+			});
 	}
 	
 	//사용수단 생성
-	function fnCreateBankSelectBox($span, bankList, item, idx){		
-		
+	function fnCreateBankSelect(item, idx){
+		let $span = $("<span>");
 		let $select = $("<select>").data("name", "bankSeq").append($("<option>").val("0").text("현금"));
+		let bankList = data.bankList;
+		
 		for(let i=0; i<bankList.length; i++){
 			$option = $("<option>").val(bankList[i].bankSeq).text(bankList[i].bankName+"("+bankList[i].bankAccount+")");	
 			if(String(cloneList[idx].bankSeq) === String(bankList[i].bankSeq)){				
@@ -481,12 +493,12 @@ function ledgerList(data){
 				$select.append($option);
 			}
 			$select.addClass("select-gray")
-			.addClass(item.purType==="LP003"?"wth50p":"wth100p")
-			.attr("name","sync"+idx)
-			.off().on("change", function(){			
-				item.moveSeq = this.value;
-				fnTypeSync(this, "moveSeq", item, idx);
-			});			
+				.addClass(item.purType==="LP003"?"wth50p":"wth100p")
+				.attr("name","sync"+idx)
+				.off().on("change", function(){
+					item.moveSeq = this.value;
+					fnTypeSync(this, "moveSeq", item, idx);
+				});			
 			
 			if(cloneList[idx].purType !== "LP003"){
 				$select.addClass("sync-blue");
@@ -500,13 +512,15 @@ function ledgerList(data){
 	}
 	
 	//수입지출란 수입, 지출, 이동구분해서 생성
-	function fnCreateMoney($moneySp, code, item, idx){
+	function fnCreateMoney(item, idx){
 		
+		let code = purLp[item.purSeq];
 		let $input = $("<input>").addClass("only-currency").data("name", "money");
-		$input.addClass("input-gray").val(cfnSetComma(item.money)).attr("name","sync"+idx).on("keyup change", function(){
-			item.money = this.value;
-			fnTypeSync(this, "money", item, idx);
-		});
+		$input.addClass("input-gray").val(cfnSetComma(item.money)).attr("name","sync"+idx)
+			.off().on("keyup change", function(){
+				item.money = this.value;
+				fnTypeSync(this, "money", item, idx);
+			});
 		
 		let $strong = $("<strong>");	
 		switch(code){
@@ -525,10 +539,8 @@ function ledgerList(data){
 		default:
 			$input.addClass("wth100p");
 			break;		
-		}	
-		$moneySp.append($strong);
-		$moneySp.append($input);
-		return $moneySp;
+		}
+		return $("<span>").append($strong).append($input);
 	}
 	
 	//타입, sync 체크

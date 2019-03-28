@@ -126,7 +126,7 @@ function fnGrid(data){
 	});
 	
 	//취소
-	$("#searchBar #cancel").on("click", function(){		
+	$("#searchBar #cancelBtn").on("click", function(){		
 		bankList.splice(0, bankList.length);
 		for(let i=0; i<clone.length; i++){
 			bankList.push(clone[i]);
@@ -135,7 +135,7 @@ function fnGrid(data){
 	});
 	
 	//저장(반영)
-	$("#searchBar #save").on("click", function(){
+	$("#searchBar #saveBtn").on("click", function(){
 		
 		for(let i=0, j=1; i<bankList.length; i++){
 			if(bankList[i].state !== "delete"){
@@ -244,7 +244,7 @@ function fnGrid(data){
 </script>
 
 <div id="searchBar" class="search-bar pull-right">	
-	<button id="save" class="btn-gray trs">저장</button>
-	<button id="cancel" class="btn-gray trs">취소</button>
+	<button id="saveBtn" class="btn-gray trs">저장</button>
+	<button id="cancelBtn" class="btn-gray trs">취소</button>
 </div>
 <div id="bankList"></div>
