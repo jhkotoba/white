@@ -92,10 +92,10 @@ $(document).ready(function(){
 	});	
 	
 	//글보기 - 삭제
-	$("#viewForm #remove").on("click", function(){		
+	$("#viewForm #remove").on("click", function(){
 		if(!confirm("삭제하시겠습니까?")) return;
 		
-		cfnCmmAjax("/board/deleteBoard", {boardSeq : $("#viewForm #boardSeq").val(), board : "free"}).done(function(data){
+		cfnCmmAjax("/board/deleteBoard", {boardSeq : $("#viewForm #boardSeq").val(), board : "${board}"}).done(function(data){
 			if(Number(data) === 1){
 				alert("삭제 하였습니다.");
 				$("#viewForm").clear().hide();
