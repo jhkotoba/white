@@ -68,7 +68,7 @@ public class WhiteMap extends HashMap<String, Object> {
 	 * @param String jsonStrParamKey
 	 * @return
 	 */
-	public WhiteMap convertWhiteMap(String jsonStrParamKey, boolean userSeqBool) {
+	public WhiteMap convertWhiteMap(String jsonStrParamKey, boolean isUserSeq) {
 		if(this.getString(jsonStrParamKey) == null) return null;
 		String jsonStr = this.getString(jsonStrParamKey);
 		WhiteMap map = new WhiteMap();
@@ -80,7 +80,7 @@ public class WhiteMap extends HashMap<String, Object> {
 			String key = ite.next();				
 			map.put(key, jsonObj.get(key));
 		}
-		if(userSeqBool) {
+		if(isUserSeq) {
 			map.put("userSeq", this.getInt("userSeq"));
 		}
 		return map;
@@ -91,7 +91,7 @@ public class WhiteMap extends HashMap<String, Object> {
 	 * @param String jsonStrParamKey
 	 * @return
 	 */
-	public List<WhiteMap> convertListWhiteMap(String jsonStrParamKey, boolean userSeqBool) {		
+	public List<WhiteMap> convertListWhiteMap(String jsonStrParamKey, boolean isUserSeq) {		
 		if(this.getString(jsonStrParamKey) == null) return null;
 		String jsonStr = this.getString(jsonStrParamKey);
 		
@@ -112,7 +112,7 @@ public class WhiteMap extends HashMap<String, Object> {
 				String key = ite.next();				
 				map.put(key, jsonObj.get(key));
 			}
-			if(userSeqBool) {
+			if(isUserSeq) {
 				map.put("userSeq", this.getInt("userSeq"));
 			}
 			list.add(map);
