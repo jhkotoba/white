@@ -112,10 +112,11 @@
 		UPDATE ${board}_board_comment
 		SET	comment = ''
 		WHERE user_seq = #{userSeq}
+		AND board_seq = #{boardSeq}
 		AND comment_seq = #{commentSeq}
 	</update>
 	
-	<!-- 게시판 삭제 -->
+	<!-- 게시판 코멘트 삭제 -->
 	<delete id="deleteComment" parameterType="WhiteMap">
 		DELETE FROM ${board}_board_comment		
 		WHERE board_seq = #{boardSeq}
@@ -134,7 +135,7 @@
 		)
 	</insert>
 	
-	<!-- 게시판 수장 -->
+	<!-- 게시판 수정 -->
 	<update id="updateBoard" parameterType="WhiteMap">
 		UPDATE ${board}_board
 		SET	title = #{title},

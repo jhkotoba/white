@@ -259,7 +259,7 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
 			        				if(item.userId === "${sessionScope.userId}"){
 			        					let $a = $("<a>").addClass("fsize03 cs-ptr deepgray").text("[삭제]").on("click", function(){
 			        						if(confirm("댓글을 삭제하시겠습니까?")){
-			        							cfnCmmAjax("/board/updateDelComment", {commentSeq : item.commentSeq, board : "${board}"}).done(function(data){							        		
+			        							cfnCmmAjax("/board/updateDelComment", {commentSeq : item.commentSeq, boardSeq: item.boardSeq, board : "${board}"}).done(function(data){							        		
 									    			createCommentList($("#viewForm #commentlist"), boardSeq);
 									        	});
 			        						}		        					

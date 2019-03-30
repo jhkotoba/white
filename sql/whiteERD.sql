@@ -8,13 +8,12 @@ DROP TABLE IF EXISTS authority;
 DROP TABLE IF EXISTS side_menu;
 DROP TABLE IF EXISTS nav_menu;
 DROP TABLE IF EXISTS auth_name;
+DROP TABLE IF EXISTS money_record_re;
 DROP TABLE IF EXISTS bank;
 DROP TABLE IF EXISTS cmm_code;
 DROP TABLE IF EXISTS commute_record;
 DROP TABLE IF EXISTS free_board_comment;
 DROP TABLE IF EXISTS free_board;
-DROP TABLE IF EXISTS memo;
-DROP TABLE IF EXISTS money_record_re;
 DROP TABLE IF EXISTS purpose_detail;
 DROP TABLE IF EXISTS purpose;
 DROP TABLE IF EXISTS source_board;
@@ -97,6 +96,7 @@ CREATE TABLE commute_record
 (
 	commute_seq int NOT NULL AUTO_INCREMENT,
 	user_seq int NOT NULL,
+	commute_location varchar(100) NOT NULL,
 	commute_type varchar(5) NOT NULL,
 	commute_date datetime NOT NULL,
 	comment varchar(1000),
@@ -129,17 +129,6 @@ CREATE TABLE free_board_comment
 );
 
 
-CREATE TABLE memo
-(
-	memo_seq int NOT NULL AUTO_INCREMENT,
-	user_seq int NOT NULL,
-	memo_type varchar(10) NOT NULL,
-	memo_content varchar(100) NOT NULL,
-	reg_date datetime NOT NULL,
-	PRIMARY KEY (memo_seq)
-);
-
-
 CREATE TABLE money_record_re
 (
 	record_seq int NOT NULL AUTO_INCREMENT,
@@ -148,7 +137,7 @@ CREATE TABLE money_record_re
 	position varchar(20),
 	content varchar(50),
 	pur_seq int NOT NULL,
-	pur_dtl_seq int,
+	pur_dtl_seq int NOT NULL,
 	bank_seq int,
 	move_seq int,
 	money int NOT NULL,
@@ -271,6 +260,22 @@ ALTER TABLE side_menu
 ;
 
 
+ALTER TABLE money_record_re
+	ADD FOREIGN KEY (bank_seq)
+	REFERENCES bank (bank_seq)
+	ON UPDATE RESTRICT
+	ON DELETE RESTRICT
+;
+
+
+ALTER TABLE money_record_re
+	ADD FOREIGN KEY (move_seq)
+	REFERENCES bank (bank_seq)
+	ON UPDATE RESTRICT
+	ON DELETE RESTRICT
+;
+
+
 ALTER TABLE free_board_comment
 	ADD FOREIGN KEY (board_seq)
 	REFERENCES free_board (board_seq)
@@ -287,9 +292,25 @@ ALTER TABLE side_menu
 ;
 
 
+ALTER TABLE money_record_re
+	ADD FOREIGN KEY (pur_seq)
+	REFERENCES purpose (pur_seq)
+	ON UPDATE RESTRICT
+	ON DELETE RESTRICT
+;
+
+
 ALTER TABLE purpose_detail
 	ADD FOREIGN KEY (pur_seq)
 	REFERENCES purpose (pur_seq)
+	ON UPDATE RESTRICT
+	ON DELETE RESTRICT
+;
+
+
+ALTER TABLE money_record_re
+	ADD FOREIGN KEY (pur_dtl_seq)
+	REFERENCES purpose_detail (pur_dtl_seq)
 	ON UPDATE RESTRICT
 	ON DELETE RESTRICT
 ;
@@ -344,14 +365,6 @@ ALTER TABLE free_board
 
 
 ALTER TABLE free_board_comment
-	ADD FOREIGN KEY (user_seq)
-	REFERENCES white_user (user_seq)
-	ON UPDATE RESTRICT
-	ON DELETE RESTRICT
-;
-
-
-ALTER TABLE memo
 	ADD FOREIGN KEY (user_seq)
 	REFERENCES white_user (user_seq)
 	ON UPDATE RESTRICT
