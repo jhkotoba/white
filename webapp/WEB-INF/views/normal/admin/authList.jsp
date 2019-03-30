@@ -80,17 +80,17 @@ function fnJsGrid(data){
 			},
 			{ title:"순서",	name:"authOrder",	type:"text", align:"center", width: "5%",
 				itemTemplate: function(value, item){
-					return isEmpty(value) ? "" : Number(value)-1;					 
+					return fnRefreshedSync(item, "authOrder", "span");
 				}
 			},
 			{ title:"권한명",	name:"authNm",		type:"text", align:"center", width: "40%", 
 				itemTemplate: function(value, item){													
-					return fnRefreshedSync(item, "authNm");
+					return fnRefreshedSync(item, "authNm", "input");
 				}
 			},
 			{ title:"권한 설명",	name:"authCmt",	type:"text", align:"center", width: "50%",
 				itemTemplate: function(value, item){					
-					return fnRefreshedSync(item, "authCmt");
+					return fnRefreshedSync(item, "authCmt", "input");
 				}
 			}
 		],
@@ -102,35 +102,16 @@ function fnJsGrid(data){
 						return $(row).data("JSGridItem");
 					});
 					
-					authList.splice(0, authList.length);
-					for(let i=0; i<items.length; i++){
-						authList.push(items[i]);
-					}
-					$("#authList").jsGrid("refresh");
 					authNoIdx = cfnNoIdx(authList, "authNmSeq");
+					for(let i=0; i<items.length; i++){
+						fnOnSync($("#authList .ui-sortable tr span")[i], i);
+					}
 				}
 			});
 			
 			//수정 sync 체크
-			let name, idx, cIdx;
-			$("input[name='sync']").on("keyup keydown change", function(){				
-				if($(this).hasClass("sync-green")){
-					authList[authNoIdx[$(this).data("authNmSeq")]][$(this).data("name")] = $(this).val();
-				}else{					
-					name = $(this).data("name");
-					idx = authNoIdx[$(this).data("authNmSeq")];
-					cIdx = cloneNoIdx[$(this).data("authNmSeq")];
-				
-					authList[idx][name] = $(this).val();
-					
-					if(String(clone[cIdx][name]) === String($(this).val())){		
-						$(this).removeClass("sync-blue");
-						if(!$(this).hasClass("sync-red")) authList[idx].state = "select";
-					}else{
-						$(this).addClass("sync-blue");
-						if(!$(this).hasClass("sync-red")) authList[idx].state = "update";
-					}
-				}
+			$("input[name='sync']").on("keyup keydown change", function(){	
+				fnOnSync(this);
 			});
 		}
 	});
@@ -158,11 +139,6 @@ function fnJsGrid(data){
 	//저장(반영)
 	$("#searchBar #save").on("click", function(){
 		
-		for(let i=0, j=2; i<authList.length; i++){
-			if(authList[i].state !== "delete"){
-				authList[i].authOrder = (j++);	
-			}
-		}
 		//유효성 검사
 		let isVali = true;
 		$("input[name='sync']").each(function(i, e){
@@ -189,11 +165,19 @@ function fnJsGrid(data){
 					wVali.alert({element : $(e), msg: "최대 글자수 50자 까지 입력할 수 있습니다."}); return false;
 				}
 				break;			
-			}
-			
+			}			
 		});
 		
-		if(isVali && confirm("저장하시겠습니까?")){
+		let applyList = new Array();
+		for(let i=0, j=1; i<authList.length; i++){
+			if(authList[i].state !== "select"){
+				applyList.push(authList[i]);
+			}
+		}
+		
+		if(applyList.length === 0){
+			alert("저장할 데이터가 없습니다.");
+		}else if(isVali && confirm("저장하시겠습니까?")){
 			
 			let param = {};
 			param.clone = JSON.stringify(clone);
@@ -212,26 +196,69 @@ function fnJsGrid(data){
 		}
 	});
 	
+	//수정 sync 체크
+	function fnOnSync(obj, sortIdx){
+		if($(obj).hasClass("sync-green")){
+			authList[authNoIdx[$(obj).data("authNmSeq")]][$(obj).data("name")] = $(obj).val();
+		}else{
+			let name = $(obj).data("name");
+			let idx = authNoIdx[$(obj).data("authNmSeq")];
+			let cIdx = cloneNoIdx[$(obj).data("authNmSeq")];
+			
+			if(isEmpty(sortIdx)){
+				
+				authList[idx][name] = $(obj).val();
+				
+				if(String(clone[cIdx][name]) === String($(obj).val())){
+					$(obj).removeClass("sync-blue");
+					if(!$(obj).hasClass("sync-red")) authList[idx].state = "select";
+				}else{
+					$(obj).addClass("sync-blue");
+					if(!$(obj).hasClass("sync-red")) authList[idx].state = "update";
+				}
+			}else{
+				
+				authList[idx][name] = sortIdx+1;
+				
+				if(idx === sortIdx){
+					$(obj).removeClass("sync-blue");
+					if(!$(obj).hasClass("sync-red")) authList[idx].state = "select";
+				}else{
+					$(obj).addClass("sync-blue");
+					if(!$(obj).hasClass("sync-red")) authList[idx].state = "update";
+				}
+			}			
+		}
+	}
+	
 	//새로고침 sync
-	function fnRefreshedSync(item, name){	
-		let el = $("<input>").attr("type", "text").attr("name", "sync")
-			.data("authNmSeq", item.authNmSeq).data("name", name)
-			.addClass("input-gray wth100p").val(item[name]);
+	function fnRefreshedSync(item, name, tag){
+		
+		let $el = null;
+		switch(tag){
+		case "input" :
+			$el = $("<input>").attr("type", "text").addClass("input-gray wth100p").val(item[name]);
+			break;
+		case "span" :
+			$el = $("<span>").val(item[name]).text(item[name]);
+			break;
+		}
+		$el.attr("name", "sync").data("authNmSeq", item.authNmSeq).data("name", name);		
 
-		if(item.state === "insert") $(el).addClass("sync-green");	
+		if(item.state === "insert") $el.addClass("sync-green");	
 		else if(item.state === "update"){									
 			if(clone[cloneNoIdx[item.authNmSeq]][name] === item[name]){
-				$(el).removeClass("sync-blue");
+				$el.removeClass("sync-blue");
 			}else{
-				$(el).addClass("sync-blue");
+				$el.addClass("sync-blue");
 			}			
 		}else if(item.state === "delete"){
-			$(el).addClass("sync-red");
-			if(clone[cloneNoIdx[item.authNmSeq]][name] !== $(el).val()){
-				$(el).addClass("sync-blue");
+				$el.addClass("sync-red");
+			if(clone[cloneNoIdx[item.authNmSeq]][name] !== $el.val()){
+				$el.addClass("sync-blue");
 			}
 		}		
-		return el;
+		return $el;
 	}
 }
 </script>

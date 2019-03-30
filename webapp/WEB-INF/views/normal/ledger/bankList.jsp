@@ -76,7 +76,11 @@ function fnGrid(data){
                     return chk;
                 }
 			},
-			{ title:"순서",	name:"bankOrder",	type:"text", align:"center", width: "5%"},
+			{ title:"순서",	name:"bankOrder",	type:"text", align:"center", width: "5%",
+				itemTemplate: function(value, item){
+					return fnRefreshedSync(item, "bankOrder", "span");
+				}
+			},
 			{ title:"은행명",	name:"bankName",		type:"text", align:"center", width: "33%", 
 				itemTemplate: function(value, item){													
 					return fnRefreshedSync(item, "bankName", "input");
@@ -101,16 +105,14 @@ function fnGrid(data){
 						return $(row).data("JSGridItem");
 					});
 					
-					bankList.splice(0, bankList.length);
-					for(let i=0; i<items.length; i++){
-						bankList.push(items[i]);
-					}
-					$("#bankList").jsGrid("refresh");
 					bankNoIdx = cfnNoIdx(bankList, "bankSeq");
+					for(let i=0; i<items.length; i++){
+						fnOnSync($("#bankList .ui-sortable tr span")[i], i);
+					}
 				}
 			});			
 			
-			//수정 intpu sync 체크
+			//수정 sync 체크
 			$("input[name='sync']").on("keyup keydown change", function(){	
 				fnOnSync(this);
 			});
@@ -136,12 +138,7 @@ function fnGrid(data){
 	
 	//저장(반영)
 	$("#searchBar #saveBtn").on("click", function(){
-		
-		for(let i=0, j=1; i<bankList.length; i++){
-			if(bankList[i].state !== "delete"){
-				bankList[i].bankOrder = (j++);	
-			}
-		}
+				
 		//유효성 검사
 		let isVali = true;
 		$("input[name='sync']").each(function(i, e){
@@ -172,10 +169,20 @@ function fnGrid(data){
 			
 		});
 		
-		if(isVali && confirm("저장하시겠습니까?")){
+		let applyList = new Array();
+		for(let i=0, j=1; i<bankList.length; i++){
+			if(bankList[i].state !== "select"){
+				applyList.push(bankList[i]);
+			}
+		}
+		
+		if(applyList.length === 0){
+			alert("저장할 데이터가 없습니다.");
+		
+		}else if(isVali && confirm("저장하시겠습니까?")){
 			
 			let param = {};			
-			param.bankList = JSON.stringify(bankList);
+			param.bankList = JSON.stringify(applyList);
 			
 			cfnCmmAjax("/ledger/applybankList", param).done(function(res){
 				if(Number(res)===-1){
@@ -190,7 +197,8 @@ function fnGrid(data){
 		}
 	});
 	
-	function fnOnSync(obj){
+	//수정 sync 체크
+	function fnOnSync(obj, sortIdx){
 		if($(obj).hasClass("sync-green")){
 			bankList[bankNoIdx[$(obj).data("bankSeq")]][$(obj).data("name")] = $(obj).val();
 		}else{
@@ -198,15 +206,29 @@ function fnGrid(data){
 			let idx = bankNoIdx[$(obj).data("bankSeq")];
 			let cIdx = cloneNoIdx[$(obj).data("bankSeq")];
 			
-			bankList[idx][name] = $(obj).val();
-			
-			if(String(clone[cIdx][name]) === String($(obj).val())){
-				$(obj).removeClass("sync-blue");
-				if(!$(obj).hasClass("sync-red")) bankList[idx].state = "select";
+			if(isEmpty(sortIdx)){
+				
+				bankList[idx][name] = $(obj).val();
+				
+				if(String(clone[cIdx][name]) === String($(obj).val())){
+					$(obj).removeClass("sync-blue");
+					if(!$(obj).hasClass("sync-red")) bankList[idx].state = "select";
+				}else{
+					$(obj).addClass("sync-blue");
+					if(!$(obj).hasClass("sync-red")) bankList[idx].state = "update";
+				}
 			}else{
-				$(obj).addClass("sync-blue");
-				if(!$(obj).hasClass("sync-red")) bankList[idx].state = "update";
-			}
+				
+				bankList[idx][name] = sortIdx+1;
+				
+				if(idx === sortIdx){
+					$(obj).removeClass("sync-blue");
+					if(!$(obj).hasClass("sync-red")) bankList[idx].state = "select";
+				}else{
+					$(obj).addClass("sync-blue");
+					if(!$(obj).hasClass("sync-red")) bankList[idx].state = "update";
+				}
+			}			
 		}
 	}
 	
@@ -218,7 +240,10 @@ function fnGrid(data){
 		case "input" :
 		default :
 			$el = $("<input>").attr("type", "text").addClass("input-gray wth100p").val(item[name]);
-			break;		
+			break;
+		case "span" :
+			$el = $("<span>").val(item[name]).text(item[name]);
+			break;
 		case "button" :
 			$el = $("<button>").addClass("btn-gray trs size-sm").val(item[name]).text(item[name]);
 			break;

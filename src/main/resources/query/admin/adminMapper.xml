@@ -41,9 +41,6 @@
 	
 	<select id="selectAuthList" resultType="WhiteMap">
 		SELECT
-			<if test="mode == 'select'">
-			'select' AS state,
-			</if>
 			auth_nm_seq AS authNmSeq,
 			auth_nm AS authNm,
 			auth_cmt AS authCmt,

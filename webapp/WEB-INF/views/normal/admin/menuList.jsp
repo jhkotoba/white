@@ -84,7 +84,11 @@ function fnNavJsGrid(data){
                     return chk;
                 }	            
 			},
-			{ title:"순서",	name:"navOrder",	type:"text", align:"center", width: "8%"},
+			{ title:"순서",	name:"navOrder",	type:"text", align:"center", width: "8%",
+				itemTemplate: function(value, item){
+					return fnRefreshedSync(item, "navOrder", "navList", "span");
+				}
+			},
 			{ title:"상위 이름",	name:"navNm",		type:"text", align:"center", width: "21%",
 				itemTemplate: function(value, item){													
 					return fnRefreshedSync(item, "navNm", "navList", "input");
@@ -139,23 +143,21 @@ function fnNavJsGrid(data){
 						return $(row).data("JSGridItem");
 					});
 					
-					data.navList.splice(0, data.navList.length);
+					navNoIdx = cfnNoIdx(data.navList, "navSeq")
 					for(let i=0; i<items.length; i++){
-						data.navList.push(items[i]);
+						fnOnSync($("#navMenuList .ui-sortable tr span")[i], "navSeq", i);
 					}
-					$("#navMenuList").jsGrid("refresh");
-					navNoIdx = cfnNoIdx(data.navList, "navSeq");
 				}
 			});
 			
 			//수정 intpu sync 체크			
 			$("input[name='syncNav']").on("keyup keydown change", function(){		
-				fnOnSync(this, "navList");
+				fnOnSync(this, "navSeq");
 			});
 			
 			//수정 select sync 체크
 			$("select[name='syncNav']").on("change", function(){				
-				fnOnSync(this, "navList");	
+				fnOnSync(this, "navSeq");	
 			});
 			
 			//수정 button sync 체크
@@ -163,7 +165,7 @@ function fnNavJsGrid(data){
 				if($(this).val() === "Y")	$(this).val("N").text("N");
 				else						$(this).val("Y").text("Y");
 				
-				fnOnSync(this, "navList");
+				fnOnSync(this, "navSeq");
 			});
 			
 			if(initSide){
@@ -263,7 +265,11 @@ function fnNavJsGrid(data){
 	                    return chk;
 	                }
 				},
-				{ title:"순서",	name:"sideOrder",	type:"text", align:"center", width: "9%"},
+				{ title:"순서",	name:"sideOrder",	type:"text", align:"center", width: "9%",
+					itemTemplate: function(value, item){
+						return fnRefreshedSync(item, "sideOrder", "sideList", "span");
+					}
+				},
 				{ title:"하위 이름",	name:"sideNm",		type:"text", align:"center", width: "20%",
 					itemTemplate: function(value, item){													
 						return fnRefreshedSync(item, "sideNm", "sideList", "input");
@@ -293,23 +299,21 @@ function fnNavJsGrid(data){
 							return $(row).data("JSGridItem");
 						});
 						
-						data.sideList.splice(0, data.sideList.length);
-						for(let i=0; i<items.length; i++){
-							data.sideList.push(items[i]);
-						}
-						$("#sideMenuList").jsGrid("refresh");
 						sideNoIdx = cfnNoIdx(data.sideList, "sideSeq");
+						for(let i=0; i<items.length; i++){
+							fnOnSync($("#sideMenuList .ui-sortable tr span")[i], "sideSeq", i);
+						}
 					}
 				});
 				
 				//수정 intpu sync 체크
 				$("input[name='syncSide']").on("keyup keydown change", function(){	
-					fnOnSync(this, "sideList");
+					fnOnSync(this, "sideSeq");
 				});
 				
 				//수정 select sync 체크
 				$("select[name='syncSide']").on("change", function(){			
-					fnOnSync(this, "sideList");
+					fnOnSync(this, "sideSeq");
 				});
 				
 				//수정 button sync 체크
@@ -317,50 +321,46 @@ function fnNavJsGrid(data){
 					if($(this).val() === "Y")	$(this).val("N").text("N");
 					else						$(this).val("Y").text("Y");
 					
-					fnOnSync(this, "sideList");
+					fnOnSync(this, "sideSeq");
 				});
 			}
 		});
 	}
 	
-	function fnOnSync(obj, listName){
+	
+	//변경여부 확인후 상태 색상적용
+	function fnOnSync(obj, seqNm, sortIdx){
+		let listNm = seqNm === "navSeq" ? "navList" : "sideList";
 		
-		if(listName === "navList"){
+		if($(obj).hasClass("sync-green")){
+			seqNm === "navSeq" ? data.navList[navNoIdx[$(obj).data(seqNm)]][$(obj).data("name")] = $(obj).val()
+							   : data.sideList[sideNoIdx[$(obj).data(seqNm)]][$(obj).data("name")] = $(obj).val();
+		}else{
+			let name = $(obj).data("name");
+			let idx = seqNm === "navSeq" ? navNoIdx[$(obj).data(seqNm)]
+									     : sideNoIdx[$(obj).data(seqNm)];
+			let cIdx = seqNm === "navSeq" ? navCloneNoIdx[$(obj).data(seqNm)]
+										  : sideCloneNoIdx[$(obj).data(seqNm)];
 			
-			if($(obj).hasClass("sync-green")){
-				data.navList[navNoIdx[$(obj).data("navSeq")]][$(obj).data("name")] = $(obj).val();
-			}else{
-				let name = $(obj).data("name");
-				let idx = navNoIdx[$(obj).data("navSeq")];
-				let cIdx = navCloneNoIdx[$(obj).data("navSeq")];
+			if(isEmpty(sortIdx)){
+				data[listNm][idx][name] = $(obj).val();
 				
-				data.navList[idx][name] = $(obj).val();
-				
-				if(String(clone.navList[cIdx][name]) === String($(obj).val())){
+				if(String(clone[listNm][cIdx][name]) === String($(obj).val())){
 					$(obj).removeClass("sync-blue");
-					if(!$(obj).hasClass("sync-red")) data.navList[idx].state = "select";
+					if(!$(obj).hasClass("sync-red")) data[listNm][idx].state = "select";
 				}else{
 					$(obj).addClass("sync-blue");
-					if(!$(obj).hasClass("sync-red")) data.navList[idx].state = "update";
+					if(!$(obj).hasClass("sync-red")) data[listNm][idx].state = "update";
 				}
-			}
-		}else if(listName === "sideList"){
-			
-			if($(obj).hasClass("sync-green")){
-				data.sideList[sideNoIdx[$(obj).data("sideSeq")]][$(obj).data("name")] = $(obj).val();
 			}else{
-				let name = $(obj).data("name");
-				let idx = sideNoIdx[$(obj).data("sideSeq")];
-				let cIdx = sideCloneNoIdx[$(obj).data("sideSeq")];
+				data[listNm][idx][name] = sortIdx+1;
 				
-				data.sideList[idx][name] = $(obj).val();			
-				
-				if(String(clone.sideList[cIdx][name]) === String($(obj).val())){
+				if(idx === sortIdx){
 					$(obj).removeClass("sync-blue");
-					if(!$(obj).hasClass("sync-red")) data.sideList[idx].state = "select";
+					if(!$(obj).hasClass("sync-red")) data[listNm][idx].state = "select";
 				}else{
 					$(obj).addClass("sync-blue");
-					if(!$(obj).hasClass("sync-red")) data.sideList[idx].state = "update";
+					if(!$(obj).hasClass("sync-red")) data[listNm][idx].state = "update";
 				}
 			}
 		}
@@ -374,6 +374,9 @@ function fnNavJsGrid(data){
 		case "input" :
 		default :
 			$el = $("<input>").attr("type", "text").addClass("input-gray wth100p").val(item[name]);
+			break;
+		case "span":
+			$el = $("<span>").val(item[name]).text(item[name]);
 			break;
 		case "select" : 
 			$el = $("<select>").addClass("select-gray");
@@ -463,13 +466,16 @@ function fnNavJsGrid(data){
 			}			
 		});
 		
-		if(isVali && confirm("저장하시겠습니까?")){
-			
-			for(let i=0, j=1; i<data.navList.length; i++){
-				if(data.navList[i].state !== "delete"){
-					data.navList[i].navOrder = (j++);	
-				}
+		let applyList = new Array();
+		for(let i=0, j=1; i<data.navList.length; i++){
+			if(data.navList[i].state !== "select"){
+				applyList.push(data.navList[i]);
 			}
+		}
+		
+		if(applyList.length === 0){
+			alert("저장할 데이터가 없습니다.");
+		}else if(isVali && confirm("저장하시겠습니까?")){		
 			
 			let param = {};
 			param.navClone = JSON.stringify(clone.navList);
@@ -533,13 +539,16 @@ function fnNavJsGrid(data){
 			
 		});
 		
-		if(isVali && confirm("저장하시겠습니까?")){
-			
-			for(let i=0, j=1; i<data.sideList.length; i++){
-				if(data.sideList[i].state !== "delete"){
-					data.sideList[i].sideOrder = (j++);	
-				}
+		let applyList = new Array();
+		for(let i=0, j=1; i<data.sideList.length; i++){
+			if(data.sideList[i].state !== "select"){
+				applyList.push(data.sideList[i]);
 			}
+		}
+		
+		if(applyList.length === 0){
+			alert("저장할 데이터가 없습니다.");
+		}else if(isVali && confirm("저장하시겠습니까?")){
 			
 			let param = {};			
 			param.navSeq = refNavSeq;
