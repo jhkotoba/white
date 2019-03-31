@@ -8,7 +8,7 @@ DROP TABLE IF EXISTS authority;
 DROP TABLE IF EXISTS side_menu;
 DROP TABLE IF EXISTS nav_menu;
 DROP TABLE IF EXISTS auth_name;
-DROP TABLE IF EXISTS money_record_re;
+DROP TABLE IF EXISTS money_record;
 DROP TABLE IF EXISTS bank;
 DROP TABLE IF EXISTS cmm_code;
 DROP TABLE IF EXISTS commute_record;
@@ -54,6 +54,7 @@ CREATE TABLE authority
 	auth_seq int NOT NULL AUTO_INCREMENT,
 	user_seq int NOT NULL,
 	auth_nm_seq int NOT NULL,
+	auth_cmt varchar(50),
 	PRIMARY KEY (auth_seq),
 	UNIQUE (auth_seq)
 );
@@ -129,7 +130,7 @@ CREATE TABLE free_board_comment
 );
 
 
-CREATE TABLE money_record_re
+CREATE TABLE money_record
 (
 	record_seq int NOT NULL AUTO_INCREMENT,
 	user_seq int NOT NULL,
@@ -138,7 +139,7 @@ CREATE TABLE money_record_re
 	content varchar(50),
 	pur_seq int NOT NULL,
 	pur_dtl_seq int NOT NULL,
-	bank_seq int,
+	bank_seq int NOT NULL,
 	move_seq int,
 	money int NOT NULL,
 	stats_yn varchar(1) DEFAULT 'Y' NOT NULL,
@@ -218,7 +219,7 @@ CREATE TABLE white_user
 	user_seq int NOT NULL AUTO_INCREMENT,
 	user_id varchar(20) NOT NULL,
 	user_name varchar(10) NOT NULL,
-	user_passwd varbinary(60) NOT NULL,
+	user_passwd varchar(60) NOT NULL,
 	PRIMARY KEY (user_seq),
 	UNIQUE (user_seq),
 	UNIQUE (user_id)
@@ -260,7 +261,7 @@ ALTER TABLE side_menu
 ;
 
 
-ALTER TABLE money_record_re
+ALTER TABLE money_record
 	ADD FOREIGN KEY (bank_seq)
 	REFERENCES bank (bank_seq)
 	ON UPDATE RESTRICT
@@ -268,7 +269,7 @@ ALTER TABLE money_record_re
 ;
 
 
-ALTER TABLE money_record_re
+ALTER TABLE money_record
 	ADD FOREIGN KEY (move_seq)
 	REFERENCES bank (bank_seq)
 	ON UPDATE RESTRICT
@@ -292,7 +293,7 @@ ALTER TABLE side_menu
 ;
 
 
-ALTER TABLE money_record_re
+ALTER TABLE money_record
 	ADD FOREIGN KEY (pur_seq)
 	REFERENCES purpose (pur_seq)
 	ON UPDATE RESTRICT
@@ -308,7 +309,7 @@ ALTER TABLE purpose_detail
 ;
 
 
-ALTER TABLE money_record_re
+ALTER TABLE money_record
 	ADD FOREIGN KEY (pur_dtl_seq)
 	REFERENCES purpose_detail (pur_dtl_seq)
 	ON UPDATE RESTRICT
@@ -372,7 +373,7 @@ ALTER TABLE free_board_comment
 ;
 
 
-ALTER TABLE money_record_re
+ALTER TABLE money_record
 	ADD FOREIGN KEY (user_seq)
 	REFERENCES white_user (user_seq)
 	ON UPDATE RESTRICT
