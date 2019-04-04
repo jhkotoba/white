@@ -35,7 +35,11 @@ function fnJsGrid(data){
 			{ align:"center", width: "5%",
 				headerTemplate : function(){
 					return $("<button>").attr("id", "add").addClass("btn-gray trs size-sm").text("+").on("click", function(){
-						authList.push({authCmt:"", authOrder: "", authNmSeq:new Date().getTime(), authNm:"", state:"insert"});
+						authList.push({authCmt:"", 
+							authOrder: "", 
+							authNmSeq:new Date().getTime(), 
+							authNm:"", 
+							state:"insert"});
 						authNoIdx = cfnNoIdx(authList, "authNmSeq");
 						$("#authList").jsGrid("refresh");
 					});			
@@ -97,7 +101,8 @@ function fnJsGrid(data){
 		onRefreshed: function() {
 			let $gridData = $("#authList .jsgrid-grid-body tbody");
 			$gridData.sortable({
-				update: function(e, ui) {
+				update: function(e, ui) {					
+					
 					let items = $.map($gridData.find("tr"), function(row) {
 						return $(row).data("JSGridItem");
 					});
@@ -117,10 +122,10 @@ function fnJsGrid(data){
 	});
 	
 	//취소
-	$("#searchBar #cancel").on("click", function(){		
+	$("#searchBar #cancel").on("click", function(){
 		authList.splice(0, authList.length);
 		for(let i=0; i<clone.length; i++){
-			authList.push(clone[i]);
+			authList.push(common.clone(clone[i]));
 		}
 		$("#authList").jsGrid("refresh");		
 	});
@@ -174,15 +179,14 @@ function fnJsGrid(data){
 				applyList.push(authList[i]);
 			}
 		}
-		
+				
 		if(applyList.length === 0){
 			alert("저장할 데이터가 없습니다.");
 		}else if(isVali && confirm("저장하시겠습니까?")){
 			
 			let param = {};
 			param.clone = JSON.stringify(clone);
-			param.authList = JSON.stringify(authList);
-			
+			param.authList = JSON.stringify(applyList);			
 			cfnCmmAjax("/admin/applyAuthList", param).done(function(res){
 				if(Number(res)===-1){
 					alert("수정하려는 데이터가 이미 수정되어 수정할 수 없습니다. 반영이 취소됩니다.");

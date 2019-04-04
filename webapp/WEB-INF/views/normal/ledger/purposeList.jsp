@@ -535,7 +535,7 @@ function fnPurGrid(data){
 		initPurDtl = true;
 		data.purList.splice(0, data.purList.length);
 		for(let i=0; i<clone.purList.length; i++){
-			data.purList.push(clone.purList[i]);
+			data.purList.push(common.clone(clone.purList[i]));
 		}
 		$("#purList").jsGrid("refresh");
 	});

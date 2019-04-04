@@ -131,7 +131,7 @@ function fnGrid(data){
 	$("#searchBar #cancelBtn").on("click", function(){		
 		bankList.splice(0, bankList.length);
 		for(let i=0; i<clone.length; i++){
-			bankList.push(clone[i]);
+			bankList.push(common.clone(clone[i]));
 		}
 		$("#bankList").jsGrid("refresh");		
 	});

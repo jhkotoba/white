@@ -590,7 +590,7 @@ function fnNavJsGrid(data){
 		initSide = true;
 		data.navList.splice(0, data.navList.length);
 		for(let i=0; i<clone.navList.length; i++){
-			data.navList.push(clone.navList[i]);
+			data.navList.push(common.clone(clone.navList[i]));
 		}
 		$("#navMenuList").jsGrid("refresh");		
 	});
