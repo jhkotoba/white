@@ -36,7 +36,7 @@ function fnJsGrid(data){
 				headerTemplate : function(){
 					return $("<button>").attr("id", "add").addClass("btn-gray trs size-sm").text("+").on("click", function(){
 						authList.push({authCmt:"", 
-							authOrder: "", 
+							authOrder: $("#authList").jsGrid("option", "data").length+1,
 							authNmSeq:new Date().getTime(), 
 							authNm:"", 
 							state:"insert"});
@@ -105,10 +105,9 @@ function fnJsGrid(data){
 					
 					let items = $.map($gridData.find("tr"), function(row) {
 						return $(row).data("JSGridItem");
-					});
-					
+					});					
 					authNoIdx = cfnNoIdx(authList, "authNmSeq");
-					for(let i=0; i<items.length; i++){
+					for(let i=0; i<items.length; i++){						
 						fnOnSync($("#authList .ui-sortable tr span")[i], i);
 					}
 				}
@@ -179,7 +178,7 @@ function fnJsGrid(data){
 				applyList.push(authList[i]);
 			}
 		}
-				
+		
 		if(applyList.length === 0){
 			alert("저장할 데이터가 없습니다.");
 		}else if(isVali && confirm("저장하시겠습니까?")){
@@ -202,17 +201,17 @@ function fnJsGrid(data){
 	
 	//수정 sync 체크
 	function fnOnSync(obj, sortIdx){
+		
+		let name = $(obj).data("name");
+		let idx = authNoIdx[$(obj).data("authNmSeq")];
+		let cIdx = cloneNoIdx[$(obj).data("authNmSeq")];
+		
 		if($(obj).hasClass("sync-green")){
-			authList[authNoIdx[$(obj).data("authNmSeq")]][$(obj).data("name")] = $(obj).val();
+			if(isEmpty(sortIdx)) authList[idx][name] = $(obj).val();
+			else authList[idx][name] = sortIdx+1;
 		}else{
-			let name = $(obj).data("name");
-			let idx = authNoIdx[$(obj).data("authNmSeq")];
-			let cIdx = cloneNoIdx[$(obj).data("authNmSeq")];
-			
 			if(isEmpty(sortIdx)){
-				
 				authList[idx][name] = $(obj).val();
-				
 				if(String(clone[cIdx][name]) === String($(obj).val())){
 					$(obj).removeClass("sync-blue");
 					if(!$(obj).hasClass("sync-red")) authList[idx].state = "select";
@@ -221,9 +220,7 @@ function fnJsGrid(data){
 					if(!$(obj).hasClass("sync-red")) authList[idx].state = "update";
 				}
 			}else{
-				
 				authList[idx][name] = sortIdx+1;
-				
 				if(idx === sortIdx){
 					$(obj).removeClass("sync-blue");
 					if(!$(obj).hasClass("sync-red")) authList[idx].state = "select";
@@ -231,7 +228,7 @@ function fnJsGrid(data){
 					$(obj).addClass("sync-blue");
 					if(!$(obj).hasClass("sync-red")) authList[idx].state = "update";
 				}
-			}			
+			}
 		}
 	}
 	
