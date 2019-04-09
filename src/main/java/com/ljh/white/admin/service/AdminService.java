@@ -11,12 +11,16 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ljh.white.admin.mapper.AdminMapper;
 import com.ljh.white.common.collection.WhiteMap;
+import com.ljh.white.common.service.WhiteService;
 
 @Service("AdminService")
 public class AdminService {
 	
 	@Resource(name = "AdminMapper")
 	private AdminMapper adminMapper;
+	
+	@Resource(name = "WhiteService")
+	private WhiteService whiteService;
 	
 	
 	/**
@@ -369,10 +373,13 @@ public class AdminService {
 		
 		if(deleteList.size()>0 && adminMapper.selectIsUsedAuthNm(deleteList)>0) {
 			return 0;
-		}else {
-			if(deleteList.size()>0) adminMapper.deleteAuthNmList(deleteList);
+		}else {			
 			if(insertList.size()>0) adminMapper.insertAuthNmList(insertList);	
 			if(updateList.size()>0) adminMapper.updateAuthNmList(updateList);
+			if(deleteList.size()>0) {
+				adminMapper.deleteAuthNmList(deleteList);
+				whiteService.updateSortOrder("auth_name", "auth_nm_seq", "auth_order");
+			}
 			return 1;
 		}
 	}

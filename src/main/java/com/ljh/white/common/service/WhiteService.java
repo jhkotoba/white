@@ -48,4 +48,25 @@ public class WhiteService{
 	public List<WhiteMap> selectCodeList(WhiteMap param){
 		return whiteMapper.selectCodeList(param);
 	}
+	
+	/**
+	 * 테이블 정렬순서 정렬(오름차순)
+	 * @param tableNm
+	 * @param seqNm
+	 * @param columnNm
+	 */
+	public void updateSortOrder(String tbNm, String seqNm, String colNm) {
+		WhiteMap param = new WhiteMap();
+		param.put("tbNm", tbNm);
+		param.put("seqNm", seqNm);
+		param.put("colNm", colNm);		
+		
+		List<WhiteMap> list = whiteMapper.selectSortTable(param);
+		for(int i=0; i<list.size(); i++) {
+			list.get(i).put("col", i+1);
+		}
+		param.put("list", list);
+		
+		whiteMapper.updateSortTable(param);
+	}
 }

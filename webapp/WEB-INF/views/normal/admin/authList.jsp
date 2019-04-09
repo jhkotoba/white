@@ -55,7 +55,7 @@ function fnJsGrid(data){
                	    		delete authNoIdx[item.authNmSeq];               	    		
                	    	}else{
                	    		if($(this).is(":checked")) {
-                   	   			$("input[name='sync']").each(function(i, e){				
+                   	   			$("[name='sync']").each(function(i, e){				
                    	   				if(item.authNmSeq  === $(e).data("authNmSeq")){
                    	   					$(e).addClass("sync-red");               	   					
                    	   					if(String(clone[cIdx][$(e).data("name")]) !== String($(e).val())){
@@ -65,7 +65,7 @@ function fnJsGrid(data){
                    	   				}
                    	   			});
                    	   		}else{
-                   	   			$("input[name='sync']").each(function(i, e){				
+                   	   			$("[name='sync']").each(function(i, e){				
                    	   				if(item.authNmSeq === $(e).data("authNmSeq")){
                    	   					$(e).removeClass("sync-red");               	   					
                    	   					if($(e).hasClass("sync-blue") || authList[idx].state === "update"){
@@ -171,7 +171,7 @@ function fnJsGrid(data){
 				break;			
 			}			
 		});
-		
+				
 		let applyList = new Array();
 		for(let i=0, j=1; i<authList.length; i++){
 			if(authList[i].state !== "select"){

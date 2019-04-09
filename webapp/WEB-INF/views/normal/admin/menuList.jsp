@@ -39,7 +39,13 @@ function fnNavJsGrid(data){
 			{ align:"center", width: "6%",
 				headerTemplate : function(){
 					return $("<button>").attr("id", "navAdd").addClass("btn-gray trs size-sm").text("+").on("click", function(){
-						data.navList.push({navAuthNmSeq: "", navNm: "", navOrder:"", navSeq: new Date().getTime(), navShowYn:"N", navUrl:"", state:"insert"});		
+						data.navList.push({navAuthNmSeq: "", 
+							navNm: "",
+							navOrder: $("#navMenuList").jsGrid("option", "data").length+1,
+							navSeq: new Date().getTime(),
+							navShowYn:"N",
+							navUrl:"",
+							state:"insert"});		
 						navNoIdx = cfnNoIdx(data.navList, "navSeq");
 						$("#navMenuList").jsGrid("refresh");
 					});					
@@ -220,7 +226,14 @@ function fnNavJsGrid(data){
 				{ align:"center", width: "7%",
 					headerTemplate : function(){
 						return $("<button>").attr("id", "sideAdd").addClass("btn-gray trs size-sm").text("+").on("click", function(){
-							data.sideList.push({navSeq: refNavSeq, sideAuthNmSeq:"", sideNm:"", sideOrder:"", sideSeq: new Date().getTime(), sideShowYn:"N", sideUrl:"", state:"insert"});		
+							data.sideList.push({navSeq: refNavSeq,
+								sideAuthNmSeq:"",
+								sideNm:"",
+								sideOrder: $("#sideMenuList").jsGrid("option", "data").length+1,
+								sideSeq: new Date().getTime(),
+								sideShowYn:"N",
+								sideUrl:"",
+								state:"insert"});		
 							sideNoIdx = cfnNoIdx(data.sideList, "sideSeq");
 							$("#sideMenuList").jsGrid("refresh");
 						});					
@@ -332,9 +345,14 @@ function fnNavJsGrid(data){
 	function fnOnSync(obj, seqNm, sortIdx){
 		let listNm = seqNm === "navSeq" ? "navList" : "sideList";
 		
-		if($(obj).hasClass("sync-green")){
-			seqNm === "navSeq" ? data.navList[navNoIdx[$(obj).data(seqNm)]][$(obj).data("name")] = $(obj).val()
-							   : data.sideList[sideNoIdx[$(obj).data(seqNm)]][$(obj).data("name")] = $(obj).val();
+		if($(obj).hasClass("sync-green")){			
+			if(isEmpty(sortIdx)){
+				seqNm === "navSeq" ? data.navList[navNoIdx[$(obj).data(seqNm)]][$(obj).data("name")] = $(obj).val()
+						   : data.sideList[sideNoIdx[$(obj).data(seqNm)]][$(obj).data("name")] = $(obj).val();
+			}else{
+				seqNm === "navSeq" ? data.navList[navNoIdx[$(obj).data(seqNm)]][$(obj).data("name")] = sortIdx+1
+						   : data.sideList[sideNoIdx[$(obj).data(seqNm)]][$(obj).data("name")] = sortIdx+1;
+			}			
 		}else{
 			let name = $(obj).data("name");
 			let idx = seqNm === "navSeq" ? navNoIdx[$(obj).data(seqNm)]
