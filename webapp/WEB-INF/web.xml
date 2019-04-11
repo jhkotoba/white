@@ -26,7 +26,7 @@
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>
-			/WEB-INF/spring/root-context.xml
+			classpath:/context/root-context.xml
 		</param-value>
 	</context-param>
 		<listener>
@@ -38,8 +38,9 @@
 			<init-param>
 				<param-name>contextConfigLocation</param-name>
 				<param-value>
-					/WEB-INF/spring/appServlet/servlet-context.xml
-					/WEB-INF/spring/appServlet/interceptor-context.xml
+					classpath:/context/servlet-context.xml
+					classpath:/context/dataSource-context.xml				
+					classpath:/context/interceptor-context.xml
 				</param-value>
 			</init-param>
 			<load-on-startup>1</load-on-startup>

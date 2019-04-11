@@ -113,20 +113,6 @@ public class AdminController {
 	}
 	
 	/**
-	 * 구버전 
-	 * @deprecated
-	 * applyNavMenuList로 대체
-	 */
-	@RequestMapping(value="/admin/inUpDelNavMenuList.ajax" )
-	public WhiteMap inUpDelNavMenuList(HttpServletRequest request){		
-		
-		WhiteMap param = new WhiteMap(request);	
-		WhiteMap result = adminService.inUpDelNavMenuList(param);
-		whiteService.setNavAuth();
-		return result;
-	}
-	
-	/**
 	 * 네비 메뉴리스트 적용
 	 * @param request
 	 * @return
@@ -151,20 +137,6 @@ public class AdminController {
 		WhiteMap param = new WhiteMap(request);	
 		int result = adminService.applySideMenuList(param);
 		whiteService.setSideAuth();		
-		return result;
-	}
-	
-	/**
-	 * @deprecated
-	 * @param request
-	 * @return
-	 */
-	@RequestMapping(value="/admin/inUpDelSideMenuList.ajax" )
-	public WhiteMap inUpDelSideMenuList(HttpServletRequest request){
-			
-		WhiteMap param = new WhiteMap(request);	
-		WhiteMap result = adminService.inUpDelSideMenuList(param);
-		whiteService.setSideAuth();
 		return result;
 	}
 	

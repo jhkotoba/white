@@ -92,34 +92,7 @@ public class AdminService {
 		}
 		
 		return result;
-	}
-	
-	/**
-	 * 
-	 * @param param
-	 * @return
-	 */
-	/*@Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
-	public WhiteMap inDelAuthList(WhiteMap param) {
-		
-		List<WhiteMap> inList = param.convertListWhiteMap("inList", false);
-		List<WhiteMap> delList = param.convertListWhiteMap("delList", false);		
-		
-		WhiteMap resultMap = new WhiteMap();
-		if(inList.size() > 0 ) {			
-			resultMap.put("inCnt", adminMapper.insertAuthList(inList));	
-		}else {
-			resultMap.put("inCnt", 0);	
-		}
-		
-		if(delList.size() > 0) {			
-			resultMap.put("delCnt", adminMapper.deleteAuthList(delList));
-		}else {
-			resultMap.put("delCnt", 0);	
-		}
-		
-		return resultMap;		
-	}*/
+	}	
 	
 	/**
 	 * 상위메뉴 조회
@@ -141,48 +114,7 @@ public class AdminService {
 	}
 	public List<WhiteMap> selectSideMenuList(WhiteMap param) {
 		return adminMapper.selectSideMenuList(param);
-	}
-	
-	/**
-	 * 네비메뉴 insert, update, delete (구)
-	 * @param list
-	 * @return
-	 * @deprecated
-	 * applyNavMenuList 로 대체
-	 */
-	@Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
-	public WhiteMap inUpDelNavMenuList(WhiteMap param) {
-		
-		List<WhiteMap> inList = param.convertListWhiteMap("inList", false);
-		List<WhiteMap> upList = param.convertListWhiteMap("upList", false);
-		List<WhiteMap> delList = param.convertListWhiteMap("delList", false);
-		
-		WhiteMap resultMap = new WhiteMap();
-		
-		if(delList.size() > 0) {
-			if(adminMapper.selectIsUsedSideUrl(delList)>0) {
-				resultMap.put("msg", "used");
-				return resultMap;			
-			}else {
-				resultMap.put("delCnt", adminMapper.deleteNavMenuList(delList));
-			}					
-		}else {
-			resultMap.put("delCnt", 0);	
-		}
-		
-		if(inList.size() > 0 ) {
-			resultMap.put("inCnt", adminMapper.insertNavMenuList(inList));	
-		}else {
-			resultMap.put("inCnt", 0);	
-		}
-		
-		if(upList.size() > 0 ) {			
-			resultMap.put("upCnt", adminMapper.updateNavMenuList(upList));	
-		}else {
-			resultMap.put("upCnt", 0);	
-		}		
-		return resultMap;
-	}
+	}	
 	
 	/**
 	 * 네비(상위) 메뉴리스트 적용
@@ -291,43 +223,6 @@ public class AdminService {
 		return 1;
 	}
 	
-	
-	/**@deprecated
-	 * 구버전
-	 * 사이드메뉴 insert, update, delete
-	 * @param list
-	 * @return
-	 */
-	@Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
-	public WhiteMap inUpDelSideMenuList(WhiteMap param) {
-		
-		List<WhiteMap> inList = param.convertListWhiteMap("inList", false);
-		List<WhiteMap> upList = param.convertListWhiteMap("upList", false);
-		List<WhiteMap> delList = param.convertListWhiteMap("delList", false);
-		
-		WhiteMap resultMap = new WhiteMap();
-		
-		if(inList.size() > 0 ) {
-			resultMap.put("inCnt", adminMapper.insertSideMenuList(inList));	
-		}else {
-			resultMap.put("inCnt", 0);	
-		}
-		
-		if(upList.size() > 0 ) {			
-			resultMap.put("upCnt", adminMapper.updateSideMenuList(upList));	
-		}else {
-			resultMap.put("upCnt", 0);	
-		}
-		
-		if(delList.size() > 0) {
-			resultMap.put("delCnt", adminMapper.deleteSideMenuList(delList));			
-		}else {
-			resultMap.put("delCnt", 0);	
-		}
-		
-		return resultMap;
-	}	
-	
 	/**
 	 * 권한 적용
 	 * @param param
@@ -378,7 +273,7 @@ public class AdminService {
 			if(updateList.size()>0) adminMapper.updateAuthNmList(updateList);
 			if(deleteList.size()>0) {
 				adminMapper.deleteAuthNmList(deleteList);
-				whiteService.updateSortOrder("auth_name", "auth_nm_seq", "auth_order");
+				whiteService.updateSortTable("auth_name", "auth_nm_seq", "auth_order");
 			}
 			return 1;
 		}

@@ -55,7 +55,7 @@ public class WhiteService{
 	 * @param seqNm
 	 * @param columnNm
 	 */
-	public void updateSortOrder(String tbNm, String seqNm, String colNm) {
+	public void updateSortTable(String tbNm, String seqNm, String colNm) {
 		WhiteMap param = new WhiteMap();
 		param.put("tbNm", tbNm);
 		param.put("seqNm", seqNm);

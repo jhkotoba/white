@@ -9,14 +9,8 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 		<typeAlias alias="whiteMap" type="com.ljh.white.common.collection.WhiteMap"/>
 		
 		<!-- ledger -->
-		<typeAlias alias="MemoBean" type="com.ljh.white.memo.bean.MemoBean"/>
-		
-		
-		
-		
-		
-		<typeAlias alias="WhiteUesrVO" type="com.ljh.white.common.vo.WhiteUesrVO"/>	
-		<typeAlias alias="MoneyRecordVO" type="com.ljh.white.common.vo.MoneyRecordVO"/>		
+		<typeAlias alias="MemoBean" type="com.ljh.white.memo.bean.MemoBean"/>		
+	
  	</typeAliases>
  	
 </configuration>

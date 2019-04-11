@@ -9,15 +9,14 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class WhiteMap extends HashMap<String, Object> {
 
 	private static final long serialVersionUID = 1587273999625657424L;
-	private static Logger logger = LogManager.getLogger(WhiteMap.class);
+	//private static Logger logger = LogManager.getLogger(WhiteMap.class);
 	
 	public WhiteMap(){
 		super();
@@ -42,8 +41,8 @@ public class WhiteMap extends HashMap<String, Object> {
 				this.put(key, values);			
 			}	
 		}
-		logger.debug("url: "+request.getRequestURI());
-		logger.debug("new WhiteMap(request): "+this);
+		//logger.debug("url: "+request.getRequestURI());
+		//logger.debug("new WhiteMap(request): "+this);
 	}
 	
 	public int getInt(String key){
