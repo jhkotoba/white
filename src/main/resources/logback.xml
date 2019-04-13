@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<!-- <property resource="logback.properties"/> -->
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>[%logger{0}.%method] %msg %n</pattern>
+		</encoder>
+	</appender>
+	<!-- <if condition='property("log.config.mode").equals("real")'>
+		<logger name="com.ljh.white" level="off"/>
+		<logger name="jdbc.sqltiming" level="off"/>
+	</if>
+	<if condition='property("log.config.mode").equals("local")'>
+		<logger name="com.ljh.white" level="debug"/>
+		<logger name="jdbc.sqltiming" level="debug"/>
+	</if> -->
+	<logger name="com.ljh.white" level="debug"/>
+	<logger name="jdbc.sqltiming" level="debug"/>
+	
+	<logger name="jdbc" level="off"/>  
+	<logger name="jdbc.sqlonly" level="off"/>	
+	<logger name="jdbc.audit" level="off"/>
+	<logger name="jdbc.resultset" level="off"/>
+	<logger name="jdbc.resultsettable" level="off"/>
+	<logger name="jdbc.connection" level="error"/>  
+	<root level="info">
+		<appender-ref ref="STDOUT" />
+	</root>
+</configuration>

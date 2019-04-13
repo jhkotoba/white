@@ -4,48 +4,56 @@
 
 <mapper namespace="whiteMapper">
 	
+	<!-- 상위권한 리스트 조회 -->
 	<select id="selectNavAuthList" resultType="WhiteMap">
-		SELECT		
-	 		nm.nav_url AS navUrl,
-      		an.auth_nm AS authNm	
+		/*whiteMapper|selectNavAuthList*/
+		SELECT
+			nm.nav_url AS navUrl
+			,an.auth_nm AS authNm
 		FROM nav_menu nm
-    	LEFT OUTER JOIN auth_name an
-    	ON an.auth_nm_seq = nm.nav_auth_nm_seq	
+		LEFT OUTER JOIN auth_name an
+		ON an.auth_nm_seq = nm.nav_auth_nm_seq
 	</select>
 	
+	<!-- 하위권한 리스트 조회 -->
 	<select id="selectSideAuthList" resultType="WhiteMap">
-		SELECT		
-	 		sm.side_url AS sideUrl,
-      		an.auth_nm AS authNm	
+		/*whiteMapper|selectSideAuthList*/
+		SELECT
+	 		sm.side_url AS sideUrl
+      		,an.auth_nm AS authNm
 		FROM side_menu sm
     	LEFT OUTER JOIN auth_name an
     	ON an.auth_nm_seq = sm.side_auth_nm_seq	
 	</select>
 	
+	<!-- 부모코드로 자식코드 리스트 조회 -->
 	<select id="selectCodeList" resultType="WhiteMap" parameterType="WhiteMap">
-		SELECT 
-			code,
-			code_nm AS codeNm
+		/*whiteMapper|selectCodeList*/
+		SELECT
+			code
+			,code_nm AS codeNm
 		FROM cmm_code 
-		WHERE code_prt = #{codePrt}		
+		WHERE code_prt = #{codePrt}
 	</select>
 	
 	<!-- 테이블 순번 전체 조회 -->
 	<select id="selectSortTable" resultType="WhiteMap" parameterType="WhiteMap">
-		SELECT 
-			${seqNm} AS seq			
+		/*whiteMapper|selectSortTable*/
+		SELECT
+			${seqNm} AS seq
 			,${colNm} AS col
 		FROM ${tbNm} ORDER BY ${colNm} ASC
-	</select>	
+	</select>
 	
 	<!-- 테이블 순번 자동 정렬 저장 -->
-	<update id="updateSortTable" parameterType="WhiteMap">		
+	<update id="updateSortTable" parameterType="WhiteMap">
+		/*whiteMapper|selectSortTable*/
 		UPDATE ${tbNm}
-		SET ${colNm} = 
-		CASE		
+		SET ${colNm} =
+		CASE
 		<foreach collection="list" item="item">
 			WHEN ${seqNm} = #{item.seq} THEN #{item.col}
-		</foreach>		
+		</foreach>
 		END
 		WHERE ${seqNm} IN 
 		<foreach collection="list" item="item" separator="," open="(" close=")">

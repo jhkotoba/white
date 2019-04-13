@@ -12,11 +12,13 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class WhiteMap extends HashMap<String, Object> {
 
 	private static final long serialVersionUID = 1587273999625657424L;
-	//private static Logger logger = LogManager.getLogger(WhiteMap.class);
+	private static final Logger logger = LoggerFactory.getLogger(WhiteMap.class);
 	
 	public WhiteMap(){
 		super();
@@ -41,8 +43,8 @@ public class WhiteMap extends HashMap<String, Object> {
 				this.put(key, values);			
 			}	
 		}
-		//logger.debug("url: "+request.getRequestURI());
-		//logger.debug("new WhiteMap(request): "+this);
+		logger.debug("url: "+request.getRequestURI());
+		logger.debug("new WhiteMap(request): "+this);
 	}
 	
 	public int getInt(String key){
