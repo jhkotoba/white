@@ -40,7 +40,8 @@
 	<select id="selectSortTable" resultType="WhiteMap" parameterType="WhiteMap">
 		/*whiteMapper|selectSortTable*/
 		SELECT
-			${seqNm} AS seq
+			${firSeqNm} AS firSeq
+			,${scdSeqNm} AS scdSeq
 			,${colNm} AS col
 		FROM ${tbNm} ORDER BY ${colNm} ASC
 	</select>
@@ -52,12 +53,18 @@
 		SET ${colNm} =
 		CASE
 		<foreach collection="list" item="item">
-			WHEN ${seqNm} = #{item.seq} THEN #{item.col}
+			WHEN ${firSeqNm} = #{item.firSeq} THEN #{item.col}
 		</foreach>
 		END
-		WHERE ${seqNm} IN 
+		WHERE ${firSeqNm} IN 
 		<foreach collection="list" item="item" separator="," open="(" close=")">
-			#{item.seq}
+			#{item.firSeq}
 		</foreach>
+		<if test="scdSeqNm == null and scdSeqNm == ''">
+			AND ${scdSeqNm} IN
+			<foreach collection="list" item="item" separator="," open="(" close=")">
+				#{item.scdSeq}
+			</foreach>
+		</if>
 	</update>
 </mapper>

@@ -101,15 +101,28 @@
 	
 	<!-- logback  -->
 	<dependency>
+	    <groupId>ch.qos.logback</groupId>
+	    <artifactId>logback-core</artifactId>
+	    <version>1.2.2</version>
+	</dependency>	
+	<dependency>
+	    <groupId>ch.qos.logback</groupId>
+	    <artifactId>logback-classic</artifactId>
+	    <version>1.2.2</version>
+	</dependency>	
+	<dependency>
 	    <groupId>org.slf4j</groupId>
 	    <artifactId>slf4j-api</artifactId>
 	    <version>1.7.26</version>
 	</dependency>
 	<dependency>
-	    <groupId>ch.qos.logback</groupId>
-	    <artifactId>logback-classic</artifactId>
-	    <version>1.2.2</version>
-	</dependency>
+        <groupId>org.codehaus.janino</groupId>
+        <artifactId>janino</artifactId>
+        <version>3.0.6</version>
+    </dependency>	
+	
+
+
 	
 	<!-- log4j2 jdbc  -->
 	<dependency>

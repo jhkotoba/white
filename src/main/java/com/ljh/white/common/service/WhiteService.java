@@ -56,9 +56,13 @@ public class WhiteService{
 	 * @param columnNm
 	 */
 	public void updateSortTable(String tbNm, String seqNm, String colNm) {
+		this.updateSortTable(tbNm, seqNm, null, colNm);
+	}
+	public void updateSortTable(String tbNm, String firSeqNm, String scdSeqNm, String colNm) {
 		WhiteMap param = new WhiteMap();
 		param.put("tbNm", tbNm);
-		param.put("seqNm", seqNm);
+		param.put("firSeqNm", firSeqNm);
+		param.put("scdSeqNm", scdSeqNm);
 		param.put("colNm", colNm);		
 		
 		List<WhiteMap> list = whiteMapper.selectSortTable(param);

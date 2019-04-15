@@ -564,6 +564,8 @@ function fnNavJsGrid(data){
 			}
 		}
 		
+		console.log(applyList);
+		
 		if(applyList.length === 0){
 			alert("저장할 데이터가 없습니다.");
 		}else if(isVali && confirm("저장하시겠습니까?")){

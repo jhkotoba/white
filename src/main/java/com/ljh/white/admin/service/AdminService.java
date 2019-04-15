@@ -163,10 +163,13 @@ public class AdminService {
 		
 		if(deleteList.size()>0 && adminMapper.selectIsUsedSideUrl(deleteList)>0) {
 			return -2;
-		}else {
-			if(deleteList.size()>0) adminMapper.deleteNavMenuList(deleteList);
+		}else {			
 			if(insertList.size()>0) adminMapper.insertNavMenuList(insertList);	
 			if(updateList.size()>0) adminMapper.updateNavMenuList(updateList);
+			if(deleteList.size()>0) {
+				adminMapper.deleteNavMenuList(deleteList);
+				whiteService.updateSortTable("nav_menu", "nav_seq", "nav_order");
+			}
 			return 1;
 		}
 	}
@@ -215,11 +218,14 @@ public class AdminService {
 			}else {
 				updateList.add(menuList.get(i));
 			}
-		}
+		}		
 		
-		if(deleteList.size()>0) adminMapper.deleteSideMenuList(deleteList);
 		if(insertList.size()>0) adminMapper.insertSideMenuList(insertList);	
 		if(updateList.size()>0) adminMapper.updateSideMenuList(updateList);
+		if(deleteList.size()>0) {
+			adminMapper.deleteSideMenuList(deleteList);
+			whiteService.updateSortTable("side_menu", "side_seq", "nav_seq", "side_order");
+		}
 		return 1;
 	}
 	

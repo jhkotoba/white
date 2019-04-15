@@ -36,7 +36,7 @@ function fnJsGrid(data){
 				headerTemplate : function(){
 					return $("<button>").attr("id", "add").addClass("btn-gray trs size-sm").text("+").on("click", function(){
 						authList.push({authCmt:"", 
-							authOrder: $("#authList").jsGrid("option", "data").length+1,
+							authOrder: $("#authList").jsGrid("option", "data").length+2,
 							authNmSeq:new Date().getTime(), 
 							authNm:"", 
 							state:"insert"});
