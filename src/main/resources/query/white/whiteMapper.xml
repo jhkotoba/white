@@ -40,31 +40,37 @@
 	<select id="selectSortTable" resultType="WhiteMap" parameterType="WhiteMap">
 		/*whiteMapper|selectSortTable*/
 		SELECT
-			${firSeqNm} AS firSeq
-			,${scdSeqNm} AS scdSeq
-			,${colNm} AS col
-		FROM ${tbNm} ORDER BY ${colNm} ASC
+			${firstSeqNm} AS firstSeq			
+			,${columnNm} AS col
+		FROM ${tableNm}
+		<where>
+			<if test="secondSeqNm != null and secondSeqNm != ''">
+			AND ${secondSeqNm} = #{secondSeq}
+			</if>
+			<if test="userSeq != null and userSeq != ''">
+			AND user_seq = #{userSeq}
+			</if>
+		</where>
+		
+		ORDER BY ${columnNm} ASC
 	</select>
 	
 	<!-- 테이블 순번 자동 정렬 저장 -->
 	<update id="updateSortTable" parameterType="WhiteMap">
-		/*whiteMapper|selectSortTable*/
-		UPDATE ${tbNm}
-		SET ${colNm} =
+		/*whiteMapper|updateSortTable*/
+		UPDATE ${tableNm}
+		SET ${columnNm} =
 		CASE
 		<foreach collection="list" item="item">
-			WHEN ${firSeqNm} = #{item.firSeq} THEN #{item.col}
+			WHEN ${firstSeqNm} = #{item.firstSeq} THEN #{item.col}
 		</foreach>
 		END
-		WHERE ${firSeqNm} IN 
+		WHERE ${firstSeqNm} IN 
 		<foreach collection="list" item="item" separator="," open="(" close=")">
-			#{item.firSeq}
+			#{item.firstSeq}
 		</foreach>
-		<if test="scdSeqNm == null and scdSeqNm == ''">
-			AND ${scdSeqNm} IN
-			<foreach collection="list" item="item" separator="," open="(" close=")">
-				#{item.scdSeq}
-			</foreach>
-		</if>
+		<if test="userSeq != null and userSeq != ''">
+		AND user_seq = #{userSeq}
+		</if>		
 	</update>
 </mapper>

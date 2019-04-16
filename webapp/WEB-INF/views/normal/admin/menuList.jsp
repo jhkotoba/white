@@ -562,9 +562,7 @@ function fnNavJsGrid(data){
 			if(data.sideList[i].state !== "select"){
 				applyList.push(data.sideList[i]);
 			}
-		}
-		
-		console.log(applyList);
+		}		
 		
 		if(applyList.length === 0){
 			alert("저장할 데이터가 없습니다.");

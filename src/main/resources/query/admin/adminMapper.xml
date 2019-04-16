@@ -45,8 +45,7 @@
 			auth_nm AS authNm,
 			auth_cmt AS authCmt,
 			auth_order AS authOrder
- 		FROM auth_name
- 		WHERE auth_nm <![CDATA[ <> ]]> 'dev'
+ 		FROM auth_name 		
  		ORDER BY auth_order ASC
 	</select>
 	
@@ -58,8 +57,7 @@
 		FROM authority auth
 		LEFT OUTER JOIN auth_name name
 		ON name.auth_nm_seq = auth.auth_nm_seq
-		WHERE auth.user_seq = #{no}
-   		AND name.auth_nm <![CDATA[ <> ]]> 'dev'
+		WHERE auth.user_seq = #{no}   		
 	</select>
 	
 	

@@ -33,7 +33,13 @@ function fnGrid(data){
 			{ align:"center", width: "5%",
 				headerTemplate : function(){
 					return $("<button>").attr("id", "bankAdd").addClass("btn-gray trs size-sm").text("+").on("click", function(){
-						bankList.push({bankAccount:"", bankOrder: "", bankSeq:new Date().getTime(), bankName:"", bankUseYn:"N", state:"insert"});		
+						bankList.push({
+							bankAccount:"",
+							bankOrder:  $("#bankList").jsGrid("option", "data").length+1,
+							bankSeq:new Date().getTime(),
+							bankName:"",
+							bankUseYn:"N",
+							state:"insert"});		
 						bankNoIdx = cfnNoIdx(bankList, "bankSeq");
 						$("#bankList").jsGrid("refresh");
 					});					
@@ -199,12 +205,15 @@ function fnGrid(data){
 	
 	//수정 sync 체크
 	function fnOnSync(obj, sortIdx){
+		
+		let name = $(obj).data("name");
+		let idx = bankNoIdx[$(obj).data("bankSeq")];
+		let cIdx = cloneNoIdx[$(obj).data("bankSeq")];
+		
 		if($(obj).hasClass("sync-green")){
-			bankList[bankNoIdx[$(obj).data("bankSeq")]][$(obj).data("name")] = $(obj).val();
-		}else{
-			let name = $(obj).data("name");
-			let idx = bankNoIdx[$(obj).data("bankSeq")];
-			let cIdx = cloneNoIdx[$(obj).data("bankSeq")];
+			if(isEmpty(sortIdx)) bankList[idx][name] = $(obj).val();
+			else bankList[idx][name] = sortIdx+1;			
+		}else{			
 			
 			if(isEmpty(sortIdx)){
 				

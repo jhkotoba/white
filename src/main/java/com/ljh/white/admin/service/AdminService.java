@@ -168,7 +168,12 @@ public class AdminService {
 			if(updateList.size()>0) adminMapper.updateNavMenuList(updateList);
 			if(deleteList.size()>0) {
 				adminMapper.deleteNavMenuList(deleteList);
-				whiteService.updateSortTable("nav_menu", "nav_seq", "nav_order");
+				
+				WhiteMap map = new WhiteMap();
+				map.put("tableNm", "nav_menu");
+				map.put("firstSeqNm", "nav_seq");							
+				map.put("columnNm", "nav_order");
+				whiteService.updateSortTable(map);	
 			}
 			return 1;
 		}
@@ -224,7 +229,14 @@ public class AdminService {
 		if(updateList.size()>0) adminMapper.updateSideMenuList(updateList);
 		if(deleteList.size()>0) {
 			adminMapper.deleteSideMenuList(deleteList);
-			whiteService.updateSortTable("side_menu", "side_seq", "nav_seq", "side_order");
+			
+			WhiteMap map = new WhiteMap();
+			map.put("tableNm", "side_menu");
+			map.put("firstSeqNm", "side_seq");				
+			map.put("secondSeqNm", "nav_seq");				
+			map.put("secondSeq", deleteList.get(0).getString("navSeq"));				
+			map.put("columnNm", "side_order");
+			whiteService.updateSortTable(map);			
 		}
 		return 1;
 	}
@@ -279,7 +291,12 @@ public class AdminService {
 			if(updateList.size()>0) adminMapper.updateAuthNmList(updateList);
 			if(deleteList.size()>0) {
 				adminMapper.deleteAuthNmList(deleteList);
-				whiteService.updateSortTable("auth_name", "auth_nm_seq", "auth_order");
+				
+				WhiteMap map = new WhiteMap();
+				map.put("tableNm", "auth_name");
+				map.put("firstSeqNm", "auth_nm_seq");							
+				map.put("columnNm", "auth_order");
+				whiteService.updateSortTable(map);
 			}
 			return 1;
 		}

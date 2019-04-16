@@ -48,7 +48,11 @@ function fnPurGrid(data){
 			{ align:"center", width: "8%",
 				headerTemplate : function(){
 					return $("<button>").attr("id", "purAdd").addClass("btn-gray trs size-sm").text("+").on("click", function(){
-						data.purList.push({purpose: "", purOrder:"", purSeq: new Date().getTime(), state:"insert"});
+						data.purList.push({purpose: "", 
+							purOrder: $("#purList").jsGrid("option", "data").length+1,
+							purSeq: new Date().getTime(), 
+							state:"insert"
+							});
 						purNoIdx = cfnNoIdx(data.purList, "purSeq");
 						$("#purList").jsGrid("refresh");
 					});
@@ -211,7 +215,11 @@ function fnPurGrid(data){
 				{ align:"center", width: "8%",
 					headerTemplate : function(){
 						return $("<button>").attr("id", "purDtlAdd").addClass("btn-gray trs size-sm").text("+").on("click", function(){
-							data.purDtlList.push({purSeq: refPurSeq, purDetail:"", purDtlOrder:"", purDtlSeq: new Date().getTime(), state:"insert"});
+							data.purDtlList.push({purSeq: refPurSeq,
+								purDetail:"",
+								purDtlOrder: $("#purDtlList").jsGrid("option", "data").length+1,
+								purDtlSeq: new Date().getTime(), state:"insert"
+								});
 							purDtlNoIdx = cfnNoIdx(data.purDtlList, "purDtlSeq");
 							$("#purDtlList").jsGrid("refresh");
 						});

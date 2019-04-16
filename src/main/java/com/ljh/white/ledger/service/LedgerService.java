@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ljh.white.common.Constant;
 import com.ljh.white.common.White;
 import com.ljh.white.common.collection.WhiteMap;
+import com.ljh.white.common.service.WhiteService;
 import com.ljh.white.ledger.mapper.LedgerMapper;
 
 
@@ -20,6 +21,9 @@ public class LedgerService {
 	
 	@Resource(name = "LedgerMapper")
 	private LedgerMapper ledgerMapper;
+	
+	@Resource(name = "WhiteService")
+	private WhiteService whiteService;
 	
 	/**
 	 * 해당유저 목적 리스트
@@ -75,10 +79,19 @@ public class LedgerService {
 			return -2;
 		}else if(deleteList.size()>0 && ledgerMapper.selectIsUsedPurposeRec(deleteList)>0) {				
 			return -3;
-		}else {
-			if(deleteList.size()>0) ledgerMapper.deletePurList(deleteList);
+		}else {			
 			if(insertList.size()>0) ledgerMapper.insertPurList(insertList);	
 			if(updateList.size()>0) ledgerMapper.updatePurList(updateList);
+			if(deleteList.size()>0) {
+				ledgerMapper.deletePurList(deleteList);
+				
+				WhiteMap map = new WhiteMap();
+				map.put("tableNm", "purpose");
+				map.put("firstSeqNm", "pur_seq");				
+				map.put("columnNm", "pur_order");
+				map.put("userSeq", param.getString("userSeq"));
+				whiteService.updateSortTable(map);
+			}
 			return 1;
 		}
 	}
@@ -120,10 +133,21 @@ public class LedgerService {
 			return -1;
 		}else if(deleteList.size()>0 && ledgerMapper.selectIsUsedPurDtlRec(deleteList)>0) {				
 			return -2;
-		}else {
-			if(deleteList.size()>0) ledgerMapper.deletePurDtlList(deleteList);
+		}else {			
 			if(insertList.size()>0) ledgerMapper.insertPurDtlList(insertList);	
 			if(updateList.size()>0) ledgerMapper.updatePurDtlList(updateList);
+			if(deleteList.size()>0) {
+				ledgerMapper.deletePurDtlList(deleteList);
+				
+				WhiteMap map = new WhiteMap();
+				map.put("tableNm", "purpose_detail");
+				map.put("firstSeqNm", "pur_dtl_seq");				
+				map.put("secondSeqNm", "pur_seq");				
+				map.put("secondSeq", deleteList.get(0).getString("purSeq"));				
+				map.put("columnNm", "pur_dtl_order");
+				map.put("userSeq", param.getString("userSeq"));
+				whiteService.updateSortTable(map);
+			}
 			return 1;
 		}
 	}
@@ -170,10 +194,19 @@ public class LedgerService {
 			return -1;
 		}else if(deleteList.size()>0 && ledgerMapper.selectIsUsedBankRec(deleteList)>0) {				
 			return -2;
-		}else {
-			if(deleteList.size()>0) ledgerMapper.deleteBankList(deleteList);
+		}else {			
 			if(insertList.size()>0) ledgerMapper.insertBankList(insertList);	
 			if(updateList.size()>0) ledgerMapper.updateBankList(updateList);
+			if(deleteList.size()>0) {
+				ledgerMapper.deleteBankList(deleteList);
+				
+				WhiteMap map = new WhiteMap();
+				map.put("tableNm", "bank");
+				map.put("firstSeqNm", "bank_seq");				
+				map.put("columnNm", "bank_order");
+				map.put("userSeq", param.getString("userSeq"));
+				whiteService.updateSortTable(map);
+			}
 			return 1;
 		}
 	}
