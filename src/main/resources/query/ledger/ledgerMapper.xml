@@ -277,6 +277,7 @@
 			move_seq,
 			money,
 			stats_yn,
+			edit_date,
 			reg_date
 		)VALUES
 		<foreach collection="list" item="item" separator="),(" open="(" close=")">
@@ -303,7 +304,8 @@
 				</otherwise>
 			</choose>						 
 			#{item.money},	
-			#{item.statsYn},	
+			#{item.statsYn},
+			now(),	
 			now()
 		</foreach>	
 	</insert>	
@@ -431,7 +433,8 @@
 		<foreach collection="list" item="item">
 			WHEN record_seq = #{item.recordSeq} THEN #{item.statsYn}
 		</foreach>		
-		END			
+		END,
+		edit_date =	now()
 		WHERE record_seq IN 
 		<foreach collection="list" item="item" separator="," open="(" close=")">
 			#{item.recordSeq}

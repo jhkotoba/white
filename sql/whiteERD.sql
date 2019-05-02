@@ -143,6 +143,7 @@ CREATE TABLE money_record
 	move_seq int,
 	money int NOT NULL,
 	stats_yn varchar(1) DEFAULT 'Y' NOT NULL,
+	edit_date datetime NOT NULL,
 	reg_date datetime NOT NULL,
 	PRIMARY KEY (record_seq),
 	UNIQUE (record_seq)
@@ -262,7 +263,7 @@ ALTER TABLE side_menu
 
 
 ALTER TABLE money_record
-	ADD FOREIGN KEY (bank_seq)
+	ADD FOREIGN KEY (move_seq)
 	REFERENCES bank (bank_seq)
 	ON UPDATE RESTRICT
 	ON DELETE RESTRICT
@@ -270,7 +271,7 @@ ALTER TABLE money_record
 
 
 ALTER TABLE money_record
-	ADD FOREIGN KEY (move_seq)
+	ADD FOREIGN KEY (bank_seq)
 	REFERENCES bank (bank_seq)
 	ON UPDATE RESTRICT
 	ON DELETE RESTRICT
