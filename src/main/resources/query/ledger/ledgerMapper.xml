@@ -393,14 +393,7 @@
 		pur_dtl_seq = 
 		CASE		
 		<foreach collection="list" item="item">
-			<choose>
-				<when test="item.purDtlSeq == ''">
-					WHEN record_seq = #{item.recordSeq} THEN null
-				</when>				
-				<otherwise>
-					WHEN record_seq = #{item.recordSeq} THEN #{item.purDtlSeq}
-				</otherwise>
-			</choose>			
+			WHEN record_seq = #{item.recordSeq} THEN #{item.purDtlSeq}		
 		</foreach>		
 		END,
 		bank_seq = 

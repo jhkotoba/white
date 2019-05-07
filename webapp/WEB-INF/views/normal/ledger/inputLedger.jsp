@@ -235,21 +235,21 @@ function inputLedger(data){
 					if(fieldList[j].button === true){
 						$button = $("<button>").addClass("btn-gray trs").text("↓")
 							//마우스 오버 이벤트
-							.off().on("mouseenter", function(){								
+							.off().on("mouseenter", function(){
 								for(let k=i; k<insertList.length; k++){
 									obj = $(this).closest("table").children().eq(k).children().eq(j).children().eq(0);
 									if(obj[0].tagName === "SPAN")	obj.children().eq(0).addClass("dncp");
 									else	obj.addClass("dncp");
 								}
 							//마우스 아웃 이벤트
-							}).off().on("mouseleave", function(){								
-								for(let k=i; k<insertList.length; k++){									
+							}).on("mouseleave", function(){								
+								for(let k=i; k<insertList.length; k++){
 									obj = $(this).closest("table").children().eq(k).children().eq(j).children().eq(0);
 									if(obj[0].tagName === "SPAN")	obj.children().eq(0).removeClass("dncp");
 									else	obj.removeClass("dncp");
 								}
 							//클릭 이벤트 - 해당란부터 마지막란까지 일괄 변경
-							}).off().on("click", function(){								
+							}).on("click", function(){
 								let value = "";
 								obj = $(this).prev();
 								if(obj[0].tagName === "SPAN")	value = obj.children().eq(0).val();
@@ -260,7 +260,7 @@ function inputLedger(data){
 									if(obj[0].tagName === "SPAN")	obj.children().eq(0).val(value).trigger('change');
 									else	obj.val(value).trigger('change');
 								}
-							});				
+							});
 						$td.append($button);
 					}
 				}else{
