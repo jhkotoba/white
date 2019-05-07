@@ -140,7 +140,7 @@ CREATE TABLE money_record
 	pur_seq int NOT NULL,
 	pur_dtl_seq int NOT NULL,
 	bank_seq int NOT NULL,
-	move_seq int,
+	move_seq int NOT NULL,
 	money int NOT NULL,
 	stats_yn varchar(1) DEFAULT 'Y' NOT NULL,
 	edit_date datetime NOT NULL,

@@ -291,7 +291,7 @@ function ledgerList(data){
 						case "LP002": $sign.text("-"); break;
 						case "LP003": $sign.text(">"); break;
 						}
-						item.moveSeq = "";
+						//item.moveSeq = "";
 						$bank.empty().append(fnCreateBankSelect(item, idx));
 					});
 				}
@@ -478,7 +478,9 @@ function ledgerList(data){
 			.addClass(item.purType==="LP003"?"wth50p":"wth100p")
 			.attr("name","sync"+idx)
 			.off().on("change", function(){			
-				item.bankSeq = this.value;
+				item.bankSeq = this.value;				
+				if(item.purType==="LP001" || item.purType==="LP002")	item.moveSeq = this.value;
+				else item.moveSeq = "";
 				fnTypeSync(this, "bankSeq", item, idx);
 			});		
 		$span.append($select);

@@ -161,7 +161,7 @@ function inputLedger(data){
 				}
 				break;
 			}
-		});	
+		});
 	
 		if(isVali && confirm("입력한 내용을 저장 하시겠습니까?")){			
 			for(let i=0; i<insertList.length; i++){
@@ -351,15 +351,17 @@ function inputLedger(data){
 				.data("name", "bankSeq").append($("<option>").text("사용수단 선택").val(""))
 				.off().on("change", function(){
 					item.bankSeq = this.value;
+					item.moveSeq = this.value;
 				});;
 			
 			fnCreateOption(item, "bankSeq", $select);			
 			
-			item.moveSeq = "";
+			//item.moveSeq = "";
 			$span.append($select).addClass("wth90p");
 			break;
 		case "LP003":
 			//보내는곳
+			item.moveSeq = "";
 			$select.addClass("select-gray wth50p").attr("name", "sync")
 				.data("name", "bankSeq").append($("<option>").text("보낸곳 선택").val(""))
 				.off().on("change", function(){
