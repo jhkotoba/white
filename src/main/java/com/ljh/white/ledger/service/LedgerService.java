@@ -223,7 +223,7 @@ public class LedgerService {
 	 * -6 : 목적 seq값 널인 경우
 	 * -7 : 목적타입이 이동인 경우에서 받는곳이 널값인 경우
 	 * -8 : 목적타입이 이동인 경우에서 보내는곳과 받는곳이 같은 경우
-	 * -9 : 목적타입이 이동이 아닌 경우에서 받는곳의 값이 있는 경우
+	 * -9 : 목적타입이 이동이 아닌 경우에서 bankSeq와 moveSeq가 같지 않는 경우
 	 * -10 : 상세목적이 목적의 하위그룹에 속하지 않는 경우
 	 * -11 : 금액값이 정상적이지 않는 경우
 	 * 0:데이터없어서 insert실행 하지 않음
@@ -271,9 +271,11 @@ public class LedgerService {
 				String moveSeq = list.get(i).getString("moveSeq");
 				if(bankSeqMap.get(moveSeq) == null) return -7;				
 				if(moveSeq.equals(list.get(i).getString("bankSeq"))) return -8;
-			//목적타입이 이동이 아닌 경우 검사
-			}else {				
-				if(!"".equals(list.get(i).getString("moveSeq"))) return -9;
+			//목적타입이 이동이 아닌 경우 검사//이동인경우 bankSeq와 moveSeq같도록 수정
+			}else {
+				str = list.get(i).getString("bankSeq");
+				if(str == null) return -9;
+				else if(!str.equals(list.get(i).getString("moveSeq"))) return -9;
 			}
 			
 			//상세목적 검사
