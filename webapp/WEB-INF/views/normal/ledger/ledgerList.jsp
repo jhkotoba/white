@@ -78,7 +78,7 @@ function ledgerList(data){
 		param.purSeq = $("#searchBar #purSeq").val();
 		param.purDtlSeq = $("#searchBar #purDtlSeq").val();
 		param.bankSeq = $("#searchBar #bankSeq").val();
-		param.isEdit = 0;
+		param.searchType = "select";
 		
 		if(!isDatePattern(param.startDate, "yyyy-MM-dd")){			
 			wVali.alert({element : $("#searchBar #startDate"), msg: "ex)2019-01-01의 형식으로 입력할 수 있습니다."});

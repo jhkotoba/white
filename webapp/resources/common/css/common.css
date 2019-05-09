@@ -34,6 +34,8 @@
 
 /* font size*/
 .fsize03{font-size: 0.3em;}
+.title-icon{display: inline-block; background-image: url(../svg/genderless-solid.svg); background-repeat: no-repeat; background-size: 10px; background-position-y: -3px; width: 10px; height: 12px;}
+.title{font-size: 1.4em; font-weight: 600;}
 
 /* font color */
 .deepgray{color:#8a8989;}
@@ -82,8 +84,10 @@ span, table{font-size: 0.9em; color: rgba(246, 246, 246, .8);}
 @-o-keyframes fadeIn{from{opacity:0}to{opacity:.92}}
 @keyframes fadeIn{from{opacity:0}to{opacity:.92}}
 
-/* search bar */
+/*bar*/
 .search-bar{margin: 0px 0px 5px 0px;}
+.button-bar{height: 20px;}
+.button-bar div{margin: 0px 0px 2px 0px; float: right;}
 
 /* main */
 .main{padding: 10px;}
@@ -215,6 +219,7 @@ h6, .h6 {font-size: 1rem;}
 /* margin */
 .mgupdown5{margin-top:5px; margin-bottom:5px;}
 .mgbottom3{margin-bottom:3px;}
+.mgbottom10{margin-bottom:10px;}
 .mgbottom30{margin-bottom:30px;}
 
 /* padding */
@@ -245,7 +250,7 @@ h6, .h6 {font-size: 1rem;}
 .path{
 	display: block;
 	border-bottom: 1px solid #5E5E5E;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
     height: 20px;
 }
 

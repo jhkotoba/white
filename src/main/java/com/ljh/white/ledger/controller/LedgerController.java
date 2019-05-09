@@ -139,11 +139,14 @@ public class LedgerController {
 	@RequestMapping(value="/ledger/selectRecordList.ajax" )
 	public List<WhiteMap> selectRecordList(HttpServletRequest request){
 		WhiteMap param = new WhiteMap(request);
-		if(param.getInt("isEdit") == 1){
-			return ledgerService.selectRecordList(param);
-		}else {
+		switch(param.getString("searchType")) {
+		case "select":
 			return ledgerService.selectRecordSumList(param);
-		}		
+		default:
+		case "edit":
+		case "recent":
+			return ledgerService.selectRecordList(param);
+		}
 	}
 	
 	/**

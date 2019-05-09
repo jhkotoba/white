@@ -8,8 +8,10 @@
 <script type="text/javascript">
 $(document).ready(function(){	
 	cfnCmmAjax("/ledger/selectPurBankList").done(inputLedger);
+	cfnCmmAjax("/ledger/selectRecordList", {searchType:"recent"}).done(recordList);
 });
 
+//가계부 기입란
 function inputLedger(data){	
 	let insertList = new Array();
 	
@@ -99,12 +101,12 @@ function inputLedger(data){
 				return $span;
 			}
 		},	
-		{title : "수입 지출*",	name:"money", 		width : "10%", align:"center",
+		{title : "수입지출*",	name:"money", 		width : "10%", align:"center",
 			itemTemplate: function(item){
 				return fnCreateMoney(item, purLp[item.purSeq], $("<span>"));
 			}
 		},
-		{title : "통계 표시",	name:"statsYn", 		width : "4%", align:"center",
+		{title : "통계여부",	name:"statsYn", 		width : "4%", align:"center",
 			itemTemplate: function(item, idx){
 				return $("<button>").addClass("btn-gray trs").text("Y").val("Y").off().on("click", function(){
 					if($(this).val() === "Y"){ $(this).val("N").text("N"); item.statsYn = this.value;}
@@ -412,7 +414,7 @@ function inputLedger(data){
 	}
 	
 	//수입지출란 수입, 지출, 이동구분해서 생성
-	function fnCreateMoney(item, code, $money){		
+	function fnCreateMoney(item, code, $money){	
 		let $input = $("<input>").addClass("only-currency").attr("name", "sync").data("name", "money");
 		
 		$input.addClass("input-gray").off().on("keyup keydown change", function(){
@@ -443,9 +445,54 @@ function inputLedger(data){
 		return $money;
 	}
 }
+
+function recordList(data){	
+	$("#recordList").jsGrid({
+        height: "auto",
+        width: "100%",
+        
+        autoload: true,     
+		data: data,		
+		paging: false,
+		pageSize: 10,
+		
+		confirmDeleting : false,
+       
+        autoload: true,
+        fields: [
+			{ title:"날짜",		name:"recordDate",	type:"text", width: "8%",	align:"center"},
+			{ title:"위치",		name:"position",	type:"text", width: "14%",	align:"center"},
+			{ title:"내용",		name:"content",		type:"text", width: "14%",	align:"center"},
+			{ title:"목적",		name:"purpose",		type:"text", width: "8%",	align:"center"},
+			{ title:"상세목적",	name:"purDetail",	type:"text", width: "9%",	align:"center"},
+			{ title:"은행",		name:"bankName",	type:"text", width: "8%",	align:"center"},
+			{ title:"은행상세",	name:"bankAccount",	type:"text", width: "12%",	align:"center"},
+			{ title:"금액",		name:"money",		type:"text", width: "5%",	align:"center"},
+			{ title:"통계여부",	name:"statsYn",		type:"text", width: "4%",	align:"center"},
+			{ title:"수정일시",	name:"editDate",	type:"text", width: "9%",	align:"center"},
+			{ title:"등록일시",	name:"regDate",		type:"text", width: "9%",	align:"center"},
+        ]
+    });	
+}
 </script>
 
-<div id="searchBar" class="search-bar pull-right">	
-	<button id="saveBtn" type="button" class="btn-gray trs">저장</button>
+<div class="button-bar">
+	<div class="btns">		
+		<button id="saveBtn" type="button" class="btn-gray trs">저장</button>
+	</div>
 </div>
-<div id="ledgerList"></div>
+<div class="mgbottom30">
+	<div>
+		<div class="title-icon"></div>
+		<label class="title">기입란</label>
+	</div>
+	<div id="ledgerList"></div>
+</div>
+<div>
+	<div>
+		<div class="title-icon"></div>
+		<label class="title">최근기입목록</label>
+	</div>
+	<div id="recordList"></div>
+	<div id="pager" class="pager"></div>
+</div>

@@ -334,22 +334,26 @@
 	<!-- 금전기록 리스트 조회  -->
 	<select id="selectRecordList" resultType="whiteMap" parameterType="whiteMap">
 		SELECT			
-			rec.record_seq AS recordSeq,
-			DATE_FORMAT(rec.record_date,'%Y-%m-%d %H:%i') AS recordDate,			
-			IFNULL(rec.position, '') AS position,
-			rec.content,
-			rec.pur_seq AS purSeq,
-			pur.pur_type AS purType,
-			IFNULL(rec.pur_dtl_seq, '') AS purDtlSeq,
-			rec.bank_seq AS bankSeq,
-			IFNULL(rec.move_seq, '') AS moveSeq,
-			rec.money,
-			rec.stats_yn AS statsYn,
-			IFNULL(pur.purpose, 'move')	AS purpose,
-			IFNULL(purDtl.pur_detail,'') AS purDetail,
-			IFNULL(bank.bank_name, 'cash')	AS bankName,
-			IFNULL(bank.bank_account, 'cash')	AS bankAccount,
-			IFNULL(bank.bank_use_yn,'X') AS bankUseYn
+			rec.record_seq AS recordSeq
+			,DATE_FORMAT(rec.record_date,'%Y-%m-%d %H:%i') AS recordDate
+			,IFNULL(rec.position, '') AS position
+			,rec.content
+			,rec.pur_seq AS purSeq
+			,pur.pur_type AS purType
+			,IFNULL(rec.pur_dtl_seq, '') AS purDtlSeq
+			,rec.bank_seq AS bankSeq
+			,IFNULL(rec.move_seq, '') AS moveSeq
+			,rec.money
+			,rec.stats_yn AS statsYn
+			,IFNULL(pur.purpose, 'move')	AS purpose
+			,IFNULL(purDtl.pur_detail,'') AS purDetail
+			,IFNULL(bank.bank_name, 'cash')	AS bankName
+			,IFNULL(bank.bank_account, 'cash')	AS bankAccount
+			,IFNULL(bank.bank_use_yn,'X') AS bankUseYn
+			<if test="searchType == 'recent'">
+			,DATE_FORMAT(rec.edit_date,'%Y-%m-%d %H:%i:%d') AS editDate
+			,DATE_FORMAT(rec.reg_date,'%Y-%m-%d %H:%i:%d') AS regDate
+			</if>
 		FROM money_record_re rec
 		LEFT OUTER JOIN purpose pur
 			ON rec.pur_seq = pur.pur_seq
@@ -357,10 +361,19 @@
 			ON rec.pur_dtl_seq = purDtl.pur_dtl_seq
 		LEFT OUTER JOIN bank bank
     		ON rec.bank_seq = bank.bank_seq
-		WHERE rec.user_seq = #{userSeq}		
+		WHERE rec.user_seq = #{userSeq}
+		<choose>
+		<when test="searchType == 'recent'">
+		AND rec.edit_date <![CDATA[ >= ]]> DATE_ADD(NOW(), INTERVAL -1 HOUR)
+		AND rec.edit_date <![CDATA[ <= ]]> NOW()
+		ORDER BY rec.edit_date DESC,  rec.record_seq DESC
+		</when>
+		<otherwise>
 		AND rec.record_date <![CDATA[ >= ]]> #{startDate}
-		AND rec.record_date <![CDATA[ <= ]]> #{endDate}			 	
-		ORDER BY rec.record_date ASC,  rec.record_seq ASC				
+		AND rec.record_date <![CDATA[ <= ]]> #{endDate}
+		ORDER BY rec.record_date ASC,  rec.record_seq ASC
+		</otherwise>
+		</choose>
 	</select>
 	
 	<!-- 금전기록 list 수정 -->
