@@ -10,7 +10,7 @@ $(document).ready(function(){
 	cfnCmmAjax("/ledger/selectPurBankList").done(ledgerList);
 	
 	//상세보기 버튼
-	$("#searchBar #right #detail").on("click", function(){
+	$("#btns #detail").on("click", function(){
 		if($(this).data("detail")){			
 			$("[name=detail]").hide();
 			$(this).data("detail", false).text("상세보기");
@@ -50,7 +50,7 @@ function ledgerList(data){
 	//목적-상세목적
 	$("#searchBar #purSeq").on("change", function(e){
 		$("#purDtlSeq").empty();
-		$("#searchBar #purDtlSeq").append($("<option>").text("상세목적 검색").val(""));
+		$("#searchBar #purDtlSeq").append($("<option>").text("전체").val(""));
 		for(let i=0; i<data.purDtlList.length; i++){
 			if(Number(data.purDtlList[i].purSeq) === Number(this.value)){
 				$option = $("<option>").val(data.purDtlList[i].purDtlSeq)
@@ -97,7 +97,7 @@ function ledgerList(data){
 			fnCreateLedgerList(data);
 			
 			//excel 버튼
-			$("#right #excel").off().on("click", function(){
+			$("#btns #excel").off().on("click", function(){
 				alert("나중에~");
 				/* $("#downloadForm #filename").val("가계부 검색 리스트.xlsx");
 				$("#downloadForm #data").val(JSON.stringify(data));
@@ -224,7 +224,7 @@ function ledgerList(data){
 			let $tb = $("<table>").addClass("table-header");
 			let $tr = $("<tr>");
 			let $th = null;
-			let detail = $("#right #detail").data("detail");
+			let detail = $("#btns #detail").data("detail");
 			
 			for(let i=0; i<data.bankList.length; i++){			
 				fieldList.push(
@@ -270,7 +270,7 @@ function ledgerList(data){
 			let $tr = null;
 			let $td = null;
 			
-			let detail = $("#right #detail").data("detail");
+			let detail = $("#btns #detail").data("detail");
 			for(let i=list.length-1; i>=0; i--){
 				if(isNotEmpty($("#searchBar #purSeq").val()) && String($("#searchBar #purSeq").val()) !== String(list[i].purSeq)){
 					continue;				
@@ -304,27 +304,71 @@ function ledgerList(data){
 }
 </script>
 
-<div id="searchBar" class="search-bar">	
-	<input id="startDate" value="" type="text" class="input-gray input-center wth1 datepicker-here" data-language='ko'>	
-	<input id="endDate" value="" type="text" class="input-gray input-center wth1 datepicker-here" data-language='ko'>	
-	
-	<select id="purSeq" class="select-gray">
-		<option value=''>목적 검색</option>		
-	</select>
-	<select id="purDtlSeq" class="select-gray detail-view" style="display: none;">
-		<option value=''>상세목적 검색</option>
-	</select>
-	<select id="bankSeq" class="select-gray detail-view" style="display: none;">
-		<option value=''>은행 검색</option>		
-		<option value='0'>현금</option>	
-	</select>
-	<button id="search" class="btn-gray trs">조회</button>
-	
-	<div id="right" class="pull-right">
+<div class="button-bar">
+	<div id="btns" class="btns">
+		<button id="search" class="btn-gray trs">조회</button>
 		<button id="detail" class="btn-gray trs">상세보기</button>
 		<button id="excel" class="btn-gray trs">엑셀</button>
 	</div>
 </div>
 
-<div id="ledgerList">
+<div>
+	<div>
+		<div class="title-icon"></div>
+		<label class="title">검색조건</label>
+	</div>
+	<div id="searchBar" class="search-bar">
+		<table>
+			<colgroup>
+				<col width="110px" class="search-th"/>
+				<col width="*" />
+				<col width="110px" class="search-th"/>
+				<col width="*">
+				<col width="110px" class="search-th"/>
+				<col width="*"/>
+				<col width="110px" class="search-th"/>
+				<col width="*"/>
+				<col width="110px" class="search-th"/>
+				<col width="*"/>
+			</colgroup>
+			<tr>
+				<th>시작일자</th>
+				<td>
+					<input id="startDate" value="" type="text" class="input-gray input-center wth1 datepicker-here" data-language='ko'>
+				</td>
+				<th>종료일자</th>
+				<td>
+					<input id="endDate" value="" type="text" class="input-gray input-center wth1 datepicker-here" data-language='ko'>
+				</td>
+				<th>목적</th>
+				<td>
+					<select id="purSeq" class="select-gray">
+						<option value=''>전체</option>
+					</select>
+				</td>
+				<th class="detail-view" style="display: none;">상세목적</th>
+				<td class="detail-view" style="display: none;">
+					<select id="purDtlSeq" class="select-gray">
+						<option value=''>전체</option>
+					</select>
+				</td>
+				<th class="detail-view" style="display: none;">은행</th>
+				<td class="detail-view" style="display: none;">
+					<select id="bankSeq" class="select-gray">
+						<option value=''>전체</option>
+						<option value='0'>현금</option>
+					</select>
+				</td>
+			</tr>
+		</table>
+	</div>
 </div>
+
+<div>
+	<div>
+		<div class="title-icon"></div>
+		<label class="title">가계부 목록</label>
+	</div>
+	<div id="ledgerList"></div>
+</div>
+
