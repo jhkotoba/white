@@ -15,12 +15,12 @@ $(document).ready(function(){
 			$("[name=detail]").hide();
 			$(this).data("detail", false).text("상세보기");
 			$("#ledgerList").removeClass("overflow-x-scroll");
-			$(".detail-view").each(function(e){$(this).hide();});			
+			//$(".detail-view").each(function(e){$(this).hide();});			
 		}else{
 			$("[name=detail]").show();
 			$(this).data("detail", true).text("간편보기");
 			$("#ledgerList").addClass("overflow-x-scroll");
-			$(".detail-view").each(function(e){$(this).show();});
+			//$(".detail-view").each(function(e){$(this).show();});
 		}
 	});
 });
@@ -320,45 +320,45 @@ function ledgerList(data){
 	<div id="searchBar" class="search-bar">
 		<table>
 			<colgroup>
-				<col width="110px" class="search-th"/>
-				<col width="*" />
-				<col width="110px" class="search-th"/>
-				<col width="*">
-				<col width="110px" class="search-th"/>
-				<col width="*"/>
-				<col width="110px" class="search-th"/>
-				<col width="*"/>
-				<col width="110px" class="search-th"/>
-				<col width="*"/>
+				<col width="5%" class="search-th"/>
+				<col width="10%" />
+				<col width="5%" class="search-th"/>
+				<col width="10%">
+				<col width="5%" class="search-th"/>
+				<col width="15%"/>
+				<col width="5%" class="search-th"/>
+				<col width="15%"/>
+				<col width="5%" class="search-th"/>
+				<col width="15%"/>				
 			</colgroup>
 			<tr>
 				<th>시작일자</th>
 				<td>
-					<input id="startDate" value="" type="text" class="input-gray input-center wth1 datepicker-here" data-language='ko'>
+					<input id="startDate" value="" type="text" class="input-gray input-center wth100p datepicker-here" data-language='ko'>
 				</td>
 				<th>종료일자</th>
 				<td>
-					<input id="endDate" value="" type="text" class="input-gray input-center wth1 datepicker-here" data-language='ko'>
+					<input id="endDate" value="" type="text" class="input-gray input-center wth100p datepicker-here" data-language='ko'>
 				</td>
 				<th>목적</th>
 				<td>
-					<select id="purSeq" class="select-gray">
+					<select id="purSeq" class="select-gray wth100p">
 						<option value=''>전체</option>
 					</select>
 				</td>
-				<th class="detail-view" style="display: none;">상세목적</th>
-				<td class="detail-view" style="display: none;">
-					<select id="purDtlSeq" class="select-gray">
+				<th>상세목적</th>
+				<td>
+					<select id="purDtlSeq" class="select-gray wth100p">
 						<option value=''>전체</option>
 					</select>
 				</td>
-				<th class="detail-view" style="display: none;">은행</th>
-				<td class="detail-view" style="display: none;">
-					<select id="bankSeq" class="select-gray">
+				<th>은행</th>
+				<td>
+					<select id="bankSeq" class="select-gray wth100p">
 						<option value=''>전체</option>
 						<option value='0'>현금</option>
 					</select>
-				</td>
+				</td>				
 			</tr>
 		</table>
 	</div>
