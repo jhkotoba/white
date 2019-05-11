@@ -94,7 +94,7 @@ function ledgerList(data){
 			fnCreateLedgerEditList(common.clone(data));
 			
 			//초기화 버튼
-			$("#right #cancel").off().on("click", function(){
+			$("#btns #cancel").off().on("click", function(){
 				fnCreateLedgerEditList(common.clone(data));
 			});
 		});
@@ -105,7 +105,7 @@ function ledgerList(data){
 		$("#ledgerList").empty();		
 		
 		//저장버튼 이벤트
-		$("#right #save").off().on("click", function(){
+		$("#btns #save").off().on("click", function(){
 			
 			let name = null;
 			let isVali = true;
@@ -560,27 +560,70 @@ function ledgerList(data){
 
 </script>
 
-<div id="searchBar" class="search-bar">	
-	<input id="startDate" value="" type="text" class="input-gray input-center wth1 datepicker-here" data-language='ko'>	
-	<input id="endDate" value="" type="text" class="input-gray input-center wth1 datepicker-here" data-language='ko'>	
-	
-	<select id="purSeq" class="select-gray">
-		<option value=''>목적 검색</option>		
-	</select>
-	<select id="purDtlSeq" class="select-gray">
-		<option value=''>상세목적 검색</option>
-	</select>
-	<select id="bankSeq" class="select-gray">
-		<option value=''>은행 검색</option>		
-		<option value='0'>현금</option>	
-	</select>
-	<button id="search" class="btn-gray trs">조회</button>
-	
-	<div id="right" class="pull-right">
+<div class="button-bar">
+	<div id="btns" class="btns">
+		<button id="search" class="btn-gray trs">조회</button>
 		<button id="save"  class="btn-gray trs">저장</button>
 		<button id="cancel" class="btn-gray trs">초기화</button>
 	</div>
 </div>
 
-<div id="ledgerList" class="text-drag-block">
+<div>
+	<div>
+		<div class="title-icon"></div>
+		<label class="title">검색조건</label>
+	</div>
+	<div id="searchBar" class="search-bar">
+		<table>
+			<colgroup>
+				<col width="5%" class="search-th"/>
+				<col width="10%" />
+				<col width="5%" class="search-th"/>
+				<col width="10%">
+				<col width="5%" class="search-th"/>
+				<col width="15%"/>
+				<col width="5%" class="search-th"/>
+				<col width="15%"/>
+				<col width="5%" class="search-th"/>
+				<col width="15%"/>				
+			</colgroup>
+			<tr>
+				<th>시작일자</th>
+				<td>
+					<input id="startDate" value="" type="text" class="input-gray input-center wth100p datepicker-here" data-language='ko'>
+				</td>
+				<th>종료일자</th>
+				<td>
+					<input id="endDate" value="" type="text" class="input-gray input-center wth100p datepicker-here" data-language='ko'>
+				</td>
+				<th>목적</th>
+				<td>
+					<select id="purSeq" class="select-gray wth100p">
+						<option value=''>전체</option>
+					</select>
+				</td>
+				<th>상세목적</th>
+				<td>
+					<select id="purDtlSeq" class="select-gray wth100p">
+						<option value=''>전체</option>
+					</select>
+				</td>
+				<th>은행</th>
+				<td>
+					<select id="bankSeq" class="select-gray wth100p">
+						<option value=''>전체</option>
+						<option value='0'>현금</option>
+					</select>
+				</td>
+			</tr>
+		</table>
+	</div>
+</div>
+
+<div>
+	<div>
+		<div class="title-icon"></div>
+		<label class="title">가계부 목록</label>
+	</div>
+	<div id="ledgerList" class="text-drag-block"></div>
 </div>

@@ -85,7 +85,7 @@ span, table{font-size: 0.9em; color: rgba(246, 246, 246, .8);}
 @keyframes fadeIn{from{opacity:0}to{opacity:.92}}
 
 /*bar*/
-.search-bar{margin: 5px 0px 5px 0px; background: #3f3f3f; border: 2px solid #323232; padding: 5px 5px 5px 5px;}
+.search-bar{margin: 5px 0px 5px 0px; background: #3f3f3f; border: 2px solid #323232; padding: 2px 2px 2px 2px;}
 .search-th{background:#4a4a4a;}
 .button-bar{height: 20px; margin-top:-20px; }
 .button-bar div{margin-bottom: 2px; margin-right: 3px; float: right; padding-top: 15px;}
