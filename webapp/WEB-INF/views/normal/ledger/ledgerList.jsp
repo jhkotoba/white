@@ -305,7 +305,7 @@ function ledgerList(data){
 </script>
 
 <div class="button-bar">
-	<div id="btns" class="btns">
+	<div id="btns" class="btn-right">
 		<button id="search" class="btn-gray trs">조회</button>
 		<button id="detail" class="btn-gray trs">상세보기</button>
 		<button id="excel" class="btn-gray trs">엑셀</button>

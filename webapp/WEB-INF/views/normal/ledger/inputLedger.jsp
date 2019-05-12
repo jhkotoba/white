@@ -453,7 +453,7 @@ function recordList(data){
         
         autoload: true,     
 		data: data,		
-		paging: false,
+		paging: true,
 		pageSize: 10,
 		
 		confirmDeleting : false,
@@ -477,7 +477,7 @@ function recordList(data){
 </script>
 
 <div class="button-bar">
-	<div class="btns">		
+	<div class="btn-right">		
 		<button id="saveBtn" type="button" class="btn-gray trs">저장</button>
 	</div>
 </div>

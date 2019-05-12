@@ -561,7 +561,7 @@ function ledgerList(data){
 </script>
 
 <div class="button-bar">
-	<div id="btns" class="btns">
+	<div id="btns" class="btn-right">
 		<button id="search" class="btn-gray trs">조회</button>
 		<button id="save"  class="btn-gray trs">저장</button>
 		<button id="cancel" class="btn-gray trs">초기화</button>

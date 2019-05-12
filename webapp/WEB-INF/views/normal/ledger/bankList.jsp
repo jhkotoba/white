@@ -277,8 +277,17 @@ function fnGrid(data){
 }
 </script>
 
-<div id="searchBar" class="search-bar pull-right">	
-	<button id="saveBtn" class="btn-gray trs">저장</button>
-	<button id="cancelBtn" class="btn-gray trs">취소</button>
+<div class="button-bar">
+	<div id="btns" class="btn-right">
+		<button id="saveBtn" class="btn-gray trs">저장</button>
+		<button id="cancelBtn" class="btn-gray trs">취소</button>
+	</div>
 </div>
-<div id="bankList"></div>
+
+<div>
+	<div>
+		<div class="title-icon"></div>
+		<label class="title">은행 목록</label>
+	</div>
+	<div id="bankList"></div>
+</div>

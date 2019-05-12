@@ -45,7 +45,7 @@ function fnPurGrid(data){
 		confirmDeleting : false,
 		
 		fields: [
-			{ align:"center", width: "8%",
+			{ align:"center", width: "5%",
 				headerTemplate : function(){
 					return $("<button>").attr("id", "purAdd").addClass("btn-gray trs size-sm").text("+").on("click", function(){
 						data.purList.push({purpose: "", 
@@ -102,7 +102,7 @@ function fnPurGrid(data){
 					return fnRefreshedSync(item, "purOrder", "purList", "span");
 				}
 			},
-			{ title:"목적",	name:"purpose",		type:"text", align:"center", width: "50%",
+			{ title:"목적",	name:"purpose",		type:"text", align:"center", width: "53%",
 				itemTemplate: function(value, item){
 					return fnRefreshedSync(item, "purpose", "purList", "input");
 				}
@@ -212,7 +212,7 @@ function fnPurGrid(data){
 			pageSize: 10,
 			
 			fields: [
-				{ align:"center", width: "8%",
+				{ align:"center", width: "5%",
 					headerTemplate : function(){
 						return $("<button>").attr("id", "purDtlAdd").addClass("btn-gray trs size-sm").text("+").on("click", function(){
 							data.purDtlList.push({purSeq: refPurSeq,
@@ -269,7 +269,7 @@ function fnPurGrid(data){
 						return fnRefreshedSync(item, "purDtlOrder", "purDtlList", "span");
 					}
 				},
-				{ title:"상세목적",	name:"purDetail",		type:"text", align:"center", width: "72%",
+				{ title:"상세목적",	name:"purDetail",		type:"text", align:"center", width: "75%",
 					itemTemplate: function(value, item){
 						return fnRefreshedSync(item, "purDetail", "purDtlList", "input");
 					}
@@ -414,7 +414,7 @@ function fnPurGrid(data){
 	}
 	
 	//목적 저장(반영)
-	$("#searchBar #purSave").on("click", function(){
+	$("#btns #purSave").on("click", function(){
 		//유효성 검사
 		let isVali = true;
 		$("[name='syncPur']").each(function(i, e){
@@ -478,7 +478,7 @@ function fnPurGrid(data){
 	});
 	
 	//상세목적 저장(반영)
-	$("#searchBar #purDtlSave").on("click", function(){
+	$("#btns #purDtlSave").on("click", function(){
 		//유효성 검사
 		let isVali = true;
 		$("[name='syncPurDtl']").each(function(i, e){
@@ -539,7 +539,7 @@ function fnPurGrid(data){
 	});
 	
 	//취소
-	$("#searchBar #cancel").on("click", function(){
+	$("#btns #cancel").on("click", function(){
 		initPurDtl = true;
 		data.purList.splice(0, data.purList.length);
 		for(let i=0; i<clone.purList.length; i++){
@@ -550,14 +550,21 @@ function fnPurGrid(data){
 }
 </script>
 
-
-<div id="searchBar" class="search-bar pull-right">
-	<button id="purSave" class="btn-gray trs ">목적 저장</button>
-	<button id="purDtlSave" class="btn-gray trs ">상세목적 저장</button>
-	<button id="cancel" class="btn-gray trs">취소</button>
+<div class="button-bar">
+	<div id="btns" class="btn-right">
+		<button id="purSave" class="btn-gray trs ">목적 저장</button>
+		<button id="purDtlSave" class="btn-gray trs ">상세목적 저장</button>
+		<button id="cancel" class="btn-gray trs">취소</button>
+	</div>
 </div>
 
-<div style="margin-top: 50px;">
+<div>
+	<div class="title-icon"></div>
+	<label class="title">목적 목록</label>
+	<div class="title-icon" style="margin-left: 46%;"></div>
+	<label class="title">상세목적 목록</label>
+</div>
+<div>
 	<div id="purList" class="pull-left"></div>
 	<div id="purDtlList"  class="pull-right"></div>
 </div>
