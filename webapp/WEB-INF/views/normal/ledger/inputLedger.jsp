@@ -8,7 +8,11 @@
 <script type="text/javascript">
 $(document).ready(function(){	
 	cfnCmmAjax("/ledger/selectPurBankList").done(inputLedger);
-	cfnCmmAjax("/ledger/selectRecordList", {searchType:"recent"}).done(recordList);
+	cfnCmmAjax("/ledger/selectRecordList", {searchType:"recent", schdTime:$("#schdTime").val()}).done(recordList);
+	
+	$("#schdTime").on("change", function(){
+		cfnCmmAjax("/ledger/selectRecordList", {searchType:"recent", schdTime:$("#schdTime").val()}).done(recordList);
+	});
 });
 
 //가계부 기입란
@@ -191,6 +195,7 @@ function inputLedger(data){
 						purSeq: "", purDtlSeq: "", bankSeq: "", moveSeq: "", money: "", statsYn:"Y"}
 					);						
 					$tbody.empty().append($("<div>").append(fnCreateRow()));					
+					cfnCmmAjax("/ledger/selectRecordList", {searchType:"recent", schdTime:$("#schdTime").val()}).done(recordList);
 				}else{
 					alert("저장에 실패하였습니다. error:"+data);	
 					for(let i=0; i<insertList.length; i++){						
@@ -446,12 +451,12 @@ function inputLedger(data){
 	}
 }
 
-function recordList(data){	
-	$("#recordList").jsGrid({
+function recordList(data){
+	$("#recordList").empty().jsGrid({
         height: "auto",
         width: "100%",
         
-        autoload: true,     
+        autoload: true,
 		data: data,		
 		paging: true,
 		pageSize: 10,
@@ -489,6 +494,28 @@ function recordList(data){
 	<div id="ledgerList"></div>
 </div>
 <div>
+	<div class="button-bar">		
+		<div class="btn-right">
+			<table>
+				<colgroup>
+					<col width="90px" class="search-th"/>
+					<col width="*"/>								
+				</colgroup>
+				<tr>
+					<th>시간설정</th>
+					<td>
+						<select id="schdTime" class="select-gray">
+							<option value="1" selected="selected">1H</option>
+							<option value="3">3H</option>
+							<option value="6">6H</option>
+							<option value="12">12H</option>
+							<option value="24">24H</option>
+						</select>
+					</td>					
+				</tr>
+			</table>			
+		</div>
+	</div>
 	<div>
 		<div class="title-icon"></div>
 		<label class="title">최근기입목록</label>

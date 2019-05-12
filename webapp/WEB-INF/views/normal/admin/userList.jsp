@@ -30,7 +30,7 @@ $(document).ready(function(){
 	fnJsGrid();
 	
   	//조회 버튼
-	$("#searchBar #searchBtn").on("click", function(){		
+	$("#btns #searchBtn").on("click", function(){		
 		
 		$("#searchForm #type").val($("#searchBar #type").val());
 		
@@ -45,7 +45,7 @@ $(document).ready(function(){
   	
 	//조회 엔터
   	$("#searchBar #text").on("keydown", function(e){
-  		if (e.which == 13) $("#searchBar #searchBtn").trigger("click");  		
+  		if (e.which == 13) $("#btns #searchBtn").trigger("click");  		
   	});
 	
 	//권한 저장
@@ -172,14 +172,42 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
 	<input id="text" type="hidden" value="">
 </form>
 
+<!-- 버튼 -->
+<div class="button-bar">
+	<div id="btns" class="btn-right">
+		<button class="btn-gray trs" id="searchBtn">조회</button>		
+	</div>
+</div>
+
 <!-- 조회 입력란 -->
-<div id="searchBar" class="search-bar">
-	<select class="select-gray" id="type">
-		<option value="id">아이디</option>		
-		<option value="name">이름</option>
-	</select>
-	<input class="input-gray wth3" id="text" type="text">
-	<button class="btn-gray trs" id="searchBtn">조회</button>
+<div>
+	<div>
+		<div class="title-icon"></div>
+		<label class="title">사용자 정보</label>
+	</div>
+	<div id="searchBar" class="search-bar">
+		<table>
+			<colgroup>
+				<col width="130px" class="search-th"/>
+				<col width="100px">
+				<col width="130px" class="search-th"/>
+				<col width="250px"/>
+			</colgroup>
+			<tr>
+				<th>검색구분</th>
+				<td>
+					<select class="select-gray wth100p" id="type">
+						<option value="id">아이디</option>
+						<option value="name">이름</option>
+					</select>
+				</td>
+				<th>검색명</th>
+				<td>
+					<input class="input-gray wth3 wth100p" id="text" type="text">
+				</td>
+			</tr>
+		</table>
+	</div>
 </div>
 
 <div id="userList"></div>

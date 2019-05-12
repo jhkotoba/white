@@ -364,7 +364,7 @@
 		WHERE rec.user_seq = #{userSeq}
 		<choose>
 		<when test="searchType == 'recent'">
-		AND rec.edit_date <![CDATA[ >= ]]> DATE_ADD(NOW(), INTERVAL -1 HOUR)
+		AND rec.edit_date <![CDATA[ >= ]]> DATE_ADD(NOW(), INTERVAL -${schdTime} HOUR)
 		AND rec.edit_date <![CDATA[ <= ]]> NOW()
 		ORDER BY rec.edit_date DESC,  rec.record_seq DESC
 		</when>

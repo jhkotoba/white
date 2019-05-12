@@ -454,7 +454,7 @@ function fnNavJsGrid(data){
 	}
 	
 	//저장(반영)
-	$("#searchBar #navSave").on("click", function(){		
+	$("#btns #navSave").on("click", function(){		
 		//유효성 검사
 		let isVali = true;
 		$("[name='syncNav']").each(function(i, e){
@@ -526,7 +526,7 @@ function fnNavJsGrid(data){
 	});
 	
 	//side 저장(반영)
-	$("#searchBar #sideSave").on("click", function(){
+	$("#btns #sideSave").on("click", function(){
 		//유효성 검사
 		let isVali = true;
 		$("[name='syncSide']").each(function(i, e){
@@ -604,7 +604,7 @@ function fnNavJsGrid(data){
 	});
 	
 	//취소
-	$("#searchBar #cancel").on("click", function(){		
+	$("#btns #cancel").on("click", function(){		
 		initSide = true;
 		data.navList.splice(0, data.navList.length);
 		for(let i=0; i<clone.navList.length; i++){
@@ -615,13 +615,21 @@ function fnNavJsGrid(data){
 }
 </script>
 
-<div id="searchBar" class="search-bar pull-right">	
-	<button id="navSave" class="btn-gray trs">상위메뉴 저장</button>
-	<button id="sideSave" class="btn-gray trs">하위메뉴 저장</button>
-	<button id="cancel" class="btn-gray trs">취소</button>
+<div class="button-bar">
+	<div id="btns" class="btn-right">
+		<button id="navSave" class="btn-gray trs">상위메뉴 저장</button>
+		<button id="sideSave" class="btn-gray trs">하위메뉴 저장</button>
+		<button id="cancel" class="btn-gray trs">취소</button>
+	</div>
 </div>
 
-<div style="margin-top: 50px;">
+<div>
+	<div class="title-icon"></div>
+	<label class="title">상위메뉴</label>
+	<div class="title-icon" style="margin-left: 46%;"></div>
+	<label class="title">하위메뉴</label>
+</div>
+<div>
 	<div id="navMenuList" class="pull-left"></div>
 	<div id="sideMenuList"  class="pull-right"></div>
 </div>

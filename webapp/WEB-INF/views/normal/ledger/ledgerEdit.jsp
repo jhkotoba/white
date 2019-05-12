@@ -571,7 +571,7 @@ function ledgerList(data){
 <div>
 	<div>
 		<div class="title-icon"></div>
-		<label class="title">검색조건</label>
+		<label class="title">가계부 목록</label>
 	</div>
 	<div id="searchBar" class="search-bar">
 		<table>
@@ -619,11 +619,4 @@ function ledgerList(data){
 		</table>
 	</div>
 </div>
-
-<div>
-	<div>
-		<div class="title-icon"></div>
-		<label class="title">가계부 목록</label>
-	</div>
-	<div id="ledgerList" class="text-drag-block"></div>
-</div>
+<div id="ledgerList" class="text-drag-block"></div>

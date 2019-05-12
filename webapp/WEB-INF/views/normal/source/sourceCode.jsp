@@ -24,7 +24,7 @@ $(document).ready(function(){
 	});	
     
   	//조회 버튼
-	$("#searchBar #searchBtn").on("click", function(){		
+	$("#btns #searchBtn").on("click", function(){		
 		$("#searchForm #langCd").val($("#searchBar #langCd").val());
 		$("#searchForm #type").val($("#searchBar #type").val());
 		
@@ -41,7 +41,7 @@ $(document).ready(function(){
   	
   	//조회 엔터
   	$("#searchBar #text").on("keydown", function(e){
-  		if (e.which == 13) $("#searchBar #searchBtn").trigger("click");  		
+  		if (e.which == 13) $("#btns #searchBtn").trigger("click");  		
   	});
   	
 	//조회타입 전체시 텍스트 비움
@@ -289,27 +289,60 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
 	</div>
 </form>
 
-<!-- 검색 -->
+<!-- 조회값 폼 -->
 <form id="searchForm" name="searchForm" onsubmit="return false;">
 	<input id="langCd" type="hidden" value="">
 	<input id="type" type="hidden" value="">
 	<input id="text" type="hidden" value="">
 </form>
 
+<!-- 버튼 -->
+<div class="button-bar">
+	<div id="btns" class="btn-right">
+		<button class="btn-gray trs" id="searchBtn">조회</button>
+		<button class="btn-gray trs" name="write">글쓰기</button>
+	</div>
+</div>
+
 <!-- 조회 입력란 -->
-<div id="searchBar" class="search-bar">
-	<select id="langCd" class="select-gray">				
-	</select>
-	<select class="select-gray" id="type">
-		<option value="">선택</option>
-		<option value="id">아이디</option>		
-		<option value="title">제목</option>
-		<option value="content">내용</option>
-		<option value="sourceSeq">번호</option>
-	</select>
-	<input class="input-gray wth3" id="text" type="text">
-	<button class="btn-gray trs" id="searchBtn">조회</button>
-	<button class="btn-gray trs pull-right" name="write">글쓰기</button>
+<div>
+	<div>
+		<div class="title-icon"></div>
+		<label class="title">소스코드 목록</label>
+	</div>
+	<div id="searchBar" class="search-bar">
+		<table>
+			<colgroup>
+				<col width="130px" class="search-th"/>
+				<col width="200px" />
+				<col width="130px" class="search-th"/>
+				<col width="100px">
+				<col width="130px" class="search-th"/>
+				<col width="250px"/>
+			</colgroup>
+			<tr>
+				<th>언어</th>
+				<td>
+					<select id="langCd" class="select-gray wth100p">
+					</select>
+				</td>
+				<th>검색구분</th>
+				<td>
+					<select class="select-gray wth100p" id="type">
+						<option value="">선택</option>
+						<option value="id">아이디</option>
+						<option value="title">제목</option>
+						<option value="content">내용</option>
+						<option value="sourceSeq">번호</option>
+					</select>
+				</td>
+				<th>검색명</th>
+				<td>
+					<input class="input-gray wth3 wth100p" id="text" type="text">
+				</td>
+			</tr>
+		</table>
+	</div>
 </div>
 
 <!-- 게시물 리스트 -->

@@ -142,9 +142,12 @@ public class LedgerController {
 		switch(param.getString("searchType")) {
 		case "select":
 			return ledgerService.selectRecordSumList(param);
+		case "recent":
+			if(param.get("schdTime")==null || "".equals(param.get("schdTime"))){
+				param.put("schdTime", 1);
+			}
 		default:
 		case "edit":
-		case "recent":
 			return ledgerService.selectRecordList(param);
 		}
 	}

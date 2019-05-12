@@ -121,7 +121,7 @@ function fnJsGrid(data){
 	});
 	
 	//취소
-	$("#searchBar #cancel").on("click", function(){
+	$("#btns #cancelBtn").on("click", function(){
 		authList.splice(0, authList.length);
 		for(let i=0; i<clone.length; i++){
 			authList.push(common.clone(clone[i]));
@@ -141,7 +141,7 @@ function fnJsGrid(data){
 	}); */
 	
 	//저장(반영)
-	$("#searchBar #save").on("click", function(){
+	$("#btns #saveBtn").on("click", function(){
 		
 		//유효성 검사
 		let isVali = true;
@@ -264,8 +264,17 @@ function fnJsGrid(data){
 }
 </script>
 
-<div id="searchBar" class="search-bar pull-right">		
-	<button id="save" class="btn-gray trs">저장</button>
-	<button id="cancel" class="btn-gray trs">취소</button>	
+<div class="button-bar">
+	<div id="btns" class="btn-right">
+		<button id="saveBtn" class="btn-gray trs">저장</button>
+		<button id="cancelBtn" class="btn-gray trs">취소</button>
+	</div>
 </div>
-<div id="authList"></div>
+
+<div>
+	<div>
+		<div class="title-icon"></div>
+		<label class="title">권한 목록</label>
+	</div>
+	<div id="authList"></div>
+</div>
