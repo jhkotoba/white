@@ -16,7 +16,9 @@ DROP TABLE IF EXISTS free_board_comment;
 DROP TABLE IF EXISTS free_board;
 DROP TABLE IF EXISTS purpose_detail;
 DROP TABLE IF EXISTS purpose;
+DROP TABLE IF EXISTS source_guide_detail;
 DROP TABLE IF EXISTS source_board;
+DROP TABLE IF EXISTS source_guide;
 DROP TABLE IF EXISTS white_user;
 
 
@@ -89,7 +91,8 @@ CREATE TABLE cmm_code
 	code varchar(5) NOT NULL,
 	code_prt varchar(5) NOT NULL,
 	code_nm varchar(20) NOT NULL,
-	PRIMARY KEY (code)
+	PRIMARY KEY (code),
+	UNIQUE (code)
 );
 
 
@@ -215,6 +218,24 @@ CREATE TABLE source_board
 );
 
 
+CREATE TABLE source_guide
+(
+	source_guide_seq int NOT NULL AUTO_INCREMENT,
+	user_seq int NOT NULL,
+	title varchar(100) NOT NULL,
+	edit_date datetime NOT NULL,
+	reg_date datetime NOT NULL,
+	PRIMARY KEY (source_guide_seq)
+);
+
+
+CREATE TABLE source_guide_detail
+(
+	source_guide_seq int NOT NULL,
+	source_seq int NOT NULL
+);
+
+
 CREATE TABLE white_user
 (
 	user_seq int NOT NULL AUTO_INCREMENT,
@@ -263,7 +284,7 @@ ALTER TABLE side_menu
 
 
 ALTER TABLE money_record
-	ADD FOREIGN KEY (move_seq)
+	ADD FOREIGN KEY (bank_seq)
 	REFERENCES bank (bank_seq)
 	ON UPDATE RESTRICT
 	ON DELETE RESTRICT
@@ -271,7 +292,7 @@ ALTER TABLE money_record
 
 
 ALTER TABLE money_record
-	ADD FOREIGN KEY (bank_seq)
+	ADD FOREIGN KEY (move_seq)
 	REFERENCES bank (bank_seq)
 	ON UPDATE RESTRICT
 	ON DELETE RESTRICT
@@ -313,6 +334,22 @@ ALTER TABLE purpose_detail
 ALTER TABLE money_record
 	ADD FOREIGN KEY (pur_dtl_seq)
 	REFERENCES purpose_detail (pur_dtl_seq)
+	ON UPDATE RESTRICT
+	ON DELETE RESTRICT
+;
+
+
+ALTER TABLE source_guide_detail
+	ADD FOREIGN KEY (source_seq)
+	REFERENCES source_board (source_seq)
+	ON UPDATE RESTRICT
+	ON DELETE RESTRICT
+;
+
+
+ALTER TABLE source_guide_detail
+	ADD FOREIGN KEY (source_guide_seq)
+	REFERENCES source_guide (source_guide_seq)
 	ON UPDATE RESTRICT
 	ON DELETE RESTRICT
 ;
@@ -391,6 +428,14 @@ ALTER TABLE purpose
 
 
 ALTER TABLE source_board
+	ADD FOREIGN KEY (user_seq)
+	REFERENCES white_user (user_seq)
+	ON UPDATE RESTRICT
+	ON DELETE RESTRICT
+;
+
+
+ALTER TABLE source_guide
 	ADD FOREIGN KEY (user_seq)
 	REFERENCES white_user (user_seq)
 	ON UPDATE RESTRICT

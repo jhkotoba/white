@@ -24,6 +24,9 @@ let cAdjust = {
 		case "mybatis":
 			adjustData = this._xml(this.restore(data), false);
 			break;
+		case "react":
+			adjustData = this._react(this.restore(data), false);
+			break;
 		default:
 			adjustData = "<div><pre class='cAdjust-textarea'>"+data+"</pre></div>";
 			break;
@@ -39,6 +42,35 @@ let cAdjust = {
 		return text.replace(/&lt;/gi, "<").replace(/&gt;/gi, ">");
 	},
 	
+	//리엑트
+	_react : function(data, part){
+		let line = 1;		
+		let ch = data.split("");
+		let str = "";
+		
+		for(let i=0; i<ch.length; i++){
+			
+			//라인 수
+			if(ch[i] === '\n') line++;
+			
+			
+			str += ch[i];
+		}
+		
+		
+		if(part === true){
+			return {cotent : str, line : line};
+		}else{
+			let result = "<div>";
+			result += "<div class='cAdjust-line'>";
+			
+			for(let i=0; i<line; i++){
+				result += "<div>"+(i+1)+"</div>";
+			}
+			result +="</div><pre class='cAdjust-textarea'>"+str+"</pre></div>";
+			return result;
+		}
+	},
 	
 	_javaCmd : {
 		
@@ -78,6 +110,7 @@ let cAdjust = {
 		
 	},
 	
+	//자바스크립트 명령어
 	_javascriptCmd : {
 		//추가불가
 		"rowannotation" : "js-annotation",
@@ -111,7 +144,9 @@ let cAdjust = {
 		"try" : "js-directive",
 		"for" : "js-directive",
 		"this" : "js-directive"
-	},	
+	},
+	
+	//자바스크립트
 	_javascript : function(data, part){
 		
 		//조합 데이터
@@ -325,6 +360,8 @@ let cAdjust = {
 	_html : function(){
 		
 	},
+	
+	//xml
 	_xml : function(data, part){
 		
 		let state = "none";
