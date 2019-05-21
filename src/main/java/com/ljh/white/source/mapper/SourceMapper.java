@@ -68,4 +68,14 @@ public class SourceMapper {
 		return sqlSession.delete("sourceMapper.deleteSource", param);
 	}
 	
+	/**
+	 * 소스가이드 조회
+	 * @param param
+	 * @return
+	 */
+	public List<WhiteMap> selectSourceGuideList(WhiteMap param) {
+		return sqlSession.selectList("sourceMapper.selectSourceGuideList", param);
+	}
+	
+	
 }

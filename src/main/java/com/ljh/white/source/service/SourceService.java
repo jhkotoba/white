@@ -79,4 +79,14 @@ public class SourceService {
 	public int deleteSource(WhiteMap param) {		
 		return sourceMapper.deleteSource(param);
 	}
+	
+	/**
+	 * 소스가이드 조회
+	 * @param param
+	 * @return
+	 */
+	public List<WhiteMap> selectSourceGuideList(WhiteMap param) {		
+		return sourceMapper.selectSourceGuideList(param);	
+		
+	}
 }

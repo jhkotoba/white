@@ -1,6 +1,8 @@
 package com.ljh.white.source.controller;
 
 
+import java.util.List;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
@@ -77,6 +79,17 @@ public class SourceController {
 	public int deleteSource(HttpServletRequest request){
 		WhiteMap param = new WhiteMap(request);		
 		return sourceService.deleteSource(param);	
+	}
+	
+	/**
+	 * 소스가이드 조회
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="/source/selectSourceGuideList.ajax" )
+	public List<WhiteMap> selectSourceGuideList(HttpServletRequest request){
+		WhiteMap param = new WhiteMap(request);		
+		return sourceService.selectSourceGuideList(param);	
 	}
 	
 }

@@ -66,7 +66,7 @@
 		  	</if>
   		</where>  	
 		ORDER BY sb.source_seq DESC
-		Limit ${pagePre}, ${pageSize}
+		LIMIT ${pagePre}, ${pageSize}
 	</select>
 	
 	<select id="selectSourceDtlView" resultType="WhiteMap" parameterType="WhiteMap">	
@@ -115,5 +115,25 @@
 		WHERE user_seq = #{userSeq}
 		AND source_seq = #{sourceSeq}	
 	</delete>
+	
+	<select id="selectSourceGuideCount" resultType="WhiteMap" parameterType="WhiteMap">
+		SELECT
+			COUNT(1)
+		FROM source_guide
+	</select>
+	
+	<select id="selectSourceGuideList" resultType="WhiteMap" parameterType="WhiteMap">
+		SELECT
+			sg.source_guide_seq		AS sourceGuideSeq
+			,sg.lang				AS lang
+			,sg.title				AS title
+			,sg.edit_date			AS editDate
+			,wu.user_id				AS userId
+		FROM source_guide sg
+		LEFT OUTER JOIN white_user wu
+  			ON wu.user_seq = sg.user_seq
+  		ORDER BY sb.source_seq DESC
+		LIMIT ${pagePre}, ${pageSize}		
+	</select>
 </mapper>
 

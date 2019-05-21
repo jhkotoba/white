@@ -222,6 +222,7 @@ CREATE TABLE source_guide
 (
 	source_guide_seq int NOT NULL AUTO_INCREMENT,
 	user_seq int NOT NULL,
+	lang varchar(50) NOT NULL,
 	title varchar(100) NOT NULL,
 	edit_date datetime NOT NULL,
 	reg_date datetime NOT NULL,
@@ -231,8 +232,12 @@ CREATE TABLE source_guide
 
 CREATE TABLE source_guide_detail
 (
+	src_gid_d_seq int NOT NULL AUTO_INCREMENT,
 	source_guide_seq int NOT NULL,
-	source_seq int NOT NULL
+	source_seq int NOT NULL,
+	guide_order int NOT NULL,
+	PRIMARY KEY (src_gid_d_seq),
+	UNIQUE (src_gid_d_seq)
 );
 
 
@@ -284,7 +289,7 @@ ALTER TABLE side_menu
 
 
 ALTER TABLE money_record
-	ADD FOREIGN KEY (bank_seq)
+	ADD FOREIGN KEY (move_seq)
 	REFERENCES bank (bank_seq)
 	ON UPDATE RESTRICT
 	ON DELETE RESTRICT
@@ -292,7 +297,7 @@ ALTER TABLE money_record
 
 
 ALTER TABLE money_record
-	ADD FOREIGN KEY (move_seq)
+	ADD FOREIGN KEY (bank_seq)
 	REFERENCES bank (bank_seq)
 	ON UPDATE RESTRICT
 	ON DELETE RESTRICT
