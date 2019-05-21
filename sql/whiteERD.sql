@@ -222,8 +222,8 @@ CREATE TABLE source_guide
 (
 	source_guide_seq int NOT NULL AUTO_INCREMENT,
 	user_seq int NOT NULL,
-	lang varchar(50) NOT NULL,
 	title varchar(100) NOT NULL,
+	content varchar(4000) NOT NULL,
 	edit_date datetime NOT NULL,
 	reg_date datetime NOT NULL,
 	PRIMARY KEY (source_guide_seq)

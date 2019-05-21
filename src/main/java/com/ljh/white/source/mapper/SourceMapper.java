@@ -69,6 +69,15 @@ public class SourceMapper {
 	}
 	
 	/**
+	 * 소스가이드 조회 카운트
+	 * @param param
+	 * @return
+	 */
+	public int selectSourceGuideCount(WhiteMap param) {
+		return sqlSession.selectOne("sourceMapper.selectSourceGuideCount", param);
+	}
+	
+	/**
 	 * 소스가이드 조회
 	 * @param param
 	 * @return

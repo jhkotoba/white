@@ -116,7 +116,7 @@
 		AND source_seq = #{sourceSeq}	
 	</delete>
 	
-	<select id="selectSourceGuideCount" resultType="WhiteMap" parameterType="WhiteMap">
+	<select id="selectSourceGuideCount" resultType="int" parameterType="WhiteMap">
 		SELECT
 			COUNT(1)
 		FROM source_guide
@@ -132,8 +132,8 @@
 		FROM source_guide sg
 		LEFT OUTER JOIN white_user wu
   			ON wu.user_seq = sg.user_seq
-  		ORDER BY sb.source_seq DESC
-		LIMIT ${pagePre}, ${pageSize}		
+  		ORDER BY sg.source_guide_seq DESC
+		<!-- LIMIT ${pagePre}, ${pageSize} -->		
 	</select>
 </mapper>
 

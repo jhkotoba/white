@@ -8,34 +8,16 @@
 
 <script type="text/javascript">
 document.addEventListener("DOMContentLoaded", function(){
-	//cfnCmmAjax("/source/selectPurBankList").done(fnSourceGuide);
-	let temp = [
-		{sourceGuideSeq:1, lang:"java", title:"TITLE", editDate:"11111111", userId:"aaaa1"},
-		{sourceGuideSeq:1, lang:"java1", title:"TITLE1", editDate:"11111111", userId:"aaaa1"},
-		{sourceGuideSeq:1, lang:"java2", title:"TITLE2", editDate:"11111111", userId:"aaaa1"},
-		{sourceGuideSeq:1, lang:"java3", title:"TITLE3", editDate:"11111111", userId:"aaaa1"},
-		{sourceGuideSeq:1, lang:"java4", title:"TITLE4", editDate:"11111111", userId:"aaaa1"},
-		{sourceGuideSeq:1, lang:"java5", title:"TITLE5", editDate:"11111111", userId:"aaaa1"},
-		{sourceGuideSeq:1, lang:"java6", title:"TITLE6", editDate:"11111111", userId:"aaaa1"},
-		{sourceGuideSeq:1, lang:"java7", title:"TITLE7", editDate:"11111111", userId:"aaaa1"},
-		
-	];
-	
-	fnSourceGuide(temp);
-	
+	cfnCmmAjax("/source/selectSourceGuideList").done(fnSourceGuide);
 });
 
 function fnSourceGuide(data){
-	let $sourceList = document.getElementById("sourceList");
-	let $table = document.createElement("table");
-	let str = "<tr>";	
-	
 	let fieldList = [
-		{title: "번호", 		name: "sourceGuideSeq", width: "10%"}, 
-		{title: "구분", 		name: "lang", 			width: "16%"}, 
-		{title: "제목", 		name: "title", 			width: "18%"}, 
-		{title: "사용자", 	name: "userId", 		width: "11%"},
-		{title: "등록날짜", 	name: "editDate",		width: "17%"}
+		{title: "번호", 		name: "sourceGuideSeq", width: "5%"}, 
+		{title: "구분", 		name: "lang", 			width: "15%"}, 
+		{title: "제목", 		name: "title", 			width: "60%"}, 
+		{title: "사용자", 	name: "userId", 		width: "15%"},
+		{title: "등록날짜", 	name: "editDate",		width: "15%"}
 	];
 	
 	let $header = $("<div>").append(fnCreateHeader());	
@@ -64,23 +46,43 @@ function fnSourceGuide(data){
 		let $tr = null;
 		let $td = null;
 		
-		for(let i=data.length-1; i>=0; i--){
-			$tr = $("<tr>");
-			for(let j=0; j<fieldList.length; j++){
-				$td = $("<td>").attr("style", "width:"+fieldList[j].width);				
-				if(fieldList[j].itemTemplate === undefined){
-					$td.append(fieldList[j].itemTemplate(data[i], i));
-				}else{
-					$td.append(data[i][fieldList[j].name]);
+		if(data.list.length === 0){
+			$tr = $("<tr>").append($("<td>").text("Not found"));
+			$tb.append($tr);
+		}else{
+			for(let i=data.list.length-1; i>=0; i--){
+				$tr = $("<tr>");
+				for(let j=0; j<fieldList.length; j++){
+					$td = $("<td>").attr("style", "width:"+fieldList[j].width);				
+					if(fieldList[j].itemTemplate === undefined){
+						$td.append(data.list[i][fieldList[j].name]);					
+					}else{
+						$td.append(fieldList[j].itemTemplate(data[i], i));
+					}
 					$tr.append($td);
 				}
+				$tb.append($tr);
 			}
-			$tb.append($tr);
 		}
 		return $tb;
 	}	
 }
 </script>
+
+<!-- 조회값 폼 -->
+<form id="searchForm" name="searchForm" onsubmit="return false;">
+	<input id="langCd" type="hidden" value="">
+	<input id="type" type="hidden" value="">
+	<input id="text" type="hidden" value="">
+</form>
+
+<!-- 버튼 -->
+<div class="button-bar">
+	<div id="btns" class="btn-right">
+		<button class="btn-gray trs" id="searchBtn">조회</button>
+		<button class="btn-gray trs" name="write">글쓰기</button>
+	</div>
+</div>
 
 <!-- 게시물 리스트 -->
 <div id="sourceList"></div>

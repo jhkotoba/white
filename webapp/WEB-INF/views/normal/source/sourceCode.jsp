@@ -321,7 +321,7 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
 				<col width="250px"/>
 			</colgroup>
 			<tr>
-				<th>언어</th>
+				<th>언어/라이브러리</th>
 				<td>
 					<select id="langCd" class="select-gray wth100p">
 					</select>

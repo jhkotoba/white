@@ -87,9 +87,13 @@ public class SourceController {
 	 * @return
 	 */
 	@RequestMapping(value="/source/selectSourceGuideList.ajax" )
-	public List<WhiteMap> selectSourceGuideList(HttpServletRequest request){
-		WhiteMap param = new WhiteMap(request);		
-		return sourceService.selectSourceGuideList(param);	
+	public WhiteMap selectSourceGuideList(HttpServletRequest request){
+		WhiteMap param = new WhiteMap(request);
+		
+		WhiteMap result = new WhiteMap();
+		result.put("itemsCount", sourceService.selectSourceGuideCount(param));
+		result.put("list", sourceService.selectSourceGuideList(param));		
+		return result;
 	}
 	
 }
