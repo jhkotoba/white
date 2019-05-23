@@ -57,11 +57,12 @@ public class WhiteService{
 	 */
 	public void updateSortTable(WhiteMap param) {		
 		List<WhiteMap> list = whiteMapper.selectSortTable(param);
-		for(int i=0; i<list.size(); i++) {
-			list.get(i).put("col", i+1);
+		if(list.size() > 0) {
+			for(int i=0; i<list.size(); i++) {
+				list.get(i).put("col", i+1);
+			}
+			param.put("list", list);
+			whiteMapper.updateSortTable(param);
 		}
-		param.put("list", list);
-		
-		whiteMapper.updateSortTable(param);
 	}
 }
