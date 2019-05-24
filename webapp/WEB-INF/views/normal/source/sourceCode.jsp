@@ -224,7 +224,7 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
 		</div>		
 	</div>	
 	<div>
-		<textarea id="content" class="textarea-gray tx-pre hht4 wth100p gray-scroll" maxlength="4000">		
+		<textarea id="content" class="textarea-gray tx-pre hht4 wth100p gray-scroll" maxlength="4000">
 		</textarea>		
 	</div>
 </form>

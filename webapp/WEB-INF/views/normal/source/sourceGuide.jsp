@@ -16,8 +16,8 @@ function fnSourceGuide(data){
 		{title: "번호", 		name: "sourceGuideSeq", width: "5%"}, 
 		{title: "구분", 		name: "lang", 			width: "15%"}, 
 		{title: "제목", 		name: "title", 			width: "60%"}, 
-		{title: "사용자", 	name: "userId", 		width: "15%"},
-		{title: "등록날짜", 	name: "editDate",		width: "15%"}
+		{title: "사용자", 	name: "userId", 		width: "10%"},
+		{title: "등록날짜", 	name: "editDate",		width: "20%"}
 	];
 	
 	let $header = $("<div>").append(fnCreateHeader());	
