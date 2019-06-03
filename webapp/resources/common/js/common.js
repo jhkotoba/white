@@ -68,6 +68,22 @@ function cfnSetComma(inNum){
 	}
 	return outNum;
 }
+//콤마제거
+function cfnRemoveComma(str, isNum){
+	if(isNum){
+		return Number(str.replace(/,/g,""));
+	}else{
+		return str.replace(/,/g,"");
+	}
+}
+//마이너스제거
+function cfnRemoveMinus(str, isNum){
+	if(isNum){
+		return Number(str.replace(/-/g,""));
+	}else{
+		return str.replace(/-/g,"");
+	}
+}
 
 function cfnRestore(text){
 	return text.replace(/&lt;/gi, "<").replace(/&gt;/gi, ">");

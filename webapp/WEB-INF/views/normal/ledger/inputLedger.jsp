@@ -424,7 +424,7 @@ function inputLedger(data){
 		
 		$input.addClass("input-gray").off().on("keyup keydown change", function(){
 			item.money = this.value;
-		}).val(item.money);
+		}).val(cfnRemoveMinus(item.money));
 		
 		let $strong = $("<strong>");		
 		switch(code){
