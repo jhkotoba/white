@@ -21,7 +21,7 @@ $(document).ready(function(){
 		<div class="title-icon"></div>
 		<label class="title">용어 정의</label>
 	</div>
-	<div id="srhBar" class="search-bar">
+	<div class="search-bar">
 		<table>
 			<colgroup>
 				<col width="130px" class="search-th"/>
@@ -32,14 +32,14 @@ $(document).ready(function(){
 			<tr>
 				<th>검색구분</th>
 				<td>
-					<select id="schTp" class="select-gray wth100p" >						
+					<select id="schTp" name="schTp" class="select-gray wth100p">						
 						<option value="A">단어</option>
 						<option value="B">약어</option>
 					</select>
 				</td>
 				<th>검색명</th>
 				<td>
-					<input class="input-gray wth3 wth100p" id="schTxt" type="text">
+					<input id="schTxt" name="schTxt" type="text" class="input-gray wth3 wth100p">
 				</td>
 			</tr>
 		</table>
