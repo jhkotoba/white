@@ -11,8 +11,7 @@ $(document).ready(function(){
 <!-- 버튼 -->
 <div class="button-bar">
 	<div id="btns" class="btn-right">
-		<button class="btn-gray trs" id="srhBtn">조회</button>
-		<button class="btn-gray trs" id="witBtn">글쓰기</button>
+		<button class="btn-gray trs" id="addBtn">추가</button>
 	</div>
 </div>
 

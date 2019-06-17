@@ -17,6 +17,7 @@ DROP TABLE IF EXISTS free_board;
 DROP TABLE IF EXISTS purpose_detail;
 DROP TABLE IF EXISTS purpose;
 DROP TABLE IF EXISTS source_board;
+DROP TABLE IF EXISTS TERM_DFI;
 DROP TABLE IF EXISTS white_user;
 
 
@@ -216,6 +217,19 @@ CREATE TABLE source_board
 );
 
 
+CREATE TABLE TERM_DFI
+(
+	TD_SEQ int NOT NULL AUTO_INCREMENT,
+	ABBR_WD varchar(10) NOT NULL,
+	ORG_WD varchar(30) NOT NULL,
+	INST_ID varchar(20) NOT NULL,
+	INST_DT datetime NOT NULL,
+	MOD_ID varchar(20) NOT NULL,
+	MOD_DT datetime NOT NULL,
+	PRIMARY KEY (TD_SEQ)
+);
+
+
 CREATE TABLE white_user
 (
 	user_seq int NOT NULL AUTO_INCREMENT,
@@ -264,7 +278,7 @@ ALTER TABLE side_menu
 
 
 ALTER TABLE money_record
-	ADD FOREIGN KEY (bank_seq)
+	ADD FOREIGN KEY (move_seq)
 	REFERENCES bank (bank_seq)
 	ON UPDATE RESTRICT
 	ON DELETE RESTRICT
@@ -272,7 +286,7 @@ ALTER TABLE money_record
 
 
 ALTER TABLE money_record
-	ADD FOREIGN KEY (move_seq)
+	ADD FOREIGN KEY (bank_seq)
 	REFERENCES bank (bank_seq)
 	ON UPDATE RESTRICT
 	ON DELETE RESTRICT
