@@ -450,6 +450,17 @@ function isDatePattern(date, patten){
 	return datePattern.test(date);
 }
 
+function createSelectBox(targetId, optionList){	
+	let select = document.getElementById(targetId);
+	let option = null;	
+	for(let i=0; i<optionList.length; i++){
+		option = document.createElement("option");
+		option.value = optionList[i].code;
+		option.textContent = optionList[i].codeNm;
+		select.appendChild(option);		
+	}
+}
+
 //문자열 관련
 let str = {
 	//첫번째 글자를 대문자
