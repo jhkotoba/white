@@ -1,0 +1,3 @@
+/**
+ *  commonUtil.js
+ */

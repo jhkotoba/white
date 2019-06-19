@@ -30,8 +30,21 @@ $(document).ajaxComplete(function() {
 });
 
 //ajax 코드 조회
-function cfnSelectCode(codePrt){
-	return cfnCmmAjax("/white/selectCodeList", {"codePrt" : codePrt});	
+function cfnSelectCode(codePrt, targetId){
+	if(isEmpty(targetId)){
+		return cfnCmmAjax("/white/selectCodeList", {"codePrt" : codePrt});
+	}else{
+		cfnCmmAjax("/white/selectCodeList", {"codePrt" : codePrt}).done(function(cdList){
+			let select = document.getElementById(targetId);
+			let option = null;	
+			for(let i=0; i<cdList.length; i++){
+				option = document.createElement("option");
+				option.value = cdList[i].code;
+				option.textContent = cdList[i].codeNm;
+				select.appendChild(option);		
+			}
+		});
+	}		
 }
 
 //ajax 권한 리스트 조회 - no(유저번호) 없으면 전체 조회

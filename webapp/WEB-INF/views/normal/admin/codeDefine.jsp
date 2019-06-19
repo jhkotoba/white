@@ -4,9 +4,7 @@
 <c:set var="contextPath" value="<%=request.getContextPath()%>"></c:set>
 <script type="text/javascript">
 $(document).ready(function(){
-	cfnSelectCode("CD").done(function(cdList){
-		createSelectBox("schTp", cdList);
-	});
+	cfnSelectCode("CD", "schTp");
 });
 </script>
 
