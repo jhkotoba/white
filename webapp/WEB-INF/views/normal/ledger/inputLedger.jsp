@@ -349,11 +349,15 @@ function inputLedger(data){
 	}
 	
 	//은행 select 생성
-	function fnCreateBank(item, purType, $span){		
+	function fnCreateBank(item, purType, $span){
 		let $select = $("<select>");		
 		switch(purType){
 		case "LP001":
 		case "LP002":
+			
+			//LP003에서 LP002,LP001이동시 moveSeq값 같게하기
+			item.moveSeq = item.bankSeq;
+			
 			$select.addClass("select-gray wth90p").attr("name", "sync")
 				.data("name", "bankSeq").append($("<option>").text("사용수단 선택").val(""))
 				.off().on("change", function(){
@@ -362,8 +366,6 @@ function inputLedger(data){
 				});;
 			
 			fnCreateOption(item, "bankSeq", $select);			
-			
-			//item.moveSeq = "";
 			$span.append($select).addClass("wth90p");
 			break;
 		case "LP003":
