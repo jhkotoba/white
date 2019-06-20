@@ -5,6 +5,21 @@
 <script type="text/javascript">
 $(document).ready(function(){
 	cfnSelectCode("CD", "schTp");
+	
+	
+	
+	//xhr.xhttp(getContextPath()+"/white/selectCodeList.ajax", {codePrt:"LP"});
+	//url : null, data : null, async : null, type : null,
+	xhr.xhttp({
+		url : "/white/selectCodeList.ajax",
+		data : {codePrt:"LP"},
+		async : true,
+		dataType : "json"
+	}, function(result){
+		console.log(result);
+	});
+	
+	
 });
 </script>
 

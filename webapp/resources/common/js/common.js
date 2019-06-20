@@ -501,3 +501,65 @@ let mf = {
 		$("#moveForm").attr("action", common.path()+navUrl).submit();
 	}
 }
+
+const xhr = {
+	//변수
+	url : "", data : null, async : true, dataType : "JSON",
+	//변수 초기화
+	clear : function(){this.url = null; this.data = null; this.async = null; this.dataType = "JSON";},
+	//통신
+	xhttp : function(option, callback){
+		if(option === null || option === undefined) return;
+		
+		//값 초기화
+		this.clear();
+		
+		//XMLHttpRequest 선언
+		let xhr = new XMLHttpRequest();	
+		
+		//url값
+	    let offset = location.href.indexOf(location.host)+location.host.length;
+		this.url = location.href.substring(offset,location.href.indexOf('/',offset+1)) + option.url;
+		if(option.async === null || option.async === undefined || option.async === ""){
+			this.async = true;
+		}else{
+			this.async = option.async;
+		}
+		//반환값 타입
+		if(option.dataType === null || option.dataType === undefined || option.dataType === ""){
+			this.dataType = "JSON";
+		}else{
+			this.dataType = option.dataType.toUpperCase();
+		}
+		//데이터 저장
+		this.data = option.data;
+		
+		//XMLHttpRequest open
+		xhr.open("POST", this.url, this.async);
+		
+		//readyState 호출함수 정의
+		xhr.onreadystatechange = function(){
+			if (xhr.readyState == 4) {
+				if (xhr.status == 200) {
+					//반환 타입
+					switch(this.dataType){
+					default :
+					case "TEXT": callback(xhr.responseText);
+					case "JSON": callback(JSON.parse(xhr.responseText));
+					}					
+				}else{
+					alert("xhr.status:"+xhr.status);
+				}
+			}
+			return this;
+		}		
+		
+		//전송할 데이터 가공
+		let formData = new FormData();			
+		let keys = Object.keys(this.data);			
+		for(let i=0; i<keys.length; i++){				
+			formData.append(keys[i], String(this.data[keys[i]]));
+		}			
+		xhr.send(formData);		
+	}	
+}
