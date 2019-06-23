@@ -29,7 +29,7 @@ public class WhiteController {
 	@ResponseBody
 	@RequestMapping(value="/white/selectCodeList.ajax")
 	public List<WhiteMap> code(HttpServletRequest request){		
-		WhiteMap param = new WhiteMap(request);		
+		WhiteMap param = new WhiteMap(request);
 		return whiteService.selectCodeList(param);		
 	}
 

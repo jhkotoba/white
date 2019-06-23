@@ -71,7 +71,6 @@
 		<input id="sideUrl" name="sideUrl" type="hidden" value="${sideUrl}"></input>		
 	</form>
 	
-	<div class="blind" style="display: none;">
-	</div>
+	<div class="blind" style="display: none;"/>
 </body>
 </html>

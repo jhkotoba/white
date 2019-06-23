@@ -4,22 +4,11 @@
 <c:set var="contextPath" value="<%=request.getContextPath()%>"></c:set>
 <script type="text/javascript">
 $(document).ready(function(){
-	cfnSelectCode("CD", "schTp");
-	
-	
-	
-	//xhr.xhttp(getContextPath()+"/white/selectCodeList.ajax", {codePrt:"LP"});
-	//url : null, data : null, async : null, type : null,
-	xhr.xhttp({
-		url : "/white/selectCodeList.ajax",
-		data : {codePrt:"LP"},
-		async : true,
-		dataType : "json"
-	}, function(result){
-		console.log(result);
+	//console.log(w);
+	//w.createCode("srhTp", "CD");
+	w.getCode("LP", function(d){
+		console.log(d);
 	});
-	
-	
 });
 </script>
 
@@ -46,12 +35,12 @@ $(document).ready(function(){
 			<tr>
 				<th>검색구분</th>
 				<td>
-					<select id="schTp" name="schTp" class="select-gray wth100p">
+					<select id="srhTp" name="schTp" class="select-gray wth100p">
 					</select>
 				</td>
 				<th>검색명</th>
 				<td>
-					<input id="schTxt" name="schTxt" type="text" class="input-gray wth3 wth100p">
+					<input id="srhTxt" name="schTxt" type="text" class="input-gray wth3 wth100p">
 				</td>
 			</tr>
 		</table>

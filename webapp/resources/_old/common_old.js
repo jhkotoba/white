@@ -450,6 +450,22 @@ function isDatePattern(date, patten){
 	return datePattern.test(date);
 }
 
+//문자열 관련
+let str = {
+	//첫번째 글자를 대문자
+	firstUpper : function(str){
+		return str.charAt(0).toUpperCase() + str.slice(1);
+	},
+	//앞뒤 공백삭제
+	trim : function(str){
+		return str.replace(/^\s+|\s+$/g,"");
+	},
+	//전체 공백삭제
+	trimAll : function(str){
+		return str.replace(/\s/gi, "");
+	}
+}
+
 function cfnGetContextPath(){
 	return getContextPath();
 }
@@ -483,108 +499,5 @@ let mf = {
 		
 		$("#moveForm").attr("method", "post");
 		$("#moveForm").attr("action", common.path()+navUrl).submit();
-	}
-}
-
-
-function w(selector){
-	white.targetId = selector;
-	return white;
-}
-const white = {
-	targetId : null,
-		
-	//변수 초기화
-	xhttpClear : function(){
-		this.url = null; this.data = null; this.async = null; this.dataType = "JSON"; this.blind = true;
-	},
-	//비동기 통신 데이터
-	xhttpData : {
-		url : "", data : null, async : true, dataType : "JSON", blind:true,
-	},	
-	//비동기 통신
-	xhttp : function(option, callback){
-		if(option === null || option === undefined) return;
-		
-		//값 초기화
-		this.xhttpClear();
-		
-		//XMLHttpRequest 선언
-		let xhr = new XMLHttpRequest();	
-		
-		//url값
-	    let offset = location.href.indexOf(location.host)+location.host.length;
-		this.xhttpData.url = location.href.substring(offset,location.href.indexOf('/',offset+1)) + option.url;
-		if(option.async === null || option.async === undefined || option.async === ""){
-			this.xhttpData.async = true;
-		}else{
-			this.xhttpData.async = option.async;
-		}
-		//반환값 타입
-		if(option.dataType === null || option.dataType === undefined || option.dataType === ""){
-			this.xhttpData.dataType = "JSON";
-		}else{
-			this.xhttpData.dataType = option.dataType.toUpperCase();
-		}
-		//데이터 저장
-		this.xhttpData.data = option.data;
-		
-		//XMLHttpRequest open
-		xhr.open("POST", this.xhttpData.url, this.xhttpData.async);
-		
-		//블러 적용
-		if(this.xhttpData.blind){
-			
-		}
-		
-		//readyState 호출함수 정의
-		xhr.onreadystatechange = () => {
-			if (xhr.readyState == 4) {
-				if (xhr.status == 200) {					
-					//반환 타입
-					switch(this.dataType){
-					default :					
-					case "TEXT": callback(xhr.responseText);
-					case "JSON": callback(JSON.parse(xhr.responseText));
-					}					
-				}else{
-					alert("xhr.status:"+xhr.status);
-				}
-			}
-			return this;
-		}		
-		
-		//전송할 데이터 가공
-		let formData = new FormData();			
-		let keys = Object.keys(this.xhttpData.data);			
-		for(let i=0; i<keys.length; i++){				
-			formData.append(keys[i], String(this.xhttpData.data[keys[i]]));
-		}			
-		xhr.send(formData);		
-	},
-	//공통코드 조회
-	getCode : function(codePrt, callback){
-		this.xhttp({
-			url : "/white/selectCodeList.ajax",
-			data : {codePrt : codePrt},
-			blind : false,
-		}, function(list){
-			callback(list);
-		});	
-	},
-	//공통코드 조회후 셀렉트박스 생성
-	createCode : function(/*targetId,*/ codePrt){
-		this.getCode(codePrt, (list) => {
-			let select = document.getElementById(this.targetId);
-			if(select.tagName === "SELECT"){
-				let option = null;			
-				for(let i=0; i<list.length; i++){
-					option = document.createElement("option");
-					option.value = list[i].code;
-					option.textContent = list[i].codeNm;
-					select.appendChild(option);		
-				}
-			}			
-		});
 	}
 }

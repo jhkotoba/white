@@ -63,7 +63,7 @@ $(document).ready(function(){
 //유저 중복체크
 function userIdCheck(){
 	
-	var userId = str.trimAll($("#userId").val());	
+	var userId = $("#userId").val().replace(/\s/gi, "");
 	if(userId === ""){
 		alert("ID를 입력하세요.");
 		return;
