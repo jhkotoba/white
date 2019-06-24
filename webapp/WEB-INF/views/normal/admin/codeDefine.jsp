@@ -6,9 +6,10 @@
 $(document).ready(function(){
 	//console.log(w);
 	//w.createCode("srhTp", "CD");
-	w.getCode("LP", function(d){
-		console.log(d);
-	});
+	//w.getCode("LP", function(d){
+	//	console.log(d);
+	//});
+	console.log(w);
 });
 </script>
 

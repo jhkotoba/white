@@ -487,13 +487,19 @@ let mf = {
 }
 
 
-function w(selector){
-	white.targetId = selector;
+function w(selector, type){
+	if(type === undefined || type === null || type === "")	type = "ID";
+	else type = type.toUpperCase();
+	white.target.selector = selector;
+	white.target.type = type;	
 	return white;
 }
 const white = {
-	targetId : null,
-		
+	//selector 값
+	target : {
+		type: null,
+		selector: "",	
+	},
 	//변수 초기화
 	xhttpClear : function(){
 		this.url = null; this.data = null; this.async = null; this.dataType = "JSON"; this.blind = true;
@@ -573,7 +579,7 @@ const white = {
 		});	
 	},
 	//공통코드 조회후 셀렉트박스 생성
-	createCode : function(/*targetId,*/ codePrt){
+	createCode : function(codePrt){
 		this.getCode(codePrt, (list) => {
 			let select = document.getElementById(this.targetId);
 			if(select.tagName === "SELECT"){
