@@ -4,12 +4,7 @@
 <c:set var="contextPath" value="<%=request.getContextPath()%>"></c:set>
 <script type="text/javascript">
 $(document).ready(function(){
-	//console.log(w);
-	//w.createCode("srhTp", "CD");
-	//w.getCode("LP", function(d){
-	//	console.log(d);
-	//});
-	console.log(w);
+	wcm.createCode("srhTp","LP");
 });
 </script>
 

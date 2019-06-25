@@ -487,19 +487,8 @@ let mf = {
 }
 
 
-function w(selector, type){
-	if(type === undefined || type === null || type === "")	type = "ID";
-	else type = type.toUpperCase();
-	white.target.selector = selector;
-	white.target.type = type;	
-	return white;
-}
-const white = {
-	//selector 값
-	target : {
-		type: null,
-		selector: "",	
-	},
+//공통함수
+const wcm = {	
 	//변수 초기화
 	xhttpClear : function(){
 		this.url = null; this.data = null; this.async = null; this.dataType = "JSON"; this.blind = true;
@@ -540,18 +529,19 @@ const white = {
 		
 		//블러 적용
 		if(this.xhttpData.blind){
-			
+		
 		}
 		
 		//readyState 호출함수 정의
 		xhr.onreadystatechange = () => {
 			if (xhr.readyState == 4) {
-				if (xhr.status == 200) {					
+				if (xhr.status == 200) {
+				
 					//반환 타입
 					switch(this.dataType){
 					default :					
-					case "TEXT": callback(xhr.responseText);
-					case "JSON": callback(JSON.parse(xhr.responseText));
+					case "TEXT": callback(xhr.responseText); break;
+					case "JSON": callback(JSON.parse(xhr.responseText)); break;
 					}					
 				}else{
 					alert("xhr.status:"+xhr.status);
@@ -579,9 +569,9 @@ const white = {
 		});	
 	},
 	//공통코드 조회후 셀렉트박스 생성
-	createCode : function(codePrt){
+	createCode : function(targetId, codePrt){
 		this.getCode(codePrt, (list) => {
-			let select = document.getElementById(this.targetId);
+			let select = document.getElementById(targetId);
 			if(select.tagName === "SELECT"){
 				let option = null;			
 				for(let i=0; i<list.length; i++){
