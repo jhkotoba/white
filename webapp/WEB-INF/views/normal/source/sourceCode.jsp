@@ -15,8 +15,8 @@ $(document).ready(function(){
 	//코드 셀렉트박스 조회
 	cfnSelectCode("sc").done(function(data){
     	let tag = "";
-    	for(let i=0; i<data.length; i++){
-    		tag += "<option value="+data[i].code+">"+data[i].codeNm+"</option>";	    		
+    	for(let i=0; i<data.codePrt.length; i++){
+    		tag += "<option value="+data.codePrt[i].code+">"+data.codePrt[i].codeNm+"</option>";	    		
     	}
     	$("#writeForm #langCd").append("<option value=''>타입</option>"+tag);
     	$("#searchBar #langCd").append("<option value=''>전체</option>"+tag);

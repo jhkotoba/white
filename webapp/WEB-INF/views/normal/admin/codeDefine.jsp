@@ -3,9 +3,38 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="contextPath" value="<%=request.getContextPath()%>"></c:set>
 <script type="text/javascript">
-$(document).ready(function(){
-	wcm.createCode("srhTp","LP");
+let codeData = {};
+$(document).ready(function(){	
+	return new Promise((resolve, reject) => {
+		wcm.getCode(["code", "lp"], (list) => {
+			codeData.prtCodeList = list;			
+			resolve();
+		});
+		console.log("1");
+	})
+	.then(fnCodeDefine).catch(err => console.log("fnCodeDefine error:"+err))
+	.then(fnCodeDefine2).catch(err => console.log(err));
+		
 });
+
+function fnCodeDefine(data){
+	console.log("2");
+	console.log(data);
+	return new Promise((resolve, reject) => {
+		wcm.getCode("LP", list => {
+			resolve();
+		});
+		
+	});
+}
+function fnCodeDefine2(data){
+	console.log("3");
+	console.log(data);
+	
+}
+
+
+
 </script>
 
 <!-- 버튼 -->

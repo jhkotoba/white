@@ -33,7 +33,7 @@
 			code
 			,code_nm AS codeNm
 		FROM cmm_code 
-		WHERE code_prt = #{codePrt}
+		WHERE code_prt = UPPER(#{codePrt})
 	</select>
 	
 	<!-- 테이블 순번 전체 조회 -->

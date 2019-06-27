@@ -45,8 +45,30 @@ public class WhiteService{
 	 * @param param
 	 * @return
 	 */
-	public List<WhiteMap> selectCodeList(WhiteMap param){
-		return whiteMapper.selectCodeList(param);
+	public WhiteMap selectCodeList(WhiteMap param){
+		WhiteMap map = null;
+		String dataType = param.getString("dataType");
+		switch(dataType) {
+			
+		case "object" : 
+			return null;
+			
+			
+		case "array"  :			
+			map = new WhiteMap();
+			WhiteMap srhMap = new WhiteMap();
+			
+			List<String> list = param.convertListString("codePrt");
+			for(int i=0; i<list.size(); i++) {
+				srhMap.put("codePrt", list.get(i));
+				map.put(list.get(i), whiteMapper.selectCodeList(srhMap));
+			}
+			return map;		
+		case "string" : default:
+			map = new WhiteMap();
+			map.put("codePrt", whiteMapper.selectCodeList(param));
+			return map;	
+		}
 	}
 	
 	/**

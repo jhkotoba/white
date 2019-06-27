@@ -491,7 +491,7 @@ let mf = {
 const wcm = {	
 	//변수 초기화
 	xhttpClear : function(){
-		this.url = null; this.data = null; this.async = null; this.dataType = "JSON"; this.blind = true;
+		this.url = null; this.data = null; this.async = true; this.dataType = "JSON"; this.blind = true;
 	},
 	//비동기 통신 데이터
 	xhttpData : {
@@ -559,14 +559,45 @@ const wcm = {
 		xhr.send(formData);		
 	},
 	//공통코드 조회
-	getCode : function(codePrt, callback){
-		this.xhttp({
-			url : "/white/selectCodeList.ajax",
-			data : {codePrt : codePrt},
-			blind : false,
-		}, function(list){
-			callback(list);
-		});	
+	getCode : function(codePrt, callback){		
+		let param = {};
+		param.dataType = null;		
+		
+		switch(typeof codePrt){		
+		case "number" :
+			param.codePrt = String(codePrt);
+			param.dataType = "string";
+			break;
+		case "string" :			
+			param.codePrt = codePrt;
+			param.dataType = "string";
+			break;
+		case "object" :
+			if(codePrt.length === undefined){
+				param.codePrt = JSON.stringify(codePrt);
+				param.dataType = "object";
+			}else if(typeof codePrt.length === "number"){
+				param.codePrt = JSON.stringify(codePrt);
+				param.dataType = "array";
+			}
+			break;
+		}
+		if(param.dataType === null){
+			console.log("getCode error");
+		}else{
+			this.xhttp({
+				url : "/white/selectCodeList.ajax",
+				data : param,
+				blind : false,
+			}, function(result){
+				if(param.dataType === "string"){
+					callback(result.codePrt);
+				}else{
+					callback(result);
+				}				
+			});
+		}
+		
 	},
 	//공통코드 조회후 셀렉트박스 생성
 	createCode : function(targetId, codePrt){

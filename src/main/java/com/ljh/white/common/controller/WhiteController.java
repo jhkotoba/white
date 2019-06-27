@@ -2,7 +2,6 @@ package com.ljh.white.common.controller;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.List;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -28,7 +27,7 @@ public class WhiteController {
 	
 	@ResponseBody
 	@RequestMapping(value="/white/selectCodeList.ajax")
-	public List<WhiteMap> code(HttpServletRequest request){		
+	public WhiteMap selectCodeList(HttpServletRequest request){		
 		WhiteMap param = new WhiteMap(request);
 		return whiteService.selectCodeList(param);		
 	}
