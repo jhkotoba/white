@@ -15,16 +15,20 @@
 		  	AND sb.lang_cd = #{langCd}
 		  	</if>
 		  	<if test="text != '' and text != null">
-			  	<if test="type == 'id'">
+		  		<!-- ID -->
+			  	<if test="type == 'SRH001'">
 				AND wu.user_id = #{text}
 			  	</if>
-			  	<if test="type == 'title'">
-				AND sb.title LIKE #{text}
+			  	<!-- TITLE -->
+			  	<if test="type == 'SRH002'">
+				AND sb.title LIKE CONCAT('%',#{text}, '%')
 			  	</if>
-			  	<if test="type == 'content'">
-			  	AND sb.content LIKE #{text}
+			  	<!-- CONTENT -->
+			  	<if test="type == 'SRH003'">
+			  	AND sb.content LIKE CONCAT('%',#{text}, '%')
 			  	</if>
-			  	<if test="type == 'sourceSeq'">
+			  	<!-- NO -->
+			  	<if test="type == 'SRH004'">
 			  	AND sb.source_seq = #{text}
 			  	</if>
 		  	</if>
@@ -50,19 +54,22 @@
 		  	</if>
 		  	
 		  	<if test="text != '' and text != null">
-			  	<if test="type == 'id'">
+			  	<!-- ID -->
+			  	<if test="type == 'SRH001'">
 				AND wu.user_id = #{text}
 			  	</if>
-			  	<if test="type == 'title'">
+			  	<!-- TITLE -->
+			  	<if test="type == 'SRH002'">
 				AND sb.title LIKE #{text}
 			  	</if>
-			  	<if test="type == 'content'">
+			  	<!-- CONTENT -->
+			  	<if test="type == 'SRH003'">
 			  	AND sb.content LIKE #{text}
 			  	</if>
-			  	<if test="type == 'sourceSeq'">
-			  	AND sb.source_seq = #{text}
-			  	</if>
-			  	
+			  	<!-- NO -->
+			  	<if test="type == 'SRH004'">
+			  	AND sb.source_seq = #{text}	
+			  	</if>		  	
 		  	</if>
   		</where>  	
 		ORDER BY sb.source_seq DESC

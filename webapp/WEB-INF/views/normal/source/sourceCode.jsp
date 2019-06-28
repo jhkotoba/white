@@ -7,17 +7,18 @@
 <script type="text/javascript" src="${contextPath}/resources/cAdjust/js/cAdjust.js"></script>
 
 <script type="text/javascript">
+let srhData = {srhLangCd : "",	srhType : "", srhTxt : ""}
 $(document).ready(function(){
 
 	//리스트 출력
-	fnJsGrid();
+	fnSourceCode();
 	
 	//코드 셀렉트박스 조회	
-	/* wcm.createCodes([
-		{targetId:"langCd", prtCode:"SRC", first:"SELECT"},
-		{targetId:"langCd", prtCode:"SRC", first:"SELECT"},
-		{targetId:"type", prtCode:"SRH", first:"ALL"}
-	]); */
+	wcm.createCodes([
+		/* {targetId:"langCd", prtCode:"SRC", first:"SELECT"},
+		{targetId:"langCd", prtCode:"SRC", first:"SELECT"}, */
+		{targetId:"srhTp", prtCode:"SRH", first:"SELECT"}
+	]);
 	cfnSelectCode("SRC").done(function(data){
     	let tag = "";
     	for(let i=0; i<data.codePrt.length; i++){
@@ -31,17 +32,12 @@ $(document).ready(function(){
   	//조회 버튼
 	$("#btns #searchBtn").on("click", function(){		
 		$("#searchForm #langCd").val($("#searchBar #langCd").val());
-		$("#searchForm #type").val($("#searchBar #type").val());
+		$("#searchForm #type").val($("#searchBar #srhTp").val());
 		
-		let type =  $("#searchForm #type").val();		
-		if(type === "id" || type === "sourceSeq"){
-			$("#searchForm #text").val($("#searchBar #text").val());
-		}else{
-			$("#searchForm #text").val("%"+$("#searchBar #text").val()+"%");
-		}
-	
+		let type =  $("#srhType").val();		
+		$("#searchForm #text").val($("#searchBar #text").val());	
 
-		fnJsGrid(1);
+		fnSourceCode(1);
 	});
   	
   	//조회 엔터
@@ -77,7 +73,7 @@ $(document).ready(function(){
 			
 			$("#writeForm").clear().hide();		    	  	
 	    	$("#searchForm").clear();
-			fnJsGrid(1);
+			fnSourceCode(1);
     	});
 	});
 	
@@ -108,7 +104,7 @@ $(document).ready(function(){
 			
 	    	$("#viewForm").clear().hide();
 	    	$("#editForm").clear().hide();
-			fnJsGrid(1);
+			fnSourceCode(1);
     	});
 	});
 	
@@ -130,7 +126,7 @@ $(document).ready(function(){
 	    	$("#editForm").clear().hide();
 	    	$("#searchForm").clear();
 	    	
-			fnJsGrid(1);
+			fnSourceCode(1);
     	});
 	});
 	
@@ -141,7 +137,7 @@ $(document).ready(function(){
 });
 
 //리스트 조회
-function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
+function fnSourceCode(pageIdx, pageSize, pageBtnCnt){
 	$("#sourceList").jsGrid({
         height: "auto",
         width: "100%",
@@ -165,7 +161,8 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
         controller: {
             loadData: function(filter) {
             	
-            	let param = $("#searchForm").getParam();            	
+            	let param = $("#searchForm").getParam();
+            	console.log(param);
             	
             	if(filter !== "" || filter !==undefined || filter !== null){
             		param.pageIndex = filter.pageIndex;
@@ -333,12 +330,12 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
 				</td>
 				<th>검색구분</th>
 				<td>
-					<select class="select-gray wth100p" id="type">
-						<option value="">선택</option>
+					<select id="srhTp" class="select-gray wth100p">
+						<!-- <option value="">선택</option>
 						<option value="id">아이디</option>
 						<option value="title">제목</option>
 						<option value="content">내용</option>
-						<option value="sourceSeq">번호</option>
+						<option value="sourceSeq">번호</option> -->
 					</select>
 				</td>
 				<th>검색명</th>
