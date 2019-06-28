@@ -5,7 +5,7 @@
 
 <script type="text/javascript">
 $(document).ready(function(){
-	cfnCmmAjax("/ledger/selectAllPurList", {codePrt:"LP"}).done(fnPurGrid);
+	cfnCmmAjax("/ledger/selectAllPurList", {codePrt:"LED"}).done(fnPurGrid);
 });
 
 function fnPurGrid(data){

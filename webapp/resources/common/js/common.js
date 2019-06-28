@@ -574,7 +574,7 @@ const wcm = {
 			break;
 		case "object" :
 			if(codePrt.length === undefined){
-				param.codePrt = JSON.stringify(codePrt);
+				param.codePrt = codePrt;
 				param.dataType = "object";
 			}else if(typeof codePrt.length === "number"){
 				param.codePrt = JSON.stringify(codePrt);
@@ -583,7 +583,8 @@ const wcm = {
 			break;
 		}
 		if(param.dataType === null){
-			console.log("getCode error");
+			console.log("data type: number, string, array OK");
+			return;
 		}else{
 			this.xhttp({
 				url : "/white/selectCodeList.ajax",
@@ -599,12 +600,28 @@ const wcm = {
 		}
 		
 	},
-	//공통코드 조회후 셀렉트박스 생성
-	createCode : function(targetId, codePrt){
-		this.getCode(codePrt, (list) => {
-			let select = document.getElementById(targetId);
-			if(select.tagName === "SELECT"){
-				let option = null;			
+	//공통코드 조회후 셀렉트박스 생성	
+	createCode : function(targetId, codePrt, first){
+		this.getCode(codePrt, list => {
+			let select = document.getElementById(targetId);			
+			//첫번째 option 선택 or 전체 설정
+			if(first !== null && first !== undefined && first !== ""){
+				switch(first.toUpperCase()){
+				case "ALL":
+					option = document.createElement("option");
+					option.textContent = "전체";
+					select.appendChild(option);
+					break;
+				case "SELECT":
+					option = document.createElement("option");
+					option.textContent = "선택";
+					select.appendChild(option);
+					break;
+				}
+			}
+			
+			if(select.tagName === "SELECT"){				
+				let option = null;
 				for(let i=0; i<list.length; i++){
 					option = document.createElement("option");
 					option.value = list[i].code;
@@ -613,5 +630,115 @@ const wcm = {
 				}
 			}			
 		});
-	}
+	},
+	//공통코드 조회후 셀렉트박스 생성(복수)
+	createCodes : function(pList){	
+		
+		//object로 오면 배열로 만들기
+		if(typeof pList === "object" && pList.length === undefined){
+			pList = new Array(pList);
+		}
+		
+		//서버가 읽도록 가공
+		let cList = new Array();
+		for(let i=0; i<pList.length; i++){				
+			cList.push(pList[i].prtCode);
+		}
+		
+		let option, select, list = null;
+		this.getCode(cList, res => {
+			pList.forEach(code => {				
+				select = document.getElementById(code.targetId);
+				if(select.tagName === "SELECT"){
+					list = res[code.prtCode];
+					
+					//첫번째 option 선택 or 전체 설정
+					if(code.first !== null && code.first !== undefined && code.first !== ""){
+						switch(code.first.toUpperCase()){
+						case "ALL":
+							option = document.createElement("option");
+							option.textContent = "전체";
+							select.appendChild(option);
+							break;
+						case "SELECT":
+							option = document.createElement("option");
+							option.textContent = "선택";
+							select.appendChild(option);
+							break;
+						}
+					}
+					
+					//select option list 생성
+					for(let i=0; i<list.length; i++){
+						option = document.createElement("option");
+						option.value = list[i].code;
+						option.textContent = list[i].codeNm;
+						select.appendChild(option);								
+					}
+				}
+				
+				
+				/*if(select.tagName === "SELECT"){						
+					list = res[code.prtCode[code.targetId]];
+					
+					for(let i=0; i<list.length; i++){
+						option = document.createElement("option");
+						option.value = list[i].code;
+						option.textContent = list[i].codeNm;
+						select.appendChild(option);								
+					}
+				}*/
+			});
+		});
+		/*let cList = new Array();		
+		for(let i=0; i<pList.length; i++){				
+			cList.push(pList[i].code.prtCode);
+		}
+		console.log(pList);
+		let option, select, list = null;
+		this.getCode(cList, res => {
+			pList.forEach(code => {
+				select = document.getElementById(code.targetId);				
+				if(select.tagName === "SELECT"){						
+					list = res[code.prtCode[code.targetId]];
+					
+					for(let i=0; i<list.length; i++){
+						option = document.createElement("option");
+						option.value = list[i].code;
+						option.textContent = list[i].codeNm;
+						select.appendChild(option);								
+					}
+				}
+			});
+		});*/
+
+		//{targetId:"srhTp", prtCode:"SC", first:"ALL"},
+		/*if(typeof object === "object" && object.length !== undefined){			
+			let keys = Object.keys(object);
+			let cList = new Array();
+			
+			for(let i=0; i<keys.length; i++){				
+				cList.push(object[keys[i]]);
+			}
+			
+			let option, select, list = null;
+			
+			this.getCode(cList, res => {
+				keys.forEach(targetId => {
+					select = document.getElementById(targetId);					
+					if(select.tagName === "SELECT"){						
+						list = res[object[targetId]];						
+						for(let i=0; i<list.length; i++){
+							option = document.createElement("option");
+							option.value = list[i].code;
+							option.textContent = list[i].codeNm;
+							select.appendChild(option);								
+						}
+					}
+				});
+			});
+		}else{
+			return;
+		}*/
+	},
 }

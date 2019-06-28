@@ -95,11 +95,11 @@ function fnMonthIEChartProcess(data){
 	chartData.maxAmount = 0;
 	
 	for(let i=0; i<list.length; i++){
-		if(list[i].purTypeCd === "LP001"){
+		if(list[i].purTypeCd === "LED001"){
 			chartData.income.push(list[i].money);
 			chartData.categories.push(list[i].startDate.split(" ")[0].substr(0,7));
 			chartData.prevAmount += list[i].money;
-		}else if(list[i].purTypeCd === "LP002"){
+		}else if(list[i].purTypeCd === "LED002"){
 			chartData.expense.push(Math.abs(list[i].money));
 			chartData.prevAmount += list[i].money;
 			chartData.amount.push(chartData.prevAmount);

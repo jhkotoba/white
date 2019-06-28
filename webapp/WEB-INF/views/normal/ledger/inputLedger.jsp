@@ -173,11 +173,11 @@ function inputLedger(data){
 			for(let i=0; i<insertList.length; i++){
 				insertList[i].money =  insertList[i].money.replace(/,/gi, "");
 				switch(purLp[insertList[i].purSeq]){
-				case "LP001":				
+				case "LED001":				
 					insertList[i].money = Number(insertList[i].money);
 					break;				
-				case "LP002":
-				case "LP003":
+				case "LED002":
+				case "LED003":
 					insertList[i].money = Number("-"+insertList[i].money);				
 					break;					
 				}
@@ -352,10 +352,10 @@ function inputLedger(data){
 	function fnCreateBank(item, purType, $span){
 		let $select = $("<select>");		
 		switch(purType){
-		case "LP001":
-		case "LP002":
+		case "LED001":
+		case "LED002":
 			
-			//LP003에서 LP002,LP001이동시 moveSeq값 같게하기
+			//LED003에서 LED002,LED001이동시 moveSeq값 같게하기
 			item.moveSeq = item.bankSeq;
 			
 			$select.addClass("select-gray wth90p").attr("name", "sync")
@@ -368,7 +368,7 @@ function inputLedger(data){
 			fnCreateOption(item, "bankSeq", $select);			
 			$span.append($select).addClass("wth90p");
 			break;
-		case "LP003":
+		case "LED003":
 			//보내는곳
 			item.moveSeq = "";
 			$select.addClass("select-gray wth50p").attr("name", "sync")
@@ -430,15 +430,15 @@ function inputLedger(data){
 		
 		let $strong = $("<strong>");		
 		switch(code){
-		case "LP001":	
+		case "LED001":	
 			$input.addClass("wth80p sync-red");
 			$strong.text("+").addClass("pm-mark sync-red");
 			break;
-		case "LP002":
+		case "LED002":
 			$input.addClass("wth80p sync-blue");
 			$strong.text("-").addClass("pm-mark sync-blue");
 			break;		
-		case "LP003":
+		case "LED003":
 			$input.addClass("wth80p sync-green");
 			$strong.text(">").addClass("pm-mark sync-green");
 			break;

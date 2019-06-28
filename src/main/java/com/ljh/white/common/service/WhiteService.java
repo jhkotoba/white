@@ -48,12 +48,7 @@ public class WhiteService{
 	public WhiteMap selectCodeList(WhiteMap param){
 		WhiteMap map = null;
 		String dataType = param.getString("dataType");
-		switch(dataType) {
-			
-		case "object" : 
-			return null;
-			
-			
+		switch(dataType) {			
 		case "array"  :			
 			map = new WhiteMap();
 			WhiteMap srhMap = new WhiteMap();

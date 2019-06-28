@@ -12,8 +12,13 @@ $(document).ready(function(){
 	//리스트 출력
 	fnJsGrid();
 	
-	//코드 셀렉트박스 조회
-	cfnSelectCode("sc").done(function(data){
+	//코드 셀렉트박스 조회	
+	/* wcm.createCodes([
+		{targetId:"langCd", prtCode:"SRC", first:"SELECT"},
+		{targetId:"langCd", prtCode:"SRC", first:"SELECT"},
+		{targetId:"type", prtCode:"SRH", first:"ALL"}
+	]); */
+	cfnSelectCode("SRC").done(function(data){
     	let tag = "";
     	for(let i=0; i<data.codePrt.length; i++){
     		tag += "<option value="+data.codePrt[i].code+">"+data.codePrt[i].codeNm+"</option>";	    		
@@ -21,7 +26,7 @@ $(document).ready(function(){
     	$("#writeForm #langCd").append("<option value=''>타입</option>"+tag);
     	$("#searchBar #langCd").append("<option value=''>전체</option>"+tag);
     	$("#editForm #langCd").append(tag);
-	});	
+	});
     
   	//조회 버튼
 	$("#btns #searchBtn").on("click", function(){		

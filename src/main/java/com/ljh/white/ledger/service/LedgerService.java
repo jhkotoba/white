@@ -267,7 +267,7 @@ public class LedgerService {
 			if(purSeqMap.get(str) == null) return -6;
 			
 			//목적타입이 이동인 경우 검사
-			if("LP003".equals(purTypeMap.get(str))) {
+			if("LED003".equals(purTypeMap.get(str))) {
 				String moveSeq = list.get(i).getString("moveSeq");
 				if(bankSeqMap.get(moveSeq) == null) return -7;				
 				if(moveSeq.equals(list.get(i).getString("bankSeq"))) return -8;
@@ -289,10 +289,10 @@ public class LedgerService {
 			try {
 				int money = Integer.parseInt(str);
 				switch(purTypeMap.get(list.get(i).getString("purSeq")).toString()) {
-				case "LP001":
+				case "LED001":
 					if(money <= 0) return -11; break;
-				case "LP002":
-				case "LP003":
+				case "LED002":
+				case "LED003":
 					if(money >= 0) return -11; break;
 				default:
 					return -11;				
@@ -361,7 +361,7 @@ public class LedgerService {
 		}
 		for(int i=0; i<recList.size(); i++) {			
 			//현금이동일때는 금액증감 제외, purSeq가 0인값은 금액이동
-			if("LP003".equals(recList.get(i).getString("purType"))) {
+			if("LED003".equals(recList.get(i).getString("purType"))) {
 				recList.get(i).put("amount", amount);
 			}else {
 				amount += recList.get(i).getInt("money");
@@ -459,8 +459,8 @@ public class LedgerService {
 			param.put("startDate", White.getFirstDate(param.getString("stdate"))+" 00:00:00");
 			param.put("endDate", White.getLastDate(param.getString("stdate"))+" 23:59:59");
 			
-			if(param.getInt("inEx") == 0) param.put("purType", "LP001");
-			else param.put("purType", "LP002");
+			if(param.getInt("inEx") == 0) param.put("purType", "LED001");
+			else param.put("purType", "LED002");
 			
 			result.put("list", ledgerMapper.selectLedgerMonthPurStats(param));
 			break;

@@ -87,8 +87,8 @@ CREATE TABLE bank
 
 CREATE TABLE cmm_code
 (
-	code varchar(5) NOT NULL,
-	code_prt varchar(5) NOT NULL,
+	code varchar(6) NOT NULL,
+	code_prt varchar(6) NOT NULL,
 	code_nm varchar(20) NOT NULL,
 	PRIMARY KEY (code),
 	UNIQUE (code)
@@ -171,7 +171,7 @@ CREATE TABLE purpose
 	user_seq int NOT NULL,
 	pur_order int NOT NULL,
 	purpose varchar(20) NOT NULL,
-	pur_type varchar(5) NOT NULL,
+	pur_type varchar(6) NOT NULL,
 	PRIMARY KEY (pur_seq),
 	UNIQUE (pur_seq)
 );
@@ -207,7 +207,7 @@ CREATE TABLE source_board
 (
 	source_seq int NOT NULL AUTO_INCREMENT,
 	user_seq int NOT NULL,
-	lang_cd varchar(5) NOT NULL,
+	lang_cd varchar(6) NOT NULL,
 	title varchar(50) NOT NULL,
 	content varchar(4000) NOT NULL,
 	edit_date datetime NOT NULL,
@@ -278,7 +278,7 @@ ALTER TABLE side_menu
 
 
 ALTER TABLE money_record
-	ADD FOREIGN KEY (move_seq)
+	ADD FOREIGN KEY (bank_seq)
 	REFERENCES bank (bank_seq)
 	ON UPDATE RESTRICT
 	ON DELETE RESTRICT
@@ -286,7 +286,7 @@ ALTER TABLE money_record
 
 
 ALTER TABLE money_record
-	ADD FOREIGN KEY (bank_seq)
+	ADD FOREIGN KEY (move_seq)
 	REFERENCES bank (bank_seq)
 	ON UPDATE RESTRICT
 	ON DELETE RESTRICT

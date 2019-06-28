@@ -176,11 +176,11 @@ function ledgerList(data){
 				for(let i=0; i<deleteList.length; i++){
 					deleteList[i].money =  deleteList[i].money.replace(/,/gi, "");
 					switch(purLp[deleteList[i].purSeq]){
-					case "LP001":
+					case "LED001":
 						deleteList[i].money = Number(deleteList[i].money);
 						break;
-					case "LP002":
-					case "LP003":
+					case "LED002":
+					case "LED003":
 						deleteList[i].money = Number("-"+deleteList[i].money);				
 						break;
 					}
@@ -188,11 +188,11 @@ function ledgerList(data){
 				for(let i=0; i<updateList.length; i++){
 					updateList[i].money =  updateList[i].money.replace(/,/gi, "");
 					switch(purLp[updateList[i].purSeq]){
-					case "LP001":
+					case "LED001":
 						updateList[i].money = Number(updateList[i].money);
 						break;
-					case "LP002":
-					case "LP003":
+					case "LED002":
+					case "LED003":
 						updateList[i].money = Number("-"+updateList[i].money);
 						break;
 					}
@@ -287,9 +287,9 @@ function ledgerList(data){
 						let $bank = $($(this).closest("td").next().next()[0]);
 						let $sign = $($(this).closest("td").next().next().next().children().children().first()[0]);
 						switch(purLp[this.value]){						
-						case "LP001": $sign.text("+"); break;
-						case "LP002": $sign.text("-"); break;
-						case "LP003": $sign.text(">"); break;
+						case "LED001": $sign.text("+"); break;
+						case "LED002": $sign.text("-"); break;
+						case "LED003": $sign.text(">"); break;
 						}
 						//item.moveSeq = "";
 						$bank.empty().append(fnCreateBankSelect(item, idx));
@@ -475,17 +475,17 @@ function ledgerList(data){
 		}
 		
 		$select.addClass("select-gray")
-			.addClass(item.purType==="LP003"?"wth50p":"wth100p")
+			.addClass(item.purType==="LED003"?"wth50p":"wth100p")
 			.attr("name","sync"+idx)
 			.off().on("change", function(){			
 				item.bankSeq = this.value;				
-				if(item.purType==="LP001" || item.purType==="LP002")	item.moveSeq = this.value;
+				if(item.purType==="LED001" || item.purType==="LED002")	item.moveSeq = this.value;
 				else item.moveSeq = "";
 				fnTypeSync(this, "bankSeq", item, idx);
 			});		
 		$span.append($select);
 		
-		if(item.purType==="LP003"){
+		if(item.purType==="LED003"){
 			$select = $("<select>").data("name", "moveSeq").append($("<option>").val("0").text("현금"));
 			for(let i=0; i<bankList.length; i++){
 				$option = $("<option>").val(bankList[i].bankSeq).text(bankList[i].bankName+"("+bankList[i].bankAccount+")");	
@@ -495,14 +495,14 @@ function ledgerList(data){
 				$select.append($option);
 			}
 			$select.addClass("select-gray")
-				.addClass(item.purType==="LP003"?"wth50p":"wth100p")
+				.addClass(item.purType==="LED003"?"wth50p":"wth100p")
 				.attr("name","sync"+idx)
 				.off().on("change", function(){
 					item.moveSeq = this.value;
 					fnTypeSync(this, "moveSeq", item, idx);
 				});			
 			
-			if(cloneList[idx].purType !== "LP003"){
+			if(cloneList[idx].purType !== "LED003"){
 				$select.addClass("sync-blue");
 			}else{
 				$select.removeClass("sync-blue");
@@ -526,15 +526,15 @@ function ledgerList(data){
 		
 		let $strong = $("<strong>");	
 		switch(code){
-		case "LP001":	
+		case "LED001":	
 			$input.addClass("wth80p");
 			$strong.text("+").addClass("pm-mark");
 			break;
-		case "LP002":
+		case "LED002":
 			$input.addClass("wth80p");
 			$strong.text("-").addClass("pm-mark");
 			break;		
-		case "LP003":
+		case "LED003":
 			$input.addClass("wth80p");
 			$strong.text(">").addClass("pm-mark");
 			break;

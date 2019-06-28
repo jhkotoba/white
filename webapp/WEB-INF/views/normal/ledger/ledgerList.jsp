@@ -112,11 +112,11 @@ function ledgerList(data){
 	function fnSetFontColor(purType, data, name, from, to){
 		let $span = $("<span>");
 		switch(purType){
-		case "LP001":
+		case "LED001":
 			return $span.addClass("sync-blue").text(cfnSetComma(data));
-		case "LP002":
+		case "LED002":
 			return $span.addClass("sync-red").text(cfnSetComma(data));
-		case "LP003":
+		case "LED003":
 			if(name === "money"){
 				return $span.addClass("sync-green").text(cfnSetComma(Math.abs(data)));
 			}else if(from){
