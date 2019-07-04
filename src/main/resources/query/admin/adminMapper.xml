@@ -348,6 +348,7 @@
 	
 	<!--권한 삭제 -->
 	<delete id="deleteAuthNmList" parameterType="java.util.List">
+		/* adminMapper|deleteAuthNmList */
 		DELETE FROM auth_name
 		WHERE auth_nm_seq IN 
 		<foreach collection="list" item="item" separator="," open="(" close=")">
@@ -355,5 +356,19 @@
 		</foreach>
 	</delete>
 	
+	<!-- 코드 정의 리스트 조회 -->
+	<select id="selectCodeDefineList" parameterType="whiteMap" resultType="whiteMap">
+		/* adminMapper|selectCodeDefineList */
+		SELECT 
+			code		AS code
+			,code_prt	AS codePrt
+			,code_nm	AS codeNm
+			,mod_user	AS modUser
+			,DATE_FORMAT(mod_date,'%Y-%m-%d %H:%i:%s') AS modDate
+			,reg_user	AS regUser
+			,DATE_FORMAT(reg_date,'%Y-%m-%d %H:%i:%s') AS regDate
+		FROM cmm_code
+		ORDER BY CODE ASC		
+	</select>
 </mapper>
 

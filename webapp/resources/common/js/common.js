@@ -491,57 +491,58 @@ let mf = {
 const wcm = {	
 	//변수 초기화
 	xhttpClear : function(){
-		this.url = null; this.data = null; this.async = true; this.dataType = "JSON"; this.blind = true;
+		this.url = null; this.data = null; this.async = true; this.dataType = "JSON";
 	},
 	//비동기 통신 데이터
 	xhttpData : {
-		url : "", data : null, async : true, dataType : "JSON", blind:true,
-	},	
+		url : "", data : null, async : true, dataType : "JSON"
+	},
 	//비동기 통신
 	xhttp : function(option, callback){
-		if(option === null || option === undefined) return;
+		if(option === null || option === undefined) return;		
 		
 		//값 초기화
 		this.xhttpClear();
 		
 		//XMLHttpRequest 선언
-		let xhr = new XMLHttpRequest();	
+		let xhr = new XMLHttpRequest();		
 		
 		//url값
 	    let offset = location.href.indexOf(location.host)+location.host.length;
-		this.xhttpData.url = location.href.substring(offset,location.href.indexOf('/',offset+1)) + option.url;
-		if(option.async === null || option.async === undefined || option.async === ""){
-			this.xhttpData.async = true;
-		}else{
-			this.xhttpData.async = option.async;
-		}
-		//반환값 타입
-		if(option.dataType === null || option.dataType === undefined || option.dataType === ""){
-			this.xhttpData.dataType = "JSON";
-		}else{
-			this.xhttpData.dataType = option.dataType.toUpperCase();
-		}
-		//데이터 저장
-		this.xhttpData.data = option.data;
+	    
+	    if(typeof option === "string"){
+	    	this.xhttpData.url = location.href.substring(offset,location.href.indexOf('/',offset+1)) + option;
+	    }else{
+	    	this.xhttpData.url = location.href.substring(offset,location.href.indexOf('/',offset+1)) + option.url;
+			if(option.async === null || option.async === undefined || option.async === ""){
+				this.xhttpData.async = true;
+			}else{
+				this.xhttpData.async = option.async;
+			}
+			//반환값 타입
+			if(option.dataType === null || option.dataType === undefined || option.dataType === ""){
+				this.xhttpData.dataType = "JSON";
+			}else{
+				this.xhttpData.dataType = option.dataType.toUpperCase();
+			}
+			//데이터 저장
+			this.xhttpData.data = option.data;
+	    }
 		
 		//XMLHttpRequest open
 		xhr.open("POST", this.xhttpData.url, this.xhttpData.async);
 		
-		//블러 적용
-		if(this.xhttpData.blind){
-		
-		}
-		
 		//readyState 호출함수 정의
 		xhr.onreadystatechange = () => {
 			if (xhr.readyState == 4) {
-				if (xhr.status == 200) {
-				
-					//반환 타입
-					switch(this.dataType){
-					default :					
-					case "TEXT": callback(xhr.responseText); break;
-					case "JSON": callback(JSON.parse(xhr.responseText)); break;
+				if (xhr.status == 200) {					
+					if(xhr.responseText !== null && xhr.responseText !== undefined && xhr.responseText !== ""){
+						//반환 타입
+						switch(this.dataType){
+						default :					
+						case "TEXT": callback(xhr.responseText); break;
+						case "JSON": callback(JSON.parse(xhr.responseText)); break;
+						}
 					}					
 				}else{
 					alert("xhr.status:"+xhr.status);
@@ -551,12 +552,16 @@ const wcm = {
 		}		
 		
 		//전송할 데이터 가공
-		let formData = new FormData();			
-		let keys = Object.keys(this.xhttpData.data);			
-		for(let i=0; i<keys.length; i++){				
-			formData.append(keys[i], String(this.xhttpData.data[keys[i]]));
-		}			
-		xhr.send(formData);		
+		if(this.xhttpData.data === null || this.xhttpData.data === undefined || this.xhttpData.data === ""){
+			xhr.send();	
+		}else{
+			let formData = new FormData();			
+			let keys = Object.keys(this.xhttpData.data);			
+			for(let i=0; i<keys.length; i++){				
+				formData.append(keys[i], String(this.xhttpData.data[keys[i]]));
+			}			
+			xhr.send(formData);	
+		}
 	},
 	//공통코드 조회
 	getCode : function(codePrt, callback){		
@@ -601,26 +606,27 @@ const wcm = {
 		
 	},
 	//공통코드 조회후 셀렉트박스 생성	
-	createCode : function(targetId, codePrt, first){
+	createCode : function(targetId, codePrt, first, callback){
 		this.getCode(codePrt, list => {
-			let select = document.getElementById(targetId);			
+			let select = document.getElementById(targetId);
 			//첫번째 option 선택 or 전체 설정
 			if(first !== null && first !== undefined && first !== ""){
 				switch(first.toUpperCase()){
 				case "ALL":
 					option = document.createElement("option");
+					option.value = "";
 					option.textContent = "전체";
 					select.appendChild(option);
 					break;
 				case "SELECT":
 					option = document.createElement("option");
+					option.value = "";
 					option.textContent = "선택";
 					select.appendChild(option);
 					break;
 				}
-			}
-			
-			if(select.tagName === "SELECT"){				
+			}			
+			if(select !== null && select.tagName === "SELECT"){				
 				let option = null;
 				for(let i=0; i<list.length; i++){
 					option = document.createElement("option");
@@ -628,12 +634,15 @@ const wcm = {
 					option.textContent = list[i].codeNm;
 					select.appendChild(option);		
 				}
-			}			
+			}
+			if(typeof callback === "function"){
+				callback(this);
+			}
+			
 		});
 	},
 	//공통코드 조회후 셀렉트박스 생성(복수)
-	createCodes : function(pList){	
-		
+	createCodes : function(pList, callback){
 		//object로 오면 배열로 만들기
 		if(typeof pList === "object" && pList.length === undefined){
 			pList = new Array(pList);
@@ -648,8 +657,8 @@ const wcm = {
 		let option, select, list = null;
 		this.getCode(cList, res => {
 			pList.forEach(code => {				
-				select = document.getElementById(code.targetId);
-				if(select.tagName === "SELECT"){
+				select = document.getElementById(code.targetId);				
+				if(select !== null && select.tagName === "SELECT"){
 					list = res[code.prtCode];
 					
 					//첫번째 option 선택 or 전체 설정
@@ -657,17 +666,18 @@ const wcm = {
 						switch(code.first.toUpperCase()){
 						case "ALL":
 							option = document.createElement("option");
+							option.value = "";
 							option.textContent = "전체";
 							select.appendChild(option);
 							break;
 						case "SELECT":
 							option = document.createElement("option");
+							option.value = "";
 							option.textContent = "선택";
 							select.appendChild(option);
 							break;
 						}
-					}
-					
+					}					
 					//select option list 생성
 					for(let i=0; i<list.length; i++){
 						option = document.createElement("option");
@@ -676,69 +686,10 @@ const wcm = {
 						select.appendChild(option);								
 					}
 				}
-				
-				
-				/*if(select.tagName === "SELECT"){						
-					list = res[code.prtCode[code.targetId]];
-					
-					for(let i=0; i<list.length; i++){
-						option = document.createElement("option");
-						option.value = list[i].code;
-						option.textContent = list[i].codeNm;
-						select.appendChild(option);								
-					}
-				}*/
 			});
-		});
-		/*let cList = new Array();		
-		for(let i=0; i<pList.length; i++){				
-			cList.push(pList[i].code.prtCode);
-		}
-		console.log(pList);
-		let option, select, list = null;
-		this.getCode(cList, res => {
-			pList.forEach(code => {
-				select = document.getElementById(code.targetId);				
-				if(select.tagName === "SELECT"){						
-					list = res[code.prtCode[code.targetId]];
-					
-					for(let i=0; i<list.length; i++){
-						option = document.createElement("option");
-						option.value = list[i].code;
-						option.textContent = list[i].codeNm;
-						select.appendChild(option);								
-					}
-				}
-			});
-		});*/
-
-		//{targetId:"srhTp", prtCode:"SC", first:"ALL"},
-		/*if(typeof object === "object" && object.length !== undefined){			
-			let keys = Object.keys(object);
-			let cList = new Array();
-			
-			for(let i=0; i<keys.length; i++){				
-				cList.push(object[keys[i]]);
+			if(typeof callback === "function"){
+				callback(this);
 			}
-			
-			let option, select, list = null;
-			
-			this.getCode(cList, res => {
-				keys.forEach(targetId => {
-					select = document.getElementById(targetId);					
-					if(select.tagName === "SELECT"){						
-						list = res[object[targetId]];						
-						for(let i=0; i<list.length; i++){
-							option = document.createElement("option");
-							option.value = list[i].code;
-							option.textContent = list[i].codeNm;
-							select.appendChild(option);								
-						}
-					}
-				});
-			});
-		}else{
-			return;
-		}*/
-	},
+		});		
+	}	
 }

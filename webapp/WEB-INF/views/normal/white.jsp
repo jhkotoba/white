@@ -22,7 +22,6 @@
 <script type="text/javascript" src="${contextPath}/resources/jsgrid/js/jsgrid.js"></script>
 <script type="text/javascript" src="${contextPath}/resources/wVali/js/wVali.js"></script>
 <script type="text/javascript" src="${contextPath}/resources/common/js/cmmCode.js"></script>
-<script type="text/javascript" src="${contextPath}/resources/common/js/cmmForm.js"></script>
 <script type="text/javascript" src="${contextPath}/resources/common/js/cmmAjax.js"></script>
 <script type="text/javascript" src="${contextPath}/resources/common/js/common.js"></script>
 
@@ -50,9 +49,14 @@ $(document).ready(function(){
 	});	
 	//사용자 체크, 로그인
 	$("#loginSmt").on("click", function(e){
+		
+		let param = {};
+		param.userId = $("#loginForm #userId").val();
+		param.passwd = $("#loginForm #passwd").val();
+		
 		$.ajax({
 			url: common.path()+'/main/loginCheck.ajax',			
-			data : $("#loginForm").getParam(),
+			data : param,
 		    success : function(data) {
 		    	if(data){		    		
 		    		$(".blind").hide(200);
@@ -141,6 +145,6 @@ $(document).ready(function(){
 	<input id="data" name="data" type="hidden"></input>
 </form>
 </c:if>
-<div class="blind" style="display: none;"></div>
+<div id="blind"></div>
 </body>
 </html>

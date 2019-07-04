@@ -90,6 +90,10 @@ CREATE TABLE cmm_code
 	code varchar(6) NOT NULL,
 	code_prt varchar(6) NOT NULL,
 	code_nm varchar(20) NOT NULL,
+	mod_user varchar(20) NOT NULL,
+	mod_date datetime NOT NULL,
+	reg_user varchar(20) NOT NULL,
+	reg_date datetime NOT NULL,
 	PRIMARY KEY (code),
 	UNIQUE (code)
 );
@@ -278,7 +282,7 @@ ALTER TABLE side_menu
 
 
 ALTER TABLE money_record
-	ADD FOREIGN KEY (bank_seq)
+	ADD FOREIGN KEY (move_seq)
 	REFERENCES bank (bank_seq)
 	ON UPDATE RESTRICT
 	ON DELETE RESTRICT
@@ -286,7 +290,7 @@ ALTER TABLE money_record
 
 
 ALTER TABLE money_record
-	ADD FOREIGN KEY (move_seq)
+	ADD FOREIGN KEY (bank_seq)
 	REFERENCES bank (bank_seq)
 	ON UPDATE RESTRICT
 	ON DELETE RESTRICT

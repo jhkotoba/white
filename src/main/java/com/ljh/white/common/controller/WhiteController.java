@@ -25,6 +25,11 @@ public class WhiteController {
 	@Resource(name = "WhiteService")
 	private WhiteService whiteService;	
 	
+	/**
+	 * 코드 조회
+	 * @param request
+	 * @return
+	 */
 	@ResponseBody
 	@RequestMapping(value="/white/selectCodeList.ajax")
 	public WhiteMap selectCodeList(HttpServletRequest request){		

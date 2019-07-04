@@ -32,9 +32,9 @@
 		SELECT
 			code
 			,code_nm AS codeNm
-		FROM cmm_code 
-		WHERE code_prt = UPPER(#{codePrt})
-	</select>
+		FROM cmm_code		
+		WHERE code_prt = UPPER(#{codePrt})		
+	</select>	
 	
 	<!-- 테이블 순번 전체 조회 -->
 	<select id="selectSortTable" resultType="WhiteMap" parameterType="WhiteMap">

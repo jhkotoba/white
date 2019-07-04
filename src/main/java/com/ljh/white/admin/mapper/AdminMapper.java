@@ -186,4 +186,15 @@ public class AdminMapper {
 	public int deleteAuthNmList(List<WhiteMap> list) {
 		return sqlSession.delete("adminMapper.deleteAuthNmList", list);		 
 	}
+	
+	/**
+	 * 네비 메뉴 리스트 조회
+	 * @param param
+	 * @return
+	 */
+	public List<WhiteMap> selectCodeDefineList(WhiteMap param) {
+		return sqlSession.selectList("adminMapper.selectCodeDefineList", param);
+	}
+	
+	
 }

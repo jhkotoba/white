@@ -161,5 +161,17 @@ public class AdminController {
 		return adminService.applyAuthList(param);
 	}
 	
+	/**
+	 * 코드 정의 리스트 조회
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="/admin/selectCodeDefineList.ajax" )
+	public List<WhiteMap> selectCodeDefineList(HttpServletRequest request){
+		WhiteMap param = new WhiteMap(request);
+		return adminService.selectCodeDefineList(param);
+	}
+	
+	
 	
 }

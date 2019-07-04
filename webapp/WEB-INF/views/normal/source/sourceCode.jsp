@@ -3,22 +3,94 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="contextPath" value="<%=request.getContextPath()%>"></c:set>
 
-<link rel="stylesheet" href="${contextPath}/resources/cAdjust/css/cAdjust.css" type="text/css" />
+<link rel="stylesheet" href="${contextPath}/resources/cAdjust/css/cAdjust.css" type="text/css"/>
 <script type="text/javascript" src="${contextPath}/resources/cAdjust/js/cAdjust.js"></script>
 
 <script type="text/javascript">
-let srhData = {srhLangCd : "",	srhType : "", srhTxt : ""}
-$(document).ready(function(){
+$(document).ready(function(){	
+	
+	//form clear
+	$.fn.clear = function() {
+		return this.each(function() {
+			let type = this.type, tag = this.tagName.toLowerCase();
+			if (tag === 'form'){
+				return $(':input',this).clear();
+			}
+			if (type === 'text' || type === 'password' || type === 'hidden' || tag === 'textarea'){
+				this.value = '';
+			}else if (type === 'checkbox' || type === 'radio'){
+				this.checked = false;
+				this.value = '';
+			}else if (tag === 'select'){
+				this.selectedIndex = 0;
+			}else if(tag === "span"){
+				$(this).text("");
+			}else if(tag === "label"){
+				$(this).text("");
+			}
+			$(this).removeData();
+	    });
+	};
+
+	//form getParam
+	$.fn.getParam = function() {
+		let param = {};	
+		this.find("*").each(function(){
+			if(this.value !== undefined){
+				let type = this.type, tag = this.tagName.toLowerCase();			
+				if(type === "text" || type === "password" || type === "hidden" || tag === "textarea"){
+					param[this.id] = this.value;
+				}else if(tag === "select"){
+					param[this.id] = this.value;
+				}else if (type === 'checkbox'){
+					
+				}else if(type === 'radio'){
+					
+				}
+			}		
+		});
+		return param;	
+	};
+
+	//form setParam
+	$.fn.setParam = function(param){
+		this.find("*").each(function(){
+			if(param[this.id] !== undefined){
+				let type = this.type, tag = this.tagName.toLowerCase();
+				if(type === "text" || type === "password" || type === "hidden" || tag === "textarea"){
+					this.value = param[this.id];
+				}else if(tag === "select"){
+					$(this).val(param[this.id]).prop("selected", true);			
+				}else if (type === 'checkbox'){
+					$(this).prop("checked", true).val(param[this.id]);
+				}else if(type === 'radio'){				
+				
+				}else if(tag === "span"){
+					$(this).text(param[this.id]);
+				}else if(tag === "label"){
+					$(this).text(param[this.id]);
+				}
+			}		
+		});
+		return this;
+	}
+	
 
 	//리스트 출력
 	fnSourceCode();
 	
-	//코드 셀렉트박스 조회	
-	wcm.createCodes([
-		/* {targetId:"langCd", prtCode:"SRC", first:"SELECT"},
-		{targetId:"langCd", prtCode:"SRC", first:"SELECT"}, */
-		{targetId:"srhTp", prtCode:"SRH", first:"SELECT"}
-	]);
+	//코드 셀렉트박스 조회		
+	/* new Promise(function(resolve, reject){
+		wcm.createCodes([
+			{targetId:"wrtLgCd", prtCode:"SRC", first:"SELECT"},
+			{targetId:"srhLgCd", prtCode:"SRC", first:"SELECT"}, 
+			{targetId:"srhTp", prtCode:"SRH", first:"SELECT"}
+		], function(){
+			resolve();			
+		});
+	//코드예제 목록조회
+	}).then(fnSourceCode); */
+	
 	cfnSelectCode("SRC").done(function(data){
     	let tag = "";
     	for(let i=0; i<data.codePrt.length; i++){
@@ -32,10 +104,15 @@ $(document).ready(function(){
   	//조회 버튼
 	$("#btns #searchBtn").on("click", function(){		
 		$("#searchForm #langCd").val($("#searchBar #langCd").val());
-		$("#searchForm #type").val($("#searchBar #srhTp").val());
+		$("#searchForm #type").val($("#searchBar #type").val());
 		
-		let type =  $("#srhType").val();		
-		$("#searchForm #text").val($("#searchBar #text").val());	
+		let type =  $("#searchForm #type").val();		
+		if(type === "id" || type === "sourceSeq"){
+			$("#searchForm #text").val($("#searchBar #text").val());
+		}else{
+			$("#searchForm #text").val("%"+$("#searchBar #text").val()+"%");
+		}
+	
 
 		fnSourceCode(1);
 	});
@@ -161,8 +238,7 @@ function fnSourceCode(pageIdx, pageSize, pageBtnCnt){
         controller: {
             loadData: function(filter) {
             	
-            	let param = $("#searchForm").getParam();
-            	console.log(param);
+            	let param = $("#searchForm").getParam();            	
             	
             	if(filter !== "" || filter !==undefined || filter !== null){
             		param.pageIndex = filter.pageIndex;
@@ -330,12 +406,12 @@ function fnSourceCode(pageIdx, pageSize, pageBtnCnt){
 				</td>
 				<th>검색구분</th>
 				<td>
-					<select id="srhTp" class="select-gray wth100p">
-						<!-- <option value="">선택</option>
+					<select id="srhType" class="select-gray wth100p" id="type">
+						<option value="">선택</option>
 						<option value="id">아이디</option>
 						<option value="title">제목</option>
 						<option value="content">내용</option>
-						<option value="sourceSeq">번호</option> -->
+						<option value="sourceSeq">번호</option>
 					</select>
 				</td>
 				<th>검색명</th>

@@ -128,6 +128,55 @@ let wVali = {
 		this._exclude = new Set();
 		this._parent = "";
 		return this;
+	},
+	tooltip : function(item){
+		
+		/*$("#writeForm").find("*").each(function(i, e){			
+			//빈값 체크
+			switch(e.id){
+			case "wfLangCd": case "title": case "content":
+				if(e.value === null || e.value === undefined || e.value === ""){
+					isVali = false;
+					wVali.tooltip({element : e, message : e.nodeName === "SELECT" ? "값을 선택해 주세요." : "값을 입력해 주세요."}); return false;
+				}
+			}
+			
+			//값 길이 체크
+			switch(e.id){			
+			case "title":
+				if(e.value.length > 50){
+					isVali = false;
+					wVali.tooltip({element : e, message: "최대 글자수 50자 까지 입력할 수 있습니다."}); return false;
+				}
+			case "content":
+				if(e.value.length > 50){
+					isVali = false;
+					wVali.tooltip({element : e, message: "최대 글자수 4000자 까지 입력할 수 있습니다."}); return false;
+				}
+			}
+		});*/	
+		
+		
+		let element = item.element;		
+		element.classList.add("wVali-border");
+		element.focus();
+		
+		let div = document.createElement("div");
+		div.setAttribute("id", "wValiAlert");
+		div.classList.add("wVali-tooltip");
+		div.textContent = item.message;
+		document.body.appendChild(div);
+		
+		let top = window.pageYOffset + element.getBoundingClientRect().top;
+		let left = window.pageYOffset + element.getBoundingClientRect().left;
+		div.style.top = top-42;		
+		div.style.left = left;	
+		
+		element.addEventListener("blur", function(event){
+			element.classList.remove("wVali-border");
+			element.removeEventListener("blur", this, false);
+			div.remove();			
+		}, false);		
+		return false;
 	}
-	
 }

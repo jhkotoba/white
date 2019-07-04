@@ -300,6 +300,16 @@ public class AdminService {
 			}
 			return 1;
 		}
+	}	
+	
+	/**
+	 * 코드정의목록 조회
+	 * @return
+	 */
+	public List<WhiteMap> selectCodeDefineList(WhiteMap param) {		
+		return adminMapper.selectCodeDefineList(param);		
+		
 	}
+	
 	
 }
