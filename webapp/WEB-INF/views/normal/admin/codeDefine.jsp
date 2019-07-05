@@ -10,14 +10,18 @@ let values = {};
 $(document).ready(function(){
 	//초기설정
 	new Promise(function(resolve, reject){
-		wcm.createCodes({targetId:"srhType", prtCode:"CODE", first:"ALL"});
+		wcm.createCodes({targetId:"srhType", prtCode:"CODE", first:"ALL"});		
 		
 		values.grid = new wGrid({
 			id : "codeList",
 			header : "",
 			data : "",			
 			fields : [        	
-				{ title:"부모코드",	name:"codePrt",	type:"text", width: "10%",	align:"center"},
+				{ title:"부모코드",	name:"codePrt",	type:"text", width: "10%",	align:"center", 
+					itemTemplate : function(value, item){
+						
+					}
+				},		
 				{ title:"코드",		name:"code",	type:"text", width: "10%",	align:"center"},
 				{ title:"코드명",		name:"codeNm",	type:"text", width: "15%",	align:"center"},
 				{ title:"수정자",		name:"modUser",	type:"text", width: "5%",	align:"center"},
@@ -26,8 +30,21 @@ $(document).ready(function(){
 				{ title:"등록날짜",	name:"regDate",	type:"text", width: "10%",	align:"center"}	
 			],
 			is : {
-				clone : true
+				clone : true,
 			},
+			option : {
+				auto : true,
+				xhr : true
+				
+			},
+			xhr : {
+				url : "/admin/selectCodeDefineList.ajax",
+				async : true,
+				type : "post"				
+			},
+			message : {
+				nodata : "조회결과가 없습니다."
+			}
 		});
 		
 		values.grid.createGrid();

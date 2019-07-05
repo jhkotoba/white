@@ -361,9 +361,9 @@ function fnPurGrid(data){
 			if(item.state === "insert"){
 				$el.append($("<option>").text("").val(""));
 			}
-			for(let i=0; i<data.purTypeList.length; i++){
-				$option = $("<option>").text(data.purTypeList[i].codeNm).val(data.purTypeList[i].code);
-				if(String(item[name]) === String(data.purTypeList[i].code)){
+			for(let i=0; i<data.purTypeList.codePrt.length; i++){
+				$option = $("<option>").text(data.purTypeList.codePrt[i].codeNm).val(data.purTypeList.codePrt[i].code);				
+				if(String(item[name]) === String(data.purTypeList.codePrt[i].code)){
 					$el.append($option.attr("selected","selected"));
 				}
 				$el.append($option);
