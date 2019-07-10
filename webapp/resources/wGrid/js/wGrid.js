@@ -25,7 +25,9 @@ class wGrid{
 			//그리드 생성시 자동 조회 여부
 			auto : args.option.auto,
 			//내부 비동기 조회 여부
-			xhr : args.option.xhr
+			xhr : args.option.xhr,
+			//edit 모드
+			edit : args.option.edit
 		}
 		
 		//message
@@ -76,6 +78,7 @@ class wGrid{
 		if(this.isEmpty(this.header)){
 			for(let i=0; i<this.fields.length; i++){
 				th = document.createElement("th"); 
+				th.style.width = this.fields[i].width;				
 				th.textContent = this.fields[i].title;
 				tr.appendChild(th);
 			}
@@ -156,7 +159,7 @@ class wGrid{
 		let table = document.createElement("table");
 		table.classList.add("wgrid-table-body");
 		
-		let tr, td = null;
+		let tr, td, input = null;
 		
 		//필드 create
 		for(let i=0; i<list.length; i++){
@@ -164,10 +167,43 @@ class wGrid{
 			
 			for(let j=0; j<this.fields.length; j++){
 				td = document.createElement("td");
-				td.textContent = list[i][this.fields[j].name];
+				
+				if(this.isNotEmpty(this.fields[j].width)){
+					td.style.width = this.fields[j].width;
+				}
+				
+				//itemTemplate
+				if(this.isNotEmpty(this.fields[j].itemTemplate)){
+					let result = this.fields[j].itemTemplate(list[i][this.fields[j].name], list[i], i);
+					if(typeof result === "object"){
+						td.appendChild(result);
+					}else{
+						td.insertAdjacentHTML("afterbegin", result);
+					}
+				
+				}else{
+					
+					switch(this.fields[j].type){
+					default :
+					case "text" : 
+						td.textContent = list[i][this.fields[j].name];
+						break;
+					case "input" :
+						input = document.createElement("input");
+						input.value = list[i][this.fields[j].name];						
+						input.classList.add("wgrid-input");
+						input.addEventListener("keyup", event => {							
+							list[i][this.fields[j].name] = event.target.value;
+						}, false);
+						td.appendChild(input);
+						break;
+					case "select" :
+						
+						break;
+					}
+				}
 				tr.appendChild(td);				
-			}
-			
+			}			
 			table.appendChild(tr);
 		}
 		

@@ -18,11 +18,11 @@ $(document).ready(function(){
 			data : "",			
 			fields : [        	
 				{ title:"부모코드",	name:"codePrt",	type:"text", width: "10%",	align:"center", 
-					itemTemplate : function(value, item){
-						
+					itemTemplate : function(value, item, index){
+						return value;
 					}
 				},		
-				{ title:"코드",		name:"code",	type:"text", width: "10%",	align:"center"},
+				{ title:"코드",		name:"code",	type:"input", width: "10%",	align:"center"},
 				{ title:"코드명",		name:"codeNm",	type:"text", width: "15%",	align:"center"},
 				{ title:"수정자",		name:"modUser",	type:"text", width: "5%",	align:"center"},
 				{ title:"수정날짜",	name:"modDate",	type:"text", width: "10%",	align:"center"},
