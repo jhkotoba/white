@@ -31,6 +31,7 @@
 		/*whiteMapper|selectCodeList*/
 		SELECT
 			code
+			,code_prt AS codePrt
 			,code_nm AS codeNm
 		FROM cmm_code		
 		WHERE code_prt = UPPER(#{codePrt})		

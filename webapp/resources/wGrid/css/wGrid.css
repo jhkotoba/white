@@ -6,3 +6,12 @@
 .wgrid-table-body tr:hover{ background: #363636;border-color: #363636;border-bottom: 0; border-top: 0; border: 1px solid #363636; padding: .5em .5em; text-align: center; border-collapse: collapse; border-spacing: 0; transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;}
 
 .wgrid-input{background: #4e4e4e; color:#C6C6C6; font-size: 1em; height: 30px; border: 1px solid #646464; border-radius: 2px; vertical-align: bottom; text-indent: 5px; width: 100%;}
+
+.wgrid-delete-tr{background: #795757 !important;}
+.wgrid-delete-tag{background: #654A4A !important;}
+
+.wgrid-update-tr{background: #5A607D;}
+.wgrid-update-tag{background: #535473;}
+
+/* #54794f;
+#41583e; */

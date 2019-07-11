@@ -10,32 +10,26 @@ let values = {};
 $(document).ready(function(){
 	//초기설정
 	new Promise(function(resolve, reject){
-		wcm.createCodes({targetId:"srhType", prtCode:"CODE", first:"ALL"});		
+		
+		wcm.createCodes({targetId:"srhType", prtCode:"CODE", first:"ALL"});
 		
 		values.grid = new wGrid({
 			id : "codeList",
 			header : "",
 			data : "",			
 			fields : [        	
-				{ title:"부모코드",	name:"codePrt",	type:"text", width: "10%",	align:"center", 
-					itemTemplate : function(value, item, index){
-						return value;
-					}
-				},		
+				{ title:"부모코드",	name:"codePrt",	type:"input", width: "10%",	align:"center"},
 				{ title:"코드",		name:"code",	type:"input", width: "10%",	align:"center"},
-				{ title:"코드명",		name:"codeNm",	type:"text", width: "15%",	align:"center"},
+				{ title:"코드명",		name:"codeNm",	type:"input", width: "15%",	align:"center"},
 				{ title:"수정자",		name:"modUser",	type:"text", width: "5%",	align:"center"},
 				{ title:"수정날짜",	name:"modDate",	type:"text", width: "10%",	align:"center"},
 				{ title:"등록자",		name:"regUser",	type:"text", width: "5%",	align:"center"},
 				{ title:"등록날짜",	name:"regDate",	type:"text", width: "10%",	align:"center"}	
 			],
-			is : {
-				clone : true,
-			},
 			option : {
 				auto : true,
-				xhr : true
-				
+				xhr : true,
+				clone : true,
 			},
 			xhr : {
 				url : "/admin/selectCodeDefineList.ajax",
@@ -47,65 +41,25 @@ $(document).ready(function(){
 			}
 		});
 		
-		values.grid.createGrid();
+		
 		
 		resolve();
 	})
-	.then(fnEvent)
-	.then(fnSearch);	
+	.then(fnInit)
+	.then(fnRegEvent);
+	
 });
-
+//초기설정
+function fnInit(){
+	values.grid.createGrid();
+	
+}
 //이벤트 등록
-function fnEvent(){	
+function fnRegEvent(){
 	//조회버튼
 	$("#srhBtn").on("click", function(){
-		fnSearch();
-	});
-}
-
-//그리드
-function fnSearch(){
-	
-	/* $("#codeList").jsGrid({
-        height: "auto",
-        width: "100%",
-        
-        editing: true,
-        autoload: true,
-		paging: true,
-		pageSize: 10,
 		
-		confirmDeleting : false,
-       
-        autoload: true,
-        controller: {
-            loadData: function(filter) { 
-            	let deferred = $.Deferred();
-            	let param = {};
-            	if(filter !== "" || filter !==undefined || filter !== null){
-            		param.pageIndex = filter.pageIndex;
-                	param.pageSize = filter.pageSize;                	
-            	}else{
-            		param.pageIndex = this.pageIndex;
-                	param.pageSize = this.pageSize;
-            	}
-            	wcm.xhttp("/admin/selectCodeDefineList.ajax", function(res){
-            		deferred.resolve(res);
-            	});            	
-            	return deferred.promise();
-            }
-        },
-        
-        fields: [        	
-			{ title:"부모코드",	name:"codePrt",	type:"text", width: "10%",	align:"center"},
-			{ title:"코드",		name:"code",	type:"text", width: "10%",	align:"center"},
-			{ title:"코드명",		name:"codeNm",	type:"text", width: "15%",	align:"center"},
-			{ title:"수정자",		name:"modUser",	type:"text", width: "5%",	align:"center"},
-			{ title:"수정날짜",	name:"modDate",	type:"text", width: "10%",	align:"center"},
-			{ title:"등록자",		name:"regUser",	type:"text", width: "5%",	align:"center"},
-			{ title:"등록날짜",	name:"regDate",	type:"text", width: "10%",	align:"center"}			
-        ]
-    }); */
+	});
 }
 </script>
 
