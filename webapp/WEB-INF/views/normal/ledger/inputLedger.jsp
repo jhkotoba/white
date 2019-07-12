@@ -483,19 +483,31 @@ function recordList(data){
 }
 </script>
 
-<div class="button-bar">
-	<div class="btn-right">		
-		<button id="saveBtn" type="button" class="btn-gray trs">저장</button>
-	</div>
-</div>
+<!-- 기입란 -->
 <div class="mgbottom30">
+	<div class="button-bar">
+		<div class="btn-right">
+			<table>
+				<colgroup>
+					<col width="*"/>
+				</colgroup>
+				<tr>
+					<td>
+						<button id="saveBtn" type="button" class="btn-gray trs">저장</button>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
 	<div>
 		<div class="title-icon"></div>
 		<label class="title">기입란</label>
 	</div>
 	<div id="ledgerList"></div>
 </div>
-<div>
+
+<!-- 최근기입목록 -->
+<div class="mgbottom30">
 	<div class="button-bar">		
 		<div class="btn-right">
 			<table>

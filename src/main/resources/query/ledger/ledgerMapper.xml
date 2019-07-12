@@ -356,11 +356,11 @@
 			</if>
 		FROM money_record_re rec
 		LEFT OUTER JOIN purpose pur
-			ON rec.pur_seq = pur.pur_seq
+		ON rec.pur_seq = pur.pur_seq
 		LEFT OUTER JOIN purpose_detail purDtl
-			ON rec.pur_dtl_seq = purDtl.pur_dtl_seq
+		ON rec.pur_dtl_seq = purDtl.pur_dtl_seq
 		LEFT OUTER JOIN bank bank
-    		ON rec.bank_seq = bank.bank_seq
+    	ON rec.bank_seq = bank.bank_seq
 		WHERE rec.user_seq = #{userSeq}
 		<choose>
 		<when test="searchType == 'recent'">

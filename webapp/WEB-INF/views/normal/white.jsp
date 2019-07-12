@@ -26,7 +26,7 @@
 <script type="text/javascript" src="${contextPath}/resources/common/js/common.js"></script>
 
 </head>
-<body>
+<body class="body">
 <c:if test="${sessionScope.userId eq null}">
 <script type="text/javascript">
 $(document).ready(function(){	

@@ -6,11 +6,12 @@
 $(document).ready(function(){	
 	$("#searchBar #startDate").val(isDate.firstDay());
 	$("#searchBar #endDate").val(isDate.lastDay());
-	$("#detail").data("detail", false);
+	$("#detail").data("detail", false);	
 	cfnCmmAjax("/ledger/selectPurBankList").done(ledgerList);
 	
+	
 	//상세보기 버튼
-	$("#btns #detail").on("click", function(){
+	$("#detailBtn").on("click", function(){
 		if($(this).data("detail")){			
 			$("[name=detail]").hide();
 			$(this).data("detail", false).text("상세보기");
@@ -71,7 +72,7 @@ function ledgerList(data){
 	}
 	
 	//조회버튼
-	$("#search").on("click", function(){
+	$("#searchBtn").on("click", function(){
 		let param = {};			
 		param.startDate = $("#searchBar #startDate").val();
 		param.endDate = $("#searchBar #endDate").val();
@@ -97,7 +98,7 @@ function ledgerList(data){
 			fnCreateLedgerList(data);
 			
 			//excel 버튼
-			$("#btns #excel").off().on("click", function(){
+			$("#excelBtn").off().on("click", function(){
 				alert("나중에~");
 				/* $("#downloadForm #filename").val("가계부 검색 리스트.xlsx");
 				$("#downloadForm #data").val(JSON.stringify(data));
@@ -170,7 +171,7 @@ function ledgerList(data){
 					}
 				}
 			},
-			{title: "수입/지출", 	name: "money", 		minWidth: 150, detail: false, bankSeq:null,
+			{title: "수입/지출/이동", 	name: "money", 		minWidth: 150, detail: false, bankSeq:null,
 				itemTemplate: function(item){
 					return fnSetFontColor(item.purType, item.money, "money", false, false);
 				}
@@ -217,14 +218,15 @@ function ledgerList(data){
 				}			
 				$("#ledgerList").scrollLeft($("#ledgerList").scrollLeft() + pos);
 			}
-		});		
+		});
+		$("[name=detail]").hide();
 		
 		//해더 생성
 		function fnCreateHeader(){
 			let $tb = $("<table>").addClass("table-header");
 			let $tr = $("<tr>");
 			let $th = null;
-			let detail = $("#btns #detail").data("detail");
+			let detail = $("#detailBtn").data("detail");
 			
 			for(let i=0; i<data.bankList.length; i++){			
 				fieldList.push(
@@ -270,7 +272,7 @@ function ledgerList(data){
 			let $tr = null;
 			let $td = null;
 			
-			let detail = $("#btns #detail").data("detail");
+			let detail = $("#detailBtn").data("detail");
 			for(let i=list.length-1; i>=0; i--){
 				if(isNotEmpty($("#searchBar #purSeq").val()) && String($("#searchBar #purSeq").val()) !== String(list[i].purSeq)){
 					continue;				
@@ -304,14 +306,6 @@ function ledgerList(data){
 }
 </script>
 
-<div class="button-bar">
-	<div id="btns" class="btn-right">
-		<button id="search" class="btn-gray trs">조회</button>
-		<button id="detail" class="btn-gray trs">상세보기</button>
-		<button id="excel" class="btn-gray trs">엑셀</button>
-	</div>
-</div>
-
 <div>
 	<div>
 		<div class="title-icon"></div>
@@ -321,15 +315,16 @@ function ledgerList(data){
 		<table>
 			<colgroup>
 				<col width="5%" class="search-th"/>
-				<col width="10%" />
+				<col width="8%" />
 				<col width="5%" class="search-th"/>
-				<col width="10%">
+				<col width="8%">
+				<col width="5%" class="search-th"/>
+				<col width="10%"/>
+				<col width="5%" class="search-th"/>
+				<col width="10%"/>
 				<col width="5%" class="search-th"/>
 				<col width="15%"/>
-				<col width="5%" class="search-th"/>
-				<col width="15%"/>
-				<col width="5%" class="search-th"/>
-				<col width="15%"/>				
+				<col width="*"/>
 			</colgroup>
 			<tr>
 				<th>시작일자</th>
@@ -343,21 +338,28 @@ function ledgerList(data){
 				<th>목적</th>
 				<td>
 					<select id="purSeq" class="select-gray wth100p">
-						<option value=''>전체</option>
+						<option value="">전체</option>
 					</select>
 				</td>
 				<th>상세목적</th>
 				<td>
 					<select id="purDtlSeq" class="select-gray wth100p">
-						<option value=''>전체</option>
+						<option value="">전체</option>
 					</select>
 				</td>
 				<th>은행</th>
 				<td>
 					<select id="bankSeq" class="select-gray wth100p">
-						<option value=''>전체</option>
-						<option value='0'>현금</option>
+						<option value="">전체</option>
+						<option value="0">현금</option>
 					</select>
+				</td>
+				<td>
+					<div class="btn-right">
+						<button id="searchBtn" class="btn-gray trs">조회</button>
+						<button id="detailBtn" class="btn-gray trs">상세보기</button>
+						<button id="excelBtn" class="btn-gray trs">엑셀</button>
+					</div>					
 				</td>				
 			</tr>
 		</table>

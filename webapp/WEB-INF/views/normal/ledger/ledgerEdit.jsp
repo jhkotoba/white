@@ -61,7 +61,7 @@ function ledgerList(data){
 	}
 	
 	//조회버튼
-	$("#search").off().on("click", function(){
+	$("#searchBtn").off().on("click", function(){
 		let param = {};			
 		param.startDate = $("#searchBar #startDate").val();
 		param.endDate = $("#searchBar #endDate").val();
@@ -94,7 +94,7 @@ function ledgerList(data){
 			fnCreateLedgerEditList(common.clone(data));
 			
 			//초기화 버튼
-			$("#btns #cancel").off().on("click", function(){
+			$("#cancelBtn").off().on("click", function(){
 				fnCreateLedgerEditList(common.clone(data));
 			});
 		});
@@ -105,7 +105,7 @@ function ledgerList(data){
 		$("#ledgerList").empty();		
 		
 		//저장버튼 이벤트
-		$("#btns #save").off().on("click", function(){
+		$("#saveBtn").off().on("click", function(){
 			
 			let name = null;
 			let isVali = true;
@@ -216,7 +216,7 @@ function ledgerList(data){
 						}
 						
 						alert(msg);
-						$("#search").trigger("click");
+						$("#searchBtn").trigger("click");
 					}
 				});
 			}
@@ -560,14 +560,6 @@ function ledgerList(data){
 
 </script>
 
-<div class="button-bar">
-	<div id="btns" class="btn-right">
-		<button id="search" class="btn-gray trs">조회</button>
-		<button id="save"  class="btn-gray trs">저장</button>
-		<button id="cancel" class="btn-gray trs">초기화</button>
-	</div>
-</div>
-
 <div>
 	<div>
 		<div class="title-icon"></div>
@@ -577,15 +569,16 @@ function ledgerList(data){
 		<table>
 			<colgroup>
 				<col width="5%" class="search-th"/>
-				<col width="10%" />
+				<col width="8%" />
 				<col width="5%" class="search-th"/>
-				<col width="10%">
+				<col width="8%">
+				<col width="5%" class="search-th"/>
+				<col width="10%"/>
+				<col width="5%" class="search-th"/>
+				<col width="10%"/>
 				<col width="5%" class="search-th"/>
 				<col width="15%"/>
-				<col width="5%" class="search-th"/>
-				<col width="15%"/>
-				<col width="5%" class="search-th"/>
-				<col width="15%"/>				
+				<col width="*"/>				
 			</colgroup>
 			<tr>
 				<th>시작일자</th>
@@ -614,6 +607,13 @@ function ledgerList(data){
 						<option value=''>전체</option>
 						<option value='0'>현금</option>
 					</select>
+				</td>
+				<td>
+					<div class="btn-right">
+						<button id="searchBtn" class="btn-gray trs">조회</button>
+						<button id="saveBtn" class="btn-gray trs">상세보기</button>
+						<button id="cancelBtn" class="btn-gray trs">엑셀</button>
+					</div>					
 				</td>
 			</tr>
 		</table>

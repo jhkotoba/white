@@ -34,13 +34,11 @@ class wGrid{
 		//option
 		this.option = {
 			//그리드 생성시 자동 조회 여부
-			auto : args.option.auto,
+			isAuto : args.option.auto,
 			//내부 비동기 조회 여부
-			xhr : args.option.xhr,
-			//edit 모드
-			edit : args.option.edit,
+			isXhr : args.option.xhr,			
 			//복제여부
-			clone : args.option.clone
+			isClone : args.option.clone
 		}
 		
 		//message
@@ -123,13 +121,13 @@ class wGrid{
 		this.target.appendChild(header);
 				
 		//자동조회 true
-		if(this.option.auto){
+		if(this.option.isAuto){
 			
 			//생성시 데이터 존재하지 않을 경우
 			if(this.isEmpty(this.data)){
 				
 				//내부 비동기 조회인 경우 xhr : true
-				if(this.option.xhr){
+				if(this.option.isXhr){
 					
 					//비동기 통신
 					this.xhttp(null, result => {
@@ -140,7 +138,7 @@ class wGrid{
 							this.dataLink[i] = i;
 						}
 						this.data = result;
-						if(this.option.clone) this.createClone();
+						if(this.option.isClone) this.createClone();
 						this.createField();
 						
 					});
@@ -223,49 +221,13 @@ class wGrid{
 						//값 동기화 이벤트 등록
 						input.addEventListener("keyup", event => {
 							list[i][this.fields[j].name] = event.target.value;							
-							if(this.option.clone){
+							if(this.option.isClone){
 								
 								//값 체크후 값 변경시 background 색상 변경
 								let node = event.target;
 								
-								//while start
-								while(true){
-									if(node.tagName === "TR"){
-										
-										//복제한 데이터와 값 비교
-										if(this.checkRow(list[i].key)){
-											
-											//class 해제 로직
-											node.classList.remove("wgrid-update-tr");											
-											let nodeList = node.childNodes;
-											nodeList.forEach(element => {
-												let tagName = element.childNodes[0].tagName;
-												if(tagName === "INPUT" || tagName === "SELECT"){
-													element.childNodes[0].classList.remove("wgrid-update-tag");
-												}
-											});											
-										}else{
-											
-											//class 적용 로직
-											node.classList.add("wgrid-update-tr");											
-											let nodeList = node.childNodes;
-											nodeList.forEach(element => {
-												let tagName = element.childNodes[0].tagName;
-												if(tagName === "INPUT" || tagName === "SELECT"){
-													element.childNodes[0].classList.add("wgrid-update-tag");
-												}												
-											});	
-										}											
-										break;
-									//부모태그를 찾다가 tr를 발견 못할시 강제종료
-									}else if(node.tagName === "TABLE" || node.tagName === "BODY" || node.tagName === "HTML"){
-										return false;
-									//찾는 노드 없을시 부모노드로 값 변경
-									}else{
-										node = node.parentNode;
-									}										
-								}
-								//while end								
+								//변경사항 style 적용
+								this.applyEditStyle(this.checkRow(list[i].key), node);
 							}
 							
 						}, false);
@@ -288,7 +250,7 @@ class wGrid{
 	
 	//원본 행과 비교
 	checkRow(key){
-		if(this.option.clone){
+		if(this.option.isClone){
 			
 			let idx = this.dataLink[key];
 			
@@ -311,6 +273,52 @@ class wGrid{
 		}
 	}
 	
+	//변경사항(추가) 스타일 적용, 취소
+	applyAddStyle(isApply, node){
+		
+	}
+	
+	//변경사항(수정) 스타일 적용, 취소
+	applyEditStyle(isApply, node){
+		while(true){
+			if(node.tagName === "TR"){
+				if(isApply){				
+					//class 해제 로직
+					node.classList.remove("wgrid-update-tr");											
+					let nodeList = node.childNodes;
+					nodeList.forEach(element => {
+						let tagName = element.childNodes[0].tagName;
+						if(tagName === "INPUT" || tagName === "SELECT"){
+							element.childNodes[0].classList.remove("wgrid-update-tag");
+						}
+					});											
+				}else{				
+					//class 적용 로직
+					node.classList.add("wgrid-update-tr");											
+					let nodeList = node.childNodes;
+					nodeList.forEach(element => {
+						let tagName = element.childNodes[0].tagName;
+						if(tagName === "INPUT" || tagName === "SELECT"){
+							element.childNodes[0].classList.add("wgrid-update-tag");
+						}												
+					});	
+				}											
+				break;
+			//부모태그를 찾다가 tr를 발견 못할시 강제종료
+			}else if(node.tagName === "TABLE" || node.tagName === "BODY" || node.tagName === "HTML"){
+				return false;
+			//찾는 노드 없을시 부모노드로 값 변경
+			}else{
+				node = node.parentNode;
+			}
+		}
+	}
+	
+	//변경사항(삭제) 스타일 적용, 취소
+	applyRemoveStyle(isApply, node){
+		
+	}
+		
 	//빈값 체크
 	isEmpty(_str){
 		return !this.isNotEmpty(_str);
