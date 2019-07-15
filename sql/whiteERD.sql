@@ -87,6 +87,7 @@ CREATE TABLE bank
 
 CREATE TABLE cmm_code
 (
+	code_seq int NOT NULL AUTO_INCREMENT,
 	code varchar(6) NOT NULL,
 	code_prt varchar(6) NOT NULL,
 	code_nm varchar(20) NOT NULL,
@@ -94,7 +95,7 @@ CREATE TABLE cmm_code
 	mod_date datetime NOT NULL,
 	reg_user varchar(20) NOT NULL,
 	reg_date datetime NOT NULL,
-	PRIMARY KEY (code),
+	PRIMARY KEY (code_seq),
 	UNIQUE (code)
 );
 

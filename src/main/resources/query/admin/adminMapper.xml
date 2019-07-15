@@ -359,8 +359,9 @@
 	<!-- 코드 정의 리스트 조회 -->
 	<select id="selectCodeDefineList" parameterType="whiteMap" resultType="whiteMap">
 		/* adminMapper|selectCodeDefineList */
-		SELECT 
-			code		AS code
+		SELECT
+			code_seq	AS codeSeq
+			,code		AS code
 			,code_prt	AS codePrt
 			,code_nm	AS codeNm
 			,mod_user	AS modUser

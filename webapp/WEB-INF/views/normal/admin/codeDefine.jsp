@@ -17,7 +17,8 @@ $(document).ready(function(){
 			id : "codeList",
 			header : "",
 			data : "",			
-			fields : [        	
+			fields : [   	
+				{ title:"번호",		name:"codeSeq",	type:"text", width: "2%",	align:"center"},
 				{ title:"부모코드",	name:"codePrt",	type:"input", width: "10%",	align:"center"},
 				{ title:"코드",		name:"code",	type:"input", width: "10%",	align:"center"},
 				{ title:"코드명",		name:"codeNm",	type:"input", width: "15%",	align:"center"},
