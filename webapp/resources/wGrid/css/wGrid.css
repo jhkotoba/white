@@ -7,11 +7,13 @@
 
 .wgrid-input{background: #4e4e4e; color:#C6C6C6; font-size: 1em; height: 30px; border: 1px solid #646464; border-radius: 2px; vertical-align: bottom; text-indent: 5px; width: 100%;}
 
+.wgrid-btn{background: #4C4C4C; color:#C6C6C6; border: 1px solid #585858; display: inline-block; border-radius: 2px;	text-align: center; white-space: nowrap; vertical-align: bottom; user-select: none; overflow: visible; margin: 0; cursor: pointer; font-weight:600; padding: .25rem .5rem; height: 30px;}
+.wgrid-btn:hover{background: #3A3A3A;}
+.wgrid-btn:active{background: #5E5E5E;}
+
 .wgrid-delete-tr{background: #795757 !important;}
 .wgrid-delete-tag{background: #654A4A !important;}
-
 .wgrid-update-tr{background: #5A607D;}
 .wgrid-update-tag{background: #535473;}
-
-/* #54794f;
-#41583e; */
+.wgrid-insert-tr{background: #54794f;}
+.wgrid-insert-tag{background: #41583e;}

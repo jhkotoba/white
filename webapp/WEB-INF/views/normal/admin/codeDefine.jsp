@@ -17,11 +17,11 @@ $(document).ready(function(){
 			id : "codeList",
 			header : "",
 			data : "",			
-			fields : [   	
-				{ title:"번호",		name:"codeSeq",	type:"text", width: "2%",	align:"center"},
+			fields : [
+				{ isRemoveButton: true, isHeadAddButton: true, width: "3%", align:"center"},
 				{ title:"부모코드",	name:"codePrt",	type:"input", width: "10%",	align:"center"},
 				{ title:"코드",		name:"code",	type:"input", width: "10%",	align:"center"},
-				{ title:"코드명",		name:"codeNm",	type:"input", width: "15%",	align:"center"},
+				{ title:"코드명",		name:"codeNm",	type:"input", align:"center"},
 				{ title:"수정자",		name:"modUser",	type:"text", width: "5%",	align:"center"},
 				{ title:"수정날짜",	name:"modDate",	type:"text", width: "10%",	align:"center"},
 				{ title:"등록자",		name:"regUser",	type:"text", width: "5%",	align:"center"},
@@ -63,15 +63,6 @@ function fnRegEvent(){
 	});
 }
 </script>
-
-<!-- 버튼 -->
-<div class="button-bar">
-	<div class="btn-right">
-		<button class="btn-gray trs" id="srhBtn">조회</button>
-		<button class="btn-gray trs" id="addBtn">추가</button>
-	</div>
-</div>
-
 <form id="srhForm" name="srhForm" onsubmit="return false;">
 	<div>
 		<div class="title-icon"></div>
@@ -84,6 +75,7 @@ function fnRegEvent(){
 				<col width="100px">
 				<col width="130px" class="search-th"/>
 				<col width="250px"/>
+				<col width="*"/>
 			</colgroup>
 			<tr>
 				<th>검색구분</th>
@@ -94,6 +86,12 @@ function fnRegEvent(){
 				<th>검색명</th>
 				<td>
 					<input id="srhTxt" name="schTxt" type="text" class="input-gray wth3 wth100p">
+				</td>
+				<td>
+					<div class="btn-right">
+						<button class="btn-gray trs" id="srhBtn">조회</button>
+						<button class="btn-gray trs" id="addBtn">추가</button>
+					</div>
 				</td>
 			</tr>
 		</table>
