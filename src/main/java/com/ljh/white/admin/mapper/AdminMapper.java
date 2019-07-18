@@ -192,6 +192,16 @@ public class AdminMapper {
 	 * @param param
 	 * @return
 	 */
+	public int selectCodeDefineCount(WhiteMap param) {
+		return sqlSession.selectOne("adminMapper.selectCodeDefineCount", param);
+	}
+	
+	
+	/**
+	 * 네비 메뉴 리스트 조회
+	 * @param param
+	 * @return
+	 */
 	public List<WhiteMap> selectCodeDefineList(WhiteMap param) {
 		return sqlSession.selectList("adminMapper.selectCodeDefineList", param);
 	}

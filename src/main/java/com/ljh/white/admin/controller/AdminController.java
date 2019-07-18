@@ -167,9 +167,12 @@ public class AdminController {
 	 * @return
 	 */
 	@RequestMapping(value="/admin/selectCodeDefineList.ajax" )
-	public List<WhiteMap> selectCodeDefineList(HttpServletRequest request){
+	public WhiteMap selectCodeDefineList(HttpServletRequest request){
 		WhiteMap param = new WhiteMap(request);
-		return adminService.selectCodeDefineList(param);
+		WhiteMap result = new WhiteMap();
+		result.put("count", adminService.selectCodeDefineCount(param));
+		result.put("list", adminService.selectCodeDefineList(param));
+		return result;
 	}
 	
 	

@@ -52,7 +52,7 @@
 		  	</if>			  
   		</where>  	
 		ORDER BY b.board_seq DESC
-		Limit ${pagePre}, ${pageSize}
+		LIMIT ${pagePre}, ${pageSize}
 	</select>
 	
 	<!-- 게시판 상세조회 -->

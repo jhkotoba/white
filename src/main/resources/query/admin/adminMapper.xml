@@ -356,6 +356,13 @@
 		</foreach>
 	</delete>
 	
+	
+	<!-- 코드 정의 리스트 조회 -->
+	<select id="selectCodeDefineCount" parameterType="whiteMap" resultType="int">
+		/* adminMapper|selectCodeDefineCount */
+		SELECT COUNT(1)	FROM cmm_code	
+	</select>	
+	
 	<!-- 코드 정의 리스트 조회 -->
 	<select id="selectCodeDefineList" parameterType="whiteMap" resultType="whiteMap">
 		/* adminMapper|selectCodeDefineList */
@@ -369,7 +376,8 @@
 			,reg_user	AS regUser
 			,DATE_FORMAT(reg_date,'%Y-%m-%d %H:%i:%s') AS regDate
 		FROM cmm_code
-		ORDER BY CODE ASC		
+		ORDER BY CODE ASC
+		LIMIT ${pagePre}, ${pageSize}	
 	</select>
 </mapper>
 

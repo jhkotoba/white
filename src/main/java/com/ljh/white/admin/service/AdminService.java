@@ -306,10 +306,16 @@ public class AdminService {
 	 * 코드정의목록 조회
 	 * @return
 	 */
-	public List<WhiteMap> selectCodeDefineList(WhiteMap param) {		
-		return adminMapper.selectCodeDefineList(param);		
-		
+	public int selectCodeDefineCount(WhiteMap param) {		
+		return adminMapper.selectCodeDefineCount(param);
 	}
 	
-	
+	/**
+	 * 코드정의목록 조회
+	 * @return
+	 */
+	public List<WhiteMap> selectCodeDefineList(WhiteMap param) {
+		param.put("pagePre", (param.getInt("pageIndex")-1)*param.getInt("pageSize"));
+		return adminMapper.selectCodeDefineList(param);		
+	}
 }

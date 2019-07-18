@@ -6,19 +6,24 @@
 <link rel="stylesheet" href="${contextPath}/resources/wGrid/css/wGrid.css" type="text/css"/>
 <script type="text/javascript" src="${contextPath}/resources/wGrid/js/wGrid.js"></script>
 <script type="text/javascript">
-let values = {};
 $(document).ready(function(){
 	//초기설정
 	new Promise(function(resolve, reject){
 		
+		//셀렉트박스 생성
 		wcm.createCodes({targetId:"srhType", prtCode:"CODE", first:"ALL"});
 		
-		values.grid = new wGrid({
-			id : "codeList",
+		//그리드 생성
+		new wGrid("codeList", {
+			controller : function(){
+				console.log(this);
+				this.createGrid();
+			},
 			header : "",
-			data : "",			
+			data : "",
 			fields : [
 				{ isRemoveButton: true, isHeadAddButton: true, width: "3%", align:"center"},
+				{ title:"번호",		name:"codeSeq",	type:"text", width: "3%",	align:"center"},
 				{ title:"부모코드",	name:"codePrt",	type:"input", width: "10%",	align:"center"},
 				{ title:"코드",		name:"code",	type:"input", width: "10%",	align:"center"},
 				{ title:"코드명",		name:"codeNm",	type:"input", align:"center"},
@@ -28,14 +33,19 @@ $(document).ready(function(){
 				{ title:"등록날짜",	name:"regDate",	type:"text", width: "10%",	align:"center"}	
 			],
 			option : {
-				auto : true,
-				xhr : true,
-				clone : true,
-			},
+				isAuto : true,
+				isXhr : true,
+				isClone : true,
+				isPaging : true				
+			},			
 			xhr : {
 				url : "/admin/selectCodeDefineList.ajax",
 				async : true,
-				type : "post"				
+				type : "post",
+				param : {
+					pageSize : 10,
+					pageIndex : 1
+				}
 			},
 			message : {
 				nodata : "조회결과가 없습니다."
@@ -52,7 +62,7 @@ $(document).ready(function(){
 });
 //초기설정
 function fnInit(){
-	values.grid.createGrid();
+	//values.grid.createGrid();
 	
 }
 //이벤트 등록
