@@ -15,9 +15,11 @@ $(document).ready(function(){
 		
 		//그리드 생성
 		new wGrid("codeList", {
-			controller : function(){
-				console.log(this);
-				this.createGrid();
+			controller : {
+				load : function(){
+					
+					
+				}
 			},
 			header : "",
 			data : "",
@@ -50,8 +52,7 @@ $(document).ready(function(){
 			message : {
 				nodata : "조회결과가 없습니다."
 			}
-		});
-		
+		}).createGrid();
 		
 		
 		resolve();

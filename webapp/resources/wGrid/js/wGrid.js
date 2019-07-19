@@ -69,7 +69,7 @@ class wGrid{
 		if(args.option.isClone) this.createClone();
 		
 		this.controller = args.controller;
-		this.controller();
+		this.controller.load();
 	}
 	
 	//데이터 넣기
