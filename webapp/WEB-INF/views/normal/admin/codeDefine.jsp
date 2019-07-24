@@ -1,25 +1,30 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<c:set var="contextPath" value="<%=request.getContextPath()%>"></c:set>
+<c:set var="path" value="<%=request.getContextPath()%>"></c:set>
 
-<link rel="stylesheet" href="${contextPath}/resources/wGrid/css/wGrid.css" type="text/css"/>
-<script type="text/javascript" src="${contextPath}/resources/wGrid/js/wGrid.js"></script>
+<link rel="stylesheet" href="${path}/resources/wGrid/css/wGrid.css" type="text/css"/>
+<script type="text/javascript" src="${path}/resources/wGrid/js/wGrid.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
 	//초기설정
-	new Promise(function(resolve, reject){
-		
+	new Promise(function(resolve, reject){		
 		//셀렉트박스 생성
-		wcm.createCodes({targetId:"srhType", prtCode:"CODE", first:"ALL"});
-		
+		wcm.createCodes({targetId:"srhType", prtCode:"CODE", first:"ALL"});		
 		//그리드 생성
-		new wGrid("codeList", {
+		let codeGrid = new wGrid("codeList", {
 			controller : {
-				load : function(){
-					
-					
-				}
+				load : function(){					
+					let promise = new Promise(function(resolve, reject){
+						let sParam = {
+							pageIndex : 1,
+							pageSize : 20,
+							pageCount : 10	
+						}
+						$.post("${path}/admin/selectCodeDefineList.ajax", sParam, resolve);
+					});
+					return promise;
+				}				
 			},
 			header : "",
 			data : "",
@@ -36,38 +41,22 @@ $(document).ready(function(){
 			],
 			option : {
 				isAuto : true,
-				isXhr : true,
 				isClone : true,
 				isPaging : true				
 			},			
-			xhr : {
-				url : "/admin/selectCodeDefineList.ajax",
-				async : true,
-				type : "post",
-				param : {
-					pageSize : 10,
-					pageIndex : 1
-				}
-			},
 			message : {
 				nodata : "조회결과가 없습니다."
+			},
+			event : {
+				
 			}
-		}).createGrid();
-		
-		
+		});
 		resolve();
-	})
-	.then(fnInit)
-	.then(fnRegEvent);
-	
+	})	
+	.then(fnEvent);	
 });
-//초기설정
-function fnInit(){
-	//values.grid.createGrid();
-	
-}
 //이벤트 등록
-function fnRegEvent(){
+function fnEvent(){
 	//조회버튼
 	$("#srhBtn").on("click", function(){
 		

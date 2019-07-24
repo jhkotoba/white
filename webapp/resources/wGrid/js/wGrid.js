@@ -3,7 +3,8 @@
  * @author JeHoon 
  */
 class wGrid{
-	constructor(targetId, args){		
+	constructor(targetId, args){
+		
 		this.id = targetId;
 		this.target = document.getElementById(this.id);
 		this.header = args.header;
@@ -20,36 +21,16 @@ class wGrid{
 				this.dataLink[i] = i;
 			}
 			this.data = args.data;
-		}		
-		
-		//xhr관련 변수
-		this.xhr = {
-			//비동기 url
-			url : args.xhr.url,
-			//비동기 여부
-			async : this.isEmpty(args.xhr.async) ? true : args.xhr.async,
-			//get, post 
-			type : this.isEmpty(args.xhr.type) ? "POST" : args.xhr.type.toUpperCase(),
-			param : args.xhr.param					
 		}
 		
 		//option
 		this.option = {
-			//그리드 생성시 자동 조회 여부
-			isAuto : this.isEmpty(args.option.isAuto) ? true : args.option.isAuto,
-			//내부 비동기 조회 여부
-			isXhr : this.isEmpty(args.option.isXhr) ? true : args.option.isXhr,	
+			isAuto : this.isEmpty(args.option.isClone) ? true : args.option.isClone,
 			//복제여부
 			isClone : this.isEmpty(args.option.isClone) ? true : args.option.isClone,
 			//페이징여부
 			isPaging : this.isEmpty(args.option.isPaging) ? false : args.option.isPaging,
-		}
-		
-		
-		
-		this.page = {
-			totalCount : 0
-		}
+		}		
 		
 		//message
 		this.message = {
@@ -68,8 +49,60 @@ class wGrid{
 		this.clone = null;
 		if(args.option.isClone) this.createClone();
 		
-		this.controller = args.controller;
-		this.controller.load();
+		this.controller = args.controller;	
+		this.controller.load().then(result => {			
+			this.dataInjection(result);			
+			if(this.option.isAuto){
+				this.createGrid();
+			}
+		});
+		
+		this.event = args.event;
+	}
+	
+	//데이터 가공 및 주입
+	dataInjection(result){		
+		//단일 리스드 (list)
+		if(typeof result === "object" && typeof result.length === "number"){
+			this.dataLink = {};
+			for(let i=0; i<result.length; i++){
+				result[i].state = "select";
+				result[i].isRemove = false;
+				result[i].key = i;
+				this.dataLink[i] = i;
+			}
+			this.data = result;
+			if(this.option.isClone) this.createClone();
+		//복합
+		}else if(typeof result === "object" && typeof result.length === "undefined"){							
+			let list = null;
+			let keys = Object.keys(result);
+										
+			switch(keys.length){
+			//카운트, 리스트(count, list)
+			case 2:
+				for(let i=0; i<keys.length; i++){									
+					if(typeof result[keys[i]] === "number"){
+						//this.page.totalCount = result[keys[i]];
+					}else if(typeof result[keys[i]] === "object" && typeof result[keys[i]].length === "number"){										
+						this.dataLink = {};
+						list = result[keys[i]];
+						for(let j=0; j<list.length; j++){
+							list[j].state = "select";
+							list[j].isRemove = false;
+							list[j].key = j;
+							this.dataLink[j] = j;
+						}
+						this.data = list;
+						if(this.option.isClone) this.createClone();
+					}
+				}								
+				break;
+			//카운트, 리스트, 맵(count, list, map)
+			case 3:
+				break;
+			}							
+		}
 	}
 	
 	//데이터 넣기
@@ -118,7 +151,7 @@ class wGrid{
 	}
 	
 	//그리드 생성
-	createGrid(){
+	createGrid(){	
 		let list = this.data;
 		
 		//헤더생성
@@ -191,77 +224,15 @@ class wGrid{
 			}
 		}
 		//해더 등록
-		this.target.appendChild(header);
-				
-		//자동조회 true
-		if(this.option.isAuto){
-			
-			//생성시 데이터 존재하지 않을 경우
-			if(this.isEmpty(this.data)){
-				
-				//내부 비동기 조회인 경우 xhr : true
-				if(this.option.isXhr){
-					
-					//비동기 통신
-					this.xhttp(this.xhr.param, result => {						
-						
-						//단일 리스드 (list)
-						if(typeof result === "object" && typeof result.length === "number"){
-							this.dataLink = {};
-							for(let i=0; i<result.length; i++){
-								result[i].state = "select";
-								result[i].isRemove = false;
-								result[i].key = i;
-								this.dataLink[i] = i;
-							}
-							this.data = result;
-							if(this.option.isClone) this.createClone();
-							this.createField();
-						
-						//복합
-						}else if(typeof result === "object" && typeof result.length === "undefined"){							
-							let list = null;
-							let keys = Object.keys(result);
-														
-							switch(keys.length){
-							//카운트, 리스트(count, list)
-							case 2:
-								for(let i=0; i<keys.length; i++){									
-									if(typeof result[keys[i]] === "number"){
-										this.page.totalCount = result[keys[i]];
-									}else if(typeof result[keys[i]] === "object" && typeof result[keys[i]].length === "number"){										
-										this.dataLink = {};
-										list = result[keys[i]];
-										for(let j=0; j<list.length; j++){
-											list[j].state = "select";
-											list[j].isRemove = false;
-											list[j].key = j;
-											this.dataLink[j] = j;
-										}
-										this.data = list;
-										if(this.option.isClone) this.createClone();
-										this.createField();
-									}
-								}								
-								break;
-							//카운트, 리스트, 맵(count, list, map)
-							case 3:
-								break;
-							}							
-						}
-					});
-				//비동기 통신이 아니고 데이터가 없는 경우	
-				}else{
-					this.createNoDataField();
-				}
-			//생성시 데이터 존재할 경우
-			}else{
-				this.createField();
-			}
-		//자동조회 false
-		}else{ 
+		this.target.appendChild(header);				
+		
+		//생성시 데이터 존재하지 않을 경우
+		if(this.isEmpty(this.data)){
 			this.createNoDataField();
-		}	
+		//생성시 데이터 존재할 경우
+		}else{
+			this.createField();
+		}
 	}
 	
 	//빈 데이터 field 생성
@@ -286,7 +257,7 @@ class wGrid{
 	
 	//필드 생성
 	createField(){
-		let list = this.data;
+		let list = this.data;		
 		
 		//엘리멘트 생성
 		let field = document.createElement("div");
@@ -299,7 +270,7 @@ class wGrid{
 		let tr = null;
 		
 		//필드 create
-		for(let i=0; i<list.length; i++){
+		for(let i=0; i<list.length; i++){			
 			tr = this.createColumn(list, i);						
 			table.appendChild(tr);
 		}
@@ -513,42 +484,63 @@ class wGrid{
 		}		
 		this.clone = deepObjCopy(this.data);
 	}
-	//비동기 통신
-	xhttp(sParam, callback){
-		
-		//XMLHttpRequest 선언
-		let xhr = new XMLHttpRequest();
-		
-		//url값
-	    let offset = location.href.indexOf(location.host)+location.host.length;
-	    let url = location.href.substring(offset,location.href.indexOf('/',offset+1)) + this.xhr.url;
-	    
-	    //XMLHttpRequest open
-		xhr.open(this.xhr.type, url, this.xhr.async);	
-		
-		//readyState 호출함수 정의
-		xhr.onreadystatechange = () => {
-			if (xhr.readyState == 4) {
-				if (xhr.status == 200) {					
-					if(xhr.responseText !== null && xhr.responseText !== undefined && xhr.responseText !== ""){					
-						callback(JSON.parse(xhr.responseText));
-					}					
-				}else{
-					console.log("xhr.status:"+xhr.status);
-				}
-			}		
-		}
-		
-		//전송할 데이터 가공
-		if(sParam === null || sParam === undefined || this.data === ""){
-			xhr.send();	
-		}else{
-			let formData = new FormData();			
-			let keys = Object.keys(sParam);			
-			for(let i=0; i<keys.length; i++){				
-				formData.append(keys[i], String(sParam[keys[i]]));
-			}			
-			xhr.send(formData);	
-		}
-	}
 }
+
+
+////////////////////참고 주석
+
+/*//내부 비동기 조회인 경우 xhr : true
+if(this.option.isXhr){
+	
+	//비동기 통신
+	this.xhttp(this.xhr.param, result => {						
+		
+		//단일 리스드 (list)
+		if(typeof result === "object" && typeof result.length === "number"){
+			this.dataLink = {};
+			for(let i=0; i<result.length; i++){
+				result[i].state = "select";
+				result[i].isRemove = false;
+				result[i].key = i;
+				this.dataLink[i] = i;
+			}
+			this.data = result;
+			if(this.option.isClone) this.createClone();
+			this.createField();
+		
+		//복합
+		}else if(typeof result === "object" && typeof result.length === "undefined"){							
+			let list = null;
+			let keys = Object.keys(result);
+										
+			switch(keys.length){
+			//카운트, 리스트(count, list)
+			case 2:
+				for(let i=0; i<keys.length; i++){									
+					if(typeof result[keys[i]] === "number"){
+						this.page.totalCount = result[keys[i]];
+					}else if(typeof result[keys[i]] === "object" && typeof result[keys[i]].length === "number"){										
+						this.dataLink = {};
+						list = result[keys[i]];
+						for(let j=0; j<list.length; j++){
+							list[j].state = "select";
+							list[j].isRemove = false;
+							list[j].key = j;
+							this.dataLink[j] = j;
+						}
+						this.data = list;
+						if(this.option.isClone) this.createClone();
+						this.createField();
+					}
+				}								
+				break;
+			//카운트, 리스트, 맵(count, list, map)
+			case 3:
+				break;
+			}							
+		}
+	});
+//비동기 통신이 아니고 데이터가 없는 경우	
+}else{
+	this.createNoDataField();
+}*/

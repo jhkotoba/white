@@ -91,7 +91,7 @@ function cfnRestore(text){
 
 //날짜 계산
 function cfnDateCalc(dateString, form, value, patten){
-	if(isDatePattern(dateString, isEmpty(patten) === true ? "yyyy-MM-dd" : patten )){
+	if(wcm.isDatePattern(dateString, isEmpty(patten) === true ? "yyyy-MM-dd" : patten )){
 		if(isNotEmpty(form) && isNotEmpty(value)){
 			let date = new Date(dateString).getTime();
 			let number = 0;		
@@ -428,28 +428,6 @@ function isOnlyNum(_str){
 	}
 }
 
-
-
-//날짜 형식 체크 ex) 2019-01-01 08:00
-function isDatePattern(date, patten){
-	let datePattern = null;
-	switch(patten){	
-	case "HH:mm:ss":
-		datePattern = /^([1-9]|[01][0-9]|2[0-3]):([0-5][0-9])$/;
-		break;	
-	case "yyyy-MM-dd":	
-		datePattern = /^(19|20)\d{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[0-1])$/;	
-		break;
-	case "yyyy-MM-dd HH:mm":
-		datePattern = /^(19|20)\d{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[0-1]) (0[0-9]|1[0-9]|2[0-3]):([0-5][0-9])$/;
-		break;	
-	case "yyyy-MM-dd HH:mm:ss":
-		datePattern = /^(19|20)\d{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[0-1]) (0[0-9]|1[0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])$/;	
-		break;
-	}
-	return datePattern.test(date);
-}
-
 function cfnGetContextPath(){
 	return getContextPath();
 }
@@ -488,7 +466,43 @@ let mf = {
 
 
 //공통함수
-const wcm = {	
+const wcm = {
+	//########################### 체크 ###########################	
+	//날짜 형식 체크 ex) 2019-01-01 08:00	
+	isDatePattern : function(date, patten){
+		let datePattern = null;
+		switch(patten.toUpperCase()){		
+		case "HH:MM:SS":
+			datePattern = /^([1-9]|[01][0-9]|2[0-3]):([0-5][0-9])$/;
+			break;
+		case "YY-MM-DD":
+			datePattern = /^\d{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[0-1])$/;
+			break;		
+		case "YYYY-MM-DD":	
+			datePattern = /^(19|20)\d{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[0-1])$/;	
+			break;
+		case "YYYY-MM-DD HH:MM":
+			datePattern = /^(19|20)\d{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[0-1]) (0[0-9]|1[0-9]|2[0-3]):([0-5][0-9])$/;
+			break;	
+		case "YYYY-MM-DD HH:MM:SS":
+			datePattern = /^(19|20)\d{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[0-1]) (0[0-9]|1[0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])$/;	
+			break;
+		}
+		return datePattern.test(date);
+	},	
+	//########################### 날짜 편집 ###########################
+	
+	
+	
+	
+		
+	//########################### 문자열 편집 ###########################		
+	//문자열의 해당인덱스 삭제
+	strIdxSlice : function(str, index){
+		let string = String(str);
+		return string.slice(0, index) + string.slice(index+1);		
+	},
+	//########################### 비동기 통신 ###########################
 	//변수 초기화
 	xhttpClear : function(){
 		this.url = null; this.data = null; this.async = true; this.dataType = "JSON";
@@ -563,6 +577,8 @@ const wcm = {
 			xhr.send(formData);	
 		}
 	},
+	
+	//########################### 공통 코드 조회 ###########################
 	//공통코드 조회
 	getCode : function(codePrt, callback){		
 		let param = {};

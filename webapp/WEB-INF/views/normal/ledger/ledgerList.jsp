@@ -81,11 +81,11 @@ function ledgerList(data){
 		param.bankSeq = $("#searchBar #bankSeq").val();
 		param.searchType = "select";
 		
-		if(!isDatePattern(param.startDate, "yyyy-MM-dd")){			
+		if(!wcm.isDatePattern(param.startDate, "yyyy-MM-dd")){			
 			wVali.alert({element : $("#searchBar #startDate"), msg: "ex)2019-01-01의 형식으로 입력할 수 있습니다."});
 			return;
 		}
-		if(!isDatePattern(param.endDate, "yyyy-MM-dd")){			
+		if(!wcm.isDatePattern(param.endDate, "yyyy-MM-dd")){			
 			wVali.alert({element : $("#searchBar #endDate"), msg: "ex)2019-01-01의 형식으로 입력할 수 있습니다."});
 			return;
 		}
@@ -94,6 +94,7 @@ function ledgerList(data){
 		param.endDate = param.endDate + " 23:59";
 		
 		cfnCmmAjax("/ledger/selectRecordList", param).done(function(data){
+			console.log(data);
 			$("#ledgerList").removeClass("overflow-x-scroll");
 			fnCreateLedgerList(data);
 			
@@ -182,8 +183,8 @@ function ledgerList(data){
 				}
 			},
 			{title: "현금", 		name: "cash", 		minWidth: 200, detail: true, bankSeq:0,
-				itemTemplate: function(item, bankSeq){
-					if(String(item.bankSeq) === String(bankSeq)){						
+				itemTemplate: function(item, bankSeq){					
+					if(String(item.bankSeq) === String(bankSeq)){
 						return fnSetFontColor(item.purType, item.cash, "cash", true, false);
 					}else if(String(item.moveSeq) === String(bankSeq)){
 						return fnSetFontColor(item.purType, item.cash, "cash", false, true);
