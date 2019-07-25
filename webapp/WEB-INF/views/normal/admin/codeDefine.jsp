@@ -63,18 +63,19 @@ function fnEvent(){
 	});
 }
 </script>
+
 <form id="srhForm" name="srhForm" onsubmit="return false;">
 	<div>
 		<div class="title-icon"></div>
 		<label class="title">코드 정의</label>
 	</div>
 	<div class="search-bar">
-		<table>
+		<table class="wth100p">
 			<colgroup>
-				<col width="130px" class="search-th"/>
-				<col width="100px">
-				<col width="130px" class="search-th"/>
-				<col width="250px"/>
+				<col width="5%" class="search-th"/>
+				<col width="10%"/>
+				<col width="5%" class="search-th"/>
+				<col width="10%"/>				
 				<col width="*"/>
 			</colgroup>
 			<tr>
@@ -86,16 +87,15 @@ function fnEvent(){
 				<th>검색명</th>
 				<td>
 					<input id="srhTxt" name="schTxt" type="text" class="input-gray wth3 wth100p">
-				</td>
+				</td>				
 				<td>
 					<div class="btn-right">
-						<button class="btn-gray trs" id="srhBtn">조회</button>
-						<button class="btn-gray trs" id="addBtn">추가</button>
-					</div>
+						<button id="srhBtn" class="btn-gray trs">조회</button>
+						<button id="addBtn" class="btn-gray trs">추가</button>
+					</div>				
 				</td>
 			</tr>
 		</table>
 	</div>
 </form>
-
 <div id="codeList"></div>

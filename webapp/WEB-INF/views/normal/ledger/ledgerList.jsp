@@ -307,18 +307,18 @@ function ledgerList(data){
 }
 </script>
 
-<div>
+<form id="srhForm" name="srhForm" onsubmit="return false;">
 	<div>
 		<div class="title-icon"></div>
 		<label class="title">가계부 목록</label>
 	</div>
 	<div id="searchBar" class="search-bar">
-		<table>
+		<table class="wth100p">
 			<colgroup>
 				<col width="5%" class="search-th"/>
-				<col width="8%" />
+				<col width="8%"/>
 				<col width="5%" class="search-th"/>
-				<col width="8%">
+				<col width="8%"/>
 				<col width="5%" class="search-th"/>
 				<col width="10%"/>
 				<col width="5%" class="search-th"/>
@@ -365,6 +365,6 @@ function ledgerList(data){
 			</tr>
 		</table>
 	</div>
-</div>
+</form>
 <div id="ledgerList"></div>
 

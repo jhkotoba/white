@@ -15,9 +15,7 @@ let cAdjust = {
 		case "java":
 			adjustData = this._java(this.restore(data), false);
 			break;		
-		case "javascript":
-		case "jquery":
-		case "jsgrid":
+		case "javascript":		
 			adjustData = this._javascript(this.restore(data), false);
 			break;
 		case "xml":

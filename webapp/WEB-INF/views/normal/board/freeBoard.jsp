@@ -438,14 +438,6 @@ $.fn.setParam = function(param){
 	<input id="text" type="hidden" value="">
 </form>
 
-<!-- 버튼 -->
-<div class="button-bar">
-	<div id="btns" class="btn-right">
-		<button class="btn-gray trs" id="searchBtn">조회</button>
-		<button class="btn-gray trs" name="write">글쓰기</button>
-	</div>
-</div>
-
 <!-- 조회 입력란 -->
 <div>
 	<div>
@@ -453,12 +445,13 @@ $.fn.setParam = function(param){
 		<label class="title">자유 게시판</label>
 	</div>
 	<div id="searchBar" class="search-bar">
-		<table>
+		<table class="wth100p">
 			<colgroup>
-				<col width="130px" class="search-th"/>
-				<col width="100px">
-				<col width="130px" class="search-th"/>
-				<col width="250px"/>
+				<col width="5%" class="search-th"/>
+				<col width="10%">
+				<col width="5%" class="search-th"/>
+				<col width="10%"/>
+				<col width="*"/>
 			</colgroup>
 			<tr>
 				<th>검색구분</th>
@@ -474,6 +467,12 @@ $.fn.setParam = function(param){
 				<th>검색명</th>
 				<td>
 					<input class="input-gray wth3 wth100p" id="text" type="text">
+				</td>
+				<td>
+					<div id="btns" class="btn-right">
+						<button class="btn-gray trs" id="searchBtn">조회</button>
+						<button class="btn-gray trs" name="write">글쓰기</button>
+					</div>
 				</td>
 			</tr>
 		</table>

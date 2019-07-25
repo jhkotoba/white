@@ -30,7 +30,7 @@ $(document).ready(function(){
 	fnJsGrid();
 	
   	//조회 버튼
-	$("#btns #searchBtn").on("click", function(){		
+	$("#searchBtn").on("click", function(){		
 		
 		$("#searchForm #type").val($("#searchBar #type").val());
 		
@@ -45,7 +45,7 @@ $(document).ready(function(){
   	
 	//조회 엔터
   	$("#searchBar #text").on("keydown", function(e){
-  		if (e.which == 13) $("#btns #searchBtn").trigger("click");  		
+  		if (e.which == 13) $("#searchBtn").trigger("click");  		
   	});
 	
 	//권한 저장
@@ -239,13 +239,6 @@ $.fn.setParam = function(param){
 	<input id="text" type="hidden" value="">
 </form>
 
-<!-- 버튼 -->
-<div class="button-bar">
-	<div id="btns" class="btn-right">
-		<button class="btn-gray trs" id="searchBtn">조회</button>		
-	</div>
-</div>
-
 <!-- 조회 입력란 -->
 <div>
 	<div>
@@ -253,12 +246,13 @@ $.fn.setParam = function(param){
 		<label class="title">사용자 정보</label>
 	</div>
 	<div id="searchBar" class="search-bar">
-		<table>
+		<table class="wth100p">
 			<colgroup>
-				<col width="130px" class="search-th"/>
-				<col width="100px">
-				<col width="130px" class="search-th"/>
-				<col width="250px"/>
+				<col width="5%" class="search-th"/>
+				<col width="10%">
+				<col width="5%" class="search-th"/>
+				<col width="10%"/>
+				<col width="*"/>
 			</colgroup>
 			<tr>
 				<th>검색구분</th>
@@ -271,6 +265,11 @@ $.fn.setParam = function(param){
 				<th>검색명</th>
 				<td>
 					<input class="input-gray wth3 wth100p" id="text" type="text">
+				</td>
+				<td>
+					<div class="btn-right">
+						<button class="btn-gray trs" id="searchBtn">조회</button>	
+					</div>										
 				</td>
 			</tr>
 		</table>

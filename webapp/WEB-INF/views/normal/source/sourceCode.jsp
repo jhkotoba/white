@@ -374,14 +374,6 @@ function fnSourceCode(pageIdx, pageSize, pageBtnCnt){
 	<input id="text" type="hidden" value="">
 </form>
 
-<!-- 버튼 -->
-<div class="button-bar">
-	<div id="btns" class="btn-right">
-		<button class="btn-gray trs" id="searchBtn">조회</button>
-		<button class="btn-gray trs" name="write">글쓰기</button>
-	</div>
-</div>
-
 <!-- 조회 입력란 -->
 <div>
 	<div>
@@ -389,14 +381,15 @@ function fnSourceCode(pageIdx, pageSize, pageBtnCnt){
 		<label class="title">소스코드 목록</label>
 	</div>
 	<div id="searchBar" class="search-bar">
-		<table>
+		<table class="wth100p">
 			<colgroup>
-				<col width="130px" class="search-th"/>
-				<col width="200px" />
-				<col width="130px" class="search-th"/>
-				<col width="100px">
-				<col width="130px" class="search-th"/>
-				<col width="250px"/>
+				<col width="8%" class="search-th"/>
+				<col width="10%" />
+				<col width="5%" class="search-th"/>
+				<col width="10%">
+				<col width="5%" class="search-th"/>
+				<col width="10%"/>
+				<col width="*"/>
 			</colgroup>
 			<tr>
 				<th>언어/라이브러리</th>
@@ -417,6 +410,12 @@ function fnSourceCode(pageIdx, pageSize, pageBtnCnt){
 				<th>검색명</th>
 				<td>
 					<input class="input-gray wth3 wth100p" id="text" type="text">
+				</td>
+				<td>
+					<div id="btns" class="btn-right">
+						<button class="btn-gray trs" id="searchBtn">조회</button>
+						<button class="btn-gray trs" name="write">글쓰기</button>
+					</div>
 				</td>
 			</tr>
 		</table>

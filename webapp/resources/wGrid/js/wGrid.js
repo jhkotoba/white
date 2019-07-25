@@ -244,14 +244,14 @@ class wGrid{
 		this.node.bodyDiv = field;
 		this.node.bodyTable = table;
 		
-		let tr = document.createElement("tr"); 
-		let td = document.createElement("td");		
+		let tr = document.createElement("tr");
+		let td = document.createElement("td");
 		td.textContent = this.message.nodata;
 		
 		//필드 등록
 		tr.appendChild(td);
 		table.appendChild(tr);
-		field.appendChild(table);		
+		field.appendChild(table);
 		this.target.appendChild(field);
 	}
 	
