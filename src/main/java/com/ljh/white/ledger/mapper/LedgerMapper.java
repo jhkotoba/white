@@ -209,8 +209,8 @@ public class LedgerMapper {
 	 * @param pastRec
 	 * @return
 	 */
-	public WhiteMap selectCalPastRecord(List<WhiteMap> list) {
-		return sqlSession.selectOne("ledgerMapper.selectCalPastRecord", list);
+	public WhiteMap selectPastCalLedger(List<WhiteMap> list) {
+		return sqlSession.selectOne("ledgerMapper.selectPastCalLedger", list);
 	}	
 	
 	/**

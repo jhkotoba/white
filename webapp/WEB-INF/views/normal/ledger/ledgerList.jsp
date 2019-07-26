@@ -7,7 +7,7 @@ $(document).ready(function(){
 	$("#searchBar #startDate").val(isDate.firstDay());
 	$("#searchBar #endDate").val(isDate.lastDay());
 	$("#detail").data("detail", false);	
-	cfnCmmAjax("/ledger/selectPurBankList").done(ledgerList);
+	cfnCmmAjax("/ledger/selectLedgerInitData").done(ledgerList);
 	
 	
 	//상세보기 버튼
@@ -94,7 +94,6 @@ function ledgerList(data){
 		param.endDate = param.endDate + " 23:59";
 		
 		cfnCmmAjax("/ledger/selectRecordList", param).done(function(data){
-			console.log(data);
 			$("#ledgerList").removeClass("overflow-x-scroll");
 			fnCreateLedgerList(data);
 			

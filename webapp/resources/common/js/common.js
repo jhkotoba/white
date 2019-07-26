@@ -466,8 +466,33 @@ let mf = {
 
 
 //공통함수
-const wcm = {
-	//########################### 체크 ###########################	
+const wcm = {	
+	//########################### 날짜 조회, 계산, 편집, 체크 ###########################
+	//오늘날짜 반환
+	getToday : function(){
+		let date = new Date();		
+		let month = (date.getMonth() + 1);	
+		let day = date.getDate();
+		month = month < 10 ? "0" + month : "" + month;
+		day = day < 10 ? "0" + day : "" + day;
+		return date.getFullYear() + "-" + month + "-" + day;
+	},
+	//올해 이번달 첫날 반환
+	getToMonthFirstDay : function(){
+		let date = new Date();
+		let month = (date.getMonth() + 1);		
+		month = month < 10 ? "0" + month : "" + month;		
+		return date.getFullYear() + "-" + month + "-01";
+	},
+	//올해 이번달 마지막 날 반환
+	getToMonthLastDay : function(){
+		let date = new Date();
+		let year = date.getFullYear();
+		let month = (date.getMonth() + 1);		
+		month = month < 10 ? "0" + month : "" + month;		
+		let lastDay = new Date(year, month, 0).getDate();	
+		return year + "-" + month + "-" + lastDay;	
+	},
 	//날짜 형식 체크 ex) 2019-01-01 08:00	
 	isDatePattern : function(date, patten){
 		let datePattern = null;
@@ -490,13 +515,7 @@ const wcm = {
 		}
 		return datePattern.test(date);
 	},	
-	//########################### 날짜 편집 ###########################
-	
-	
-	
-	
-		
-	//########################### 문자열 편집 ###########################		
+	//########################### 문자열 편집, 계산, 체크 ###########################		
 	//문자열의 해당인덱스 삭제
 	strIdxSlice : function(str, index){
 		let string = String(str);
@@ -707,5 +726,5 @@ const wcm = {
 				callback(this);
 			}
 		});		
-	}	
+	}
 }

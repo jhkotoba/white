@@ -9,7 +9,7 @@ $(document).ready(function(){6
 
 	$.ajax({		
 		type: 'POST',
-		url: common.path()+'/ledgerRe/selectPurBankList.ajax',
+		url: common.path()+'/ledgerRe/selectLedgerInitData.ajax',
 		dataType: 'json',
 	    success : function(data) {
 	    	recIn.init(data.purList, data.purDtlList, data.bankList).add().view();    	

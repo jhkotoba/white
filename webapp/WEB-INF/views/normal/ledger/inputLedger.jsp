@@ -7,7 +7,7 @@
 </style>
 <script type="text/javascript">
 $(document).ready(function(){	
-	cfnCmmAjax("/ledger/selectPurBankList").done(inputLedger);
+	cfnCmmAjax("/ledger/selectLedgerInitData").done(inputLedger);
 	cfnCmmAjax("/ledger/selectRecordList", {searchType:"recent", schdTime:$("#schdTime").val()}).done(recordList);
 	
 	$("#schdTime").on("change", function(){

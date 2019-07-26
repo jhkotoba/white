@@ -50,14 +50,19 @@ class wGrid{
 		if(args.option.isClone) this.createClone();
 		
 		this.controller = args.controller;	
+		this.search();
+		
+		this.event = args.event;
+	}
+	
+	//조회
+	search(){
 		this.controller.load().then(result => {			
 			this.dataInjection(result);			
 			if(this.option.isAuto){
 				this.createGrid();
 			}
 		});
-		
-		this.event = args.event;
 	}
 	
 	//데이터 가공 및 주입

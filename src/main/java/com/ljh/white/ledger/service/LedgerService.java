@@ -310,11 +310,45 @@ public class LedgerService {
 	 * @param param
 	 * @return
 	 */
+	public List<WhiteMap> selectLedgerList(WhiteMap param){
+		
+		List<WhiteMap> bankList = this.selectBankList(param);
+		//금전기록 기간 조회시 기간 이전  각각(현금, 은행등등) 금액 데이터 합산
+		List<WhiteMap> pastLedgerList = new ArrayList<WhiteMap>();
+		WhiteMap map = null;
+		for(int i=0; i<bankList.size()+1; i++) {
+			map = new WhiteMap();
+			if(i==0) {
+				map.put("bankName", "cash");
+				map.put("bankSeq", 0);				
+				map.put("userSeq", param.getInt("userSeq"));
+				map.put("startDate", param.getString("startDate"));
+			}else {
+				map.put("bankName", "bank"+(i-1));
+				map.put("bankSeq", bankList.get(i-1).getInt("bankSeq"));
+				map.put("userSeq", param.getInt("userSeq"));
+				map.put("startDate", param.getString("startDate"));
+			}
+			pastLedgerList.add(map);
+		}		
+		WhiteMap pastCalLedger = ledgerMapper.selectPastCalLedger(pastLedgerList);
+		
+		System.out.println(pastCalLedger);
+		
+		return null;
+	}
+	
+	
+	/** @deprecated 새로개발중
+	 * 해당 유저 가계부 조회
+	 * @param param
+	 * @return
+	 */
 	public List<WhiteMap> selectRecordList(WhiteMap param){
 		return ledgerMapper.selectRecordList(param);
 	}
 	
-	/**
+	/** @deprecated 새로개발중
 	 * 해당 유저 가계부 조회(금액 합산)
 	 * @param param
 	 * @return
@@ -340,7 +374,7 @@ public class LedgerService {
 			}
 			pastRecList.add(map);
 		}		
-		WhiteMap pastRec = ledgerMapper.selectCalPastRecord(pastRecList);
+		WhiteMap pastRec = ledgerMapper.selectPastCalLedger(pastRecList);
 		
 		//금전기록 조회
 		List<WhiteMap> recList = ledgerMapper.selectRecordList(param);

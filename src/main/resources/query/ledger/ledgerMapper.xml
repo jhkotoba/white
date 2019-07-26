@@ -311,7 +311,7 @@
 	</insert>	
 	
 	<!-- 금전기록 해당날짜 이전 각각(현금, 은행등등) 금액 합산 조회 -->
-	<select id="selectCalPastRecord" resultType="whiteMap" parameterType="java.util.List">
+	<select id="selectPastCalLedger" resultType="whiteMap" parameterType="java.util.List">
 		SELECT
 		<foreach collection="list" item="item" separator=",">
 			(

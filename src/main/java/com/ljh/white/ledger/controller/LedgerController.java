@@ -106,12 +106,12 @@ public class LedgerController {
 	}
 	
 	/**
-	 * 해당유저 목적, 상세목적, 은행 리스트 조회
+	 * 가계부 초기 데이터 조회 : 해당유저 목적, 상세목적, 은행 리스트
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value="/ledger/selectPurBankList.ajax" )
-	public WhiteMap selectPurBankList(HttpServletRequest request){		
+	@RequestMapping(value="/ledger/selectLedgerInitData.ajax" )
+	public WhiteMap selectLedgerInitData(HttpServletRequest request){		
 		WhiteMap param = new WhiteMap(request);
 		WhiteMap result = new WhiteMap();		
 		result.put("purList", ledgerService.selectPurList(param));
@@ -131,7 +131,7 @@ public class LedgerController {
 		return ledgerService.insertRecordList(param);
 	}
 	
-	/**
+	/** @deprecated 새로개발중 -> selectLedgerList
 	 * 가계부 조회
 	 * @param request
 	 * @return
@@ -151,6 +151,19 @@ public class LedgerController {
 			return ledgerService.selectRecordList(param);
 		}
 	}
+	
+	
+	/**
+	 * 가계부 조회
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="/ledger/selectLedgerList.ajax" )
+	public List<WhiteMap> selectLedgerList(HttpServletRequest request){
+		WhiteMap param = new WhiteMap(request);
+		return ledgerService.selectLedgerList(param);		
+	}
+	
 	
 	/**
 	 * 가게구 첫 입력날짜 조회

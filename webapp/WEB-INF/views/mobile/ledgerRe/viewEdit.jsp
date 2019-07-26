@@ -18,7 +18,7 @@ $(document).ready(function(){
 	//검색 목적리스트, 은행리스트
 	$.ajax({		
 		type: 'POST',
-		url: common.path()+'/ledgerRe/selectPurBankList.ajax',
+		url: common.path()+'/ledgerRe/selectLedgerInitData.ajax',
 		dataType: 'json',
 	    success : function(data) {	    	
 	    	

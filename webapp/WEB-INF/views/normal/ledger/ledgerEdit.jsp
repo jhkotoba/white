@@ -6,7 +6,7 @@
 $(document).ready(function(){	
 	$("#searchBar #startDate").val(isDate.firstDay());
 	$("#searchBar #endDate").val(isDate.lastDay());	
-	cfnCmmAjax("/ledger/selectPurBankList").done(ledgerList);
+	cfnCmmAjax("/ledger/selectLedgerInitData").done(ledgerList);
 });
 
 function ledgerList(data){
