@@ -212,14 +212,32 @@ public class LedgerMapper {
 	public WhiteMap selectPastCalLedger(List<WhiteMap> list) {
 		return sqlSession.selectOne("ledgerMapper.selectPastCalLedger", list);
 	}	
+	/** @deprecated 새로작성중
+	 * 금전기록 해당날짜 이전 각각(현금, 은행등등) 금액 합산 조회 old
+	 * @param pastRec
+	 * @return
+	 */
+	public WhiteMap selectPastCalLedgerOLD(List<WhiteMap> list) {
+		return sqlSession.selectOne("ledgerMapper.selectPastCalLedgerOLD", list);
+	}	
 	
-	/**
+	
+	
+	/** @deprecated 새로작성중
 	 * 해당 유저 가계부 조회
 	 * @param list
 	 * @return
 	 */
 	public List<WhiteMap> selectRecordList(WhiteMap param) {		
 		return sqlSession.selectList("ledgerMapper.selectRecordList", param);		 
+	}
+	/**
+	 * 해당 유저 가계부 조회
+	 * @param list
+	 * @return
+	 */
+	public List<WhiteMap> selectLedgerList(WhiteMap param) {		
+		return sqlSession.selectList("ledgerMapper.selectLedgerList", param);		 
 	}
 	
 	/**

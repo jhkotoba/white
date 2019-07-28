@@ -1,6 +1,7 @@
 package com.ljh.white.ledger.service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -312,30 +313,63 @@ public class LedgerService {
 	 */
 	public List<WhiteMap> selectLedgerList(WhiteMap param){
 		
-		List<WhiteMap> bankList = this.selectBankList(param);
+		List<WhiteMap> bankList = this.selectBankList(param);		
+		
 		//금전기록 기간 조회시 기간 이전  각각(현금, 은행등등) 금액 데이터 합산
-		List<WhiteMap> pastLedgerList = new ArrayList<WhiteMap>();
+		List<WhiteMap> pastList = new ArrayList<WhiteMap>();
 		WhiteMap map = null;
-		for(int i=0; i<bankList.size()+1; i++) {
+		for(int i=0; i<bankList.size(); i++) {
 			map = new WhiteMap();
-			if(i==0) {
-				map.put("bankName", "cash");
-				map.put("bankSeq", 0);				
-				map.put("userSeq", param.getInt("userSeq"));
-				map.put("startDate", param.getString("startDate"));
-			}else {
-				map.put("bankName", "bank"+(i-1));
-				map.put("bankSeq", bankList.get(i-1).getInt("bankSeq"));
-				map.put("userSeq", param.getInt("userSeq"));
-				map.put("startDate", param.getString("startDate"));
-			}
-			pastLedgerList.add(map);
+			map.put("bankNo", "bank"+i);
+			map.put("bankSeq", bankList.get(i).getInt("bankSeq"));
+			map.put("userSeq", param.getInt("userSeq"));
+			map.put("startDate", param.getString("startDate"));			
+			pastList.add(map);
 		}		
-		WhiteMap pastCalLedger = ledgerMapper.selectPastCalLedger(pastLedgerList);
+		WhiteMap pastCal = ledgerMapper.selectPastCalLedger(pastList);
 		
-		System.out.println(pastCalLedger);
+		//금전기록 조회
+		List<WhiteMap> ledgerList = ledgerMapper.selectLedgerList(param);
 		
-		return null;
+		//총합계
+		int amount = 0;		
+		//수단(은행)별금액  금액증감
+		int m = 0;		
+		WhiteMap moneyMap = new WhiteMap();		
+		for(int i=0; i<bankList.size(); i++) {
+			m = pastCal == null ? 0 : pastCal.getInt("bank"+i);
+			moneyMap.put(bankList.get(i).getString("bankSeq"), m);			
+			amount += m;
+		}
+		
+		String bankSeq, moveSeq, bankNo = null;
+		for(int i=0; i<ledgerList.size(); i++) {			
+			//현금이동일때는 금액증감 제외
+			if("LED003".equals(ledgerList.get(i).getString("purType"))) {
+				ledgerList.get(i).put("amount", amount);				
+			}else {
+				amount += ledgerList.get(i).getInt("money");
+				ledgerList.get(i).put("amount", amount);
+			}
+			
+			//각각 수단(은행) money 증감
+			bankSeq = ledgerList.get(i).getString("bankSeq");
+			moneyMap.put(bankSeq, moneyMap.getInt(bankSeq) + ledgerList.get(i).getInt("money"));					
+			
+			//금액이동시 받는쪽 추가
+			if("LED003".equals(ledgerList.get(i).getString("purType"))) {
+				moveSeq = ledgerList.get(i).getString("moveSeq");				
+				moneyMap.put(moveSeq, moneyMap.getInt(moveSeq) + Math.abs(ledgerList.get(i).getInt("money")));
+			}
+			
+			//수단(은행)별 추가
+			for(int j=0; j<bankList.size(); j++) {
+				bankNo = "no" + bankList.get(j).getString("bankSeq");				
+				ledgerList.get(i).put(bankNo, moneyMap.getInt(bankList.get(j).getString("bankSeq")));
+			}
+		}		
+		Collections.reverse(ledgerList);
+		return ledgerList;
 	}
 	
 	
@@ -374,7 +408,7 @@ public class LedgerService {
 			}
 			pastRecList.add(map);
 		}		
-		WhiteMap pastRec = ledgerMapper.selectPastCalLedger(pastRecList);
+		WhiteMap pastRec = ledgerMapper.selectPastCalLedgerOLD(pastRecList);
 		
 		//금전기록 조회
 		List<WhiteMap> recList = ledgerMapper.selectRecordList(param);

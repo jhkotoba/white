@@ -134,7 +134,7 @@ function fnGrid(data){
 	});
 	
 	//취소
-	$("#searchBar #cancelBtn").on("click", function(){		
+	$("#cancelBtn").on("click", function(){		
 		bankList.splice(0, bankList.length);
 		for(let i=0; i<clone.length; i++){
 			bankList.push(common.clone(clone[i]));
@@ -143,7 +143,7 @@ function fnGrid(data){
 	});
 	
 	//저장(반영)
-	$("#searchBar #saveBtn").on("click", function(){
+	$("#saveBtn").on("click", function(){
 				
 		//유효성 검사
 		let isVali = true;

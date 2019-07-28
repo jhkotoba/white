@@ -50,33 +50,49 @@ function fnInit(){
 	$("#startDate").val(wcm.getToMonthFirstDay());
 	$("#endDate").val(wcm.getToMonthLastDay());
 	
+	
+	//가계부 헤드셀릭서 값 가공
+	let headList = new Array();
+	$.map(vals.bankList, function(item, idx){
+		headList.push({
+			value : "no"+item.bankSeq,
+			text : item.bankName + "(" + item.bankAccount + ")"
+		});
+	});
+	
 	//가계부 그리드 생성
 	vals.ledgerGrid = new wGrid("ledgerGrid", {
 		controller : {
 			load : function(){					
 				let promise = new Promise(function(resolve, reject){
-					let srhParam = {startDate: $("#startDate").val(), endDate: $("#endDate").val()};
+					let srhParam = {
+						startDate : $("#startDate").val(),
+						endDate : $("#endDate").val(),
+						purSeq : $("#purSelect").val(),
+						purDtlSeq : $("#purDtlSelect").val(),
+						bankSeq : $("#bankSelect").val(),
+					};
 					$.post("${contextPath}/ledger/selectLedgerList.ajax", srhParam, resolve);
 				});
 				return promise;
 			}				
 		},		
 		fields : [			
-			{ title:"번호",		name:"recordDate",	type:"date", 	width: "3%",	align:"center"},
-			{ title:"부모코드",	name:"position",		type:"input", 	width: "10%",	align:"center"},
-			{ title:"코드",		name:"content",		type:"input", 	width: "10%",	align:"center"},			
-			{ title:"수정자",		name:"purSeq",		type:"text", 	width: "5%",	align:"center"},
-			{ title:"수정날짜",	name:"purDtlSeq",		type:"text", 	width: "10%",	align:"center"},
-			{ title:"등록자",		name:"bankSeq",		type:"text", 	width: "5%",	align:"center"},
-			{ title:"등록날짜",	name:"money",		type:"text", 	width: "10%",	align:"center"}			
+			{ title:"날짜", name:"recordDate", type:"text", width: "7%", align:"center"},
+			{ title:"위치", name:"position", type:"text", width: "8%", align:"center"},
+			{ title:"내용", name:"content", type:"text", 	width: "10%", align:"center"},			
+			{ title:"목적", name:"purpose", type:"text", 	width: "5%", align:"center"},
+			{ title:"상세목적", name:"purDetail", type:"text", width: "10%", align:"center"},
+			{ title:"사용수단", name:"bankName", type:"text", 	width: "5%", align:"center"},
+			{ title:"수입/지출/이동", name:"money", type:"text", width: "10%", align:"center"},		
+			{ title:"소지금액", name:"amount", type:"text", width: "10%", align:"center"},			
+			{ isTitleSelect: true, headSelectList: headList, width: "10%", align:"center"},
 		],
 		option : {isAuto : false, isClone : true, isPaging : false},			
 		message : {
 			nodata : "조회결과가 없습니다."
 		},
-		event : {
-			
-		}
+		
 	});
 }
 
@@ -91,11 +107,6 @@ function fnEventInit(){
 	//조회
 	$("#searchBtn").on("click", function(){
 		fnSearch();
-	});
-	
-	//상세보기
-	$("#detailBtn").on("click", function(){
-		
 	});
 	
 	//엑셀
@@ -126,7 +137,7 @@ function fnParSeqChange(purSeq){
 <form id="srhForm" name="srhForm" onsubmit="return false;">
 	<div>
 		<div class="title-icon"></div>
-		<label class="title">가계부 목록</label>
+		<label class="title">가계부 기간조회</label>
 	</div>
 	<div id="searchBar" class="search-bar">
 		<table class="wth100p">
@@ -139,8 +150,7 @@ function fnParSeqChange(purSeq){
 				<col width="10%"/>
 				<col width="5%" class="search-th"/>
 				<col width="10%"/>
-				<col width="5%" class="search-th"/>
-				<col width="15%"/>
+				<col width="5%" class="search-th"/>				
 				<col width="*"/>
 			</colgroup>
 			<tr>
@@ -160,14 +170,13 @@ function fnParSeqChange(purSeq){
 				<td>
 					<select id="purDtlSelect" class="select-gray wth100p"></select>
 				</td>
-				<th>은행</th>
+				<th>사용수단</th>
 				<td>
 					<select id="bankSelect" class="select-gray wth100p"></select>
-				</td>
+				</td>				
 				<td>
 					<div class="btn-right">
-						<button id="searchBtn" class="btn-gray trs">조회</button>
-						<button id="detailBtn" class="btn-gray trs">상세보기</button>
+						<button id="searchBtn" class="btn-gray trs">조회</button>						
 						<button id="excelBtn" class="btn-gray trs">엑셀</button>
 					</div>					
 				</td>				

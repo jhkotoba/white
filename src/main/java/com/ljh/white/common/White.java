@@ -191,4 +191,36 @@ public class White {
 			return null;
 		}
 	}
+	
+	/**
+	 * "", null 이면 true 아니면 false 
+	 * @param str
+	 * @return
+	 */
+	static public boolean isEmpty(Object obj) {
+		return White.isEmpty(obj.toString());
+	}
+	static public boolean isEmpty(String str) {
+		if("".equals(str) || str == null) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+	
+	/**
+	 * "", null 이면 null,  아니면  toString 해서 반환 
+	 * @param str
+	 * @return
+	 */
+	static public String isEmptyRtn(Object obj) {
+		return White.isEmptyRtn(obj.toString());
+	}
+	static public String isEmptyRtn(String str) {
+		if("".equals(str) || str == null) {
+			return null;
+		}else {
+			return str.toString();
+		}
+	}
 }

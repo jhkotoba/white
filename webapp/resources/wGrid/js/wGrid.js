@@ -25,7 +25,7 @@ class wGrid{
 		
 		//option
 		this.option = {
-			isAuto : this.isEmpty(args.option.isClone) ? true : args.option.isClone,
+			isAuto : this.isEmpty(args.option.isAuto) ? false : args.option.isAuto,
 			//복제여부
 			isClone : this.isEmpty(args.option.isClone) ? true : args.option.isClone,
 			//페이징여부
@@ -49,19 +49,21 @@ class wGrid{
 		this.clone = null;
 		if(args.option.isClone) this.createClone();
 		
-		this.controller = args.controller;	
-		this.search();
-		
-		this.event = args.event;
+		this.controller = args.controller;
+		if(this.option.isAuto){
+			this.search();
+		}
 	}
 	
 	//조회
 	search(){
 		this.controller.load().then(result => {			
-			this.dataInjection(result);			
-			if(this.option.isAuto){
-				this.createGrid();
+			this.dataInjection(result);
+			this.target
+			while(this.target.hasChildNodes()){
+				this.target.removeChild( this.target.firstChild ); 
 			}
+			this.createGrid();
 		});
 	}
 	
@@ -188,9 +190,8 @@ class wGrid{
 					}else{
 						th.insertAdjacentHTML("afterbegin", result);
 					}
-					
-				
-				}else if(this.fields[i].isHeadAddButton){					
+				//헤드부분 추가 버튼
+				}else if(this.fields[i].isHeadAddButton){
 					let button = document.createElement("button");
 					button.classList.add("wgrid-btn");
 					button.textContent = "+";
@@ -203,7 +204,35 @@ class wGrid{
 						}						
 						this.prependRow(row);
 					});
-					th.appendChild(button);					
+					th.appendChild(button);
+				//헤드부분 셀렉트박스(선택에 따라서 필드(행)값 변경)
+				}else if(this.fields[i].isTitleSelect){
+					let select = document.createElement("select");
+					select.classList.add("wgrid-haed-select");
+					
+					let option = null;					
+					for(let j=0; j<this.fields[i].headSelectList.length; j++){
+						option = document.createElement("option");					
+						option.value = this.fields[i].headSelectList[j].value;
+						option.textContent = this.fields[i].headSelectList[j].text;
+						select.appendChild(option);	
+					}
+					
+					let previous = null;
+					select.addEventListener("focus", event => {					
+						previous = event.target.value;
+					});
+					select.addEventListener("change", event => {
+						let names, prevs = null;						
+						prevs = document.getElementsByName(previous);						
+						names = document.getElementsByName(event.target.value);
+						previous = event.target.value;
+						for(let j=0; j<names.length; j++){
+							prevs[j].style.display = "none";
+							names[j].style.display = "block";
+						}
+					});
+					th.appendChild(select);
 				}else{
 					th.textContent = this.fields[i].title;
 				}
@@ -213,8 +242,7 @@ class wGrid{
 			table.appendChild(tr);
 			header.appendChild(table);
 		//header 있을시 생성	
-		}else{
-			
+		}else{			
 			//header가 문자열인경우 innerHTML
 			if(typeof this.header === "string"){
 				header.innerHTML = this.header;				
@@ -282,7 +310,7 @@ class wGrid{
 		
 		//필드 등록
 		field.appendChild(table);
-		this.target.appendChild(field);		
+		this.target.appendChild(field);
 	}
 	
 	//필드 컬럼 생성
@@ -341,7 +369,18 @@ class wGrid{
 						this.applyStyle(!this.data[idx].isRemove, "delete", node);						
 					}
 				});
-				td.appendChild(button);					
+				td.appendChild(button);
+				
+			//헤더 셀렉트 필드값 적용
+			}else if(this.fields[j].isTitleSelect){
+				let div = null;
+				for(let k=0; k<this.fields[j].headSelectList.length; k++){
+					div = document.createElement("div");
+					if(k !== 0)	div.style.display = "none";
+					div.setAttribute("name", this.fields[j].headSelectList[k].value);
+					div.textContent = list[i][this.fields[j].headSelectList[k].value];				
+					td.appendChild(div);
+				}			
 			//타입별 정의 (text, input, select)
 			}else{
 				

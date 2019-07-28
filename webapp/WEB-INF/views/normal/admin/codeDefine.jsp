@@ -10,7 +10,7 @@ $(document).ready(function(){
 	//초기설정
 	new Promise(function(resolve, reject){		
 		//셀렉트박스 생성
-		wcm.createCodes({targetId:"srhType", prtCode:"CODE", first:"ALL"});		
+		wcm.createCodes({targetId:"srhType", prtCode:"CODE", first:"ALL"});
 		//그리드 생성
 		let codeGrid = new wGrid("codeList", {
 			controller : {
