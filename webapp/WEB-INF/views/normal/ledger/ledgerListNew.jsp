@@ -84,9 +84,33 @@ function fnInit(){
 			{ title:"목적", name:"purpose", type:"text", 	width: "5%", align:"center"},
 			{ title:"상세목적", name:"purDetail", type:"text", width: "10%", align:"center"},
 			{ title:"사용수단", name:"bankName", type:"text", 	width: "5%", align:"center"},
-			{ title:"수입/지출/이동", name:"money", type:"text", width: "10%", align:"center"},		
-			{ title:"소지금액", name:"amount", type:"text", width: "10%", align:"center"},			
-			{ isTitleSelect: true, headSelectList: headList, width: "10%", align:"center"},
+			{ title:"수입/지출/이동", name:"money", type:"text", width: "10%", align:"center",
+				itemTemplate : function(value, item, key){					
+					let $span = $("<span>");
+					switch(item.purType){
+					case "LED001": $span.addClass("sync-red").text(wcm.comma(value)); break;
+					case "LED002": $span.addClass("sync-blue").text(wcm.comma(value)); break;
+					case "LED003": $span.addClass("sync-green").text("("+wcm.comma(Math.abs(value))+")"); break;						
+					}
+					return $span;
+				}
+			},		
+			{ title:"소지금액", name:"amount", type:"text", width: "10%", align:"center",
+				itemTemplate : function(value, item, key){					
+					let $span = $("<span>");
+					switch(item.purType){
+					case "LED001": $span.addClass("sync-red").text(wcm.comma(value)); break;
+					case "LED002": $span.addClass("sync-blue").text(wcm.comma(value)); break;
+					case "LED003": return wcm.comma(value);				
+					}
+					return $span;
+				}
+			},
+			{ isTitleSelect: true, headSelectList: headList, width: "10%", align:"center",
+				itemTemplate : function(value, item, key){					
+					return value;
+				}	
+			},
 		],
 		option : {isAuto : false, isClone : true, isPaging : false},			
 		message : {
@@ -100,8 +124,8 @@ function fnInit(){
 function fnEventInit(){
 	
 	//목적 변경이벤트
-	$("#purSelect").on("change", function(element){
-		fnParSeqChange(element.target.value);			
+	$("#purSelect").on("change", function(event){
+		fnParSeqChange(event.target.value);			
 	});
 	
 	//조회
@@ -112,7 +136,7 @@ function fnEventInit(){
 	//엑셀
 	$("#excelBtn").on("click", function(){
 		
-	})
+	});	
 }
 
 //조회
@@ -137,7 +161,7 @@ function fnParSeqChange(purSeq){
 <form id="srhForm" name="srhForm" onsubmit="return false;">
 	<div>
 		<div class="title-icon"></div>
-		<label class="title">가계부 기간조회</label>
+		<label class="title">가계부 조회</label>
 	</div>
 	<div id="searchBar" class="search-bar">
 		<table class="wth100p">

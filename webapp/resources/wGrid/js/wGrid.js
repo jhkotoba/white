@@ -335,17 +335,41 @@ class wGrid{
 			
 			//사용자정의 템플릿
 			if(this.isNotEmpty(this.fields[j].itemTemplate)){
-				let result = this.fields[j].itemTemplate(list[i][this.fields[j].name], tr.dataset.key, this);
-				if(typeof result === "object"){
-					if(result.length === 1){
-						//jquery $("<tag>")로 올 경우
-						td.appendChild(result[0]);
-					}else{
-						td.appendChild(result);
-					}						
+				
+				//사용자정의 템플릿, 헤드셀렉트인 경우
+				if(this.fields[j].isTitleSelect){
+					let div = null;
+					for(let k=0; k<this.fields[j].headSelectList.length; k++){
+						div = document.createElement("div");
+						if(k !== 0)	div.style.display = "none";					
+						div.setAttribute("name", this.fields[j].headSelectList[k].value);						
+						let result = this.fields[j].itemTemplate(list[i][this.fields[j].headSelectList[k].value], this.data[this.dataLink[tr.dataset.key]], tr.dataset.key);
+						if(typeof result === "object"){
+							if(result.length === 1){
+								//jquery $("<tag>")로 올 경우
+								div.appendChild(result[0]);
+							}else{
+								div.appendChild(result);
+							}						
+						}else{
+							div.insertAdjacentHTML("afterbegin", result);
+						}				
+						td.appendChild(div);										
+					}
 				}else{
-					td.insertAdjacentHTML("afterbegin", result);
+					let result = this.fields[j].itemTemplate(list[i][this.fields[j].name], this.data[this.dataLink[tr.dataset.key]], tr.dataset.key);
+					if(typeof result === "object"){
+						if(result.length === 1){
+							//jquery $("<tag>")로 올 경우
+							td.appendChild(result[0]);
+						}else{
+							td.appendChild(result);
+						}						
+					}else{
+						td.insertAdjacentHTML("afterbegin", result);
+					}
 				}
+				
 			//행 삭제버튼 추가 
 			}else if(this.fields[j].isRemoveButton){					
 				let button = document.createElement("button");
@@ -376,10 +400,10 @@ class wGrid{
 				let div = null;
 				for(let k=0; k<this.fields[j].headSelectList.length; k++){
 					div = document.createElement("div");
-					if(k !== 0)	div.style.display = "none";
-					div.setAttribute("name", this.fields[j].headSelectList[k].value);
+					if(k !== 0)	div.style.display = "none";					
+					div.setAttribute("name", this.fields[j].headSelectList[k].value);					
 					div.textContent = list[i][this.fields[j].headSelectList[k].value];				
-					td.appendChild(div);
+					td.appendChild(div);										
 				}			
 			//타입별 정의 (text, input, select)
 			}else{

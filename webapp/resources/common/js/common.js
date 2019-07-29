@@ -521,6 +521,10 @@ const wcm = {
 		let string = String(str);
 		return string.slice(0, index) + string.slice(index+1);		
 	},
+	//콤마 자리수 추가
+	comma : function(x){
+	    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+	},
 	//########################### 비동기 통신 ###########################
 	//변수 초기화
 	xhttpClear : function(){
