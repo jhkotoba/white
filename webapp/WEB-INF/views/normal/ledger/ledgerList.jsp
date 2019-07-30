@@ -2,314 +2,186 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="contextPath" value="<%=request.getContextPath()%>"></c:set>
+<link rel="stylesheet" href="${contextPath}/resources/wGrid/css/wGrid.css" type="text/css"/>
+<script type="text/javascript" src="${contextPath}/resources/wGrid/js/wGrid.js"></script>
 <script type="text/javascript">
-$(document).ready(function(){	
-	$("#searchBar #startDate").val(isDate.firstDay());
-	$("#searchBar #endDate").val(isDate.lastDay());
-	$("#detail").data("detail", false);	
-	cfnCmmAjax("/ledger/selectLedgerInitData").done(ledgerList);
+//전역변수
+const vals = {};
+$(document).ready(function(){
 	
-	
-	//상세보기 버튼
-	$("#detailBtn").on("click", function(){
-		if($(this).data("detail")){			
-			$("[name=detail]").hide();
-			$(this).data("detail", false).text("상세보기");
-			$("#ledgerList").removeClass("overflow-x-scroll");
-			//$(".detail-view").each(function(e){$(this).hide();});			
-		}else{
-			$("[name=detail]").show();
-			$(this).data("detail", true).text("간편보기");
-			$("#ledgerList").addClass("overflow-x-scroll");
-			//$(".detail-view").each(function(e){$(this).show();});
-		}
-	});
-});
-
-function ledgerList(data){
-	let $option = null;
-	let purMap = {};
-	let purDtlMap = {};
-	let bankMap = {};
-	
-	//목적
-	for(let i=0; i<data.purList.length; i++){
-		$option = $("<option>").val(data.purList[i].purSeq)
-			.text(data.purList[i].purpose)
-			.data("purType", data.purList[i].purType);		
-		$("#searchBar #purSeq").append($option);
-		
-		//seq값 목적명 맵 생성
-		purMap[data.purList[i].purSeq] = data.purList[i].purpose;
-	}
-	
-	//상세목적seq 맵 생성
-	for(let i=0; i<data.purDtlList.length; i++){
-		purDtlMap[data.purDtlList[i].purDtlSeq] = data.purDtlList[i].purDetail;
-	}
-	
-	//목적-상세목적
-	$("#searchBar #purSeq").on("change", function(e){
-		$("#purDtlSeq").empty();
-		$("#searchBar #purDtlSeq").append($("<option>").text("전체").val(""));
-		for(let i=0; i<data.purDtlList.length; i++){
-			if(Number(data.purDtlList[i].purSeq) === Number(this.value)){
-				$option = $("<option>").val(data.purDtlList[i].purDtlSeq)
-					.text(data.purDtlList[i].purDetail);		
-				$("#searchBar #purDtlSeq").append($option);
-			}
-		}
-	});
-	
-	//사용수단
-	for(let i=0; i<data.bankList.length; i++){
-		$option = $("<option>").val(data.bankList[i].bankSeq)
-			.text(data.bankList[i].bankName+"("+data.bankList[i].bankAccount+")");					
-		$("#searchBar #bankSeq").append($option);
-		
-		//은행seq 맵 생성
-		bankMap[data.bankList[i].bankSeq] = data.bankList[i].bankName+"("+data.bankList[i].bankAccount+")";
-	}
-	
-	//조회버튼
-	$("#searchBtn").on("click", function(){
-		let param = {};			
-		param.startDate = $("#searchBar #startDate").val();
-		param.endDate = $("#searchBar #endDate").val();
-		param.purSeq = $("#searchBar #purSeq").val();
-		param.purDtlSeq = $("#searchBar #purDtlSeq").val();
-		param.bankSeq = $("#searchBar #bankSeq").val();
-		param.searchType = "select";
-		
-		if(!wcm.isDatePattern(param.startDate, "yyyy-MM-dd")){			
-			wVali.alert({element : $("#searchBar #startDate"), msg: "ex)2019-01-01의 형식으로 입력할 수 있습니다."});
-			return;
-		}
-		if(!wcm.isDatePattern(param.endDate, "yyyy-MM-dd")){			
-			wVali.alert({element : $("#searchBar #endDate"), msg: "ex)2019-01-01의 형식으로 입력할 수 있습니다."});
-			return;
-		}
-		
-		param.startDate = param.startDate + " 00:00";
-		param.endDate = param.endDate + " 23:59";
-		
-		cfnCmmAjax("/ledger/selectRecordList", param).done(function(data){
-			$("#ledgerList").removeClass("overflow-x-scroll");
-			fnCreateLedgerList(data);
-			
-			//excel 버튼
-			$("#excelBtn").off().on("click", function(){
-				alert("나중에~");
-				/* $("#downloadForm #filename").val("가계부 검색 리스트.xlsx");
-				$("#downloadForm #data").val(JSON.stringify(data));
-				$("#downloadForm").attr("method", "post").attr("action", common.path()+"/white/excelPrint.print").submit();
-				$("#downloadForm input").each(function(){this.value = ""}); */
+	//초기 데이터 조회
+	new Promise(function(resolve, reject){
+		$.post("${contextPath}/ledger/selectLedgerInitData.ajax", null, function(data){
+			vals.purList = data.purList;
+			vals.purDtlList = data.purDtlList;
+			vals.bankList = data.bankList;
+			//가계부 헤드셀렉트 값 가공
+			vals.headList = new Array();			
+			$.map(vals.bankList, function(item, idx){
+				vals.headList.push({
+					value : "no"+item.bankSeq,
+					text : item.bankName + "(" + item.bankAccount + ")"
+				});				
 			});
-
-		});
-	}).trigger("click");	
+			vals.headCnt = 0;
+			vals.headCntCheck = function(){
+				if(vals.headCnt == vals.headList.length){
+					vals.headCnt = 0;
+				}
+			};
+			resolve();
+		});		
+	})
+	//초기설정
+	.then(fnInit)
+	//이벤트 등록
+	.then(fnEventInit)
+	//초기 조회
+	.then(fnSearch);
+});
+//초기설정
+function fnInit(){
 	
-	//목적타입별 폰트 색상 적용
-	function fnSetFontColor(purType, data, name, from, to){
-		let $span = $("<span>");
-		switch(purType){
-		case "LED001":
-			return $span.addClass("sync-blue").text(cfnSetComma(data));
-		case "LED002":
-			return $span.addClass("sync-red").text(cfnSetComma(data));
-		case "LED003":
-			if(name === "money"){
-				return $span.addClass("sync-green").text(cfnSetComma(Math.abs(data)));
-			}else if(from){
-				return $span.addClass("sync-red").text(cfnSetComma(data));
-			}else if(to){
-				return $span.addClass("sync-blue").text(cfnSetComma(data));
-			}else{
-				return cfnSetComma(data);
-			}
-		default:
-			return cfnSetComma(data);
-		}
-	}	
+	//조회폼 셀렉트 박스 생성
+	let $option = null;
+	$("#purSelect").append($("<option>").text("선택").val(""));
+	$("#purDtlSelect").append($("<option>").text("선택").val(""));
+	$("#bankSelect").append($("<option>").text("선택").val(""));
 	
-	//가계부 리스트 생성
-	function fnCreateLedgerList(list){
-		$("#ledgerList").empty();
-		
-		let fieldList = [
-			{title: "날짜", 		name: "recordDate", minWidth: 200, detail: false, bankSeq:null,			
-				itemTemplate: function(item){
-					return item.recordDate;
-				}
-			},
-			{title: "위치", 		name: "position", 	minWidth: 250, detail: true, bankSeq:null,				
-				itemTemplate: function(item){
-					return item.position;
-				}
-			},
-			{title: "내용", 		name: "content", 	minWidth: 500, detail: false, bankSeq:null,				
-				itemTemplate: function(item){
-					return item.content;
-				}
-			},
-			{title: "목적", 		name: "purSeq", 	minWidth: 200, detail: false, bankSeq:null,				
-				itemTemplate: function(item){
-					return purMap[Number(item.purSeq)];
-				}
-			},
-			{title: "상세목적", 	name: "purDtlSeq", 	minWidth: 200, detail: true, bankSeq:null,				
-				itemTemplate: function(item){
-					return purDtlMap[Number(item.purDtlSeq)];
-				}
-			},
-			{title: "사용수단", 	name: "bankSeq",	minWidth: 200, detail: true, bankSeq:null,				
-				itemTemplate: function(item){										
-					if(Number(item.bankSeq) === 0){
-						return "현금";
-					}else{
-						return bankMap[Number(item.bankSeq)];						
-					}
-				}
-			},
-			{title: "수입/지출/이동", 	name: "money", 		minWidth: 150, detail: false, bankSeq:null,
-				itemTemplate: function(item){
-					return fnSetFontColor(item.purType, item.money, "money", false, false);
-				}
-			},
-			{title: "소지금액", 	name: "amount",		minWidth: 200, detail: false, bankSeq:null,				
-				itemTemplate: function(item){
-					return fnSetFontColor(item.purType, item.amount, "amount", false, false);
-				}
-			},
-			{title: "현금", 		name: "cash", 		minWidth: 200, detail: true, bankSeq:0,
-				itemTemplate: function(item, bankSeq){					
-					if(String(item.bankSeq) === String(bankSeq)){
-						return fnSetFontColor(item.purType, item.cash, "cash", true, false);
-					}else if(String(item.moveSeq) === String(bankSeq)){
-						return fnSetFontColor(item.purType, item.cash, "cash", false, true);
-					}else{
-						return cfnSetComma(item.cash);
-					}
-				}
-			}
-		];		
-		
-		let $header = $("<div>").append(fnCreateHeader());	
-		let $tbody = $("<div>").append(fnCreateRow());
-		
-		let curDown = false;
-		let curXPos = 0;
-		let pos = 0;
-		
-		$("#ledgerList").append($header)
-		.append($tbody)
-		.mousedown(function(m){		
-			curDown = true;		
-			curXPos = m.pageX;
-		}).mouseup(function(){
-			curDown = false;
-		}).mousemove(function(m){		    
-			if(curDown === true){		
-				pos = curXPos - m.pageX;
-				if(pos > 15){
-					pos = 15;
-				}else if(pos < -15){
-					pos = -15;
-				}			
-				$("#ledgerList").scrollLeft($("#ledgerList").scrollLeft() + pos);
-			}
-		});
-		$("[name=detail]").hide();
-		
-		//해더 생성
-		function fnCreateHeader(){
-			let $tb = $("<table>").addClass("table-header");
-			let $tr = $("<tr>");
-			let $th = null;
-			let detail = $("#detailBtn").data("detail");
-			
-			for(let i=0; i<data.bankList.length; i++){			
-				fieldList.push(
-					{
-						title:data.bankList[i].bankName+"<br>("+data.bankList[i].bankAccount+")", 
-						name:data.bankList[i].bankAccount, 
-						minWidth: 200, 
-						detail:true,
-						edit:false,
-						bankSeq:data.bankList[i].bankSeq,
-						itemTemplate: function(item, bankSeq){
-							if(Number(item.bankSeq) === Number(bankSeq)){
-								return fnSetFontColor(item.purType, item[data.bankList[i].bankAccount], data.bankList[i].bankAccount, true, false);
-							}else if(Number(item.moveSeq) === Number(bankSeq)){
-								return fnSetFontColor(item.purType, item[data.bankList[i].bankAccount], data.bankList[i].bankAccount, false, true);
-							}else{
-								return cfnSetComma(item[data.bankList[i].bankAccount]);
-							}
-						}
-					}
-				);
+	//목적 option 생성
+	$.each(vals.purList, function(idx, item){
+		$option = $("<option>").text(item.purpose).val(item.purSeq).data("purType", item.purType);
+		$("#purSelect").append($option);		
+	});
+	
+	//은행 option 생성
+	$.each(vals.bankList, function(idx, item){		
+		$option = $("<option>").text(item.bankName+"("+item.bankAccount+")").val(item.bankSeq).data("purType", item.purType);
+		$("#bankSelect").append($option);		
+	});
+	
+	//날짜 설정
+	$("#startDate").val(wcm.getToMonthFirstDay());
+	$("#endDate").val(wcm.getToMonthLastDay());	
+	
+	//가계부 그리드 생성
+	vals.ledgerGrid = new wGrid("ledgerGrid", {
+		controller : {
+			load : function(){					
+				let promise = new Promise(function(resolve, reject){
+					let srhParam = {
+						startDate : $("#startDate").val(),
+						endDate : $("#endDate").val(),
+						purSeq : $("#purSelect").val(),
+						purDtlSeq : $("#purDtlSelect").val(),
+						bankSeq : $("#bankSelect").val(),
+					};
+					$.post("${contextPath}/ledger/selectLedgerList.ajax", srhParam, resolve);
+				});
+				return promise;
 			}			
-			
-			for(let i=0; i<fieldList.length; i++){
-				$th = $("<th>").html(fieldList[i].title).attr("style", "min-width:"+fieldList[i].minWidth);
-				if(fieldList[i].detail){
-					$th.attr("name", "detail");
-					if(detail === false){
-						$th.hide();
-					}else{
-						$("#ledgerList").addClass("overflow-x-scroll");
+		},		
+		fields : [			
+			{ title:"날짜", name:"recordDate", type:"text", width: "7%", align:"center"},
+			{ title:"위치", name:"position", type:"text", width: "8%", align:"center"},
+			{ title:"내용", name:"content", type:"text", 	width: "10%", align:"center"},			
+			{ title:"목적", name:"purpose", type:"text", 	width: "5%", align:"center"},
+			{ title:"상세목적", name:"purDetail", type:"text", width: "10%", align:"center"},
+			{ title:"사용수단", name:"bankName", type:"text", 	width: "5%", align:"center"},
+			{ title:"수입/지출/이동", name:"money", type:"text", width: "10%", align:"center",
+				itemTemplate : function(value, item, key){					
+					let $span = $("<span>");
+					switch(item.purType){
+					case "LED001": $span.addClass("sync-red").text(wcm.comma(value)); break;
+					case "LED002": $span.addClass("sync-blue").text(wcm.comma(value)); break;
+					case "LED003": $span.addClass("sync-green").text("("+wcm.comma(Math.abs(value))+")"); break;
 					}
-				}				
-				$tr.append($th);				
-			}
-			$tb.append($tr);
-			return $tb;
-		}
+					return $span;
+				}
+			},		
+			{ title:"소지금액", name:"amount", type:"text", width: "10%", align:"center",
+				itemTemplate : function(value, item, key){					
+					let $span = $("<span>");
+					switch(item.purType){
+					case "LED001": $span.addClass("sync-red").text(wcm.comma(value)); break;
+					case "LED002": $span.addClass("sync-blue").text(wcm.comma(value)); break;
+					case "LED003": return wcm.comma(value);				
+					}
+					return $span;
+				}
+			},
+			{ isHeadSelect: true, headSelectList: vals.headList, width: "10%", align:"center",
+				itemTemplate : function(value, item, key){
+					
+					let $span = $("<span>");
+					if(vals.headList[vals.headCnt++].value === "no"+item.bankSeq){
+						switch(item.purType){
+						case "LED001":
+						case "LED003": $span.addClass("sync-red").text(wcm.comma(value)); break;
+						case "LED002": $span.addClass("sync-blue").text(wcm.comma(value)); break;							
+						}						
+					}else if(vals.haedSelected === "no"+item.moveSeq){
+						if(item.purType === "LED003"){
+							$span.addClass("sync-red").text(wcm.comma(value));
+						}						
+					}else{
+						$span = null;
+					}
+					vals.headCntCheck();
+					return $span == null ? wcm.comma(value) : $span;
+				}	
+			},
+		],
+		option : {isAuto : false, isClone : true, isPaging : false},			
+		message : {
+			nodata : "조회결과가 없습니다."
+		},
 		
-		//새로운 행 생성
-		function fnCreateRow(){
-			let $tb = $("<table>").addClass("table-body");
-			let $tr = null;
-			let $td = null;
-			
-			let detail = $("#detailBtn").data("detail");
-			for(let i=list.length-1; i>=0; i--){
-				if(isNotEmpty($("#searchBar #purSeq").val()) && String($("#searchBar #purSeq").val()) !== String(list[i].purSeq)){
-					continue;				
-				}
-				if(isNotEmpty($("#searchBar #purDtlSeq").val()) && String($("#searchBar #purDtlSeq").val()) !== String(list[i].purDtlSeq)){
-					continue;				
-				}
-				if(isNotEmpty($("#searchBar #bankSeq").val()) && String($("#searchBar #bankSeq").val()) !== String(list[i].bankSeq)){
-					continue;				
-				}
-				
-				$tr = $("<tr>");
-				for(let j=0; j<fieldList.length; j++){
-					$td = $("<td>").attr("style", "min-width:"+fieldList[j].minWidth);
-					if(fieldList[j].detail){
-						$td.attr("name", "detail");
-						if(detail === false){
-							$td.hide();
-						}else{
-							$("#ledgerList").addClass("overflow-x-scroll");
-						}
-					}					
-					$td.append(fieldList[j].itemTemplate(list[i], fieldList[j].bankSeq));
-					$tr.append($td);
-				}
-				$tb.append($tr);
-			}
-			return $tb;
+	});
+}
+
+//이벤트 등록
+function fnEventInit(){
+	
+	//목적 변경이벤트
+	$("#purSelect").on("change", function(event){
+		fnParSeqChange(event.target.value);			
+	});
+	
+	//조회
+	$("#searchBtn").on("click", function(){
+		fnSearch();
+	});
+	
+	//엑셀
+	$("#excelBtn").on("click", function(){
+		
+	});	
+}
+
+//조회
+function fnSearch(){
+	vals.ledgerGrid.search();
+}
+
+//목적변경
+function fnParSeqChange(purSeq){	
+	$("#purDtlSelect").empty().append($("<option>").text("선택").val(""));
+	
+	//상세목적 option 생성
+	$.each(vals.purDtlList, function(idx, item){
+		if(purSeq == item.purSeq){
+			$option = $("<option>").text(item.purDetail).val(item.purDtlSeq).data("purSeq", item.purSeq);
+			$("#purDtlSelect").append($option);	
 		}
-	}
+	});	
 }
 </script>
 
 <form id="srhForm" name="srhForm" onsubmit="return false;">
 	<div>
 		<div class="title-icon"></div>
-		<label class="title">가계부 목록</label>
+		<label class="title">가계부 조회</label>
 	</div>
 	<div id="searchBar" class="search-bar">
 		<table class="wth100p">
@@ -322,8 +194,7 @@ function ledgerList(data){
 				<col width="10%"/>
 				<col width="5%" class="search-th"/>
 				<col width="10%"/>
-				<col width="5%" class="search-th"/>
-				<col width="15%"/>
+				<col width="5%" class="search-th"/>				
 				<col width="*"/>
 			</colgroup>
 			<tr>
@@ -337,27 +208,19 @@ function ledgerList(data){
 				</td>
 				<th>목적</th>
 				<td>
-					<select id="purSeq" class="select-gray wth100p">
-						<option value="">전체</option>
-					</select>
+					<select id="purSelect" class="select-gray wth100p"></select>
 				</td>
 				<th>상세목적</th>
 				<td>
-					<select id="purDtlSeq" class="select-gray wth100p">
-						<option value="">전체</option>
-					</select>
+					<select id="purDtlSelect" class="select-gray wth100p"></select>
 				</td>
-				<th>은행</th>
+				<th>사용수단</th>
 				<td>
-					<select id="bankSeq" class="select-gray wth100p">
-						<option value="">전체</option>
-						<option value="0">현금</option>
-					</select>
-				</td>
+					<select id="bankSelect" class="select-gray wth100p"></select>
+				</td>				
 				<td>
 					<div class="btn-right">
-						<button id="searchBtn" class="btn-gray trs">조회</button>
-						<button id="detailBtn" class="btn-gray trs">상세보기</button>
+						<button id="searchBtn" class="btn-gray trs">조회</button>						
 						<button id="excelBtn" class="btn-gray trs">엑셀</button>
 					</div>					
 				</td>				
@@ -365,5 +228,4 @@ function ledgerList(data){
 		</table>
 	</div>
 </form>
-<div id="ledgerList"></div>
-
+<div id="ledgerGrid"></div>

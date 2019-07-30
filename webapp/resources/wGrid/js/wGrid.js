@@ -30,7 +30,12 @@ class wGrid{
 			isClone : this.isEmpty(args.option.isClone) ? true : args.option.isClone,
 			//페이징여부
 			isPaging : this.isEmpty(args.option.isPaging) ? false : args.option.isPaging,
-		}		
+		}
+
+		//paging
+		this.page = {
+				
+		}
 		
 		//message
 		this.message = {
@@ -63,7 +68,19 @@ class wGrid{
 			while(this.target.hasChildNodes()){
 				this.target.removeChild( this.target.firstChild ); 
 			}
+			
+			//생성전 콜백함수
+			if(this.isNotEmpty(this.controller.createStart)){
+				this.controller.createStart(this.data);
+			}
+			
 			this.createGrid();
+			
+			//생성후 콜백함수
+			if(this.isNotEmpty(this.controller.createEnd)){
+				this.controller.createEnd(this.data);
+			}
+			
 		});
 	}
 	
@@ -206,7 +223,7 @@ class wGrid{
 					});
 					th.appendChild(button);
 				//헤드부분 셀렉트박스(선택에 따라서 필드(행)값 변경)
-				}else if(this.fields[i].isTitleSelect){
+				}else if(this.fields[i].isHeadSelect){
 					let select = document.createElement("select");
 					select.classList.add("wgrid-haed-select");
 					
@@ -337,7 +354,7 @@ class wGrid{
 			if(this.isNotEmpty(this.fields[j].itemTemplate)){
 				
 				//사용자정의 템플릿, 헤드셀렉트인 경우
-				if(this.fields[j].isTitleSelect){
+				if(this.fields[j].isHeadSelect){
 					let div = null;
 					for(let k=0; k<this.fields[j].headSelectList.length; k++){
 						div = document.createElement("div");
@@ -357,6 +374,8 @@ class wGrid{
 						td.appendChild(div);										
 					}
 				}else{
+					
+					//순수 사용자정의 템플릿 로직
 					let result = this.fields[j].itemTemplate(list[i][this.fields[j].name], this.data[this.dataLink[tr.dataset.key]], tr.dataset.key);
 					if(typeof result === "object"){
 						if(result.length === 1){
@@ -396,7 +415,7 @@ class wGrid{
 				td.appendChild(button);
 				
 			//헤더 셀렉트 필드값 적용
-			}else if(this.fields[j].isTitleSelect){
+			}else if(this.fields[j].isHeadSelect){
 				let div = null;
 				for(let k=0; k<this.fields[j].headSelectList.length; k++){
 					div = document.createElement("div");
