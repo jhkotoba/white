@@ -2,6 +2,7 @@ package com.ljh.white.ledger.service;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -239,7 +240,7 @@ public class LedgerService {
 		WhiteMap purSeqMap = White.convertListToMap(purList, "purSeq", "purpose");	
 		WhiteMap purTypeMap = White.convertListToMap(purList, "purSeq", "purType");	
 		WhiteMap purDtlSeqMap = White.convertListToMap(this.selectPurDtlList(param), "purDtlSeq", "purSeq");
-		WhiteMap bankSeqMap = White.convertListToMap(this.selectBankList(param), "bankSeq", "bankName");
+		WhiteMap bankSeqMap = White.convertListToMap(this.selectBankList(param), "bankSeq", "meansNm");
 		bankSeqMap.put("0", "cash");
 		
 		String str = null;
@@ -368,10 +369,43 @@ public class LedgerService {
 				ledgerList.get(i).put(bankNo, moneyMap.getInt(bankList.get(j).getString("bankSeq")));
 			}
 		}		
+		
+		String purSeq = White.isEmptyRtn(param.getString("purSeq"));
+		String purDtlSeq =  White.isEmptyRtn(param.getString("purDtlSeq"));
+		bankSeq = White.isEmptyRtn(param.getString("bankSeq"));
+		
+		if(purSeq != null || purDtlSeq != null || bankSeq != null) {
+			Iterator<WhiteMap> iter = ledgerList.iterator();			
+			if(purSeq != null) {
+				while (iter.hasNext()) {
+					map = iter.next();			 
+					if(purSeq != null && !purSeq.equals(map.get("purSeq").toString())) {
+						iter.remove();
+					}
+				}
+			}			
+			if(purDtlSeq != null) {
+				iter = ledgerList.iterator();
+				while (iter.hasNext()) {
+					map = iter.next();			 
+					if(purDtlSeq != null && !purDtlSeq.equals(map.get("purDtlSeq").toString())) {
+						iter.remove();
+					}
+				}
+			}
+			if(bankSeq != null) {
+				iter = ledgerList.iterator();
+				while (iter.hasNext()) {
+					map = iter.next();			 
+					if(bankSeq != null && !bankSeq.equals(map.get("bankSeq").toString())) {
+						iter.remove();
+					}
+				}
+			}
+		}
 		Collections.reverse(ledgerList);
 		return ledgerList;
-	}
-	
+	}	
 	
 	/** @deprecated 새로개발중
 	 * 해당 유저 가계부 조회
@@ -396,12 +430,12 @@ public class LedgerService {
 		for(int i=0; i<bankList.size()+1; i++) {
 			map = new WhiteMap();
 			if(i==0) {
-				map.put("bankName", "cash");
+				map.put("meansNm", "cash");
 				map.put("bankSeq", 0);				
 				map.put("userSeq", param.getInt("userSeq"));
 				map.put("startDate", param.getString("startDate"));
 			}else {
-				map.put("bankName", "bank"+(i-1));
+				map.put("meansNm", "bank"+(i-1));
 				map.put("bankSeq", bankList.get(i-1).getInt("bankSeq"));
 				map.put("userSeq", param.getInt("userSeq"));
 				map.put("startDate", param.getString("startDate"));

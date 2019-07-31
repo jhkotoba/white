@@ -53,11 +53,11 @@ function ledgerList(data){
 	//사용수단
 	for(let i=0; i<data.bankList.length; i++){
 		$option = $("<option>").val(data.bankList[i].bankSeq)
-			.text(data.bankList[i].bankName+"("+data.bankList[i].bankAccount+")");					
+			.text(data.bankList[i].meansNm+"("+data.bankList[i].bankAccount+")");					
 		$("#searchBar #bankSeq").append($option);
 		
 		//은행seq 맵 생성
-		bankMap[data.bankList[i].bankSeq] = data.bankList[i].bankName+"("+data.bankList[i].bankAccount+")";
+		bankMap[data.bankList[i].bankSeq] = data.bankList[i].meansNm+"("+data.bankList[i].bankAccount+")";
 	}
 	
 	//조회버튼
@@ -467,7 +467,7 @@ function ledgerList(data){
 		let bankList = data.bankList;
 		
 		for(let i=0; i<bankList.length; i++){
-			$option = $("<option>").val(bankList[i].bankSeq).text(bankList[i].bankName+"("+bankList[i].bankAccount+")");	
+			$option = $("<option>").val(bankList[i].bankSeq).text(bankList[i].meansNm+"("+bankList[i].bankAccount+")");	
 			if(String(cloneList[idx].bankSeq) === String(bankList[i].bankSeq)){				
 				$option.prop("selected", true);
 			}
@@ -488,7 +488,7 @@ function ledgerList(data){
 		if(item.purType==="LED003"){
 			$select = $("<select>").data("name", "moveSeq").append($("<option>").val("0").text("현금"));
 			for(let i=0; i<bankList.length; i++){
-				$option = $("<option>").val(bankList[i].bankSeq).text(bankList[i].bankName+"("+bankList[i].bankAccount+")");	
+				$option = $("<option>").val(bankList[i].bankSeq).text(bankList[i].meansNm+"("+bankList[i].bankAccount+")");	
 				if(String(cloneList[idx].moveSeq) === String(bankList[i].bankSeq)){				
 					$option.prop("selected", true);
 				}

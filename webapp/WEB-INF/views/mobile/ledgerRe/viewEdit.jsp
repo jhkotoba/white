@@ -36,7 +36,7 @@ $(document).ready(function(){
 	    	
 	    	tag = "";
 	    	for(let i=0; i<data.bankList.length; i++){		
-	    		tag += "<option value='"+data.bankList[i].bankSeq+"'>"+data.bankList[i].bankName+"("+data.bankList[i].bankAccount+")</option>";
+	    		tag += "<option value='"+data.bankList[i].bankSeq+"'>"+data.bankList[i].meansNm+"("+data.bankList[i].bankAccount+")</option>";
 	    	}
 	    	$("#srhBank").append(tag);
 	    	

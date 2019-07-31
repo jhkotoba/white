@@ -466,7 +466,26 @@ let mf = {
 
 
 //공통함수
-const wcm = {	
+const wcm = {
+	//########################### 빈값, null, undefined, 값타입 체크  ###########################
+	//비어있는지 체크 후 비어있으면 ""반환, 비어있지않으면 대상값 반환
+	isEmptyRtn : function(_str){
+		if(this.isNotEmpty(_str)){
+			return _str;
+		}else{
+			return "";
+		}
+	},
+	//비어있는지 체크
+	isEmpty : function(_str){
+		return !this.isNotEmpty(_str);
+	},
+	//비어있지 않는지 체크
+	isNotEmpty : function(_str){
+		let obj = String(_str);
+		if(obj == null || obj == undefined || obj == 'null' || obj == 'undefined' || obj == '' ) return false;
+		else return true;
+	},		
 	//########################### 날짜 조회, 계산, 편집, 체크 ###########################
 	//오늘날짜 반환
 	getToday : function(){

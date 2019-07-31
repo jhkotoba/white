@@ -20,7 +20,7 @@ $(document).ready(function(){
 			$.map(vals.bankList, function(item, idx){
 				vals.headList.push({
 					value : "no"+item.bankSeq,
-					text : item.bankName + "(" + item.bankAccount + ")"
+					text : item.meansNm + "(" + item.bankAccount + ")"
 				});				
 			});
 			vals.headCnt = 0;
@@ -56,7 +56,7 @@ function fnInit(){
 	
 	//은행 option 생성
 	$.each(vals.bankList, function(idx, item){		
-		$option = $("<option>").text(item.bankName+"("+item.bankAccount+")").val(item.bankSeq).data("purType", item.purType);
+		$option = $("<option>").text(item.meansNm+"("+item.bankAccount+")").val(item.bankSeq).data("purType", item.purType);
 		$("#bankSelect").append($option);		
 	});
 	
@@ -82,13 +82,18 @@ function fnInit(){
 			}			
 		},		
 		fields : [			
-			{ title:"날짜", name:"recordDate", type:"text", width: "7%", align:"center"},
-			{ title:"위치", name:"position", type:"text", width: "8%", align:"center"},
-			{ title:"내용", name:"content", type:"text", 	width: "10%", align:"center"},			
-			{ title:"목적", name:"purpose", type:"text", 	width: "5%", align:"center"},
-			{ title:"상세목적", name:"purDetail", type:"text", width: "10%", align:"center"},
-			{ title:"사용수단", name:"bankName", type:"text", 	width: "5%", align:"center"},
-			{ title:"수입/지출/이동", name:"money", type:"text", width: "10%", align:"center",
+			{ title:"날짜", name:"recordDate", type:"text", width: "8%", align:"center"},
+			{ title:"위치", name:"position", type:"text", width: "10%", align:"center"},
+			{ title:"내용", name:"content", type:"text", 	width: "15%", align:"center"},			
+			{ title:"목적", name:"purpose", type:"text", 	width: "10%", align:"center"},
+			{ title:"상세목적", name:"purDetail", type:"text", width: "15%", align:"center"},
+			{ title:"사용수단", name:"meansNm", type:"text", 	width: "15%", align:"center", tooltip: false,
+				itemTemplate : function(value, item, key){
+					return $("<span>").attr("title", value + " " + wcm.isEmptyRtn(item.meansDtlNm) + " "+wcm.isEmptyRtn(item.meansInfo))
+						.text(value + " " + wcm.isEmptyRtn(item.meansDtlNm));										
+				}
+			},
+			{ title:"수입/지출/이동", name:"money", type:"text", width: "9%", align:"center",
 				itemTemplate : function(value, item, key){					
 					let $span = $("<span>");
 					switch(item.purType){
@@ -99,7 +104,7 @@ function fnInit(){
 					return $span;
 				}
 			},		
-			{ title:"소지금액", name:"amount", type:"text", width: "10%", align:"center",
+			{ title:"소지금액", name:"amount", type:"text", width: "9%", align:"center",
 				itemTemplate : function(value, item, key){					
 					let $span = $("<span>");
 					switch(item.purType){
@@ -110,7 +115,7 @@ function fnInit(){
 					return $span;
 				}
 			},
-			{ isHeadSelect: true, headSelectList: vals.headList, width: "10%", align:"center",
+			{ isHeadSelect: true, headSelectList: vals.headList, width: "9%", align:"center",
 				itemTemplate : function(value, item, key){
 					
 					let $span = $("<span>");

@@ -37,7 +37,8 @@ function fnGrid(data){
 							bankAccount:"",
 							bankOrder:  $("#bankList").jsGrid("option", "data").length+1,
 							bankSeq:new Date().getTime(),
-							bankName:"",
+							meansNm:"",
+							meansDtlNm: "",
 							bankUseYn:"N",
 							state:"insert"});		
 						bankNoIdx = cfnNoIdx(bankList, "bankSeq");
@@ -87,12 +88,17 @@ function fnGrid(data){
 					return fnRefreshedSync(item, "bankOrder", "span");
 				}
 			},
-			{ title:"은행명",	name:"bankName",		type:"text", align:"center", width: "33%", 
+			{ title:"사용수단",	name:"meansNm",		type:"text", align:"center", width: "23%", 
 				itemTemplate: function(value, item){													
-					return fnRefreshedSync(item, "bankName", "input");
+					return fnRefreshedSync(item, "meansNm", "input");
 				}
 			},
-			{ title:"계좌번호",	name:"bankAccount",	type:"text", align:"center", width: "47%",
+			{ title:"사용수단상세",	name:"meansDtlNm",		type:"text", align:"center", width: "35%", 
+				itemTemplate: function(value, item){													
+					return fnRefreshedSync(item, "meansDtlNm", "input");
+				}
+			},
+			{ title:"계좌번호",	name:"bankAccount",	type:"text", align:"center", width: "22%",
 				itemTemplate: function(value, item){					
 					return fnRefreshedSync(item, "bankAccount", "input");
 				}
@@ -148,18 +154,29 @@ function fnGrid(data){
 		//유효성 검사
 		let isVali = true;
 		$("input[name='sync']").each(function(i, e){
-			if(isEmpty($(e).val())){
-				isVali = false;
-				wVali.alert({element : $(e), msg: "값을 입력해 주세요."}); return false;
+			if(isEmpty($(e).val())){				
+				if($(e).data("name") !== "meansDtlNm"){
+					isVali = false;
+					wVali.alert({element : $(e), msg: "값을 입력해 주세요."}); return false;
+				}				
 			}
 			switch($(e).data("name")){
-			case "bankName":
+			case "meansNm":
 				if(!isOnlyHanAlphaNum($(e).val())){
 					isVali = false;
 					wVali.alert({element : $(e), msg: "한글, 영문자, 숫자를 입력해 주세요."}); return false;
 				}else if($(e).val().length > 20){
 					isVali = false;
 					wVali.alert({element : $(e), msg: "최대 글자수 20자 까지 입력할 수 있습니다."}); return false;
+				}
+				break;
+			case "meansDtlNm":
+				if("" !== $(e).val() && !isOnlyHanAlphaNum($(e).val())){
+					isVali = false;
+					wVali.alert({element : $(e), msg: "한글, 영문자, 숫자를 입력해 주세요."}); return false;
+				}else if($(e).val().length > 50){
+					isVali = false;
+					wVali.alert({element : $(e), msg: "최대 글자수 50자 까지 입력할 수 있습니다."}); return false;
 				}
 				break;
 			case "bankAccount":
@@ -258,6 +275,10 @@ function fnGrid(data){
 			break;
 		}
 		$el.attr("name", "sync").data("bankSeq", item.bankSeq).data("name", name);
+		/* if(name !== "meansDtlNm"){
+			$el.attr("name", "sync");
+		} */
+		
 
 		if(item.state === "insert") $el.addClass("sync-green");	
 		else if(item.state === "update"){									

@@ -179,7 +179,9 @@
 	<select id="selectBankList" resultType="whiteMap" parameterType="whiteMap">
 		SELECT			
 			bank_seq AS bankSeq,
-			bank_name AS bankName,
+			<!-- bank_name AS bankName, -->
+			MEANS_NM AS meansNm,
+			MEANS_DTL_NM AS meansDtlNm,
 			bank_account AS bankAccount,
 			bank_use_yn AS bankUseYn,
 			bank_order AS bankOrder
@@ -207,15 +209,17 @@
 	<!-- 은행 리스트 insert -->
 	<insert id="insertBankList" parameterType="java.util.List">
 		INSERT INTO bank(		
-			user_seq,	
-			bank_name,
+			user_seq,
+			MEANS_NM,
+			MEANS_DTL_NM,
 			bank_account,
 			bank_use_yn,
 			bank_order	
 		)VALUES
 		<foreach collection="list" item="item" separator="),(" open="(" close=")">
-			#{item.userSeq}, 
-			#{item.bankName},
+			#{item.userSeq},
+			#{item.meansNm},
+			#{item.meansDtlNm},
 			#{item.bankAccount},
 			#{item.bankUseYn},
 			#{item.bankOrder}	
@@ -225,12 +229,19 @@
 	<!-- 은행 list 수정 -->
 	<update id="updateBankList" parameterType="java.util.List">		
 		UPDATE bank		
-		SET bank_name = 
+		<!-- SET bank_name =  -->
+		SET MEANS_NM = 
 		CASE		
 		<foreach collection="list" item="item">
-			WHEN bank_seq = #{item.bankSeq} THEN #{item.bankName}
+			WHEN bank_seq = #{item.bankSeq} THEN #{item.meansNm}
 		</foreach>		
-		END,	
+		END,
+		MEANS_DTL_NM = 
+		CASE		
+		<foreach collection="list" item="item">
+			WHEN bank_seq = #{item.bankSeq} THEN #{item.meansDtlNm}
+		</foreach>		
+		END,
 		bank_account = 
 		CASE		
 		<foreach collection="list" item="item">
@@ -347,7 +358,8 @@
 			,rec.stats_yn AS statsYn
 			,pur.purpose	AS purpose
 			,purDtl.pur_detail AS purDetail
-			,bank.bank_name	AS bankName
+			,bank.MEANS_NM	AS meansNm
+			,bank.MEANS_DTL_NM	AS meansDtlNm
 			,bank.bank_account AS bankAccount
 			,IFNULL(bank.bank_use_yn,'X') AS bankUseYn
 		FROM money_record_re rec
@@ -358,8 +370,8 @@
 		LEFT OUTER JOIN bank bank
     	ON rec.bank_seq = bank.bank_seq
 		WHERE rec.user_seq = #{userSeq}
-		AND rec.record_date <![CDATA[ >= ]]> #{startDate}
-		AND rec.record_date <![CDATA[ <= ]]> #{endDate}
+		AND rec.record_date <![CDATA[ >= ]]> CONCAT(#{startDate}, ' 00:00:00')
+		AND rec.record_date <![CDATA[ <= ]]> CONCAT(#{endDate}, ' 23:59:59')
 		ORDER BY rec.record_date ASC,  rec.record_seq ASC
 	</select>
 	
@@ -381,7 +393,7 @@
 			  FROM money_record_re
 			  WHERE user_seq = #{item.userSeq} 
 			  AND record_date <![CDATA[ < ]]>  #{item.startDate}
-			)AS ${item.bankName}	
+			)AS ${item.meansNm}	
 		</foreach>		
 	</select>	
 	
@@ -401,7 +413,8 @@
 			,rec.stats_yn AS statsYn
 			,IFNULL(pur.purpose, 'move')	AS purpose
 			,IFNULL(purDtl.pur_detail,'') AS purDetail
-			,IFNULL(bank.bank_name, 'cash')	AS bankName
+			<!-- ,IFNULL(bank.bank_name, 'cash')	AS bankName -->
+			,IFNULL(bank.MEANS_NM, 'cash')	AS meansNm
 			,IFNULL(bank.bank_account, 'cash')	AS bankAccount
 			,IFNULL(bank.bank_use_yn,'X') AS bankUseYn
 			<if test="searchType == 'recent'">

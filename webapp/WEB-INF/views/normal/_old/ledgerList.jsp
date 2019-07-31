@@ -64,11 +64,11 @@ function ledgerList(data){
 	//사용수단
 	for(let i=0; i<data.bankList.length; i++){
 		$option = $("<option>").val(data.bankList[i].bankSeq)
-			.text(data.bankList[i].bankName+"("+data.bankList[i].bankAccount+")");					
+			.text(data.bankList[i].meansNm+"("+data.bankList[i].bankAccount+")");					
 		$("#searchBar #bankSeq").append($option);
 		
 		//은행seq 맵 생성
-		bankMap[data.bankList[i].bankSeq] = data.bankList[i].bankName+"("+data.bankList[i].bankAccount+")";
+		bankMap[data.bankList[i].bankSeq] = data.bankList[i].meansNm+"("+data.bankList[i].bankAccount+")";
 	}
 	
 	//조회버튼
@@ -231,7 +231,7 @@ function ledgerList(data){
 			for(let i=0; i<data.bankList.length; i++){			
 				fieldList.push(
 					{
-						title:data.bankList[i].bankName+"<br>("+data.bankList[i].bankAccount+")", 
+						title:data.bankList[i].meansNm+"<br>("+data.bankList[i].bankAccount+")", 
 						name:data.bankList[i].bankAccount, 
 						minWidth: 200, 
 						detail:true,

@@ -30,6 +30,8 @@ class wGrid{
 			isClone : this.isEmpty(args.option.isClone) ? true : args.option.isClone,
 			//페이징여부
 			isPaging : this.isEmpty(args.option.isPaging) ? false : args.option.isPaging,
+			//그리드 내 툴립여부
+			isTooltip : this.isEmpty(args.option.isTooltip) ? true : args.option.isTooltip
 		}
 
 		//paging
@@ -572,62 +574,3 @@ class wGrid{
 		this.clone = deepObjCopy(this.data);
 	}
 }
-
-
-////////////////////참고 주석
-
-/*//내부 비동기 조회인 경우 xhr : true
-if(this.option.isXhr){
-	
-	//비동기 통신
-	this.xhttp(this.xhr.param, result => {						
-		
-		//단일 리스드 (list)
-		if(typeof result === "object" && typeof result.length === "number"){
-			this.dataLink = {};
-			for(let i=0; i<result.length; i++){
-				result[i].state = "select";
-				result[i].isRemove = false;
-				result[i].key = i;
-				this.dataLink[i] = i;
-			}
-			this.data = result;
-			if(this.option.isClone) this.createClone();
-			this.createField();
-		
-		//복합
-		}else if(typeof result === "object" && typeof result.length === "undefined"){							
-			let list = null;
-			let keys = Object.keys(result);
-										
-			switch(keys.length){
-			//카운트, 리스트(count, list)
-			case 2:
-				for(let i=0; i<keys.length; i++){									
-					if(typeof result[keys[i]] === "number"){
-						this.page.totalCount = result[keys[i]];
-					}else if(typeof result[keys[i]] === "object" && typeof result[keys[i]].length === "number"){										
-						this.dataLink = {};
-						list = result[keys[i]];
-						for(let j=0; j<list.length; j++){
-							list[j].state = "select";
-							list[j].isRemove = false;
-							list[j].key = j;
-							this.dataLink[j] = j;
-						}
-						this.data = list;
-						if(this.option.isClone) this.createClone();
-						this.createField();
-					}
-				}								
-				break;
-			//카운트, 리스트, 맵(count, list, map)
-			case 3:
-				break;
-			}							
-		}
-	});
-//비동기 통신이 아니고 데이터가 없는 경우	
-}else{
-	this.createNoDataField();
-}*/

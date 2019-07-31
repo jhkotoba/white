@@ -190,7 +190,7 @@ function monthCBStatsDraw(BC){
 	areaData.push("현금");	
 	
 	for(let i=0; i<bankList.length; i++){
-		areaData.push(bankList[i].bankName);		
+		areaData.push(bankList[i].meansNm);		
 	}
 	area.push(areaData);
 	
