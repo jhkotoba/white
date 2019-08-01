@@ -179,15 +179,15 @@
 	<select id="selectBankList" resultType="whiteMap" parameterType="whiteMap">
 		SELECT			
 			bank_seq AS bankSeq,
-			<!-- bank_name AS bankName, -->
 			MEANS_NM AS meansNm,
 			MEANS_DTL_NM AS meansDtlNm,
-			bank_account AS bankAccount,
-			bank_use_yn AS bankUseYn,
-			bank_order AS bankOrder
+			MEANS_INFO AS meansInfo,
+			MEANS_USE_YN AS meansUseYn,
+			MEANS_ORDER AS meansOrder,
+			MEANS_REMARK AS meansRemark
 		FROM bank
 		WHERE user_seq = #{userSeq}		
-		ORDER BY bank_order ASC
+		ORDER BY MEANS_ORDER ASC
 	</select>
 	
 	<!-- 해당 유저 은행 반영하기전 상세목적 시퀀스 검증 -->
@@ -212,17 +212,19 @@
 			user_seq,
 			MEANS_NM,
 			MEANS_DTL_NM,
-			bank_account,
-			bank_use_yn,
-			bank_order	
+			MEANS_INFO,
+			MEANS_USE_YN,
+			MEANS_ORDER,
+			MEANS_REMARK
 		)VALUES
 		<foreach collection="list" item="item" separator="),(" open="(" close=")">
 			#{item.userSeq},
 			#{item.meansNm},
 			#{item.meansDtlNm},
-			#{item.bankAccount},
-			#{item.bankUseYn},
-			#{item.bankOrder}	
+			#{item.meansInfo},
+			#{item.meansUseYn},
+			#{item.meansOrder},	
+			#{item.meansRemark}	
 		</foreach>	
 	</insert>
 	
@@ -242,22 +244,28 @@
 			WHEN bank_seq = #{item.bankSeq} THEN #{item.meansDtlNm}
 		</foreach>		
 		END,
-		bank_account = 
+		MEANS_INFO = 
 		CASE		
 		<foreach collection="list" item="item">
-			WHEN bank_seq = #{item.bankSeq} THEN #{item.bankAccount}
+			WHEN bank_seq = #{item.bankSeq} THEN #{item.meansInfo}
 		</foreach>		
 		END,
-		bank_use_yn = 
+		MEANS_USE_YN = 
 		CASE		
 		<foreach collection="list" item="item">
-			WHEN bank_seq = #{item.bankSeq} THEN #{item.bankUseYn}
+			WHEN bank_seq = #{item.bankSeq} THEN #{item.meansUseYn}
 		</foreach>
 		END,
-		bank_order = 
+		MEANS_ORDER = 
 		CASE		
 		<foreach collection="list" item="item">
-			WHEN bank_seq = #{item.bankSeq} THEN #{item.bankOrder}
+			WHEN bank_seq = #{item.bankSeq} THEN #{item.meansOrder}
+		</foreach>
+		END,
+		MEANS_REMARK = 
+		CASE		
+		<foreach collection="list" item="item">
+			WHEN bank_seq = #{item.bankSeq} THEN #{item.meansRemark}
 		</foreach>
 		END
 		WHERE bank_seq IN 
@@ -297,23 +305,9 @@
 			#{item.position},
 			#{item.content}, 
 			#{item.purSeq},	
-			<choose>
-				<when test="item.purDtlSeq == ''">
-					NULL,
-				</when>
-				<otherwise>				
-					#{item.purDtlSeq},
-				</otherwise>
-			</choose>
+			#{item.purDtlSeq},
 			#{item.bankSeq}, 
-			<choose>
-				<when test="item.moveSeq == ''">
-					NULL,
-				</when>
-				<otherwise>				
-					#{item.moveSeq},
-				</otherwise>
-			</choose>						 
+			#{item.moveSeq},						 
 			#{item.money},	
 			#{item.statsYn},
 			now(),	
@@ -360,8 +354,8 @@
 			,purDtl.pur_detail AS purDetail
 			,bank.MEANS_NM	AS meansNm
 			,bank.MEANS_DTL_NM	AS meansDtlNm
-			,bank.bank_account AS bankAccount
-			,IFNULL(bank.bank_use_yn,'X') AS bankUseYn
+			,bank.MEANS_INFO AS meansInfo
+			,IFNULL(bank.MEANS_USE_YN,'X') AS meansUseYn
 		FROM money_record_re rec
 		LEFT OUTER JOIN purpose pur
 		ON rec.pur_seq = pur.pur_seq
@@ -413,10 +407,9 @@
 			,rec.stats_yn AS statsYn
 			,IFNULL(pur.purpose, 'move')	AS purpose
 			,IFNULL(purDtl.pur_detail,'') AS purDetail
-			<!-- ,IFNULL(bank.bank_name, 'cash')	AS bankName -->
 			,IFNULL(bank.MEANS_NM, 'cash')	AS meansNm
-			,IFNULL(bank.bank_account, 'cash')	AS bankAccount
-			,IFNULL(bank.bank_use_yn,'X') AS bankUseYn
+			,IFNULL(bank.MEANS_INFO, 'cash')	AS meansInfo
+			,IFNULL(bank.MEANS_USE_YN,'X') AS meansUseYn
 			<if test="searchType == 'recent'">
 			,DATE_FORMAT(rec.edit_date,'%Y-%m-%d %H:%i:%d') AS editDate
 			,DATE_FORMAT(rec.reg_date,'%Y-%m-%d %H:%i:%d') AS regDate

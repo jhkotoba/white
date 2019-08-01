@@ -17,7 +17,7 @@ class wGrid{
 			for(let i=0; i<args.data.length; i++){
 				args.data[i].state = "select";
 				args.data[i].isRemove = false;
-				args.data[i].key = i;
+				args.data[i]._key = i;
 				this.dataLink[i] = i;
 			}
 			this.data = args.data;
@@ -30,8 +30,6 @@ class wGrid{
 			isClone : this.isEmpty(args.option.isClone) ? true : args.option.isClone,
 			//페이징여부
 			isPaging : this.isEmpty(args.option.isPaging) ? false : args.option.isPaging,
-			//그리드 내 툴립여부
-			isTooltip : this.isEmpty(args.option.isTooltip) ? true : args.option.isTooltip
 		}
 
 		//paging
@@ -94,7 +92,7 @@ class wGrid{
 			for(let i=0; i<result.length; i++){
 				result[i].state = "select";
 				result[i].isRemove = false;
-				result[i].key = i;
+				result[i]._key = i;
 				this.dataLink[i] = i;
 			}
 			this.data = result;
@@ -116,7 +114,7 @@ class wGrid{
 						for(let j=0; j<list.length; j++){
 							list[j].state = "select";
 							list[j].isRemove = false;
-							list[j].key = j;
+							list[j]._key = j;
 							this.dataLink[j] = j;
 						}
 						this.data = list;
@@ -137,7 +135,7 @@ class wGrid{
 		for(let i=0; i<data.length; i++){
 			data[i].state = "select";
 			data[i].isRemove = false;
-			data[i].key = i;			
+			data[i]._key = i;			
 			this.dataLink[i] = i;
 		}
 		this.data = data;
@@ -160,11 +158,11 @@ class wGrid{
 	prependRow(row){
 		
 		//데이터 추가
-		row.key = new Date().getTime();
+		row._key = new Date().getTime();
 		row.isRemove = false;
 		row.state = "insert";		
 		this.data.push(row);
-		this.dataLink[row.key] = this.data.length-1;		
+		this.dataLink[row._key] = this.data.length-1;		
 	
 		let newColumn = this.createColumn([row], 0);
 		
@@ -251,7 +249,7 @@ class wGrid{
 							names[j].style.display = "block";
 						}
 					});
-					th.appendChild(select);
+					th.appendChild(select);									
 				}else{
 					th.textContent = this.fields[i].title;
 				}
@@ -338,7 +336,7 @@ class wGrid{
 		let td, input, select, option = null;
 		
 		let tr = document.createElement("tr");
-		tr.dataset.key = list[i].key;
+		tr.dataset.key = list[i]._key;
 		
 		//신규행 배경색 변경
 		if(list[i].state === "insert"){
@@ -354,9 +352,7 @@ class wGrid{
 			
 			//사용자정의 템플릿
 			if(this.isNotEmpty(this.fields[j].itemTemplate)){
-				
-				//사용자정의 템플릿, 헤드셀렉트인 경우
-				if(this.fields[j].isHeadSelect){
+				if(this.fields[j].isHeadSelect){				
 					let div = null;
 					for(let k=0; k<this.fields[j].headSelectList.length; k++){
 						div = document.createElement("div");
@@ -390,7 +386,16 @@ class wGrid{
 						td.insertAdjacentHTML("afterbegin", result);
 					}
 				}
-				
+			//헤더 셀렉트 필드값 적용
+			}else if(this.fields[j].isHeadSelect){
+				let div = null;
+				for(let k=0; k<this.fields[j].headSelectList.length; k++){
+					div = document.createElement("div");
+					if(k !== 0)	div.style.display = "none";					
+					div.setAttribute("name", this.fields[j].headSelectList[k].value);					
+					div.textContent = list[i][this.fields[j].headSelectList[k].value];				
+					td.appendChild(div);										
+				}	
 			//행 삭제버튼 추가 
 			}else if(this.fields[j].isRemoveButton){					
 				let button = document.createElement("button");
@@ -414,18 +419,7 @@ class wGrid{
 						this.applyStyle(!this.data[idx].isRemove, "delete", node);						
 					}
 				});
-				td.appendChild(button);
-				
-			//헤더 셀렉트 필드값 적용
-			}else if(this.fields[j].isHeadSelect){
-				let div = null;
-				for(let k=0; k<this.fields[j].headSelectList.length; k++){
-					div = document.createElement("div");
-					if(k !== 0)	div.style.display = "none";					
-					div.setAttribute("name", this.fields[j].headSelectList[k].value);					
-					div.textContent = list[i][this.fields[j].headSelectList[k].value];				
-					td.appendChild(div);										
-				}			
+				td.appendChild(button);			
 			//타입별 정의 (text, input, select)
 			}else{
 				

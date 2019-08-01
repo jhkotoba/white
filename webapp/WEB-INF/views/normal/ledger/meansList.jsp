@@ -4,7 +4,6 @@
 <c:set var="contextPath" value="<%=request.getContextPath()%>"></c:set>
 <script type="text/javascript">
 </script>
-
 <div class="button-bar">
 	<div id="btns" class="btn-right">
 		<button id="saveBtn" class="btn-gray trs">저장</button>
@@ -15,7 +14,7 @@
 <div>
 	<div>
 		<div class="title-icon"></div>
-		<label class="title">은행 목록</label>
+		<label class="title">사용수단 목록</label>
 	</div>
-	<div id="bankList"></div>
+	<div id="meansGrid"></div>
 </div>

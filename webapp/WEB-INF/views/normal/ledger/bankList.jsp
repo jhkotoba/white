@@ -30,16 +30,17 @@ function fnGrid(data){
 		confirmDeleting : false,
 		
 		fields: [
-			{ align:"center", width: "5%",
+			{ align:"center", width: "3%",
 				headerTemplate : function(){
 					return $("<button>").attr("id", "bankAdd").addClass("btn-gray trs size-sm").text("+").on("click", function(){
 						bankList.push({
-							bankAccount:"",
-							bankOrder:  $("#bankList").jsGrid("option", "data").length+1,
+							meansInfo:"",
+							meansOrder:  $("#bankList").jsGrid("option", "data").length+1,
 							bankSeq:new Date().getTime(),
 							meansNm:"",
 							meansDtlNm: "",
-							bankUseYn:"N",
+							meansRemark: "",
+							meansUseYn:"N",
 							state:"insert"});		
 						bankNoIdx = cfnNoIdx(bankList, "bankSeq");
 						$("#bankList").jsGrid("refresh");
@@ -47,11 +48,11 @@ function fnGrid(data){
 				},				
                 itemTemplate: function(value, item) {
                     let chk = $("<input>").attr("type", "checkbox").attr("name", "check")
-                    .data("bankSeq", item.bankSeq).data("bankOrder", item.bankOrder).on("change", function() {
+                    .data("bankSeq", item.bankSeq).data("meansOrder", item.bankOrder).on("change", function() {
                     	let idx = bankNoIdx[item.bankSeq];
                     	let cIdx = cloneNoIdx[item.bankSeq];
                 			
-               			if(isEmpty(item.bankOrder)){
+               			if(isEmpty(item.meansOrder)){
                	    		$("#bankList").jsGrid("deleteItem", item);
                	    		delete bankNoIdx[item.bankSeq];               	    		
                	    	}else{
@@ -83,12 +84,12 @@ function fnGrid(data){
                     return chk;
                 }
 			},
-			{ title:"순서",	name:"bankOrder",	type:"text", align:"center", width: "5%",
+			{ title:"순서",	name:"meansOrder",	type:"text", align:"center", width: "3%",
 				itemTemplate: function(value, item){
-					return fnRefreshedSync(item, "bankOrder", "span");
+					return fnRefreshedSync(item, "meansOrder", "span");
 				}
 			},
-			{ title:"사용수단",	name:"meansNm",		type:"text", align:"center", width: "23%", 
+			{ title:"사용수단",	name:"meansNm",		type:"text", align:"center", width: "12%", 
 				itemTemplate: function(value, item){													
 					return fnRefreshedSync(item, "meansNm", "input");
 				}
@@ -98,14 +99,19 @@ function fnGrid(data){
 					return fnRefreshedSync(item, "meansDtlNm", "input");
 				}
 			},
-			{ title:"계좌번호",	name:"bankAccount",	type:"text", align:"center", width: "22%",
+			{ title:"수단정보",	name:"meansInfo",	type:"text", align:"center", width: "22%",
 				itemTemplate: function(value, item){					
-					return fnRefreshedSync(item, "bankAccount", "input");
+					return fnRefreshedSync(item, "meansInfo", "input");
 				}
 			},
-			{ title:"사용여부", name:"bankUseYn", align:"center", width: "5%",
+			{ title:"비고",	name:"meansRemark",	type:"text", align:"center", width: "15%",
+				itemTemplate: function(value, item){					
+					return fnRefreshedSync(item, "meansRemark", "input");
+				}
+			},
+			{ title:"사용여부", name:"meansUseYn", align:"center", width: "5%",
 				itemTemplate: function(value, item){
-					return fnRefreshedSync(item, "bankUseYn", "button");
+					return fnRefreshedSync(item, "meansUseYn", "button");
 				}
 			}
 		],
@@ -154,11 +160,16 @@ function fnGrid(data){
 		//유효성 검사
 		let isVali = true;
 		$("input[name='sync']").each(function(i, e){
-			if(isEmpty($(e).val())){				
-				if($(e).data("name") !== "meansDtlNm"){
+			if(isEmpty($(e).val())){
+				switch($(e).data("name")){
+				case "meansDtlNm" :
+				case "meansRemark" :
+				case "meansInfo" :
+					break;
+				default :
 					isVali = false;
 					wVali.alert({element : $(e), msg: "값을 입력해 주세요."}); return false;
-				}				
+				}							
 			}
 			switch($(e).data("name")){
 			case "meansNm":
@@ -179,13 +190,10 @@ function fnGrid(data){
 					wVali.alert({element : $(e), msg: "최대 글자수 50자 까지 입력할 수 있습니다."}); return false;
 				}
 				break;
-			case "bankAccount":
-				if(!isOnlyNumHyphen($(e).val())){
+			case "meansInfo":
+				if($(e).val().length > 50){
 					isVali = false;
-					wVali.alert({element : $(e), msg: "숫자, 하이픈(-)만 입력할 수 있습니다."}); return false;
-				}else if($(e).val().length > 50){
-					isVali = false;
-					wVali.alert({element : $(e), msg: "최대 글자수 60자 까지 입력할 수 있습니다."}); return false;
+					wVali.alert({element : $(e), msg: "최대 글자수 50자 까지 입력할 수 있습니다."}); return false;
 				}
 				break;			
 			}

@@ -205,7 +205,7 @@ public class LedgerService {
 				WhiteMap map = new WhiteMap();
 				map.put("tableNm", "bank");
 				map.put("firstSeqNm", "bank_seq");				
-				map.put("columnNm", "bank_order");
+				map.put("columnNm", "MEANS_ORDER");
 				map.put("userSeq", param.getString("userSeq"));
 				whiteService.updateSortTable(map);
 			}
@@ -491,8 +491,8 @@ public class LedgerService {
 			recList.get(i).put("cash", moneyMap.getInt("0"));
 			//은행별 추가 map추가
 			recList.get(i).put("bankIdxLen", bankList.size()-1);
-			for(int j=0; j<bankList.size(); j++) {
-				recList.get(i).put(bankList.get(j).getString("bankAccount"), moneyMap.getInt(bankList.get(j).getString("bankSeq")));
+			for(int j=0; j<bankList.size(); j++) { 
+				recList.get(i).put(bankList.get(j).getString("meansInfo"), moneyMap.getInt(bankList.get(j).getString("bankSeq")));
 				//recList.get(i).put("bank"+j, moneyMap.getInt(bankList.get(j).getString("bankSeq")));
 			}						
 		}		

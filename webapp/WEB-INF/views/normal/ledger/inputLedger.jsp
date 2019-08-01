@@ -24,7 +24,7 @@ function inputLedger(data){
 		purLp[data.purList[i].purSeq] = data.purList[i].purType;
 	}	
 	
-	data.bankList.unshift({bankAccount: "", meansNm: "현금", bankOrder: 0, bankSeq: 0, bankUseYn: "N"});	
+	data.bankList.unshift({meansInfo: "", meansNm: "현금", meansOrder: 0, bankSeq: 0, meansUseYn: "N"});	
 	insertList.push({recordDate: isDate.today()+" "+isTime.curTime(), position:"", content:"",
 		purSeq: "", purDtlSeq: "", bankSeq: "", moveSeq: "", money: "", statsYn: "Y"}
 	);
@@ -410,7 +410,7 @@ function inputLedger(data){
 		for(let i=0; i<data.bankList.length; i++){
 			
 			$option = $("<option>").val(data.bankList[i].bankSeq)
-				.text(data.bankList[i].meansNm + (isEmpty(data.bankList[i].bankAccount) ? "" : "(" + data.bankList[i].bankAccount + ")"));
+				.text(data.bankList[i].meansNm + (isEmpty(data.bankList[i].meansInfo) ? "" : "(" + data.bankList[i].bankAccount + ")"));
 			
 			if(String(item[seq]) === String(data.bankList[i].bankSeq)){				
 				$option.prop("selected", true);
@@ -472,8 +472,8 @@ function recordList(data){
 			{ title:"내용",		name:"content",		type:"text", width: "14%",	align:"center"},
 			{ title:"목적",		name:"purpose",		type:"text", width: "8%",	align:"center"},
 			{ title:"상세목적",	name:"purDetail",	type:"text", width: "9%",	align:"center"},
-			{ title:"은행",		name:"meansNm",	type:"text", width: "8%",	align:"center"},
-			{ title:"은행상세",	name:"bankAccount",	type:"text", width: "12%",	align:"center"},
+			{ title:"은행",		name:"meansNm",		type:"text", width: "8%",	align:"center"},
+			{ title:"수단정보",	name:"meansInfo",	type:"text", width: "12%",	align:"center"},
 			{ title:"금액",		name:"money",		type:"text", width: "5%",	align:"center"},
 			{ title:"통계여부",	name:"statsYn",		type:"text", width: "4%",	align:"center"},
 			{ title:"수정일시",	name:"editDate",	type:"text", width: "9%",	align:"center"},

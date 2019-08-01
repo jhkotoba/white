@@ -542,7 +542,11 @@ const wcm = {
 	},
 	//콤마 자리수 추가
 	comma : function(x){
-	    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+		if(this.isEmpty(x)){
+			return x;
+		}else{
+			return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+		}
 	},
 	//########################### 비동기 통신 ###########################
 	//변수 초기화

@@ -14,21 +14,7 @@ $(document).ready(function(){
 		$.post("${contextPath}/ledger/selectLedgerInitData.ajax", null, function(data){
 			vals.purList = data.purList;
 			vals.purDtlList = data.purDtlList;
-			vals.bankList = data.bankList;
-			//가계부 헤드셀렉트 값 가공
-			vals.headList = new Array();			
-			$.map(vals.bankList, function(item, idx){
-				vals.headList.push({
-					value : "no"+item.bankSeq,
-					text : item.meansNm + "(" + item.bankAccount + ")"
-				});				
-			});
-			vals.headCnt = 0;
-			vals.headCntCheck = function(){
-				if(vals.headCnt == vals.headList.length){
-					vals.headCnt = 0;
-				}
-			};
+			vals.bankList = data.bankList;		
 			resolve();
 		});		
 	})
@@ -54,15 +40,31 @@ function fnInit(){
 		$("#purSelect").append($option);		
 	});
 	
-	//은행 option 생성
+	//수단 option 생성
 	$.each(vals.bankList, function(idx, item){		
-		$option = $("<option>").text(item.meansNm+"("+item.bankAccount+")").val(item.bankSeq).data("purType", item.purType);
+		$option = $("<option>").text(item.meansNm + " " + wcm.isEmptyRtn(item.meansDtlNm) + " " + wcm.isEmptyRtn(item.meansInfo))
+			.val(item.bankSeq).data("purType", item.purType);
 		$("#bankSelect").append($option);		
 	});
 	
 	//날짜 설정
 	$("#startDate").val(wcm.getToMonthFirstDay());
-	$("#endDate").val(wcm.getToMonthLastDay());	
+	$("#endDate").val(wcm.getToMonthLastDay());
+	
+	//가계부 헤드셀렉트 값 가공
+	vals.headList = new Array();			
+	$.map(vals.bankList, function(item, idx){
+		vals.headList.push({
+			value : "no"+item.bankSeq,
+			text : item.meansNm + " " + wcm.isEmptyRtn(item.meansDtlNm) + " " + wcm.isEmptyRtn(item.meansInfo)
+		});				
+	});
+	vals.headCnt = 0;
+	vals.headCntCheck = function(){
+		if(vals.headCnt == vals.headList.length){
+			vals.headCnt = 0;
+		}
+	};
 	
 	//가계부 그리드 생성
 	vals.ledgerGrid = new wGrid("ledgerGrid", {
@@ -87,7 +89,7 @@ function fnInit(){
 			{ title:"내용", name:"content", type:"text", 	width: "15%", align:"center"},			
 			{ title:"목적", name:"purpose", type:"text", 	width: "10%", align:"center"},
 			{ title:"상세목적", name:"purDetail", type:"text", width: "15%", align:"center"},
-			{ title:"사용수단", name:"meansNm", type:"text", 	width: "15%", align:"center", tooltip: false,
+			{ title:"사용수단", name:"meansNm", type:"text", 	width: "15%", align:"center",
 				itemTemplate : function(value, item, key){
 					return $("<span>").attr("title", value + " " + wcm.isEmptyRtn(item.meansDtlNm) + " "+wcm.isEmptyRtn(item.meansInfo))
 						.text(value + " " + wcm.isEmptyRtn(item.meansDtlNm));										
@@ -116,8 +118,7 @@ function fnInit(){
 				}
 			},
 			{ isHeadSelect: true, headSelectList: vals.headList, width: "9%", align:"center",
-				itemTemplate : function(value, item, key){
-					
+				itemTemplate : function(value, item, key){					
 					let $span = $("<span>");
 					if(vals.headList[vals.headCnt++].value === "no"+item.bankSeq){
 						switch(item.purType){
