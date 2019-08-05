@@ -30,14 +30,14 @@ $(document).ready(function(){
 			data : "",
 			fields : [
 				{ isRemoveButton: true, isHeadAddButton: true, width: "3%", align:"center"},
-				{ title:"번호",		name:"codeSeq",	type:"text", width: "3%",	align:"center"},
-				{ title:"부모코드",	name:"codePrt",	type:"input", width: "10%",	align:"center"},
-				{ title:"코드",		name:"code",	type:"input", width: "10%",	align:"center"},
-				{ title:"코드명",		name:"codeNm",	type:"input", align:"center"},
-				{ title:"수정자",		name:"modUser",	type:"text", width: "5%",	align:"center"},
-				{ title:"수정날짜",	name:"modDate",	type:"text", width: "10%",	align:"center"},
-				{ title:"등록자",		name:"regUser",	type:"text", width: "5%",	align:"center"},
-				{ title:"등록날짜",	name:"regDate",	type:"text", width: "10%",	align:"center"}	
+				{ title:"번호",		name:"codeSeq",	tag:"text", width: "3%",	align:"center"},
+				{ title:"부모코드",	name:"codePrt",	tag:"input", width: "10%",	align:"center"},
+				{ title:"코드",		name:"code",	tag:"input", width: "10%",	align:"center"},
+				{ title:"코드명",		name:"codeNm",	tag:"input", align:"center"},
+				{ title:"수정자",		name:"modUser",	tag:"text", width: "5%",	align:"center"},
+				{ title:"수정날짜",	name:"modDate",	tag:"text", width: "10%",	align:"center"},
+				{ title:"등록자",		name:"regUser",	tag:"text", width: "5%",	align:"center"},
+				{ title:"등록날짜",	name:"regDate",	tag:"text", width: "10%",	align:"center"}	
 			],
 			option : {
 				isAuto : true,

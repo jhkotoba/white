@@ -1,5 +1,5 @@
 /**
- * wGrid
+ * wGrid 0.1
  * @author JeHoon 
  */
 class wGrid{
@@ -38,9 +38,13 @@ class wGrid{
 		}
 		
 		//message
+		if(this.isEmpty(args.message)){
+			args.message = {
+				nodata : "no data"
+			}
+		}
 		this.message = {
-			//조회 데이터 없을시 메시지
-			nodata : this.isEmpty(args.message.nodata) ? "no data" : args.message.nodata
+			nodata : args.message.nodata
 		}
 		
 		this.node = {
@@ -64,7 +68,6 @@ class wGrid{
 	search(){
 		this.controller.load().then(result => {			
 			this.dataInjection(result);
-			this.target
 			while(this.target.hasChildNodes()){
 				this.target.removeChild( this.target.firstChild ); 
 			}
@@ -87,15 +90,11 @@ class wGrid{
 	//데이터 가공 및 주입
 	dataInjection(result){		
 		//단일 리스드 (list)
-		if(typeof result === "object" && typeof result.length === "number"){
-			this.dataLink = {};
-			for(let i=0; i<result.length; i++){
-				result[i].state = "select";
-				result[i].isRemove = false;
-				result[i]._key = i;
-				this.dataLink[i] = i;
-			}
-			this.data = result;
+		if(typeof result === "object" && typeof result.length === "number"){			
+			
+			//데이터 넣기
+			this.setData(result);
+			
 			if(this.option.isClone) this.createClone();
 		//복합
 		}else if(typeof result === "object" && typeof result.length === "undefined"){							
@@ -109,15 +108,11 @@ class wGrid{
 					if(typeof result[keys[i]] === "number"){
 						//this.page.totalCount = result[keys[i]];
 					}else if(typeof result[keys[i]] === "object" && typeof result[keys[i]].length === "number"){										
-						this.dataLink = {};
-						list = result[keys[i]];
-						for(let j=0; j<list.length; j++){
-							list[j].state = "select";
-							list[j].isRemove = false;
-							list[j]._key = j;
-							this.dataLink[j] = j;
-						}
-						this.data = list;
+						
+						list = result[keys[i]];						
+						//데이터 넣기
+						this.setData(list);
+						
 						if(this.option.isClone) this.createClone();
 					}
 				}								
@@ -137,6 +132,13 @@ class wGrid{
 			data[i].isRemove = false;
 			data[i]._key = i;			
 			this.dataLink[i] = i;
+			
+			//조회시 fields없는값 ""값으로 설정
+			for(let j=0; j<this.fields.length; j++){
+				if(this.isNotEmpty(this.fields[j].name) && this.isEmpty(data[i][this.fields[j].name])){
+					data[i][this.fields[j].name] = "";
+				}
+			}
 		}
 		this.data = data;
 	}
@@ -144,11 +146,7 @@ class wGrid{
 	//데이터 가져오기
 	getData(){
 		return this.data;
-	}
-	
-	
-	
-	
+	}	
 	
 	//행단위 데이터 가져오기
 	getRow(){
@@ -417,13 +415,14 @@ class wGrid{
 						this.data[idx].isRemove = !this.data[idx].isRemove;
 						//변경사항 style 적용
 						this.applyStyle(!this.data[idx].isRemove, "delete", node);						
+						this.applyStyle(this.checkRow(list[i]._key), "update", node);
 					}
 				});
 				td.appendChild(button);			
 			//타입별 정의 (text, input, select)
 			}else{
 				
-				switch(this.fields[j].type){
+				switch(this.fields[j].tag){
 				default :
 				case "text" :						
 					td.textContent = list[i][this.fields[j].name];
@@ -432,7 +431,7 @@ class wGrid{
 					
 					//input박스 생성
 					input = document.createElement("input");
-					input.value = list[i][this.fields[j].name];						
+					input.value = list[i][this.fields[j].name];
 					input.classList.add("wgrid-input");
 					
 					//신규행 배경색 변경
@@ -446,7 +445,7 @@ class wGrid{
 							if(this.option.isClone){								
 								let node = this.getTrNode(event.target);
 								//변경사항 style 적용
-								this.applyStyle(this.checkRow(list[i].key), "update", node);								
+								this.applyStyle(this.checkRow(list[i]._key), "update", node);								
 							}
 							
 						}, false);
@@ -477,19 +476,17 @@ class wGrid{
 	}
 	
 	//원본 행과 비교
-	checkRow(key){
+	checkRow(key){		
 		if(this.option.isClone){
-			
-			let idx = this.dataLink[key];
-			
+			let idx = this.dataLink[key];			
 			if(this.data[idx].state === "insert"){
 				return true;
 			}else{				
 				let isEqual = true; 
 				
 				let keys = Object.keys(this.data[idx]);				
-				for(let i=0; i<keys.length; i++){
-					if(this.data[idx][keys[i]] !== this.clone[idx][keys[i]]){
+				for(let i=0; i<keys.length; i++){					
+					if(this.data[idx][keys[i]] != this.clone[idx][keys[i]]){
 						isEqual = false;
 						break;
 					}

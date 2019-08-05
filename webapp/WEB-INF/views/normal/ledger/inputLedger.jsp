@@ -22,9 +22,8 @@ function inputLedger(data){
 	let purLp = {};
 	for(let i=0; i<data.purList.length; i++){
 		purLp[data.purList[i].purSeq] = data.purList[i].purType;
-	}	
+	}
 	
-	data.bankList.unshift({meansInfo: "", meansNm: "현금", meansOrder: 0, bankSeq: 0, meansUseYn: "N"});	
 	insertList.push({recordDate: isDate.today()+" "+isTime.curTime(), position:"", content:"",
 		purSeq: "", purDtlSeq: "", bankSeq: "", moveSeq: "", money: "", statsYn: "Y"}
 	);
@@ -410,7 +409,7 @@ function inputLedger(data){
 		for(let i=0; i<data.bankList.length; i++){
 			
 			$option = $("<option>").val(data.bankList[i].bankSeq)
-				.text(data.bankList[i].meansNm + (isEmpty(data.bankList[i].meansInfo) ? "" : "(" + data.bankList[i].bankAccount + ")"));
+				.text(data.bankList[i].meansNm + " " + wcm.isEmptyRtn(data.bankList[i].meansDtlNm) + " " + wcm.isEmptyRtn(data.bankList[i].meansInfo));
 			
 			if(String(item[seq]) === String(data.bankList[i].bankSeq)){				
 				$option.prop("selected", true);

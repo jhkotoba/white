@@ -2,7 +2,47 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="contextPath" value="<%=request.getContextPath()%>"></c:set>
+<link rel="stylesheet" href="${contextPath}/resources/wGrid/css/wGrid.css" type="text/css"/>
+<script type="text/javascript" src="${contextPath}/resources/wGrid/js/wGrid.js"></script>
 <script type="text/javascript">
+//전역변수
+const vals = {};
+$(document).ready(function(){
+	//초기설정
+	fnInit();
+	//이벤트 등록
+	fnEventInit();	
+});
+
+//초기설정
+function fnInit(){	
+	vals.meansGrid = new wGrid("meansGrid", {
+		controller : {
+			load : function(){					
+				let promise = new Promise(function(resolve, reject){
+					let srhParam = {};
+					$.post("${contextPath}/ledger/selectBankList.ajax", srhParam, resolve);
+				});
+				return promise;
+			}			
+		},
+		fields : [
+			{ isRemoveButton: true, isHeadAddButton: true, width: "3%", align:"center"},
+			{ title:"순서", name:"meansOrder", tag:"text", width: "3%", align:"center"},
+			{ title:"사용수단", name:"meansNm", tag:"input", width: "10%", align:"center"},
+			{ title:"사용수단상세", name:"meansDtlNm", tag:"input", width: "34%", align:"center"},			
+			{ title:"수단정보", name:"meansInfo", tag:"input", width: "20%", align:"center"},
+			{ title:"비고", name:"meansRemark", tag:"input", width: "25%", align:"center"},
+			{ title:"사용여부", isUseYnButton: true, name:"meansUseYn", width: "5%", align:"center"},			
+		],
+		option : {isAuto : true, isClone : true, isPaging : true},		
+	});
+}
+
+//이벤트 등록
+function fnEventInit(){
+	
+}
 </script>
 <div class="button-bar">
 	<div id="btns" class="btn-right">

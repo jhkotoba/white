@@ -84,18 +84,18 @@ function fnInit(){
 			}			
 		},		
 		fields : [			
-			{ title:"날짜", name:"recordDate", type:"text", width: "8%", align:"center"},
-			{ title:"위치", name:"position", type:"text", width: "10%", align:"center"},
-			{ title:"내용", name:"content", type:"text", 	width: "15%", align:"center"},			
-			{ title:"목적", name:"purpose", type:"text", 	width: "10%", align:"center"},
-			{ title:"상세목적", name:"purDetail", type:"text", width: "15%", align:"center"},
-			{ title:"사용수단", name:"meansNm", type:"text", 	width: "15%", align:"center",
+			{ title:"날짜", name:"recordDate", width: "8%", align:"center"},
+			{ title:"위치", name:"position", width: "10%", align:"center"},
+			{ title:"내용", name:"content", width: "15%", align:"center"},			
+			{ title:"목적", name:"purpose", width: "10%", align:"center"},
+			{ title:"상세목적", name:"purDetail", tag:"text", width: "15%", align:"center"},
+			{ title:"사용수단", name:"meansNm", tag:"text", 	width: "15%", align:"center",
 				itemTemplate : function(value, item, key){
 					return $("<span>").attr("title", value + " " + wcm.isEmptyRtn(item.meansDtlNm) + " "+wcm.isEmptyRtn(item.meansInfo))
 						.text(value + " " + wcm.isEmptyRtn(item.meansDtlNm));										
 				}
 			},
-			{ title:"수입/지출/이동", name:"money", type:"text", width: "9%", align:"center",
+			{ title:"수입/지출/이동", name:"money", width: "9%", align:"center",
 				itemTemplate : function(value, item, key){					
 					let $span = $("<span>");
 					switch(item.purType){
@@ -106,7 +106,7 @@ function fnInit(){
 					return $span;
 				}
 			},		
-			{ title:"소지금액", name:"amount", type:"text", width: "9%", align:"center",
+			{ title:"소지금액", name:"amount", width: "9%", align:"center",
 				itemTemplate : function(value, item, key){					
 					let $span = $("<span>");
 					switch(item.purType){
@@ -141,8 +141,7 @@ function fnInit(){
 		option : {isAuto : false, isClone : true, isPaging : false},			
 		message : {
 			nodata : "조회결과가 없습니다."
-		},
-		
+		}
 	});
 }
 
