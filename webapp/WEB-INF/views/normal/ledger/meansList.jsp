@@ -28,12 +28,12 @@ function fnInit(){
 		},
 		fields : [
 			{ isRemoveButton: true, isHeadAddButton: true, width: "3%", align:"center"},
-			{ title:"순서", name:"meansOrder", tag:"text", width: "3%", align:"center"},
+			{ title:"번호", name:"meansOrder", tag:"text", width: "3%", align:"center"},
 			{ title:"사용수단", name:"meansNm", tag:"input", width: "10%", align:"center"},
-			{ title:"사용수단상세", name:"meansDtlNm", tag:"input", width: "34%", align:"center"},			
+			{ title:"사용수단상세", name:"meansDtlNm", tag:"input", width: "35%", align:"center"},			
 			{ title:"수단정보", name:"meansInfo", tag:"input", width: "20%", align:"center"},
 			{ title:"비고", name:"meansRemark", tag:"input", width: "25%", align:"center"},
-			{ title:"사용여부", isUseYnButton: true, name:"meansUseYn", width: "5%", align:"center"},			
+			{ title:"사용여부", isUseYnButton: true, name:"meansUseYn", width: "4%", align:"center"},			
 		],
 		option : {isAuto : true, isClone : true, isPaging : true},		
 	});

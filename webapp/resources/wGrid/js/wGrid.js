@@ -350,6 +350,7 @@ class wGrid{
 			
 			//사용자정의 템플릿
 			if(this.isNotEmpty(this.fields[j].itemTemplate)){
+				
 				if(this.fields[j].isHeadSelect){				
 					let div = null;
 					for(let k=0; k<this.fields[j].headSelectList.length; k++){
@@ -409,16 +410,44 @@ class wGrid{
 						this.getTrNode(event.target).remove();
 				    //그외 삭제 background 적용
 					}else{
-						let node = this.getTrNode(event.target);
+						
 						
 						let idx = this.dataLink[node.dataset.key];
 						this.data[idx].isRemove = !this.data[idx].isRemove;
 						//변경사항 style 적용
+						let node = this.getTrNode(event.target);
 						this.applyStyle(!this.data[idx].isRemove, "delete", node);						
 						this.applyStyle(this.checkRow(list[i]._key), "update", node);
 					}
 				});
-				td.appendChild(button);			
+				td.appendChild(button);
+			//yn 버튼 
+			}else if(this.fields[j].isUseYnButton){
+				let button = document.createElement("button");
+				button.classList.add("wgrid-btn");
+				
+				if(list[i].state === "insert"){
+					button.textContent = "Y";
+					list[i][this.fields[j].name] = "Y";
+				}else{
+					button.textContent = list[i][this.fields[j].name];
+				}
+				
+				button.addEventListener("click", event => {
+					if("Y" === list[i][this.fields[j].name]){
+						list[i][this.fields[j].name] = "N";
+					}else{
+						list[i][this.fields[j].name] = "Y";
+					}
+					button.textContent = list[i][this.fields[j].name];
+					
+					//변경사항 style 적용 (insert 제외)
+					if(list[i].state !== "insert"){
+						this.applyStyle(this.checkRow(list[i]._key), "update", this.getTrNode(event.target));
+					}
+					
+				});
+				td.appendChild(button);
 			//타입별 정의 (text, input, select)
 			}else{
 				
@@ -442,10 +471,9 @@ class wGrid{
 						//값 동기화 이벤트 등록 
 						input.addEventListener("keyup", event => {
 							list[i][this.fields[j].name] = event.target.value;							
-							if(this.option.isClone){								
-								let node = this.getTrNode(event.target);
+							if(this.option.isClone){
 								//변경사항 style 적용
-								this.applyStyle(this.checkRow(list[i]._key), "update", node);								
+								this.applyStyle(this.checkRow(list[i]._key), "update", this.getTrNode(event.target));								
 							}
 							
 						}, false);
