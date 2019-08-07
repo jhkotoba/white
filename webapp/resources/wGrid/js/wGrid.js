@@ -24,12 +24,29 @@ class wGrid{
 		}
 		
 		//option
+		if(this.isEmpty(args.option)){
+			args.option = {
+				isAutoSearch : false,
+				isClone : false,
+				isPaging : false,
+				isScrollY : false,			
+				isScrollX : false
+			}
+		}
 		this.option = {
-			isAuto : this.isEmpty(args.option.isAuto) ? false : args.option.isAuto,
+			//자동조회 여부
+			isAutoSearch : this.isEmpty(args.option.isAutoSearch) ? false : args.option.isAutoSearch,
 			//복제여부
-			isClone : this.isEmpty(args.option.isClone) ? true : args.option.isClone,
+			isClone : this.isEmpty(args.option.isClone) ? false : args.option.isClone,
 			//페이징여부
 			isPaging : this.isEmpty(args.option.isPaging) ? false : args.option.isPaging,
+			//스크롤 Y(위 아래)
+			isScrollY : this.isEmpty(args.option.isScrollY) ? false : args.option.isScrollY,
+			//스크롤 X(왼쪽 오른쪽)
+			isScrollX : this.isEmpty(args.option.isScrollX) ? false : args.option.isScrollX,		
+					
+					
+					
 		}
 
 		//paging
@@ -59,7 +76,7 @@ class wGrid{
 		if(args.option.isClone) this.createClone();
 		
 		this.controller = args.controller;
-		if(this.option.isAuto){
+		if(this.option.isAutoSearch){
 			this.search();
 		}
 	}
@@ -251,7 +268,6 @@ class wGrid{
 				}else{
 					th.textContent = this.fields[i].title;
 				}
-				
 				tr.appendChild(th);
 			}
 			table.appendChild(tr);
@@ -271,6 +287,7 @@ class wGrid{
 				header.appendChild(table);
 			}
 		}
+		
 		//해더 등록
 		this.target.appendChild(header);				
 		
@@ -325,6 +342,12 @@ class wGrid{
 		
 		//필드 등록
 		field.appendChild(table);
+		
+		//option - 스크롤 Y 설정
+		if(this.option.isScrollY){
+			field.classList.add("wgrid-overflow-y");			
+		}
+		
 		this.target.appendChild(field);
 	}
 	
@@ -411,11 +434,11 @@ class wGrid{
 				    //그외 삭제 background 적용
 					}else{
 						
-						
+						let node = this.getTrNode(event.target);
 						let idx = this.dataLink[node.dataset.key];
 						this.data[idx].isRemove = !this.data[idx].isRemove;
 						//변경사항 style 적용
-						let node = this.getTrNode(event.target);
+						
 						this.applyStyle(!this.data[idx].isRemove, "delete", node);						
 						this.applyStyle(this.checkRow(list[i]._key), "update", node);
 					}

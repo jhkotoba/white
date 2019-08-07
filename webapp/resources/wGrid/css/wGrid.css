@@ -21,3 +21,17 @@
 .wgrid-insert-tag{background: #41583e;}
 
 
+/* .wgrid-head-overflow-y{overflow-y:scroll;}
+.wgrid-head-overflow-y::-webkit-scrollbar {border: 1px solid #363636; width: 8px;}
+.wgrid-head-overflow-y::-webkit-scrollbar-button:start:decrement,::-webkit-scrollbar-button:end:increment {display: none;}
+.wgrid-head-overflow-y::-webkit-scrollbar-track {background: #4C4C4C;}
+.wgrid-head-overflow-y::-webkit-scrollbar-thumb {background: #4C4C4C;}
+.wgrid-head-overflow-y::-webkit-scrollbar-corner{background: #4C4C4C;} */
+
+.wgrid-overflow-y{overflow-y:scroll;}
+.wgrid-overflow-y::-webkit-scrollbar {border: 1px solid #363636; width: 8px;}
+.wgrid-overflow-y::-webkit-scrollbar-button:start:decrement,::-webkit-scrollbar-button:end:increment {display: none;}
+.wgrid-overflow-y::-webkit-scrollbar-track {background: #5A5A5A;}
+.wgrid-overflow-y::-webkit-scrollbar-thumb {background: #4C4C4C;}
+.wgrid-overflow-y::-webkit-scrollbar-corner{background: #4C4C4C;}
+
