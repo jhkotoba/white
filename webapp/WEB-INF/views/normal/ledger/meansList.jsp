@@ -35,7 +35,7 @@ function fnInit(){
 			{ title:"비고", name:"meansRemark", tag:"input", width: "25%", align:"center"},
 			{ title:"사용여부", isUseYnButton: true, name:"meansUseYn", width: "4%", align:"center"},			
 		],
-		option : {isAutoSearch: true, isClone: true, isPaging: false, isScrollY: true, isScrollX: false},		
+		option : {isAutoSearch: true, isClone: true, isPaging: false, isScrollY: true, isScrollX: false, bodyHeight:"550px"},		
 	});
 }
 

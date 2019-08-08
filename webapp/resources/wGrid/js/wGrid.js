@@ -26,11 +26,16 @@ class wGrid{
 		//option
 		if(this.isEmpty(args.option)){
 			args.option = {
+				//bool 값
 				isAutoSearch : false,
 				isClone : false,
 				isPaging : false,
 				isScrollY : false,			
-				isScrollX : false
+				isScrollX : false,
+				
+				
+				//수치 값
+				bodyHeight : ""
 			}
 		}
 		this.option = {
@@ -44,7 +49,9 @@ class wGrid{
 			isScrollY : this.isEmpty(args.option.isScrollY) ? false : args.option.isScrollY,
 			//스크롤 X(왼쪽 오른쪽)
 			isScrollX : this.isEmpty(args.option.isScrollX) ? false : args.option.isScrollX,		
-					
+			//body 높이
+			bodyHeight : this.isEmpty(args.option.bodyHeight) ? "" : args.option.bodyHeight,
+		
 					
 					
 		}
@@ -202,7 +209,7 @@ class wGrid{
 		this.node.headTable = table;
 		
 		let tr = document.createElement("tr"); 
-		let th, td = null;
+		let th, td, div = null;
 		
 		//header 없을시 fields title로 헤더 생성
 		if(this.isEmpty(this.header)){
@@ -267,11 +274,18 @@ class wGrid{
 					th.appendChild(select);									
 				}else{
 					th.textContent = this.fields[i].title;
-				}
+				}				
+				
 				tr.appendChild(th);
 			}
+			
+			if(this.option.isScrollY){
+				th = document.createElement("th");
+				tr.appendChild(th);
+			}
+			
 			table.appendChild(tr);
-			header.appendChild(table);
+			header.appendChild(table);			
 		//header 있을시 생성	
 		}else{			
 			//header가 문자열인경우 innerHTML
@@ -322,7 +336,7 @@ class wGrid{
 	
 	//필드 생성
 	createField(){
-		let list = this.data;		
+		let list = this.data;
 		
 		//엘리멘트 생성
 		let field = document.createElement("div");
@@ -336,7 +350,7 @@ class wGrid{
 		
 		//필드 create
 		for(let i=0; i<list.length; i++){			
-			tr = this.createColumn(list, i);						
+			tr = this.createColumn(list, i);			
 			table.appendChild(tr);
 		}
 		
@@ -345,7 +359,8 @@ class wGrid{
 		
 		//option - 스크롤 Y 설정
 		if(this.option.isScrollY){
-			field.classList.add("wgrid-overflow-y");			
+			field.classList.add("wgrid-overflow-y");
+			field.style.height = this.option.bodyHeight;
 		}
 		
 		this.target.appendChild(field);
@@ -354,7 +369,7 @@ class wGrid{
 	//필드 컬럼 생성
 	createColumn(list, i){
 		
-		let td, input, select, option = null;
+		let td, input, select, option, div = null;
 		
 		let tr = document.createElement("tr");
 		tr.dataset.key = list[i]._key;
@@ -508,8 +523,22 @@ class wGrid{
 					break;
 				}
 			}
+			
 			tr.appendChild(td);				
 		}
+		
+		//isScrollY 스크롤 적용시 추가 td 생성
+		if(this.option.isScrollY){
+			td = document.createElement("td");
+			div = document.createElement("div");
+			
+			div.style.marginRight = "1px";
+			td.classList.add("wgrid-overflow-y-border");	
+			
+			td.appendChild(div);					
+			tr.appendChild(td);
+		}
+		
 		return tr;
 	}
 
@@ -570,8 +599,8 @@ class wGrid{
 		}else{				
 			//class 적용 로직
 			tr.classList.add("wgrid-" + state + "-tr");											
-			let trList = tr.childNodes;
-			trList.forEach(element => {
+			let trList = tr.childNodes;			
+			trList.forEach(element => {				
 				let tagName = element.childNodes[0].tagName;
 				if(tagName === "INPUT" || tagName === "SELECT"){
 					element.childNodes[0].classList.add("wgrid-" + state +"-tag");

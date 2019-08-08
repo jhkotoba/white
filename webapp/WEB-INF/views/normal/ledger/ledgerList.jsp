@@ -138,7 +138,7 @@ function fnInit(){
 				}	
 			},
 		],
-		option : {isAuto : false, isClone : true, isPaging : false},			
+		option : {isAuto : false, isClone : true, isPaging : false, isScrollY: true, bodyHeight:"500px"},			
 		message : {
 			nodata : "조회결과가 없습니다."
 		}
