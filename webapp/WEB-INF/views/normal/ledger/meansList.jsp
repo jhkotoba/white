@@ -41,7 +41,15 @@ function fnInit(){
 
 //이벤트 등록
 function fnEventInit(){
+	//저장 버튼
+	$("#saveBtn").on("click", function(){
+		//vals.meansGrid.
+	});
 	
+	//취소(초기화) 버튼
+	$("#cancelBtn").on("click", function(){
+		vals.meansGrid.originalReset();
+	});
 }
 </script>
 <div class="button-bar">

@@ -1,5 +1,5 @@
 /**
- * wGrid 0.1
+ * wGrid 0.0.1
  * @author JeHoon 
  */
 class wGrid{
@@ -15,8 +15,8 @@ class wGrid{
 			this.data = null;
 		}else{
 			for(let i=0; i<args.data.length; i++){
-				args.data[i].state = "select";
-				args.data[i].isRemove = false;
+				args.data[i]._state = "select";
+				args.data[i]._isRemove = false;
 				args.data[i]._key = i;
 				this.dataLink[i] = i;
 			}
@@ -91,7 +91,7 @@ class wGrid{
 	//조회
 	search(){
 		this.controller.load().then(result => {			
-			this.dataInjection(result);
+			this._dataInjection(result);
 			while(this.target.hasChildNodes()){
 				this.target.removeChild( this.target.firstChild ); 
 			}
@@ -112,7 +112,7 @@ class wGrid{
 	}
 	
 	//데이터 가공 및 주입
-	dataInjection(result){		
+	_dataInjection(result){		
 		//단일 리스드 (list)
 		if(typeof result === "object" && typeof result.length === "number"){			
 			
@@ -152,8 +152,8 @@ class wGrid{
 	setData(data){
 		this.dataLink = {};
 		for(let i=0; i<data.length; i++){
-			data[i].state = "select";
-			data[i].isRemove = false;
+			data[i]._state = "select";
+			data[i]._isRemove = false;
 			data[i]._key = i;			
 			this.dataLink[i] = i;
 			
@@ -168,21 +168,75 @@ class wGrid{
 	}
 	
 	//데이터 가져오기
-	getData(){
-		return this.data;
-	}	
+	getData(key){
+		if(this.isEmpty(key)){
+			return this.data.map(item => item);
+		}else{
+			return this.data.filter(item => {
+				return item._key === key;
+			}).map(item => item);
+		}		
+	}
 	
-	//행단위 데이터 가져오기
-	getRow(){
-		
+	//새로 추가된 행 가져오기
+	getNewData(){
+		return this.data.filter(item => {
+			return item._state === "insert";
+		}).map(item => item);		
+	}
+	
+	//기존데이터 수정된 행 가져오기
+	getModifyData(){
+		return this.data.filter(item => {
+			return item._state === "update";
+		}).map(item => item);
+	}
+	
+	//기존데이터 삭제할 행 가져오기
+	getRemoveData(){
+		return this.data.filter(item => {
+			return item._isRemove === true;
+		}).map(item => item);
+	}
+	
+	//신규, 수정된, 삭제할 행 가져오기 
+	getSaveData(){
+		return this.data.filter(item => {
+			return item._isRemove === true || item._state === "insert" || item._state === "update";
+		}).map(item => item);
+	}
+	
+	//최초 조회시 값 가져오기
+	getOriginalData(){
+		return this.clone.map(item => item);
+	}
+	
+	//오리지널 복사값으로 초기화
+	originalReset(){	
+		this._bodyRemove();
+		this.data = this.clone.map(item => item);
+		this.createField();
+	}
+	
+	//빈값으로 초기화
+	reset(){		
+		this._bodyRemove();
+		this.createNoDataField();
+	}
+	
+	//필드값 삭제
+	_bodyRemove(){
+		this.node.bodyTable = null;
+		this.node.bodyDiv.remove();
+		this.node.bodyDiv = null;
 	}
 	
 	prependRow(row){
 		
 		//데이터 추가
 		row._key = new Date().getTime();
-		row.isRemove = false;
-		row.state = "insert";		
+		row._isRemove = false;
+		row._state = "insert";		
 		this.data.push(row);
 		this.dataLink[row._key] = this.data.length-1;		
 	
@@ -279,11 +333,6 @@ class wGrid{
 				tr.appendChild(th);
 			}
 			
-			if(this.option.isScrollY){
-				th = document.createElement("th");
-				tr.appendChild(th);
-			}
-			
 			table.appendChild(tr);
 			header.appendChild(table);			
 		//header 있을시 생성	
@@ -375,7 +424,7 @@ class wGrid{
 		tr.dataset.key = list[i]._key;
 		
 		//신규행 배경색 변경
-		if(list[i].state === "insert"){
+		if(list[i]._state === "insert"){
 			tr.classList.add("wgrid-insert-tr");
 		}
 		
@@ -424,8 +473,7 @@ class wGrid{
 					}
 				}
 			//헤더 셀렉트 필드값 적용
-			}else if(this.fields[j].isHeadSelect){
-				let div = null;
+			}else if(this.fields[j].isHeadSelect){				
 				for(let k=0; k<this.fields[j].headSelectList.length; k++){
 					div = document.createElement("div");
 					if(k !== 0)	div.style.display = "none";					
@@ -441,7 +489,7 @@ class wGrid{
 				button.addEventListener("click", event => {
 					
 					//신규행은 바로 삭제
-					if(list[i].state === "insert"){
+					if(list[i]._state === "insert"){
 						//데이터 삭제 (index 유지)
 						delete this.data[this.dataLink[this.getTrNode(event.target).dataset.key]];
 						//태그 삭제
@@ -451,11 +499,11 @@ class wGrid{
 						
 						let node = this.getTrNode(event.target);
 						let idx = this.dataLink[node.dataset.key];
-						this.data[idx].isRemove = !this.data[idx].isRemove;
+						this.data[idx]._isRemove = !this.data[idx]._isRemove;
 						//변경사항 style 적용
 						
-						this.applyStyle(!this.data[idx].isRemove, "delete", node);						
-						this.applyStyle(this.checkRow(list[i]._key), "update", node);
+						this.applyStyle(!this.data[idx]._isRemove, "delete", node);						
+						this.applyStyle(this._checkRow(list[i]._key), "update", node);
 					}
 				});
 				td.appendChild(button);
@@ -464,7 +512,7 @@ class wGrid{
 				let button = document.createElement("button");
 				button.classList.add("wgrid-btn");
 				
-				if(list[i].state === "insert"){
+				if(list[i]._state === "insert"){
 					button.textContent = "Y";
 					list[i][this.fields[j].name] = "Y";
 				}else{
@@ -480,8 +528,8 @@ class wGrid{
 					button.textContent = list[i][this.fields[j].name];
 					
 					//변경사항 style 적용 (insert 제외)
-					if(list[i].state !== "insert"){
-						this.applyStyle(this.checkRow(list[i]._key), "update", this.getTrNode(event.target));
+					if(list[i]._state !== "insert"){
+						this.applyStyle(this._checkRow(list[i]._key), "update", this.getTrNode(event.target));
 					}
 					
 				});
@@ -502,17 +550,22 @@ class wGrid{
 					input.classList.add("wgrid-input");
 					
 					//신규행 배경색 변경
-					if(list[i].state === "insert"){
+					if(list[i]._state === "insert"){
 						input.classList.add("wgrid-insert-tag");
 					//신규는 이벤트 필요없음
 					}else{
 						//값 동기화 이벤트 등록 
 						input.addEventListener("keyup", event => {
 							list[i][this.fields[j].name] = event.target.value;							
-							if(this.option.isClone){
-								//변경사항 style 적용
-								this.applyStyle(this.checkRow(list[i]._key), "update", this.getTrNode(event.target));								
+							if(this.option.isClone){																
+								//변경사항 style 적용								
+								this.applyStyle(this._checkRow(list[i]._key), "update", this.getTrNode(event.target));								
 							}
+							if(this._checkRow(list[i]._key)){
+								list[i]._state = "select";
+							}else{
+								list[i]._state = "update";
+							}					
 							
 						}, false);
 					}					
@@ -525,20 +578,7 @@ class wGrid{
 			}
 			
 			tr.appendChild(td);				
-		}
-		
-		//isScrollY 스크롤 적용시 추가 td 생성
-		if(this.option.isScrollY){
-			td = document.createElement("td");
-			div = document.createElement("div");
-			
-			div.style.marginRight = "1px";
-			td.classList.add("wgrid-overflow-y-border");	
-			
-			td.appendChild(div);					
-			tr.appendChild(td);
-		}
-		
+		}	
 		return tr;
 	}
 
@@ -556,17 +596,20 @@ class wGrid{
 	}
 	
 	//원본 행과 비교
-	checkRow(key){		
+	_checkRow(key){		
 		if(this.option.isClone){
 			let idx = this.dataLink[key];			
-			if(this.data[idx].state === "insert"){
+			if(this.data[idx]._state === "insert"){
 				return true;
 			}else{				
 				let isEqual = true; 
 				
 				let keys = Object.keys(this.data[idx]);				
 				for(let i=0; i<keys.length; i++){					
-					if(this.data[idx][keys[i]] != this.clone[idx][keys[i]]){
+					
+					if(keys[i].substring(0,1) === "_"){
+						continue;
+					}else if(this.data[idx][keys[i]] != this.clone[idx][keys[i]]){
 						isEqual = false;
 						break;
 					}
@@ -584,26 +627,26 @@ class wGrid{
 	}
 	
 	//스타일 적용, 취소
-	applyStyle(isApply, state, tr){
-		state = state.toLowerCase();
-		if(isApply){				
+	applyStyle(isApply, _state, tr){
+		_state = _state.toLowerCase();
+		if(isApply){
 			//class 해제 로직
-			tr.classList.remove("wgrid-" + state + "-tr");											
+			tr.classList.remove("wgrid-" + _state + "-tr");											
 			let trList = tr.childNodes;
 			trList.forEach(element => {
 				let tagName = element.childNodes[0].tagName;
 				if(tagName === "INPUT" || tagName === "SELECT"){
-					element.childNodes[0].classList.remove("wgrid-" + state +"-tag");
+					element.childNodes[0].classList.remove("wgrid-" + _state +"-tag");
 				}
 			});											
 		}else{				
 			//class 적용 로직
-			tr.classList.add("wgrid-" + state + "-tr");											
+			tr.classList.add("wgrid-" + _state + "-tr");											
 			let trList = tr.childNodes;			
 			trList.forEach(element => {				
 				let tagName = element.childNodes[0].tagName;
 				if(tagName === "INPUT" || tagName === "SELECT"){
-					element.childNodes[0].classList.add("wgrid-" + state +"-tag");
+					element.childNodes[0].classList.add("wgrid-" + _state +"-tag");
 				}												
 			});	
 		}
