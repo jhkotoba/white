@@ -212,7 +212,7 @@ class wGrid{
 	}
 	
 	//오리지널 복사값으로 초기화
-	originalReset(){	
+	originalToReset(){	
 		this._bodyRemove();
 		this.data = this.clone.map(item => item);
 		this.createField();

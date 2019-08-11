@@ -48,7 +48,7 @@ function fnEventInit(){
 	
 	//취소(초기화) 버튼
 	$("#cancelBtn").on("click", function(){
-		vals.meansGrid.originalReset();
+		vals.meansGrid.originalToReset();
 	});
 }
 </script>
