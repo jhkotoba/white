@@ -43,7 +43,7 @@ function fnInit(){
 function fnEventInit(){
 	//저장 버튼
 	$("#saveBtn").on("click", function(){
-		//vals.meansGrid.
+		let saveList = vals.meansGrid.getSaveData();
 	});
 	
 	//취소(초기화) 버튼

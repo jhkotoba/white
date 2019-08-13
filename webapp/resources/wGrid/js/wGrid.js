@@ -224,6 +224,54 @@ class wGrid{
 		this.createNoDataField();
 	}
 	
+	//key와 컬럼명으로 Element 찾기
+	_getColumnNameElement(key, columnName){
+		let dataKey, element, columnElement = null;
+		
+		for(let i=0; i<this.node.bodyTable.childElementCount; i++){
+			element = this.node.bodyTable.childNodes[i];
+			dataKey = element.getAttribute("data-key");
+			
+			if(key == dataKey){	
+				for(let j=0; j<element.childElementCount; j++){
+					columnElement = element.childNodes[j];
+					if(columnName == columnElement.getAttribute("data-column-name")){
+						return columnElement;
+					}
+				}			
+			}
+		}
+	}
+	
+	//툴팁메세지 띄우기
+	tooltipMessage(key, columnName, message, offset, zIndex){
+		
+		/*let element = this._getColumnNameElement(key, columnName);
+		
+		element.classList.add("wVali-border");
+		element.focus();
+		
+		let div = document.createElement("div");
+		div.setAttribute("id", "wValiAlert");
+		div.classList.add("wVali-tooltip");
+		div.textContent = message;
+		document.body.appendChild(div);
+		
+		let top = window.pageYOffset + element.getBoundingClientRect().top;
+		let left = window.pageYOffset + element.getBoundingClientRect().left;
+		div.style.top = top-42;		
+		div.style.left = left;	
+		
+		element.addEventListener("focusout", function(event){
+			alert(1111);
+			element.classList.remove("wVali-border");
+			element.removeEventListener("focusout", this, false);
+			div.remove();			
+		}, false);*/		
+		
+	}
+
+	
 	//필드값 삭제
 	_bodyRemove(){
 		this.node.bodyTable = null;
@@ -431,6 +479,12 @@ class wGrid{
 		for(let j=0; j<this.fields.length; j++){
 			td = document.createElement("td");
 			
+			//data속성
+			if(this.isNotEmpty(this.fields[j].name)){
+				td.dataset.columnName = this.fields[j].name;
+			}
+			
+			//넓이 설정
 			if(this.isNotEmpty(this.fields[j].width)){
 				td.style.width = this.fields[j].width;
 			}
@@ -502,8 +556,8 @@ class wGrid{
 						this.data[idx]._isRemove = !this.data[idx]._isRemove;
 						//변경사항 style 적용
 						
-						this.applyStyle(!this.data[idx]._isRemove, "delete", node);						
-						this.applyStyle(this._checkRow(list[i]._key), "update", node);
+						this._applyStyle(!this.data[idx]._isRemove, "delete", node);						
+						this._applyStyle(this._checkRow(list[i]._key), "update", node);
 					}
 				});
 				td.appendChild(button);
@@ -529,7 +583,7 @@ class wGrid{
 					
 					//변경사항 style 적용 (insert 제외)
 					if(list[i]._state !== "insert"){
-						this.applyStyle(this._checkRow(list[i]._key), "update", this.getTrNode(event.target));
+						this._applyStyle(this._checkRow(list[i]._key), "update", this.getTrNode(event.target));
 					}
 					
 				});
@@ -559,7 +613,7 @@ class wGrid{
 							list[i][this.fields[j].name] = event.target.value;							
 							if(this.option.isClone){																
 								//변경사항 style 적용								
-								this.applyStyle(this._checkRow(list[i]._key), "update", this.getTrNode(event.target));								
+								this._applyStyle(this._checkRow(list[i]._key), "update", this.getTrNode(event.target));								
 							}
 							if(this._checkRow(list[i]._key)){
 								list[i]._state = "select";
@@ -627,7 +681,7 @@ class wGrid{
 	}
 	
 	//스타일 적용, 취소
-	applyStyle(isApply, _state, tr){
+	_applyStyle(isApply, _state, tr){
 		_state = _state.toLowerCase();
 		if(isApply){
 			//class 해제 로직
