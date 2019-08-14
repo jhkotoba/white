@@ -95,14 +95,20 @@ public class LedgerController {
 	}
 	
 	/**
-	 * 해당유저 은행목록 반영
+	 * 해당유저 사용수단 목록 반영
 	 * @param request
 	 * @return
 	 */
+	//추후 삭제
 	@RequestMapping(value="/ledger/applybankList.ajax" )
 	public int applybankList(HttpServletRequest request){		
 		WhiteMap param = new WhiteMap(request);		
-		return ledgerService.applybankList(param);
+		return ledgerService.applyMeansList(param);
+	}
+	@RequestMapping(value="/ledger/applyMeansList.ajax" )
+	public int applyMeansList(HttpServletRequest request){		
+		WhiteMap param = new WhiteMap(request);		
+		return ledgerService.applyMeansList(param);
 	}
 	
 	/**

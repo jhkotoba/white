@@ -14,7 +14,7 @@ $(document).ready(function(){
 	fnEventInit();	
 });
 
-//초기설정
+//############## 초기설정 ################
 function fnInit(){	
 	vals.meansGrid = new wGrid("meansGrid", {
 		controller : {
@@ -39,11 +39,11 @@ function fnInit(){
 	});
 }
 
-//이벤트 등록
+//############## 이벤트 등록 ################
 function fnEventInit(){
 	//저장 버튼
 	$("#saveBtn").on("click", function(){
-		let saveList = vals.meansGrid.getSaveData();
+		fnApplyData();		
 	});
 	
 	//취소(초기화) 버튼
@@ -51,6 +51,57 @@ function fnEventInit(){
 		vals.meansGrid.originalToReset();
 	});
 }
+
+
+//############## 유효성 검사 ################
+function fnValiCheck(list){
+	if(list.length > 0){
+		return !list.some(function(item){		
+			switch(item._state){
+			case "insert":
+			case "update":
+				if(wcm.isEmpty(item.meansNm)){
+					vals.meansGrid.inputMessage(item._key, "meansNm", "값이 없습니다.");
+					return true;
+				}else if(item.meansNm.length > 50){
+					vals.meansGrid.inputMessage(item._key, "meansNm", "최대길이 50자 입니다.");
+					return true;
+				}else if(item.meansDtlNm.length > 50){
+					vals.meansGrid.inputMessage(item._key, "meansDtlNm", "최대길이 50자 입니다.");
+					return true;
+				}else if(item.meansInfo.length > 50){
+					vals.meansGrid.inputMessage(item._key, "meansInfo", "최대길이 50자 입니다.");
+					return true;
+				}else if(item.meansRemark.length > 100){
+					vals.meansGrid.inputMessage(item._key, "meansRemark", "최대길이 100자 입니다.");
+					return true;
+				}else{
+					return false;
+				}
+			}
+		});
+	}else{
+		return false;
+	}
+}
+
+//############## 적용 로직 ################
+function fnApplyData(){
+	let applyList = vals.meansGrid.getApplyData();
+	if(fnValiCheck(applyList)){			
+		$.post("${contextPath}/ledger/applyMeansList.ajax", 
+				{list : JSON.stringify(applyList)}, function(res){
+			if(res === -1){
+				alert("사용자 정보가 일치하지 않습니다.");					
+			}else if(res === -2){
+				alert("삭제하려는 정보가 가계부목록에 사용되고 있습니다.");					
+			}else{
+				vals.meansGrid.search();
+			}
+		});
+	}
+}
+
 </script>
 <div class="button-bar">
 	<div id="btns" class="btn-right">

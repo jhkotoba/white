@@ -36,7 +36,7 @@ $(document).ready(function(){
 	    	
 	    	tag = "";
 	    	for(let i=0; i<data.bankList.length; i++){		
-	    		tag += "<option value='"+data.bankList[i].bankSeq+"'>"+data.bankList[i].meansNm+"("+data.bankList[i].bankAccount+")</option>";
+	    		tag += "<option value='"+data.bankList[i].meansSeq+"'>"+data.bankList[i].meansNm+"("+data.bankList[i].bankAccount+")</option>";
 	    	}
 	    	$("#srhBank").append(tag);
 	    	
@@ -116,7 +116,7 @@ $(document).ready(function(){
 	
 	//은행 셀렉트 박스 선택시
 	$("#srhBank").change(function(){
-		rec.search.bankSeq = this.value;
+		rec.search.meansSeq = this.value;
 	});
 });
 

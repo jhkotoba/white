@@ -43,7 +43,7 @@ function fnInit(){
 	//수단 option 생성
 	$.each(vals.bankList, function(idx, item){		
 		$option = $("<option>").text(item.meansNm + " " + wcm.isEmptyRtn(item.meansDtlNm) + " " + wcm.isEmptyRtn(item.meansInfo))
-			.val(item.bankSeq).data("purType", item.purType);
+			.val(item.meansSeq).data("purType", item.purType);
 		$("#bankSelect").append($option);		
 	});
 	
@@ -55,7 +55,7 @@ function fnInit(){
 	vals.headList = new Array();			
 	$.map(vals.bankList, function(item, idx){
 		vals.headList.push({
-			value : "no"+item.bankSeq,
+			value : "no"+item.meansSeq,
 			text : item.meansNm + " " + wcm.isEmptyRtn(item.meansDtlNm) + " " + wcm.isEmptyRtn(item.meansInfo)
 		});				
 	});
@@ -76,7 +76,7 @@ function fnInit(){
 						endDate : $("#endDate").val(),
 						purSeq : $("#purSelect").val(),
 						purDtlSeq : $("#purDtlSelect").val(),
-						bankSeq : $("#bankSelect").val(),
+						meansSeq : $("#bankSelect").val(),
 					};
 					$.post("${contextPath}/ledger/selectLedgerList.ajax", srhParam, resolve);
 				});
@@ -120,7 +120,7 @@ function fnInit(){
 			{ isHeadSelect: true, headSelectList: vals.headList, width: "9%", align:"center",
 				itemTemplate : function(value, item, key){					
 					let $span = $("<span>");
-					if(vals.headList[vals.headCnt++].value === "no"+item.bankSeq){
+					if(vals.headList[vals.headCnt++].value === "no"+item.meansSeq){
 						switch(item.purType){
 						case "LED001":
 						case "LED003": $span.addClass("sync-red").text(wcm.comma(value)); break;

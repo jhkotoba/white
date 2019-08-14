@@ -178,7 +178,7 @@
 	<!-- 은행 조회 -->
 	<select id="selectBankList" resultType="whiteMap" parameterType="whiteMap">
 		SELECT			
-			bank_seq AS bankSeq,
+			MEANS_SEQ AS meansSeq,
 			MEANS_NM AS meansNm,
 			MEANS_DTL_NM AS meansDtlNm,
 			MEANS_INFO AS meansInfo,
@@ -191,23 +191,26 @@
 	</select>
 	
 	<!-- 해당 유저 은행 반영하기전 상세목적 시퀀스 검증 -->
-	<select id="selectVerifyBankSeqStrList" resultType="int" parameterType="java.util.List">
+	<select id="selectVerifyMeansSeqStrList" resultType="int" parameterType="java.util.List">
+		/* ledgerMapper|selectVerifyMeansSeqStrList */
 		SELECT COUNT(1)	FROM bank
 		WHERE user_seq <![CDATA[ <> ]]> #{userSeq}
-		AND bank_seq IN (${verifyBankSeqList})
+		AND MEANS_SEQ IN (${verifyMeansSeqList})
 	</select>
 	
 	<!-- 은행 사용되는지 확인 -->
 	<select id="selectIsUsedBankRec" resultType="int" parameterType="java.util.List">
+		/* ledgerMapper|selectIsUsedBankRec */
 		SELECT COUNT(1) FROM money_record_re
-		WHERE bank_seq IN
+		WHERE MEANS_SEQ IN
 		<foreach collection="list" item="item" separator="," open="(" close=")">
-			#{item.bankSeq}
+			#{item.meansSeq}
 		</foreach>
 	</select>
 	
 	<!-- 은행 리스트 insert -->
 	<insert id="insertBankList" parameterType="java.util.List">
+		/* ledgerMapper|insertBankList */
 		INSERT INTO bank(		
 			user_seq,
 			MEANS_NM,
@@ -217,13 +220,13 @@
 			MEANS_ORDER,
 			MEANS_REMARK
 		)VALUES
-		<foreach collection="list" item="item" separator="),(" open="(" close=")">
+		<foreach collection="list" item="item" index="index" separator="),(" open="(" close=")">
 			#{item.userSeq},
 			#{item.meansNm},
 			#{item.meansDtlNm},
 			#{item.meansInfo},
 			#{item.meansUseYn},
-			#{item.meansOrder},	
+			(SELECT MAX(B.MEANS_ORDER)+1 FROM bank B WHERE B.user_seq = #{item.userSeq}),			
 			#{item.meansRemark}	
 		</foreach>	
 	</insert>
@@ -235,51 +238,51 @@
 		SET MEANS_NM = 
 		CASE		
 		<foreach collection="list" item="item">
-			WHEN bank_seq = #{item.bankSeq} THEN #{item.meansNm}
+			WHEN MEANS_SEQ = #{item.meansSeq} THEN #{item.meansNm}
 		</foreach>		
 		END,
 		MEANS_DTL_NM = 
 		CASE		
 		<foreach collection="list" item="item">
-			WHEN bank_seq = #{item.bankSeq} THEN #{item.meansDtlNm}
+			WHEN MEANS_SEQ = #{item.meansSeq} THEN #{item.meansDtlNm}
 		</foreach>		
 		END,
 		MEANS_INFO = 
 		CASE		
 		<foreach collection="list" item="item">
-			WHEN bank_seq = #{item.bankSeq} THEN #{item.meansInfo}
+			WHEN MEANS_SEQ = #{item.meansSeq} THEN #{item.meansInfo}
 		</foreach>		
 		END,
 		MEANS_USE_YN = 
 		CASE		
 		<foreach collection="list" item="item">
-			WHEN bank_seq = #{item.bankSeq} THEN #{item.meansUseYn}
+			WHEN MEANS_SEQ = #{item.meansSeq} THEN #{item.meansUseYn}
 		</foreach>
 		END,
 		MEANS_ORDER = 
 		CASE		
 		<foreach collection="list" item="item">
-			WHEN bank_seq = #{item.bankSeq} THEN #{item.meansOrder}
+			WHEN MEANS_SEQ = #{item.meansSeq} THEN #{item.meansOrder}
 		</foreach>
 		END,
 		MEANS_REMARK = 
 		CASE		
 		<foreach collection="list" item="item">
-			WHEN bank_seq = #{item.bankSeq} THEN #{item.meansRemark}
+			WHEN MEANS_SEQ = #{item.meansSeq} THEN #{item.meansRemark}
 		</foreach>
 		END
-		WHERE bank_seq IN 
+		WHERE MEANS_SEQ IN 
 		<foreach collection="list" item="item" separator="," open="(" close=")">
-			#{item.bankSeq}
+			#{item.meansSeq}
 		</foreach>
 	</update>
 	
 	<!-- 은행 list 삭제 -->
 	<delete id="deleteBankList" parameterType="java.util.List">
 		DELETE FROM bank
-		WHERE bank_seq IN 
+		WHERE MEANS_SEQ IN 
 		<foreach collection="list" item="item" separator="," open="(" close=")">
-			#{item.bankSeq}
+			#{item.meansSeq}
 		</foreach>
 	</delete>
 	
@@ -292,7 +295,7 @@
 			content,	
 			pur_seq,
 			pur_dtl_seq,
-			bank_seq,
+			MEANS_SEQ,
 			move_seq,
 			money,
 			stats_yn,
@@ -306,7 +309,7 @@
 			#{item.content}, 
 			#{item.purSeq},	
 			#{item.purDtlSeq},
-			#{item.bankSeq}, 
+			#{item.meansSeq}, 
 			#{item.moveSeq},						 
 			#{item.money},	
 			#{item.statsYn},
@@ -324,8 +327,8 @@
 			    IFNULL(
 				    SUM( 
 				      CASE
-				      WHEN bank_seq = #{item.bankSeq} THEN money
-				      WHEN move_seq = #{item.bankSeq} THEN ABS(money)
+				      WHEN MEANS_SEQ = #{item.meansSeq} THEN money
+				      WHEN move_seq = #{item.meansSeq} THEN ABS(money)
 				      END
 				    )
 				  ,0)
@@ -346,7 +349,7 @@
 			,rec.pur_seq AS purSeq
 			,pur.pur_type AS purType
 			,rec.pur_dtl_seq AS purDtlSeq
-			,rec.bank_seq AS bankSeq
+			,rec.MEANS_SEQ AS meansSeq
 			,rec.move_seq AS moveSeq
 			,rec.money
 			,rec.stats_yn AS statsYn
@@ -362,7 +365,7 @@
 		LEFT OUTER JOIN purpose_detail purDtl
 		ON rec.pur_dtl_seq = purDtl.pur_dtl_seq
 		LEFT OUTER JOIN bank bank
-    	ON rec.bank_seq = bank.bank_seq
+    	ON rec.MEANS_SEQ = bank.MEANS_SEQ
 		WHERE rec.user_seq = #{userSeq}
 		AND rec.record_date <![CDATA[ >= ]]> CONCAT(#{startDate}, ' 00:00:00')
 		AND rec.record_date <![CDATA[ <= ]]> CONCAT(#{endDate}, ' 23:59:59')
@@ -379,8 +382,8 @@
 			    IFNULL(
 				    SUM( 
 				      CASE
-				      WHEN bank_seq = #{item.bankSeq} THEN money
-				      WHEN move_seq = #{item.bankSeq} THEN ABS(money)
+				      WHEN MEANS_SEQ = #{item.meansSeq} THEN money
+				      WHEN move_seq = #{item.meansSeq} THEN ABS(money)
 				      END
 				    )
 				  ,0)
@@ -401,7 +404,7 @@
 			,rec.pur_seq AS purSeq
 			,pur.pur_type AS purType
 			,IFNULL(rec.pur_dtl_seq, '') AS purDtlSeq
-			,rec.bank_seq AS bankSeq
+			,rec.MEANS_SEQ AS meansSeq
 			,IFNULL(rec.move_seq, '') AS moveSeq
 			,rec.money
 			,rec.stats_yn AS statsYn
@@ -420,7 +423,7 @@
 		LEFT OUTER JOIN purpose_detail purDtl
 		ON rec.pur_dtl_seq = purDtl.pur_dtl_seq
 		LEFT OUTER JOIN bank bank
-    	ON rec.bank_seq = bank.bank_seq
+    	ON rec.MEANS_SEQ = bank.MEANS_SEQ
 		WHERE rec.user_seq = #{userSeq}
 		<choose>
 		<when test="searchType == 'recent'">
@@ -469,10 +472,10 @@
 			WHEN record_seq = #{item.recordSeq} THEN #{item.purDtlSeq}		
 		</foreach>		
 		END,
-		bank_seq = 
+		MEANS_SEQ = 
 		CASE		
 		<foreach collection="list" item="item">
-			WHEN record_seq = #{item.recordSeq} THEN #{item.bankSeq}					
+			WHEN record_seq = #{item.recordSeq} THEN #{item.meansSeq}					
 		</foreach>		
 		END,		
 		move_seq = 

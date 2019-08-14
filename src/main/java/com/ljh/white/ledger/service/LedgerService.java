@@ -164,47 +164,54 @@ public class LedgerService {
 	}
 	
 	/**
-	 * 해당 유저 은행 리스트 반영
+	 * 해당 유저 사용수단 리스트 반영
 	 * @param parma
 	 * @return
+	 * 1 : 정상처리.
+	 * -1 : userSeq 바르지 않음.
+	 * -2 : 가계부 테이블에 사용되어 있음. 
 	 */
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
-	public int applybankList(WhiteMap param) {
-		List<WhiteMap> bankList = param.convertListWhiteMap("bankList", true);
+	public int applyMeansList(WhiteMap param) {
+		List<WhiteMap> meansList = param.convertListWhiteMap("list", true);
 		
 		List<WhiteMap> deleteList = new ArrayList<WhiteMap>();
 		List<WhiteMap> insertList = new ArrayList<WhiteMap>();
 		List<WhiteMap> updateList = new ArrayList<WhiteMap>();
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		
-		for(int i=0; i<bankList.size(); i++) {
-			sb.append(bankList.get(i).get("bankSeq")).append(",");
+		for(int i=0; i<meansList.size(); i++) {			
 			
-			if("delete".equals(bankList.get(i).get("state"))) {
-				deleteList.add(bankList.get(i));
-			}else if("insert".equals(bankList.get(i).get("state"))) {
-				insertList.add(bankList.get(i));
+			sb.append(meansList.get(i).get("meansSeq")).append(",");
+			
+			if("delete".equals(meansList.get(i).get("_state"))) {
+				deleteList.add(meansList.get(i));				
+			}else if("insert".equals(meansList.get(i).get("_state"))) {
+				insertList.add(meansList.get(i));
 			}else {
-				updateList.add(bankList.get(i));
+				updateList.add(meansList.get(i));				
 			}
 		}
 		
 		sb.setLength(sb.length() - 1);
-		param.put("verifyBankSeqList", sb.toString());		
+		param.put("verifyMeansSeqList", sb.toString());		
 		
-		if(ledgerMapper.selectVerifyBankSeqStrList(param)>0) {
+		if(ledgerMapper.selectVerifyMeansSeqStrList(param) > 0) {
 			return -1;
-		}else if(deleteList.size()>0 && ledgerMapper.selectIsUsedBankRec(deleteList)>0) {				
+		}else if(deleteList.size() > 0 && ledgerMapper.selectIsUsedBankRec(deleteList) > 0) {				
 			return -2;
 		}else {			
-			if(insertList.size()>0) ledgerMapper.insertBankList(insertList);	
-			if(updateList.size()>0) ledgerMapper.updateBankList(updateList);
-			if(deleteList.size()>0) {
+			if(insertList.size() > 0) {
+				Collections.reverse(insertList);
+				ledgerMapper.insertBankList(insertList);	
+			}
+			if(updateList.size() > 0) ledgerMapper.updateBankList(updateList);
+			if(deleteList.size() > 0) {
 				ledgerMapper.deleteBankList(deleteList);
 				
 				WhiteMap map = new WhiteMap();
 				map.put("tableNm", "bank");
-				map.put("firstSeqNm", "bank_seq");				
+				map.put("firstSeqNm", "MEANS_SEQ");				
 				map.put("columnNm", "MEANS_ORDER");
 				map.put("userSeq", param.getString("userSeq"));
 				whiteService.updateSortTable(map);
@@ -225,7 +232,7 @@ public class LedgerService {
 	 * -6 : 목적 seq값 널인 경우
 	 * -7 : 목적타입이 이동인 경우에서 받는곳이 널값인 경우
 	 * -8 : 목적타입이 이동인 경우에서 보내는곳과 받는곳이 같은 경우
-	 * -9 : 목적타입이 이동이 아닌 경우에서 bankSeq와 moveSeq가 같지 않는 경우
+	 * -9 : 목적타입이 이동이 아닌 경우에서 meansSeq와 moveSeq가 같지 않는 경우
 	 * -10 : 상세목적이 목적의 하위그룹에 속하지 않는 경우
 	 * -11 : 금액값이 정상적이지 않는 경우
 	 * 0:데이터없어서 insert실행 하지 않음
@@ -240,8 +247,8 @@ public class LedgerService {
 		WhiteMap purSeqMap = White.convertListToMap(purList, "purSeq", "purpose");	
 		WhiteMap purTypeMap = White.convertListToMap(purList, "purSeq", "purType");	
 		WhiteMap purDtlSeqMap = White.convertListToMap(this.selectPurDtlList(param), "purDtlSeq", "purSeq");
-		WhiteMap bankSeqMap = White.convertListToMap(this.selectBankList(param), "bankSeq", "meansNm");
-		bankSeqMap.put("0", "cash");
+		WhiteMap meansSeqMap = White.convertListToMap(this.selectBankList(param), "meansSeq", "meansNm");
+		meansSeqMap.put("0", "cash");
 		
 		String str = null;
 		
@@ -261,8 +268,8 @@ public class LedgerService {
 			else if(str.length() > Constant.CONTENT_LENGTH) return -4;
 			
 			//사용수단 검사
-			str = list.get(i).getString("bankSeq");			
-			if(bankSeqMap.get(str) == null) return -5;			
+			str = list.get(i).getString("meansSeq");			
+			if(meansSeqMap.get(str) == null) return -5;			
 			
 			//목적 검사
 			str = list.get(i).getString("purSeq");			
@@ -271,11 +278,11 @@ public class LedgerService {
 			//목적타입이 이동인 경우 검사
 			if("LED003".equals(purTypeMap.get(str))) {
 				String moveSeq = list.get(i).getString("moveSeq");
-				if(bankSeqMap.get(moveSeq) == null) return -7;				
-				if(moveSeq.equals(list.get(i).getString("bankSeq"))) return -8;
-			//목적타입이 이동이 아닌 경우 검사//이동인경우 bankSeq와 moveSeq같도록 수정
+				if(meansSeqMap.get(moveSeq) == null) return -7;				
+				if(moveSeq.equals(list.get(i).getString("meansSeq"))) return -8;
+			//목적타입이 이동이 아닌 경우 검사//이동인경우 meansSeq와 moveSeq같도록 수정
 			}else {
-				str = list.get(i).getString("bankSeq");
+				str = list.get(i).getString("meansSeq");
 				if(str == null) return -9;
 				else if(!str.equals(list.get(i).getString("moveSeq"))) return -9;
 			}
@@ -322,7 +329,7 @@ public class LedgerService {
 		for(int i=0; i<bankList.size(); i++) {
 			map = new WhiteMap();
 			map.put("bankNo", "bank"+i);
-			map.put("bankSeq", bankList.get(i).getInt("bankSeq"));
+			map.put("meansSeq", bankList.get(i).getInt("meansSeq"));
 			map.put("userSeq", param.getInt("userSeq"));
 			map.put("startDate", param.getString("startDate"));			
 			pastList.add(map);
@@ -339,11 +346,11 @@ public class LedgerService {
 		WhiteMap moneyMap = new WhiteMap();		
 		for(int i=0; i<bankList.size(); i++) {
 			m = pastCal == null ? 0 : pastCal.getInt("bank"+i);
-			moneyMap.put(bankList.get(i).getString("bankSeq"), m);			
+			moneyMap.put(bankList.get(i).getString("meansSeq"), m);			
 			amount += m;
 		}
 		
-		String bankSeq, moveSeq, bankNo = null;
+		String meansSeq, moveSeq, bankNo = null;
 		for(int i=0; i<ledgerList.size(); i++) {			
 			//현금이동일때는 금액증감 제외
 			if("LED003".equals(ledgerList.get(i).getString("purType"))) {
@@ -354,8 +361,8 @@ public class LedgerService {
 			}
 			
 			//각각 수단(은행) money 증감
-			bankSeq = ledgerList.get(i).getString("bankSeq");
-			moneyMap.put(bankSeq, moneyMap.getInt(bankSeq) + ledgerList.get(i).getInt("money"));					
+			meansSeq = ledgerList.get(i).getString("meansSeq");
+			moneyMap.put(meansSeq, moneyMap.getInt(meansSeq) + ledgerList.get(i).getInt("money"));					
 			
 			//금액이동시 받는쪽 추가
 			if("LED003".equals(ledgerList.get(i).getString("purType"))) {
@@ -365,16 +372,16 @@ public class LedgerService {
 			
 			//수단(은행)별 추가
 			for(int j=0; j<bankList.size(); j++) {
-				bankNo = "no" + bankList.get(j).getString("bankSeq");				
-				ledgerList.get(i).put(bankNo, moneyMap.getInt(bankList.get(j).getString("bankSeq")));
+				bankNo = "no" + bankList.get(j).getString("meansSeq");				
+				ledgerList.get(i).put(bankNo, moneyMap.getInt(bankList.get(j).getString("meansSeq")));
 			}
 		}		
 		
 		String purSeq = White.isEmptyRtn(param.getString("purSeq"));
 		String purDtlSeq =  White.isEmptyRtn(param.getString("purDtlSeq"));
-		bankSeq = White.isEmptyRtn(param.getString("bankSeq"));
+		meansSeq = White.isEmptyRtn(param.getString("meansSeq"));
 		
-		if(purSeq != null || purDtlSeq != null || bankSeq != null) {
+		if(purSeq != null || purDtlSeq != null || meansSeq != null) {
 			Iterator<WhiteMap> iter = ledgerList.iterator();			
 			if(purSeq != null) {
 				while (iter.hasNext()) {
@@ -393,11 +400,11 @@ public class LedgerService {
 					}
 				}
 			}
-			if(bankSeq != null) {
+			if(meansSeq != null) {
 				iter = ledgerList.iterator();
 				while (iter.hasNext()) {
 					map = iter.next();			 
-					if(bankSeq != null && !bankSeq.equals(map.get("bankSeq").toString())) {
+					if(meansSeq != null && !meansSeq.equals(map.get("meansSeq").toString())) {
 						iter.remove();
 					}
 				}
@@ -431,12 +438,12 @@ public class LedgerService {
 			map = new WhiteMap();
 			if(i==0) {
 				map.put("meansNm", "cash");
-				map.put("bankSeq", 0);				
+				map.put("meansSeq", 0);				
 				map.put("userSeq", param.getInt("userSeq"));
 				map.put("startDate", param.getString("startDate"));
 			}else {
 				map.put("meansNm", "bank"+(i-1));
-				map.put("bankSeq", bankList.get(i-1).getInt("bankSeq"));
+				map.put("meansSeq", bankList.get(i-1).getInt("meansSeq"));
 				map.put("userSeq", param.getInt("userSeq"));
 				map.put("startDate", param.getString("startDate"));
 			}
@@ -458,7 +465,7 @@ public class LedgerService {
 		amount += m;
 		for(int i=0; i<bankList.size(); i++) {
 			m = pastRec == null ? 0 : pastRec.getInt("bank"+i);
-			moneyMap.put(bankList.get(i).getString("bankSeq"), m );			
+			moneyMap.put(bankList.get(i).getString("meansSeq"), m );			
 			amount += m;
 		}
 		for(int i=0; i<recList.size(); i++) {			
@@ -470,16 +477,16 @@ public class LedgerService {
 				recList.get(i).put("amount", amount);
 			}
 			//현금쪽 각 행마다 money 증감
-			if("0".equals(recList.get(i).getString("bankSeq"))) {				
+			if("0".equals(recList.get(i).getString("meansSeq"))) {				
 				int cash = moneyMap.getInt("0");
 				cash += recList.get(i).getInt("money");
 				moneyMap.put("0", cash);
 			//각각은행 money 증감
 			}else{				
-				String bankSeq = recList.get(i).getString("bankSeq");
-				int bankMoney = moneyMap.getInt(bankSeq);
+				String meansSeq = recList.get(i).getString("meansSeq");
+				int bankMoney = moneyMap.getInt(meansSeq);
 				bankMoney += recList.get(i).getInt("money");
-				moneyMap.put(bankSeq, bankMoney);				
+				moneyMap.put(meansSeq, bankMoney);				
 			}			
 			//현금이동시 받는쪽 추가
 			if(!("".equals(recList.get(i).getString("moveSeq")) || recList.get(i).getString("moveSeq")==null)){				
@@ -492,8 +499,8 @@ public class LedgerService {
 			//은행별 추가 map추가
 			recList.get(i).put("bankIdxLen", bankList.size()-1);
 			for(int j=0; j<bankList.size(); j++) { 
-				recList.get(i).put(bankList.get(j).getString("meansInfo"), moneyMap.getInt(bankList.get(j).getString("bankSeq")));
-				//recList.get(i).put("bank"+j, moneyMap.getInt(bankList.get(j).getString("bankSeq")));
+				recList.get(i).put(bankList.get(j).getString("meansInfo"), moneyMap.getInt(bankList.get(j).getString("meansSeq")));
+				//recList.get(i).put("bank"+j, moneyMap.getInt(bankList.get(j).getString("meansSeq")));
 			}						
 		}		
 		return recList;			

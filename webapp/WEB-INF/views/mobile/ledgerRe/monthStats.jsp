@@ -201,7 +201,7 @@ function monthCBStatsDraw(BC){
 			areaData.push(BC[i].date);
 			areaData.push(BC[0].cash + BC[i].cash);
 			for(let j=0; j<bankList.length; j++){
-				areaData.push(BC[0]["bank"+bankList[j].bankSeq] + BC[i]["bank"+bankList[j].bankSeq]);
+				areaData.push(BC[0]["bank"+bankList[j].meansSeq] + BC[i]["bank"+bankList[j].meansSeq]);
 			}
 			area.push(areaData);
 		}else{
@@ -210,7 +210,7 @@ function monthCBStatsDraw(BC){
 			areaData.push(area[i-1][1] + BC[i].cash);
 			
 			for(let j=0; j<bankList.length; j++){				
-				areaData.push(area[i-1][j+2] + BC[i]["bank"+bankList[j].bankSeq]);
+				areaData.push(area[i-1][j+2] + BC[i]["bank"+bankList[j].meansSeq]);
 			}
 			area.push(areaData);
 		}

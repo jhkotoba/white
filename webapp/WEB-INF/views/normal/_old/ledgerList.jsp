@@ -63,12 +63,12 @@ function ledgerList(data){
 	
 	//사용수단
 	for(let i=0; i<data.bankList.length; i++){
-		$option = $("<option>").val(data.bankList[i].bankSeq)
+		$option = $("<option>").val(data.bankList[i].meansSeq)
 			.text(data.bankList[i].meansNm+"("+data.bankList[i].bankAccount+")");					
-		$("#searchBar #bankSeq").append($option);
+		$("#searchBar #meansSeq").append($option);
 		
 		//은행seq 맵 생성
-		bankMap[data.bankList[i].bankSeq] = data.bankList[i].meansNm+"("+data.bankList[i].bankAccount+")";
+		bankMap[data.bankList[i].meansSeq] = data.bankList[i].meansNm+"("+data.bankList[i].bankAccount+")";
 	}
 	
 	//조회버튼
@@ -78,7 +78,7 @@ function ledgerList(data){
 		param.endDate = $("#searchBar #endDate").val();
 		param.purSeq = $("#searchBar #purSeq").val();
 		param.purDtlSeq = $("#searchBar #purDtlSeq").val();
-		param.bankSeq = $("#searchBar #bankSeq").val();
+		param.meansSeq = $("#searchBar #meansSeq").val();
 		param.searchType = "select";
 		
 		if(!wcm.isDatePattern(param.startDate, "yyyy-MM-dd")){			
@@ -137,55 +137,55 @@ function ledgerList(data){
 		$("#ledgerList").empty();
 		
 		let fieldList = [
-			{title: "날짜", 		name: "recordDate", minWidth: 200, detail: false, bankSeq:null,			
+			{title: "날짜", 		name: "recordDate", minWidth: 200, detail: false, meansSeq:null,			
 				itemTemplate: function(item){
 					return item.recordDate;
 				}
 			},
-			{title: "위치", 		name: "position", 	minWidth: 250, detail: true, bankSeq:null,				
+			{title: "위치", 		name: "position", 	minWidth: 250, detail: true, meansSeq:null,				
 				itemTemplate: function(item){
 					return item.position;
 				}
 			},
-			{title: "내용", 		name: "content", 	minWidth: 500, detail: false, bankSeq:null,				
+			{title: "내용", 		name: "content", 	minWidth: 500, detail: false, meansSeq:null,				
 				itemTemplate: function(item){
 					return item.content;
 				}
 			},
-			{title: "목적", 		name: "purSeq", 	minWidth: 200, detail: false, bankSeq:null,				
+			{title: "목적", 		name: "purSeq", 	minWidth: 200, detail: false, meansSeq:null,				
 				itemTemplate: function(item){
 					return purMap[Number(item.purSeq)];
 				}
 			},
-			{title: "상세목적", 	name: "purDtlSeq", 	minWidth: 200, detail: true, bankSeq:null,				
+			{title: "상세목적", 	name: "purDtlSeq", 	minWidth: 200, detail: true, meansSeq:null,				
 				itemTemplate: function(item){
 					return purDtlMap[Number(item.purDtlSeq)];
 				}
 			},
-			{title: "사용수단", 	name: "bankSeq",	minWidth: 200, detail: true, bankSeq:null,				
+			{title: "사용수단", 	name: "meansSeq",	minWidth: 200, detail: true, meansSeq:null,				
 				itemTemplate: function(item){										
-					if(Number(item.bankSeq) === 0){
+					if(Number(item.meansSeq) === 0){
 						return "현금";
 					}else{
-						return bankMap[Number(item.bankSeq)];						
+						return bankMap[Number(item.meansSeq)];						
 					}
 				}
 			},
-			{title: "수입/지출/이동", 	name: "money", 		minWidth: 150, detail: false, bankSeq:null,
+			{title: "수입/지출/이동", 	name: "money", 		minWidth: 150, detail: false, meansSeq:null,
 				itemTemplate: function(item){
 					return fnSetFontColor(item.purType, item.money, "money", false, false);
 				}
 			},
-			{title: "소지금액", 	name: "amount",		minWidth: 200, detail: false, bankSeq:null,				
+			{title: "소지금액", 	name: "amount",		minWidth: 200, detail: false, meansSeq:null,				
 				itemTemplate: function(item){
 					return fnSetFontColor(item.purType, item.amount, "amount", false, false);
 				}
 			},
-			{title: "현금", 		name: "cash", 		minWidth: 200, detail: true, bankSeq:0,
-				itemTemplate: function(item, bankSeq){					
-					if(String(item.bankSeq) === String(bankSeq)){
+			{title: "현금", 		name: "cash", 		minWidth: 200, detail: true, meansSeq:0,
+				itemTemplate: function(item, meansSeq){					
+					if(String(item.meansSeq) === String(meansSeq)){
 						return fnSetFontColor(item.purType, item.cash, "cash", true, false);
-					}else if(String(item.moveSeq) === String(bankSeq)){
+					}else if(String(item.moveSeq) === String(meansSeq)){
 						return fnSetFontColor(item.purType, item.cash, "cash", false, true);
 					}else{
 						return cfnSetComma(item.cash);
@@ -236,11 +236,11 @@ function ledgerList(data){
 						minWidth: 200, 
 						detail:true,
 						edit:false,
-						bankSeq:data.bankList[i].bankSeq,
-						itemTemplate: function(item, bankSeq){
-							if(Number(item.bankSeq) === Number(bankSeq)){
+						meansSeq:data.bankList[i].meansSeq,
+						itemTemplate: function(item, meansSeq){
+							if(Number(item.meansSeq) === Number(meansSeq)){
 								return fnSetFontColor(item.purType, item[data.bankList[i].bankAccount], data.bankList[i].bankAccount, true, false);
-							}else if(Number(item.moveSeq) === Number(bankSeq)){
+							}else if(Number(item.moveSeq) === Number(meansSeq)){
 								return fnSetFontColor(item.purType, item[data.bankList[i].bankAccount], data.bankList[i].bankAccount, false, true);
 							}else{
 								return cfnSetComma(item[data.bankList[i].bankAccount]);
@@ -280,7 +280,7 @@ function ledgerList(data){
 				if(isNotEmpty($("#searchBar #purDtlSeq").val()) && String($("#searchBar #purDtlSeq").val()) !== String(list[i].purDtlSeq)){
 					continue;				
 				}
-				if(isNotEmpty($("#searchBar #bankSeq").val()) && String($("#searchBar #bankSeq").val()) !== String(list[i].bankSeq)){
+				if(isNotEmpty($("#searchBar #meansSeq").val()) && String($("#searchBar #meansSeq").val()) !== String(list[i].meansSeq)){
 					continue;				
 				}
 				
@@ -295,7 +295,7 @@ function ledgerList(data){
 							$("#ledgerList").addClass("overflow-x-scroll");
 						}
 					}					
-					$td.append(fieldList[j].itemTemplate(list[i], fieldList[j].bankSeq));
+					$td.append(fieldList[j].itemTemplate(list[i], fieldList[j].meansSeq));
 					$tr.append($td);
 				}
 				$tb.append($tr);
@@ -349,7 +349,7 @@ function ledgerList(data){
 				</td>
 				<th>은행</th>
 				<td>
-					<select id="bankSeq" class="select-gray wth100p">
+					<select id="meansSeq" class="select-gray wth100p">
 						<option value="">전체</option>
 						<option value="0">현금</option>
 					</select>

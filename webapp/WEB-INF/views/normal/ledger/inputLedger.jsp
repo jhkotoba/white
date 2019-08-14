@@ -25,7 +25,7 @@ function inputLedger(data){
 	}
 	
 	insertList.push({recordDate: isDate.today()+" "+isTime.curTime(), position:"", content:"",
-		purSeq: "", purDtlSeq: "", bankSeq: "", moveSeq: "", money: "", statsYn: "Y"}
+		purSeq: "", purDtlSeq: "", meansSeq: "", moveSeq: "", money: "", statsYn: "Y"}
 	);
 	
 	let fieldList = [
@@ -36,7 +36,7 @@ function inputLedger(data){
 					.text("+")
 					.off().on("click", function(){
 						insertList.push({recordDate: isDate.today()+" "+isTime.curTime(), position:"",
-							content:"", purSeq: "",purDtlSeq: "", bankSeq: "", moveSeq: "", money: "", statsYn: "Y"}
+							content:"", purSeq: "",purDtlSeq: "", meansSeq: "", moveSeq: "", money: "", statsYn: "Y"}
 						);
 						$tbody.empty().append(
 							$("<div>").append(fnCreateRow())
@@ -90,7 +90,7 @@ function inputLedger(data){
 				return fnCreatePurposeDetail(item);
 			}
 		},		
-		{title : "사용수단*",	name:"bankSeq", 	width : "19%", align:"center", button:true,
+		{title : "사용수단*",	name:"meansSeq", 	width : "19%", align:"center", button:true,
 			itemTemplate: function(item){				
 				let $span = $("<span>");				
 				if(isNotEmpty(item.purSeq)){
@@ -159,7 +159,7 @@ function inputLedger(data){
 					wVali.alert({element : $(e), msg: "숫자를 입력해 주세요."}); return false;
 				}
 				break;
-			case "bankSeq" :				
+			case "meansSeq" :				
 				if(String($(e).val()) === String($($(e)[0]).next().val())){
 					isVali = false;
 					wVali.alert({element : $(e), msg: "보내는 곳과 받는곳이 일치합니다."}); return false;
@@ -191,7 +191,7 @@ function inputLedger(data){
 
 					insertList = new Array();
 					insertList.push({recordDate: isDate.today()+" "+isTime.curTime(), position:"", content:"",
-						purSeq: "", purDtlSeq: "", bankSeq: "", moveSeq: "", money: "", statsYn:"Y"}
+						purSeq: "", purDtlSeq: "", meansSeq: "", moveSeq: "", money: "", statsYn:"Y"}
 					);						
 					$tbody.empty().append($("<div>").append(fnCreateRow()));					
 					cfnCmmAjax("/ledger/selectRecordList", {searchType:"recent", schdTime:$("#schdTime").val()}).done(recordList);
@@ -355,28 +355,28 @@ function inputLedger(data){
 		case "LED002":
 			
 			//LED003에서 LED002,LED001이동시 moveSeq값 같게하기
-			item.moveSeq = item.bankSeq;
+			item.moveSeq = item.meansSeq;
 			
 			$select.addClass("select-gray wth90p").attr("name", "sync")
-				.data("name", "bankSeq").append($("<option>").text("사용수단 선택").val(""))
+				.data("name", "meansSeq").append($("<option>").text("사용수단 선택").val(""))
 				.off().on("change", function(){
-					item.bankSeq = this.value;
+					item.meansSeq = this.value;
 					item.moveSeq = this.value;
 				});;
 			
-			fnCreateOption(item, "bankSeq", $select);			
+			fnCreateOption(item, "meansSeq", $select);			
 			$span.append($select).addClass("wth90p");
 			break;
 		case "LED003":
 			//보내는곳
 			item.moveSeq = "";
 			$select.addClass("select-gray wth50p").attr("name", "sync")
-				.data("name", "bankSeq").append($("<option>").text("보낸곳 선택").val(""))
+				.data("name", "meansSeq").append($("<option>").text("보낸곳 선택").val(""))
 				.off().on("change", function(){
-					item.bankSeq = this.value;
+					item.meansSeq = this.value;
 				});
 			
-			fnCreateOption(item, "bankSeq", $select);			
+			fnCreateOption(item, "meansSeq", $select);			
 			$span.append($select);
 			
 			//받는곳
@@ -392,10 +392,10 @@ function inputLedger(data){
 		default:
 			$select.addClass("select-gray wth90p").append($("<option>").text("사용수단 선택").val(""))
 				.off().on("change", function(){
-					item.bankSeq = this.value;
+					item.meansSeq = this.value;
 				});
 		
-			fnCreateOption(item, "bankSeq", $select);
+			fnCreateOption(item, "meansSeq", $select);
 		
 			item.moveSeq = "";
 			$span.append($select).addClass("wth90p");
@@ -408,10 +408,10 @@ function inputLedger(data){
 		let $option = $("<option>");
 		for(let i=0; i<data.bankList.length; i++){
 			
-			$option = $("<option>").val(data.bankList[i].bankSeq)
+			$option = $("<option>").val(data.bankList[i].meansSeq)
 				.text(data.bankList[i].meansNm + " " + wcm.isEmptyRtn(data.bankList[i].meansDtlNm) + " " + wcm.isEmptyRtn(data.bankList[i].meansInfo));
 			
-			if(String(item[seq]) === String(data.bankList[i].bankSeq)){				
+			if(String(item[seq]) === String(data.bankList[i].meansSeq)){				
 				$option.prop("selected", true);
 			}
 			$select.append($option);

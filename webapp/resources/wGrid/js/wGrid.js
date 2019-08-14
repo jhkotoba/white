@@ -200,10 +200,17 @@ class wGrid{
 	}
 	
 	//신규, 수정된, 삭제할 행 가져오기 
-	getSaveData(){
+	getApplyData(){		
 		return this.data.filter(item => {
 			return item._isRemove === true || item._state === "insert" || item._state === "update";
-		}).map(item => item);
+		}).map(item => {
+			if(item._isRemove){
+				item._state = "delete";
+				return item;
+			}else{
+				return item;
+			}
+		});
 	}
 	
 	//최초 조회시 값 가져오기
@@ -225,7 +232,7 @@ class wGrid{
 	}
 	
 	//key와 컬럼명으로 Element 찾기
-	_getColumnNameElement(key, columnName){
+	_getColumnElement(key, columnName){
 		let dataKey, element, columnElement = null;
 		
 		for(let i=0; i<this.node.bodyTable.childElementCount; i++){
@@ -241,34 +248,34 @@ class wGrid{
 				}			
 			}
 		}
-	}
+	}	
 	
-	//툴팁메세지 띄우기
-	tooltipMessage(key, columnName, message, offset, zIndex){
+	//input태그 툴팁메세지 띄우기
+	inputMessage(key, columnName, message, offset, zIndex){
 		
-		/*let element = this._getColumnNameElement(key, columnName);
-		
-		element.classList.add("wVali-border");
-		element.focus();
-		
-		let div = document.createElement("div");
-		div.setAttribute("id", "wValiAlert");
-		div.classList.add("wVali-tooltip");
-		div.textContent = message;
-		document.body.appendChild(div);
-		
-		let top = window.pageYOffset + element.getBoundingClientRect().top;
-		let left = window.pageYOffset + element.getBoundingClientRect().left;
-		div.style.top = top-42;		
-		div.style.left = left;	
-		
-		element.addEventListener("focusout", function(event){
-			alert(1111);
-			element.classList.remove("wVali-border");
-			element.removeEventListener("focusout", this, false);
-			div.remove();			
-		}, false);*/		
-		
+		let element = this._getColumnElement(key, columnName).querySelector(".wgrid-input");
+		if(element != null){
+			
+			let div = document.createElement("div");
+			
+			element.classList.add("wgrid-tooltip-input-border");
+			element.focus();
+			
+			div.classList.add("wgrid-tooltip");
+			div.textContent = message;
+			document.body.appendChild(div);
+			
+			let top = window.pageYOffset + element.getBoundingClientRect().top;
+			let left = window.pageYOffset + element.getBoundingClientRect().left;
+			div.style.top = top-42;		
+			div.style.left = left;	
+			
+			element.addEventListener("focusout", function(event){			
+				element.classList.remove("wgrid-tooltip-input-border");
+				element.removeEventListener("focusout", this, false);
+				div.remove();			
+			}, false);
+		}	
 	}
 
 	
@@ -464,7 +471,7 @@ class wGrid{
 	}
 	
 	//필드 컬럼 생성
-	createColumn(list, i){
+	createColumn(list, i){		
 		
 		let td, input, select, option, div = null;
 		
@@ -606,8 +613,15 @@ class wGrid{
 					//신규행 배경색 변경
 					if(list[i]._state === "insert"){
 						input.classList.add("wgrid-insert-tag");
-					//신규는 이벤트 필요없음
+						
+						//값 동기화 이벤트 등록 
+						input.addEventListener("keyup", event => {
+							list[i][this.fields[j].name] = event.target.value;
+						}, false);						
+						
+					//신규가 아닌 행
 					}else{
+						
 						//값 동기화 이벤트 등록 
 						input.addEventListener("keyup", event => {
 							list[i][this.fields[j].name] = event.target.value;							
@@ -622,6 +636,7 @@ class wGrid{
 							}					
 							
 						}, false);
+						
 					}					
 					td.appendChild(input);
 					break;

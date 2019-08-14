@@ -155,8 +155,8 @@ public class LedgerMapper {
 	 * @param list
 	 * @return
 	 */
-	public int selectVerifyBankSeqStrList(WhiteMap param) {
-		return sqlSession.selectOne("ledgerMapper.selectVerifyBankSeqStrList", param);
+	public int selectVerifyMeansSeqStrList(WhiteMap param) {
+		return sqlSession.selectOne("ledgerMapper.selectVerifyMeansSeqStrList", param);
 	}
 	
 	/**

@@ -15,8 +15,8 @@ function fnGrid(data){
 	
 	let clone = common.clone(data);
 	let bankList = data;
-	let bankNoIdx = cfnNoIdx(bankList, "bankSeq");
-	let cloneNoIdx = cfnNoIdx(clone, "bankSeq");
+	let bankNoIdx = cfnNoIdx(bankList, "meansSeq");
+	let cloneNoIdx = cfnNoIdx(clone, "meansSeq");
 	
 	$("#bankList").jsGrid({
 		height: "auto",
@@ -36,29 +36,29 @@ function fnGrid(data){
 						bankList.push({
 							meansInfo:"",
 							meansOrder:  $("#bankList").jsGrid("option", "data").length+1,
-							bankSeq:new Date().getTime(),
+							meansSeq:new Date().getTime(),
 							meansNm:"",
 							meansDtlNm: "",
 							meansRemark: "",
 							meansUseYn:"N",
 							state:"insert"});		
-						bankNoIdx = cfnNoIdx(bankList, "bankSeq");
+						bankNoIdx = cfnNoIdx(bankList, "meansSeq");
 						$("#bankList").jsGrid("refresh");
 					});					
 				},				
                 itemTemplate: function(value, item) {
                     let chk = $("<input>").attr("type", "checkbox").attr("name", "check")
-                    .data("bankSeq", item.bankSeq).data("meansOrder", item.bankOrder).on("change", function() {
-                    	let idx = bankNoIdx[item.bankSeq];
-                    	let cIdx = cloneNoIdx[item.bankSeq];
+                    .data("meansSeq", item.meansSeq).data("meansOrder", item.bankOrder).on("change", function() {
+                    	let idx = bankNoIdx[item.meansSeq];
+                    	let cIdx = cloneNoIdx[item.meansSeq];
                 			
                			if(isEmpty(item.meansOrder)){
                	    		$("#bankList").jsGrid("deleteItem", item);
-               	    		delete bankNoIdx[item.bankSeq];               	    		
+               	    		delete bankNoIdx[item.meansSeq];               	    		
                	    	}else{
                	    		if($(this).is(":checked")) {
                    	   			$("[name='sync']").each(function(i, e){				
-                   	   				if(item.bankSeq  === $(e).data("bankSeq")){
+                   	   				if(item.meansSeq  === $(e).data("meansSeq")){
                    	   					$(e).addClass("sync-red");               	   					
                    	   					if(String(clone[cIdx][$(e).data("name")]) !== String($(e).val())){
                    	   						$(e).addClass("sync-blue");
@@ -68,7 +68,7 @@ function fnGrid(data){
                    	   			});
                    	   		}else{
                    	   			$("[name='sync']").each(function(i, e){				
-                   	   				if(item.bankSeq === $(e).data("bankSeq")){
+                   	   				if(item.meansSeq === $(e).data("meansSeq")){
                    	   					$(e).removeClass("sync-red");               	   					
                    	   					if($(e).hasClass("sync-blue") || bankList[idx].state === "update"){
                    	   						bankList[idx].state = "update";
@@ -123,7 +123,7 @@ function fnGrid(data){
 						return $(row).data("JSGridItem");
 					});
 					
-					bankNoIdx = cfnNoIdx(bankList, "bankSeq");
+					bankNoIdx = cfnNoIdx(bankList, "meansSeq");
 					for(let i=0; i<items.length; i++){
 						fnOnSync($("#bankList .ui-sortable tr span")[i], i);
 					}
@@ -232,8 +232,8 @@ function fnGrid(data){
 	function fnOnSync(obj, sortIdx){
 		
 		let name = $(obj).data("name");
-		let idx = bankNoIdx[$(obj).data("bankSeq")];
-		let cIdx = cloneNoIdx[$(obj).data("bankSeq")];
+		let idx = bankNoIdx[$(obj).data("meansSeq")];
+		let cIdx = cloneNoIdx[$(obj).data("meansSeq")];
 		
 		if($(obj).hasClass("sync-green")){
 			if(isEmpty(sortIdx)) bankList[idx][name] = $(obj).val();
@@ -282,7 +282,7 @@ function fnGrid(data){
 			$el = $("<button>").addClass("btn-gray trs size-sm").val(item[name]).text(item[name]);
 			break;
 		}
-		$el.attr("name", "sync").data("bankSeq", item.bankSeq).data("name", name);
+		$el.attr("name", "sync").data("meansSeq", item.meansSeq).data("name", name);
 		/* if(name !== "meansDtlNm"){
 			$el.attr("name", "sync");
 		} */
@@ -290,14 +290,14 @@ function fnGrid(data){
 
 		if(item.state === "insert") $el.addClass("sync-green");	
 		else if(item.state === "update"){									
-			if(clone[cloneNoIdx[item.bankSeq]][name] === item[name]){
+			if(clone[cloneNoIdx[item.meansSeq]][name] === item[name]){
 				$el.removeClass("sync-blue");
 			}else{
 				$el.addClass("sync-blue");
 			}			
 		}else if(item.state === "delete"){
 			$el.addClass("sync-red");
-			if(clone[cloneNoIdx[item.bankSeq]][name] !== $el.val()){
+			if(clone[cloneNoIdx[item.meansSeq]][name] !== $el.val()){
 				$el.addClass("sync-blue");
 			}
 		}		

@@ -52,12 +52,12 @@ function ledgerList(data){
 	
 	//사용수단
 	for(let i=0; i<data.bankList.length; i++){
-		$option = $("<option>").val(data.bankList[i].bankSeq)
+		$option = $("<option>").val(data.bankList[i].meansSeq)
 			.text(data.bankList[i].meansNm+"("+data.bankList[i].meansInfo+")");					
-		$("#searchBar #bankSeq").append($option);
+		$("#searchBar #meansSeq").append($option);
 		
 		//은행seq 맵 생성
-		bankMap[data.bankList[i].bankSeq] = data.bankList[i].meansNm+"("+data.bankList[i].meansInfo+")";
+		bankMap[data.bankList[i].meansSeq] = data.bankList[i].meansNm+"("+data.bankList[i].meansInfo+")";
 	}
 	
 	//조회버튼
@@ -67,7 +67,7 @@ function ledgerList(data){
 		param.endDate = $("#searchBar #endDate").val();
 		param.purSeq = $("#searchBar #purSeq").val();
 		param.purDtlSeq = $("#searchBar #purDtlSeq").val();
-		param.bankSeq = $("#searchBar #bankSeq").val();
+		param.meansSeq = $("#searchBar #meansSeq").val();
 		param.searchType = "edit";
 		
 		if(!wcm.isDatePattern(param.startDate, "yyyy-MM-dd")){			
@@ -142,7 +142,7 @@ function ledgerList(data){
 						wVali.alert({element : $(e), msg: "숫자를 입력해 주세요."}); return false;
 					}
 					break;
-				case "bankSeq" :
+				case "meansSeq" :
 					if(String($(e).val()) === String($($(e)[0]).next().val())){
 						isVali = false;
 						wVali.alert({element : $(e), msg: "보내는 곳과 받는곳이 일치합니다."}); return false;
@@ -301,7 +301,7 @@ function ledgerList(data){
 					return fnCreatePurSelect(item, idx, "purDtlSeq");
 				}
 			},
-			{title: "사용수단", 	name: "bankSeq",	width: "17%",
+			{title: "사용수단", 	name: "meansSeq",	width: "17%",
 				itemTemplate: function(item, idx){
 					return fnCreateBankSelect(item, idx);
 				}
@@ -355,7 +355,7 @@ function ledgerList(data){
 				if(isNotEmpty($("#searchBar #purDtlSeq").val()) && String($("#searchBar #purDtlSeq").val()) !== String(list[i].purDtlSeq)){
 					continue;				
 				}
-				if(isNotEmpty($("#searchBar #bankSeq").val()) && String($("#searchBar #bankSeq").val()) !== String(list[i].bankSeq)){
+				if(isNotEmpty($("#searchBar #meansSeq").val()) && String($("#searchBar #meansSeq").val()) !== String(list[i].meansSeq)){
 					continue;				
 				}
 				
@@ -386,7 +386,7 @@ function ledgerList(data){
 				return false;	
 			}else if(String(item.purDtlSeq) !== String(cloneList[idx].purDtlSeq)){
 				return false;
-			}else if(String(item.bankSeq) !== String(cloneList[idx].bankSeq)){
+			}else if(String(item.meansSeq) !== String(cloneList[idx].meansSeq)){
 				return false;
 			}else if(String(item.money).replace(/,/g,"") !== String(cloneList[idx].money).replace(/,/g,"")){
 				return false;
@@ -463,12 +463,12 @@ function ledgerList(data){
 	//사용수단 생성
 	function fnCreateBankSelect(item, idx){
 		let $span = $("<span>");
-		let $select = $("<select>").data("name", "bankSeq").append($("<option>").val("0").text("현금"));
+		let $select = $("<select>").data("name", "meansSeq").append($("<option>").val("0").text("현금"));
 		let bankList = data.bankList;
 		
 		for(let i=0; i<bankList.length; i++){
-			$option = $("<option>").val(bankList[i].bankSeq).text(bankList[i].meansNm+"("+bankList[i].meansInfo+")");	
-			if(String(cloneList[idx].bankSeq) === String(bankList[i].bankSeq)){				
+			$option = $("<option>").val(bankList[i].meansSeq).text(bankList[i].meansNm+"("+bankList[i].meansInfo+")");	
+			if(String(cloneList[idx].meansSeq) === String(bankList[i].meansSeq)){				
 				$option.prop("selected", true);
 			}
 			$select.append($option);
@@ -478,18 +478,18 @@ function ledgerList(data){
 			.addClass(item.purType==="LED003"?"wth50p":"wth100p")
 			.attr("name","sync"+idx)
 			.off().on("change", function(){			
-				item.bankSeq = this.value;				
+				item.meansSeq = this.value;				
 				if(item.purType==="LED001" || item.purType==="LED002")	item.moveSeq = this.value;
 				else item.moveSeq = "";
-				fnTypeSync(this, "bankSeq", item, idx);
+				fnTypeSync(this, "meansSeq", item, idx);
 			});		
 		$span.append($select);
 		
 		if(item.purType==="LED003"){
 			$select = $("<select>").data("name", "moveSeq").append($("<option>").val("0").text("현금"));
 			for(let i=0; i<bankList.length; i++){
-				$option = $("<option>").val(bankList[i].bankSeq).text(bankList[i].meansNm+"("+bankList[i].meansInfo+")");	
-				if(String(cloneList[idx].moveSeq) === String(bankList[i].bankSeq)){				
+				$option = $("<option>").val(bankList[i].meansSeq).text(bankList[i].meansNm+"("+bankList[i].meansInfo+")");	
+				if(String(cloneList[idx].moveSeq) === String(bankList[i].meansSeq)){				
 					$option.prop("selected", true);
 				}
 				$select.append($option);
@@ -603,7 +603,7 @@ function ledgerList(data){
 				</td>
 				<th>은행</th>
 				<td>
-					<select id="bankSeq" class="select-gray wth100p">
+					<select id="meansSeq" class="select-gray wth100p">
 						<option value=''>전체</option>
 						<option value='0'>현금</option>
 					</select>
