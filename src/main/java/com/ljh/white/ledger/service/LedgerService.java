@@ -155,12 +155,12 @@ public class LedgerService {
 	}
 	
 	/**
-	 * 해당 유저 은행리스트
+	 * 해당 유저 사용수단 리스트
 	 * @param param
 	 * @return
 	 */
-	public List<WhiteMap> selectBankList(WhiteMap param){		
-		return ledgerMapper.selectBankList(param);	
+	public List<WhiteMap> selectMeansList(WhiteMap param){		
+		return ledgerMapper.selectMeansList(param);	
 	}
 	
 	/**
@@ -247,7 +247,7 @@ public class LedgerService {
 		WhiteMap purSeqMap = White.convertListToMap(purList, "purSeq", "purpose");	
 		WhiteMap purTypeMap = White.convertListToMap(purList, "purSeq", "purType");	
 		WhiteMap purDtlSeqMap = White.convertListToMap(this.selectPurDtlList(param), "purDtlSeq", "purSeq");
-		WhiteMap meansSeqMap = White.convertListToMap(this.selectBankList(param), "meansSeq", "meansNm");
+		WhiteMap meansSeqMap = White.convertListToMap(this.selectMeansList(param), "meansSeq", "meansNm");
 		meansSeqMap.put("0", "cash");
 		
 		String str = null;
@@ -321,7 +321,7 @@ public class LedgerService {
 	 */
 	public List<WhiteMap> selectLedgerList(WhiteMap param){
 		
-		List<WhiteMap> bankList = this.selectBankList(param);		
+		List<WhiteMap> bankList = this.selectMeansList(param);		
 		
 		//금전기록 기간 조회시 기간 이전  각각(현금, 은행등등) 금액 데이터 합산
 		List<WhiteMap> pastList = new ArrayList<WhiteMap>();
@@ -428,9 +428,9 @@ public class LedgerService {
 	 * @param param
 	 * @return
 	 */
-	public List<WhiteMap> selectRecordSumList(WhiteMap param){
+	/*public List<WhiteMap> selectRecordSumList(WhiteMap param){
 		
-		List<WhiteMap> bankList = this.selectBankList(param);
+		List<WhiteMap> bankList = this.selectMeansList(param);
 		//금전기록 기간 조회시 기간 이전  각각(현금, 은행등등) 금액 데이터 합산
 		List<WhiteMap> pastRecList = new ArrayList<WhiteMap>();
 		WhiteMap map = null;
@@ -504,7 +504,7 @@ public class LedgerService {
 			}						
 		}		
 		return recList;			
-	}
+	}*/
 	
 	/**
 	 * 가계부 첫 입력 날짜 조회

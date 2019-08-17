@@ -84,14 +84,19 @@ public class LedgerController {
 	}
 	
 	/**
-	 * 해당유저 은행목록 조회
+	 * 해당유저 사용수단 목록 조회
 	 * @param request
 	 * @return
 	 */
 	@RequestMapping(value="/ledger/selectBankList.ajax" )
 	public List<WhiteMap> selectBankList(HttpServletRequest request){		
 		WhiteMap param = new WhiteMap(request);		
-		return ledgerService.selectBankList(param);
+		return ledgerService.selectMeansList(param);
+	}
+	@RequestMapping(value="/ledger/selectMeansList.ajax" )
+	public List<WhiteMap> selectMeansList(HttpServletRequest request){		
+		WhiteMap param = new WhiteMap(request);		
+		return ledgerService.selectMeansList(param);
 	}
 	
 	/**
@@ -122,7 +127,7 @@ public class LedgerController {
 		WhiteMap result = new WhiteMap();		
 		result.put("purList", ledgerService.selectPurList(param));
 		result.put("purDtlList", ledgerService.selectPurDtlList(param));
-		result.put("bankList", ledgerService.selectBankList(param));
+		result.put("bankList", ledgerService.selectMeansList(param));
 		return result;
 	}
 	
@@ -146,8 +151,8 @@ public class LedgerController {
 	public List<WhiteMap> selectRecordList(HttpServletRequest request){
 		WhiteMap param = new WhiteMap(request);
 		switch(param.getString("searchType")) {
-		case "select":
-			return ledgerService.selectRecordSumList(param);
+		//case "select":   selectLedgerList 으로 옮김
+		//	return ledgerService.selectRecordSumList(param);
 		case "recent":
 			if(param.get("schdTime")==null || "".equals(param.get("schdTime"))){
 				param.put("schdTime", 1);

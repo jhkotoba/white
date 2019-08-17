@@ -21,7 +21,7 @@ function fnInit(){
 			load : function(){					
 				let promise = new Promise(function(resolve, reject){
 					let srhParam = {};
-					$.post("${contextPath}/ledger/selectBankList.ajax", srhParam, resolve);
+					$.post("${contextPath}/ledger/selectMeansList.ajax", srhParam, resolve);
 				});
 				return promise;
 			}			

@@ -176,7 +176,7 @@
 	</insert>
 	
 	<!-- 은행 조회 -->
-	<select id="selectBankList" resultType="whiteMap" parameterType="whiteMap">
+	<select id="selectMeansList" resultType="whiteMap" parameterType="whiteMap">
 		SELECT			
 			MEANS_SEQ AS meansSeq,
 			MEANS_NM AS meansNm,

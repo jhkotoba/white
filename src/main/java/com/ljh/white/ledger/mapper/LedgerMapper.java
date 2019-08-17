@@ -146,8 +146,8 @@ public class LedgerMapper {
 	 * @param paramMap
 	 * @return
 	 */
-	public List<WhiteMap> selectBankList(WhiteMap param) {
-		return sqlSession.selectList("ledgerMapper.selectBankList", param);
+	public List<WhiteMap> selectMeansList(WhiteMap param) {
+		return sqlSession.selectList("ledgerMapper.selectMeansList", param);
 	}
 	
 	/**
