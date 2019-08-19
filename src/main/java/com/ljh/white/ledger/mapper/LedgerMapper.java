@@ -164,8 +164,8 @@ public class LedgerMapper {
 	 * @param list
 	 * @return
 	 */
-	public int selectIsUsedBankRec(List<WhiteMap> list) {		
-		return sqlSession.selectOne("ledgerMapper.selectIsUsedBankRec", list);		 
+	public int selectIsUsedMeansRec(List<WhiteMap> list) {		
+		return sqlSession.selectOne("ledgerMapper.selectIsUsedMeansRec", list);		 
 	}
 	
 	/**
@@ -173,8 +173,8 @@ public class LedgerMapper {
 	 * @param list
 	 * @return
 	 */
-	public int insertBankList(List<WhiteMap> list) {
-		return sqlSession.insert("ledgerMapper.insertBankList", list);
+	public int insertMeansList(List<WhiteMap> list) {
+		return sqlSession.insert("ledgerMapper.insertMeansList", list);
 	}
 	
 	/**
@@ -182,8 +182,8 @@ public class LedgerMapper {
 	 * @param list
 	 * @return
 	 */
-	public int updateBankList(List<WhiteMap> list) {		
-		return sqlSession.update("ledgerMapper.updateBankList", list);		
+	public int updateMeansList(List<WhiteMap> list) {		
+		return sqlSession.update("ledgerMapper.updateMeansList", list);		
 	}
 	
 	/**
@@ -191,8 +191,8 @@ public class LedgerMapper {
 	 * @param list
 	 * @return
 	 */
-	public int deleteBankList(List<WhiteMap> list) {		
-		return sqlSession.delete("ledgerMapper.deleteBankList", list);		 
+	public int deleteMeansList(List<WhiteMap> list) {		
+		return sqlSession.delete("ledgerMapper.deleteMeansList", list);		 
 	}
 	
 	/**

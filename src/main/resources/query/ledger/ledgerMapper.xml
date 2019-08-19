@@ -12,7 +12,7 @@
 	 		purpose AS purpose,
 	 		pur_type AS purType
 		FROM purpose
-		WHERE user_seq = #{userSeq}
+		WHERE USER_SEQ = #{userSeq}
 		ORDER BY pur_order
 	</select>
 	
@@ -24,14 +24,14 @@
 			pur_dtl_order AS purDtlOrder,
 			pur_detail AS purDetail
 		FROM purpose_detail
-		WHERE user_seq = #{userSeq}
+		WHERE USER_SEQ = #{userSeq}
 		ORDER BY pur_dtl_order	
 	</select>
 	
 	<!-- 해당 유저 목적 반영하기전 목적 시퀀스 검증 -->
 	<select id="selectVerifyPurSeqStrList" resultType="int" parameterType="java.util.List">
 		SELECT COUNT(1)	FROM purpose
-		WHERE user_seq <![CDATA[ <> ]]> #{userSeq}
+		WHERE USER_SEQ <![CDATA[ <> ]]> #{userSeq}
 		AND pur_seq IN (${verifyPurSeqList})
 	</select>
 	
@@ -65,7 +65,7 @@
 	<!-- 목적 리스트 insert -->
 	<insert id="insertPurList" parameterType="java.util.List">
 		INSERT INTO purpose(		
-			user_seq,	
+			USER_SEQ,	
 			pur_order,
 			purpose,
 			pur_type
@@ -109,14 +109,14 @@
 	<!-- 해당 유저 상세목적 반영하기전 상세목적 시퀀스 검증 -->
 	<select id="selectVerifyPurDtlSeqStrList" resultType="int" parameterType="java.util.List">
 		SELECT COUNT(1)	FROM purpose_detail
-		WHERE user_seq <![CDATA[ <> ]]> #{userSeq}
+		WHERE USER_SEQ <![CDATA[ <> ]]> #{userSeq}
 		AND pur_dtl_seq IN (${verifyPurDtlSeqList})
 	</select>
 	
 	<!-- 해당 유저 상세목적반영하기전 목적 시퀀스 검증 -->
 	<select id="selectVerifyPurSeq" resultType="int" parameterType="whiteMap">
 		SELECT COUNT(1) FROM purpose
-		WHERE user_seq = #{userSeq}
+		WHERE USER_SEQ = #{userSeq}
 		AND pur_seq = #{purSeq}
 	</select>
 	
@@ -163,7 +163,7 @@
 	<insert id="insertPurDtlList" parameterType="java.util.List">
 		INSERT INTO purpose_detail(		
 			pur_seq,	
-			user_seq,	
+			USER_SEQ,	
 			pur_dtl_order,
 			pur_detail
 		)VALUES
@@ -185,22 +185,22 @@
 			MEANS_USE_YN AS meansUseYn,
 			MEANS_ORDER AS meansOrder,
 			MEANS_REMARK AS meansRemark
-		FROM bank
-		WHERE user_seq = #{userSeq}		
+		FROM MEANS
+		WHERE USER_SEQ = #{userSeq}		
 		ORDER BY MEANS_ORDER ASC
 	</select>
 	
 	<!-- 해당 유저 은행 반영하기전 상세목적 시퀀스 검증 -->
 	<select id="selectVerifyMeansSeqStrList" resultType="int" parameterType="java.util.List">
 		/* ledgerMapper|selectVerifyMeansSeqStrList */
-		SELECT COUNT(1)	FROM bank
-		WHERE user_seq <![CDATA[ <> ]]> #{userSeq}
+		SELECT COUNT(1)	FROM MEANS
+		WHERE USER_SEQ <![CDATA[ <> ]]> #{userSeq}
 		AND MEANS_SEQ IN (${verifyMeansSeqList})
 	</select>
 	
-	<!-- 은행 사용되는지 확인 -->
-	<select id="selectIsUsedBankRec" resultType="int" parameterType="java.util.List">
-		/* ledgerMapper|selectIsUsedBankRec */
+	<!-- 사용목적 사용되는지 확인 -->
+	<select id="selectIsUsedMeansRec" resultType="int" parameterType="java.util.List">
+		/* ledgerMapper|selectIsUsedMeansRec */
 		SELECT COUNT(1) FROM money_record_re
 		WHERE MEANS_SEQ IN
 		<foreach collection="list" item="item" separator="," open="(" close=")">
@@ -208,11 +208,11 @@
 		</foreach>
 	</select>
 	
-	<!-- 은행 리스트 insert -->
-	<insert id="insertBankList" parameterType="java.util.List">
-		/* ledgerMapper|insertBankList */
-		INSERT INTO bank(		
-			user_seq,
+	<!-- 사용목적 리스트 insert -->
+	<insert id="insertMeansList" parameterType="java.util.List">
+		/* ledgerMapper|insertMeansList */
+		INSERT INTO MEANS(		
+			USER_SEQ,
 			MEANS_NM,
 			MEANS_DTL_NM,
 			MEANS_INFO,
@@ -226,15 +226,14 @@
 			#{item.meansDtlNm},
 			#{item.meansInfo},
 			#{item.meansUseYn},
-			(SELECT MAX(B.MEANS_ORDER)+1 FROM bank B WHERE B.user_seq = #{item.userSeq}),			
+			(SELECT MAX(B.MEANS_ORDER)+1 FROM MEANS B WHERE B.USER_SEQ = #{item.userSeq}),			
 			#{item.meansRemark}	
 		</foreach>	
 	</insert>
 	
 	<!-- 은행 list 수정 -->
-	<update id="updateBankList" parameterType="java.util.List">		
-		UPDATE bank		
-		<!-- SET bank_name =  -->
+	<update id="updateMeansList" parameterType="java.util.List">		
+		UPDATE MEANS
 		SET MEANS_NM = 
 		CASE		
 		<foreach collection="list" item="item">
@@ -278,8 +277,8 @@
 	</update>
 	
 	<!-- 은행 list 삭제 -->
-	<delete id="deleteBankList" parameterType="java.util.List">
-		DELETE FROM bank
+	<delete id="deleteMeansList" parameterType="java.util.List">
+		DELETE FROM MEANS
 		WHERE MEANS_SEQ IN 
 		<foreach collection="list" item="item" separator="," open="(" close=")">
 			#{item.meansSeq}
@@ -289,7 +288,7 @@
 	<!-- 가게부 기입 list insert -->
 	<insert id="insertRecordList" parameterType="java.util.List">
 		INSERT INTO money_record_re(		
-			user_seq,	
+			USER_SEQ,	
 			record_date,
 			position,	
 			content,	
@@ -333,9 +332,9 @@
 				    )
 				  ,0)
 			  FROM money_record_re
-			  WHERE user_seq = #{item.userSeq} 
+			  WHERE USER_SEQ = #{item.userSeq} 
 			  AND record_date <![CDATA[ < ]]>  #{item.startDate}
-			)AS ${item.bankNo}	
+			)AS ${item.meansNo}	
 		</foreach>		
 	</select>
 	
@@ -355,18 +354,18 @@
 			,rec.stats_yn AS statsYn
 			,pur.purpose	AS purpose
 			,purDtl.pur_detail AS purDetail
-			,bank.MEANS_NM	AS meansNm
-			,bank.MEANS_DTL_NM	AS meansDtlNm
-			,bank.MEANS_INFO AS meansInfo
-			,IFNULL(bank.MEANS_USE_YN,'X') AS meansUseYn
+			,M.MEANS_NM	AS meansNm
+			,M.MEANS_DTL_NM	AS meansDtlNm
+			,M.MEANS_INFO AS meansInfo
+			,IFNULL(M.MEANS_USE_YN,'X') AS meansUseYn
 		FROM money_record_re rec
 		LEFT OUTER JOIN purpose pur
 		ON rec.pur_seq = pur.pur_seq
 		LEFT OUTER JOIN purpose_detail purDtl
 		ON rec.pur_dtl_seq = purDtl.pur_dtl_seq
-		LEFT OUTER JOIN bank bank
-    	ON rec.MEANS_SEQ = bank.MEANS_SEQ
-		WHERE rec.user_seq = #{userSeq}
+		LEFT OUTER JOIN MEANS M
+    	ON rec.MEANS_SEQ = M.MEANS_SEQ
+		WHERE rec.USER_SEQ = #{userSeq}
 		AND rec.record_date <![CDATA[ >= ]]> CONCAT(#{startDate}, ' 00:00:00')
 		AND rec.record_date <![CDATA[ <= ]]> CONCAT(#{endDate}, ' 23:59:59')
 		ORDER BY rec.record_date ASC,  rec.record_seq ASC
@@ -388,7 +387,7 @@
 				    )
 				  ,0)
 			  FROM money_record_re
-			  WHERE user_seq = #{item.userSeq} 
+			  WHERE USER_SEQ = #{item.userSeq} 
 			  AND record_date <![CDATA[ < ]]>  #{item.startDate}
 			)AS ${item.meansNm}	
 		</foreach>		
@@ -410,9 +409,9 @@
 			,rec.stats_yn AS statsYn
 			,IFNULL(pur.purpose, 'move')	AS purpose
 			,IFNULL(purDtl.pur_detail,'') AS purDetail
-			,IFNULL(bank.MEANS_NM, 'cash')	AS meansNm
-			,IFNULL(bank.MEANS_INFO, 'cash')	AS meansInfo
-			,IFNULL(bank.MEANS_USE_YN,'X') AS meansUseYn
+			,IFNULL(M.MEANS_NM, 'cash')	AS meansNm
+			,IFNULL(M.MEANS_INFO, 'cash')	AS meansInfo
+			,IFNULL(M.MEANS_USE_YN,'X') AS meansUseYn
 			<if test="searchType == 'recent'">
 			,DATE_FORMAT(rec.edit_date,'%Y-%m-%d %H:%i:%d') AS editDate
 			,DATE_FORMAT(rec.reg_date,'%Y-%m-%d %H:%i:%d') AS regDate
@@ -422,9 +421,9 @@
 		ON rec.pur_seq = pur.pur_seq
 		LEFT OUTER JOIN purpose_detail purDtl
 		ON rec.pur_dtl_seq = purDtl.pur_dtl_seq
-		LEFT OUTER JOIN bank bank
-    	ON rec.MEANS_SEQ = bank.MEANS_SEQ
-		WHERE rec.user_seq = #{userSeq}
+		LEFT OUTER JOIN MEANS M
+    	ON rec.MEANS_SEQ = M.MEANS_SEQ
+		WHERE rec.USER_SEQ = #{userSeq}
 		<choose>
 		<when test="searchType == 'recent'">
 		AND rec.reg_date <![CDATA[ >= ]]> DATE_ADD(NOW(), INTERVAL -${schdTime} HOUR)
@@ -508,7 +507,7 @@
 		<foreach collection="list" item="item" separator="," open="(" close=")">
 			#{item.recordSeq}
 		</foreach>
-		AND user_seq IN 
+		AND USER_SEQ IN 
 		<foreach collection="list" item="item" separator="," open="(" close=")">
 			#{item.userSeq}
 		</foreach>
@@ -521,7 +520,7 @@
 		<foreach collection="list" item="item" separator="," open="(" close=")">
 			#{item.recordSeq}
 		</foreach>
-		AND user_seq IN 
+		AND USER_SEQ IN 
 		<foreach collection="list" item="item" separator="," open="(" close=")">
 			#{item.userSeq}
 		</foreach>
@@ -532,7 +531,7 @@
 		SELECT
 			DATE_FORMAT(mr.record_date,'%Y-%m-%d') AS firstDate
 		FROM money_record_re mr		
-		WHERE mr.user_seq = #{userSeq}
+		WHERE mr.USER_SEQ = #{userSeq}
 	    ORDER BY mr.record_date ASC
 	    Limit 1
 	</select>	
@@ -546,7 +545,7 @@
 			ON p.pur_seq = mr.pur_seq
 		INNER JOIN purpose_detail pd
 			ON pd.pur_dtl_seq = mr.pur_dtl_seq
-		WHERE mr.user_seq = #{userSeq}		
+		WHERE mr.USER_SEQ = #{userSeq}		
 		AND p.pur_type != 'LED003'   
 		AND mr.record_date  <![CDATA[ < ]]> #{startDate}
 	</select>
@@ -568,7 +567,7 @@
 					ON p.pur_seq = mr.pur_seq
 		    	INNER JOIN purpose_detail pd
 		      		ON pd.pur_dtl_seq = mr.pur_dtl_seq			
-		    	WHERE mr.user_seq = #{item.userSeq}	
+		    	WHERE mr.USER_SEQ = #{item.userSeq}	
 		    	AND mr.stats_yn = 'Y'	    	
 		    	AND p.pur_type != 'LED003'   
 				AND mr.record_date   <![CDATA[ >= ]]>  #{item.startDate}
@@ -598,7 +597,7 @@
 			ON p.pur_seq = mr.pur_seq
 		INNER JOIN purpose_detail pd
 			ON pd.pur_dtl_seq = mr.pur_dtl_seq	
-		WHERE mr.user_seq = #{userSeq}
+		WHERE mr.USER_SEQ = #{userSeq}
 		AND mr.record_date   <![CDATA[ >= ]]> #{startDate}
 		AND mr.record_date   <![CDATA[ <= ]]> #{endDate}
 		AND mr.stats_yn = 'Y'
@@ -615,7 +614,7 @@
 		FROM money_record_re mr		
 		INNER JOIN purpose_detail pd
 			ON pd.pur_dtl_seq = mr.pur_dtl_seq	
-		WHERE mr.user_seq = #{userSeq}
+		WHERE mr.USER_SEQ = #{userSeq}
 		AND mr.pur_seq = #{purSeq}
 		AND mr.record_date   <![CDATA[ >= ]]> #{startDate}
 		AND mr.record_date   <![CDATA[ <= ]]> #{endDate}

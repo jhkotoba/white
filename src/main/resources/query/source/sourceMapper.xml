@@ -9,7 +9,7 @@
 		LEFT OUTER JOIN cmm_code cc
 	    	ON sb.lang_cd = cc.code
 	    LEFT OUTER JOIN white_user wu
-  			ON wu.user_seq = sb.user_seq
+  			ON wu.USER_SEQ = sb.USER_SEQ
 		<where>
   			<if test="langCd != '' and langCd != null">
 		  	AND sb.lang_cd = #{langCd}
@@ -47,7 +47,7 @@
 	    LEFT OUTER JOIN cmm_code cc
 	    	ON sb.lang_cd = cc.code
 	    LEFT OUTER JOIN white_user wu
-  			ON wu.user_seq = sb.user_seq
+  			ON wu.USER_SEQ = sb.USER_SEQ
   		<where>
   			<if test="langCd != '' and langCd != null">
 		  	AND sb.lang_cd = #{langCd}
@@ -88,7 +88,7 @@
 			,DATE_FORMAT(sb.reg_date,'%Y-%m-%d %H:%i:%s') AS regDate
 		FROM source_board sb
    		LEFT OUTER JOIN white_user wu
-  			ON wu.user_seq = sb.user_seq
+  			ON wu.USER_SEQ = sb.USER_SEQ
   		LEFT OUTER JOIN cmm_code cc
 	    	ON sb.lang_cd = cc.code   
 		WHERE sb.source_seq = #{sourceSeq}
@@ -96,7 +96,7 @@
 	
 	<insert id="insertSource" parameterType="WhiteMap">
 		INSERT
-		INTO source_board(user_seq, lang_cd, title, content, edit_date, reg_date)
+		INTO source_board(USER_SEQ, lang_cd, title, content, edit_date, reg_date)
 		VALUES(
 			#{userSeq},
 			#{langCd},
@@ -113,13 +113,13 @@
 			lang_cd = #{langCd},
 			content = #{content},
 			edit_date = NOW()
-		WHERE user_seq = #{userSeq}
+		WHERE USER_SEQ = #{userSeq}
 		AND source_seq = #{sourceSeq}
 	</update>
 	
 	<delete id="deleteSource" parameterType="WhiteMap">
 		DELETE FROM source_board
-		WHERE user_seq = #{userSeq}
+		WHERE USER_SEQ = #{userSeq}
 		AND source_seq = #{sourceSeq}	
 	</delete>
 	
@@ -138,7 +138,7 @@
 			,wu.user_id				AS userId
 		FROM source_guide sg
 		LEFT OUTER JOIN white_user wu
-  			ON wu.user_seq = sg.user_seq
+  			ON wu.USER_SEQ = sg.USER_SEQ
   		ORDER BY sg.source_guide_seq DESC
 		<!-- LIMIT ${pagePre}, ${pageSize} -->		
 	</select>

@@ -19,7 +19,7 @@ function monthStats(date){
 	
 	$("#monthIEStatsChart").empty();
 	$("#monthAmountSumChart").empty();
-	$("#monthCashBankChart").empty();
+	$("#monthCashMeansChart").empty();
 	$("#monthPurposeP1Chart").empty();
 	$("#monthPurposeP2Chart").empty();
 	$("#monthPurposeP3Chart").empty();
@@ -185,12 +185,12 @@ function monthCBStatsDraw(BC){
 	let areaTag = {head: "", data: ""};
 	
 	//제목 입력
-	let bankList = BC[0].bankList;
+	let meansList = BC[0].meansList;
 	areaData.push("date");
 	areaData.push("현금");	
 	
-	for(let i=0; i<bankList.length; i++){
-		areaData.push(bankList[i].meansNm);		
+	for(let i=0; i<meansList.length; i++){
+		areaData.push(meansList[i].meansNm);		
 	}
 	area.push(areaData);
 	
@@ -200,8 +200,8 @@ function monthCBStatsDraw(BC){
 			areaData = new Array();
 			areaData.push(BC[i].date);
 			areaData.push(BC[0].cash + BC[i].cash);
-			for(let j=0; j<bankList.length; j++){
-				areaData.push(BC[0]["bank"+bankList[j].meansSeq] + BC[i]["bank"+bankList[j].meansSeq]);
+			for(let j=0; j<meansList.length; j++){
+				areaData.push(BC[0]["means"+meansList[j].meansSeq] + BC[i]["means"+meansList[j].meansSeq]);
 			}
 			area.push(areaData);
 		}else{
@@ -209,8 +209,8 @@ function monthCBStatsDraw(BC){
 			areaData.push(BC[i].date);
 			areaData.push(area[i-1][1] + BC[i].cash);
 			
-			for(let j=0; j<bankList.length; j++){				
-				areaData.push(area[i-1][j+2] + BC[i]["bank"+bankList[j].meansSeq]);
+			for(let j=0; j<meansList.length; j++){				
+				areaData.push(area[i-1][j+2] + BC[i]["means"+meansList[j].meansSeq]);
 			}
 			area.push(areaData);
 		}
@@ -251,7 +251,7 @@ function monthCBStatsDraw(BC){
 			}
 		};
 		
-		let chart = new google.visualization.AreaChart(document.getElementById("monthCashBankChart"));		
+		let chart = new google.visualization.AreaChart(document.getElementById("monthCashMeansChart"));		
 		chart.draw(data, options);
 	}	
 	
@@ -343,8 +343,8 @@ function monthPStatsDraw(P){
 	<div id="monthAmountSumList"></div>
 	
 	<!-- 월별 현금, 은행별 통계 -->
-	<div class="chart-height" id="monthCashBankChart"></div>
-	<%-- <div id="monthCashBankList"></div> 추후 업데이트--%>
+	<div class="chart-height" id="monthCashMeansChart"></div>
+	<%-- <div id="monthCashMeansList"></div> 추후 업데이트--%>
 	
 	<!-- 월별 목적별 통계 -->
 	<div>

@@ -13,7 +13,7 @@
 			memo_content AS memoContent,
 			'select' AS state
 		FROM memo
-		WHERE user_seq = #{userSeq}
+		WHERE USER_SEQ = #{userSeq}
 		AND memo_type = #{memoType}
 		ORDER BY memo_seq ASC
 	</select>
@@ -23,7 +23,7 @@
 	
 	<insert id="insertMemoList" parameterType="java.util.List">
 		INSERT INTO memo(		
-			user_seq,	
+			USER_SEQ,	
 			memo_type,	
 			memo_content,	
 			reg_date

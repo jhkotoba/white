@@ -28,12 +28,12 @@ function fnInit(){
 		},
 		fields : [
 			{ isRemoveButton: true, isHeadAddButton: true, width: "3%", align:"center"},
-			{ title:"번호", name:"meansOrder", tag:"text", width: "3%", align:"center"},
+			{ title:"정렬", name:"meansOrder", tag:"input", width: "4%", align:"right"},
 			{ title:"사용수단", name:"meansNm", tag:"input", width: "10%", align:"center"},
-			{ title:"사용수단상세", name:"meansDtlNm", tag:"input", width: "35%", align:"center"},			
+			{ title:"사용수단상세", name:"meansDtlNm", tag:"input", width: "34%", align:"center"},			
 			{ title:"수단정보", name:"meansInfo", tag:"input", width: "20%", align:"center"},
-			{ title:"비고", name:"meansRemark", tag:"input", width: "25%", align:"center"},
-			{ title:"사용여부", isUseYnButton: true, name:"meansUseYn", width: "4%", align:"center"},			
+			{ title:"비고", name:"meansRemark", tag:"input", width: "24%", align:"center"},
+			{ title:"사용여부", isUseYnButton: true, name:"meansUseYn", width: "5%", align:"center"},			
 		],
 		option : {isAutoSearch: true, isClone: true, isPaging: false, isScrollY: true, isScrollX: false, bodyHeight:"550px"},		
 	});
@@ -56,10 +56,19 @@ function fnEventInit(){
 //############## 유효성 검사 ################
 function fnValiCheck(list){
 	if(list.length > 0){
-		return !list.some(function(item){		
-			switch(item._state){
-			case "insert":
+		return !list.some(function(item){			
+			switch(item._state){			
 			case "update":
+				let gList = vals.meansGrid.getData();
+				for(let i=0; i<gList.length; i++){
+					if(item._key !== gList[i]._key){
+						if(item.meansOrder == gList[i].meansOrder){
+							vals.meansGrid.inputMessage(item._key, "meansOrder", "중복되는 값이 있습니다.");
+							return true;
+						}
+					}	
+				}				
+			case "insert":
 				if(wcm.isEmpty(item.meansNm)){
 					vals.meansGrid.inputMessage(item._key, "meansNm", "값이 없습니다.");
 					return true;
@@ -96,6 +105,7 @@ function fnApplyData(){
 			}else if(res === -2){
 				alert("삭제하려는 정보가 가계부목록에 사용되고 있습니다.");					
 			}else{
+				alert("저장되었습니다.");
 				vals.meansGrid.search();
 			}
 		});

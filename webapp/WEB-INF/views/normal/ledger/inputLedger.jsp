@@ -96,11 +96,11 @@ function inputLedger(data){
 				if(isNotEmpty(item.purSeq)){
 					for(let i=0; i<data.purList.length; i++){				
 						if(Number(item.purSeq) === Number(data.purList[i].purSeq)){							
-							fnCreateBank(item, data.purList[i].purType, $span);							
+							fnCreateMeans(item, data.purList[i].purType, $span);							
 							break;
 						}
 					}
-				}else{fnCreateBank(item, null, $span);}
+				}else{fnCreateMeans(item, null, $span);}
 				return $span;
 			}
 		},	
@@ -314,7 +314,7 @@ function inputLedger(data){
 				if(Number(item.purSeq) === Number(element.value)){					
 					//현금,은행 입력란
 					let $move = $(this).closest("td").next().next().children().first().empty().removeClass();
-					fnCreateBank(item, $(element).data("purType"), $move);
+					fnCreateMeans(item, $(element).data("purType"), $move);
 					//금액 입력란
 					let $money = $(this).closest("td").next().next().next().children().first().empty().removeClass();
 					fnCreateMoney(item, purLp[item.purSeq], $money);
@@ -348,7 +348,7 @@ function inputLedger(data){
 	}
 	
 	//은행 select 생성
-	function fnCreateBank(item, purType, $span){
+	function fnCreateMeans(item, purType, $span){
 		let $select = $("<select>");		
 		switch(purType){
 		case "LED001":
@@ -403,15 +403,15 @@ function inputLedger(data){
 		}
 	}
 	
-	//은행 셀렉트박스 옵션리스트 생성
+	//사용목적 셀렉트박스 옵션리스트 생성
 	function fnCreateOption(item, seq, $select){
 		let $option = $("<option>");
-		for(let i=0; i<data.bankList.length; i++){
+		for(let i=0; i<data.meansList.length; i++){
 			
-			$option = $("<option>").val(data.bankList[i].meansSeq)
-				.text(data.bankList[i].meansNm + " " + wcm.isEmptyRtn(data.bankList[i].meansDtlNm) + " " + wcm.isEmptyRtn(data.bankList[i].meansInfo));
+			$option = $("<option>").val(data.meansList[i].meansSeq)
+				.text(data.meansList[i].meansNm + " " + wcm.isEmptyRtn(data.meansList[i].meansDtlNm) + " " + wcm.isEmptyRtn(data.meansList[i].meansInfo));
 			
-			if(String(item[seq]) === String(data.bankList[i].meansSeq)){				
+			if(String(item[seq]) === String(data.meansList[i].meansSeq)){				
 				$option.prop("selected", true);
 			}
 			$select.append($option);

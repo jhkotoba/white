@@ -46,7 +46,7 @@ $(document).ready(function(){
 		dataType: 'json',
 	    success : function(data) {	    	
 	    	chart.view(data.recList);
-	    	rec.initPB(data.purList, data.purDtlList, data.bankList).initRec("index", data.recList).view();	    	
+	    	rec.initPB(data.purList, data.purDtlList, data.meansList).initRec("index", data.recList).view();	    	
 	    },
 	    error : function(request, status, error){
 	    	alert("error");

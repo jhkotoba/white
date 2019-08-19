@@ -14,7 +14,7 @@ $(document).ready(function(){
 		$.post("${contextPath}/ledger/selectLedgerInitData.ajax", null, function(data){
 			vals.purList = data.purList;
 			vals.purDtlList = data.purDtlList;
-			vals.bankList = data.bankList;		
+			vals.meansList = data.meansList;		
 			resolve();
 		});		
 	})
@@ -32,7 +32,7 @@ function fnInit(){
 	let $option = null;
 	$("#purSelect").append($("<option>").text("선택").val(""));
 	$("#purDtlSelect").append($("<option>").text("선택").val(""));
-	$("#bankSelect").append($("<option>").text("선택").val(""));
+	$("#meansSelect").append($("<option>").text("선택").val(""));
 	
 	//목적 option 생성
 	$.each(vals.purList, function(idx, item){
@@ -41,10 +41,10 @@ function fnInit(){
 	});
 	
 	//수단 option 생성
-	$.each(vals.bankList, function(idx, item){		
+	$.each(vals.meansList, function(idx, item){		
 		$option = $("<option>").text(item.meansNm + " " + wcm.isEmptyRtn(item.meansDtlNm) + " " + wcm.isEmptyRtn(item.meansInfo))
 			.val(item.meansSeq).data("purType", item.purType);
-		$("#bankSelect").append($option);		
+		$("#meansSelect").append($option);		
 	});
 	
 	//날짜 설정
@@ -53,7 +53,7 @@ function fnInit(){
 	
 	//가계부 헤드셀렉트 값 가공
 	vals.headList = new Array();			
-	$.map(vals.bankList, function(item, idx){
+	$.map(vals.meansList, function(item, idx){
 		vals.headList.push({
 			value : "no"+item.meansSeq,
 			text : item.meansNm + " " + wcm.isEmptyRtn(item.meansDtlNm) + " " + wcm.isEmptyRtn(item.meansInfo)
@@ -76,7 +76,7 @@ function fnInit(){
 						endDate : $("#endDate").val(),
 						purSeq : $("#purSelect").val(),
 						purDtlSeq : $("#purDtlSelect").val(),
-						meansSeq : $("#bankSelect").val(),
+						meansSeq : $("#meansSelect").val(),
 					};
 					$.post("${contextPath}/ledger/selectLedgerList.ajax", srhParam, resolve);
 				});
@@ -221,7 +221,7 @@ function fnParSeqChange(purSeq){
 				</td>
 				<th>사용수단</th>
 				<td>
-					<select id="bankSelect" class="select-gray wth100p"></select>
+					<select id="meansSelect" class="select-gray wth100p"></select>
 				</td>				
 				<td>
 					<div class="btn-right">

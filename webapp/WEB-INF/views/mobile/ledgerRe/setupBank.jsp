@@ -3,39 +3,39 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="contextPath" value="<%=request.getContextPath()%>"></c:set>
 
-<script type="text/javascript" src="${contextPath}/resources/js/ledgerRe/setupBank.js?ver=0.013"></script>
+<script type="text/javascript" src="${contextPath}/resources/js/ledgerRe/setupMeans.js?ver=0.013"></script>
 <script type="text/javascript">
 $(document).ready(function(){	
 	
 	$.ajax({
 		type: 'POST',
-		url: common.path()+'/ledgerRe/selectBankList.ajax',
+		url: common.path()+'/ledgerRe/selectMeansList.ajax',
 		dataType: 'json',
 		data : {
 			mode : "select"
 		},
 	    success : function(data) {
-	    	bank.init(data).view();
+	    	means.init(data).view();
 	    },
 	    error : function(request, status, error){
-	    	alert("bank error");
+	    	alert("means error");
 	    }
 	});
 	
 	//은행 추가
-	$("#bankAddBtn").click(function(){
-		bank.add().view();
+	$("#meansAddBtn").click(function(){
+		means.add().view();
 	});
 	
 	//은행 취소
-	$("#bankCelBtn").click(function(){
-		bank.cancel().view();
+	$("#meansCelBtn").click(function(){
+		means.cancel().view();
 	});
 	
-	$("#bankSaveBtn").click(function(){
-		let rtn = bank.check();
+	$("#meansSaveBtn").click(function(){
+		let rtn = means.check();
 		if(rtn.check === true){
-			bank.save();
+			means.save();
 		}else{
 			alert(rtn.msg);
 		}
@@ -46,9 +46,9 @@ $(document).ready(function(){
 <div class="space left"></div>
 
 <div class="btn-group" role="group">	
-	<button id="bankAddBtn" type="button" class="btn btn-secondary btn-fs nsrb">추가</button>
-	<button id="bankSaveBtn" type="button" class="btn btn-secondary btn-fs nsrb">저장</button>
-	<button id="bankCelBtn" type="button" class="btn btn-secondary btn-fs nsrb">취소</button>
+	<button id="meansAddBtn" type="button" class="btn btn-secondary btn-fs nsrb">추가</button>
+	<button id="meansSaveBtn" type="button" class="btn btn-secondary btn-fs nsrb">저장</button>
+	<button id="meansCelBtn" type="button" class="btn btn-secondary btn-fs nsrb">취소</button>
 </div>
 
-<div id="bankList" class="width-vmin"></div>
+<div id="meansList" class="width-vmin"></div>

@@ -22,7 +22,7 @@
 	<!-- 사용자 정보 리스트 조회 -->
 	<select id="selectUserList" resultType="WhiteMap" parameterType="WhiteMap">
 		SELECT 
-			user_seq AS no,
+			USER_SEQ AS no,
 			user_id AS userId,
 			user_name AS userName
  		FROM white_user
@@ -57,7 +57,7 @@
 		FROM authority auth
 		LEFT OUTER JOIN auth_name name
 		ON name.auth_nm_seq = auth.auth_nm_seq
-		WHERE auth.user_seq = #{no}   		
+		WHERE auth.USER_SEQ = #{no}   		
 	</select>
 	
 	
@@ -108,7 +108,7 @@
 	
 	<insert id="insertAuthList" parameterType="java.util.List">
 		INSERT INTO authority(		
-			user_seq,	
+			USER_SEQ,	
 			auth_nm_seq
 		)VALUES
 		<foreach collection="list" item="item" separator="),(" open="(" close=")">
@@ -119,7 +119,7 @@
 	
 	<delete id="deleteAuthList" parameterType="whiteMap">
 		DELETE FROM authority
-		WHERE user_seq = #{userNo}
+		WHERE USER_SEQ = #{userNo}
 		AND auth_nm_seq IN (${remove})
 	</delete>
 	

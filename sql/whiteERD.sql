@@ -8,12 +8,12 @@ DROP TABLE IF EXISTS authority;
 DROP TABLE IF EXISTS side_menu;
 DROP TABLE IF EXISTS nav_menu;
 DROP TABLE IF EXISTS auth_name;
-DROP TABLE IF EXISTS money_record;
-DROP TABLE IF EXISTS bank;
 DROP TABLE IF EXISTS cmm_code;
 DROP TABLE IF EXISTS commute_record;
 DROP TABLE IF EXISTS free_board_comment;
 DROP TABLE IF EXISTS free_board;
+DROP TABLE IF EXISTS money_record;
+DROP TABLE IF EXISTS MEANS;
 DROP TABLE IF EXISTS purpose_detail;
 DROP TABLE IF EXISTS purpose;
 DROP TABLE IF EXISTS source_board;
@@ -28,7 +28,7 @@ DROP TABLE IF EXISTS white_user;
 CREATE TABLE admin_board
 (
 	board_seq int NOT NULL AUTO_INCREMENT,
-	user_seq int NOT NULL,
+	USER_SEQ int NOT NULL,
 	title varchar(50) NOT NULL,
 	content varchar(4000) NOT NULL,
 	edit_date datetime NOT NULL,
@@ -42,7 +42,7 @@ CREATE TABLE admin_board_comment
 (
 	comment_seq int NOT NULL AUTO_INCREMENT,
 	board_seq int NOT NULL,
-	user_seq int NOT NULL,
+	USER_SEQ int NOT NULL,
 	comment varchar(1000) NOT NULL,
 	reg_date datetime NOT NULL,
 	PRIMARY KEY (comment_seq),
@@ -53,7 +53,7 @@ CREATE TABLE admin_board_comment
 CREATE TABLE authority
 (
 	auth_seq int NOT NULL AUTO_INCREMENT,
-	user_seq int NOT NULL,
+	USER_SEQ int NOT NULL,
 	auth_nm_seq int NOT NULL,
 	auth_cmt varchar(50),
 	PRIMARY KEY (auth_seq),
@@ -69,19 +69,6 @@ CREATE TABLE auth_name
 	PRIMARY KEY (auth_nm_seq),
 	UNIQUE (auth_nm_seq),
 	UNIQUE (auth_nm)
-);
-
-
-CREATE TABLE bank
-(
-	bank_seq int NOT NULL AUTO_INCREMENT,
-	user_seq int NOT NULL,
-	bank_name varchar(20) NOT NULL,
-	bank_account varchar(60) NOT NULL,
-	bank_use_yn varchar(1) NOT NULL,
-	bank_order int NOT NULL,
-	PRIMARY KEY (bank_seq),
-	UNIQUE (bank_seq)
 );
 
 
@@ -103,7 +90,7 @@ CREATE TABLE cmm_code
 CREATE TABLE commute_record
 (
 	commute_seq int NOT NULL AUTO_INCREMENT,
-	user_seq int NOT NULL,
+	USER_SEQ int NOT NULL,
 	commute_location varchar(100) NOT NULL,
 	commute_type varchar(5) NOT NULL,
 	commute_date datetime NOT NULL,
@@ -115,7 +102,7 @@ CREATE TABLE commute_record
 CREATE TABLE free_board
 (
 	board_seq int NOT NULL AUTO_INCREMENT,
-	user_seq int NOT NULL,
+	USER_SEQ int NOT NULL,
 	title varchar(50) NOT NULL,
 	content varchar(4000) NOT NULL,
 	edit_date datetime NOT NULL,
@@ -129,7 +116,7 @@ CREATE TABLE free_board_comment
 (
 	comment_seq int NOT NULL AUTO_INCREMENT,
 	board_seq int NOT NULL,
-	user_seq int NOT NULL,
+	USER_SEQ int NOT NULL,
 	comment varchar(1000) NOT NULL,
 	reg_date datetime NOT NULL,
 	PRIMARY KEY (comment_seq),
@@ -137,17 +124,30 @@ CREATE TABLE free_board_comment
 );
 
 
+CREATE TABLE MEANS
+(
+	MEANS_SEQ int NOT NULL,
+	USER_SEQ int NOT NULL,
+	MEANS_NM varchar(50) NOT NULL,
+	MEANS_DTL_NM varchar(50),
+	MEANS_INFO varchar(50),
+	MEANS_USE_YN varchar(1) NOT NULL,
+	MEANS_REMARK varchar(100),
+	MEANS_ORDER int NOT NULL,
+	PRIMARY KEY (MEANS_SEQ)
+);
+
+
 CREATE TABLE money_record
 (
 	record_seq int NOT NULL AUTO_INCREMENT,
-	user_seq int NOT NULL,
+	USER_SEQ int NOT NULL,
 	record_date datetime NOT NULL,
 	position varchar(20),
 	content varchar(50),
 	pur_seq int NOT NULL,
 	pur_dtl_seq int NOT NULL,
-	bank_seq int NOT NULL,
-	move_seq int NOT NULL,
+	MEANS_SEQ int NOT NULL,
 	money int NOT NULL,
 	stats_yn varchar(1) DEFAULT 'Y' NOT NULL,
 	edit_date datetime NOT NULL,
@@ -173,7 +173,7 @@ CREATE TABLE nav_menu
 CREATE TABLE purpose
 (
 	pur_seq int NOT NULL AUTO_INCREMENT,
-	user_seq int NOT NULL,
+	USER_SEQ int NOT NULL,
 	pur_order int NOT NULL,
 	purpose varchar(20) NOT NULL,
 	pur_type varchar(6) NOT NULL,
@@ -211,7 +211,7 @@ CREATE TABLE side_menu
 CREATE TABLE source_board
 (
 	source_seq int NOT NULL AUTO_INCREMENT,
-	user_seq int NOT NULL,
+	USER_SEQ int NOT NULL,
 	lang_cd varchar(6) NOT NULL,
 	title varchar(50) NOT NULL,
 	content varchar(4000) NOT NULL,
@@ -237,12 +237,12 @@ CREATE TABLE TERM_DFI
 
 CREATE TABLE white_user
 (
-	user_seq int NOT NULL AUTO_INCREMENT,
+	USER_SEQ int NOT NULL AUTO_INCREMENT,
 	user_id varchar(20) NOT NULL,
 	user_name varchar(10) NOT NULL,
 	user_passwd varchar(60) NOT NULL,
-	PRIMARY KEY (user_seq),
-	UNIQUE (user_seq),
+	PRIMARY KEY (USER_SEQ),
+	UNIQUE (USER_SEQ),
 	UNIQUE (user_id)
 );
 
@@ -282,25 +282,17 @@ ALTER TABLE side_menu
 ;
 
 
-ALTER TABLE money_record
-	ADD FOREIGN KEY (move_seq)
-	REFERENCES bank (bank_seq)
-	ON UPDATE RESTRICT
-	ON DELETE RESTRICT
-;
-
-
-ALTER TABLE money_record
-	ADD FOREIGN KEY (bank_seq)
-	REFERENCES bank (bank_seq)
-	ON UPDATE RESTRICT
-	ON DELETE RESTRICT
-;
-
-
 ALTER TABLE free_board_comment
 	ADD FOREIGN KEY (board_seq)
 	REFERENCES free_board (board_seq)
+	ON UPDATE RESTRICT
+	ON DELETE RESTRICT
+;
+
+
+ALTER TABLE money_record
+	ADD FOREIGN KEY (MEANS_SEQ)
+	REFERENCES MEANS (MEANS_SEQ)
 	ON UPDATE RESTRICT
 	ON DELETE RESTRICT
 ;
@@ -339,80 +331,80 @@ ALTER TABLE money_record
 
 
 ALTER TABLE admin_board
-	ADD FOREIGN KEY (user_seq)
-	REFERENCES white_user (user_seq)
+	ADD FOREIGN KEY (USER_SEQ)
+	REFERENCES white_user (USER_SEQ)
 	ON UPDATE RESTRICT
 	ON DELETE RESTRICT
 ;
 
 
 ALTER TABLE admin_board_comment
-	ADD FOREIGN KEY (user_seq)
-	REFERENCES white_user (user_seq)
+	ADD FOREIGN KEY (USER_SEQ)
+	REFERENCES white_user (USER_SEQ)
 	ON UPDATE RESTRICT
 	ON DELETE RESTRICT
 ;
 
 
 ALTER TABLE authority
-	ADD FOREIGN KEY (user_seq)
-	REFERENCES white_user (user_seq)
-	ON UPDATE RESTRICT
-	ON DELETE RESTRICT
-;
-
-
-ALTER TABLE bank
-	ADD FOREIGN KEY (user_seq)
-	REFERENCES white_user (user_seq)
+	ADD FOREIGN KEY (USER_SEQ)
+	REFERENCES white_user (USER_SEQ)
 	ON UPDATE RESTRICT
 	ON DELETE RESTRICT
 ;
 
 
 ALTER TABLE commute_record
-	ADD FOREIGN KEY (user_seq)
-	REFERENCES white_user (user_seq)
+	ADD FOREIGN KEY (USER_SEQ)
+	REFERENCES white_user (USER_SEQ)
 	ON UPDATE RESTRICT
 	ON DELETE RESTRICT
 ;
 
 
 ALTER TABLE free_board
-	ADD FOREIGN KEY (user_seq)
-	REFERENCES white_user (user_seq)
+	ADD FOREIGN KEY (USER_SEQ)
+	REFERENCES white_user (USER_SEQ)
 	ON UPDATE RESTRICT
 	ON DELETE RESTRICT
 ;
 
 
 ALTER TABLE free_board_comment
-	ADD FOREIGN KEY (user_seq)
-	REFERENCES white_user (user_seq)
+	ADD FOREIGN KEY (USER_SEQ)
+	REFERENCES white_user (USER_SEQ)
+	ON UPDATE RESTRICT
+	ON DELETE RESTRICT
+;
+
+
+ALTER TABLE MEANS
+	ADD FOREIGN KEY (USER_SEQ)
+	REFERENCES white_user (USER_SEQ)
 	ON UPDATE RESTRICT
 	ON DELETE RESTRICT
 ;
 
 
 ALTER TABLE money_record
-	ADD FOREIGN KEY (user_seq)
-	REFERENCES white_user (user_seq)
+	ADD FOREIGN KEY (USER_SEQ)
+	REFERENCES white_user (USER_SEQ)
 	ON UPDATE RESTRICT
 	ON DELETE RESTRICT
 ;
 
 
 ALTER TABLE purpose
-	ADD FOREIGN KEY (user_seq)
-	REFERENCES white_user (user_seq)
+	ADD FOREIGN KEY (USER_SEQ)
+	REFERENCES white_user (USER_SEQ)
 	ON UPDATE RESTRICT
 	ON DELETE RESTRICT
 ;
 
 
 ALTER TABLE source_board
-	ADD FOREIGN KEY (user_seq)
-	REFERENCES white_user (user_seq)
+	ADD FOREIGN KEY (USER_SEQ)
+	REFERENCES white_user (USER_SEQ)
 	ON UPDATE RESTRICT
 	ON DELETE RESTRICT
 ;

@@ -88,11 +88,6 @@ public class LedgerController {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value="/ledger/selectBankList.ajax" )
-	public List<WhiteMap> selectBankList(HttpServletRequest request){		
-		WhiteMap param = new WhiteMap(request);		
-		return ledgerService.selectMeansList(param);
-	}
 	@RequestMapping(value="/ledger/selectMeansList.ajax" )
 	public List<WhiteMap> selectMeansList(HttpServletRequest request){		
 		WhiteMap param = new WhiteMap(request);		
@@ -103,13 +98,7 @@ public class LedgerController {
 	 * 해당유저 사용수단 목록 반영
 	 * @param request
 	 * @return
-	 */
-	//추후 삭제
-	@RequestMapping(value="/ledger/applybankList.ajax" )
-	public int applybankList(HttpServletRequest request){		
-		WhiteMap param = new WhiteMap(request);		
-		return ledgerService.applyMeansList(param);
-	}
+	 */	
 	@RequestMapping(value="/ledger/applyMeansList.ajax" )
 	public int applyMeansList(HttpServletRequest request){		
 		WhiteMap param = new WhiteMap(request);		
@@ -127,7 +116,7 @@ public class LedgerController {
 		WhiteMap result = new WhiteMap();		
 		result.put("purList", ledgerService.selectPurList(param));
 		result.put("purDtlList", ledgerService.selectPurDtlList(param));
-		result.put("bankList", ledgerService.selectMeansList(param));
+		result.put("meansList", ledgerService.selectMeansList(param));
 		return result;
 	}
 	
@@ -151,8 +140,8 @@ public class LedgerController {
 	public List<WhiteMap> selectRecordList(HttpServletRequest request){
 		WhiteMap param = new WhiteMap(request);
 		switch(param.getString("searchType")) {
-		//case "select":   selectLedgerList 으로 옮김
-		//	return ledgerService.selectRecordSumList(param);
+		case "select":
+			return ledgerService.selectRecordSumList(param);
 		case "recent":
 			if(param.get("schdTime")==null || "".equals(param.get("schdTime"))){
 				param.put("schdTime", 1);

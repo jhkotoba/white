@@ -49,7 +49,7 @@
 			AND ${secondSeqNm} = #{secondSeq}
 			</if>
 			<if test="userSeq != null and userSeq != ''">
-			AND user_seq = #{userSeq}
+			AND USER_SEQ = #{userSeq}
 			</if>
 		</where>
 		
@@ -71,7 +71,7 @@
 			#{item.firstSeq}
 		</foreach>
 		<if test="userSeq != null and userSeq != ''">
-		AND user_seq = #{userSeq}
+		AND USER_SEQ = #{userSeq}
 		</if>		
 	</update>
 </mapper>

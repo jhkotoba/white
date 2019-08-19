@@ -16,7 +16,7 @@
 	<!-- <select id="getUserAuthority" resultType="Map" parameterType="String" >
 		SELECT 
 		    a.authority AS authority,
-		    w.user_seq AS userSeq
+		    w.USER_SEQ AS userSeq
   		FROM 
 		    authority a, 
 		    white_user w
@@ -27,7 +27,7 @@
 	
 	<select id="getUserSeq" resultType="int" parameterType="String" >
 		SELECT 
-	  		user_seq AS userSeq
+	  		USER_SEQ AS userSeq
 		FROM white_user
 		WHERE user_id = #{userId}
 	</select>
@@ -45,7 +45,7 @@
 				(
 					SELECT a.auth_seq FROM authority a
 					WHERE a.auth_nm_seq = n.auth_nm_seq
-					AND user_seq = #{userSeq}
+					AND USER_SEQ = #{userSeq}
 					LIMIT 1
 				) IS NULL, 0, 1
 		  ) AS auth
@@ -68,7 +68,7 @@
 					(
 						SELECT a.auth_seq FROM authority a
 						WHERE a.auth_nm_seq = nm.nav_auth_nm_seq
-						AND a.user_seq = #{userSeq}
+						AND a.USER_SEQ = #{userSeq}
 						LIMIT 1
 					) IS NULL, 0, 1
 				) AS auth
@@ -98,7 +98,7 @@
 						(
 							SELECT a.auth_seq FROM authority a
 							WHERE a.auth_nm_seq = sm.side_auth_nm_seq
-							AND a.user_seq = #{userSeq}
+							AND a.USER_SEQ = #{userSeq}
 							LIMIT 1
 						) IS NULL, 0, 1
 					) AS auth
@@ -112,7 +112,7 @@
 	</select>
 	
 	<!-- 사용자 등록 -->
-	<insert id="insertSignUp" parameterType="WhiteMap" useGeneratedKeys="true" keyProperty="user_seq">
+	<insert id="insertSignUp" parameterType="WhiteMap" useGeneratedKeys="true" keyProperty="USER_SEQ">
 		INSERT INTO white_user
 			(user_id, user_name, user_passwd)
 		VALUES 
@@ -122,8 +122,8 @@
 	<!-- 사용자 초기 권한 등록 -->
 	<insert id="insertUserAuth" parameterType="String">
 		INSERT INTO authority
-			(user_seq, auth_nm_seq)
+			(USER_SEQ, auth_nm_seq)
 		VALUES 
-			(#{user_seq}, (SELECT auth_nm_seq FROM auth_name WHERE auth_nm = 'user'))
+			(#{USER_SEQ}, (SELECT auth_nm_seq FROM auth_name WHERE auth_nm = 'user'))
 	</insert>
 </mapper>

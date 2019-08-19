@@ -12,7 +12,7 @@ $(document).ready(function(){6
 		url: common.path()+'/ledgerRe/selectLedgerInitData.ajax',
 		dataType: 'json',
 	    success : function(data) {
-	    	recIn.init(data.purList, data.purDtlList, data.bankList).add().view();    	
+	    	recIn.init(data.purList, data.purDtlList, data.meansList).add().view();    	
 	    },
 	    error : function(request, status, error){
 	    	alert("error");

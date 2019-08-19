@@ -198,19 +198,19 @@ public class LedgerService {
 		
 		if(ledgerMapper.selectVerifyMeansSeqStrList(param) > 0) {
 			return -1;
-		}else if(deleteList.size() > 0 && ledgerMapper.selectIsUsedBankRec(deleteList) > 0) {				
+		}else if(deleteList.size() > 0 && ledgerMapper.selectIsUsedMeansRec(deleteList) > 0) {				
 			return -2;
 		}else {			
 			if(insertList.size() > 0) {
 				Collections.reverse(insertList);
-				ledgerMapper.insertBankList(insertList);	
+				ledgerMapper.insertMeansList(insertList);	
 			}
-			if(updateList.size() > 0) ledgerMapper.updateBankList(updateList);
+			if(updateList.size() > 0) ledgerMapper.updateMeansList(updateList);
 			if(deleteList.size() > 0) {
-				ledgerMapper.deleteBankList(deleteList);
+				ledgerMapper.deleteMeansList(deleteList);
 				
 				WhiteMap map = new WhiteMap();
-				map.put("tableNm", "bank");
+				map.put("tableNm", "MEANS");
 				map.put("firstSeqNm", "MEANS_SEQ");				
 				map.put("columnNm", "MEANS_ORDER");
 				map.put("userSeq", param.getString("userSeq"));
@@ -321,15 +321,15 @@ public class LedgerService {
 	 */
 	public List<WhiteMap> selectLedgerList(WhiteMap param){
 		
-		List<WhiteMap> bankList = this.selectMeansList(param);		
+		List<WhiteMap> meansList = this.selectMeansList(param);		
 		
 		//금전기록 기간 조회시 기간 이전  각각(현금, 은행등등) 금액 데이터 합산
 		List<WhiteMap> pastList = new ArrayList<WhiteMap>();
 		WhiteMap map = null;
-		for(int i=0; i<bankList.size(); i++) {
+		for(int i=0; i<meansList.size(); i++) {
 			map = new WhiteMap();
-			map.put("bankNo", "bank"+i);
-			map.put("meansSeq", bankList.get(i).getInt("meansSeq"));
+			map.put("meansNo", "means"+i);
+			map.put("meansSeq", meansList.get(i).getInt("meansSeq"));
 			map.put("userSeq", param.getInt("userSeq"));
 			map.put("startDate", param.getString("startDate"));			
 			pastList.add(map);
@@ -344,13 +344,13 @@ public class LedgerService {
 		//수단(은행)별금액  금액증감
 		int m = 0;		
 		WhiteMap moneyMap = new WhiteMap();		
-		for(int i=0; i<bankList.size(); i++) {
-			m = pastCal == null ? 0 : pastCal.getInt("bank"+i);
-			moneyMap.put(bankList.get(i).getString("meansSeq"), m);			
+		for(int i=0; i<meansList.size(); i++) {
+			m = pastCal == null ? 0 : pastCal.getInt("means"+i);
+			moneyMap.put(meansList.get(i).getString("meansSeq"), m);			
 			amount += m;
 		}
 		
-		String meansSeq, moveSeq, bankNo = null;
+		String meansSeq, moveSeq, meansNo = null;
 		for(int i=0; i<ledgerList.size(); i++) {			
 			//현금이동일때는 금액증감 제외
 			if("LED003".equals(ledgerList.get(i).getString("purType"))) {
@@ -371,9 +371,9 @@ public class LedgerService {
 			}
 			
 			//수단(은행)별 추가
-			for(int j=0; j<bankList.size(); j++) {
-				bankNo = "no" + bankList.get(j).getString("meansSeq");				
-				ledgerList.get(i).put(bankNo, moneyMap.getInt(bankList.get(j).getString("meansSeq")));
+			for(int j=0; j<meansList.size(); j++) {
+				meansNo = "no" + meansList.get(j).getString("meansSeq");				
+				ledgerList.get(i).put(meansNo, moneyMap.getInt(meansList.get(j).getString("meansSeq")));
 			}
 		}		
 		
@@ -428,13 +428,13 @@ public class LedgerService {
 	 * @param param
 	 * @return
 	 */
-	/*public List<WhiteMap> selectRecordSumList(WhiteMap param){
+	public List<WhiteMap> selectRecordSumList(WhiteMap param){
 		
-		List<WhiteMap> bankList = this.selectMeansList(param);
+		List<WhiteMap> meansList = this.selectMeansList(param);
 		//금전기록 기간 조회시 기간 이전  각각(현금, 은행등등) 금액 데이터 합산
 		List<WhiteMap> pastRecList = new ArrayList<WhiteMap>();
 		WhiteMap map = null;
-		for(int i=0; i<bankList.size()+1; i++) {
+		for(int i=0; i<meansList.size()+1; i++) {
 			map = new WhiteMap();
 			if(i==0) {
 				map.put("meansNm", "cash");
@@ -442,8 +442,8 @@ public class LedgerService {
 				map.put("userSeq", param.getInt("userSeq"));
 				map.put("startDate", param.getString("startDate"));
 			}else {
-				map.put("meansNm", "bank"+(i-1));
-				map.put("meansSeq", bankList.get(i-1).getInt("meansSeq"));
+				map.put("meansNm", "means"+(i-1));
+				map.put("meansSeq", meansList.get(i-1).getInt("meansSeq"));
 				map.put("userSeq", param.getInt("userSeq"));
 				map.put("startDate", param.getString("startDate"));
 			}
@@ -463,9 +463,9 @@ public class LedgerService {
 		m = pastRec == null ? 0 : pastRec.getInt("cash");
 		moneyMap.put("0", m);
 		amount += m;
-		for(int i=0; i<bankList.size(); i++) {
-			m = pastRec == null ? 0 : pastRec.getInt("bank"+i);
-			moneyMap.put(bankList.get(i).getString("meansSeq"), m );			
+		for(int i=0; i<meansList.size(); i++) {
+			m = pastRec == null ? 0 : pastRec.getInt("means"+i);
+			moneyMap.put(meansList.get(i).getString("meansSeq"), m );			
 			amount += m;
 		}
 		for(int i=0; i<recList.size(); i++) {			
@@ -484,9 +484,9 @@ public class LedgerService {
 			//각각은행 money 증감
 			}else{				
 				String meansSeq = recList.get(i).getString("meansSeq");
-				int bankMoney = moneyMap.getInt(meansSeq);
-				bankMoney += recList.get(i).getInt("money");
-				moneyMap.put(meansSeq, bankMoney);				
+				int meansMoney = moneyMap.getInt(meansSeq);
+				meansMoney += recList.get(i).getInt("money");
+				moneyMap.put(meansSeq, meansMoney);				
 			}			
 			//현금이동시 받는쪽 추가
 			if(!("".equals(recList.get(i).getString("moveSeq")) || recList.get(i).getString("moveSeq")==null)){				
@@ -497,14 +497,14 @@ public class LedgerService {
 			//현금금액 증감 map추가
 			recList.get(i).put("cash", moneyMap.getInt("0"));
 			//은행별 추가 map추가
-			recList.get(i).put("bankIdxLen", bankList.size()-1);
-			for(int j=0; j<bankList.size(); j++) { 
-				recList.get(i).put(bankList.get(j).getString("meansInfo"), moneyMap.getInt(bankList.get(j).getString("meansSeq")));
-				//recList.get(i).put("bank"+j, moneyMap.getInt(bankList.get(j).getString("meansSeq")));
+			recList.get(i).put("meansIdxLen", meansList.size()-1);
+			for(int j=0; j<meansList.size(); j++) { 
+				recList.get(i).put(meansList.get(j).getString("meansInfo"), moneyMap.getInt(meansList.get(j).getString("meansSeq")));
+				//recList.get(i).put("means"+j, moneyMap.getInt(bankList.get(j).getString("meansSeq")));
 			}						
 		}		
 		return recList;			
-	}*/
+	}
 	
 	/**
 	 * 가계부 첫 입력 날짜 조회

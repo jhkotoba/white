@@ -35,12 +35,12 @@ $(document).ready(function(){
 	    	$("#srhPurDtl").append(tag);
 	    	
 	    	tag = "";
-	    	for(let i=0; i<data.bankList.length; i++){		
-	    		tag += "<option value='"+data.bankList[i].meansSeq+"'>"+data.bankList[i].meansNm+"("+data.bankList[i].bankAccount+")</option>";
+	    	for(let i=0; i<data.meansList.length; i++){		
+	    		tag += "<option value='"+data.meansList[i].meansSeq+"'>"+data.bankList[i].meansNm+"("+data.bankList[i].bankAccount+")</option>";
 	    	}
-	    	$("#srhBank").append(tag);
+	    	$("#srhmeans").append(tag);
 	    	
-	    	rec.initPB(data.purList, data.purDtlList, data.bankList);			
+	    	rec.initPB(data.purList, data.purDtlList, data.meansList);			
 	    },
 	    error : function(request, status, error){
 	    	alert("error");
@@ -85,7 +85,7 @@ $(document).ready(function(){
 		$("#recSaveBtn").hide();
 		
 		$("#srhPur").val("").prop("selected", true);
-		$("#srhBank").val("").prop("selected", true);
+		$("#srhMeans").val("").prop("selected", true);
 	});
 	
 	//저장
@@ -115,7 +115,7 @@ $(document).ready(function(){
 	});
 	
 	//은행 셀렉트 박스 선택시
-	$("#srhBank").change(function(){
+	$("#srhMeans").change(function(){
 		rec.search.meansSeq = this.value;
 	});
 });
@@ -149,7 +149,7 @@ $(document).ready(function(){
 			<select id="srhPurDtl" class="custom-select slt-fs">
 				<option value=''>상세 검색</option>
 			</select>
-			<select id="srhBank" class="custom-select slt-fs">
+			<select id="srhMeans" class="custom-select slt-fs">
 				<option value=''>은행 검색</option>			
 				<option value='0'>현금</option>	
 			</select>			

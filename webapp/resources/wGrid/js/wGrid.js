@@ -90,7 +90,7 @@ class wGrid{
 	
 	//조회
 	search(){
-		this.controller.load().then(result => {			
+		this.controller.load().then(result => {
 			this._dataInjection(result);
 			while(this.target.hasChildNodes()){
 				this.target.removeChild( this.target.firstChild ); 
@@ -107,7 +107,6 @@ class wGrid{
 			if(this.isNotEmpty(this.controller.createEnd)){
 				this.controller.createEnd(this.data);
 			}
-			
 		});
 	}
 	
@@ -561,8 +560,8 @@ class wGrid{
 						let node = this.getTrNode(event.target);
 						let idx = this.dataLink[node.dataset.key];
 						this.data[idx]._isRemove = !this.data[idx]._isRemove;
-						//변경사항 style 적용
 						
+						//변경사항 style 적용						
 						this._applyStyle(!this.data[idx]._isRemove, "delete", node);						
 						this._applyStyle(this._checkRow(list[i]._key), "update", node);
 					}
@@ -602,6 +601,11 @@ class wGrid{
 				default :
 				case "text" :						
 					td.textContent = list[i][this.fields[j].name];
+					
+					//align 설정
+					if(this.isNotEmpty(this.fields[j].align)){
+						td.style.textAlign = this.fields[j].align;
+					}
 					break;
 				case "input" :
 					
@@ -609,6 +613,11 @@ class wGrid{
 					input = document.createElement("input");
 					input.value = list[i][this.fields[j].name];
 					input.classList.add("wgrid-input");
+					
+					//align 설정
+					if(this.isNotEmpty(this.fields[j].align)){
+						input.style.textAlign = this.fields[j].align;
+					}
 					
 					//신규행 배경색 변경
 					if(list[i]._state === "insert"){

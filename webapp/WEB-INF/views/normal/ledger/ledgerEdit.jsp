@@ -13,7 +13,7 @@ function ledgerList(data){
 	let $option = null;
 	let purMap = {};
 	let purDtlMap = {};
-	let bankMap = {};
+	let meansMap = {};
 	let cloneList = null;
 	
 	let purLp = {};
@@ -51,13 +51,13 @@ function ledgerList(data){
 	});
 	
 	//사용수단
-	for(let i=0; i<data.bankList.length; i++){
-		$option = $("<option>").val(data.bankList[i].meansSeq)
-			.text(data.bankList[i].meansNm+"("+data.bankList[i].meansInfo+")");					
+	for(let i=0; i<data.meansList.length; i++){
+		$option = $("<option>").val(data.meansList[i].meansSeq)
+			.text(data.meansList[i].meansNm+"("+data.meansList[i].meansInfo+")");					
 		$("#searchBar #meansSeq").append($option);
 		
 		//은행seq 맵 생성
-		bankMap[data.bankList[i].meansSeq] = data.bankList[i].meansNm+"("+data.bankList[i].meansInfo+")";
+		meansMap[data.meansList[i].meansSeq] = data.meansList[i].meansNm+"("+data.meansList[i].meansInfo+")";
 	}
 	
 	//조회버튼
@@ -284,7 +284,7 @@ function ledgerList(data){
 						}				
 						
 						//수입지출 기호 변경, 목적이 금액이동일 경우 사용수단 변경 아닐경우 원복
-						let $bank = $($(this).closest("td").next().next()[0]);
+						let $means = $($(this).closest("td").next().next()[0]);
 						let $sign = $($(this).closest("td").next().next().next().children().children().first()[0]);
 						switch(purLp[this.value]){						
 						case "LED001": $sign.text("+"); break;
@@ -292,7 +292,7 @@ function ledgerList(data){
 						case "LED003": $sign.text(">"); break;
 						}
 						//item.moveSeq = "";
-						$bank.empty().append(fnCreateBankSelect(item, idx));
+						$means.empty().append(fnCreateMeansSelect(item, idx));
 					});
 				}
 			},
@@ -303,7 +303,7 @@ function ledgerList(data){
 			},
 			{title: "사용수단", 	name: "meansSeq",	width: "17%",
 				itemTemplate: function(item, idx){
-					return fnCreateBankSelect(item, idx);
+					return fnCreateMeansSelect(item, idx);
 				}
 			},
 			{title: "수입/지출", 	name: "money", 		width: "10%",
@@ -461,14 +461,14 @@ function ledgerList(data){
 	}
 	
 	//사용수단 생성
-	function fnCreateBankSelect(item, idx){
+	function fnCreateMeansSelect(item, idx){
 		let $span = $("<span>");
 		let $select = $("<select>").data("name", "meansSeq").append($("<option>").val("0").text("현금"));
-		let bankList = data.bankList;
+		let meansList = data.meansList;
 		
-		for(let i=0; i<bankList.length; i++){
-			$option = $("<option>").val(bankList[i].meansSeq).text(bankList[i].meansNm+"("+bankList[i].meansInfo+")");	
-			if(String(cloneList[idx].meansSeq) === String(bankList[i].meansSeq)){				
+		for(let i=0; i<meansList.length; i++){
+			$option = $("<option>").val(meansList[i].meansSeq).text(meansList[i].meansNm+"("+meansList[i].meansInfo+")");	
+			if(String(cloneList[idx].meansSeq) === String(meansList[i].meansSeq)){				
 				$option.prop("selected", true);
 			}
 			$select.append($option);
@@ -487,9 +487,9 @@ function ledgerList(data){
 		
 		if(item.purType==="LED003"){
 			$select = $("<select>").data("name", "moveSeq").append($("<option>").val("0").text("현금"));
-			for(let i=0; i<bankList.length; i++){
-				$option = $("<option>").val(bankList[i].meansSeq).text(bankList[i].meansNm+"("+bankList[i].meansInfo+")");	
-				if(String(cloneList[idx].moveSeq) === String(bankList[i].meansSeq)){				
+			for(let i=0; i<meansList.length; i++){
+				$option = $("<option>").val(meansList[i].meansSeq).text(meansList[i].meansNm+"("+meansList[i].meansInfo+")");	
+				if(String(cloneList[idx].moveSeq) === String(meansList[i].meansSeq)){				
 					$option.prop("selected", true);
 				}
 				$select.append($option);
