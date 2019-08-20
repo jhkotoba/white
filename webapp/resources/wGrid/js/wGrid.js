@@ -169,40 +169,40 @@ class wGrid{
 	//데이터 가져오기
 	getData(key){
 		if(this.isEmpty(key)){
-			return this.data.map(item => item);
+			return this.deepCopy(this.data);
 		}else{
-			return this.data.filter(item => {
+			return this.deepCopy(this.data.filter(item => {
 				return item._key === key;
-			}).map(item => item);
+			}));
 		}		
 	}
 	
 	//새로 추가된 행 가져오기
 	getNewData(){
-		return this.data.filter(item => {
+		return this.deepCopy(this.data.filter(item => {
 			return item._state === "insert";
-		}).map(item => item);		
+		}));		
 	}
 	
 	//기존데이터 수정된 행 가져오기
 	getModifyData(){
-		return this.data.filter(item => {
+		return this.deepCopy(this.data.filter(item => {
 			return item._state === "update";
-		}).map(item => item);
+		}));
 	}
 	
 	//기존데이터 삭제할 행 가져오기
 	getRemoveData(){
-		return this.data.filter(item => {
+		return this.deepCopy(this.data.filter(item => {
 			return item._isRemove === true;
-		}).map(item => item);
+		}));
 	}
 	
 	//신규, 수정된, 삭제할 행 가져오기 
-	getApplyData(){		
-		return this.data.filter(item => {
+	getApplyData(){
+		return this.deepCopy(this.data.filter(item => {
 			return item._isRemove === true || item._state === "insert" || item._state === "update";
-		}).map(item => {
+		})).map(item => {
 			if(item._isRemove){
 				item._state = "delete";
 				return item;
@@ -214,13 +214,13 @@ class wGrid{
 	
 	//최초 조회시 값 가져오기
 	getOriginalData(){
-		return this.clone.map(item => item);
+		return this.deepCopy(this.clone);
 	}
 	
 	//오리지널 복사값으로 초기화
 	originalToReset(){	
 		this._bodyRemove();
-		this.data = this.clone.map(item => item);
+		this.data = this.deepCopy(this.clone);
 		this.createField();
 	}
 	
@@ -743,7 +743,11 @@ class wGrid{
 	//복제본 생성
 	createClone(){
 		if(this.isEmpty(this.data)) return;
-		
+		this.clone = this.deepCopy(this.data);
+	}
+	
+	//깊은복사
+	deepCopy(data){
 		function deepObjCopy(dupeObj){
 			var retObj = new Object();
 			if (typeof(dupeObj) == 'object') {
@@ -762,7 +766,7 @@ class wGrid{
 				}
 			}
 			return retObj;
-		}		
-		this.clone = deepObjCopy(this.data);
+		}
+		return deepObjCopy(data);
 	}
 }

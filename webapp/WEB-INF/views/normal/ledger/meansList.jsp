@@ -19,9 +19,8 @@ function fnInit(){
 	vals.meansGrid = new wGrid("meansGrid", {
 		controller : {
 			load : function(){					
-				let promise = new Promise(function(resolve, reject){
-					let srhParam = {};
-					$.post("${contextPath}/ledger/selectMeansList.ajax", srhParam, resolve);
+				let promise = new Promise(function(resolve, reject){					
+					$.post("${contextPath}/ledger/selectMeansList.ajax", null, resolve);
 				});
 				return promise;
 			}			

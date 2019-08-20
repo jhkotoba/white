@@ -23,8 +23,11 @@ $(document).ready(function(){
 	//이벤트 등록
 	.then(fnEventInit)
 	//초기 조회
-	.then(fnSearch);
+	.then(function(){
+		vals.ledgerGrid.search();
+	});
 });
+
 //초기설정
 function fnInit(){
 	
@@ -162,11 +165,6 @@ function fnEventInit(){
 	$("#excelBtn").on("click", function(){
 		
 	});	
-}
-
-//조회
-function fnSearch(){
-	vals.ledgerGrid.search();
 }
 
 //목적변경
