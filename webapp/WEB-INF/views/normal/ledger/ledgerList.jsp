@@ -5,32 +5,16 @@
 <link rel="stylesheet" href="${contextPath}/resources/wGrid/css/wGrid.css" type="text/css"/>
 <script type="text/javascript" src="${contextPath}/resources/wGrid/js/wGrid.js"></script>
 <script type="text/javascript">
-//전역변수
-const vals = {};
-$(document).ready(function(){
+function fnInit(vals){
+	//############## 초기자료 조회 ################
+	if(wcm.isEmpty(vals)){
+		new Promise(function(resolve, reject){
+			$.post("${contextPath}/ledger/selectLedgerInitData.ajax", null, fnInit);
+		});
+		return;
+	}	
 	
-	//초기 데이터 조회
-	new Promise(function(resolve, reject){
-		$.post("${contextPath}/ledger/selectLedgerInitData.ajax", null, function(data){
-			vals.purList = data.purList;
-			vals.purDtlList = data.purDtlList;
-			vals.meansList = data.meansList;		
-			resolve();
-		});		
-	})
-	//초기설정
-	.then(fnInit)
-	//이벤트 등록
-	.then(fnEventInit)
-	//초기 조회
-	.then(function(){
-		vals.ledgerGrid.search();
-	});
-});
-
-//초기설정
-function fnInit(){
-	
+	//############## 초기설정 ################
 	//조회폼 셀렉트 박스 생성
 	let $option = null;
 	$("#purSelect").append($("<option>").text("선택").val(""));
@@ -70,7 +54,7 @@ function fnInit(){
 	};
 	
 	//가계부 그리드 생성
-	vals.ledgerGrid = new wGrid("ledgerGrid", {
+	const ledgerGrid = new wGrid("ledgerGrid", {
 		controller : {
 			load : function(){					
 				let promise = new Promise(function(resolve, reject){
@@ -141,34 +125,32 @@ function fnInit(){
 				}	
 			},
 		],
-		option : {isAuto : false, isClone : true, isPaging : false, isScrollY: true, bodyHeight:"500px"},			
+		option : {isAutoSearch : true, isClone : true, isPaging : false, isScrollY: true, bodyHeight:"500px"},			
 		message : {
 			nodata : "조회결과가 없습니다."
 		}
 	});
-}
-
-//이벤트 등록
-function fnEventInit(){
 	
+	
+	//############## 이벤트 등록 ################
 	//목적 변경이벤트
 	$("#purSelect").on("change", function(event){
-		fnParSeqChange(event.target.value);			
+		fnParSeqChange(vals, event.target.value);			
 	});
 	
 	//조회
 	$("#searchBtn").on("click", function(){
-		fnSearch();
+		ledgerGrid.search();
 	});
 	
 	//엑셀
 	$("#excelBtn").on("click", function(){
 		
-	});	
+	});
 }
 
 //목적변경
-function fnParSeqChange(purSeq){	
+function fnParSeqChange(vals, purSeq){	
 	$("#purDtlSelect").empty().append($("<option>").text("선택").val(""));
 	
 	//상세목적 option 생성
