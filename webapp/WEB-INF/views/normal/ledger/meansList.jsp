@@ -2,8 +2,10 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="contextPath" value="<%=request.getContextPath()%>"></c:set>
+
 <link rel="stylesheet" href="${contextPath}/resources/wGrid/css/wGrid.css" type="text/css"/>
 <script type="text/javascript" src="${contextPath}/resources/wGrid/js/wGrid.js"></script>
+
 <script type="text/javascript">
 
 function fnInit(){

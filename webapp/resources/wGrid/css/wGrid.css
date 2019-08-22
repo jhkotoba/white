@@ -23,7 +23,7 @@
 .wgrid-overflow-y::-webkit-scrollbar {width: 10px;}
 .wgrid-overflow-y::-webkit-scrollbar-button:start:decrement,::-webkit-scrollbar-button:end:increment {display: none;}
 .wgrid-overflow-y::-webkit-scrollbar-track {background: #5A5A5A; border: 1px solid #484747;}
-.wgrid-overflow-y::-webkit-scrollbar-thumb {background: #4C4C4C;}
+.wgrid-overflow-y::-webkit-scrollbar-thumb {background: #404040;}
 .wgrid-overflow-y::-webkit-scrollbar-corner{background: #4C4C4C;}
 
 .wgrid-tooltip-input-border{border-color: #FFF !important; background: #363636 !important; animation: fadeIn 0.26s ease-in;}

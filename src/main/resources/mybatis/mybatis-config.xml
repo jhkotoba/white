@@ -3,14 +3,8 @@
 PUBLIC "-//mybatis.org//DTD Config 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-config.dtd"> 
 
-<configuration> 
-
-	<typeAliases>
+<configuration> 	
+ 	<typeAliases>
 		<typeAlias alias="whiteMap" type="com.ljh.white.common.collection.WhiteMap"/>
-		
-		<!-- ledger -->
-		<typeAlias alias="MemoBean" type="com.ljh.white.memo.bean.MemoBean"/>		
-	
- 	</typeAliases>
- 	
+ 	</typeAliases>	
 </configuration>

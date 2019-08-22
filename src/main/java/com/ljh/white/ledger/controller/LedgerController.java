@@ -154,6 +154,17 @@ public class LedgerController {
 	
 	
 	/**
+	 * 계산된 가계부 조회
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="/ledger/selectLedgerCalcList.ajax" )
+	public List<WhiteMap> selectLedgerCalcList(HttpServletRequest request){
+		WhiteMap param = new WhiteMap(request);
+		return ledgerService.selectLedgerCalcList(param);		
+	}
+	
+	/**
 	 * 가계부 조회
 	 * @param request
 	 * @return

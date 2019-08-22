@@ -338,7 +338,7 @@
 		</foreach>		
 	</select>
 	
-	<!-- 금전기록 리스트 조회  -->
+	<!-- 가계부 리스트 조회  -->
 	<select id="selectLedgerList" resultType="whiteMap" parameterType="whiteMap">
 		SELECT			
 			rec.record_seq AS recordSeq
@@ -366,6 +366,15 @@
 		LEFT OUTER JOIN MEANS M
     	ON rec.MEANS_SEQ = M.MEANS_SEQ
 		WHERE rec.USER_SEQ = #{userSeq}
+		<if test="purSeq != null and purSeq != ''">
+		AND rec.pur_seq = #{purSeq}
+		</if>
+		<if test="purDtlSeq != null and purDtlSeq != ''">
+		AND rec.pur_dtl_seq = #{purDtlSeq}
+		</if>
+		<if test="meansSeq != null and meansSeq != ''">
+		AND rec.MEANS_SEQ = #{meansSeq}
+		</if>		
 		AND rec.record_date <![CDATA[ >= ]]> CONCAT(#{startDate}, ' 00:00:00')
 		AND rec.record_date <![CDATA[ <= ]]> CONCAT(#{endDate}, ' 23:59:59')
 		ORDER BY rec.record_date ASC,  rec.record_seq ASC

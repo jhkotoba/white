@@ -314,18 +314,36 @@ public class LedgerService {
 		return ledgerMapper.insertRecordList(list);
 	}
 	
+	
 	/**
 	 * 해당 유저 가계부 조회
 	 * @param param
 	 * @return
 	 */
 	public List<WhiteMap> selectLedgerList(WhiteMap param){
+		return ledgerMapper.selectLedgerList(param);
+	}
+	/**
+	 * 사용자의 계산된 가계부 조회
+	 * @param param
+	 * @return
+	 */
+	public List<WhiteMap> selectLedgerCalcList(WhiteMap param){
+		WhiteMap map = null;
 		
-		List<WhiteMap> meansList = this.selectMeansList(param);		
+		//사용수단 조회
+		List<WhiteMap> meansList = ledgerMapper.selectMeansList(param);
+		
+		//금전기록 조회
+		map = new WhiteMap();
+		map.put("userSeq", param.getInt("userSeq"));
+		map.put("startDate", param.getString("startDate"));
+		map.put("endDate", param.getString("endDate"));
+		List<WhiteMap> ledgerList = ledgerMapper.selectLedgerList(param);
 		
 		//금전기록 기간 조회시 기간 이전  각각(현금, 은행등등) 금액 데이터 합산
 		List<WhiteMap> pastList = new ArrayList<WhiteMap>();
-		WhiteMap map = null;
+		
 		for(int i=0; i<meansList.size(); i++) {
 			map = new WhiteMap();
 			map.put("meansNo", "means"+i);
@@ -334,10 +352,7 @@ public class LedgerService {
 			map.put("startDate", param.getString("startDate"));			
 			pastList.add(map);
 		}		
-		WhiteMap pastCal = ledgerMapper.selectPastCalLedger(pastList);
-		
-		//금전기록 조회
-		List<WhiteMap> ledgerList = ledgerMapper.selectLedgerList(param);
+		WhiteMap pastCal = ledgerMapper.selectPastCalLedger(pastList);		
 		
 		//총합계
 		int amount = 0;		
