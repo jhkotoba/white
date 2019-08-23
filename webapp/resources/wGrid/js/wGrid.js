@@ -21,6 +21,18 @@ class wGrid{
 				this.dataLink[i] = i;
 			}
 			this.data = args.data;
+		}		
+		
+		//item
+		this.items = {
+			select : {}
+		};
+		if(this.isNotEmpty(args.items)){
+			if(this.isNotEmpty(args.items.select)){
+				args.items.select.forEach(item => {					
+					this.items.select[item.name] = item;
+				});
+			}
 		}
 		
 		//option
@@ -651,6 +663,11 @@ class wGrid{
 					break;
 				case "select" :
 					
+					//select박스 생성
+					select = document.createElement("select");					
+					select.classList.add("wgrid-select");
+					
+					td.appendChild(select);
 					break;
 				}
 			}
