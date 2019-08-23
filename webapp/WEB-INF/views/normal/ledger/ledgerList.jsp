@@ -9,10 +9,8 @@
 <script type="text/javascript">
 function fnInit(vals){
 	//############## 초기자료 조회 ################
-	if(wcm.isEmpty(vals)){
-		new Promise(function(resolve, reject){
-			$.post("${contextPath}/ledger/selectLedgerInitData.ajax", null, fnInit);
-		});
+	if(wcm.isEmpty(vals)){		
+		$.post("${contextPath}/ledger/selectLedgerInitData.ajax", null, fnInit);
 		return;
 	}
 	
