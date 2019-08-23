@@ -712,19 +712,23 @@ class wGrid{
 			tr.classList.remove("wgrid-" + _state + "-tr");											
 			let trList = tr.childNodes;
 			trList.forEach(element => {
-				let tagName = element.childNodes[0].tagName;
-				if(tagName === "INPUT" || tagName === "SELECT"){
-					element.childNodes[0].classList.remove("wgrid-" + _state +"-tag");
+				if(element.childNodes.length > 0){
+					let tagName = element.childNodes[0].tagName;
+					if(tagName === "INPUT" || tagName === "SELECT"){
+						element.childNodes[0].classList.remove("wgrid-" + _state +"-tag");
+					}
 				}
 			});											
 		}else{				
 			//class 적용 로직
 			tr.classList.add("wgrid-" + _state + "-tr");											
 			let trList = tr.childNodes;			
-			trList.forEach(element => {				
-				let tagName = element.childNodes[0].tagName;
-				if(tagName === "INPUT" || tagName === "SELECT"){
-					element.childNodes[0].classList.add("wgrid-" + _state +"-tag");
+			trList.forEach(element => {
+				if(element.childNodes.length > 0){
+					let tagName = element.childNodes[0].tagName;
+					if(tagName === "INPUT" || tagName === "SELECT"){
+						element.childNodes[0].classList.add("wgrid-" + _state +"-tag");
+					}
 				}												
 			});	
 		}
