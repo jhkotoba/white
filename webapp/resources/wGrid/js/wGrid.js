@@ -666,16 +666,47 @@ class wGrid{
 					select = document.createElement("select");					
 					select.classList.add("wgrid-select");
 					
-					console.log(this.items.select);
-					console.log(this.fields[j].name);
-					console.log(this.items.select[this.fields[j].name]);
+					let seItem = this.items.select[this.fields[j].name];
 					
-					let item = this.items.select[this.fields[j].name];
-					
-					item.opList.forEach(opListItem => {						
+					//셀렉트박스 option 등록
+					seItem.opList.forEach(opItem => {						
 						option = document.createElement("option");
-						option.value = opListItem[item.value];
-						option.textContent = opListItem[item.text];
+						option.value = opItem[seItem.value];
+						
+						//selected 설정
+						if(option.value == list[i][seItem.value]){
+							option.selected = true;
+						}						
+					
+						//text[]일 경우 구분자(seItem.textJoin) 구분하여 합침
+						if(typeof seItem.text === "object" && typeof seItem.text.length === "number"){							
+							let txt = "";
+							let join = this.isEmpty(seItem.textJoin) ? " " : seItem.textJoin;
+							
+							seItem.text.forEach(txList => {							
+								if(this.isNotEmpty(opItem[txList])){
+									txt += opItem[txList] + join;
+								}
+							});
+							option.textContent = txt;
+							txt = "";
+						//Text인 경우
+						}else{
+							option.textContent = opItem[seItem.text];
+						}
+						
+						//data-value 설정
+						if(this.isNotEmpty(seItem.dataValue)){							
+							//여러개일 경우
+							if(typeof seItem.dataValue === "object" && typeof seItem.dataValue.length === "number"){														
+								seItem.dataValue.forEach(daVal => {						
+									option.dataset[daVal] = opItem[daVal];
+								});								
+							//한개인 경우
+							}else{
+								option.dataset[seItem.dataValue] = opItem[seItem.dataValue]; 
+							}
+						}
 						select.appendChild(option);
 					});
 					

@@ -54,14 +54,38 @@ function fnInit(vals){
 					$.post("${contextPath}/ledger/selectLedgerList.ajax", srhParam, resolve);
 				});
 				return promise;
-			}			
+			},
+			createEnd : function(data){				
+				//이동처 컬럼 LED001 or LED002 disabled
+				$("[data-column-name='purpose'] .wgrid-select").each(function(idx, el){					
+					let purType = el.options[el.selectedIndex].dataset.purType;
+					if(purType !== "LED003"){
+						$(el).closest("td").next().next().next().find(".wgrid-select")[0].disabled = true;
+					}else{
+						$(el).closest("td").next().next().next().find(".wgrid-select")[0].disabled = false;
+					}
+				//그리드 목적 change 이벤트
+				}).on("change", function(ev){
+					let purType = ev.target.options[ev.target.selectedIndex].dataset.purType;
+					if(purType !== "LED003"){
+						
+						
+						//----> org값으로 복원
+						
+						
+						$(ev.target).closest("td").next().next().next().find(".wgrid-select")[0].disabled = true;
+					}else{
+						$(ev.target).closest("td").next().next().next().find(".wgrid-select")[0].disabled = false;
+					}
+				});
+			}
 		},
 		items : {
 			select : [
 				{name: "purpose", opList: vals.purList, value: "purSeq", text: "purpose", dataValue: "purType"},				
 				{name: "purDetail", opList: vals.purDtlList, value: "purDtlSeq", text: "purDetail", filterName:"purpose", filter : "purSeq"},				
 				{name: "meansNm", opList : vals.meansList, value : "meansSeq", text:["meansNm", "meansDtlNm", "meansInfo"], textJoin:" "},
-				{name: "moveTarget", opList : vals.meansList, value : "meansSeq", text:["meansNm", "meansDtlNm", "meansInfo"], textJoin:" "},
+				{name: "moveMeans", opList : vals.meansList, value : "meansSeq", text:["meansNm", "meansDtlNm", "meansInfo"], textJoin:" "},
 			]
 		},	
 		fields : [
@@ -72,7 +96,7 @@ function fnInit(vals){
 			{ title:"목적", name:"purpose", tag:"select", width: "12%", align:"center"},
 			{ title:"상세목적", name:"purDetail", tag:"select", width: "12%", align:"center"},
 			{ title:"사용수단", name:"meansNm", tag:"select", 	width: "15%", align:"center"},
-			{ title:"이동처", name:"moveTarget", tag:"select", width: "15%", align:"center"},
+			{ title:"이동처", name:"moveMeans", tag:"select", width: "15%", align:"center"},
 			{ title:"수입/지출/이동", name:"money", tag:"input", width: "8%", align:"center"}
 		],
 		option : {isAutoSearch : true, isClone : true, isPaging : false, isScrollY: true, bodyHeight:"500px"},			
