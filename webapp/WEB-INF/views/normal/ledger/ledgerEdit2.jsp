@@ -58,9 +58,10 @@ function fnInit(vals){
 		},
 		items : {
 			select : [
-				{name: "purpose", item: vals.purList, value: "purSeq", text: "purpose", dataValue: "purType"},				
-				{name: "purDetail", item: vals.purDtlList, value: "purDtlSeq", text: "purDetail", filterName:"purpose", filter : "purSeq"},				
-				{name: "meansNm", item : vals.meansList, value : "meansSeq", text:["meansNm", "meansDtlNm", "meansInfo"], textJoin:" "}
+				{name: "purpose", opList: vals.purList, value: "purSeq", text: "purpose", dataValue: "purType"},				
+				{name: "purDetail", opList: vals.purDtlList, value: "purDtlSeq", text: "purDetail", filterName:"purpose", filter : "purSeq"},				
+				{name: "meansNm", opList : vals.meansList, value : "meansSeq", text:["meansNm", "meansDtlNm", "meansInfo"], textJoin:" "},
+				{name: "moveTarget", opList : vals.meansList, value : "meansSeq", text:["meansNm", "meansDtlNm", "meansInfo"], textJoin:" "},
 			]
 		},	
 		fields : [

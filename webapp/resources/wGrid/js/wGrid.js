@@ -654,8 +654,7 @@ class wGrid{
 								list[i]._state = "select";
 							}else{
 								list[i]._state = "update";
-							}					
-							
+							}
 						}, false);
 						
 					}					
@@ -666,6 +665,19 @@ class wGrid{
 					//select박스 생성
 					select = document.createElement("select");					
 					select.classList.add("wgrid-select");
+					
+					console.log(this.items.select);
+					console.log(this.fields[j].name);
+					console.log(this.items.select[this.fields[j].name]);
+					
+					let item = this.items.select[this.fields[j].name];
+					
+					item.opList.forEach(opListItem => {						
+						option = document.createElement("option");
+						option.value = opListItem[item.value];
+						option.textContent = opListItem[item.text];
+						select.appendChild(option);
+					});
 					
 					td.appendChild(select);
 					break;
