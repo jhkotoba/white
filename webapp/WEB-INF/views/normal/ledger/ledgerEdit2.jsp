@@ -7,7 +7,6 @@
 <script type="text/javascript" src="${contextPath}/resources/wGrid/js/wGrid.js"></script>
 
 <script type="text/javascript">
-var temp;
 function fnInit(vals){
 	//############## 초기자료 조회 ################
 	if(wcm.isEmpty(vals)){		
@@ -55,9 +54,9 @@ function fnInit(vals){
 				});
 				return promise;
 			},
-			createEnd : function(data){				
+			afterCreate : function(){				
 				//이동처 컬럼 LED001 or LED002 disabled
-				$("[data-column-name='purpose'] .wgrid-select").each(function(idx, el){					
+				$("[data-column-name='purSeq'] .wgrid-select").each(function(idx, el){					
 					let purType = el.options[el.selectedIndex].dataset.purType;
 					if(purType !== "LED003"){
 						$(el).closest("td").next().next().next().find(".wgrid-select")[0].disabled = true;
@@ -68,12 +67,17 @@ function fnInit(vals){
 				}).on("change", function(ev){
 					let purType = ev.target.options[ev.target.selectedIndex].dataset.purType;
 					if(purType !== "LED003"){
+						let key = $(ev.target).closest("tr").data("key");
+						let meansSeq = $(ev.target).closest("td").next().next().find(".wgrid-select").val();
+						let $moveSeq = $(ev.target).closest("td").next().next().next().find(".wgrid-select");
 						
+						$moveSeq.val(Number(meansSeq));
+						ledgerGrid.setCellData(key, "moveSeq", Number(meansSeq));
 						
-						//----> org값으로 복원
+						//내부 _applyStyle 로직이 현재 이번트 이전에 수행되기 때문에 직접 호출
+						ledgerGrid._applyStyle(ledgerGrid._checkRow(key), "update", ledgerGrid._getTrNode(ev.target));
 						
-						
-						$(ev.target).closest("td").next().next().next().find(".wgrid-select")[0].disabled = true;
+						$moveSeq[0].disabled = true;
 					}else{
 						$(ev.target).closest("td").next().next().next().find(".wgrid-select")[0].disabled = false;
 					}
@@ -82,29 +86,30 @@ function fnInit(vals){
 		},
 		items : {
 			select : [
-				{name: "purpose", opList: vals.purList, value: "purSeq", text: "purpose", dataValue: "purType"},				
-				{name: "purDetail", opList: vals.purDtlList, value: "purDtlSeq", text: "purDetail", filterName:"purpose", filter : "purSeq"},				
-				{name: "meansNm", opList : vals.meansList, value : "meansSeq", text:["meansNm", "meansDtlNm", "meansInfo"], textJoin:" "},
-				{name: "moveMeans", opList : vals.meansList, value : "meansSeq", text:["meansNm", "meansDtlNm", "meansInfo"], textJoin:" "},
+				{name: "purSeq", opList: vals.purList, value: "purSeq", text: "purpose", dataValue: "purType"},				
+				{name: "purDtlSeq", opList: vals.purDtlList, value: "purDtlSeq", text: "purDetail", filterName:"purpose", filter : "purSeq"},				
+				{name: "meansSeq", opList : vals.meansList, value : "meansSeq", text:["meansNm", "meansDtlNm", "meansInfo"], textJoin:" "},
+				{name: "moveSeq", opList : vals.meansList, value : "meansSeq", text:["meansNm", "meansDtlNm", "meansInfo"], textJoin:" "},
 			]
 		},	
 		fields : [
 			{ isRemoveButton: true, isHeadAddButton: true, width: "3%", align:"center"},
-			{ title:"날짜", name:"recordDate", tag:"input", width: "10%", align:"center"},
+			{ title:"날짜", name:"recordDate", tag:"input", width: "7%", align:"center"},
 			{ title:"위치", name:"position", tag:"input", width: "10%", align:"center"},
-			{ title:"내용", name:"content", tag:"input", width: "15%", align:"center"},			
-			{ title:"목적", name:"purpose", tag:"select", width: "12%", align:"center"},
-			{ title:"상세목적", name:"purDetail", tag:"select", width: "12%", align:"center"},
-			{ title:"사용수단", name:"meansNm", tag:"select", 	width: "15%", align:"center"},
-			{ title:"이동처", name:"moveMeans", tag:"select", width: "15%", align:"center"},
-			{ title:"수입/지출/이동", name:"money", tag:"input", width: "8%", align:"center"}
+			{ title:"내용", name:"content", tag:"input", width: "16%", align:"center"},			
+			{ title:"목적", name:"purSeq", tag:"select", width: "12%", align:"center"},
+			{ title:"상세목적", name:"purDtlSeq", tag:"select", width: "11%", align:"center"},
+			{ title:"사용수단", name:"meansSeq", tag:"select", 	width: "14%", align:"center"},
+			{ title:"이동처", name:"moveSeq", tag:"select", width: "14%", align:"center"},
+			{ title:"수입/지출/이동", name:"money", tag:"input", width: "8%", align:"center"},
+			{ title:"사용여부", isUseYnButton: true, name:"statsYn", width: "5%", align:"center"},	
 		],
 		option : {isAutoSearch : true, isClone : true, isPaging : false, isScrollY: true, bodyHeight:"500px"},			
 		message : {
 			nodata : "조회결과가 없습니다."
 		}
 	});
-	temp = ledgerGrid;
+	
 	//############## 이벤트 등록 ################
 	//목적 변경이벤트
 	$("#purSelect").on("change", function(event){
@@ -123,7 +128,7 @@ function fnInit(vals){
 	
 	//초기화
 	$("#cancelBtn").on("click", function(){
-		ledgerGrid.originalToReset();
+		ledgerGrid.originalToReset(false, true);
 	});
 }
 

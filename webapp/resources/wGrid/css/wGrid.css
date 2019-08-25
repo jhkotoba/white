@@ -16,10 +16,13 @@
 
 .wgrid-delete-tr{background: #795757 !important;}
 .wgrid-delete-tag{background: #654A4A !important;}
+.wgrid-delete-tag:disabled{background: #654A4A !important;}
 .wgrid-update-tr{background: #5A607D;}
 .wgrid-update-tag{background: #535473;}
+.wgrid-update-tag:disabled{background: #535473;}
 .wgrid-insert-tr{background: #54794f;}
 .wgrid-insert-tag{background: #41583e;}
+.wgrid-insert-tag:disabled{background: #41583e;}
 
 .wgrid-overflow-y{overflow-y: overlay;}
 .wgrid-overflow-y::-webkit-scrollbar {width: 10px;}

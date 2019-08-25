@@ -109,15 +109,16 @@ class wGrid{
 			}
 			
 			//생성전 콜백함수
-			if(this.isNotEmpty(this.controller.createStart)){
-				this.controller.createStart(this.data);
+			if(this.isNotEmpty(this.controller.beforeCreate)){
+				this.controller.dataConverter(this.data);
+				this.controller.beforeCreate(this.deepCopy(this.data));
 			}
 			
 			this.createGrid();
 			
 			//생성후 콜백함수
-			if(this.isNotEmpty(this.controller.createEnd)){
-				this.controller.createEnd(this.data);
+			if(this.isNotEmpty(this.controller.afterCreate)){
+				this.controller.afterCreate(this.deepCopy(this.data));
 			}
 		});
 	}
@@ -156,6 +157,19 @@ class wGrid{
 			case 3:
 				break;
 			}							
+		}
+	}
+	
+	setRowData(key, data){
+		
+	}
+	
+	//데이터 삽입 cell
+	setCellData(key, columnName, data){
+		if(this.isNotEmpty(this.dataLink[key])){
+			if(this.isNotEmpty(this.data[this.dataLink[key]][columnName])){
+				this.data[this.dataLink[key]][columnName] = data;
+			}
 		}
 	}
 	
@@ -230,10 +244,29 @@ class wGrid{
 	}
 	
 	//오리지널 복사값으로 초기화
-	originalToReset(){	
+	originalToReset(isBefore, isAfter){	
 		this._bodyRemove();
 		this.data = this.deepCopy(this.clone);
+		
+		if(this.isEmpty(isBefore)){
+			isBefore = false;
+		}
+		if(this.isEmpty(isAfter)){
+			isAfter = false;
+		}
+		
+		//생성전 콜백함수
+		if(isBefore && this.isNotEmpty(this.controller.beforeCreate)){
+			this.controller.dataConverter(this.data);
+			this.controller.beforeCreate(this.deepCopy(this.data));
+		}
+		
 		this.createField();
+		
+		//생성후 콜백함수
+		if(isAfter && this.isNotEmpty(this.controller.afterCreate)){
+			this.controller.afterCreate(this.deepCopy(this.data));
+		}
 	}
 	
 	//빈값으로 초기화
@@ -561,15 +594,16 @@ class wGrid{
 				button.addEventListener("click", event => {
 					
 					//신규행은 바로 삭제
-					if(list[i]._state === "insert"){
+					if(list[i]._state === "insert"){						
+						let node = this._getTrNode(event.target);
 						//데이터 삭제 (index 유지)
-						delete this.data[this.dataLink[this.getTrNode(event.target).dataset.key]];
+						delete this.data[this.dataLink[node.dataset.key]];
 						//태그 삭제
-						this.getTrNode(event.target).remove();
+						node.remove();
 				    //그외 삭제 background 적용
 					}else{
 						
-						let node = this.getTrNode(event.target);
+						let node = this._getTrNode(event.target);
 						let idx = this.dataLink[node.dataset.key];
 						this.data[idx]._isRemove = !this.data[idx]._isRemove;
 						
@@ -601,7 +635,7 @@ class wGrid{
 					
 					//변경사항 style 적용 (insert 제외)
 					if(list[i]._state !== "insert"){
-						this._applyStyle(this._checkRow(list[i]._key), "update", this.getTrNode(event.target));
+						this._applyStyle(this._checkRow(list[i]._key), "update", this._getTrNode(event.target));
 					}
 					
 				});
@@ -648,7 +682,7 @@ class wGrid{
 							list[i][this.fields[j].name] = event.target.value;							
 							if(this.option.isClone){																
 								//변경사항 style 적용								
-								this._applyStyle(this._checkRow(list[i]._key), "update", this.getTrNode(event.target));								
+								this._applyStyle(this._checkRow(list[i]._key), "update", this._getTrNode(event.target));								
 							}
 							if(this._checkRow(list[i]._key)){
 								list[i]._state = "select";
@@ -708,7 +742,21 @@ class wGrid{
 							}
 						}
 						select.appendChild(option);
-					});
+					});					
+					
+					//값 동기화 이벤트 등록 
+					select.addEventListener("change", event => {
+						list[i][seItem.name] = event.target.value;
+						if(this.option.isClone){																
+							//변경사항 style 적용								
+							this._applyStyle(this._checkRow(list[i]._key), "update", this._getTrNode(event.target));								
+						}
+						if(this._checkRow(list[i]._key)){
+							list[i]._state = "select";
+						}else{
+							list[i]._state = "update";
+						}
+					}, false);
 					
 					td.appendChild(select);
 					break;
@@ -720,7 +768,7 @@ class wGrid{
 		return tr;
 	}
 
-	getTrNode(node){
+	_getTrNode(node){
 		while(true){
 			if(node.tagName === "TR"){											
 				break;						
