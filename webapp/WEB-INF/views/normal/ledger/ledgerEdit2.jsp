@@ -100,7 +100,11 @@ function fnInit(vals){
 			{ title:"목적", name:"purSeq", tag:"select", width: "12%", align:"center"},
 			{ title:"상세목적", name:"purDtlSeq", tag:"select", width: "11%", align:"center"},
 			{ title:"사용수단", name:"meansSeq", tag:"select", 	width: "14%", align:"center"},
-			{ title:"이동처", name:"moveSeq", tag:"select", width: "14%", align:"center"},
+			{ title:"이동처", name:"moveSeq", tag:"select", width: "14%", align:"center",
+				itemTemplate: function(value, item, key){
+					
+				}
+			},
 			{ title:"수입/지출/이동", name:"money", tag:"input", width: "8%", align:"center"},
 			{ title:"사용여부", isUseYnButton: true, name:"statsYn", width: "5%", align:"center"},	
 		],

@@ -565,7 +565,7 @@ class wGrid{
 				}else{
 					
 					//순수 사용자정의 템플릿 로직
-					let result = this.fields[j].itemTemplate(list[i][this.fields[j].name], this.data[this.dataLink[tr.dataset.key]], tr.dataset.key);
+					let result = this.fields[j].itemTemplate(list[i][this.fields[j].name], this.deepCopy(this.data[this.dataLink[tr.dataset.key]]), tr.dataset.key);
 					if(typeof result === "object"){
 						if(result.length === 1){
 							//jquery $("<tag>")로 올 경우
