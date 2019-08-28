@@ -24,6 +24,8 @@
 <script type="text/javascript" src="${contextPath}/resources/common/js/cmmCode.js"></script>
 <script type="text/javascript" src="${contextPath}/resources/common/js/cmmAjax.js"></script>
 <script type="text/javascript" src="${contextPath}/resources/common/js/common.js"></script>
+<script type="text/javascript" src="${contextPath}/resources/common/js/commonEvent.js"></script>
+
 
 </head>
 <body class="body">

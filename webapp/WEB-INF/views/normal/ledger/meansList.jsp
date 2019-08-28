@@ -7,10 +7,13 @@
 <script type="text/javascript" src="${contextPath}/resources/wGrid/js/wGrid.js"></script>
 
 <script type="text/javascript">
+//############## 사용 페이지 전역변수 ################
+let meansGrid = null;
 
+//############## 초기설정 ################
 function fnInit(){
-	//############## 초기설정 ################
-	const meansGrid = new wGrid("meansGrid", {
+	
+	meansGrid = new wGrid("meansGrid", {
 		controller : {
 			load : function(){					
 				let promise = new Promise(function(resolve, reject){					
@@ -31,25 +34,24 @@ function fnInit(){
 		option : {isAutoSearch: true, isClone: true, isPaging: false, isScrollY: true, isScrollX: false, bodyHeight:"550px"},		
 	});
 	
-	//############## 이벤트 등록 ################
+	fnInitEvent();
+}
+
+//############## 이벤트 등록 ################
+function fnInitEvent(){
 	//저장 버튼
 	$("#saveBtn").on("click", function(){
-		fnApplyData(meansGrid);		
+		fnApplyData();		
 	});
 	
 	//취소(초기화) 버튼
 	$("#cancelBtn").on("click", function(){
 		meansGrid.originalToReset();
 	});
-
-}
-
-function fnInitEvent(){
-	
 }
 
 //############## 적용 로직 ################
-function fnApplyData(meansGrid){
+function fnApplyData(){
 	
 	let applyList = meansGrid.getApplyData();
 	let isSave = false;
