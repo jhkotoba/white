@@ -197,12 +197,10 @@ class wGrid{
 		if(this.isEmpty(key)){
 			return this.deepCopy(this.data);
 		}else{
-			return this.deepCopy(this.data.filter(item => {
-				return item._key === key;
-			}));
+			return this.deepCopy(this.data[this.dataLink[key]]);
 		}		
 	}
-	
+		
 	//새로 추가된 행 가져오기
 	getNewData(){
 		return this.deepCopy(this.data.filter(item => {
@@ -812,8 +810,29 @@ class wGrid{
 		
 	}
 	
+	//key값으로 applyStyle적용
+	applySync(key){
+		let node = null;
+		let item = this.data[this.dataLink[key]];
+		console.log(item);
+		Array.from(this.node.bodyTable.childNodes).some(item => {
+			if(item.dataset.key == key){
+				node = item;
+				return true;
+			}else{
+				return false;
+			}
+		});
+		console.log(node);
+		this._applyStyle(!item.isRemove, "delete", node);						
+		this._applyStyle(this._checkRow(key), "update", node);
+	}
+	
 	//스타일 적용, 취소
 	_applyStyle(isApply, _state, tr){
+		console.log("isApply:"+isApply);
+		console.log("_state:"+_state);
+		console.log(tr);
 		_state = _state.toLowerCase();
 		if(isApply){
 			//class 해제 로직

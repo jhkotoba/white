@@ -464,7 +464,6 @@ let mf = {
 	}
 }
 
-
 //공통함수
 const wcm = {
 	//########################### 빈값, null, undefined, 값타입 체크  ###########################
@@ -485,7 +484,18 @@ const wcm = {
 		let obj = String(_str);
 		if(obj == null || obj == undefined || obj == 'null' || obj == 'undefined' || obj == '' ) return false;
 		else return true;
-	},		
+	},
+	
+	//########################### 금액 계산, 편집, 체크 ###########################	
+	//콤마 적용
+	setComma : function(inNum){     
+		let outNum;
+		outNum = String(inNum); 
+		while (/(\d+)(\d{3})/.test(outNum)) {
+			outNum = outNum.replace(/(\d+)(\d{3})/, '$1' + ',' + '$2');
+		}
+		return outNum;
+	},
 	//########################### 날짜 조회, 계산, 편집, 체크 ###########################
 	//오늘날짜 반환
 	getToday : function(){
@@ -514,25 +524,57 @@ const wcm = {
 	},
 	//날짜 형식 체크 ex) 2019-01-01 08:00	
 	isDatePattern : function(date, patten){
-		let datePattern = null;
-		switch(patten.toUpperCase()){		
-		case "HH:MM:SS":
-			datePattern = /^([1-9]|[01][0-9]|2[0-3]):([0-5][0-9])$/;
-			break;
-		case "YY-MM-DD":
-			datePattern = /^\d{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[0-1])$/;
-			break;		
-		case "YYYY-MM-DD":	
-			datePattern = /^(19|20)\d{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[0-1])$/;	
-			break;
-		case "YYYY-MM-DD HH:MM":
-			datePattern = /^(19|20)\d{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[0-1]) (0[0-9]|1[0-9]|2[0-3]):([0-5][0-9])$/;
-			break;	
-		case "YYYY-MM-DD HH:MM:SS":
-			datePattern = /^(19|20)\d{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[0-1]) (0[0-9]|1[0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])$/;	
-			break;
-		}
-		return datePattern.test(date);
+		try{			
+			let datePattern = null;
+			
+			if(this.isEmpty(patten)){
+				patten = "YYYY-MM-DD";
+			}
+			
+			switch(patten.toUpperCase()){
+			case "YYYY-MM-DD":	
+				datePattern = /^(19|20)\d{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[0-1])$/;	
+				break;
+			case "YYYY-MM-DD HH:MM":
+				datePattern = /^(19|20)\d{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[0-1]) (0[0-9]|1[0-9]|2[0-3]):([0-5][0-9])$/;
+				break;	
+			case "YYYY-MM-DD HH:MM:SS":
+				datePattern = /^(19|20)\d{2}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[0-1]) (0[0-9]|1[0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])$/;	
+				break;
+			}
+			
+			if(datePattern.test(date)){				
+				let checkDate = date.replace(/[^0-9]/g,"");
+				
+				if(isNaN(checkDate) || checkDate.length < 8){
+					return false;
+				}
+				
+				let year = Number(checkDate.substring(0, 4));
+				let month = Number(checkDate.substring(4, 6));
+				let day = Number(checkDate.substring(6, 8));
+		         
+		        if(month < 1 || month > 12 ) {
+		            return false;
+		        }
+		         
+		        var lastDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+		        var maxDay = lastDays[month-1];		         
+		        
+		        if(month === 2 && (year % 4 === 0 && year % 100 !== 0 || year % 400 ===0)){
+		            maxDay = 29;
+		        }
+		         
+		        if(day <= 0 || day > maxDay){
+		            return false;
+		        }
+		        return true;
+			}else{
+				return false;
+			}
+		}catch(err){			
+	        return false;
+	    }
 	},	
 	//########################### 문자열 편집, 계산, 체크 ###########################		
 	//문자열의 해당인덱스 삭제

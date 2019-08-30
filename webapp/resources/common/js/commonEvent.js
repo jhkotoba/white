@@ -20,23 +20,3 @@ document.addEventListener("keyup", event => {
 		value = null;
 	});
 });
-
-
-/*//통화 입력 - 숫제만
-function _getNumber(obj){	
-	let num01;
-	let num02;
-	num01 = obj.value;
-	num02 = num01.replace(/\D/g,"");
-	num01 = _setComma(num02);
-	obj.value =  num01;
-}
-//통화 입력 - 콤마추가
-function _setComma(inNum){     
-	let outNum;
-	outNum = String(inNum); 
-	while (/(\d+)(\d{3})/.test(outNum)) {
-		outNum = outNum.replace(/(\d+)(\d{3})/, '$1' + ',' + '$2');
-	}
-	return outNum;
-}*/

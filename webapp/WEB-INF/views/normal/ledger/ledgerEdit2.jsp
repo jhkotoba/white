@@ -59,9 +59,7 @@ function fnInit(vals){
 				});
 				return promise;
 			},
-			afterCreate : function(){
-				fnCreateGridEventInit();
-			}
+			afterCreate : fnCreateGridAfterInit
 		},
 		items : {
 			select : [
@@ -80,7 +78,7 @@ function fnInit(vals){
 			{ title:"상세목적", name:"purDtlSeq", tag:"select", width: "11%", align:"center"},
 			{ title:"사용수단", name:"meansSeq", tag:"select", 	width: "14%", align:"center"},
 			{ title:"이동처", name:"moveSeq", tag:"select", width: "14%", align:"center"},
-			{ title:"수입/지출/이동", name:"money", tag:"input", width: "8%", align:"center", itemTemplate: fnCreateFieldMoney},
+			{ title:"수입/지출/이동", name:"money", tag:"input", width: "8%", align:"right"},
 			{ title:"사용여부", isUseYnButton: true, name:"statsYn", width: "5%", align:"center"},	
 		],
 		option : {isAutoSearch : true, isClone : true, isPaging : false, isScrollY: true, bodyHeight:"500px"},			
@@ -113,22 +111,46 @@ function fnEventInit(){
 	//초기화
 	$("#cancelBtn").on("click", function(){
 		ledgerGrid.originalToReset(false, true);
-	});
+	});	
 }
 
-//############## 그리드 생성후 이벤트 등록 ################
-function fnCreateGridEventInit(){
+//############## 그리드 생성 후 그리드 초기설정 ################
+function fnCreateGridAfterInit(){
+	
+	//금액 필드 통화속성 적용
+	$("[data-column-name='money'] .wgrid-input").addClass("only-currency wth80p");
+	
 	//이동처 컬럼 LED001 or LED002 disabled
 	$("[data-column-name='purSeq'] .wgrid-select").each(function(idx, el){					
 		let purType = el.options[el.selectedIndex].dataset.purType;
-		if(purType !== "LED003"){
-			$(el).closest("td").next().next().next().find(".wgrid-select")[0].disabled = true;
-		}else{
-			$(el).closest("td").next().next().next().find(".wgrid-select")[0].disabled = false;
+		let moveSelect = $(el).closest("td").next().next().next().find(".wgrid-select")[0];
+		
+		let $sign = $("<span>");
+		let $strong = $("<strong>").addClass("pm-mark");; 
+		                                    
+		switch(purType){                    
+		case "LED001":
+			moveSelect.disabled = true;
+			$strong.text("+");
+			$(el).closest("td").next().next().next().next().prepend($strong);
+			break;
+		case "LED002":
+			moveSelect.disabled = true;
+			$strong.text("-");
+			$(el).closest("td").next().next().next().next().prepend($strong);
+			break;
+		case "LED003":
+			moveSelect.disabled = false;
+			$strong.text(">");
+			$(el).closest("td").next().next().next().next().prepend($strong);
+			break;			
 		}
+		
 	//그리드 목적 change 이벤트
-	}).on("change", function(ev){
+	}).off().on("change", function(ev){
+		
 		let purType = ev.target.options[ev.target.selectedIndex].dataset.purType;
+		
 		if(purType !== "LED003"){
 			let key = $(ev.target).closest("tr").data("key");
 			let meansSeq = $(ev.target).closest("td").next().next().find(".wgrid-select").val();
@@ -136,9 +158,7 @@ function fnCreateGridEventInit(){
 			
 			$moveSeq.val(Number(meansSeq));
 			ledgerGrid.setCellData(key, "moveSeq", Number(meansSeq));
-			
-			//내부 _applyStyle 로직이 현재 이번트 이전에 수행되기 때문에 직접 호출
-			ledgerGrid._applyStyle(ledgerGrid._checkRow(key), "update", ledgerGrid._getTrNode(ev.target));
+			ledgerGrid.applySync(key);			
 			
 			$moveSeq[0].disabled = true;
 		}else{
@@ -161,13 +181,16 @@ function fnParSeqChange(vals, purSeq){
 }
 
 //############## 그리드 생성시 수입/지출/이동 필드 생성 ################
-function fnCreateFieldMoney(value, item){
+/* function fnCreateFieldMoney(value, item, key){
 	let purType = item.purType;
 	
 	let $div = $("<div>");
 	let $sign = $("<span>");
 	let $strong = $("<strong>");
-	let $input = $("<input>").addClass("input-gray only-currency").val(value);
+	let $input = $("<input>").addClass("input-gray only-currency").val(value)
+		.on("change", function(){
+			ledgerGrid.applySync(key);
+		});
 	
 	switch(purType){
 	case "LED001": $sign.text("+"); break;
@@ -176,7 +199,7 @@ function fnCreateFieldMoney(value, item){
 	}
 	
 	return $div.append($sign).append($input);
-}
+} */
 </script>
 
 <form id="srhForm" name="srhForm" onsubmit="return false;">
