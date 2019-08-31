@@ -1,8 +1,8 @@
 /**
  *  공통 이벤트
  */
-//################## 공통 keyup 이벤트 #####################
-document.addEventListener("keyup", event => {	
+//################## 공통 change 이벤트 #####################
+document.addEventListener("change", event => {	
 	event.target.classList.forEach(className => {
 		let value = [];
 		switch(className){
@@ -13,6 +13,7 @@ document.addEventListener("keyup", event => {
 			value[2] = String(value[1]);
 			while (/(\d+)(\d{3})/.test(value[2])) {
 				value[2] = value[2].replace(/(\d+)(\d{3})/, '$1' + ',' + '$2');
+				value[2] = value[2].replace(/(^0+)/, "");
 			}
 			event.target.value = value[2];
 			break;

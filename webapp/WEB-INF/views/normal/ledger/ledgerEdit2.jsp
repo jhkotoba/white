@@ -124,9 +124,9 @@ function fnEventInit(){
 }
 
 //############## 그리드 데이터 가공  ################
-function fnGridDataConverter(data){
-	return data.map(function(item){		
-		item.money = wcm.setComma(Math.abs(item.money));
+function fnGridDataConverter(data){	
+	return data.map(function(item){
+		item.money = Math.abs(item.money);
 		return item;
 	});
 }
@@ -139,8 +139,8 @@ function fnCreatedGridBeforeInit(){
 //############## 그리드 생성 후 그리드 초기설정 ################
 function fnCreatedGridAfterInit(){
 	
-	//금액 필드 통화속성 적용
-	$("[data-column-name='money'] .wgrid-input").addClass("only-currency wth80p");
+	//금액 필드 넓이 적용
+	$("[data-column-name='money'] .wgrid-input").addClass("wth80p");
 	
 	//이동처 컬럼 LED001 or LED002 disabled
 	$("[data-column-name='purSeq'] .wgrid-select").each(function(idx, el){					

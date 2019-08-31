@@ -484,18 +484,7 @@ const wcm = {
 		let obj = String(_str);
 		if(obj == null || obj == undefined || obj == 'null' || obj == 'undefined' || obj == '' ) return false;
 		else return true;
-	},
-	
-	//########################### 금액 계산, 편집, 체크 ###########################	
-	//콤마 적용
-	setComma : function(inNum){     
-		let outNum;
-		outNum = String(inNum); 
-		while (/(\d+)(\d{3})/.test(outNum)) {
-			outNum = outNum.replace(/(\d+)(\d{3})/, '$1' + ',' + '$2');
-		}
-		return outNum;
-	},
+	},	
 	//########################### 날짜 조회, 계산, 편집, 체크 ###########################
 	//오늘날짜 반환
 	getToday : function(){
@@ -583,12 +572,16 @@ const wcm = {
 		return string.slice(0, index) + string.slice(index+1);		
 	},
 	//콤마 자리수 추가
-	comma : function(x){
+	setComma : function(x){
 		if(this.isEmpty(x)){
 			return x;
 		}else{
 			return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 		}
+	},
+	//콤마 삭제
+	removeComma : function(str){
+		return String(str).replace(/,/g,"");
 	},
 	//########################### 비동기 통신 ###########################
 	//변수 초기화

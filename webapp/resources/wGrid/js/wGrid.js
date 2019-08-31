@@ -9,19 +9,7 @@ class wGrid{
 		this.target = document.getElementById(this.id);
 		this.header = args.header;
 		this.fields = args.fields;		
-		this.dataLink = {};
-		
-		if(isEmpty(args.data)){
-			this.data = null;
-		}else{
-			for(let i=0; i<args.data.length; i++){
-				args.data[i]._state = "select";
-				args.data[i]._isRemove = false;
-				args.data[i]._key = i;
-				this.dataLink[i] = i;
-			}
-			this.data = args.data;
-		}		
+		this.dataLink = {};	
 		
 		//item
 		this.items = {
@@ -94,6 +82,39 @@ class wGrid{
 		this.controller = args.controller;			
 		this.clone = null;
 		
+		//의존 이벤트 등록(change)
+		this.target.addEventListener("change", event => {	
+			event.target.classList.forEach(className => {
+				let value = [];
+				switch(className){
+				//금액 입력란 설정
+				case "wgrid-currency" :
+					value[0] = event.target.value;
+					value[1] = value[0].replace(/\D/g,"");			
+					value[2] = String(value[1]);
+					while (/(\d+)(\d{3})/.test(value[2])) {
+						value[2] = value[2].replace(/(\d+)(\d{3})/, '$1' + ',' + '$2');
+						value[2] = value[2].replace(/(^0+)/, "");
+					}
+					event.target.value = value[2];
+					break;
+				}
+				value = null;
+			});
+		});
+		
+		if(isEmpty(args.data)){
+			this.data = null;
+		}else{
+			
+			//사용자임의 데이터 가공 및 주입
+			if(this.isNotEmpty(this.controller.dataConverter)){
+				args.data = this.controller.dataConverter(this.deepCopy(args.data));
+			}
+			
+			this.setData(args.data);
+		}
+		
 		//조회 호출
 		if(this.option.isAutoSearch){
 			this.search();
@@ -102,14 +123,20 @@ class wGrid{
 	
 	//조회
 	search(){
-		this.controller.load().then(result => {
+		this.controller.load().then(result => {	
+			
 			//초기 데이터 가공 및 주입
-			this._dataInjection(result);
+			let res = this._dataInjection(result);
+			let data = res.data;			
+			//this.dataCount = res.count;
 			
 			//사용자임의 데이터 가공 및 주입
 			if(this.isNotEmpty(this.controller.dataConverter)){
-				this.data = this.controller.dataConverter(this.deepCopy(this.data));
+				data = this.controller.dataConverter(this.deepCopy(data));
 			}
+			
+			//데이터 그리드변수에 적용
+			this.setData(data);
 			
 			//데이터 클론 생성
 			if(this.option.isClone) this.createClone();
@@ -135,14 +162,10 @@ class wGrid{
 	}
 	
 	//데이터 가공 및 주입
-	_dataInjection(result){		
+	_dataInjection(result){
 		//단일 리스드 (list)
 		if(typeof result === "object" && typeof result.length === "number"){			
-			
-			//데이터 넣기
-			this.setData(result);
-			
-			if(this.option.isClone) this.createClone();
+			return {data:result, count:0};			
 		//복합
 		}else if(typeof result === "object" && typeof result.length === "undefined"){							
 			let list = null;
@@ -151,18 +174,15 @@ class wGrid{
 			switch(keys.length){
 			//카운트, 리스트(count, list)
 			case 2:
-				for(let i=0; i<keys.length; i++){									
+				let count = 0;
+				for(let i=0; i<keys.length; i++){					
 					if(typeof result[keys[i]] === "number"){
-						//this.page.totalCount = result[keys[i]];
-					}else if(typeof result[keys[i]] === "object" && typeof result[keys[i]].length === "number"){										
-						
-						list = result[keys[i]];						
-						//데이터 넣기
-						this.setData(list);
-						
-						if(this.option.isClone) this.createClone();
+						count = result[keys[i]];
+					}else if(typeof result[keys[i]] === "object" && typeof result[keys[i]].length === "number"){
+						list = result[keys[i]];
 					}
-				}								
+				}
+				return {data:list, count:count};	
 				break;
 			//카운트, 리스트, 맵(count, list, map)
 			case 3:
@@ -191,10 +211,25 @@ class wGrid{
 			data[i]._state = "select";
 			data[i]._isRemove = false;
 			data[i]._key = i;			
-			this.dataLink[i] = i;
+			data[i]._type = [];			
+			this.dataLink[i] = i;			
 			
-			//조회시 fields없는값 ""값으로 설정
 			for(let j=0; j<this.fields.length; j++){
+				
+				//type 리스트에 주입
+				if(this.isEmpty(this.fields[j].type)){
+					data[i]._type[j] = "text";
+				}else{
+					data[i]._type[j] = this.fields[j].type;
+					
+					//타입별 데이터 가공
+					switch(this.fields[j].type){					
+					case "currency" :						
+						data[i][this.fields[j].name] = this._setComma(data[i][this.fields[j].name]);						
+						break;
+					}					
+				}
+				//조회시 fields없는값 ""값으로 설정
 				if(this.isNotEmpty(this.fields[j].name) && this.isEmpty(data[i][this.fields[j].name])){
 					data[i][this.fields[j].name] = "";
 				}
@@ -674,6 +709,14 @@ class wGrid{
 						input.style.textAlign = this.fields[j].align;
 					}
 					
+					//이벤트 의존 클래스 등록
+					switch(this.fields[j].type){
+					case "currency":
+						input.classList.add("wgrid-currency");
+						break;
+					}
+				
+					
 					//신규행 배경색 변경
 					if(list[i]._state === "insert"){
 						input.classList.add("wgrid-insert-tag");
@@ -793,7 +836,8 @@ class wGrid{
 	//원본 행과 비교
 	_checkRow(key){		
 		if(this.option.isClone){
-			let idx = this.dataLink[key];			
+			
+			let idx = this.dataLink[key];
 			if(this.data[idx]._state === "insert"){
 				return true;
 			}else{				
@@ -804,10 +848,22 @@ class wGrid{
 					
 					if(keys[i].substring(0,1) === "_"){
 						continue;
-					}else if(this.data[idx][keys[i]] != this.clone[idx][keys[i]]){
-						isEqual = false;
-						break;
+					}else{						
+						//타입에따른 비교(텍스트)
+						if(this.data[idx]._type[i] === "text"){
+							if(this.data[idx][keys[i]] != this.clone[idx][keys[i]]){
+								isEqual = false;
+								break;
+							}
+						//타입에따른 비교(통화)
+						}else if(this.data[idx]._type[i] === "currency"){														
+							if(this._removeComma(this.data[idx][keys[i]]) != this._removeComma(this.clone[idx][keys[i]])){
+								isEqual = false;
+								break;
+							}
+						}
 					}
+					
 				}		
 				return isEqual;				
 			}			
@@ -824,8 +880,7 @@ class wGrid{
 	//key값으로 applyStyle적용
 	applySync(key){
 		let node = null;
-		let item = this.data[this.dataLink[key]];
-		console.log(item);
+		let item = this.data[this.dataLink[key]];		
 		Array.from(this.node.bodyTable.childNodes).some(item => {
 			if(item.dataset.key == key){
 				node = item;
@@ -833,17 +888,13 @@ class wGrid{
 			}else{
 				return false;
 			}
-		});
-		console.log(node);
+		});		
 		this._applyStyle(!item.isRemove, "delete", node);						
 		this._applyStyle(this._checkRow(key), "update", node);
 	}
 	
 	//스타일 적용, 취소
 	_applyStyle(isApply, _state, tr){
-		console.log("isApply:"+isApply);
-		console.log("_state:"+_state);
-		console.log(tr);
 		_state = _state.toLowerCase();
 		if(isApply){
 			//class 해제 로직
@@ -910,5 +961,19 @@ class wGrid{
 			return retObj;
 		}
 		return deepObjCopy(data);
+	}	
+	
+	//콤마추카
+	_setComma(str){
+		str = String(str);
+		if(this.isEmpty(str)){
+			return str;
+		}else{
+			return str.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+		}
+	}
+	//콤마 삭제
+	_removeComma(str){
+		return String(str).replace(/,/g,"");
 	}
 }

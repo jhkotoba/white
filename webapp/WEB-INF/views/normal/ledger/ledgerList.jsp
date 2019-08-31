@@ -90,9 +90,9 @@ function fnInit(vals){
 				itemTemplate : function(value, item, key){					
 					let $span = $("<span>");
 					switch(item.purType){
-					case "LED001": $span.addClass("sync-red").text(wcm.comma(value)); break;
-					case "LED002": $span.addClass("sync-blue").text(wcm.comma(value)); break;
-					case "LED003": $span.addClass("sync-green").text("("+wcm.comma(Math.abs(value))+")"); break;
+					case "LED001": $span.addClass("sync-red").text(wcm.setComma(value)); break;
+					case "LED002": $span.addClass("sync-blue").text(wcm.setComma(value)); break;
+					case "LED003": $span.addClass("sync-green").text("("+wcm.setComma(Math.abs(value))+")"); break;
 					}
 					return $span;
 				}
@@ -101,9 +101,9 @@ function fnInit(vals){
 				itemTemplate : function(value, item, key){					
 					let $span = $("<span>");
 					switch(item.purType){
-					case "LED001": $span.addClass("sync-red").text(wcm.comma(value)); break;
-					case "LED002": $span.addClass("sync-blue").text(wcm.comma(value)); break;
-					case "LED003": return wcm.comma(value);				
+					case "LED001": $span.addClass("sync-red").text(wcm.setComma(value)); break;
+					case "LED002": $span.addClass("sync-blue").text(wcm.setComma(value)); break;
+					case "LED003": return wcm.setComma(value);				
 					}
 					return $span;
 				}
@@ -114,18 +114,18 @@ function fnInit(vals){
 					if(vals.headList[vals.headCnt++].value === "no"+item.meansSeq){
 						switch(item.purType){
 						case "LED001":
-						case "LED003": $span.addClass("sync-red").text(wcm.comma(value)); break;
-						case "LED002": $span.addClass("sync-blue").text(wcm.comma(value)); break;							
+						case "LED003": $span.addClass("sync-red").text(wcm.setComma(value)); break;
+						case "LED002": $span.addClass("sync-blue").text(wcm.setComma(value)); break;							
 						}						
 					}else if(vals.haedSelected === "no"+item.moveSeq){
 						if(item.purType === "LED003"){
-							$span.addClass("sync-red").text(wcm.comma(value));
+							$span.addClass("sync-red").text(wcm.setComma(value));
 						}						
 					}else{
 						$span = null;
 					}
 					vals.headCntCheck();
-					return $span == null ? wcm.comma(value) : $span;
+					return $span == null ? wcm.setComma(value) : $span;
 				}	
 			},
 		],
