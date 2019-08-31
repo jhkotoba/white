@@ -90,11 +90,11 @@ class wGrid{
 			bodyTable : null
 		}
 		
-		//데이터 복제본 생성
+		//컨트롤로 저장
+		this.controller = args.controller;			
 		this.clone = null;
-		if(args.option.isClone) this.createClone();
 		
-		this.controller = args.controller;
+		//조회 호출
 		if(this.option.isAutoSearch){
 			this.search();
 		}
@@ -103,20 +103,31 @@ class wGrid{
 	//조회
 	search(){
 		this.controller.load().then(result => {
+			//초기 데이터 가공 및 주입
 			this._dataInjection(result);
-			while(this.target.hasChildNodes()){
-				this.target.removeChild( this.target.firstChild ); 
+			
+			//사용자임의 데이터 가공 및 주입
+			if(this.isNotEmpty(this.controller.dataConverter)){
+				this.data = this.controller.dataConverter(this.deepCopy(this.data));
 			}
 			
-			//생성전 콜백함수
-			if(this.isNotEmpty(this.controller.beforeCreate)){
-				this.controller.dataConverter(this.data);
+			//데이터 클론 생성
+			if(this.option.isClone) this.createClone();
+			
+			//기존 그리드 존재시 삭제
+			while(this.target.hasChildNodes()){
+				this.target.removeChild(this.target.firstChild); 
+			}			
+			
+			//그리드 생성전 콜백함수
+			if(this.isNotEmpty(this.controller.beforeCreate)){				
 				this.controller.beforeCreate(this.deepCopy(this.data));
 			}
 			
+			//그리드 생성
 			this.createGrid();
 			
-			//생성후 콜백함수
+			//그리드 생성후 콜백함수
 			if(this.isNotEmpty(this.controller.afterCreate)){
 				this.controller.afterCreate(this.deepCopy(this.data));
 			}

@@ -59,8 +59,14 @@ function fnInit(vals){
 				});
 				return promise;
 			},
-			afterCreate : fnCreateGridAfterInit
+			//데이터 가공
+			dataConverter : fnGridDataConverter,
+			//그리드 생성전 초기설정
+			beforeCreate : fnCreatedGridBeforeInit,
+			//그리드 생성후 초기설정
+			afterCreate : fnCreatedGridAfterInit
 		},
+		//그리드 생성시 필요한 아이템
 		items : {
 			select : [
 				{name: "purSeq", opList: vals.purList, value: "purSeq", text: "purpose", dataValue: "purType"},				
@@ -68,7 +74,8 @@ function fnInit(vals){
 				{name: "meansSeq", opList : vals.meansList, value : "meansSeq", text:["meansNm", "meansDtlNm", "meansInfo"], textJoin:" "},
 				{name: "moveSeq", opList : vals.meansList, value : "meansSeq", text:["meansNm", "meansDtlNm", "meansInfo"], textJoin:" "},
 			]
-		},	
+		},
+		//그리드 필드 정보
 		fields : [
 			{ isRemoveButton: true, isHeadAddButton: true, width: "3%", align:"center"},
 			{ title:"날짜", name:"recordDate", tag:"input", width: "7%", align:"center"},
@@ -78,10 +85,12 @@ function fnInit(vals){
 			{ title:"상세목적", name:"purDtlSeq", tag:"select", width: "11%", align:"center"},
 			{ title:"사용수단", name:"meansSeq", tag:"select", 	width: "14%", align:"center"},
 			{ title:"이동처", name:"moveSeq", tag:"select", width: "14%", align:"center"},
-			{ title:"수입/지출/이동", name:"money", tag:"input", width: "8%", align:"right"},
+			{ title:"수입/지출/이동", name:"money", tag:"input", type:"currency", width: "8%", align:"right"},
 			{ title:"사용여부", isUseYnButton: true, name:"statsYn", width: "5%", align:"center"},	
 		],
+		//그리드 옵션
 		option : {isAutoSearch : true, isClone : true, isPaging : false, isScrollY: true, bodyHeight:"500px"},			
+		//그리드 메시지
 		message : {
 			nodata : "조회결과가 없습니다."
 		}
@@ -114,8 +123,21 @@ function fnEventInit(){
 	});	
 }
 
+//############## 그리드 데이터 가공  ################
+function fnGridDataConverter(data){
+	return data.map(function(item){		
+		item.money = wcm.setComma(Math.abs(item.money));
+		return item;
+	});
+}
+
+//############## 그리드 생성 전 그리드 초기설정 ################
+function fnCreatedGridBeforeInit(){
+	//이벤트 중복방지를 위한 삭제
+	$("[data-column-name='purSeq'] .wgrid-select").off();
+}
 //############## 그리드 생성 후 그리드 초기설정 ################
-function fnCreateGridAfterInit(){
+function fnCreatedGridAfterInit(){
 	
 	//금액 필드 통화속성 적용
 	$("[data-column-name='money'] .wgrid-input").addClass("only-currency wth80p");
@@ -125,8 +147,7 @@ function fnCreateGridAfterInit(){
 		let purType = el.options[el.selectedIndex].dataset.purType;
 		let moveSelect = $(el).closest("td").next().next().next().find(".wgrid-select")[0];
 		
-		let $sign = $("<span>");
-		let $strong = $("<strong>").addClass("pm-mark");; 
+		let $strong = $("<strong>").addClass("pm-mark");
 		                                    
 		switch(purType){                    
 		case "LED001":
@@ -145,9 +166,18 @@ function fnCreateGridAfterInit(){
 			$(el).closest("td").next().next().next().next().prepend($strong);
 			break;			
 		}
-		
+	});
+	
+	//그리드 생성 후 이벤트 설정
+	fnCreatedGridAfterEventInit();
+}
+
+//############## 그리드 생성 후 그리드 이벤트 설정 ################
+function fnCreatedGridAfterEventInit(){
+	
+	
 	//그리드 목적 change 이벤트
-	}).off().on("change", function(ev){
+	$("[data-column-name='purSeq'] .wgrid-select").on("change", function(ev){
 		
 		let purType = ev.target.options[ev.target.selectedIndex].dataset.purType;
 		
@@ -179,27 +209,6 @@ function fnParSeqChange(vals, purSeq){
 		}
 	});	
 }
-
-//############## 그리드 생성시 수입/지출/이동 필드 생성 ################
-/* function fnCreateFieldMoney(value, item, key){
-	let purType = item.purType;
-	
-	let $div = $("<div>");
-	let $sign = $("<span>");
-	let $strong = $("<strong>");
-	let $input = $("<input>").addClass("input-gray only-currency").val(value)
-		.on("change", function(){
-			ledgerGrid.applySync(key);
-		});
-	
-	switch(purType){
-	case "LED001": $sign.text("+"); break;
-	case "LED002": $sign.text("-"); break;
-	case "LED003": $sign.text(">"); break;
-	}
-	
-	return $div.append($sign).append($input);
-} */
 </script>
 
 <form id="srhForm" name="srhForm" onsubmit="return false;">
