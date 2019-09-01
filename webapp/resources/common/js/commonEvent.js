@@ -2,7 +2,7 @@
  *  공통 이벤트
  */
 //################## 공통 change 이벤트 #####################
-document.addEventListener("change", event => {	
+document.addEventListener("keyup", event => {	
 	event.target.classList.forEach(className => {
 		let value = [];
 		switch(className){

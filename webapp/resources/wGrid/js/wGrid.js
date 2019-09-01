@@ -82,26 +82,7 @@ class wGrid{
 		this.controller = args.controller;			
 		this.clone = null;
 		
-		//의존 이벤트 등록(change)
-		this.target.addEventListener("change", event => {	
-			event.target.classList.forEach(className => {
-				let value = [];
-				switch(className){
-				//금액 입력란 설정
-				case "wgrid-currency" :
-					value[0] = event.target.value;
-					value[1] = value[0].replace(/\D/g,"");			
-					value[2] = String(value[1]);
-					while (/(\d+)(\d{3})/.test(value[2])) {
-						value[2] = value[2].replace(/(\d+)(\d{3})/, '$1' + ',' + '$2');
-						value[2] = value[2].replace(/(^0+)/, "");
-					}
-					event.target.value = value[2];
-					break;
-				}
-				value = null;
-			});
-		});
+		this._createEvent();		
 		
 		if(isEmpty(args.data)){
 			this.data = null;
@@ -976,4 +957,30 @@ class wGrid{
 	_removeComma(str){
 		return String(str).replace(/,/g,"");
 	}
+	
+	//의존 이벤트 등록
+	_createEvent(){
+		
+		//change 이벤트
+		this.target.addEventListener("change", event => {	
+			event.target.classList.forEach(className => {
+				let value = [];
+				switch(className){
+				//금액 입력란 설정
+				case "wgrid-currency" :
+					value[0] = event.target.value;
+					value[1] = value[0].replace(/\D/g,"");			
+					value[2] = String(value[1]);
+					while (/(\d+)(\d{3})/.test(value[2])) {
+						value[2] = value[2].replace(/(\d+)(\d{3})/, '$1' + ',' + '$2');
+						value[2] = value[2].replace(/(^0+)/, "");
+					}
+					event.target.value = value[2];
+					break;
+				}
+				value = null;
+			});
+		});
+	}
+
 }
