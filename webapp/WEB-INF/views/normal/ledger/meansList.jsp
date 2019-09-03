@@ -64,7 +64,7 @@ function fnApplyData(){
 		isSave = !applyList.some(function(item){			
 			switch(item._state){			
 			case "update":
-				let gList = vals.meansGrid.getData();
+				let gList = meansGrid.getData();
 				for(let i=0; i<gList.length; i++){
 					if(item._key !== gList[i]._key){
 						if(item.meansOrder == gList[i].meansOrder){
