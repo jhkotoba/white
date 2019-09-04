@@ -9,15 +9,17 @@
 <script type="text/javascript">
 //############## 가계부 조회 페이지 전역변수 ################
 let ledgerGrid = null;
+let vals = null;
+
+$(document).ready(function(){
+	$.post("${contextPath}/ledger/selectLedgerInitData.ajax", null, function(data){
+		vals = data;
+		fnInit();
+	});
+});
 
 //############## 초기설정 ################
-function fnInit(vals){
-	
-	//초기자료 조회
-	if(wcm.isEmpty(vals)){		
-		$.post("${contextPath}/ledger/selectLedgerInitData.ajax", null, fnInit);
-		return;
-	}	
+function fnInit(){
 	
 	//조회폼 셀렉트 박스 생성
 	let $option = null;
@@ -142,7 +144,7 @@ function fnInit(vals){
 function fnEventInit(){
 	//목적 변경이벤트
 	$("#purSelect").on("change", function(event){
-		fnParSeqChange(vals, event.target.value);			
+		fnParSeqChange(event.target.value);			
 	});
 	
 	//조회
@@ -152,12 +154,12 @@ function fnEventInit(){
 	
 	//엑셀
 	$("#excelBtn").on("click", function(){
-		
+		alert("미구현..");
 	});
 }
 
 //############## 목적변경  ################
-function fnParSeqChange(vals, purSeq){	
+function fnParSeqChange(purSeq){	
 	$("#purDtlSelect").empty().append($("<option>").text("선택").val(""));
 	
 	//상세목적 option 생성

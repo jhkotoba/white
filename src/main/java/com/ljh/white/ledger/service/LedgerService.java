@@ -321,7 +321,11 @@ public class LedgerService {
 	 * @return
 	 */
 	public List<WhiteMap> selectLedgerList(WhiteMap param){
-		return ledgerMapper.selectLedgerList(param);
+		List<WhiteMap> list = ledgerMapper.selectLedgerList(param);
+		if("DESC".equals(param.get("sort"))){
+			Collections.reverse(list);
+		}
+		return list;
 	}
 	/**
 	 * 사용자의 계산된 가계부 조회

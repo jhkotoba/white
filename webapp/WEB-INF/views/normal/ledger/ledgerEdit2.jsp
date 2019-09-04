@@ -9,7 +9,14 @@
 <script type="text/javascript">
 //############## 가계부 편집 페이지 전역변수 ################
 let ledgerGrid = null;
+let vals = null;
 
+$(document).ready(function(){
+	$.post("${contextPath}/ledger/selectLedgerInitData.ajax", null, function(data){
+		vals = data;
+		fnInit();
+	});
+});
 
 //############## 초기설정 ################
 function fnInit(vals){
@@ -54,6 +61,7 @@ function fnInit(vals){
 						purSeq : $("#purSelect").val(),
 						purDtlSeq : $("#purDtlSelect").val(),
 						meansSeq : $("#meansSelect").val(),
+						sort : "DESC"
 					};
 					$.post("${contextPath}/ledger/selectLedgerList.ajax", srhParam, resolve);
 				});
@@ -104,7 +112,7 @@ function fnInit(vals){
 function fnEventInit(){
 	//목적 변경이벤트
 	$("#purSelect").on("change", function(event){
-		fnParSeqChange(vals, event.target.value);			
+		fnParSeqChange(event.target.value);			
 	});
 	
 	//조회
@@ -198,7 +206,7 @@ function fnCreatedGridAfterEventInit(){
 }
 
 //############## 목적변경  ################
-function fnParSeqChange(vals, purSeq){	
+function fnParSeqChange(purSeq){	
 	$("#purDtlSelect").empty().append($("<option>").text("선택").val(""));
 	
 	//상세목적 option 생성

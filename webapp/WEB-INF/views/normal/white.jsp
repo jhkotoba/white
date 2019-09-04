@@ -76,13 +76,6 @@ $(document).ready(function(){
 </script>
 </c:if>
 
-<script type="text/javascript">
-document.addEventListener("DOMContentLoaded", function(){
-	fnInit();
-});
-</script>
-
-
 <nav class="nav">
 	<a class="nav-brand h6" href="${contextPath}/main">white</a>
 	<ul>

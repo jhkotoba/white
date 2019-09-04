@@ -10,6 +10,10 @@
 //############## 사용 페이지 전역변수 ################
 let meansGrid = null;
 
+$(document).ready(function(){
+	fnInit();
+});
+
 //############## 초기설정 ################
 function fnInit(){
 	
