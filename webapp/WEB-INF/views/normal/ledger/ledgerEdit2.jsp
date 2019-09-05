@@ -19,13 +19,7 @@ $(document).ready(function(){
 });
 
 //############## 초기설정 ################
-function fnInit(vals){
-	
-	//초기자료 조회
-	if(wcm.isEmpty(vals)){		
-		$.post("${contextPath}/ledger/selectLedgerInitData.ajax", null, fnInit);
-		return;
-	}
+function fnInit(){
 	
 	//조회폼 셀렉트 박스 생성
 	let $option = null;
@@ -76,9 +70,9 @@ function fnInit(vals){
 		},
 		//그리드 생성시 필요한 아이템
 		items : {
-			select : [
-				{name: "purSeq", opList: vals.purList, value: "purSeq", text: "purpose", dataValue: "purType"},				
-				{name: "purDtlSeq", opList: vals.purDtlList, value: "purDtlSeq", text: "purDetail", filterName:"purSeq", filter : "purSeq"},				
+			select : [				
+				{name: "purSeq", opList: vals.purList, value: "purSeq", text: "purpose", dataValue: "purType", child: "purDtlSeq"},				
+				{name: "purDtlSeq", opList: vals.purDtlList, value: "purDtlSeq", text: "purDetail", parent:"purSeq", filter : "purSeq"},				
 				{name: "meansSeq", opList : vals.meansList, value : "meansSeq", text:["meansNm", "meansDtlNm", "meansInfo"], textJoin:" "},
 				{name: "moveSeq", opList : vals.meansList, value : "meansSeq", text:["meansNm", "meansDtlNm", "meansInfo"], textJoin:" "},
 			]

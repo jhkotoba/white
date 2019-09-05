@@ -672,33 +672,31 @@ class wGrid{
 					select = document.createElement("select");					
 					select.classList.add("wgrid-select");
 					
-					let seItem = this.items.select[this.fields[j].name];
-					//console.log("seItem:");
-					//console.log(seItem);
+					let seItem = this.items.select[this.fields[j].name];					
+					let fOpList = null;
 					
-					//필터 없는 옵션 리스트
-					if(this._isEmpty(seItem.filterName)){
-						//로직없음. 
+					//필터 미적용
+					if(this._isEmpty(seItem.parent)){						
+						fOpList = seItem.opList;
+						
+						//자신이 아닌 필터 적용된 셀렉트박스가 자신을 가르키는지 검사 후 가르키면 
+						//필터적용된 부모 체인지 이벤트 클래스 적용
+						//select.classList.add("wgrid-select-filter-chgev");
+						/*this.items.select.forEach()*/
+						
+						
 						
 					//필터 적용할 옵션 리스트
 					}else{
-						
 						//필터할 대상의 값
-						let filterValue = list[i][seItem.filterName];
-						
-						console.log("filterValue:"+filterValue);
-						
-						console.log("i:"+i);
-						console.log("j:"+j);
-						
-						
+						let filterValue = list[i][seItem.parent];
+						fOpList = seItem.opList.filter(fOpItem => {
+							return filterValue == fOpItem[seItem.filter];
+						});
 					}
 					
 					//셀렉트박스 option 등록
-					seItem.opList.forEach(opItem => {
-						
-						//console.log("opItem:");
-						//console.log(opItem);
+					fOpList.forEach(opItem => {
 						
 						option = document.createElement("option");
 						option.value = opItem[seItem.value];						
@@ -909,6 +907,7 @@ class wGrid{
 			
 			event.target.classList.forEach(className => {
 				switch(className){
+				//동기화 이벤트
 				case "wgrid-sync-chgev":
 					//값 동기화
 					this.data[this.dataLink[item.key]][item.columnName] = event.target.value;
@@ -920,6 +919,9 @@ class wGrid{
 						this.data[this.dataLink[item.key]]._state = "update";
 					}
 					break;
+				//필터 적용 셀렉트박스 - 부모 변경시 자신 변경 이벤트
+				//case "wgrid-select-filter-chgev":
+				//	break;
 				}
 			});
 		}, false);
