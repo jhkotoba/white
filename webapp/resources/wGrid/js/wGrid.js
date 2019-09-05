@@ -673,11 +673,35 @@ class wGrid{
 					select.classList.add("wgrid-select");
 					
 					let seItem = this.items.select[this.fields[j].name];
+					//console.log("seItem:");
+					//console.log(seItem);
+					
+					//필터 없는 옵션 리스트
+					if(this._isEmpty(seItem.filterName)){
+						//로직없음. 
+						
+					//필터 적용할 옵션 리스트
+					}else{
+						
+						//필터할 대상의 값
+						let filterValue = list[i][seItem.filterName];
+						
+						console.log("filterValue:"+filterValue);
+						
+						console.log("i:"+i);
+						console.log("j:"+j);
+						
+						
+					}
 					
 					//셀렉트박스 option 등록
-					seItem.opList.forEach(opItem => {						
+					seItem.opList.forEach(opItem => {
+						
+						//console.log("opItem:");
+						//console.log(opItem);
+						
 						option = document.createElement("option");
-						option.value = opItem[seItem.value];
+						option.value = opItem[seItem.value];						
 						
 						//selected 설정
 						if(option.value == list[i][seItem.value]){
