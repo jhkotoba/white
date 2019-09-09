@@ -673,27 +673,20 @@ class wGrid{
 					select.classList.add("wgrid-select");
 					
 					let seItem = this.items.select[this.fields[j].name];					
-					let fOpList = null;
+					let fOpList = seItem.opList;
 					
-					//필터 미적용
-					if(this._isEmpty(seItem.parent)){						
-						fOpList = seItem.opList;
-						
-						//자신이 아닌 필터 적용된 셀렉트박스가 자신을 가르키는지 검사 후 가르키면 
-						//필터적용된 부모 체인지 이벤트 클래스 적용
-						//select.classList.add("wgrid-select-filter-chgev");
-						/*this.items.select.forEach()*/
-						
-						
-						
-					//필터 적용할 옵션 리스트
-					}else{
-						//필터할 대상의 값
-						let filterValue = list[i][seItem.parent];
+					//부모 필터가 적용되는 셀렉트박스
+					if(this._isNotEmpty(seItem.parent)){
 						fOpList = seItem.opList.filter(fOpItem => {
-							return filterValue == fOpItem[seItem.filter];
+							return list[i][seItem.parent] == fOpItem[seItem.filter];
 						});
 					}
+					
+					//자신 셀렉트박스 변경시 자식 셀렉트박스가 변경되는 부분
+					if(this._isNotEmpty(seItem.child)){
+						//자식 변경 이벤트 클래스 적용
+						select.classList.add("wgrid-parent-chgev");
+					}					
 					
 					//셀렉트박스 option 등록
 					fOpList.forEach(opItem => {
@@ -920,8 +913,9 @@ class wGrid{
 					}
 					break;
 				//필터 적용 셀렉트박스 - 부모 변경시 자신 변경 이벤트
-				//case "wgrid-select-filter-chgev":
-				//	break;
+				case "wgrid-parent-chgev":
+					console.log("wgrid-parent-chgev");
+					break;
 				}
 			});
 		}, false);
