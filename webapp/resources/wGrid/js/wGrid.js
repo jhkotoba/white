@@ -912,8 +912,47 @@ class wGrid{
 						this.data[this.dataLink[item.key]]._state = "update";
 					}
 					break;
-				//필터 적용 셀렉트박스 - 부모 변경시 자신 변경 이벤트
+				//필터 적용 셀렉트박스 - 부모(자신) 변경시 자식 변경 이벤트
 				case "wgrid-parent-chgev":
+					console.log("item");
+					console.log(item);
+					console.log("event.target");
+					console.log(event.target);
+					
+					let childValueName = this.items.select[item.columnName].childValueName; 		
+					let childColumnName = this.items.select[item.columnName].childColumnName;				
+					let childObj = this.items.select[childName];
+										
+					
+					let $childElement = this._getColumnElement(item.key, childColumnName);
+					
+					
+					while($childElement.hasChildNodes()){
+						$childElement.removeChild($childElement.firstChild); 
+					}
+					
+					let newOpList = childObj.opList.filter(opItem => {
+						
+						return opItem[item.columnName] == event.target.value;
+					});				
+					
+					let option = null;
+					let select = document.createElement("select");
+					newOpList.forEach(opItem => {						
+						option = document.createElement("option");
+						option.value = opItem[childValueName];
+						option.textContent = opItem[childObj.text];
+						select.appendChild(option);
+					});
+					select.classList.add("wgrid-select");
+					select.classList.add("wgrid-sync-chgev");
+					$childElement.appendChild(select);
+					console.log($childElement);
+					
+					//자식 셀렉트 박스 값 동기화
+					this.data[this.dataLink[item.key]][childColumnName] = select.value;					
+					
+					
 					console.log("wgrid-parent-chgev");
 					break;
 				}

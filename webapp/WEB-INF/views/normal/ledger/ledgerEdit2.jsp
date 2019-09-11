@@ -71,8 +71,8 @@ function fnInit(){
 		//그리드 생성시 필요한 아이템
 		items : {
 			select : [				
-				{name: "purSeq", opList: vals.purList, value: "purSeq", text: "purpose", dataValue: "purType", child: "purDtlSeq"},				
-				{name: "purDtlSeq", opList: vals.purDtlList, value: "purDtlSeq", text: "purDetail", parent:"purSeq", filter : "purSeq"},				
+				{name: "purSeq", opList: vals.purList, value: "purSeq", text: "purpose", dataValue: "purType", childColumnName:"purDtlSeq", childValueName: "purDtlSeq"},				
+				{name: "purDtlSeq", opList: vals.purDtlList, value: "purDtlSeq", text: "purDetail", parentColumnName:"purSeq", parentValueName:"purSeq", filterValueName : "purSeq"},				
 				{name: "meansSeq", opList : vals.meansList, value : "meansSeq", text:["meansNm", "meansDtlNm", "meansInfo"], textJoin:" "},
 				{name: "moveSeq", opList : vals.meansList, value : "meansSeq", text:["meansNm", "meansDtlNm", "meansInfo"], textJoin:" "},
 			]
