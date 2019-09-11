@@ -683,7 +683,7 @@ class wGrid{
 					}
 					
 					//자신 셀렉트박스 변경시 자식 셀렉트박스가 변경되는 부분
-					if(this._isNotEmpty(seItem.child)){
+					if(this._isNotEmpty(seItem.childValueName) && this._isNotEmpty(seItem.childColumnName)){
 						//자식 변경 이벤트 클래스 적용
 						select.classList.add("wgrid-parent-chgev");
 					}					
@@ -788,8 +788,7 @@ class wGrid{
 	}
 	
 	//원본 행과 비교
-	_checkRow(key){		
-		
+	_checkRow(key){
 			
 		let idx = this.dataLink[key];
 		if(this.data[idx]._state === "insert"){
@@ -810,7 +809,7 @@ class wGrid{
 							break;
 						}
 					//타입에따른 비교(통화)
-					}else if(this.dataType[keys] === "currency"){														
+					}else if(this.dataType[keys[i]] === "currency"){														
 						if(this._removeComma(this.data[idx][keys[i]]) != this._removeComma(this.clone[idx][keys[i]])){
 							isEqual = false;
 							break;
@@ -913,47 +912,42 @@ class wGrid{
 					}
 					break;
 				//필터 적용 셀렉트박스 - 부모(자신) 변경시 자식 변경 이벤트
-				case "wgrid-parent-chgev":
-					console.log("item");
-					console.log(item);
-					console.log("event.target");
-					console.log(event.target);
+				case "wgrid-parent-chgev":					
 					
-					let childValueName = this.items.select[item.columnName].childValueName; 		
-					let childColumnName = this.items.select[item.columnName].childColumnName;				
-					let childObj = this.items.select[childName];
-										
-					
-					let $childElement = this._getColumnElement(item.key, childColumnName);
-					
-					
-					while($childElement.hasChildNodes()){
-						$childElement.removeChild($childElement.firstChild); 
-					}
-					
-					let newOpList = childObj.opList.filter(opItem => {
+					//부모 변경시 자식변경 이벤트에 필요한 변수 체크
+					if(this._isNotEmpty(this.items) && this._isNotEmpty(this.items.select) && this._isNotEmpty(this.items.select)
+							&& this._isNotEmpty(this.items.select[item.columnName].childValueName) 
+							&& this._isNotEmpty(this.items.select[item.columnName].childColumnName)){						
 						
-						return opItem[item.columnName] == event.target.value;
-					});				
-					
-					let option = null;
-					let select = document.createElement("select");
-					newOpList.forEach(opItem => {						
-						option = document.createElement("option");
-						option.value = opItem[childValueName];
-						option.textContent = opItem[childObj.text];
-						select.appendChild(option);
-					});
-					select.classList.add("wgrid-select");
-					select.classList.add("wgrid-sync-chgev");
-					$childElement.appendChild(select);
-					console.log($childElement);
-					
-					//자식 셀렉트 박스 값 동기화
-					this.data[this.dataLink[item.key]][childColumnName] = select.value;					
-					
-					
-					console.log("wgrid-parent-chgev");
+						let childValueName = this.items.select[item.columnName].childValueName; 		
+						let childColumnName = this.items.select[item.columnName].childColumnName;				
+						let childItem = this.items.select[childColumnName];									
+						
+						let childElement = this._getColumnElement(item.key, childColumnName);
+						
+						while(childElement.hasChildNodes()){
+							childElement.removeChild(childElement.firstChild); 
+						}
+						
+						let option = null;
+						let select = document.createElement("select");
+						
+						childItem.opList.filter(opItem => {							
+							return opItem[item.columnName] == event.target.value;
+						}).forEach(opItem => {
+							option = document.createElement("option");
+							option.value = opItem[childValueName];
+							option.textContent = opItem[childItem.text];
+							select.appendChild(option);
+						});
+						
+						select.classList.add("wgrid-select");
+						select.classList.add("wgrid-sync-chgev");
+						childElement.appendChild(select);
+						
+						//자식 셀렉트 박스 값 동기화
+						this.data[this.dataLink[item.key]][childColumnName] = select.value;	
+					}
 					break;
 				}
 			});
@@ -966,7 +960,7 @@ class wGrid{
 			event.target.classList.forEach(className => {				
 				switch(className){
 				//값 동기화 이벤트
-				case "wgrid-sync-kuev" :
+				case "wgrid-sync-kuev" :					
 					//값 동기화
 					this.data[this.dataLink[item.key]][item.columnName] = event.target.value;
 					//변경사항 style 적용										

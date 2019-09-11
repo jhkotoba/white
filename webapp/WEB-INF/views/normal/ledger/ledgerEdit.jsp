@@ -202,8 +202,8 @@ function ledgerList(data){
 				param.updateList = JSON.stringify(updateList);
 				param.deleteList = JSON.stringify(deleteList);
 				
-				cfnCmmAjax("/ledger/applyRecordList", param).done(function(data){
-					if(isEmpty(data.updateCnt) && isEmpty(data.deleteCnt)){
+				cfnCmmAjax("/ledger/applyRecordList", param).done(function(data){					
+					if(isEmpty(data.updateCnt) && isEmpty(data.deleteCnt)){						
 						alert("데이터 수정에 실패하였습니다");
 					}else{
 						let msg = "";

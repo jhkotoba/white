@@ -248,7 +248,6 @@ public class LedgerService {
 		WhiteMap purTypeMap = White.convertListToMap(purList, "purSeq", "purType");	
 		WhiteMap purDtlSeqMap = White.convertListToMap(this.selectPurDtlList(param), "purDtlSeq", "purSeq");
 		WhiteMap meansSeqMap = White.convertListToMap(this.selectMeansList(param), "meansSeq", "meansNm");
-		meansSeqMap.put("0", "cash");
 		
 		String str = null;
 		
@@ -312,6 +311,143 @@ public class LedgerService {
 			}
 		}
 		return ledgerMapper.insertRecordList(list);
+	}
+	
+	/**
+	 * 금전기록 수정 및 삭제
+	 * @param param
+	 * @return 
+	 * errorCode
+	 * -1 : 날짜값이 정상적이지 않는 경우
+	 * -2 : 위치값 길이 오버 (20자)
+	 * -3 : 내용값 널값이거나 빈값
+	 * -4 : 내용값 길이 오버 (50자)
+	 * -5 : 사용수단 seq값 널값인 경우
+	 * -6 : 목적 seq값 널인 경우
+	 * -7 : 목적타입이 이동인 경우에서 받는곳이 널값인 경우
+	 * -8 : 목적타입이 이동인 경우에서 보내는곳과 받는곳이 같은 경우
+	 * -9 : 목적타입이 이동이 아닌 경우에서 meansSeq와 moveSeq가 같지 않는 경우
+	 * -10 : 상세목적이 목적의 하위그룹에 속하지 않는 경우
+	 * -11 : 금액값이 정상적이지 않는 경우
+	 * deleteCnt or updateCnt : 갯수
+	 */
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
+	public WhiteMap applyRecordList(WhiteMap param) {		
+		List<WhiteMap> updateList = param.convertListWhiteMap("updateList", true);
+		List<WhiteMap> deleteList = param.convertListWhiteMap("deleteList", true);
+		
+		List<WhiteMap> purList = this.selectPurList(param);
+		
+		WhiteMap purSeqMap = White.convertListToMap(purList, "purSeq", "purpose");	
+		WhiteMap purTypeMap = White.convertListToMap(purList, "purSeq", "purType");	
+		WhiteMap purDtlSeqMap = White.convertListToMap(this.selectPurDtlList(param), "purDtlSeq", "purSeq");
+		WhiteMap meansSeqMap = White.convertListToMap(this.selectMeansList(param), "meansSeq", "meansNm");
+		
+		String str = null;
+		WhiteMap result = new WhiteMap();
+				
+		for(int i=0; i<updateList.size(); i++) {			
+			//날짜 검사
+			str = updateList.get(i).getString("recordDate");
+			if(!White.dateCheck(str, "yyyy-MM-dd HH:mm")) {
+				result.put("errorCode", -1);
+				return result;
+			}
+			
+			//위치 검사
+			str = updateList.get(i).getString("position");			
+			if(str.length() > Constant.POSITION_LENGTH) {
+				result.put("errorCode", -2);
+				return result;
+			}
+			
+			//내용 검사
+			str = updateList.get(i).getString("content");	
+			if(str == null || "".equals(str)) {
+				result.put("errorCode", -3);
+				return result;
+			}else if(str.length() > Constant.CONTENT_LENGTH) {
+				result.put("errorCode", -4);
+				return result;
+			}
+			
+			//사용수단 검사
+			str = updateList.get(i).getString("meansSeq");			
+			if(meansSeqMap.get(str) == null) {
+				result.put("errorCode", -5);
+				return result;			
+			}
+			
+			//목적 검사
+			str = updateList.get(i).getString("purSeq");			
+			if(purSeqMap.get(str) == null) {
+				result.put("errorCode", -6);
+				return result;
+			}
+			
+			//목적타입이 이동인 경우 검사
+			if("LED003".equals(purTypeMap.get(str))) {
+				String moveSeq = updateList.get(i).getString("moveSeq");
+				if(meansSeqMap.get(moveSeq) == null) {
+					result.put("errorCode", -7);
+					return result;				
+				}
+				if(moveSeq.equals(updateList.get(i).getString("meansSeq"))){
+					result.put("errorCode", -8);
+					return result;
+				}
+			//목적타입이 이동이 아닌 경우 검사//이동인경우 meansSeq와 moveSeq같도록 수정
+			}else {
+				str = updateList.get(i).getString("meansSeq");
+				if(str == null) {
+					result.put("errorCode", -9);
+					return result;
+				}else if(!str.equals(updateList.get(i).getString("moveSeq"))) {
+					result.put("errorCode", -9);
+					return result;
+				}
+			}
+			
+			//상세목적 검사
+			str = updateList.get(i).getString("purDtlSeq");			
+			if(!"".equals(str)) {
+				if(!updateList.get(i).getString("purSeq").equals(purDtlSeqMap.get(str))) {
+					result.put("errorCode", -10);
+					return result;
+				}
+			}		
+			
+			//금액 검사
+			str = updateList.get(i).getString("money");
+			try {
+				int money = Integer.parseInt(str);
+				switch(purTypeMap.get(updateList.get(i).getString("purSeq")).toString()) {
+				case "LED001":
+					if(money <= 0) {
+						result.put("errorCode", -11);
+						return result;
+					}
+					break;
+				case "LED002":
+				case "LED003":
+					if(money >= 0) {
+						result.put("errorCode", -11);
+						return result;
+					}break;
+				default:
+					result.put("errorCode", -11);
+					return result;				
+				}
+				
+			}catch (NumberFormatException e) {
+				result.put("errorCode", -11);
+				return result;
+			}
+		}		
+		
+		if(deleteList.size()!=0) result.put("deleteCnt", ledgerMapper.deleteRecordList(deleteList));
+		if(updateList.size()!=0) result.put("updateCnt", ledgerMapper.updateRecordList(updateList));
+		return result;
 	}
 	
 	
@@ -537,23 +673,6 @@ public class LedgerService {
 			result.put("firstDate", White.getTodayDate());
 		}		
 		return result;			
-	}
-	
-	
-	/**
-	 * 금전기록 수정 및 삭제
-	 * @param param
-	 * @return
-	 */
-	@Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
-	public WhiteMap applyRecordList(WhiteMap param) {		
-		List<WhiteMap> updateList = param.convertListWhiteMap("updateList", true);
-		List<WhiteMap> deleteList = param.convertListWhiteMap("deleteList", true);
-		
-		WhiteMap result = new WhiteMap();
-		if(deleteList.size()!=0) result.put("deleteCnt", ledgerMapper.deleteRecordList(deleteList));
-		if(updateList.size()!=0) result.put("updateCnt", ledgerMapper.updateRecordList(updateList));
-		return result;
 	}
 	
 	/**
