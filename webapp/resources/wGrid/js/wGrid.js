@@ -9,7 +9,7 @@ class wGrid{
 		this.target = document.getElementById(this.id);
 		this.header = args.header;
 		this.fields = args.fields;		
-		this.dataLink = {};	
+		this._dataLink = {};	
 		
 		//item
 		this.items = {
@@ -74,13 +74,13 @@ class wGrid{
 		
 		//컨트롤로 저장
 		this.controller = args.controller;			
-		this.clone = null;
+		this._clone = null;
 		
 		this._createEvent();		
 		
 		if(this._isEmpty(args.data)){
-			this.data = null;
-			this.dataType = null;
+			this._data = null;
+			this._dataType = null;
 		}else{
 			
 			//사용자임의 데이터 가공 및 주입
@@ -124,7 +124,7 @@ class wGrid{
 			
 			//그리드 생성전 콜백함수
 			if(this._isNotEmpty(this.controller.beforeCreate)){				
-				this.controller.beforeCreate(this.deepCopy(this.data));
+				this.controller.beforeCreate(this.deepCopy(this._data));
 			}
 			
 			//그리드 생성
@@ -132,7 +132,7 @@ class wGrid{
 			
 			//그리드 생성후 콜백함수
 			if(this._isNotEmpty(this.controller.afterCreate)){
-				this.controller.afterCreate(this.deepCopy(this.data));
+				this.controller.afterCreate(this.deepCopy(this._data));
 			}
 		});
 	}
@@ -143,23 +143,23 @@ class wGrid{
 	
 	//데이터 삽입 cell
 	setCellData(key, columnName, data){
-		if(this._isNotEmpty(this.dataLink[key])){
-			if(this._isNotEmpty(this.data[this.dataLink[key]][columnName])){
-				this.data[this.dataLink[key]][columnName] = data;
+		if(this._isNotEmpty(this._dataLink[key])){
+			if(this._isNotEmpty(this._data[this._dataLink[key]][columnName])){
+				this._data[this._dataLink[key]][columnName] = data;
 			}
 		}
 	}
 	
 	//데이터 넣기
 	setData(data){
-		this.dataLink = {};
-		this.dataType = {};
+		this._dataLink = {};
+		this._dataType = {};
 		for(let i=0; i<data.length; i++){
 			data[i]._state = "select";
 			data[i]._isRemove = false;
 			data[i]._key = i;			
 			data[i]._type = [];			
-			this.dataLink[i] = i;			
+			this._dataLink[i] = i;			
 			
 			for(let j=0; j<this.fields.length; j++){
 				
@@ -167,9 +167,9 @@ class wGrid{
 				if(this._isEmpty(this.fields[j].name)){
 					continue;
 				}else if(this._isEmpty(this.fields[j].type)){
-					this.dataType[this.fields[j].name] = "text";					
+					this._dataType[this.fields[j].name] = "text";					
 				}else{
-					this.dataType[this.fields[j].name] = this.fields[j].type;					
+					this._dataType[this.fields[j].name] = this.fields[j].type;					
 					
 					//타입별 데이터 가공
 					switch(this.fields[j].type){					
@@ -184,42 +184,42 @@ class wGrid{
 				}
 			}
 		}
-		this.data = data;
+		this._data = data;
 	}
 	
 	//데이터 가져오기
 	getData(key){
 		if(this._isEmpty(key)){
-			return this.deepCopy(this.data);
+			return this._outputDataProcess(this._data);
 		}else{
-			return this.deepCopy(this.data[this.dataLink[key]]);
+			return this._outputDataProcess(this._data[this._dataLink[key]]);
 		}		
 	}
 		
 	//새로 추가된 행 가져오기
 	getNewData(){
-		return this.deepCopy(this.data.filter(item => {
+		return this._outputDataProcess(this._data.filter(item => {
 			return item._state === "insert";
 		}));		
 	}
 	
 	//기존데이터 수정된 행 가져오기
 	getModifyData(){
-		return this.deepCopy(this.data.filter(item => {
+		return this._outputDataProcess(this._data.filter(item => {
 			return item._state === "update";
 		}));
 	}
 	
 	//기존데이터 삭제할 행 가져오기
 	getRemoveData(){
-		return this.deepCopy(this.data.filter(item => {
+		return this._outputDataProcess(this._data.filter(item => {
 			return item._isRemove === true;
 		}));
 	}
 	
 	//신규, 수정된, 삭제할 행 가져오기 
 	getApplyData(){
-		return this.deepCopy(this.data.filter(item => {
+		return this._outputDataProcess(this._data.filter(item => {
 			return item._isRemove === true || item._state === "insert" || item._state === "update";
 		})).map(item => {
 			if(item._isRemove){
@@ -233,13 +233,13 @@ class wGrid{
 	
 	//최초 조회시 값 가져오기
 	getOriginalData(){
-		return this.deepCopy(this.clone);
+		return this._outputDataProcess(this._clone);
 	}
 	
 	//오리지널 복사값으로 초기화
 	originalToReset(isBefore, isAfter){	
 		this._bodyRemove();
-		this.data = this.deepCopy(this.clone);
+		this._data = this.setData(this.deepCopy(this._clone));
 		
 		if(this._isEmpty(isBefore)){
 			isBefore = false;
@@ -250,15 +250,15 @@ class wGrid{
 		
 		//생성전 콜백함수
 		if(isBefore && this._isNotEmpty(this.controller.beforeCreate)){
-			this.controller.dataConverter(this.data);
-			this.controller.beforeCreate(this.deepCopy(this.data));
+			this.controller.dataConverter(this._data);
+			this.controller.beforeCreate(this.deepCopy(this._data));
 		}
 		
 		this.createField();
 		
 		//생성후 콜백함수
 		if(isAfter && this._isNotEmpty(this.controller.afterCreate)){
-			this.controller.afterCreate(this.deepCopy(this.data));
+			this.controller.afterCreate(this.deepCopy(this._data));
 		}
 	}
 	
@@ -273,7 +273,7 @@ class wGrid{
 	//key값으로 applyStyle적용
 	applySync(key){
 		let node = null;
-		let item = this.data[this.dataLink[key]];		
+		let item = this._data[this._dataLink[key]];		
 		Array.from(this.node.bodyTable.childNodes).some(item => {
 			if(item.dataset.key == key){
 				node = item;
@@ -321,8 +321,8 @@ class wGrid{
 		row._key = new Date().getTime();
 		row._isRemove = false;
 		row._state = "insert";		
-		this.data.push(row);
-		this.dataLink[row._key] = this.data.length-1;		
+		this._data.push(row);
+		this._dataLink[row._key] = this._data.length-1;		
 	
 		let newColumn = this.createColumn([row], 0);
 		
@@ -342,7 +342,7 @@ class wGrid{
 	
 	//그리드 생성
 	createGrid(){	
-		let list = this.data;
+		let list = this._data;
 		
 		//헤더생성
 		let header = document.createElement("div");
@@ -445,7 +445,7 @@ class wGrid{
 		this.target.appendChild(header);				
 		
 		//생성시 데이터 존재하지 않을 경우
-		if(this._isEmpty(this.data)){
+		if(this._isEmpty(this._data)){
 			this.createNoDataField();
 		//생성시 데이터 존재할 경우
 		}else{
@@ -475,7 +475,7 @@ class wGrid{
 	
 	//필드 생성
 	createField(){
-		let list = this.data;
+		let list = this._data;
 		
 		//엘리멘트 생성
 		let field = document.createElement("div");
@@ -540,7 +540,7 @@ class wGrid{
 						div = document.createElement("div");
 						if(k !== 0)	div.style.display = "none";					
 						div.setAttribute("name", this.fields[j].headSelectList[k].value);						
-						let result = this.fields[j].itemTemplate(list[i][this.fields[j].headSelectList[k].value], this.data[this.dataLink[tr.dataset.key]], tr.dataset.key);
+						let result = this.fields[j].itemTemplate(list[i][this.fields[j].headSelectList[k].value], this._data[this._dataLink[tr.dataset.key]], tr.dataset.key);
 						if(typeof result === "object"){
 							if(result.length === 1){
 								//jquery $("<tag>")로 올 경우
@@ -556,7 +556,7 @@ class wGrid{
 				}else{
 					
 					//순수 사용자정의 템플릿 로직
-					let result = this.fields[j].itemTemplate(list[i][this.fields[j].name], this.deepCopy(this.data[this.dataLink[tr.dataset.key]]), tr.dataset.key);
+					let result = this.fields[j].itemTemplate(list[i][this.fields[j].name], this.deepCopy(this._data[this._dataLink[tr.dataset.key]]), tr.dataset.key);
 					if(typeof result === "object"){
 						if(result.length === 1){
 							//jquery $("<tag>")로 올 경우
@@ -588,18 +588,18 @@ class wGrid{
 					if(list[i]._state === "insert"){						
 						let node = this._getTrNode(event.target);
 						//데이터 삭제 (index 유지)
-						delete this.data[this.dataLink[node.dataset.key]];
+						delete this._data[this._dataLink[node.dataset.key]];
 						//태그 삭제
 						node.remove();
 				    //그외 삭제 background 적용
 					}else{
 						
 						let node = this._getTrNode(event.target);
-						let idx = this.dataLink[node.dataset.key];
-						this.data[idx]._isRemove = !this.data[idx]._isRemove;
+						let idx = this._dataLink[node.dataset.key];
+						this._data[idx]._isRemove = !this._data[idx]._isRemove;
 						
 						//변경사항 style 적용						
-						this._applyStyle(!this.data[idx]._isRemove, "delete", node);						
+						this._applyStyle(!this._data[idx]._isRemove, "delete", node);						
 						this._applyStyle(this._checkRow(list[i]._key), "update", node);
 					}
 				});
@@ -787,30 +787,51 @@ class wGrid{
 		return node;
 	}
 	
+	//데이터 타입에 따른 데이터 가공
+	_outputDataProcess(dataList){
+		
+		let list = this.deepCopy(dataList);
+		let keys = null;
+		
+		list.forEach(item => {			
+			keys = Object.keys(item);			
+			for(let i=0; i<keys.length; i++){					
+				switch(this._dataType[keys[i]]){				
+				//통화
+				case "currency":
+					item[keys[i]] = this._removeComma(item[keys[i]]);
+					break;
+				}
+			}
+		});
+		
+		return list;		
+	}
+	
 	//원본 행과 비교
 	_checkRow(key){
 			
-		let idx = this.dataLink[key];
-		if(this.data[idx]._state === "insert"){
+		let idx = this._dataLink[key];
+		if(this._data[idx]._state === "insert"){
 			return true;
 		}else{				
 			let isEqual = true; 
 			
-			let keys = Object.keys(this.data[idx]);				
+			let keys = Object.keys(this._data[idx]);				
 			for(let i=0; i<keys.length; i++){					
 				
 				if(keys[i].substring(0,1) === "_"){
 					continue;
 				}else{
 					//타입에따른 비교(텍스트)
-					if(this.dataType[keys[i]] === "text"){
-						if(this.data[idx][keys[i]] != this.clone[idx][keys[i]]){
+					if(this._dataType[keys[i]] === "text"){
+						if(this._data[idx][keys[i]] != this._clone[idx][keys[i]]){
 							isEqual = false;
 							break;
 						}
 					//타입에따른 비교(통화)
-					}else if(this.dataType[keys[i]] === "currency"){														
-						if(this._removeComma(this.data[idx][keys[i]]) != this._removeComma(this.clone[idx][keys[i]])){
+					}else if(this._dataType[keys[i]] === "currency"){														
+						if(this._removeComma(this._data[idx][keys[i]]) != this._removeComma(this._clone[idx][keys[i]])){
 							isEqual = false;
 							break;
 						}
@@ -824,8 +845,8 @@ class wGrid{
 	
 	//복제본 생성
 	_createClone(){
-		if(this._isEmpty(this.data)) return;
-		this.clone = this.deepCopy(this.data);
+		if(this._isEmpty(this._data)) return;
+		this._clone = this.deepCopy(this._data);
 	}
 	
 	//스타일 적용, 취소 (내부용)
@@ -876,15 +897,15 @@ class wGrid{
 				switch(className){
 				case "wgrid-ynbtn-clkev":
 					
-					if("Y" === this.data[this.dataLink[item.key]][item.columnName]){
-						this.data[this.dataLink[item.key]][item.columnName] = "N";
+					if("Y" === this._data[this._dataLink[item.key]][item.columnName]){
+						this._data[this._dataLink[item.key]][item.columnName] = "N";
 					}else{
-						this.data[this.dataLink[item.key]][item.columnName] = "Y";
+						this._data[this._dataLink[item.key]][item.columnName] = "Y";
 					}
-					event.target.textContent = this.data[this.dataLink[item.key]][item.columnName];
+					event.target.textContent = this._data[this._dataLink[item.key]][item.columnName];
 					
 					//변경사항 style 적용 (insert 제외)
-					if(this.data[this.dataLink[item.key]]._state !== "insert"){
+					if(this._data[this._dataLink[item.key]]._state !== "insert"){
 						this._applyStyle(this._checkRow(item.key), "update", this._getTrNode(event.target));
 					}
 					
@@ -902,13 +923,13 @@ class wGrid{
 				//동기화 이벤트
 				case "wgrid-sync-chgev":
 					//값 동기화
-					this.data[this.dataLink[item.key]][item.columnName] = event.target.value;
+					this._data[this._dataLink[item.key]][item.columnName] = event.target.value;
 					//변경사항 style 적용										
 					this._applyStyle(this._checkRow(item.key), "update", this._getTrNode(event.target));
 					if(this._checkRow(item.key)){
-						this.data[this.dataLink[item.key]]._state = "select";
+						this._data[this._dataLink[item.key]]._state = "select";
 					}else{
-						this.data[this.dataLink[item.key]]._state = "update";
+						this._data[this._dataLink[item.key]]._state = "update";
 					}
 					break;
 				//필터 적용 셀렉트박스 - 부모(자신) 변경시 자식 변경 이벤트
@@ -946,7 +967,7 @@ class wGrid{
 						childElement.appendChild(select);
 						
 						//자식 셀렉트 박스 값 동기화
-						this.data[this.dataLink[item.key]][childColumnName] = select.value;	
+						this._data[this._dataLink[item.key]][childColumnName] = select.value;	
 					}
 					break;
 				}
@@ -962,19 +983,20 @@ class wGrid{
 				//값 동기화 이벤트
 				case "wgrid-sync-kuev" :					
 					//값 동기화
-					this.data[this.dataLink[item.key]][item.columnName] = event.target.value;
+					this._data[this._dataLink[item.key]][item.columnName] = event.target.value;				
+					
 					//변경사항 style 적용										
 					this._applyStyle(this._checkRow(item.key), "update", this._getTrNode(event.target));
 					if(this._checkRow(item.key)){
-						this.data[this.dataLink[item.key]]._state = "select";
+						this._data[this._dataLink[item.key]]._state = "select";
 					}else{
-						this.data[this.dataLink[item.key]]._state = "update";
+						this._data[this._dataLink[item.key]]._state = "update";
 					}					
 					break;
 				//신규행 값 동기화 이벤트
 				case "wgrid-sync-insert-kuev" :
 					//값 동기화
-					this.data[this.dataLink[item.key]][item.columnName] = event.target.value;
+					this._data[this._dataLink[item.key]][item.columnName] = event.target.value;
 					break;		
 				//금액 입력란 설정
 				case "wgrid-currency-kuev" :

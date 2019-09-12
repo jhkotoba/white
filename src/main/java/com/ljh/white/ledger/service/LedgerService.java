@@ -317,7 +317,8 @@ public class LedgerService {
 	 * 금전기록 수정 및 삭제
 	 * @param param
 	 * @return 
-	 * errorCode
+	 * resultCode
+	 * 0 : 성공
 	 * -1 : 날짜값이 정상적이지 않는 경우
 	 * -2 : 위치값 길이 오버 (20자)
 	 * -3 : 내용값 널값이거나 빈값
@@ -332,7 +333,10 @@ public class LedgerService {
 	 * deleteCnt or updateCnt : 갯수
 	 */
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
-	public WhiteMap applyRecordList(WhiteMap param) {		
+	public WhiteMap applyRecordList(WhiteMap param) {
+		
+		WhiteMap result = new WhiteMap();
+		
 		List<WhiteMap> updateList = param.convertListWhiteMap("updateList", true);
 		List<WhiteMap> deleteList = param.convertListWhiteMap("deleteList", true);
 		
@@ -343,45 +347,44 @@ public class LedgerService {
 		WhiteMap purDtlSeqMap = White.convertListToMap(this.selectPurDtlList(param), "purDtlSeq", "purSeq");
 		WhiteMap meansSeqMap = White.convertListToMap(this.selectMeansList(param), "meansSeq", "meansNm");
 		
-		String str = null;
-		WhiteMap result = new WhiteMap();
+		String str = null;		
 				
 		for(int i=0; i<updateList.size(); i++) {			
 			//날짜 검사
 			str = updateList.get(i).getString("recordDate");
 			if(!White.dateCheck(str, "yyyy-MM-dd HH:mm")) {
-				result.put("errorCode", -1);
+				result.put("resultCode", -1);
 				return result;
 			}
 			
 			//위치 검사
 			str = updateList.get(i).getString("position");			
 			if(str.length() > Constant.POSITION_LENGTH) {
-				result.put("errorCode", -2);
+				result.put("resultCode", -2);
 				return result;
 			}
 			
 			//내용 검사
 			str = updateList.get(i).getString("content");	
 			if(str == null || "".equals(str)) {
-				result.put("errorCode", -3);
+				result.put("resultCode", -3);
 				return result;
 			}else if(str.length() > Constant.CONTENT_LENGTH) {
-				result.put("errorCode", -4);
+				result.put("resultCode", -4);
 				return result;
 			}
 			
 			//사용수단 검사
 			str = updateList.get(i).getString("meansSeq");			
 			if(meansSeqMap.get(str) == null) {
-				result.put("errorCode", -5);
+				result.put("resultCode", -5);
 				return result;			
 			}
 			
 			//목적 검사
 			str = updateList.get(i).getString("purSeq");			
 			if(purSeqMap.get(str) == null) {
-				result.put("errorCode", -6);
+				result.put("resultCode", -6);
 				return result;
 			}
 			
@@ -389,21 +392,21 @@ public class LedgerService {
 			if("LED003".equals(purTypeMap.get(str))) {
 				String moveSeq = updateList.get(i).getString("moveSeq");
 				if(meansSeqMap.get(moveSeq) == null) {
-					result.put("errorCode", -7);
+					result.put("resultCode", -7);
 					return result;				
 				}
 				if(moveSeq.equals(updateList.get(i).getString("meansSeq"))){
-					result.put("errorCode", -8);
+					result.put("resultCode", -8);
 					return result;
 				}
 			//목적타입이 이동이 아닌 경우 검사//이동인경우 meansSeq와 moveSeq같도록 수정
 			}else {
 				str = updateList.get(i).getString("meansSeq");
 				if(str == null) {
-					result.put("errorCode", -9);
+					result.put("resultCode", -9);
 					return result;
 				}else if(!str.equals(updateList.get(i).getString("moveSeq"))) {
-					result.put("errorCode", -9);
+					result.put("resultCode", -9);
 					return result;
 				}
 			}
@@ -412,7 +415,7 @@ public class LedgerService {
 			str = updateList.get(i).getString("purDtlSeq");			
 			if(!"".equals(str)) {
 				if(!updateList.get(i).getString("purSeq").equals(purDtlSeqMap.get(str))) {
-					result.put("errorCode", -10);
+					result.put("resultCode", -10);
 					return result;
 				}
 			}		
@@ -424,29 +427,30 @@ public class LedgerService {
 				switch(purTypeMap.get(updateList.get(i).getString("purSeq")).toString()) {
 				case "LED001":
 					if(money <= 0) {
-						result.put("errorCode", -11);
+						result.put("resultCode", -11);
 						return result;
 					}
 					break;
 				case "LED002":
 				case "LED003":
 					if(money >= 0) {
-						result.put("errorCode", -11);
+						result.put("resultCode", -11);
 						return result;
 					}break;
 				default:
-					result.put("errorCode", -11);
+					result.put("resultCode", -11);
 					return result;				
 				}
 				
 			}catch (NumberFormatException e) {
-				result.put("errorCode", -11);
+				result.put("resultCode", -11);
 				return result;
 			}
 		}		
 		
 		if(deleteList.size()!=0) result.put("deleteCnt", ledgerMapper.deleteRecordList(deleteList));
 		if(updateList.size()!=0) result.put("updateCnt", ledgerMapper.updateRecordList(updateList));
+		result.put("resultCode", 1);
 		return result;
 	}
 	

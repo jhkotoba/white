@@ -57,6 +57,7 @@ function fnInitEvent(){
 //############## 적용 로직 ################
 function fnApplyData(){
 	
+	let gList = meansGrid.getData();
 	let applyList = meansGrid.getApplyData();
 	let isSave = false;
 	
@@ -67,8 +68,7 @@ function fnApplyData(){
 	}else{
 		isSave = !applyList.some(function(item){			
 			switch(item._state){			
-			case "update":
-				let gList = meansGrid.getData();
+			case "update":				
 				for(let i=0; i<gList.length; i++){
 					if(item._key !== gList[i]._key){
 						if(item.meansOrder == gList[i].meansOrder){

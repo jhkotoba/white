@@ -116,7 +116,7 @@ function fnEventInit(){
 	
 	//저장
 	$("#saveBtn").on("click", function(){
-		
+		fnApplyLedger();
 	});
 	
 	//초기화
@@ -211,6 +211,55 @@ function fnParSeqChange(purSeq){
 		}
 	});	
 }
+
+//############## 가계부 변경사항 저장  ################
+function fnApplyLedger(){
+	let updateList = ledgerGrid.getModifyData();
+	let deleteList = ledgerGrid.getRemoveData();
+	let isSave = false;
+	
+	//유효성 검사
+	if(updateList.length + deleteList.length === 0){
+		alert("적용할 데이터가 없습니다.");
+		return;
+	}else{
+		isSave = !updateList.some(function(item){			
+			switch(item._state){			
+			case "update":
+				if(wcm.isEmpty(item.recordDate)){
+					ledgerGrid.inputMessage(item._key, "recordDate", "값이 없습니다.");
+					return true;
+				}else if(!wcm.isDatePattern(item.recordDate, "YYYY-MM-DD HH:MM")){
+					ledgerGrid.inputMessage(item._key, "recordDate", "날짜 형식이 바르지 않습니다. 날짜형식:YYYY-MM-DD HH:MM");
+					return true;
+				}else if(item.position.length > 20){
+					ledgerGrid.inputMessage(item._key, "position", "최대길이 20자 입니다.");
+					return true;
+				}else if(item.content.length > 20){
+					ledgerGrid.inputMessage(item._key, "content", "최대길이 50자 입니다.");
+					return true;
+				}else if(isNaN(item.money)){					
+					ledgerGrid.inputMessage(item._key, "money", "형식이 잘못되었습니다.");
+					return true;
+				}else{
+					return false;
+				}
+			}
+		});	
+	}	
+	
+	if(isSave && confirm("적용하시겠습니까?")){			
+		$.post("${contextPath}/ledger/applyRecordList.ajax", 
+				{updateList : JSON.stringify(updateList), deleteList : JSON.stringify(deleteList)}, function(res){
+					
+			//console.log(res);
+			ledgerGrid.search();		
+			
+		});
+	}
+	
+}
+
 </script>
 
 <form id="srhForm" name="srhForm" onsubmit="return false;">
