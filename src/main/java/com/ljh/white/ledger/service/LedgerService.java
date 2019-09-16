@@ -337,7 +337,122 @@ public class LedgerService {
 		
 		WhiteMap result = new WhiteMap();
 		
-		List<WhiteMap> updateList = param.convertListWhiteMap("updateList", true);
+		try {
+			
+			List<WhiteMap> updateList = param.convertListWhiteMap("updateList", true);
+			List<WhiteMap> deleteList = param.convertListWhiteMap("deleteList", true);
+			
+			List<WhiteMap> purList = this.selectPurList(param);
+			
+			WhiteMap purSeqMap = White.convertListToMap(purList, "purSeq", "purpose");	
+			WhiteMap purTypeMap = White.convertListToMap(purList, "purSeq", "purType");	
+			WhiteMap purDtlSeqMap = White.convertListToMap(this.selectPurDtlList(param), "purDtlSeq", "purSeq");
+			WhiteMap meansSeqMap = White.convertListToMap(this.selectMeansList(param), "meansSeq", "meansNm");
+			
+			String str = null;		
+					
+			for(int i=0; i<updateList.size(); i++) {			
+				//날짜 검사
+				str = updateList.get(i).getString("recordDate");
+				if(!White.dateCheck(str, "yyyy-MM-dd HH:mm")) {
+					throw new RuntimeException("날짜의 형식이 바르지 않습니다.");
+				}
+				
+				//위치 검사
+				str = updateList.get(i).getString("position");			
+				if(str.length() > Constant.POSITION_LENGTH) {
+					throw new RuntimeException("위치값의 문자수가 20자를 초과합니다.");
+				}
+				
+				//내용 검사
+				str = updateList.get(i).getString("content");	
+				if(str == null || "".equals(str)) {
+					throw new RuntimeException("내용의 값이 없습니다.");
+				}else if(str.length() > Constant.CONTENT_LENGTH) {
+					throw new RuntimeException("내용의 문자수가 50자를 초과합니다.");					
+				}
+				
+				//사용수단 검사
+				str = updateList.get(i).getString("meansSeq");			
+				if(meansSeqMap.get(str) == null) {
+					throw new RuntimeException("사용수단이 선택되어 있지 않거나 잘못되었습니다.");
+				}
+				
+				//목적 검사
+				str = updateList.get(i).getString("purSeq");			
+				if(purSeqMap.get(str) == null) {
+					throw new RuntimeException("목적이 선택되어 있지 않거나 잘못되었습니다.");
+				}
+				
+				//목적타입이 이동인 경우 검사
+				if("LED003".equals(purTypeMap.get(str))) {
+					String moveSeq = updateList.get(i).getString("moveSeq");
+					if(meansSeqMap.get(moveSeq) == null) {
+						throw new RuntimeException("목적이 금액이동이고 받는곳이 선택되어있지 않거나 잘못되었습니다.");
+					}
+					if(moveSeq.equals(updateList.get(i).getString("meansSeq"))){
+						throw new RuntimeException("목적이 금액이동이면서 보내는 곳과 받는곳이 같습니다.");
+					}
+				//목적타입이 이동이 아닌 경우 검사//이동인경우 meansSeq와 moveSeq같도록 수정
+				}else {
+					str = updateList.get(i).getString("meansSeq");
+					if(str == null) {
+						throw new RuntimeException("수단정보의 값이 없습니다.");						
+					}else if(!str.equals(updateList.get(i).getString("moveSeq"))) {
+						throw new RuntimeException("목적이 금액이동이 아닌 경우 보내는 곳과 받는 곳이 설정 되어있습니다.");						
+					}
+				}
+				
+				//상세목적 검사
+				str = updateList.get(i).getString("purDtlSeq");			
+				if(!"".equals(str)) {
+					if(!updateList.get(i).getString("purSeq").equals(purDtlSeqMap.get(str))) {
+						throw new RuntimeException("상세목적이 상위목적의 하위 그룹이 아닙니다.");
+					}
+				}		
+				
+				//금액 검사
+				str = updateList.get(i).getString("money");				
+				int money = Integer.parseInt(str);
+				switch(purTypeMap.get(updateList.get(i).getString("purSeq")).toString()) {
+				case "LED001":
+					if(money <= 0) {
+						throw new RuntimeException("금액값이 정상적이지 않습니다");
+					}
+					break;
+				case "LED002":
+				case "LED003":
+					if(money >= 0) {
+						throw new RuntimeException("금액값이 정상적이지 않습니다");
+					}break;
+				default:
+					throw new RuntimeException("금액값이 정상적이지 않습니다");				
+				}
+			}		
+			
+			if(deleteList.size()!=0) result.put("deleteCnt", ledgerMapper.deleteRecordList(deleteList));
+			
+			/*if(true) {
+				throw new Exception("TEST EXCEPTION");
+			}*/
+			
+			if(updateList.size()!=0) result.put("updateCnt", ledgerMapper.updateRecordList(updateList));
+			
+			result.put("message", "적용되었습니다.");
+			result.put("code", "0");
+			
+			
+		}catch(RuntimeException e) {
+			e.printStackTrace();
+			result.put("message", e.getMessage());
+			result.put("code", "1");
+		}
+		
+		return result;
+		
+		
+		
+		/*List<WhiteMap> updateList = param.convertListWhiteMap("updateList", true);
 		List<WhiteMap> deleteList = param.convertListWhiteMap("deleteList", true);
 		
 		List<WhiteMap> purList = this.selectPurList(param);
@@ -451,7 +566,7 @@ public class LedgerService {
 		if(deleteList.size()!=0) result.put("deleteCnt", ledgerMapper.deleteRecordList(deleteList));
 		if(updateList.size()!=0) result.put("updateCnt", ledgerMapper.updateRecordList(updateList));
 		result.put("resultCode", 1);
-		return result;
+		return result;*/
 	}
 	
 	

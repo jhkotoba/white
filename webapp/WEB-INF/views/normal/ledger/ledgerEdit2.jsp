@@ -214,9 +214,18 @@ function fnParSeqChange(purSeq){
 
 //############## 가계부 변경사항 저장  ################
 function fnApplyLedger(){
-	let updateList = ledgerGrid.getModifyData();
+	let updateList = ledgerGrid.getModifyData();	
 	let deleteList = ledgerGrid.getRemoveData();
 	let isSave = false;
+	
+	updateList.map(function(item){
+		if(item.purType == "LED002" || item.purType == "LED003"){
+			item.money = "-" + item.money;
+			return item;
+		}else{
+			return item;
+		}
+	});
 	
 	//유효성 검사
 	if(updateList.length + deleteList.length === 0){
@@ -245,16 +254,14 @@ function fnApplyLedger(){
 					return false;
 				}
 			}
-		});	
+		});		
 	}	
 	
 	if(isSave && confirm("적용하시겠습니까?")){			
 		$.post("${contextPath}/ledger/applyRecordList.ajax", 
-				{updateList : JSON.stringify(updateList), deleteList : JSON.stringify(deleteList)}, function(res){
-					
-			//console.log(res);
-			ledgerGrid.search();		
-			
+				{updateList : JSON.stringify(updateList), deleteList : JSON.stringify(deleteList)}, function(res){			
+			alert(res.message);
+			if(res.code == "0")	ledgerGrid.search();
 		});
 	}
 	
