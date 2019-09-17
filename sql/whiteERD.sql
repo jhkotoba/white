@@ -57,7 +57,6 @@ CREATE TABLE authority
 	auth_seq int NOT NULL AUTO_INCREMENT,
 	USER_SEQ int NOT NULL,
 	auth_nm_seq int NOT NULL,
-	auth_cmt varchar(50),
 	PRIMARY KEY (auth_seq),
 	UNIQUE (auth_seq)
 );
@@ -68,6 +67,7 @@ CREATE TABLE auth_name
 	auth_nm_seq int NOT NULL AUTO_INCREMENT,
 	auth_nm varchar(20) NOT NULL,
 	auth_order int NOT NULL,
+	auth_cmt varchar(50) NOT NULL,
 	PRIMARY KEY (auth_nm_seq),
 	UNIQUE (auth_nm_seq),
 	UNIQUE (auth_nm)

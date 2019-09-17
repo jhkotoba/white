@@ -331,9 +331,10 @@ public class LedgerService {
 	 * -10 : 상세목적이 목적의 하위그룹에 속하지 않는 경우
 	 * -11 : 금액값이 정상적이지 않는 경우
 	 * deleteCnt or updateCnt : 갯수
+	 * @throws Exception 
 	 */
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
-	public WhiteMap applyRecordList(WhiteMap param) {
+	public WhiteMap applyRecordList(WhiteMap param) throws Exception {
 		
 		WhiteMap result = new WhiteMap();
 		
@@ -430,12 +431,7 @@ public class LedgerService {
 				}
 			}		
 			
-			if(deleteList.size()!=0) result.put("deleteCnt", ledgerMapper.deleteRecordList(deleteList));
-			
-			/*if(true) {
-				throw new Exception("TEST EXCEPTION");
-			}*/
-			
+			if(deleteList.size()!=0) result.put("deleteCnt", ledgerMapper.deleteRecordList(deleteList));			
 			if(updateList.size()!=0) result.put("updateCnt", ledgerMapper.updateRecordList(updateList));
 			
 			result.put("message", "적용되었습니다.");
@@ -449,124 +445,6 @@ public class LedgerService {
 		}
 		
 		return result;
-		
-		
-		
-		/*List<WhiteMap> updateList = param.convertListWhiteMap("updateList", true);
-		List<WhiteMap> deleteList = param.convertListWhiteMap("deleteList", true);
-		
-		List<WhiteMap> purList = this.selectPurList(param);
-		
-		WhiteMap purSeqMap = White.convertListToMap(purList, "purSeq", "purpose");	
-		WhiteMap purTypeMap = White.convertListToMap(purList, "purSeq", "purType");	
-		WhiteMap purDtlSeqMap = White.convertListToMap(this.selectPurDtlList(param), "purDtlSeq", "purSeq");
-		WhiteMap meansSeqMap = White.convertListToMap(this.selectMeansList(param), "meansSeq", "meansNm");
-		
-		String str = null;		
-				
-		for(int i=0; i<updateList.size(); i++) {			
-			//날짜 검사
-			str = updateList.get(i).getString("recordDate");
-			if(!White.dateCheck(str, "yyyy-MM-dd HH:mm")) {
-				result.put("resultCode", -1);
-				return result;
-			}
-			
-			//위치 검사
-			str = updateList.get(i).getString("position");			
-			if(str.length() > Constant.POSITION_LENGTH) {
-				result.put("resultCode", -2);
-				return result;
-			}
-			
-			//내용 검사
-			str = updateList.get(i).getString("content");	
-			if(str == null || "".equals(str)) {
-				result.put("resultCode", -3);
-				return result;
-			}else if(str.length() > Constant.CONTENT_LENGTH) {
-				result.put("resultCode", -4);
-				return result;
-			}
-			
-			//사용수단 검사
-			str = updateList.get(i).getString("meansSeq");			
-			if(meansSeqMap.get(str) == null) {
-				result.put("resultCode", -5);
-				return result;			
-			}
-			
-			//목적 검사
-			str = updateList.get(i).getString("purSeq");			
-			if(purSeqMap.get(str) == null) {
-				result.put("resultCode", -6);
-				return result;
-			}
-			
-			//목적타입이 이동인 경우 검사
-			if("LED003".equals(purTypeMap.get(str))) {
-				String moveSeq = updateList.get(i).getString("moveSeq");
-				if(meansSeqMap.get(moveSeq) == null) {
-					result.put("resultCode", -7);
-					return result;				
-				}
-				if(moveSeq.equals(updateList.get(i).getString("meansSeq"))){
-					result.put("resultCode", -8);
-					return result;
-				}
-			//목적타입이 이동이 아닌 경우 검사//이동인경우 meansSeq와 moveSeq같도록 수정
-			}else {
-				str = updateList.get(i).getString("meansSeq");
-				if(str == null) {
-					result.put("resultCode", -9);
-					return result;
-				}else if(!str.equals(updateList.get(i).getString("moveSeq"))) {
-					result.put("resultCode", -9);
-					return result;
-				}
-			}
-			
-			//상세목적 검사
-			str = updateList.get(i).getString("purDtlSeq");			
-			if(!"".equals(str)) {
-				if(!updateList.get(i).getString("purSeq").equals(purDtlSeqMap.get(str))) {
-					result.put("resultCode", -10);
-					return result;
-				}
-			}		
-			
-			//금액 검사
-			str = updateList.get(i).getString("money");
-			try {
-				int money = Integer.parseInt(str);
-				switch(purTypeMap.get(updateList.get(i).getString("purSeq")).toString()) {
-				case "LED001":
-					if(money <= 0) {
-						result.put("resultCode", -11);
-						return result;
-					}
-					break;
-				case "LED002":
-				case "LED003":
-					if(money >= 0) {
-						result.put("resultCode", -11);
-						return result;
-					}break;
-				default:
-					result.put("resultCode", -11);
-					return result;				
-				}
-				
-			}catch (NumberFormatException e) {
-				result.put("resultCode", -11);
-				return result;
-			}
-		}		
-		
-		if(deleteList.size()!=0) result.put("deleteCnt", ledgerMapper.deleteRecordList(deleteList));
-		if(updateList.size()!=0) result.put("updateCnt", ledgerMapper.updateRecordList(updateList));
-		result.put("resultCode", 1);
-		return result;*/
 	}
 	
 	

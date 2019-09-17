@@ -676,9 +676,9 @@ class wGrid{
 					let fOpList = seItem.opList;
 					
 					//부모 필터가 적용되는 셀렉트박스
-					if(this._isNotEmpty(seItem.parent)){
+					if(this._isNotEmpty(seItem.parentValueName)){
 						fOpList = seItem.opList.filter(fOpItem => {
-							return list[i][seItem.parent] == fOpItem[seItem.filter];
+							return list[i][seItem.parentValueName] == fOpItem[seItem.filterValueName];
 						});
 					}
 					
@@ -686,16 +686,16 @@ class wGrid{
 					if(this._isNotEmpty(seItem.childValueName) && this._isNotEmpty(seItem.childColumnName)){
 						//자식 변경 이벤트 클래스 적용
 						select.classList.add("wgrid-parent-chgev");
-					}					
+					}
 					
 					//셀렉트박스 option 등록
-					fOpList.forEach(opItem => {
+					fOpList.forEach(opItem => {						
 						
 						option = document.createElement("option");
 						option.value = opItem[seItem.value];						
 						
-						//selected 설정
-						if(option.value == list[i][seItem.value]){
+						//selected 설정						
+						if(option.value == list[i][seItem.name]){
 							option.selected = true;
 						}						
 					

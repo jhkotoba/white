@@ -37,7 +37,7 @@
 	
 	<!-- 거래내역에 목적이 사용되는지 확인 -->
 	<select id="selectIsUsedPurposeRec" resultType="int" parameterType="java.util.List">
-		SELECT COUNT(1) FROM money_record_re
+		SELECT COUNT(1) FROM money_record
 		WHERE pur_seq IN
 		<foreach collection="list" item="item" separator="," open="(" close=")">
 			#{item.purSeq}
@@ -122,7 +122,7 @@
 	
 	<!-- 거래내역에 상세목적이 사용되는지 확인 -->
 	<select id="selectIsUsedPurDtlRec" resultType="int" parameterType="java.util.List">
-		SELECT COUNT(1) FROM money_record_re
+		SELECT COUNT(1) FROM money_record
 		WHERE pur_dtl_seq IN
 		<foreach collection="list" item="item" separator="," open="(" close=")">
 			#{item.purDtlSeq}
@@ -201,7 +201,7 @@
 	<!-- 사용목적 사용되는지 확인 -->
 	<select id="selectIsUsedMeansRec" resultType="int" parameterType="java.util.List">
 		/* ledgerMapper|selectIsUsedMeansRec */
-		SELECT COUNT(1) FROM money_record_re
+		SELECT COUNT(1) FROM money_record
 		WHERE MEANS_SEQ IN
 		<foreach collection="list" item="item" separator="," open="(" close=")">
 			#{item.meansSeq}
@@ -287,7 +287,7 @@
 	
 	<!-- 가게부 기입 list insert -->
 	<insert id="insertRecordList" parameterType="java.util.List">
-		INSERT INTO money_record_re(		
+		INSERT INTO money_record(		
 			USER_SEQ,	
 			record_date,
 			position,	
@@ -331,7 +331,7 @@
 				      END
 				    )
 				  ,0)
-			  FROM money_record_re
+			  FROM money_record
 			  WHERE USER_SEQ = #{item.userSeq} 
 			  AND record_date <![CDATA[ < ]]>  #{item.startDate}
 			)AS ${item.meansNo}	
@@ -358,7 +358,7 @@
 			,M.MEANS_DTL_NM	AS meansDtlNm
 			,M.MEANS_INFO AS meansInfo
 			,IFNULL(M.MEANS_USE_YN,'X') AS meansUseYn
-		FROM money_record_re rec
+		FROM money_record rec
 		LEFT OUTER JOIN purpose pur
 		ON rec.pur_seq = pur.pur_seq
 		LEFT OUTER JOIN purpose_detail purDtl
@@ -395,7 +395,7 @@
 				      END
 				    )
 				  ,0)
-			  FROM money_record_re
+			  FROM money_record
 			  WHERE USER_SEQ = #{item.userSeq} 
 			  AND record_date <![CDATA[ < ]]>  #{item.startDate}
 			)AS ${item.meansNm}	
@@ -425,7 +425,7 @@
 			,DATE_FORMAT(rec.edit_date,'%Y-%m-%d %H:%i:%d') AS editDate
 			,DATE_FORMAT(rec.reg_date,'%Y-%m-%d %H:%i:%d') AS regDate
 			</if>
-		FROM money_record_re rec
+		FROM money_record rec
 		LEFT OUTER JOIN purpose pur
 		ON rec.pur_seq = pur.pur_seq
 		LEFT OUTER JOIN purpose_detail purDtl
@@ -449,7 +449,7 @@
 	
 	<!-- 금전기록 list 수정 -->
 	<update id="updateRecordList" parameterType="java.util.List">		
-		UPDATE money_record_re
+		UPDATE money_record
 		SET record_date = 
 		CASE		
 		<foreach collection="list" item="item">
@@ -524,7 +524,7 @@
 	
 	<!-- 금전기록 list 삭제 -->
 	<delete id="deleteRecordList" parameterType="java.util.List">
-		DELETE FROM money_record_re
+		DELETE FROM money_record
 		WHERE record_seq IN 
 		<foreach collection="list" item="item" separator="," open="(" close=")">
 			#{item.recordSeq}
@@ -539,7 +539,7 @@
 	<select id="selectFirstRecordDate" resultType="whiteMap" parameterType="whiteMap">
 		SELECT
 			DATE_FORMAT(mr.record_date,'%Y-%m-%d') AS firstDate
-		FROM money_record_re mr		
+		FROM money_record mr		
 		WHERE mr.USER_SEQ = #{userSeq}
 	    ORDER BY mr.record_date ASC
 	    Limit 1
@@ -549,7 +549,7 @@
 	<select id="selectPrevAmount" resultType="int" parameterType="whiteMap">
 		SELECT
 			IFNULL(SUM(mr.money), 0) AS amount
-		FROM money_record_re mr
+		FROM money_record mr
 		INNER JOIN purpose p
 			ON p.pur_seq = mr.pur_seq
 		INNER JOIN purpose_detail pd
@@ -571,7 +571,7 @@
 				SELECT				
 					p.pur_type  		AS purTypeCd
 					,SUM(mr.money) 		AS money
-				FROM money_record_re mr
+				FROM money_record mr
 				INNER JOIN purpose p
 					ON p.pur_seq = mr.pur_seq
 		    	INNER JOIN purpose_detail pd
@@ -601,7 +601,7 @@
 			p.purpose         	AS purpose
 			,p.pur_seq          AS purSeq
 			,ABS(SUM(mr.money)) AS money		
-		FROM money_record_re mr
+		FROM money_record mr
 		INNER JOIN purpose p
 			ON p.pur_seq = mr.pur_seq
 		INNER JOIN purpose_detail pd
@@ -620,7 +620,7 @@
 		SELECT
 			pd.pur_detail       AS purDetail			
 			,ABS(SUM(mr.money)) AS money		
-		FROM money_record_re mr		
+		FROM money_record mr		
 		INNER JOIN purpose_detail pd
 			ON pd.pur_dtl_seq = mr.pur_dtl_seq	
 		WHERE mr.USER_SEQ = #{userSeq}

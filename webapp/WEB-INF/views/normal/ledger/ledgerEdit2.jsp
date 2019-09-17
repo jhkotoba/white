@@ -227,6 +227,8 @@ function fnApplyLedger(){
 		}
 	});
 	
+	console.log(updateList);
+	
 	//유효성 검사
 	if(updateList.length + deleteList.length === 0){
 		alert("적용할 데이터가 없습니다.");

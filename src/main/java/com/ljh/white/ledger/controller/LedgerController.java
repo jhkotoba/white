@@ -191,9 +191,10 @@ public class LedgerController {
 	 * 금전기록 수정 및 삭제
 	 * @param request
 	 * @return
+	 * @throws Exception 
 	 */
 	@RequestMapping(value="/ledger/applyRecordList.ajax")
-	public WhiteMap applyRecordList(HttpServletRequest request) {
+	public WhiteMap applyRecordList(HttpServletRequest request) throws Exception {
 		WhiteMap param = new WhiteMap(request);
 		return ledgerService.applyRecordList(param);
 	}
