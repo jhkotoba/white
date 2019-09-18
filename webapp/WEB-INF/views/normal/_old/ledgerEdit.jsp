@@ -86,7 +86,7 @@ function ledgerList(data){
 			//데이터 초기 세팅
 			for(let i=0; i<data.length; i++){
 				data[i].type = "select";
-				data[i].money = cfnSetComma(Math.abs(data[i].money));
+				data[i].money = wcm.setComma(Math.abs(data[i].money));
 			}
 			
 			//편집리스트 생성
@@ -202,8 +202,8 @@ function ledgerList(data){
 				param.updateList = JSON.stringify(updateList);
 				param.deleteList = JSON.stringify(deleteList);
 				
-				cfnCmmAjax("/ledger/applyRecordList", param).done(function(data){
-					if(isEmpty(data.updateCnt) && isEmpty(data.deleteCnt)){
+				cfnCmmAjax("/ledger/applyRecordList", param).done(function(data){					
+					if(isEmpty(data.updateCnt) && isEmpty(data.deleteCnt)){						
 						alert("데이터 수정에 실패하였습니다");
 					}else{
 						let msg = "";
@@ -518,7 +518,7 @@ function ledgerList(data){
 		
 		let code = purLp[item.purSeq];
 		let $input = $("<input>").addClass("only-currency").data("name", "money");
-		$input.addClass("input-gray").val(cfnSetComma(item.money)).attr("name","sync"+idx)
+		$input.addClass("input-gray").val(wcm.setComma(item.money)).attr("name","sync"+idx)
 			.off().on("keyup change", function(){
 				item.money = this.value;
 				fnTypeSync(this, "money", item, idx);

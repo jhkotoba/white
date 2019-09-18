@@ -11,7 +11,10 @@
 let meansGrid = null;
 
 $(document).ready(function(){
-	fnInit();
+	//초기설정
+	fnInit();	
+	//이벤트 등록
+	fnInitEvent();
 });
 
 //############## 초기설정 ################
@@ -35,10 +38,8 @@ function fnInit(){
 			{ title:"비고", name:"meansRemark", tag:"input", width: "24%", align:"center"},
 			{ title:"사용여부", isUseYnButton: true, name:"meansUseYn", width: "5%", align:"center"},			
 		],
-		option : {isAutoSearch: true, isClone: true, isPaging: false, isScrollY: true, isScrollX: false, bodyHeight:"550px"},		
+		option : {isAutoSearch: true, isPaging: false, isScrollY: true, isScrollX: false, bodyHeight:"550px"},		
 	});
-	
-	fnInitEvent();
 }
 
 //############## 이벤트 등록 ################

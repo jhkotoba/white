@@ -27,6 +27,7 @@ class wGrid{
 		if(this._isEmpty(args.option)){
 			args.option = {
 				//bool 값
+				isEmptyFirstData : false,
 				isAutoSearch : false,				
 				isPaging : false,
 				isScrollY : false,			
@@ -38,6 +39,8 @@ class wGrid{
 			}
 		}
 		this.option = {
+			//첫행 빈값행 생성 여부
+			isEmptyFirstData : this._isEmpty(args.option.isEmptyFirstData) ? false : args.option.isEmptyFirstData,				
 			//자동조회 여부
 			isAutoSearch : this._isEmpty(args.option.isAutoSearch) ? false : args.option.isAutoSearch,			
 			//페이징여부
@@ -94,6 +97,12 @@ class wGrid{
 		//조회 호출
 		if(this.option.isAutoSearch){
 			this.search();
+		}
+		
+		//그리드 생성후 최초 1회 콜백함수		
+		this.afterInit = args.afterInit;		
+		if(this._isNotEmpty(this.afterInit)){
+			this.afterInit();
 		}
 	}
 	
@@ -239,7 +248,7 @@ class wGrid{
 	//오리지널 복사값으로 초기화
 	originalToReset(isBefore, isAfter){	
 		this._bodyRemove();
-		this._data = this.setData(this.deepCopy(this._clone));
+		this.setData(this.deepCopy(this._clone));		
 		
 		if(this._isEmpty(isBefore)){
 			isBefore = false;
@@ -487,7 +496,7 @@ class wGrid{
 		
 		let tr = null;
 		
-		//필드 create
+		//필드 create		
 		for(let i=0; i<list.length; i++){			
 			tr = this.createColumn(list, i);			
 			table.appendChild(tr);
