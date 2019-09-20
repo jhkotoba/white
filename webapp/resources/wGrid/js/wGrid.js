@@ -28,6 +28,7 @@ class wGrid{
 			args.option = {
 				//bool 값
 				isEmptyFirstData : false,
+				isSync : true,
 				isAutoSearch : false,				
 				isPaging : false,
 				isScrollY : false,			
@@ -37,10 +38,13 @@ class wGrid{
 				//수치 값
 				bodyHeight : ""
 			}
-		}
+		}	
+		
 		this.option = {
 			//첫행 빈값행 생성 여부
-			isEmptyFirstData : this._isEmpty(args.option.isEmptyFirstData) ? false : args.option.isEmptyFirstData,				
+			isEmptyFirstData : this._isEmpty(args.option.isEmptyFirstData) ? false : args.option.isEmptyFirstData,
+			//변경사항 체크 여부
+			isSync : this._isEmpty(args.option.isSync) ? true : args.option.isSync,
 			//자동조회 여부
 			isAutoSearch : this._isEmpty(args.option.isAutoSearch) ? false : args.option.isAutoSearch,			
 			//페이징여부
@@ -72,7 +76,8 @@ class wGrid{
 			headDiv : null,
 			headTable : null,
 			bodyDiv : null,
-			bodyTable : null
+			bodyTable : null,
+			noDataField : null
 		}
 		
 		//컨트롤로 저장
@@ -80,22 +85,22 @@ class wGrid{
 		this._clone = null;
 		
 		this._createEvent();		
-		
+				
+		//빈값일 경우
 		if(this._isEmpty(args.data)){
 			this._data = null;
 			this._dataType = null;
-		}else{
-			
+			this.createGrid();
+		}else{			
 			//사용자임의 데이터 가공 및 주입
 			if(this._isNotEmpty(this.controller.dataConverter)){
 				args.data = this.controller.dataConverter(this.deepCopy(args.data));
-			}
-			
+			}						
 			this.setData(args.data);
 		}
 		
 		//조회 호출
-		if(this.option.isAutoSearch){
+		if(this.option.isAutoSearch && this._isNotEmpty(this.controller.load)){
 			this.search();
 		}
 		
@@ -263,7 +268,7 @@ class wGrid{
 			this.controller.beforeCreate(this.deepCopy(this._data));
 		}
 		
-		this.createField();
+		this._createField();
 		
 		//생성후 콜백함수
 		if(isAfter && this._isNotEmpty(this.controller.afterCreate)){
@@ -274,7 +279,7 @@ class wGrid{
 	//빈값으로 초기화
 	reset(){		
 		this._bodyRemove();
-		this.createNoDataField();
+		this._createNoDataField();
 	}
 	
 	
@@ -329,11 +334,14 @@ class wGrid{
 		//데이터 추가
 		row._key = new Date().getTime();
 		row._isRemove = false;
-		row._state = "insert";		
+		row._state = "insert";
+		if(this._data == null){
+			this._data = [];
+		}
 		this._data.push(row);
 		this._dataLink[row._key] = this._data.length-1;		
 	
-		let newColumn = this.createColumn([row], 0);
+		let newColumn = this._createColumn([row], 0);
 		
 		//행추가
 		this.node.bodyTable.insertBefore(newColumn, this.node.bodyTable.firstChild);		
@@ -393,7 +401,8 @@ class wGrid{
 							if(this._isNotEmpty(this.fields[j].name)){
 								row[this.fields[j].name] = "";
 							}
-						}						
+						}
+						console.log(row);
 						this.prependRow(row);
 					});
 					th.appendChild(button);
@@ -455,15 +464,15 @@ class wGrid{
 		
 		//생성시 데이터 존재하지 않을 경우
 		if(this._isEmpty(this._data)){
-			this.createNoDataField();
+			this._createNoDataField();
 		//생성시 데이터 존재할 경우
 		}else{
-			this.createField();
+			this._createField();
 		}
 	}
 	
 	//빈 데이터 field 생성
-	createNoDataField(){
+	_createNoDataField(){
 		let field = document.createElement("div");
 		let table = document.createElement("table");
 		table.classList.add("wgrid-table-body");
@@ -476,14 +485,16 @@ class wGrid{
 		td.textContent = this.message.nodata;
 		
 		//필드 등록
-		tr.appendChild(td);
+		tr.appendChild(td);		
+		this.node.noDataField = tr;		
+		
 		table.appendChild(tr);
 		field.appendChild(table);
 		this.target.appendChild(field);
 	}
 	
 	//필드 생성
-	createField(){
+	_createField(){
 		let list = this._data;
 		
 		//엘리멘트 생성
@@ -498,7 +509,7 @@ class wGrid{
 		
 		//필드 create		
 		for(let i=0; i<list.length; i++){			
-			tr = this.createColumn(list, i);			
+			tr = this._createColumn(list, i);			
 			table.appendChild(tr);
 		}
 		
@@ -515,7 +526,7 @@ class wGrid{
 	}
 	
 	//필드 컬럼 생성
-	createColumn(list, i){		
+	_createColumn(list, i){		
 		
 		let td, input, select, option, div = null;
 		
@@ -661,18 +672,18 @@ class wGrid{
 						input.classList.add("wgrid-currency-kuev");
 						break;
 					}
-					
 					//신규행 배경색 변경
 					if(list[i]._state === "insert"){
 						//신규행 배경색 class
 						input.classList.add("wgrid-insert-tag");						
 						//신규행 값 동기화 이벤트용 클래스 
 						input.classList.add("wgrid-sync-insert-kuev");
+				
 					//신규가 아닌 행
 					}else{						
 						//값 동기화 이벤트용 클래스
-						input.classList.add("wgrid-sync-kuev");
-					}					
+						input.classList.add("wgrid-sync-kuev");							
+					}									
 					td.appendChild(input);
 					break;
 				case "select" :
@@ -738,11 +749,9 @@ class wGrid{
 							}
 						}
 						select.appendChild(option);
-					});					
-					
+					});
 					//값 동기화 이벤트 클래스 추가
-					select.classList.add("wgrid-sync-chgev");	
-					
+					select.classList.add("wgrid-sync-chgev");					
 					td.appendChild(select);
 					break;
 				}
@@ -971,8 +980,8 @@ class wGrid{
 							select.appendChild(option);
 						});
 						
-						select.classList.add("wgrid-select");
-						select.classList.add("wgrid-sync-chgev");
+						select.classList.add("wgrid-select");						
+						select.classList.add("wgrid-sync-chgev");												
 						childElement.appendChild(select);
 						
 						//자식 셀렉트 박스 값 동기화

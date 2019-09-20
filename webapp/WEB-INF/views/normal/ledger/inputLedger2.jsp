@@ -51,7 +51,7 @@ function fnInit(){
 			{ title:"통계여부", isUseYnButton: true, name:"statsYn", width: "5%", align:"center"},	
 		],
 		//그리드 옵션
-		option : {emptyFirstData: true, isAutoSearch : false, isPaging : false, isScrollY: true, bodyHeight:"500px"}			
+		option : {isAutoSearch : false, isPaging : false, isScrollY: true, bodyHeight:"500px"}			
 	});
 }
 
