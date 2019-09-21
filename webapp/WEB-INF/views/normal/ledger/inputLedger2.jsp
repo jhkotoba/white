@@ -51,13 +51,20 @@ function fnInit(){
 			{ title:"통계여부", isUseYnButton: true, name:"statsYn", width: "5%", align:"center"},	
 		],
 		//그리드 옵션
-		option : {isAutoSearch : false, isPaging : false, isScrollY: true, bodyHeight:"500px"}			
+		option : {isAutoSearch : false, isSync : false, isPaging : false, isScrollY: true, bodyHeight:"500px"},
+		//그리드 메시지
+		message : {
+			nodata : "데이터를 입력하세요."
+		}
 	});
 }
 
 //############## 이벤트 등록 ################
 function fnEventInit(){
-	
+	//행추카
+	$("#addBtn").on("click", function(){		
+		ledgerGrid.node.headAddButtonElement.click();
+	});
 }
 
 </script>
@@ -72,6 +79,7 @@ function fnEventInit(){
 				</colgroup>
 				<tr>
 					<td>
+						<button id="addBtn" type="button" class="btn-gray trs">추가</button>
 						<button id="saveBtn" type="button" class="btn-gray trs">저장</button>
 					</td>
 				</tr>

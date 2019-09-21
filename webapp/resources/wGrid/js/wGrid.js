@@ -73,11 +73,19 @@ class wGrid{
 		}
 		
 		this.node = {
+			//헤더 제목 영역 DIV 태크
 			headDiv : null,
+			//헤더 제목 영역의 하위영역 TABLE 태그
 			headTable : null,
+			//헤더 제목 영역 행추가버튼 BUTTON 태그
+			headAddButton : null,
+			//필드 목록리스트 영역 DIV 태그
 			bodyDiv : null,
+			//필드 영역의 하위영역 TABLE 태그
 			bodyTable : null,
-			noDataField : null
+			//필드 영역의 하위영역 데이터 없을시 나타내는 영역 DIV 태그
+			bodyNoDataField : null,
+			
 		}
 		
 		//컨트롤로 저장
@@ -406,6 +414,9 @@ class wGrid{
 						this.prependRow(row);
 					});
 					th.appendChild(button);
+					
+					//추가버튼 타켓 저장
+					this.node.headAddButtonElement = button;
 				//헤드부분 셀렉트박스(선택에 따라서 필드(행)값 변경)
 				}else if(this.fields[i].isHeadSelect){
 					let select = document.createElement("select");
@@ -485,11 +496,10 @@ class wGrid{
 		td.textContent = this.message.nodata;
 		
 		//필드 등록
-		tr.appendChild(td);		
-		this.node.noDataField = tr;		
-		
+		tr.appendChild(td);
 		table.appendChild(tr);
 		field.appendChild(table);
+		this.node.bodyNoDataField = field;		
 		this.target.appendChild(field);
 	}
 	
@@ -750,8 +760,15 @@ class wGrid{
 						}
 						select.appendChild(option);
 					});
+					
+					//신규행 배경색 변경
+					if(list[i]._state === "insert"){
+						//신규행 배경색 class
+						select.classList.add("wgrid-insert-tag");
+					}
+					
 					//값 동기화 이벤트 클래스 추가
-					select.classList.add("wgrid-sync-chgev");					
+					select.classList.add("wgrid-sync-chgev");
 					td.appendChild(select);
 					break;
 				}
@@ -835,8 +852,8 @@ class wGrid{
 		}else{				
 			let isEqual = true; 
 			
-			let keys = Object.keys(this._data[idx]);				
-			for(let i=0; i<keys.length; i++){					
+			let keys = Object.keys(this._data[idx]);
+			for(let i=0; i<keys.length; i++){
 				
 				if(keys[i].substring(0,1) === "_"){
 					continue;
@@ -875,11 +892,12 @@ class wGrid{
 			tr.classList.remove("wgrid-" + _state + "-tr");											
 			let trList = tr.childNodes;
 			trList.forEach(element => {
-				if(element.childNodes.length > 0){
-					let tagName = element.childNodes[0].tagName;
-					if(tagName === "INPUT" || tagName === "SELECT"){
-						element.childNodes[0].classList.remove("wgrid-" + _state +"-tag");
-					}
+				if(element.childNodes.length > 0){					
+					for(let i=0; i<element.childNodes.length; i++){						
+						if(element.childNodes[i].tagName === "INPUT" || element.childNodes[i].tagName === "SELECT"){
+							element.childNodes[i].classList.remove("wgrid-" + _state +"-tag");
+						}
+					}					
 				}
 			});											
 		}else{				
@@ -887,11 +905,12 @@ class wGrid{
 			tr.classList.add("wgrid-" + _state + "-tr");											
 			let trList = tr.childNodes;			
 			trList.forEach(element => {
-				if(element.childNodes.length > 0){
-					let tagName = element.childNodes[0].tagName;
-					if(tagName === "INPUT" || tagName === "SELECT"){
-						element.childNodes[0].classList.add("wgrid-" + _state +"-tag");
-					}
+				if(element.childNodes.length > 0){					
+					for(let i=0; i<element.childNodes.length; i++){	
+						if(element.childNodes[i].tagName === "INPUT" || element.childNodes[i].tagName === "SELECT"){
+							element.childNodes[i].classList.add("wgrid-" + _state +"-tag");
+						}
+					}					
 				}												
 			});	
 		}

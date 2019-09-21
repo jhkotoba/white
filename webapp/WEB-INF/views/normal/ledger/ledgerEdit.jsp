@@ -83,7 +83,7 @@ function fnInit(){
 		},
 		//그리드 필드 정보
 		fields : [
-			{ isRemoveButton: true, isHeadAddButton: true, width: "3%", align:"center"},
+			{ isRemoveButton: true, isHeadAddButton: false, width: "3%", align:"center"},
 			{ title:"날짜", name:"recordDate", tag:"input", width: "7%", align:"center"},
 			{ title:"위치", name:"position", tag:"input", width: "10%", align:"center"},
 			{ title:"내용", name:"content", tag:"input", width: "16%", align:"center"},			
