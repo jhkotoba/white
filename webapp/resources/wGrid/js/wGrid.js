@@ -98,13 +98,15 @@ class wGrid{
 		if(this._isEmpty(args.data)){
 			this._data = null;
 			this._dataType = null;
-			this.createGrid();
+			
+			this.createGrid();			
 		}else{			
 			//사용자임의 데이터 가공 및 주입
 			if(this._isNotEmpty(this.controller.dataConverter)){
 				args.data = this.controller.dataConverter(this.deepCopy(args.data));
 			}						
 			this.setData(args.data);
+			this.createGrid();
 		}
 		
 		//조회 호출
@@ -277,6 +279,7 @@ class wGrid{
 		}
 		
 		this._createField();
+		this._createNoDataField();
 		
 		//생성후 콜백함수
 		if(isAfter && this._isNotEmpty(this.controller.afterCreate)){
@@ -287,10 +290,10 @@ class wGrid{
 	//빈값으로 초기화
 	reset(){		
 		this._bodyRemove();
+		this._createField();
 		this._createNoDataField();
-	}
-	
-	
+		this._noDataField();		
+	}	
 	
 	//key값으로 applyStyle적용
 	applySync(key){
@@ -343,8 +346,9 @@ class wGrid{
 		row._key = new Date().getTime();
 		row._isRemove = false;
 		row._state = "insert";
+		
 		if(this._data == null){
-			this._data = [];
+			this._data = [];		
 		}
 		this._data.push(row);
 		this._dataLink[row._key] = this._data.length-1;		
@@ -353,6 +357,7 @@ class wGrid{
 		
 		//행추가
 		this.node.bodyTable.insertBefore(newColumn, this.node.bodyTable.firstChild);		
+		this._noDataField();
 	}
 	
 	//행추카(아래)
@@ -366,7 +371,7 @@ class wGrid{
 	}
 	
 	//그리드 생성
-	createGrid(){	
+	createGrid(){		
 		let list = this._data;
 		
 		//헤더생성
@@ -410,7 +415,6 @@ class wGrid{
 								row[this.fields[j].name] = "";
 							}
 						}
-						console.log(row);
 						this.prependRow(row);
 					});
 					th.appendChild(button);
@@ -472,24 +476,21 @@ class wGrid{
 		
 		//해더 등록
 		this.target.appendChild(header);				
-		
-		//생성시 데이터 존재하지 않을 경우
-		if(this._isEmpty(this._data)){
-			this._createNoDataField();
-		//생성시 데이터 존재할 경우
-		}else{
-			this._createField();
-		}
+				
+		this._createField();
+		this._createNoDataField();		
+		this._noDataField();
 	}
 	
 	//빈 데이터 field 생성
 	_createNoDataField(){
 		let field = document.createElement("div");
+		field.style.display = "none";
+		
 		let table = document.createElement("table");
 		table.classList.add("wgrid-table-body");
 		
-		this.node.bodyDiv = field;
-		this.node.bodyTable = table;
+		this.node.bodyNoDataField = field;
 		
 		let tr = document.createElement("tr");
 		let td = document.createElement("td");
@@ -499,13 +500,34 @@ class wGrid{
 		tr.appendChild(td);
 		table.appendChild(tr);
 		field.appendChild(table);
-		this.node.bodyNoDataField = field;		
-		this.target.appendChild(field);
+		this.target.appendChild(field);		
 	}
 	
+	_noDataField(){
+		//data여부 따라서 화면표시, 미표시
+		
+		
+		
+		if(this._data == null){
+			this.node.bodyNoDataField.style.display = "block";
+		}else{
+			let isEmpty = true;			
+			for(let i=0; i<this._data.length; i++){
+				if(this._isNotEmpty(this._data[i])){
+					isEmpty = false;
+					break;
+				}
+			}
+			if(isEmpty){
+				this.node.bodyNoDataField.style.display = "block";
+			}else{
+				this.node.bodyNoDataField.style.display = "none";
+			}
+		}
+	}	
+	
 	//필드 생성
-	_createField(){
-		let list = this._data;
+	_createField(){	
 		
 		//엘리멘트 생성
 		let field = document.createElement("div");
@@ -515,24 +537,28 @@ class wGrid{
 		this.node.bodyDiv = field;
 		this.node.bodyTable = table;
 		
-		let tr = null;
-		
-		//필드 create		
-		for(let i=0; i<list.length; i++){			
-			tr = this._createColumn(list, i);			
-			table.appendChild(tr);
-		}
-		
 		//필드 등록
-		field.appendChild(table);
+		field.appendChild(table);		
+		this.target.appendChild(field);		
 		
-		//option - 스크롤 Y 설정
-		if(this.option.isScrollY){
-			field.classList.add("wgrid-overflow-y");
-			field.style.height = this.option.bodyHeight;
-		}
-		
-		this.target.appendChild(field);
+		if(this._data == null){
+			return;
+		}else{
+			
+			let list = this._data;
+			let tr = null;
+			
+			//필드 create		
+			for(let i=0; i<list.length; i++){			
+				tr = this._createColumn(list, i);			
+				table.appendChild(tr);
+			}
+			//option - 스크롤 Y 설정
+			if(this.option.isScrollY){
+				field.classList.add("wgrid-overflow-y");
+				field.style.height = this.option.bodyHeight;
+			}			
+		}		
 	}
 	
 	//필드 컬럼 생성
@@ -621,6 +647,7 @@ class wGrid{
 						delete this._data[this._dataLink[node.dataset.key]];
 						//태그 삭제
 						node.remove();
+						this._noDataField();
 				    //그외 삭제 background 적용
 					}else{
 						
@@ -631,7 +658,7 @@ class wGrid{
 						//변경사항 style 적용						
 						this._applyStyle(!this._data[idx]._isRemove, "delete", node);						
 						this._applyStyle(this._checkRow(list[i]._key), "update", node);
-					}
+					}					
 				});
 				td.appendChild(button);
 			//yn 버튼 
