@@ -98,8 +98,9 @@ class wGrid{
 		if(this._isEmpty(args.data)){
 			this._data = null;
 			this._dataType = null;
-			
-			this.createGrid();			
+			if(this._isEmpty(this.controller) || this._isEmpty(this.controller.load)){
+				this.createGrid();
+			}			
 		}else{			
 			//사용자임의 데이터 가공 및 주입
 			if(this._isNotEmpty(this.controller.dataConverter)){
@@ -371,7 +372,8 @@ class wGrid{
 	}
 	
 	//그리드 생성
-	createGrid(){		
+	createGrid(){
+		console.log("createGrid");
 		let list = this._data;
 		
 		//헤더생성
