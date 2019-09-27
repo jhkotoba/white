@@ -909,8 +909,11 @@ class wGrid{
 	
 	//복제본 생성
 	_createClone(){
-		if(this._isEmpty(this._data)) return;
-		this._clone = this.deepCopy(this._data);
+		if(this._isEmpty(this._data)){
+			return;
+		}else if(this.option.isSync){
+			this._clone = this.deepCopy(this._data);
+		}
 	}
 	
 	//스타일 적용, 취소 (내부용)

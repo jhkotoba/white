@@ -14,7 +14,7 @@ let vals = null;
 $(document).ready(function(){
 	$.post("${contextPath}/ledger/selectLedgerInitData.ajax", null, function(data){
 		//참조데이터 등록
-		vals = data;		
+		vals = data;
 		//초기설정
 		fnInit();
 		//이벤트 등록
@@ -169,23 +169,24 @@ function fnCreatedGridAfterInit(){
 			$(el).closest("td").next().next().next().next().prepend($strong);
 			break;			
 		}
-	});	
+	});
+	
+	fnCreatedGridAfterEventInit();
 }
 
 //############## 그리드 생성 후 그리드 이벤트 설정 ################
 function fnCreatedGridAfterEventInit(){
 
 	//그리드 목적 change 이벤트
-	$("[data-column-name='purSeq'] .wgrid-select").on("change", function(ev){
-		
+	$("[data-column-name='purSeq'] .wgrid-select").on("change", function(ev){		
 		let purType = ev.target.options[ev.target.selectedIndex].dataset.purType;		
 		
 		//목적타입에 따른 설정
 		let $tr = $(ev.target).closest("tr");
 		let key = $tr.data("key");
 		let meansSeq = $tr.find("[data-column-name='meansSeq'] .wgrid-select").val();
-		let $moveSeq = $tr.find("[data-column-name='moveSeq'] .wgrid-select");		
-		let $moneyMark = $tr.find("[data-column-name='money'] .pm-mark");
+		let $moveSeq = $tr.find("[data-column-name='moveSeq'] .wgrid-select");	
+		let $moneyMark = $tr.find("[data-column-name='money'] .pm-mark");		
 		switch(purType){
 		//수입
 		case "LED001" :
