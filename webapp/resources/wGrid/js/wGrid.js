@@ -506,12 +506,10 @@ class wGrid{
 	}
 	
 	_noDataField(){
-		//data여부 따라서 화면표시, 미표시
-		
-		
-		
+		//data여부 따라서 화면표시, 미표시		
 		if(this._data == null){
 			this.node.bodyNoDataField.style.display = "block";
+			this.node.bodyDiv.style.display = "none";
 		}else{
 			let isEmpty = true;			
 			for(let i=0; i<this._data.length; i++){
@@ -522,8 +520,10 @@ class wGrid{
 			}
 			if(isEmpty){
 				this.node.bodyNoDataField.style.display = "block";
+				this.node.bodyDiv.style.display = "none";
 			}else{
 				this.node.bodyNoDataField.style.display = "none";
+				this.node.bodyDiv.style.display = "block";
 			}
 		}
 	}	

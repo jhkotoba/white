@@ -1,5 +1,5 @@
 /**
- * wGrid 0.0.2
+ * wGrid 0.0.1
  * @author JeHoon 
  */
 class wGrid{
