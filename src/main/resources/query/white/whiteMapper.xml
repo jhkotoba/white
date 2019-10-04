@@ -30,11 +30,11 @@
 	<select id="selectCodeList" resultType="WhiteMap" parameterType="WhiteMap">
 		/*whiteMapper|selectCodeList*/
 		SELECT
-			code
-			,code_prt AS codePrt
-			,code_nm AS codeNm
-		FROM cmm_code		
-		WHERE code_prt = UPPER(#{codePrt})		
+			CODE
+			,CODE_PRT AS codePrt
+			,CODE_NM AS codeNm
+		FROM COMMON_CD		
+		WHERE CODE_PRT = UPPER(#{codePrt})		
 	</select>	
 	
 	<!-- 테이블 순번 전체 조회 -->

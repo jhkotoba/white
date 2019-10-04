@@ -1054,7 +1054,7 @@ class wGrid{
 					//값 동기화
 					this._data[this._dataLink[item.key]][item.columnName] = event.target.value;				
 					
-					//변경사항 style 적용										
+					//변경사항 style 적용
 					this._applyStyle(this._checkRow(item.key), "update", this._getTrNode(event.target));
 					if(this._checkRow(item.key)){
 						this._data[this._dataLink[item.key]]._state = "select";

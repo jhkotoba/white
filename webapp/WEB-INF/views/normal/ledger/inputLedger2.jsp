@@ -5,7 +5,6 @@
 
 <link rel="stylesheet" href="${contextPath}/resources/wGrid/css/wGrid.css" type="text/css"/>
 <script type="text/javascript" src="${contextPath}/resources/wGrid/js/wGrid.js"></script>
-
 <script type="text/javascript">
 //############## 가계부 기입 페이지 전역변수 ################
 let ledgerGrid = null;
@@ -27,7 +26,7 @@ $(document).ready(function(){
 function fnInit(){
 	//가계부 그리드 생성
 	ledgerGrid = new wGrid("ledgerGrid", {
-		
+		mode : ["insert"],
 		//그리드 생성시 필요한 아이템
 		items : {
 			select : [				

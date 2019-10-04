@@ -10,7 +10,7 @@ DROP TABLE IF EXISTS nav_menu;
 DROP TABLE IF EXISTS auth_name;
 DROP TABLE IF EXISTS BOARD_CMT;
 DROP TABLE IF EXISTS BOARD;
-DROP TABLE IF EXISTS cmm_code;
+DROP TABLE IF EXISTS COMMON_CD;
 DROP TABLE IF EXISTS commute_record;
 DROP TABLE IF EXISTS free_board_comment;
 DROP TABLE IF EXISTS free_board;
@@ -19,7 +19,6 @@ DROP TABLE IF EXISTS MEANS;
 DROP TABLE IF EXISTS purpose_detail;
 DROP TABLE IF EXISTS purpose;
 DROP TABLE IF EXISTS source_board;
-DROP TABLE IF EXISTS TERM_DFI;
 DROP TABLE IF EXISTS white_user;
 
 
@@ -101,18 +100,18 @@ CREATE TABLE BOARD_CMT
 );
 
 
-CREATE TABLE cmm_code
+CREATE TABLE COMMON_CD
 (
-	code_seq int NOT NULL AUTO_INCREMENT,
-	code varchar(6) NOT NULL,
-	code_prt varchar(6) NOT NULL,
-	code_nm varchar(20) NOT NULL,
-	mod_user varchar(20) NOT NULL,
-	mod_date datetime NOT NULL,
-	reg_user varchar(20) NOT NULL,
-	reg_date datetime NOT NULL,
-	PRIMARY KEY (code_seq),
-	UNIQUE (code)
+	CODE_SEQ int NOT NULL AUTO_INCREMENT,
+	CODE varchar(6) NOT NULL,
+	CODE_PRT varchar(6) NOT NULL,
+	CODE_NM varchar(20) NOT NULL,
+	MOD_USER varchar(20) NOT NULL,
+	MOD_DATE datetime NOT NULL,
+	REG_USER varchar(20) NOT NULL,
+	REG_DATE datetime NOT NULL,
+	PRIMARY KEY (CODE_SEQ),
+	UNIQUE (CODE)
 );
 
 
@@ -248,19 +247,6 @@ CREATE TABLE source_board
 	reg_date datetime NOT NULL,
 	PRIMARY KEY (source_seq),
 	UNIQUE (source_seq)
-);
-
-
-CREATE TABLE TERM_DFI
-(
-	TD_SEQ int NOT NULL AUTO_INCREMENT,
-	ABBR_WD varchar(10) NOT NULL,
-	ORG_WD varchar(30) NOT NULL,
-	INST_ID varchar(20) NOT NULL,
-	INST_DT datetime NOT NULL,
-	MOD_ID varchar(20) NOT NULL,
-	MOD_DT datetime NOT NULL,
-	PRIMARY KEY (TD_SEQ)
 );
 
 

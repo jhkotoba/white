@@ -360,22 +360,22 @@
 	<!-- 코드 정의 리스트 조회 -->
 	<select id="selectCodeDefineCount" parameterType="whiteMap" resultType="int">
 		/* adminMapper|selectCodeDefineCount */
-		SELECT COUNT(1)	FROM cmm_code	
+		SELECT COUNT(1)	FROM COMMON_CD	
 	</select>	
 	
 	<!-- 코드 정의 리스트 조회 -->
 	<select id="selectCodeDefineList" parameterType="whiteMap" resultType="whiteMap">
 		/* adminMapper|selectCodeDefineList */
 		SELECT
-			code_seq	AS codeSeq
-			,code		AS code
-			,code_prt	AS codePrt
-			,code_nm	AS codeNm
-			,mod_user	AS modUser
-			,DATE_FORMAT(mod_date,'%Y-%m-%d %H:%i:%s') AS modDate
-			,reg_user	AS regUser
-			,DATE_FORMAT(reg_date,'%Y-%m-%d %H:%i:%s') AS regDate
-		FROM cmm_code
+			CODE_SEQ	AS codeSeq
+			,CODE		AS code
+			,CODE_PRT	AS codePrt
+			,CODE_NM	AS codeNm
+			,MOD_USER	AS modUser
+			,DATE_FORMAT(MOD_DATE,'%Y-%m-%d %H:%i:%s') AS modDate
+			,REG_USER	AS regUser
+			,DATE_FORMAT(REG_DATE,'%Y-%m-%d %H:%i:%s') AS regDate
+		FROM COMMON_CD
 		ORDER BY CODE ASC
 		LIMIT ${pagePre}, ${pageSize}	
 	</select>

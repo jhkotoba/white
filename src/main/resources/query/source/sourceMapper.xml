@@ -6,8 +6,8 @@
 	
 	<select id="selectSourceCount" resultType="int" parameterType="WhiteMap">
 		SELECT COUNT(1) FROM source_board sb
-		LEFT OUTER JOIN cmm_code cc
-	    	ON sb.lang_cd = cc.code
+		LEFT OUTER JOIN COMMON_CD CC
+	    	ON sb.lang_cd = CC.CODE
 	    LEFT OUTER JOIN white_user wu
   			ON wu.USER_SEQ = sb.USER_SEQ
 		<where>
@@ -38,14 +38,14 @@
 	<select id="selectSourceList" resultType="WhiteMap" parameterType="WhiteMap">	
 		SELECT
 			sb.source_seq 		AS sourceSeq
-			,cc.code_nm 		AS langNm
+			,CC.CODE_NM 		AS langNm
 			,wu.user_id 		AS userId
 			,sb.title
 			,DATE_FORMAT(sb.edit_date,'%Y-%m-%d %H:%i:%s') AS editDate
 			,DATE_FORMAT(sb.reg_date,'%Y-%m-%d %H:%i:%s')  AS regDate
 		FROM source_board sb
-	    LEFT OUTER JOIN cmm_code cc
-	    	ON sb.lang_cd = cc.code
+	    LEFT OUTER JOIN COMMON_CD CC
+	    	ON sb.lang_cd = CC.code
 	    LEFT OUTER JOIN white_user wu
   			ON wu.USER_SEQ = sb.USER_SEQ
   		<where>
@@ -79,8 +79,8 @@
 	<select id="selectSourceDtlView" resultType="WhiteMap" parameterType="WhiteMap">	
 		SELECT 
 			sb.source_seq 	AS sourceSeq
-			,cc.code_nm 	AS langNm
-			,cc.code		AS langCd
+			,CC.CODE_NM 	AS langNm
+			,CC.CODE		AS langCd
 			,wu.user_id 	AS userId
 			,sb.title
 			,sb.content
@@ -89,8 +89,8 @@
 		FROM source_board sb
    		LEFT OUTER JOIN white_user wu
   			ON wu.USER_SEQ = sb.USER_SEQ
-  		LEFT OUTER JOIN cmm_code cc
-	    	ON sb.lang_cd = cc.code   
+  		LEFT OUTER JOIN COMMON_CD CC
+	    	ON sb.lang_cd = CC.CODE   
 		WHERE sb.source_seq = #{sourceSeq}
 	</select>
 	
