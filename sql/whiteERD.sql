@@ -4,14 +4,13 @@ SET SESSION FOREIGN_KEY_CHECKS=0;
 
 DROP TABLE IF EXISTS admin_board_comment;
 DROP TABLE IF EXISTS admin_board;
-DROP TABLE IF EXISTS authority;
 DROP TABLE IF EXISTS side_menu;
 DROP TABLE IF EXISTS nav_menu;
+DROP TABLE IF EXISTS POS_AUTH;
 DROP TABLE IF EXISTS auth_name;
 DROP TABLE IF EXISTS BOARD_CMT;
 DROP TABLE IF EXISTS BOARD;
 DROP TABLE IF EXISTS COMMON_CD;
-DROP TABLE IF EXISTS commute_record;
 DROP TABLE IF EXISTS free_board_comment;
 DROP TABLE IF EXISTS free_board;
 DROP TABLE IF EXISTS money_record;
@@ -48,16 +47,6 @@ CREATE TABLE admin_board_comment
 	reg_date datetime NOT NULL,
 	PRIMARY KEY (comment_seq),
 	UNIQUE (comment_seq)
-);
-
-
-CREATE TABLE authority
-(
-	auth_seq int NOT NULL AUTO_INCREMENT,
-	USER_SEQ int NOT NULL,
-	auth_nm_seq int NOT NULL,
-	PRIMARY KEY (auth_seq),
-	UNIQUE (auth_seq)
 );
 
 
@@ -112,18 +101,6 @@ CREATE TABLE COMMON_CD
 	REG_DATE datetime NOT NULL,
 	PRIMARY KEY (CODE_SEQ),
 	UNIQUE (CODE)
-);
-
-
-CREATE TABLE commute_record
-(
-	commute_seq int NOT NULL AUTO_INCREMENT,
-	USER_SEQ int NOT NULL,
-	commute_location varchar(100) NOT NULL,
-	commute_type varchar(5) NOT NULL,
-	commute_date datetime NOT NULL,
-	comment varchar(1000),
-	PRIMARY KEY (commute_seq)
 );
 
 
@@ -195,6 +172,16 @@ CREATE TABLE nav_menu
 	nav_order int NOT NULL,
 	PRIMARY KEY (nav_seq),
 	UNIQUE (nav_seq)
+);
+
+
+CREATE TABLE POS_AUTH
+(
+	POS_AUTH_SEQ int NOT NULL AUTO_INCREMENT,
+	USER_SEQ int NOT NULL,
+	auth_nm_seq int NOT NULL,
+	PRIMARY KEY (POS_AUTH_SEQ),
+	UNIQUE (POS_AUTH_SEQ)
 );
 
 
@@ -273,16 +260,16 @@ ALTER TABLE admin_board_comment
 ;
 
 
-ALTER TABLE authority
-	ADD FOREIGN KEY (auth_nm_seq)
+ALTER TABLE nav_menu
+	ADD FOREIGN KEY (nav_auth_nm_seq)
 	REFERENCES auth_name (auth_nm_seq)
 	ON UPDATE RESTRICT
 	ON DELETE RESTRICT
 ;
 
 
-ALTER TABLE nav_menu
-	ADD FOREIGN KEY (nav_auth_nm_seq)
+ALTER TABLE POS_AUTH
+	ADD FOREIGN KEY (auth_nm_seq)
 	REFERENCES auth_name (auth_nm_seq)
 	ON UPDATE RESTRICT
 	ON DELETE RESTRICT
@@ -369,14 +356,6 @@ ALTER TABLE admin_board_comment
 ;
 
 
-ALTER TABLE authority
-	ADD FOREIGN KEY (USER_SEQ)
-	REFERENCES white_user (USER_SEQ)
-	ON UPDATE RESTRICT
-	ON DELETE RESTRICT
-;
-
-
 ALTER TABLE BOARD
 	ADD FOREIGN KEY (USER_SEQ)
 	REFERENCES white_user (USER_SEQ)
@@ -386,14 +365,6 @@ ALTER TABLE BOARD
 
 
 ALTER TABLE BOARD_CMT
-	ADD FOREIGN KEY (USER_SEQ)
-	REFERENCES white_user (USER_SEQ)
-	ON UPDATE RESTRICT
-	ON DELETE RESTRICT
-;
-
-
-ALTER TABLE commute_record
 	ADD FOREIGN KEY (USER_SEQ)
 	REFERENCES white_user (USER_SEQ)
 	ON UPDATE RESTRICT
@@ -426,6 +397,14 @@ ALTER TABLE MEANS
 
 
 ALTER TABLE money_record
+	ADD FOREIGN KEY (USER_SEQ)
+	REFERENCES white_user (USER_SEQ)
+	ON UPDATE RESTRICT
+	ON DELETE RESTRICT
+;
+
+
+ALTER TABLE POS_AUTH
 	ADD FOREIGN KEY (USER_SEQ)
 	REFERENCES white_user (USER_SEQ)
 	ON UPDATE RESTRICT

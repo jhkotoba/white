@@ -43,8 +43,8 @@
 		  n.auth_nm AS authNm,
 		  IF(
 				(
-					SELECT a.auth_seq FROM authority a
-					WHERE a.auth_nm_seq = n.auth_nm_seq
+					SELECT PA.POS_AUTH_SEQ FROM POS_AUTH PA
+					WHERE PA.auth_nm_seq = n.auth_nm_seq
 					AND USER_SEQ = #{userSeq}
 					LIMIT 1
 				) IS NULL, 0, 1
@@ -66,9 +66,9 @@
 				<otherwise>
 				,IF(
 					(
-						SELECT a.auth_seq FROM authority a
-						WHERE a.auth_nm_seq = nm.nav_auth_nm_seq
-						AND a.USER_SEQ = #{userSeq}
+						SELECT PA.POS_AUTH_SEQ FROM POS_AUTH PA
+						WHERE PA.auth_nm_seq = nm.nav_auth_nm_seq
+						AND PA.USER_SEQ = #{userSeq}
 						LIMIT 1
 					) IS NULL, 0, 1
 				) AS auth
@@ -96,9 +96,9 @@
 					<otherwise>
 					,IF(
 						(
-							SELECT a.auth_seq FROM authority a
-							WHERE a.auth_nm_seq = sm.side_auth_nm_seq
-							AND a.USER_SEQ = #{userSeq}
+							SELECT PA.POS_AUTH_SEQ FROM POS_AUTH PA
+							WHERE PA.auth_nm_seq = sm.side_auth_nm_seq
+							AND PA.USER_SEQ = #{userSeq}
 							LIMIT 1
 						) IS NULL, 0, 1
 					) AS auth
@@ -121,7 +121,7 @@
 	
 	<!-- 사용자 초기 권한 등록 -->
 	<insert id="insertUserAuth" parameterType="String">
-		INSERT INTO authority
+		INSERT INTO POS_AUTH
 			(USER_SEQ, auth_nm_seq)
 		VALUES 
 			(#{USER_SEQ}, (SELECT auth_nm_seq FROM auth_name WHERE auth_nm = 'user'))

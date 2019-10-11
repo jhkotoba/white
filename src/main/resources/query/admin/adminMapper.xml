@@ -51,13 +51,13 @@
 	
 	<select id="selectUserAuth" resultType="WhiteMap" parameterType="WhiteMap">
 		SELECT
-			auth.auth_seq AS authSeq,
-			auth.auth_nm_seq AS authNmSeq,
+			PA.POS_AUTH_SEQ AS posAuthSeq,
+			PA.auth_nm_seq AS authNmSeq,
 			name.auth_nm AS authNm
-		FROM authority auth
+		FROM POS_AUTH PA
 		LEFT OUTER JOIN auth_name name
-		ON name.auth_nm_seq = auth.auth_nm_seq
-		WHERE auth.USER_SEQ = #{no}   		
+		ON name.auth_nm_seq = PA.auth_nm_seq
+		WHERE PA.USER_SEQ = #{no}   		
 	</select>
 	
 	
@@ -107,7 +107,7 @@
 	</select>	
 	
 	<insert id="insertAuthList" parameterType="java.util.List">
-		INSERT INTO authority(		
+		INSERT INTO POS_AUTH(		
 			USER_SEQ,	
 			auth_nm_seq
 		)VALUES
@@ -118,7 +118,7 @@
 	</insert>
 	
 	<delete id="deleteAuthList" parameterType="whiteMap">
-		DELETE FROM authority
+		DELETE FROM POS_AUTH
 		WHERE USER_SEQ = #{userNo}
 		AND auth_nm_seq IN (${remove})
 	</delete>
@@ -324,7 +324,7 @@
 	<select id="selectIsUsedAuthNm" resultType="int" parameterType="java.util.List">
 		SELECT
 		(
-			SELECT COUNT(1) FROM authority
+			SELECT COUNT(1) FROM POS_AUTH
 			WHERE auth_nm_seq IN
 			<foreach collection="list" item="item" separator="," open="(" close=")">
 				#{item.authNmSeq}

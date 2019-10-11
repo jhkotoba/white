@@ -86,7 +86,7 @@ $(document).ready(function(){
 			if(name === "insert"){
 				inList.push({userNo : userNo, authNmSeq : this.id.split('_')[1]})
 			}else if(name === "delete"){
-				delList.push({authSeq : seq, authNmSeq : this.id.split('_')[1]})
+				delList.push({posAuthSeq : seq, authNmSeq : this.id.split('_')[1]})
 			}
 		});
 		if(emptyCheck.isEmpty(userNo)){
