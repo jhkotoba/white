@@ -65,8 +65,8 @@ public class MainController {
 		session.removeAttribute("userId");
 		session.removeAttribute("userSeq");
 		session.removeAttribute("authority");
-		session.removeAttribute("navList");
-		session.removeAttribute("sideList");
+		session.removeAttribute("upperList");
+		session.removeAttribute("lowerList");
 		session.invalidate();
 		
 		return "redirect:/main";
@@ -84,22 +84,22 @@ public class MainController {
 	}
 
 	//화면이동 컨트롤러
-	@RequestMapping(value="{navUrl}")
+	@RequestMapping(value="{upperUrl}")
 	public String white(HttpServletRequest request, Device device) throws UnsupportedEncodingException{		
 		WhiteMap param = new WhiteMap(request);	
 		
-		String navUrl = param.getString("navUrl");
-		String sideUrl = param.getString("sideUrl");	
+		String upperUrl = param.getString("upperUrl");
+		String lowerUrl = param.getString("lowerUrl");	
 		
 		request.setCharacterEncoding("UTF-8");
 		
-		request.setAttribute("navUrl", navUrl);
-		request.setAttribute("sideUrl", sideUrl);
-		request.setAttribute("navNm", param.getString("navNm"));
-		request.setAttribute("sideNm", param.getString("sideNm"));
+		request.setAttribute("upperUrl", upperUrl);
+		request.setAttribute("lowerUrl", lowerUrl);
+		request.setAttribute("upperNm", param.getString("upperNm"));
+		request.setAttribute("lowerNm", param.getString("lowerNm"));
 		request.setAttribute("prevParam", param.getString("param"));
 		
-		request.setAttribute("sectionPage", navUrl.replace("/", "")+sideUrl+".jsp");
+		request.setAttribute("sectionPage", upperUrl.replace("/", "")+lowerUrl+".jsp");
 		return White.device(device)+"/white.jsp";
 	}
 	

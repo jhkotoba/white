@@ -79,10 +79,10 @@ public class AdminService {
 			for(int i=0; i<addArr.length; i++) {
 				map = new WhiteMap();
 				map.put("userNo", param.get("userNo"));
-				map.put("authNmSeq", addArr[i]);
+				map.put("authSeq", addArr[i]);
 				addList.add(map);
 			}			
-			result.put("add", adminMapper.insertAuthList(addList));
+			result.put("add", adminMapper.insertPosAuthList(addList));
 		}
 		
 		//권한 삭제
@@ -99,8 +99,8 @@ public class AdminService {
 	 * @param param
 	 * @return
 	 */
-	public List<WhiteMap> selectNavMenuList() {		
-		return adminMapper.selectNavMenuList();		
+	public List<WhiteMap> selectUpperMenuList() {		
+		return adminMapper.selectUpperMenuList();		
 		
 	}
 		
@@ -109,44 +109,44 @@ public class AdminService {
 	 * @param param
 	 * @return
 	 */
-	public List<WhiteMap> selectSideMenuList() {		
-		return this.selectSideMenuList(null);
+	public List<WhiteMap> selectLowerMenuList() {		
+		return this.selectLowerMenuList(null);
 	}
-	public List<WhiteMap> selectSideMenuList(WhiteMap param) {
-		return adminMapper.selectSideMenuList(param);
+	public List<WhiteMap> selectLowerMenuList(WhiteMap param) {
+		return adminMapper.selectLowerMenuList(param);
 	}	
 	
 	/**
-	 * 네비(상위) 메뉴리스트 적용
+	 * 상위 메뉴리스트 적용
 	 * @param param
 	 * @return -1: 반영전 수정할 데이터가 수정하기전에 바뀜, -2:삭제대상이 사용되는 시퀀스. 삭제불가, 1:성공
 	 */
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
-	public int applyNavMenuList(WhiteMap param) {
+	public int applyUpperMenuList(WhiteMap param) {
 		
 		//반영전 수정되었는지 체크
-		List<WhiteMap> menuList = param.convertListWhiteMap("navClone", false);
-		List<WhiteMap> list = adminMapper.selectNavMenuList();		
+		List<WhiteMap> menuList = param.convertListWhiteMap("upperClone", false);
+		List<WhiteMap> list = adminMapper.selectUpperMenuList();		
 		
 		if(menuList.size() != list.size()) {
 			return -1;
 		}else {
 			for(int i=0; i<menuList.size(); i++) {
-				if(!menuList.get(i).get("navNm").equals(list.get(i).get("navNm"))) {
+				if(!menuList.get(i).get("upperNm").equals(list.get(i).get("upperNm"))) {
 					return -1;
-				}else if(!menuList.get(i).get("navUrl").equals(list.get(i).get("navUrl"))) {
+				}else if(!menuList.get(i).get("upperUrl").equals(list.get(i).get("upperUrl"))) {
 					return -1;
-				}else if(!menuList.get(i).get("navAuthNmSeq").equals(list.get(i).get("navAuthNmSeq"))) {
+				}else if(!menuList.get(i).get("authSeq").equals(list.get(i).get("authSeq"))) {
 					return -1;
-				}else if(!menuList.get(i).get("navShowYn").equals(list.get(i).get("navShowYn"))) {
+				}else if(!menuList.get(i).get("showYn").equals(list.get(i).get("showYn"))) {
 					return -1;
-				}else if(!menuList.get(i).get("navOrder").equals(list.get(i).get("navOrder"))) {
+				}else if(!menuList.get(i).get("upperOrder").equals(list.get(i).get("upperOrder"))) {
 					return -1;
 				}
 			}			
 		}
 		
-		menuList = param.convertListWhiteMap("navList", false);		
+		menuList = param.convertListWhiteMap("upperList", false);		
 		List<WhiteMap> deleteList = new ArrayList<WhiteMap>();
 		List<WhiteMap> insertList = new ArrayList<WhiteMap>();
 		List<WhiteMap> updateList = new ArrayList<WhiteMap>();
@@ -161,18 +161,18 @@ public class AdminService {
 			}
 		}
 		
-		if(deleteList.size()>0 && adminMapper.selectIsUsedSideUrl(deleteList)>0) {
+		if(deleteList.size()>0 && adminMapper.selectIsUsedLowerUrl(deleteList)>0) {
 			return -2;
 		}else {			
-			if(insertList.size()>0) adminMapper.insertNavMenuList(insertList);	
-			if(updateList.size()>0) adminMapper.updateNavMenuList(updateList);
+			if(insertList.size()>0) adminMapper.insertUpperMenuList(insertList);	
+			if(updateList.size()>0) adminMapper.updateUpperMenuList(updateList);
 			if(deleteList.size()>0) {
-				adminMapper.deleteNavMenuList(deleteList);
+				adminMapper.deleteUpperMenuList(deleteList);
 				
 				WhiteMap map = new WhiteMap();
-				map.put("tableNm", "nav_menu");
-				map.put("firstSeqNm", "nav_seq");							
-				map.put("columnNm", "nav_order");
+				map.put("tableNm", "UPPER_MENU");
+				map.put("firstSeqNm", "UPPER_SEQ");							
+				map.put("columnNm", "UPPER_ORDER");
 				whiteService.updateSortTable(map);	
 			}
 			return 1;
@@ -186,31 +186,31 @@ public class AdminService {
 	 * @return -1: 반영전 수정할 데이터가 수정하기전에 바뀜, 1:성공
 	 */
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
-	public int applySideMenuList(WhiteMap param) {
+	public int applyLowerMenuList(WhiteMap param) {
 		
 		//반영전 수정되었는지 체크
-		List<WhiteMap> menuList = param.convertListWhiteMap("sideClone", false);
-		List<WhiteMap> list = adminMapper.selectSideMenuList(param.createKeyNewMap("navSeq"));
+		List<WhiteMap> menuList = param.convertListWhiteMap("lowerClone", false);
+		List<WhiteMap> list = adminMapper.selectLowerMenuList(param.createKeyNewMap("upperSeq"));
 		
 		if(menuList.size() != list.size()) {
 			return -1;
 		}else {
 			for(int i=0; i<menuList.size(); i++) {
-				if(!menuList.get(i).get("sideNm").equals(list.get(i).get("sideNm"))) {
+				if(!menuList.get(i).get("lowerNm").equals(list.get(i).get("lowerNm"))) {
 					return -1;
-				}else if(!menuList.get(i).get("sideUrl").equals(list.get(i).get("sideUrl"))) {
+				}else if(!menuList.get(i).get("lowerUrl").equals(list.get(i).get("lowerUrl"))) {
 					return -1;
-				}else if(!menuList.get(i).get("sideAuthNmSeq").equals(list.get(i).get("sideAuthNmSeq"))) {
+				}else if(!menuList.get(i).get("authSeq").equals(list.get(i).get("authSeq"))) {
 					return -1;
-				}else if(!menuList.get(i).get("sideShowYn").equals(list.get(i).get("sideShowYn"))) {
+				}else if(!menuList.get(i).get("showYn").equals(list.get(i).get("showYn"))) {
 					return -1;
-				}else if(!menuList.get(i).get("sideOrder").equals(list.get(i).get("sideOrder"))) {
+				}else if(!menuList.get(i).get("lowerOrder").equals(list.get(i).get("lowerOrder"))) {
 					return -1;
 				}
 			}			
 		}
 		
-		menuList = param.convertListWhiteMap("sideList", false);		
+		menuList = param.convertListWhiteMap("lowerList", false);		
 		List<WhiteMap> deleteList = new ArrayList<WhiteMap>();
 		List<WhiteMap> insertList = new ArrayList<WhiteMap>();
 		List<WhiteMap> updateList = new ArrayList<WhiteMap>();
@@ -225,17 +225,17 @@ public class AdminService {
 			}
 		}		
 		
-		if(insertList.size()>0) adminMapper.insertSideMenuList(insertList);	
-		if(updateList.size()>0) adminMapper.updateSideMenuList(updateList);
+		if(insertList.size()>0) adminMapper.insertLowerMenuList(insertList);	
+		if(updateList.size()>0) adminMapper.updateLowerMenuList(updateList);
 		if(deleteList.size()>0) {
-			adminMapper.deleteSideMenuList(deleteList);
+			adminMapper.deleteLowerMenuList(deleteList);
 			
 			WhiteMap map = new WhiteMap();
-			map.put("tableNm", "side_menu");
-			map.put("firstSeqNm", "side_seq");				
-			map.put("secondSeqNm", "nav_seq");				
-			map.put("secondSeq", deleteList.get(0).getString("navSeq"));				
-			map.put("columnNm", "side_order");
+			map.put("tableNm", "LOWER_MENU");
+			map.put("firstSeqNm", "LOWER_SEQ");				
+			map.put("secondSeqNm", "UPPER_SEQ");				
+			map.put("secondSeq", deleteList.get(0).getString("upperSeq"));				
+			map.put("columnNm", "LOWER_ORDER");
 			whiteService.updateSortTable(map);			
 		}
 		return 1;
@@ -261,7 +261,7 @@ public class AdminService {
 					return -1;
 				}else if(!authList.get(i).get("authOrder").equals(list.get(i).get("authOrder"))) {
 					return -1;
-				}else if(!authList.get(i).get("authNmSeq").equals(list.get(i).get("authNmSeq"))) {
+				}else if(!authList.get(i).get("authSeq").equals(list.get(i).get("authSeq"))) {
 					return -1;
 				}else if(!authList.get(i).get("authNm").equals(list.get(i).get("authNm"))) {
 					return -1;
@@ -284,18 +284,18 @@ public class AdminService {
 			}
 		}
 		
-		if(deleteList.size()>0 && adminMapper.selectIsUsedAuthNm(deleteList)>0) {
+		if(deleteList.size()>0 && adminMapper.selectIsUsedAuth(deleteList)>0) {
 			return 0;
 		}else {			
-			if(insertList.size()>0) adminMapper.insertAuthNmList(insertList);	
-			if(updateList.size()>0) adminMapper.updateAuthNmList(updateList);
+			if(insertList.size()>0) adminMapper.insertAuthList(insertList);	
+			if(updateList.size()>0) adminMapper.updateAuthList(updateList);
 			if(deleteList.size()>0) {
-				adminMapper.deleteAuthNmList(deleteList);
+				adminMapper.deleteAuthList(deleteList);
 				
 				WhiteMap map = new WhiteMap();
-				map.put("tableNm", "auth_name");
-				map.put("firstSeqNm", "auth_nm_seq");							
-				map.put("columnNm", "auth_order");
+				map.put("tableNm", "AUTH");
+				map.put("firstSeqNm", "AUTH_SEQ");							
+				map.put("columnNm", "AUTH_ORDER");
 				whiteService.updateSortTable(map);
 			}
 			return 1;

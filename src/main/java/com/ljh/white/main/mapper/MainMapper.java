@@ -26,11 +26,11 @@ public class MainMapper {
 		return sqlSession.selectList("mainMapper.selectUserAuthority", userSeq);			
 	}
 
-	public List<WhiteMap> selectNavMenuList(WhiteMap param){
-		return sqlSession.selectList("mainMapper.selectNavMenuList", param);			
+	public List<WhiteMap> selectUpperMenuList(WhiteMap param){
+		return sqlSession.selectList("mainMapper.selectUpperMenuList", param);			
 	}
 	
-	public List<WhiteMap> selectSideMenuList(WhiteMap param){	
-		return sqlSession.selectList("mainMapper.selectSideMenuList", param);			
+	public List<WhiteMap> selectLowerMenuList(WhiteMap param){	
+		return sqlSession.selectList("mainMapper.selectLowerMenuList", param);			
 	}
 }

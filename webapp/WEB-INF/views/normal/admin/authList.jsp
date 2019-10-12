@@ -17,8 +17,8 @@ function fnJsGrid(data){
 	
 	let clone = common.clone(data);
 	let authList = data;
-	let authNoIdx = cfnNoIdx(authList, "authNmSeq");
-	let cloneNoIdx = cfnNoIdx(clone, "authNmSeq");
+	let authNoIdx = cfnNoIdx(authList, "authSeq");
+	let cloneNoIdx = cfnNoIdx(clone, "authSeq");
 	
 	$("#authList").jsGrid({
 		height: "auto",
@@ -37,26 +37,26 @@ function fnJsGrid(data){
 					return $("<button>").attr("id", "add").addClass("btn-gray trs size-sm").text("+").on("click", function(){
 						authList.push({authCmt:"", 
 							authOrder: $("#authList").jsGrid("option", "data").length+1,
-							authNmSeq:new Date().getTime(), 
+							authSeq:new Date().getTime(), 
 							authNm:"", 
 							state:"insert"});
-						authNoIdx = cfnNoIdx(authList, "authNmSeq");
+						authNoIdx = cfnNoIdx(authList, "authSeq");
 						$("#authList").jsGrid("refresh");
 					});			
 				},				
                 itemTemplate: function(value, item) {
                     let chk = $("<input>").attr("type", "checkbox").attr("name", "check")
-                    .data("authNmSeq", item.authNmSeq).data("authOrder", item.authOrder).on("change", function() {
-                    	let idx = authNoIdx[item.authNmSeq];
-                    	let cIdx = cloneNoIdx[item.authNmSeq];
+                    .data("authSeq", item.authSeq).data("authOrder", item.authOrder).on("change", function() {
+                    	let idx = authNoIdx[item.authSeq];
+                    	let cIdx = cloneNoIdx[item.authSeq];
                 			
                			if(isEmpty(item.authOrder)){
                	    		$("#authList").jsGrid("deleteItem", item);
-               	    		delete authNoIdx[item.authNmSeq];               	    		
+               	    		delete authNoIdx[item.authSeq];               	    		
                	    	}else{
                	    		if($(this).is(":checked")) {
                    	   			$("[name='sync']").each(function(i, e){				
-                   	   				if(item.authNmSeq  === $(e).data("authNmSeq")){
+                   	   				if(item.authSeq  === $(e).data("authSeq")){
                    	   					$(e).addClass("sync-red");               	   					
                    	   					if(String(clone[cIdx][$(e).data("name")]) !== String($(e).val())){
                    	   						$(e).addClass("sync-blue");
@@ -66,7 +66,7 @@ function fnJsGrid(data){
                    	   			});
                    	   		}else{
                    	   			$("[name='sync']").each(function(i, e){				
-                   	   				if(item.authNmSeq === $(e).data("authNmSeq")){
+                   	   				if(item.authSeq === $(e).data("authSeq")){
                    	   					$(e).removeClass("sync-red");               	   					
                    	   					if($(e).hasClass("sync-blue") || authList[idx].state === "update"){
                    	   						authList[idx].state = "update";
@@ -106,7 +106,7 @@ function fnJsGrid(data){
 					let items = $.map($gridData.find("tr"), function(row) {
 						return $(row).data("JSGridItem");
 					});					
-					authNoIdx = cfnNoIdx(authList, "authNmSeq");
+					authNoIdx = cfnNoIdx(authList, "authSeq");
 					for(let i=0; i<items.length; i++){						
 						fnOnSync($("#authList .ui-sortable tr span")[i], i);
 					}
@@ -203,8 +203,8 @@ function fnJsGrid(data){
 	function fnOnSync(obj, sortIdx){
 		
 		let name = $(obj).data("name");
-		let idx = authNoIdx[$(obj).data("authNmSeq")];
-		let cIdx = cloneNoIdx[$(obj).data("authNmSeq")];
+		let idx = authNoIdx[$(obj).data("authSeq")];
+		let cIdx = cloneNoIdx[$(obj).data("authSeq")];
 		
 		if($(obj).hasClass("sync-green")){
 			if(isEmpty(sortIdx)) authList[idx][name] = $(obj).val();
@@ -244,18 +244,18 @@ function fnJsGrid(data){
 			$el = $("<span>").val(item[name]).text(item[name]);
 			break;
 		}
-		$el.attr("name", "sync").data("authNmSeq", item.authNmSeq).data("name", name);		
+		$el.attr("name", "sync").data("authSeq", item.authSeq).data("name", name);		
 
 		if(item.state === "insert") $el.addClass("sync-green");	
 		else if(item.state === "update"){									
-			if(clone[cloneNoIdx[item.authNmSeq]][name] === item[name]){
+			if(clone[cloneNoIdx[item.authSeq]][name] === item[name]){
 				$el.removeClass("sync-blue");
 			}else{
 				$el.addClass("sync-blue");
 			}			
 		}else if(item.state === "delete"){
 				$el.addClass("sync-red");
-			if(clone[cloneNoIdx[item.authNmSeq]][name] !== $el.val()){
+			if(clone[cloneNoIdx[item.authSeq]][name] !== $el.val()){
 				$el.addClass("sync-blue");
 			}
 		}		

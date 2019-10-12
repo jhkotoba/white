@@ -5,31 +5,31 @@
 
 <script type="text/javascript">
 $(document).ready(function(){	
-	cfnCmmAjax("/admin/selectMenuList").done(fnNavJsGrid);
+	cfnCmmAjax("/admin/selectMenuList").done(fnUpperJsGrid);
 });
 
-function fnNavJsGrid(data){
+function fnUpperJsGrid(data){
 
-	for(let i=0; i<data.navList.length; i++){
-		data.navList[i].state = "select";
+	for(let i=0; i<data.upperList.length; i++){
+		data.upperList[i].state = "select";
 	}
 
 	let clone = common.clone(data);
-	data.sideList = null;
+	data.lowerList = null;
 	
-	let navNoIdx = cfnNoIdx(data.navList, "navSeq");
-	let navCloneNoIdx = cfnNoIdx(clone.navList, "navSeq");
-	let sideNoIdx = null;
-	let sideCloneNoIdx = null;
-	let initSide = true;
-	let refNavSeq = isEmpty("${prevParam}")?clone.navList[0].navSeq:Number("${prevParam}");
+	let upperNoIdx = cfnNoIdx(data.upperList, "upperSeq");
+	let upperCloneNoIdx = cfnNoIdx(clone.upperList, "upperSeq");
+	let lowerNoIdx = null;
+	let lowerCloneNoIdx = null;
+	let initLower = true;
+	let refUpperSeq = isEmpty("${prevParam}")?clone.upperList[0].upperSeq:Number("${prevParam}");
 	
-	$("#navMenuList").jsGrid({
+	$("#upperMenuList").jsGrid({
 		height: "auto",
 		width: "51%",		
 		
 		autoload: true,     
-		data: data.navList,
+		data: data.upperList,
 		paging: false,
 		pageSize: 10,
 		
@@ -38,48 +38,48 @@ function fnNavJsGrid(data){
 		fields: [			
 			{ align:"center", width: "6%",
 				headerTemplate : function(){
-					return $("<button>").attr("id", "navAdd").addClass("btn-gray trs size-sm").text("+").on("click", function(){
-						data.navList.push({navAuthNmSeq: "", 
-							navNm: "",
-							navOrder: $("#navMenuList").jsGrid("option", "data").length+1,
-							navSeq: new Date().getTime(),
-							navShowYn:"N",
-							navUrl:"",
+					return $("<button>").attr("id", "upperAdd").addClass("btn-gray trs size-sm").text("+").on("click", function(){
+						data.upperList.push({authSeq: "", 
+							upperNm: "",
+							upperOrder: $("#upperMenuList").jsGrid("option", "data").length+1,
+							upperSeq: new Date().getTime(),
+							showYn:"N",
+							upperUrl:"",
 							state:"insert"});		
-						navNoIdx = cfnNoIdx(data.navList, "navSeq");
-						$("#navMenuList").jsGrid("refresh");
+						upperNoIdx = cfnNoIdx(data.upperList, "upperSeq");
+						$("#upperMenuList").jsGrid("refresh");
 					});					
 				},
                 itemTemplate: function(value, item) {
                     let chk = $("<input>").attr("type", "checkbox").attr("name", "check")
-                    .data("navSeq", item.navSeq).data("navOrder", item.navOrder).on("change", function() {
-                    	let idx = navNoIdx[item.navSeq];
-                    	let cIdx = navCloneNoIdx[item.navSeq];
+                    .data("upperSeq", item.upperSeq).data("upperOrder", item.upperOrder).on("change", function() {
+                    	let idx = upperNoIdx[item.upperSeq];
+                    	let cIdx = upperCloneNoIdx[item.upperSeq];
                 			
-               			if(isEmpty(item.navOrder)){
-               	    		$("#navMenuList").jsGrid("deleteItem", item);
-               	    		delete navNoIdx[item.navSeq];               	    		
+               			if(isEmpty(item.upperOrder)){
+               	    		$("#upperMenuList").jsGrid("deleteItem", item);
+               	    		delete upperNoIdx[item.upperSeq];               	    		
                	    	}else{
                	    		if($(this).is(":checked")) {
-                   	   			$("[name='syncNav']").each(function(i, e){
-                   	   				if(item.navSeq  === $(e).data("navSeq")){
+                   	   			$("[name='syncUpper']").each(function(i, e){
+                   	   				if(item.upperSeq  === $(e).data("upperSeq")){
                    	   					$(e).addClass("sync-red");
                    	   					
-                   	   					if(String(clone.navList[cIdx][$(e).data("name")]) !== String($(e).val())){
+                   	   					if(String(clone.upperList[cIdx][$(e).data("name")]) !== String($(e).val())){
                    	   						$(e).addClass("sync-blue");
                    	   					}
-                   	   					data.navList[idx].state = "delete";   
+                   	   					data.upperList[idx].state = "delete";   
                    	   				}
                    	   			});
                    	   		}else{
-                   	   			$("[name='syncNav']").each(function(i, e){
-                   	   				if(item.navSeq === $(e).data("navSeq")){
+                   	   			$("[name='syncUpper']").each(function(i, e){
+                   	   				if(item.upperSeq === $(e).data("upperSeq")){
                    	   					$(e).removeClass("sync-red");
                    	   					
-                   	   					if($(e).hasClass("sync-blue") || data.navList[idx].state === "update" ){
-                   	   						data.navList[idx].state = "update";
+                   	   					if($(e).hasClass("sync-blue") || data.upperList[idx].state === "update" ){
+                   	   						data.upperList[idx].state = "update";
                    	   					}else{   						
-                   	   						data.navList[idx].state = "select";
+                   	   						data.upperList[idx].state = "select";
                    	   					}   					
                    	   				}
                    	   			});
@@ -90,29 +90,29 @@ function fnNavJsGrid(data){
                     return chk;
                 }	            
 			},
-			{ title:"순서",	name:"navOrder",	type:"text", align:"center", width: "8%",
+			{ title:"순서",	name:"upperOrder",	type:"text", align:"center", width: "8%",
 				itemTemplate: function(value, item){
-					return fnRefreshedSync(item, "navOrder", "navList", "span");
+					return fnRefreshedSync(item, "upperOrder", "upperList", "span");
 				}
 			},
-			{ title:"상위 이름",	name:"navNm",		type:"text", align:"center", width: "21%",
+			{ title:"상위 이름",	name:"upperNm",		type:"text", align:"center", width: "21%",
 				itemTemplate: function(value, item){													
-					return fnRefreshedSync(item, "navNm", "navList", "input");
+					return fnRefreshedSync(item, "upperNm", "upperList", "input");
 				}
 			},
-			{ title:"상위 URL",	name:"navUrl",		type:"text", align:"center", width: "33%",
+			{ title:"상위 URL",	name:"upperUrl",		type:"text", align:"center", width: "33%",
 				itemTemplate: function(value, item){													
-					return fnRefreshedSync(item, "navUrl", "navList", "input");
+					return fnRefreshedSync(item, "upperUrl", "upperList", "input");
 				}
 			},
-			{ title:"권한",	name:"navAuthNmSeq", align:"center", width: "20%",
+			{ title:"권한",	name:"authSeq", align:"center", width: "20%",
 				itemTemplate: function(value, item){
-					return fnRefreshedSync(item, "navAuthNmSeq", "navList", "select");
+					return fnRefreshedSync(item, "authSeq", "upperList", "select");
 				}
 			},
-			{ title:"표시",	name:"navShowYn",		type:"text", align:"center", width: "6%",
+			{ title:"표시",	name:"showYn",		type:"text", align:"center", width: "6%",
 				itemTemplate: function(value, item){
-					return fnRefreshedSync(item, "navShowYn", "navList", "button");
+					return fnRefreshedSync(item, "showYn", "upperList", "button");
 				}
 			},
 			{ title:"보기", align:"center", width: "6%",
@@ -120,7 +120,7 @@ function fnNavJsGrid(data){
 					if(item.state === "insert"){
 						return "";
 					}else{
-						return $("<button>").addClass("btn-gray size-sm").text(">").data("navSeq", item.navSeq)
+						return $("<button>").addClass("btn-gray size-sm").text(">").data("upperSeq", item.upperSeq)
 							.attr("name", "svb").on("click", function(){						
 							
 							$("button[name='svb']").each(function(i, e){
@@ -128,73 +128,73 @@ function fnNavJsGrid(data){
 							});
 							$(this).addClass("btn-selected-gray");
 							
-							refNavSeq = item.navSeq;
-							data.sideList = new Array();
-							for(let i=0; i<clone.sideList.length; i++){
-								if(item.navSeq === clone.sideList[i].navSeq){
-									data.sideList.push(common.clone(clone.sideList[i]));
+							refUpperSeq = item.upperSeq;
+							data.lowerList = new Array();
+							for(let i=0; i<clone.lowerList.length; i++){
+								if(item.upperSeq === clone.lowerList[i].upperSeq){
+									data.lowerList.push(common.clone(clone.lowerList[i]));
 								}							
 							}
-							fnSideJsGrid();
+							fnLowerJsGrid();
 						});
 					}
 				}
 			}
 		],
 		onRefreshed: function() {
-			let $gridData = $("#navMenuList .jsgrid-grid-body tbody");
+			let $gridData = $("#upperMenuList .jsgrid-grid-body tbody");
 			$gridData.sortable({
 				update: function(e, ui) {
 					let items = $.map($gridData.find("tr"), function(row) {
 						return $(row).data("JSGridItem");
 					});
 					
-					navNoIdx = cfnNoIdx(data.navList, "navSeq")
+					upperNoIdx = cfnNoIdx(data.upperList, "upperSeq")
 					for(let i=0; i<items.length; i++){
-						fnOnSync($("#navMenuList .ui-sortable tr span")[i], "navSeq", i);
+						fnOnSync($("#upperMenuList .ui-sortable tr span")[i], "upperSeq", i);
 					}
 				}
 			});
 			
 			//수정 intpu sync 체크			
-			$("input[name='syncNav']").on("keyup keydown change", function(){		
-				fnOnSync(this, "navSeq");
+			$("input[name='syncUpper']").on("keyup keydown change", function(){		
+				fnOnSync(this, "upperSeq");
 			});
 			
 			//수정 select sync 체크
-			$("select[name='syncNav']").on("change", function(){				
-				fnOnSync(this, "navSeq");	
+			$("select[name='syncUpper']").on("change", function(){				
+				fnOnSync(this, "upperSeq");	
 			});
 			
 			//수정 button sync 체크
-			$("button[name='syncNav']").on("click", function(){
+			$("button[name='syncUpper']").on("click", function(){
 				if($(this).val() === "Y")	$(this).val("N").text("N");
 				else						$(this).val("Y").text("Y");
 				
-				fnOnSync(this, "navSeq");
+				fnOnSync(this, "upperSeq");
 			});
 			
-			if(initSide){
-				data.sideList = new Array();
-				if(clone.sideList.length > 0){
+			if(initLower){
+				data.lowerList = new Array();
+				if(clone.lowerList.length > 0){
 					
-					for(let i=0; i<clone.sideList.length; i++){
-						if(refNavSeq === clone.sideList[i].navSeq){
-							data.sideList.push(common.clone(clone.sideList[i]));
+					for(let i=0; i<clone.lowerList.length; i++){
+						if(refUpperSeq === clone.lowerList[i].upperSeq){
+							data.lowerList.push(common.clone(clone.lowerList[i]));
 						}
 					}
 					$("button[name='svb']").each(function(i, e){
-						if(refNavSeq === Number($(e).data("navSeq"))){
+						if(refUpperSeq === Number($(e).data("upperSeq"))){
 							$(e).addClass("btn-selected-gray");
 							return;
 						}
 					});
 				}
-				fnSideJsGrid();
-				initSide = false;
+				fnLowerJsGrid();
+				initLower = false;
 			}else{
 				$("button[name='svb']").each(function(i, e){
-					if(refNavSeq === Number($(e).data("navSeq"))){
+					if(refUpperSeq === Number($(e).data("upperSeq"))){
 						$(e).addClass("btn-selected-gray");
 						return;
 					}
@@ -203,21 +203,21 @@ function fnNavJsGrid(data){
 		}	
 	});	
 	
-	function fnSideJsGrid(){		
-		$("#sideMenuList").empty();
+	function fnLowerJsGrid(){		
+		$("#lowerMenuList").empty();
 		
-		for(let i=0; i<data.sideList.length; i++){
-			data.sideList[i].state = "select";
+		for(let i=0; i<data.lowerList.length; i++){
+			data.lowerList[i].state = "select";
 		}
 		
-		sideNoIdx = cfnNoIdx(data.sideList, "sideSeq");
-		sideCloneNoIdx = cfnNoIdx(clone.sideList, "sideSeq");
+		lowerNoIdx = cfnNoIdx(data.lowerList, "lowerSeq");
+		lowerCloneNoIdx = cfnNoIdx(clone.lowerList, "lowerSeq");
 		
-		$("#sideMenuList").jsGrid({
+		$("#lowerMenuList").jsGrid({
 			height: "auto",
 			width: "48%",
 			
-			data: data.sideList,
+			data: data.lowerList,
 			
 			paging: false,
 			pageSize: 10,
@@ -225,49 +225,49 @@ function fnNavJsGrid(data){
 			fields: [
 				{ align:"center", width: "7%",
 					headerTemplate : function(){
-						return $("<button>").attr("id", "sideAdd").addClass("btn-gray trs size-sm").text("+").on("click", function(){
-							data.sideList.push({navSeq: refNavSeq,
-								sideAuthNmSeq:"",
-								sideNm:"",
-								sideOrder: $("#sideMenuList").jsGrid("option", "data").length+1,
-								sideSeq: new Date().getTime(),
-								sideShowYn:"N",
-								sideUrl:"",
+						return $("<button>").attr("id", "lowerAdd").addClass("btn-gray trs size-sm").text("+").on("click", function(){
+							data.lowerList.push({upperSeq: refUpperSeq,
+								authSeq:"",
+								lowerNm:"",
+								lowerOrder: $("#lowerMenuList").jsGrid("option", "data").length+1,
+								lowerSeq: new Date().getTime(),
+								showYn:"N",
+								lowerUrl:"",
 								state:"insert"});		
-							sideNoIdx = cfnNoIdx(data.sideList, "sideSeq");
-							$("#sideMenuList").jsGrid("refresh");
+							lowerNoIdx = cfnNoIdx(data.lowerList, "lowerSeq");
+							$("#lowerMenuList").jsGrid("refresh");
 						});					
 					},
 	                itemTemplate: function(value, item) {
 	                    let chk = $("<input>").attr("type", "checkbox").attr("name", "check")
-	                    .data("sideSeq", item.sideSeq).data("sideOrder", item.sideOrder).on("change", function() {
-	                    	let idx = sideNoIdx[item.sideSeq];
-	                    	let cIdx = sideCloneNoIdx[item.sideSeq];
+	                    .data("lowerSeq", item.lowerSeq).data("lowerOrder", item.lowerOrder).on("change", function() {
+	                    	let idx = lowerNoIdx[item.lowerSeq];
+	                    	let cIdx = lowerCloneNoIdx[item.lowerSeq];
 	                			
-	               			if(isEmpty(item.sideOrder)){
-	               	    		$("#sideMenuList").jsGrid("deleteItem", item);
-	               	    		delete sideNoIdx[item.sideSeq];               	    		
+	               			if(isEmpty(item.lowerOrder)){
+	               	    		$("#lowerMenuList").jsGrid("deleteItem", item);
+	               	    		delete lowerNoIdx[item.lowerSeq];               	    		
 	               	    	}else{
 	               	    		if($(this).is(":checked")) {
-	                   	   			$("[name='syncSide']").each(function(i, e){
-	                   	   				if(item.sideSeq  === $(e).data("sideSeq")){
+	                   	   			$("[name='syncLower']").each(function(i, e){
+	                   	   				if(item.lowerSeq  === $(e).data("lowerSeq")){
 	                   	   					$(e).addClass("sync-red");
 	                   	   					
-	                   	   					if(String(clone.sideList[cIdx][$(e).data("name")]) !== String($(e).val())){
+	                   	   					if(String(clone.lowerList[cIdx][$(e).data("name")]) !== String($(e).val())){
 	                   	   						$(e).addClass("sync-blue");
 	                   	   					}
-	                   	   					data.sideList[idx].state = "delete";
+	                   	   					data.lowerList[idx].state = "delete";
 	                   	   				}
 	                   	   			});
 	                   	   		}else{
-	                   	   			$("[name='syncSide']").each(function(i, e){
-	                   	   				if(item.sideSeq === $(e).data("sideSeq")){
+	                   	   			$("[name='syncLower']").each(function(i, e){
+	                   	   				if(item.lowerSeq === $(e).data("lowerSeq")){
 	                   	   					$(e).removeClass("sync-red");
 	                   	   					
-	                   	   					if($(e).hasClass("sync-blue") || data.sideList[idx].state === "update" ){
-	                   	   						data.sideList[idx].state = "update";
+	                   	   					if($(e).hasClass("sync-blue") || data.lowerList[idx].state === "update" ){
+	                   	   						data.lowerList[idx].state = "update";
 	                   	   					}else{
-	                   	   						data.sideList[idx].state = "select";
+	                   	   						data.lowerList[idx].state = "select";
 	                   	   					}   					
 	                   	   				}
 	                   	   			});
@@ -278,63 +278,63 @@ function fnNavJsGrid(data){
 	                    return chk;
 	                }
 				},
-				{ title:"순서",	name:"sideOrder",	type:"text", align:"center", width: "9%",
+				{ title:"순서",	name:"lowerOrder",	type:"text", align:"center", width: "9%",
 					itemTemplate: function(value, item){
-						return fnRefreshedSync(item, "sideOrder", "sideList", "span");
+						return fnRefreshedSync(item, "lowerOrder", "lowerList", "span");
 					}
 				},
-				{ title:"하위 이름",	name:"sideNm",		type:"text", align:"center", width: "20%",
+				{ title:"하위 이름",	name:"lowerNm",		type:"text", align:"center", width: "20%",
 					itemTemplate: function(value, item){													
-						return fnRefreshedSync(item, "sideNm", "sideList", "input");
+						return fnRefreshedSync(item, "lowerNm", "lowerList", "input");
 					}
 				},
-				{ title:"하위 URL",	name:"sideUrl",		type:"text", align:"center", width: "37%",
+				{ title:"하위 URL",	name:"lowerUrl",		type:"text", align:"center", width: "37%",
 					itemTemplate: function(value, item){													
-						return fnRefreshedSync(item, "sideUrl", "sideList", "input");
+						return fnRefreshedSync(item, "lowerUrl", "lowerList", "input");
 					}
 				},
-				{ title:"권한",	name:"sideAuthNmSeq", align:"center", width: "20%",
+				{ title:"권한",	name:"authSeq", align:"center", width: "20%",
 					itemTemplate: function(value, item){
-						return fnRefreshedSync(item, "sideAuthNmSeq", "sideList", "select");
+						return fnRefreshedSync(item, "authSeq", "lowerList", "select");
 					}
 				},				
-				{ title:"표시",	name:"sideShowYn",		type:"text", align:"center", width: "7%",
+				{ title:"표시",	name:"showYn",		type:"text", align:"center", width: "7%",
 					itemTemplate: function(value, item){
-						return fnRefreshedSync(item, "sideShowYn", "sideList", "button");
+						return fnRefreshedSync(item, "showYn", "lowerList", "button");
 					}
 				}
 			],
 			onRefreshed: function() {
-				let $gridData = $("#sideMenuList .jsgrid-grid-body tbody");
+				let $gridData = $("#lowerMenuList .jsgrid-grid-body tbody");
 				$gridData.sortable({
 					update: function(e, ui) {
 						let items = $.map($gridData.find("tr"), function(row) {
 							return $(row).data("JSGridItem");
 						});
 						
-						sideNoIdx = cfnNoIdx(data.sideList, "sideSeq");
+						lowerNoIdx = cfnNoIdx(data.lowerList, "lowerSeq");
 						for(let i=0; i<items.length; i++){
-							fnOnSync($("#sideMenuList .ui-sortable tr span")[i], "sideSeq", i);
+							fnOnSync($("#lowerMenuList .ui-sortable tr span")[i], "lowerSeq", i);
 						}
 					}
 				});
 				
 				//수정 intpu sync 체크
-				$("input[name='syncSide']").on("keyup keydown change", function(){	
-					fnOnSync(this, "sideSeq");
+				$("input[name='syncLower']").on("keyup keydown change", function(){	
+					fnOnSync(this, "lowerSeq");
 				});
 				
 				//수정 select sync 체크
-				$("select[name='syncSide']").on("change", function(){			
-					fnOnSync(this, "sideSeq");
+				$("select[name='syncLower']").on("change", function(){			
+					fnOnSync(this, "lowerSeq");
 				});
 				
 				//수정 button sync 체크
-				$("button[name='syncSide']").on("click", function(){			
+				$("button[name='syncLower']").on("click", function(){			
 					if($(this).val() === "Y")	$(this).val("N").text("N");
 					else						$(this).val("Y").text("Y");
 					
-					fnOnSync(this, "sideSeq");
+					fnOnSync(this, "lowerSeq");
 				});
 			}
 		});
@@ -343,22 +343,22 @@ function fnNavJsGrid(data){
 	
 	//변경여부 확인후 상태 색상적용
 	function fnOnSync(obj, seqNm, sortIdx){
-		let listNm = seqNm === "navSeq" ? "navList" : "sideList";
+		let listNm = seqNm === "upperSeq" ? "upperList" : "lowerList";
 		
 		if($(obj).hasClass("sync-green")){			
 			if(isEmpty(sortIdx)){
-				seqNm === "navSeq" ? data.navList[navNoIdx[$(obj).data(seqNm)]][$(obj).data("name")] = $(obj).val()
-						   : data.sideList[sideNoIdx[$(obj).data(seqNm)]][$(obj).data("name")] = $(obj).val();
+				seqNm === "upperSeq" ? data.upperList[upperNoIdx[$(obj).data(seqNm)]][$(obj).data("name")] = $(obj).val()
+						   : data.lowerList[lowerNoIdx[$(obj).data(seqNm)]][$(obj).data("name")] = $(obj).val();
 			}else{
-				seqNm === "navSeq" ? data.navList[navNoIdx[$(obj).data(seqNm)]][$(obj).data("name")] = sortIdx+1
-						   : data.sideList[sideNoIdx[$(obj).data(seqNm)]][$(obj).data("name")] = sortIdx+1;
+				seqNm === "upperSeq" ? data.upperList[upperNoIdx[$(obj).data(seqNm)]][$(obj).data("name")] = sortIdx+1
+						   : data.lowerList[lowerNoIdx[$(obj).data(seqNm)]][$(obj).data("name")] = sortIdx+1;
 			}			
 		}else{
 			let name = $(obj).data("name");
-			let idx = seqNm === "navSeq" ? navNoIdx[$(obj).data(seqNm)]
-									     : sideNoIdx[$(obj).data(seqNm)];
-			let cIdx = seqNm === "navSeq" ? navCloneNoIdx[$(obj).data(seqNm)]
-										  : sideCloneNoIdx[$(obj).data(seqNm)];
+			let idx = seqNm === "upperSeq" ? upperNoIdx[$(obj).data(seqNm)]
+									     : lowerNoIdx[$(obj).data(seqNm)];
+			let cIdx = seqNm === "upperSeq" ? upperCloneNoIdx[$(obj).data(seqNm)]
+										  : lowerCloneNoIdx[$(obj).data(seqNm)];
 			
 			if(isEmpty(sortIdx)){
 				data[listNm][idx][name] = $(obj).val();
@@ -403,8 +403,8 @@ function fnNavJsGrid(data){
 				$el.append($("<option>").text("").val(""));
 			}			
 			for(let i=0; i<data.authList.length; i++){
-				$option = $("<option>").text(data.authList[i].authNm).val(data.authList[i].authNmSeq);
-				if(String(item[name]) === String(data.authList[i].authNmSeq)){
+				$option = $("<option>").text(data.authList[i].authNm).val(data.authList[i].authSeq);
+				if(String(item[name]) === String(data.authList[i].authSeq)){
 					$el.append($option.attr("selected","selected"));
 				}
 				$el.append($option);
@@ -415,37 +415,37 @@ function fnNavJsGrid(data){
 			break;
 		}
 		
-		if(listName === "navList"){
+		if(listName === "upperList"){
 			
-			$el.attr("name", "syncNav").data("navSeq", item.navSeq).data("name", name);		
+			$el.attr("name", "syncUpper").data("upperSeq", item.upperSeq).data("name", name);		
 
 			if(item.state === "insert") $el.addClass("sync-green");	
 			else if(item.state === "update"){									
-				if(String(clone[listName][navCloneNoIdx[item.navSeq]][name]) === String(item[name])){
+				if(String(clone[listName][upperCloneNoIdx[item.upperSeq]][name]) === String(item[name])){
 					$el.removeClass("sync-blue");
 				}else{
 					$el.addClass("sync-blue");
 				}			
 			}else if(item.state === "delete"){
 				$el.addClass("sync-red");				
-				if(String(clone[listName][navCloneNoIdx[item.navSeq]][name]) !== String($el.val())){
+				if(String(clone[listName][upperCloneNoIdx[item.upperSeq]][name]) !== String($el.val())){
 					$el.addClass("sync-blue");
 				}
 			}		
-		}else if(listName === "sideList"){
+		}else if(listName === "lowerList"){
 			
-			$el.attr("name", "syncSide").data("sideSeq", item.sideSeq).data("name", name);		
+			$el.attr("name", "syncLower").data("lowerSeq", item.lowerSeq).data("name", name);		
 
 			if(item.state === "insert") $el.addClass("sync-green");	
 			else if(item.state === "update"){									
-				if(String(clone[listName][sideCloneNoIdx[item.sideSeq]][name]) === String(item[name])){
+				if(String(clone[listName][lowerCloneNoIdx[item.lowerSeq]][name]) === String(item[name])){
 					$el.removeClass("sync-blue");
 				}else{
 					$el.addClass("sync-blue");
 				}			
 			}else if(item.state === "delete"){
 				$el.addClass("sync-red");
-				if(String(clone[listName][sideCloneNoIdx[item.sideSeq]][name]) !== String($el.val())){
+				if(String(clone[listName][lowerCloneNoIdx[item.lowerSeq]][name]) !== String($el.val())){
 					$el.addClass("sync-blue");
 				}
 			}		
@@ -454,16 +454,16 @@ function fnNavJsGrid(data){
 	}
 	
 	//저장(반영)
-	$("#btns #navSave").on("click", function(){		
+	$("#btns #upperSave").on("click", function(){		
 		//유효성 검사
 		let isVali = true;
-		$("[name='syncNav']").each(function(i, e){
+		$("[name='syncUpper']").each(function(i, e){
 			if(isEmpty($(e).val())){
 				isVali = false;
 				wVali.alert({element : $(e), msg: $(e)[0].nodeName === "SELECT" ? "값을 선택해 주세요." : "값을 입력해 주세요."}); return false;
 			}
 			switch($(e).data("name")){
-			case "navNm":			
+			case "upperNm":			
 				if(!isOnlyHanAlphaNum($(e).val())){
 					isVali = false;
 					wVali.alert({element : $(e), msg: "한글, 영문자, 숫자를 입력해 주세요."}); return false;
@@ -472,7 +472,7 @@ function fnNavJsGrid(data){
 					wVali.alert({element : $(e), msg: "최대 글자수 20자 까지 입력할 수 있습니다."}); return false;
 				}
 				break;
-			case "navUrl":			
+			case "upperUrl":			
 				if(!isOnlyOneURL($(e).val())){
 					isVali = false;
 					wVali.alert({element : $(e), msg: "첫번째 문자에 /, 영문자, 숫자를 입력해 주세요."}); return false;
@@ -485,9 +485,9 @@ function fnNavJsGrid(data){
 		});
 		
 		let applyList = new Array();
-		for(let i=0, j=1; i<data.navList.length; i++){
-			if(data.navList[i].state !== "select"){
-				applyList.push(data.navList[i]);
+		for(let i=0, j=1; i<data.upperList.length; i++){
+			if(data.upperList[i].state !== "select"){
+				applyList.push(data.upperList[i]);
 			}
 		}
 		
@@ -496,28 +496,28 @@ function fnNavJsGrid(data){
 		}else if(isVali && confirm("저장하시겠습니까?")){		
 			
 			let param = {};
-			param.navClone = JSON.stringify(clone.navList);
-			param.navList = JSON.stringify(data.navList);
+			param.upperClone = JSON.stringify(clone.upperList);
+			param.upperList = JSON.stringify(data.upperList);
 			
-			cfnCmmAjax("/admin/applyNavMenuList", param).done(function(res){
+			cfnCmmAjax("/admin/applyUpperMenuList", param).done(function(res){
 				
 				if(Number(res)===-1){
 					alert("수정하려는 데이터가 이미 수정되어 수정할 수 없습니다. 반영이 취소됩니다.");
 				}else if(Number(res)===-2){
 					alert("삭제하려는 상위메뉴가 하위메뉴에서 사용중 입니다. 반영이 취소됩니다.");
 				}else{					
-					cfnCmmAjax("/admin/selectNavMenuList", param).done(function(result){
-						initSide = false;
-						clone.navList = common.clone(result);
-						data.navList.splice(0, data.navList.length);
+					cfnCmmAjax("/admin/selectUpperMenuList", param).done(function(result){
+						initLower = false;
+						clone.upperList = common.clone(result);
+						data.upperList.splice(0, data.upperList.length);
 						
 						for(let i=0; i<result.length; i++){
-							data.navList.push(result[i]);
+							data.upperList.push(result[i]);
 						}
 						
-						$("#navMenuList").jsGrid("refresh");
-						navNoIdx = cfnNoIdx(data.navList, "navSeq");
-						navCloneNoIdx = cfnNoIdx(clone.navList, "navSeq");
+						$("#upperMenuList").jsGrid("refresh");
+						upperNoIdx = cfnNoIdx(data.upperList, "upperSeq");
+						upperCloneNoIdx = cfnNoIdx(clone.upperList, "upperSeq");
 					});
 					alert("반영되었습니다.");
 				}
@@ -525,17 +525,17 @@ function fnNavJsGrid(data){
 		}
 	});
 	
-	//side 저장(반영)
-	$("#btns #sideSave").on("click", function(){
+	//lower 저장(반영)
+	$("#btns #lowerSave").on("click", function(){
 		//유효성 검사
 		let isVali = true;
-		$("[name='syncSide']").each(function(i, e){
+		$("[name='syncLower']").each(function(i, e){
 			if(isEmpty($(e).val())){
 				isVali = false;
 				wVali.alert({element : $(e), msg: $(e)[0].nodeName === "SELECT" ? "값을 선택해 주세요." : "값을 입력해 주세요."}); return false;
 			}
 			switch($(e).data("name")){		
-			case "sideNm":
+			case "lowerNm":
 				if(!isOnlyHanAlphaNum($(e).val())){
 					isVali = false;
 					wVali.alert({element : $(e), msg: "한글, 영문자, 숫자를 입력해 주세요."}); return false;
@@ -544,7 +544,7 @@ function fnNavJsGrid(data){
 					wVali.alert({element : $(e), msg: "최대 글자수 20자 까지 입력할 수 있습니다."}); return false;
 				}
 				break;			
-			case "sideUrl":
+			case "lowerUrl":
 				if(!isOnlyOneURL($(e).val())){
 					isVali = false;
 					wVali.alert({element : $(e), msg: "첫번째 문자에 /, 영문자, 숫자를 입력해 주세요."}); return false;
@@ -558,9 +558,9 @@ function fnNavJsGrid(data){
 		});
 		
 		let applyList = new Array();
-		for(let i=0, j=1; i<data.sideList.length; i++){
-			if(data.sideList[i].state !== "select"){
-				applyList.push(data.sideList[i]);
+		for(let i=0, j=1; i<data.lowerList.length; i++){
+			if(data.lowerList[i].state !== "select"){
+				applyList.push(data.lowerList[i]);
 			}
 		}		
 		
@@ -569,33 +569,33 @@ function fnNavJsGrid(data){
 		}else if(isVali && confirm("저장하시겠습니까?")){
 			
 			let param = {};			
-			param.navSeq = refNavSeq;
-			let cloneSideList = new Array();
+			param.upperSeq = refUpperSeq;
+			let cloneLowerList = new Array();
 			
-			for(let i=0; i<clone.sideList.length; i++){
-				if(refNavSeq === clone.sideList[i].navSeq){
-					cloneSideList.push(common.clone(clone.sideList[i]));
+			for(let i=0; i<clone.lowerList.length; i++){
+				if(refUpperSeq === clone.lowerList[i].upperSeq){
+					cloneLowerList.push(common.clone(clone.lowerList[i]));
 				}
 			}
 			
-			param.sideClone = JSON.stringify(cloneSideList);
-			param.sideList = JSON.stringify(data.sideList);
+			param.lowerClone = JSON.stringify(cloneLowerList);
+			param.lowerList = JSON.stringify(data.lowerList);
 			
-			cfnCmmAjax("/admin/applySideMenuList", param).done(function(res){
+			cfnCmmAjax("/admin/applyLowerMenuList", param).done(function(res){
 				if(Number(res)===-1){
 					alert("수정하려는 데이터가 이미 수정되어 수정할 수 없습니다. 반영이 취소됩니다.");				
 				}else{					
-					cfnCmmAjax("/admin/selectSideMenuList").done(function(result){						
-						clone.sideList = common.clone(result);
-						data.sideList.splice(0, data.sideList.length);						
-						for(let i=0; i<clone.sideList.length; i++){
-							if(refNavSeq === clone.sideList[i].navSeq){
-								data.sideList.push(common.clone(clone.sideList[i]));
+					cfnCmmAjax("/admin/selectLowerMenuList").done(function(result){						
+						clone.lowerList = common.clone(result);
+						data.lowerList.splice(0, data.lowerList.length);						
+						for(let i=0; i<clone.lowerList.length; i++){
+							if(refUpperSeq === clone.lowerList[i].upperSeq){
+								data.lowerList.push(common.clone(clone.lowerList[i]));
 							}
 						}						
-						$("#sideMenuList").jsGrid("refresh");
-						sideNoIdx = cfnNoIdx(data.sideList, "sideSeq");
-						sideCloneNoIdx = cfnNoIdx(clone.sideList, "sideSeq");
+						$("#lowerMenuList").jsGrid("refresh");
+						lowerNoIdx = cfnNoIdx(data.lowerList, "lowerSeq");
+						lowerCloneNoIdx = cfnNoIdx(clone.lowerList, "lowerSeq");
 					});
 					alert("반영되었습니다.");
 				}
@@ -605,20 +605,20 @@ function fnNavJsGrid(data){
 	
 	//취소
 	$("#btns #cancel").on("click", function(){		
-		initSide = true;
-		data.navList.splice(0, data.navList.length);
-		for(let i=0; i<clone.navList.length; i++){
-			data.navList.push(common.clone(clone.navList[i]));
+		initLower = true;
+		data.upperList.splice(0, data.upperList.length);
+		for(let i=0; i<clone.upperList.length; i++){
+			data.upperList.push(common.clone(clone.upperList[i]));
 		}
-		$("#navMenuList").jsGrid("refresh");		
+		$("#upperMenuList").jsGrid("refresh");		
 	});
 }
 </script>
 
 <div class="button-bar">
 	<div id="btns" class="btn-right">
-		<button id="navSave" class="btn-gray trs">상위메뉴 저장</button>
-		<button id="sideSave" class="btn-gray trs">하위메뉴 저장</button>
+		<button id="upperSave" class="btn-gray trs">상위메뉴 저장</button>
+		<button id="lowerSave" class="btn-gray trs">하위메뉴 저장</button>
 		<button id="cancel" class="btn-gray trs">취소</button>
 	</div>
 </div>
@@ -630,6 +630,6 @@ function fnNavJsGrid(data){
 	<label class="title">하위메뉴</label>
 </div>
 <div>
-	<div id="navMenuList" class="pull-left"></div>
-	<div id="sideMenuList"  class="pull-right"></div>
+	<div id="upperMenuList" class="pull-left"></div>
+	<div id="lowerMenuList"  class="pull-right"></div>
 </div>

@@ -53,8 +53,8 @@ public class MainService {
 			}
 			
 			param.put("userSeq", userSeq);			
-			List<WhiteMap> navList = mainMapper.selectNavMenuList(param);		
-			List<WhiteMap> sideList = mainMapper.selectSideMenuList(param);		
+			List<WhiteMap> upperList = mainMapper.selectUpperMenuList(param);		
+			List<WhiteMap> lowerList = mainMapper.selectLowerMenuList(param);		
 			
 			//세션 등록 
 			HttpSession session = request.getSession();			
@@ -62,8 +62,8 @@ public class MainService {
 			session.setAttribute("userId", userId);
 			session.setAttribute("userSeq", userSeq);
 			session.setAttribute("authority", auth);
-			session.setAttribute("navList", navList);	
-			session.setAttribute("sideList", sideList);
+			session.setAttribute("upperList", upperList);	
+			session.setAttribute("lowerList", lowerList);
 			
 			return true;
 		}else {

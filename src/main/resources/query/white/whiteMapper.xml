@@ -5,25 +5,25 @@
 <mapper namespace="whiteMapper">
 	
 	<!-- 상위권한 리스트 조회 -->
-	<select id="selectNavAuthList" resultType="WhiteMap">
-		/*whiteMapper|selectNavAuthList*/
+	<select id="selectUpperAuthList" resultType="WhiteMap">
+		/*whiteMapper|selectUpperAuthList*/
 		SELECT
-			nm.nav_url AS navUrl
-			,an.auth_nm AS authNm
-		FROM nav_menu nm
-		LEFT OUTER JOIN auth_name an
-		ON an.auth_nm_seq = nm.nav_auth_nm_seq
+			UM.UPPER_URL AS upperUrl
+			,A.AUTH_NM AS authNm
+		FROM UPPER_MENU UM
+		LEFT OUTER JOIN AUTH A
+		ON A.AUTH_SEQ = UM.AUTH_SEQ
 	</select>
 	
 	<!-- 하위권한 리스트 조회 -->
-	<select id="selectSideAuthList" resultType="WhiteMap">
-		/*whiteMapper|selectSideAuthList*/
+	<select id="selectLowerAuthList" resultType="WhiteMap">
+		/*whiteMapper|selectLowerAuthList*/
 		SELECT
-	 		sm.side_url AS sideUrl
-      		,an.auth_nm AS authNm
-		FROM side_menu sm
-    	LEFT OUTER JOIN auth_name an
-    	ON an.auth_nm_seq = sm.side_auth_nm_seq	
+	 		LM.LOWER_URL AS lowerUrl
+      		,A.AUTH_NM AS authNm
+		FROM LOWER_MENU LM
+    	LEFT OUTER JOIN AUTH A
+    	ON A.AUTH_SEQ = LM.AUTH_SEQ	
 	</select>
 	
 	<!-- 부모코드로 자식코드 리스트 조회 -->

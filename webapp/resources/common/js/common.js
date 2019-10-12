@@ -452,15 +452,15 @@ function getContextPath(){
 
 //moveForm
 let mf = {	
-	 submit : function(navUrl, sideUrl, navNm, sideNm, param){
-		$("#moveForm #navUrl").attr("value", navUrl);
-		$("#moveForm #sideUrl").attr("value", sideUrl);		
-		$("#moveForm #navNm").attr("value", navNm);
-		$("#moveForm #sideNm").attr("value", sideNm);
+	 submit : function(upperUrl, lowerUrl, upperNm, lowerNm, param){
+		$("#moveForm #upperUrl").attr("value", upperUrl);
+		$("#moveForm #lowerUrl").attr("value", lowerUrl);		
+		$("#moveForm #upperNm").attr("value", upperNm);
+		$("#moveForm #lowerNm").attr("value", lowerNm);
 		if(isNotEmpty(param)) $("#moveForm #param").attr("value", param);		
 		
 		$("#moveForm").attr("method", "post");
-		$("#moveForm").attr("action", common.path()+navUrl).submit();
+		$("#moveForm").attr("action", common.path()+upperUrl).submit();
 	}
 }
 

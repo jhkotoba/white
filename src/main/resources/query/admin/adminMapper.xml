@@ -41,248 +41,248 @@
 	
 	<select id="selectAuthList" resultType="WhiteMap">
 		SELECT
-			auth_nm_seq AS authNmSeq,
-			auth_nm AS authNm,
-			auth_cmt AS authCmt,
-			auth_order AS authOrder
- 		FROM auth_name 		
- 		ORDER BY auth_order ASC
+			AUTH_SEQ AS authSeq,
+			AUTH_NM AS authNm,
+			AUTH_CMT AS authCmt,
+			AUTH_ORDER AS authOrder
+ 		FROM AUTH 		
+ 		ORDER BY AUTH_ORDER ASC
 	</select>
 	
 	<select id="selectUserAuth" resultType="WhiteMap" parameterType="WhiteMap">
 		SELECT
 			PA.POS_AUTH_SEQ AS posAuthSeq,
-			PA.auth_nm_seq AS authNmSeq,
-			name.auth_nm AS authNm
+			PA.AUTH_SEQ AS authNmSeq,
+			A.AUTH_NM AS authNm
 		FROM POS_AUTH PA
-		LEFT OUTER JOIN auth_name name
-		ON name.auth_nm_seq = PA.auth_nm_seq
+		LEFT OUTER JOIN AUTH A
+		ON A.AUTH_SEQ = PA.AUTH_SEQ
 		WHERE PA.USER_SEQ = #{no}   		
 	</select>
 	
 	
 	<!--  -->
-	<select id="selectNavMenuList" resultType="whiteMap">		
+	<select id="selectUpperMenuList" resultType="whiteMap">		
 		SELECT
-			nm.nav_seq AS navSeq,
-	  		nm.nav_nm AS navNm,
-	 		nm.nav_url AS navUrl,
-	 		nm.nav_show_yn AS navShowYn,
-	 		nm.nav_order AS navOrder,
-			nm.nav_auth_nm_seq AS navAuthNmSeq			
-		FROM nav_menu nm
-		ORDER BY nm.nav_order
+			UM.UPPER_SEQ AS upperSeq,
+	  		UM.UPPER_NM AS upperNm,
+	 		UM.UPPER_URL AS upperUrl,
+	 		UM.SHOW_YN AS showYn,
+	 		UM.UPPER_ORDER AS upperOrder,
+			UM.AUTH_SEQ AS authSeq			
+		FROM UPPER_MENU UM
+		ORDER BY UM.UPPER_ORDER
 	</select>
 	
 	<!--  -->
-	<select id="selectSideMenuList" parameterType="whiteMap" resultType="whiteMap">
+	<select id="selectLowerMenuList" parameterType="whiteMap" resultType="whiteMap">
 		SELECT			
-			sm.side_seq AS sideSeq,
-			sm.nav_seq AS navSeq,
-			sm.side_nm AS sideNm,
-			sm.side_url AS sideUrl,
-			sm.side_auth_nm_seq AS sideAuthNmSeq,
-			sm.side_show_yn AS sideShowYn,
-			sm.side_order AS sideOrder
-		FROM side_menu AS sm
-		<if test="navSeq != null and navSeq != ''">
-		WHERE sm.nav_seq = #{navSeq}
+			LM.LOWER_SEQ AS lowerSeq,
+			LM.UPPER_SEQ AS upperSeq,
+			LM.LOWER_NM AS lowerNm,
+			LM.LOWER_URL AS lowerUrl,
+			LM.AUTH_SEQ AS authSeq,
+			LM.SHOW_YN AS showYn,
+			LM.LOWER_ORDER AS lowerOrder
+		FROM LOWER_MENU AS LM
+		<if test="upperSeq != null and upperSeq != ''">
+		WHERE LM.UPPER_SEQ = #{upperSeq}
 		</if>		
-		ORDER BY sm.side_order		
+		ORDER BY LM.LOWER_ORDER		
 	</select>
 	
 	<!--  -->
-	<select id="selectNSideMenuList" parameterType="String" resultType="whiteMap">
+	<select id="selectNLowerMenuList" parameterType="String" resultType="whiteMap">
 		SELECT			
-			sm.side_seq AS sideSeq,
-			sm.nav_seq AS navSeq,
-			sm.side_nm AS sideNm,
-			sm.side_url AS sideUrl,
-			sm.side_auth_nm_seq AS sideAuthNmSeq,
-			sm.side_show_yn AS sideShowYn,
-			sm.side_order AS sideOrder
-		FROM side_menu AS sm		
-		WHERE sm.nav_seq = #{navSeq}		
-		ORDER BY sm.side_order	
+			LM.LOWER_SEQ AS lowerSeq,
+			LM.UPPER_SEQ AS upperSeq,
+			LM.LOWER_NM AS lowerNm,
+			LM.LOWER_URL AS lowerUrl,
+			LM.AUTH_SEQ AS authSeq,
+			LM.SHOW_YN AS showYn,
+			LM.LOWER_ORDER AS lowerOrder
+		FROM LOWER_MENU AS LM	
+		WHERE LM.UPPER_SEQ = #{upperSeq}		
+		ORDER BY LM.LOWER_ORDER	
 	</select>	
 	
-	<insert id="insertAuthList" parameterType="java.util.List">
+	<insert id="insertPosAuthList" parameterType="java.util.List">
 		INSERT INTO POS_AUTH(		
 			USER_SEQ,	
-			auth_nm_seq
+			AUTH_SEQ
 		)VALUES
 		<foreach collection="list" item="item" separator="),(" open="(" close=")">
 			#{item.userNo}, 
-			#{item.authNmSeq}	
+			#{item.authSeq}	
 		</foreach>	
 	</insert>
 	
-	<delete id="deleteAuthList" parameterType="whiteMap">
+	<delete id="deletePosAuthList" parameterType="whiteMap">
 		DELETE FROM POS_AUTH
 		WHERE USER_SEQ = #{userNo}
-		AND auth_nm_seq IN (${remove})
+		AND AUTH_SEQ IN (${remove})
 	</delete>
 	
-	<!-- 네비메뉴 insert -->
-	<insert id="insertNavMenuList" parameterType="java.util.List">
-		INSERT INTO nav_menu(		
-			nav_nm,	
-			nav_url,
-			nav_auth_nm_seq,
-			nav_show_yn,
-			nav_order
+	<!-- 상위메뉴 insert -->
+	<insert id="insertUpperMenuList" parameterType="java.util.List">
+		INSERT INTO UPPER_MENU(		
+			UPPER_NM,	
+			UPPER_URL,
+			AUTH_SEQ,
+			SHOW_YN,
+			UPPER_ORDER
 		)VALUES
 		<foreach collection="list" item="item" separator="),(" open="(" close=")">
-			#{item.navNm}, 
-			#{item.navUrl},
-			#{item.navAuthNmSeq},
-			#{item.navShowYn},
-			#{item.navOrder}			
+			#{item.upperNm}, 
+			#{item.upperUrl},
+			#{item.authSeq},
+			#{item.showYn},
+			#{item.upperOrder}			
 		</foreach>	
 	</insert>
 	
 	
-	<!-- 네비메뉴 수정 -->
-	<update id="updateNavMenuList" parameterType="java.util.List">		
-		UPDATE nav_menu
-		SET nav_nm = 
+	<!-- 상위메뉴 수정 -->
+	<update id="updateUpperMenuList" parameterType="java.util.List">		
+		UPDATE UPPER_MENU
+		SET UPPER_NM = 
 		CASE		
 		<foreach collection="list" item="item">
-			WHEN nav_seq = #{item.navSeq} THEN #{item.navNm}
+			WHEN UPPER_SEQ = #{item.upperSeq} THEN #{item.upperNm}
 		</foreach>		
 		END,	
-		nav_url = 
+		UPPER_URL = 
 		CASE		
 		<foreach collection="list" item="item">
-			WHEN nav_seq = #{item.navSeq} THEN #{item.navUrl}
+			WHEN UPPER_SEQ = #{item.upperSeq} THEN #{item.upperUrl}
 		</foreach>		
 		END,
-		nav_auth_nm_seq = 
+		AUTH_SEQ = 
 		CASE		
 		<foreach collection="list" item="item">
-			WHEN nav_seq = #{item.navSeq} THEN #{item.navAuthNmSeq}
+			WHEN UPPER_SEQ = #{item.upperSeq} THEN #{item.authSeq}
 		</foreach>		
 		END,
-		nav_show_yn = 
+		SHOW_YN = 
 		CASE		
 		<foreach collection="list" item="item">
-			WHEN nav_seq = #{item.navSeq} THEN #{item.navShowYn}
+			WHEN UPPER_SEQ = #{item.upperSeq} THEN #{item.showYn}
 		</foreach>		
 		END,
-		nav_order = 
+		UPPER_ORDER = 
 		CASE		
 		<foreach collection="list" item="item">
-			WHEN nav_seq = #{item.navSeq} THEN #{item.navOrder}
+			WHEN UPPER_SEQ = #{item.upperSeq} THEN #{item.upperOrder}
 		</foreach>		
 		END
-		WHERE nav_seq IN 
+		WHERE UPPER_SEQ IN 
 		<foreach collection="list" item="item" separator="," open="(" close=")">
-			#{item.navSeq}
+			#{item.upperSeq}
 		</foreach>
 	</update>	
 	
 		
-	<!-- 네비메뉴 삭제시 사이드메뉴의 상위목적인지 확인 -->
-	<select id="selectIsUsedSideUrl" resultType="int" parameterType="java.util.List">
-		SELECT COUNT(1) FROM side_menu
-		WHERE nav_seq IN
+	<!-- 상위메뉴 삭제시 하위메뉴의 상위목적인지 확인 -->
+	<select id="selectIsUsedLowerUrl" resultType="int" parameterType="java.util.List">
+		SELECT COUNT(1) FROM LOWER_MENU
+		WHERE UPPER_SEQ IN
 		<foreach collection="list" item="item" separator="," open="(" close=")">
-			#{item.navSeq}
+			#{item.upperSeq}
 		</foreach>
 	</select>
 	
-	<!-- 네비메뉴 삭제 -->
-	<delete id="deleteNavMenuList" parameterType="java.util.List">
-		DELETE FROM nav_menu
-		WHERE nav_seq IN 
+	<!-- 상위메뉴 삭제 -->
+	<delete id="deleteUpperMenuList" parameterType="java.util.List">
+		DELETE FROM UPPER_MENU
+		WHERE UPPER_SEQ IN 
 		<foreach collection="list" item="item" separator="," open="(" close=")">
-			#{item.navSeq}
+			#{item.upperSeq}
 		</foreach>
 	</delete>
 	
 	
-	<!-- 사이드메뉴 insert -->
-	<insert id="insertSideMenuList" parameterType="java.util.List">
-		INSERT INTO side_menu(
-			nav_seq,
-			side_nm,	
-			side_url,
-			side_auth_nm_seq,
-			side_show_yn,
-			side_order
+	<!-- 하위메뉴 insert -->
+	<insert id="insertLowerMenuList" parameterType="java.util.List">
+		INSERT INTO LOWER_MENU(
+			UPPER_SEQ,
+			LOWER_NM,	
+			LOWER_URL,
+			AUTH_SEQ,
+			SHOW_YN,
+			LOWER_ORDER
 		)VALUES
 		<foreach collection="list" item="item" separator="),(" open="(" close=")">
-			#{item.navSeq}, 
-			#{item.sideNm}, 
-			#{item.sideUrl},
-			#{item.sideAuthNmSeq},
-			#{item.sideShowYn},
-			#{item.sideOrder}			
+			#{item.upperSeq}, 
+			#{item.lowerNm}, 
+			#{item.lowerUrl},
+			#{item.authSeq},
+			#{item.showYn},
+			#{item.lowerOrder}			
 		</foreach>	
 	</insert>
 	
 	
-	<!-- 사이드메뉴 수정 -->
-	<update id="updateSideMenuList" parameterType="java.util.List">		
-		UPDATE side_menu
-		SET nav_seq = 
+	<!-- 하위메뉴 수정 -->
+	<update id="updateLowerMenuList" parameterType="java.util.List">		
+		UPDATE LOWER_MENU
+		SET UPPER_SEQ = 
 		CASE		
 		<foreach collection="list" item="item">
-			WHEN side_seq = #{item.sideSeq} THEN #{item.navSeq}
+			WHEN LOWER_SEQ = #{item.lowerSeq} THEN #{item.upperSeq}
 		</foreach>		
 		END,
-		side_nm = 
+		LOWER_NM = 
 		CASE		
 		<foreach collection="list" item="item">
-			WHEN side_seq = #{item.sideSeq} THEN #{item.sideNm}
+			WHEN LOWER_SEQ = #{item.lowerSeq} THEN #{item.lowerNm}
 		</foreach>		
 		END,	
-		side_url = 
+		LOWER_URL = 
 		CASE		
 		<foreach collection="list" item="item">
-			WHEN side_seq = #{item.sideSeq} THEN #{item.sideUrl}
+			WHEN LOWER_SEQ = #{item.lowerSeq} THEN #{item.lowerUrl}
 		</foreach>		
 		END,
-		side_auth_nm_seq = 
+		AUTH_SEQ = 
 		CASE		
 		<foreach collection="list" item="item">
-			WHEN side_seq = #{item.sideSeq} THEN #{item.sideAuthNmSeq}
+			WHEN LOWER_SEQ = #{item.lowerSeq} THEN #{item.authSeq}
 		</foreach>		
 		END,
-		side_show_yn = 
+		SHOW_YN = 
 		CASE		
 		<foreach collection="list" item="item">
-			WHEN side_seq = #{item.sideSeq} THEN #{item.sideShowYn}
+			WHEN LOWER_SEQ = #{item.lowerSeq} THEN #{item.showYn}
 		</foreach>		
 		END,
-		side_order = 
+		LOWER_ORDER = 
 		CASE		
 		<foreach collection="list" item="item">
-			WHEN side_seq = #{item.sideSeq} THEN #{item.sideOrder}
+			WHEN LOWER_SEQ = #{item.lowerSeq} THEN #{item.lowerOrder}
 		</foreach>		
 		END
-		WHERE side_seq IN 
+		WHERE LOWER_SEQ IN 
 		<foreach collection="list" item="item" separator="," open="(" close=")">
-			#{item.sideSeq}
+			#{item.lowerSeq}
 		</foreach>
 	</update>	
 	
-	<!-- 사이드메뉴 삭제 -->
-	<delete id="deleteSideMenuList" parameterType="java.util.List">
-		DELETE FROM side_menu
-		WHERE side_seq IN 
+	<!-- 하위메뉴 삭제 -->
+	<delete id="deleteLowerMenuList" parameterType="java.util.List">
+		DELETE FROM LOWER_MENU
+		WHERE LOWER_SEQ IN 
 		<foreach collection="list" item="item" separator="," open="(" close=")">
-			#{item.sideSeq}
+			#{item.lowerSeq}
 		</foreach>
 	</delete>
 	
 	
 	<!-- 권한 insert -->
-	<insert id="insertAuthNmList" parameterType="java.util.List">
-		INSERT INTO auth_name(		
-			auth_nm,
-			auth_cmt,
-			auth_order
+	<insert id="insertAuthList" parameterType="java.util.List">
+		INSERT INTO AUTH(		
+			AUTH_NM,
+			AUTH_CMT,
+			AUTH_ORDER
 		)VALUES
 		<foreach collection="list" item="item" separator="),(" open="(" close=")">
 			#{item.authNm}, 
@@ -293,66 +293,66 @@
 	
 	
 	<!-- 권한 수정 -->
-	<update id="updateAuthNmList" parameterType="java.util.List">		
-		UPDATE auth_name
-		SET auth_nm = 
+	<update id="updateAuthList" parameterType="java.util.List">		
+		UPDATE AUTH
+		SET AUTH_NM = 
 		CASE		
 		<foreach collection="list" item="item">
-			WHEN auth_nm_seq = #{item.authNmSeq} THEN #{item.authNm}
+			WHEN AUTH_SEQ = #{item.authSeq} THEN #{item.authNm}
 		</foreach>		
 		END,
-		auth_cmt = 
+		AUTH_CMT = 
 		CASE		
 		<foreach collection="list" item="item">
-			WHEN auth_nm_seq = #{item.authNmSeq} THEN #{item.authCmt}
+			WHEN AUTH_SEQ = #{item.authSeq} THEN #{item.authCmt}
 		</foreach>
 		END,
-		auth_order = 
+		AUTH_ORDER = 
 		CASE		
 		<foreach collection="list" item="item">
-			WHEN auth_nm_seq = #{item.authNmSeq} THEN #{item.authOrder}
+			WHEN AUTH_SEQ = #{item.authSeq} THEN #{item.authOrder}
 		</foreach>		
 		END
-		WHERE auth_nm_seq IN 
+		WHERE AUTH_SEQ IN 
 		<foreach collection="list" item="item" separator="," open="(" close=")">
-			#{item.authNmSeq}
+			#{item.authSeq}
 		</foreach>
 	</update>	
 	
 		
 	<!-- 권한 삭제시 사용되는지 확인 -->
-	<select id="selectIsUsedAuthNm" resultType="int" parameterType="java.util.List">
+	<select id="selectIsUsedAuth" resultType="int" parameterType="java.util.List">
 		SELECT
 		(
 			SELECT COUNT(1) FROM POS_AUTH
-			WHERE auth_nm_seq IN
+			WHERE AUTH_SEQ IN
 			<foreach collection="list" item="item" separator="," open="(" close=")">
-				#{item.authNmSeq}
+				#{item.authSeq}
 			</foreach>		
 		)+
 		(
 			SELECT COUNT(1) FROM nav_menu
-			WHERE nav_auth_nm_seq IN
+			WHERE AUTH_SEQ IN
 			<foreach collection="list" item="item" separator="," open="(" close=")">
-				#{item.authNmSeq}
+				#{item.authSeq}
 			</foreach>		
 		)+
 		(
 			SELECT COUNT(1) FROM side_menu
-			WHERE side_auth_nm_seq IN
+			WHERE AUTH_SEQ IN
 			<foreach collection="list" item="item" separator="," open="(" close=")">
-				#{item.authNmSeq}
+				#{item.authSeq}
 			</foreach>		
 		) AS count		
 	</select>
 	
 	<!--권한 삭제 -->
-	<delete id="deleteAuthNmList" parameterType="java.util.List">
-		/* adminMapper|deleteAuthNmList */
-		DELETE FROM auth_name
-		WHERE auth_nm_seq IN 
+	<delete id="deleteAuthList" parameterType="java.util.List">
+		/* adminMapper|deleteAuthList */
+		DELETE FROM AUTH
+		WHERE AUTH_SEQ IN 
 		<foreach collection="list" item="item" separator="," open="(" close=")">
-			#{item.authNmSeq}
+			#{item.authSeq}
 		</foreach>
 	</delete>
 	

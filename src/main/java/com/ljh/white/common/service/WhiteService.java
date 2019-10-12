@@ -22,22 +22,22 @@ public class WhiteService{
 	 */
 	@PostConstruct
 	public void postConstruct() {
-		this.setNavAuth();
-		this.setSideAuth();
+		this.setUpperAuth();
+		this.setLowerAuth();
 	}
 	
 	/**
 	 *  네비메뉴 권한 메모리 저장
 	 */
-	public void setNavAuth() {
-		Auth.setNavAuth(whiteMapper.selectNavAuthList());
+	public void setUpperAuth() {
+		Auth.setUpperAuth(whiteMapper.selectUpperAuthList());
 	}
 	
 	/**
 	 *  사이드메뉴 권한 메모리 저장
 	 */
-	public void setSideAuth() {
-		Auth.setSideAuth(whiteMapper.selectSideAuthList());
+	public void setLowerAuth() {
+		Auth.setLowerAuth(whiteMapper.selectLowerAuthList());
 	}
 	
 	/**

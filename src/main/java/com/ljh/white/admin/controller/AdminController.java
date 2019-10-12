@@ -61,24 +61,24 @@ public class AdminController {
 	}	
 	
 	/**
-	 * 네비메뉴 리스트 조회
+	 * 상위메뉴 리스트 조회
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value="/admin/selectNavMenuList.ajax")
-	public List<WhiteMap> selectNavMenuList(HttpServletRequest request) {
-		return adminService.selectNavMenuList();	
+	@RequestMapping(value="/admin/selectUpperMenuList.ajax")
+	public List<WhiteMap> selectUpperMenuList(HttpServletRequest request) {
+		return adminService.selectUpperMenuList();	
 	}	
 	
 	/**
-	 * 사이드메뉴 리스트 조회
+	 * 하위메뉴 리스트 조회
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value="/admin/selectSideMenuList.ajax")
-	public List<WhiteMap> selectSideMenuList(HttpServletRequest request) {
+	@RequestMapping(value="/admin/selectLowerMenuList.ajax")
+	public List<WhiteMap> selectLowerMenuList(HttpServletRequest request) {
 		WhiteMap param = new WhiteMap(request);
-		return adminService.selectSideMenuList(param);	
+		return adminService.selectLowerMenuList(param);	
 	}
 	
 	/**
@@ -89,8 +89,8 @@ public class AdminController {
 	@RequestMapping(value="/admin/selectMenuList.ajax")
 	public WhiteMap selectMenuList(HttpServletRequest request) {
 		WhiteMap result = new WhiteMap();		
-		result.put("navList", adminService.selectNavMenuList());			
-		result.put("sideList", adminService.selectSideMenuList());			
+		result.put("upperList", adminService.selectUpperMenuList());			
+		result.put("lowerList", adminService.selectLowerMenuList());			
 		result.put("authList", adminService.selectAuthList());			
 		
 		return result;
@@ -102,7 +102,7 @@ public class AdminController {
 	 * @return
 	 * @deprecated
 	 */
-	@RequestMapping(value="/admin/selectNavSideMenuList.ajax")
+	/*@RequestMapping(value="/admin/selectNavSideMenuList.ajax")
 	public WhiteMap selectNavSideMenuList(HttpServletRequest request) {	
 		WhiteMap result = new WhiteMap();		
 		result.put("navList", adminService.selectNavMenuList());			
@@ -110,33 +110,33 @@ public class AdminController {
 		result.put("authList", adminService.selectAuthList());			
 		
 		return result;
-	}
+	}*/
 	
 	/**
-	 * 네비 메뉴리스트 적용
+	 * 상위 메뉴리스트 적용
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value="/admin/applyNavMenuList.ajax" )
-	public int applyNavMenuList(HttpServletRequest request){		
+	@RequestMapping(value="/admin/applyUpperMenuList.ajax" )
+	public int applyUpperMenuList(HttpServletRequest request){		
 		
 		WhiteMap param = new WhiteMap(request);	
-		int result = adminService.applyNavMenuList(param);
-		whiteService.setNavAuth();	
+		int result = adminService.applyUpperMenuList(param);
+		whiteService.setUpperAuth();	
 		return result;
 	}
 	
 	/**
-	 * 사이드 메뉴리스트 적용
+	 * 하위 메뉴리스트 적용
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping(value="/admin/applySideMenuList.ajax" )
-	public int applySideMenuList(HttpServletRequest request){		
+	@RequestMapping(value="/admin/applyLowerMenuList.ajax" )
+	public int applyLowerMenuList(HttpServletRequest request){		
 		
 		WhiteMap param = new WhiteMap(request);	
-		int result = adminService.applySideMenuList(param);
-		whiteService.setSideAuth();		
+		int result = adminService.applyLowerMenuList(param);
+		whiteService.setLowerAuth();		
 		return result;
 	}
 	

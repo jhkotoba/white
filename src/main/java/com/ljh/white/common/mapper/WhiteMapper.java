@@ -23,14 +23,14 @@ public class WhiteMapper {
 	@Autowired
 	private SqlSession sqlSession;	
 	
-	public List<WhiteMap> selectNavAuthList() {
+	public List<WhiteMap> selectUpperAuthList() {
 		logger.debug("");
-		return sqlSession.selectList("whiteMapper.selectNavAuthList");
+		return sqlSession.selectList("whiteMapper.selectUpperAuthList");
 	}
 	
-	public List<WhiteMap> selectSideAuthList() {
+	public List<WhiteMap> selectLowerAuthList() {
 		logger.debug("");
-		return sqlSession.selectList("whiteMapper.selectSideAuthList");
+		return sqlSession.selectList("whiteMapper.selectLowerAuthList");
 	}
 	
 	/**

@@ -6,6 +6,7 @@
 	
 	<!--  userCheck -->
 	<select id="selectUserPasswd" parameterType="WhiteMap" resultType="String">
+		/* mainMapper|selectUserPasswd */
 		SELECT					
 			user_passwd userPasswd
 		FROM white_user		
@@ -26,6 +27,7 @@
 	</select> -->
 	
 	<select id="getUserSeq" resultType="int" parameterType="String" >
+		/* mainMapper|getUserSeq */
 		SELECT 
 	  		USER_SEQ AS userSeq
 		FROM white_user
@@ -33,32 +35,35 @@
 	</select>
 	
 	<select id="userIdCheck" resultType="int" parameterType="String" >
+		/* mainMapper|userIdCheck */
 		SELECT COUNT(1)
 		FROM white_user
 		WHERE user_id = #{userId}
 	</select>
 		
 	<select id="selectUserAuthority" resultType="WhiteMap" parameterType="int" >
+		/* mainMapper|selectUserAuthority */
 		SELECT 
-		  n.auth_nm AS authNm,
+		  A.AUTH_NM AS authNm,
 		  IF(
 				(
 					SELECT PA.POS_AUTH_SEQ FROM POS_AUTH PA
-					WHERE PA.auth_nm_seq = n.auth_nm_seq
+					WHERE PA.AUTH_SEQ = A.AUTH_SEQ
 					AND USER_SEQ = #{userSeq}
 					LIMIT 1
 				) IS NULL, 0, 1
 		  ) AS auth
-		FROM auth_name n
+		FROM AUTH A
 	</select>
 	
-	<select id="selectNavMenuList" resultType="whiteMap" parameterType="whiteMap">		
+	<select id="selectUpperMenuList" resultType="whiteMap" parameterType="whiteMap">
+		/* mainMapper|selectUpperMenuList */
 		SELECT					
-			nm.nav_seq AS navSeq,
-	  		nm.nav_nm AS navNm,
-	 		nm.nav_url AS navUrl,
-	 		nm.nav_order AS navOrder,
-			nm.nav_auth_nm_seq AS navAuthNmSeq
+			UM.UPPER_SEQ AS upperSeq,
+	  		UM.UPPER_NM AS upperNm,
+	 		UM.UPPER_URL AS upperUrl,
+	 		UM.UPPER_ORDER AS upperOrder,
+			UM.AUTH_SEQ AS authSeq
 			<choose>
 				<when test="userId == 'leedev'">
 				,1 AS auth
@@ -67,28 +72,29 @@
 				,IF(
 					(
 						SELECT PA.POS_AUTH_SEQ FROM POS_AUTH PA
-						WHERE PA.auth_nm_seq = nm.nav_auth_nm_seq
+						WHERE PA.AUTH_SEQ = UM.AUTH_SEQ
 						AND PA.USER_SEQ = #{userSeq}
 						LIMIT 1
 					) IS NULL, 0, 1
 				) AS auth
 				</otherwise>
 			</choose>			
-		FROM nav_menu nm
+		FROM UPPER_MENU UM
 		<if test="userId != 'leedev'">
-			WHERE nm.nav_show_yn = 'Y'
+			WHERE UM.SHOW_YN = 'Y'
 		</if>		
-		ORDER BY nm.nav_order
+		ORDER BY UM.UPPER_ORDER
 	</select>
 	
-	<select id="selectSideMenuList" resultType="whiteMap" parameterType="whiteMap">		
+	<select id="selectLowerMenuList" resultType="whiteMap" parameterType="whiteMap">
+		/* mainMapper|selectLowerMenuList */
 		SELECT					
-			sm.side_seq AS sideSeq,
-			sm.nav_seq AS navSeq,
-	  		sm.side_nm AS sideNm,
-	 		sm.side_url AS sideUrl,
-	 		sm.side_order AS sideOrder,
-			sm.side_auth_nm_seq AS sideAuthNmSeq
+			LM.LOWER_SEQ AS lowerSeq,
+			LM.UPPER_SEQ AS upperSeq,
+	  		LM.LOWER_NM AS lowerNm,
+	 		LM.LOWER_URL AS lowerUrl,
+	 		LM.LOWER_ORDER AS lowerOrder,
+			LM.AUTH_SEQ AS authSeq
 			<choose>
 				<when test="userId == 'leedev'">
 				,1 AS auth
@@ -97,22 +103,23 @@
 					,IF(
 						(
 							SELECT PA.POS_AUTH_SEQ FROM POS_AUTH PA
-							WHERE PA.auth_nm_seq = sm.side_auth_nm_seq
+							WHERE PA.AUTH_SEQ = LM.AUTH_SEQ
 							AND PA.USER_SEQ = #{userSeq}
 							LIMIT 1
 						) IS NULL, 0, 1
 					) AS auth
 				</otherwise>
 			</choose>	
-		FROM side_menu sm
+		FROM LOWER_MENU LM
 		<if test="userId != 'leedev'">
-			WHERE sm.side_show_yn = 'Y'
+			WHERE LM.SHOW_YN = 'Y'
 		</if>
-		ORDER BY sm.side_order
+		ORDER BY LM.LOWER_ORDER
 	</select>
 	
 	<!-- 사용자 등록 -->
 	<insert id="insertSignUp" parameterType="WhiteMap" useGeneratedKeys="true" keyProperty="USER_SEQ">
+		/* mainMapper|insertSignUp */
 		INSERT INTO white_user
 			(user_id, user_name, user_passwd)
 		VALUES 
@@ -121,9 +128,10 @@
 	
 	<!-- 사용자 초기 권한 등록 -->
 	<insert id="insertUserAuth" parameterType="String">
+		/* mainMapper|insertUserAuth */
 		INSERT INTO POS_AUTH
-			(USER_SEQ, auth_nm_seq)
+			(USER_SEQ, AUTH_SEQ)
 		VALUES 
-			(#{USER_SEQ}, (SELECT auth_nm_seq FROM auth_name WHERE auth_nm = 'user'))
+			(#{USER_SEQ}, (SELECT auth_nm_seq FROM AUTH WHERE auth_nm = 'user'))
 	</insert>
 </mapper>

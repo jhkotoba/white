@@ -79,15 +79,15 @@ $(document).ready(function(){
 <nav class="nav">
 	<a class="nav-brand h6" href="${contextPath}/main">white</a>
 	<ul>
-		<c:forEach items="${sessionScope.navList}" var="nav">
-			<c:if test="${nav.auth eq 1 }">
+		<c:forEach items="${sessionScope.upperList}" var="upper">
+			<c:if test="${upper.auth eq 1 }">
 				<li class="dropdown">
-					<a href="javascript:void(0);">${nav.navNm}</a>
+					<a href="javascript:void(0);">${upper.upperNm}</a>
 					<div class="dropdown-content">								
-						<c:forEach items="${sessionScope.sideList}" var="side">									
-							<c:if test="${nav.navSeq eq side.navSeq }">
-								<c:if test="${side.auth eq 1 }">
-									<a class="sideHeight" href="javascript:mf.submit('${nav.navUrl}', '${side.sideUrl}', '${nav.navNm}', '${side.sideNm}')">${side.sideNm}</a>
+						<c:forEach items="${sessionScope.lowerList}" var="lower">									
+							<c:if test="${upper.upperSeq eq lower.upperSeq }">
+								<c:if test="${lower.auth eq 1 }">
+									<a class="lowerHeight" href="javascript:mf.submit('${upper.upperUrl}', '${lower.lowerUrl}', '${upper.upperNm}', '${lower.lowerNm}')">${lower.lowerNm}</a>
 								</c:if>
 							</c:if>
 						</c:forEach>
@@ -109,8 +109,8 @@ $(document).ready(function(){
 </nav>	
 <section>
 	<main role="main" class="main">	
-		<c:if test="${navNm ne null}">
-			<span class="path">${navNm} > ${sideNm}</span>
+		<c:if test="${upperNm ne null}">
+			<span class="path">${upperNm} > ${upperNm}</span>
 		</c:if>
 		<jsp:include page="${requestScope.sectionPage}" flush="false" />
 	</main>
@@ -136,10 +136,10 @@ $(document).ready(function(){
 
 <c:if test="${sessionScope.userId ne null}">
 <form id="moveForm" action="">
-	<input id="navUrl" name="navUrl" type="hidden" value="${navUrl}"></input>
-	<input id="sideUrl" name="sideUrl" type="hidden" value="${sideUrl}"></input>
-	<input id="navNm" name="navNm" type="hidden"></input>
-	<input id="sideNm" name="sideNm" type="hidden"></input>
+	<input id="upperUrl" name="upperUrl" type="hidden" value="${upperUrl}"></input>
+	<input id="lowerUrl" name="lowerUrl" type="hidden" value="${lowerUrl}"></input>
+	<input id="upperNm" name="upperNm" type="hidden"></input>
+	<input id="lowerNm" name="lowerNm" type="hidden"></input>
 	<input id="param" name="param" type="hidden"></input>
 </form>
 <form id="downloadForm">

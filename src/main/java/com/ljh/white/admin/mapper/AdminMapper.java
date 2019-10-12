@@ -69,85 +69,85 @@ public class AdminMapper {
 	}
 	
 	/**
-	 * 네비 메뉴 리스트 조회
+	 * 상위 메뉴 리스트 조회
 	 * @param param
 	 * @return
 	 */
-	public List<WhiteMap> selectNavMenuList() {
-		return sqlSession.selectList("adminMapper.selectNavMenuList");
+	public List<WhiteMap> selectUpperMenuList() {
+		return sqlSession.selectList("adminMapper.selectUpperMenuList");
 	}
 	
 	
 	/**
-	 * 사이드 메뉴 리스트 전체 조회
+	 * 하위 메뉴 리스트 전체 조회
 	 * @param param
 	 * @return
 	 */
-	public List<WhiteMap> selectSideMenuList(WhiteMap param) {
-		return sqlSession.selectList("adminMapper.selectSideMenuList", param);
+	public List<WhiteMap> selectLowerMenuList(WhiteMap param) {
+		return sqlSession.selectList("adminMapper.selectLowerMenuList", param);
 	}
 	
 	/**
-	 * 네비메뉴 insert
+	 * 상위메뉴 insert
 	 * @param list
 	 * @return
 	 */
-	public int insertNavMenuList(List<WhiteMap> list) {
-		return sqlSession.insert("adminMapper.insertNavMenuList", list);		 
+	public int insertUpperMenuList(List<WhiteMap> list) {
+		return sqlSession.insert("adminMapper.insertUpperMenuList", list);		 
 	}	
 	
 	/**
-	 * 네비메뉴 update
+	 * 상위메뉴 update
 	 * @param list
 	 * @return
 	 */
-	public int updateNavMenuList(List<WhiteMap> list) {
-		return sqlSession.update("adminMapper.updateNavMenuList", list);		 
+	public int updateUpperMenuList(List<WhiteMap> list) {
+		return sqlSession.update("adminMapper.updateUpperMenuList", list);		 
 	}	
 	
 	/**
-	 * 네비메뉴  delete 하기전 하위 사이드메뉴 체크
+	 * 상위메뉴  delete 하기전 하위 사이드메뉴 체크
 	 * @param list
 	 * @return
 	 */
-	public int selectIsUsedSideUrl(List<WhiteMap> list) {
-		return sqlSession.selectOne("adminMapper.selectIsUsedSideUrl", list);		 
+	public int selectIsUsedLowerUrl(List<WhiteMap> list) {
+		return sqlSession.selectOne("adminMapper.selectIsUsedLowerUrl", list);		 
 	}
 	
 	/**
-	 * 네비메뉴  delete
+	 * 상위메뉴  delete
 	 * @param list
 	 * @return
 	 */
-	public int deleteNavMenuList(List<WhiteMap> list) {
-		return sqlSession.delete("adminMapper.deleteNavMenuList", list);		 
+	public int deleteUpperMenuList(List<WhiteMap> list) {
+		return sqlSession.delete("adminMapper.deleteUpperMenuList", list);		 
 	}
 	
 	/**
-	 * 사이드메뉴 insert
+	 * 하위메뉴 insert
 	 * @param list
 	 * @return
 	 */
-	public int insertSideMenuList(List<WhiteMap> list) {
-		return sqlSession.insert("adminMapper.insertSideMenuList", list);		 
+	public int insertLowerMenuList(List<WhiteMap> list) {
+		return sqlSession.insert("adminMapper.insertLowerMenuList", list);		 
 	}	
 	
 	/**
-	 * 사이드메뉴 update
+	 * 하위메뉴 update
 	 * @param list
 	 * @return
 	 */
-	public int updateSideMenuList(List<WhiteMap> list) {
-		return sqlSession.update("adminMapper.updateSideMenuList", list);		 
+	public int updateLowerMenuList(List<WhiteMap> list) {
+		return sqlSession.update("adminMapper.updateLowerMenuList", list);		 
 	}	
 	
 	/**
-	 * 사이드메뉴  delete
+	 * 하위메뉴  delete
 	 * @param list
 	 * @return
 	 */
-	public int deleteSideMenuList(List<WhiteMap> list) {
-		return sqlSession.delete("adminMapper.deleteSideMenuList", list);		 
+	public int deleteLowerMenuList(List<WhiteMap> list) {
+		return sqlSession.delete("adminMapper.deleteLowerMenuList", list);		 
 	}
 	
 	
@@ -156,8 +156,8 @@ public class AdminMapper {
 	 * @param list
 	 * @return
 	 */
-	public int insertAuthNmList(List<WhiteMap> list) {
-		return sqlSession.insert("adminMapper.insertAuthNmList", list);		 
+	public int insertPosAuthList(List<WhiteMap> list) {
+		return sqlSession.insert("adminMapper.insertPosAuthList", list);		 
 	}	
 	
 	/**
@@ -165,8 +165,8 @@ public class AdminMapper {
 	 * @param list
 	 * @return
 	 */
-	public int updateAuthNmList(List<WhiteMap> list) {
-		return sqlSession.update("adminMapper.updateAuthNmList", list);		 
+	public int updateAuthList(List<WhiteMap> list) {
+		return sqlSession.update("adminMapper.updateAuthList", list);		 
 	}	
 	
 	/**
@@ -174,8 +174,8 @@ public class AdminMapper {
 	 * @param list
 	 * @return
 	 */
-	public int selectIsUsedAuthNm(List<WhiteMap> list) {
-		return sqlSession.selectOne("adminMapper.selectIsUsedAuthNm", list);		 
+	public int selectIsUsedAuth(List<WhiteMap> list) {
+		return sqlSession.selectOne("adminMapper.selectIsUsedAuth", list);		 
 	}
 	
 	/**
@@ -183,12 +183,12 @@ public class AdminMapper {
 	 * @param list
 	 * @return
 	 */
-	public int deleteAuthNmList(List<WhiteMap> list) {
-		return sqlSession.delete("adminMapper.deleteAuthNmList", list);		 
+	public int deleteAuthList(List<WhiteMap> list) {
+		return sqlSession.delete("adminMapper.deleteAuthList", list);		 
 	}
 	
 	/**
-	 * 네비 메뉴 리스트 조회
+	 * 
 	 * @param param
 	 * @return
 	 */
@@ -198,7 +198,7 @@ public class AdminMapper {
 	
 	
 	/**
-	 * 네비 메뉴 리스트 조회
+	 * 
 	 * @param param
 	 * @return
 	 */

@@ -37,14 +37,14 @@ public class SessionInterceptor extends HandlerInterceptorAdapter {
 			}
 			
 			//nav 권한 검사
-			String navUrl = "/"+(request.getRequestURI().replaceAll(path, "")).split("/")[1];
-			String sideUrl = request.getParameter("sideUrl");
+			String upperUrl = "/"+(request.getRequestURI().replaceAll(path, "")).split("/")[1];
+			String lowerUrl = request.getParameter("lowerUrl");
 			WhiteMap auth = (WhiteMap)request.getSession(false).getAttribute("authority");
 			
 			//nav메뉴 권한 체크
-			if(auth.getInt(Auth.getNavAuth().getString(navUrl))==1) {
+			if(auth.getInt(Auth.getUpperAuth().getString(upperUrl))==1) {
 				
-				if(auth.getInt(Auth.getSideAuth().getString(sideUrl))==1) {					
+				if(auth.getInt(Auth.getLowerAuth().getString(lowerUrl))==1) {					
 					return true;
 				}else {
 					response.sendRedirect(path+"/main");

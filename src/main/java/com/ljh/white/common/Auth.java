@@ -11,37 +11,37 @@ import com.ljh.white.common.collection.WhiteMap;
  */
 public class Auth {
 	
-	private static WhiteMap navAuth = null;
-	private static WhiteMap sideAuth = null;
+	private static WhiteMap upperAuth = null;
+	private static WhiteMap lowerAuth = null;
 
-	public static WhiteMap getNavAuth() {
-		return navAuth;
+	public static WhiteMap getUpperAuth() {
+		return upperAuth;
 	}
 
-	public static void setNavAuth(WhiteMap navAuth) {
-		Auth.navAuth = navAuth;
+	public static void setUpperAuth(WhiteMap upperAuth) {
+		Auth.upperAuth = upperAuth;
 	}
-	public static void setNavAuth(List<WhiteMap> navAuthList) {
-		WhiteMap navAuth = new WhiteMap();
-		for(int i=0; i< navAuthList.size(); i++) {
-			navAuth.put(navAuthList.get(i).getString("navUrl"), navAuthList.get(i).getString("authNm"));
+	public static void setUpperAuth(List<WhiteMap> upperAuthList) {
+		WhiteMap upperAuth = new WhiteMap();
+		for(int i=0; i< upperAuthList.size(); i++) {
+			upperAuth.put(upperAuthList.get(i).getString("upperUrl"), upperAuthList.get(i).getString("authNm"));
 		}
-		Auth.setNavAuth(navAuth);
+		Auth.setUpperAuth(upperAuth);
 	}
 	
-	public static WhiteMap getSideAuth() {
-		return sideAuth;
+	public static WhiteMap getLowerAuth() {
+		return lowerAuth;
 	}
 
-	public static void setSideAuth(WhiteMap sideAuth) {
-		Auth.sideAuth = sideAuth;
+	public static void setLowerAuth(WhiteMap lowerAuth) {
+		Auth.lowerAuth = lowerAuth;
 	}
-	public static void setSideAuth(List<WhiteMap> sideAuthList) {
-		WhiteMap sideAuth = new WhiteMap();
-		for(int i=0; i< sideAuthList.size(); i++) {
-			sideAuth.put(sideAuthList.get(i).getString("sideUrl"), sideAuthList.get(i).getString("authNm"));
+	public static void setLowerAuth(List<WhiteMap> lowerAuthList) {
+		WhiteMap lowerAuth = new WhiteMap();
+		for(int i=0; i< lowerAuthList.size(); i++) {
+			lowerAuth.put(lowerAuthList.get(i).getString("lowerUrl"), lowerAuthList.get(i).getString("authNm"));
 		}
-		Auth.setSideAuth(sideAuth);
+		Auth.setLowerAuth(lowerAuth);
 	}
 
 }
