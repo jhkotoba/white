@@ -452,7 +452,7 @@ function getContextPath(){
 
 //moveForm
 let mf = {	
-	 submit : function(upperUrl, lowerUrl, upperNm, lowerNm, param){
+	 submit : function(upperUrl, lowerUrl, upperNm, lowerNm, param){		 
 		$("#moveForm #upperUrl").attr("value", upperUrl);
 		$("#moveForm #lowerUrl").attr("value", lowerUrl);		
 		$("#moveForm #upperNm").attr("value", upperNm);

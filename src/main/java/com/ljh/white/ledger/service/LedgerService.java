@@ -88,7 +88,7 @@ public class LedgerService {
 				ledgerMapper.deletePurList(deleteList);
 				
 				WhiteMap map = new WhiteMap();
-				map.put("tableNm", "purpose");
+				map.put("tableNm", "PURPOSE");
 				map.put("firstSeqNm", "pur_seq");				
 				map.put("columnNm", "pur_order");
 				map.put("userSeq", param.getString("userSeq"));

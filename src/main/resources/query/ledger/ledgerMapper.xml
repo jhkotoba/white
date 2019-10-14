@@ -11,7 +11,7 @@
 	  		pur_order AS purOrder,
 	 		purpose AS purpose,
 	 		pur_type AS purType
-		FROM purpose
+		FROM PURPOSE
 		WHERE USER_SEQ = #{userSeq}
 		ORDER BY pur_order
 	</select>
@@ -30,7 +30,7 @@
 	
 	<!-- 해당 유저 목적 반영하기전 목적 시퀀스 검증 -->
 	<select id="selectVerifyPurSeqStrList" resultType="int" parameterType="java.util.List">
-		SELECT COUNT(1)	FROM purpose
+		SELECT COUNT(1)	FROM PURPOSE
 		WHERE USER_SEQ <![CDATA[ <> ]]> #{userSeq}
 		AND pur_seq IN (${verifyPurSeqList})
 	</select>
@@ -55,7 +55,7 @@
 	
 	<!-- 목적 list 삭제 -->
 	<delete id="deletePurList" parameterType="java.util.List">
-		DELETE FROM purpose
+		DELETE FROM PURPOSE
 		WHERE pur_seq IN 
 		<foreach collection="list" item="item" separator="," open="(" close=")">
 			#{item.purSeq}
@@ -64,7 +64,7 @@
 	
 	<!-- 목적 리스트 insert -->
 	<insert id="insertPurList" parameterType="java.util.List">
-		INSERT INTO purpose(		
+		INSERT INTO PURPOSE(		
 			USER_SEQ,	
 			pur_order,
 			purpose,
@@ -80,7 +80,7 @@
 	
 	<!-- 목적 list 수정 -->
 	<update id="updatePurList" parameterType="java.util.List">		
-		UPDATE purpose
+		UPDATE PURPOSE
 		SET pur_order = 
 		CASE		
 		<foreach collection="list" item="item">
@@ -115,7 +115,7 @@
 	
 	<!-- 해당 유저 상세목적반영하기전 목적 시퀀스 검증 -->
 	<select id="selectVerifyPurSeq" resultType="int" parameterType="whiteMap">
-		SELECT COUNT(1) FROM purpose
+		SELECT COUNT(1) FROM PURPOSE
 		WHERE USER_SEQ = #{userSeq}
 		AND pur_seq = #{purSeq}
 	</select>
@@ -359,7 +359,7 @@
 			,M.MEANS_INFO AS meansInfo
 			,IFNULL(M.MEANS_USE_YN,'X') AS meansUseYn
 		FROM money_record rec
-		LEFT OUTER JOIN purpose pur
+		LEFT OUTER JOIN PURPOSE pur
 		ON rec.pur_seq = pur.pur_seq
 		LEFT OUTER JOIN purpose_detail purDtl
 		ON rec.pur_dtl_seq = purDtl.pur_dtl_seq
@@ -426,7 +426,7 @@
 			,DATE_FORMAT(rec.reg_date,'%Y-%m-%d %H:%i:%d') AS regDate
 			</if>
 		FROM money_record rec
-		LEFT OUTER JOIN purpose pur
+		LEFT OUTER JOIN PURPOSE pur
 		ON rec.pur_seq = pur.pur_seq
 		LEFT OUTER JOIN purpose_detail purDtl
 		ON rec.pur_dtl_seq = purDtl.pur_dtl_seq
@@ -550,7 +550,7 @@
 		SELECT
 			IFNULL(SUM(mr.money), 0) AS amount
 		FROM money_record mr
-		INNER JOIN purpose p
+		INNER JOIN PURPOSE p
 			ON p.pur_seq = mr.pur_seq
 		INNER JOIN purpose_detail pd
 			ON pd.pur_dtl_seq = mr.pur_dtl_seq
@@ -572,7 +572,7 @@
 					p.pur_type  		AS purTypeCd
 					,SUM(mr.money) 		AS money
 				FROM money_record mr
-				INNER JOIN purpose p
+				INNER JOIN PURPOSE p
 					ON p.pur_seq = mr.pur_seq
 		    	INNER JOIN purpose_detail pd
 		      		ON pd.pur_dtl_seq = mr.pur_dtl_seq			
@@ -602,7 +602,7 @@
 			,p.pur_seq          AS purSeq
 			,ABS(SUM(mr.money)) AS money		
 		FROM money_record mr
-		INNER JOIN purpose p
+		INNER JOIN PURPOSE p
 			ON p.pur_seq = mr.pur_seq
 		INNER JOIN purpose_detail pd
 			ON pd.pur_dtl_seq = mr.pur_dtl_seq	
