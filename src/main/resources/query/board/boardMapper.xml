@@ -7,11 +7,11 @@
 	<!-- 게시판 카운트 조회 -->
 	<select id="selectBoardCount" resultType="int" parameterType="WhiteMap">
 		SELECT COUNT(1) FROM ${board}_board b		
-	    LEFT OUTER JOIN white_user wu
+	    LEFT OUTER JOIN WHITE_USER WU
   			ON wu.USER_SEQ = b.USER_SEQ
 		<where>	  
 		  	<if test="type == 'id'">
-			AND wu.user_id = #{text}
+			AND WU.USER_ID = #{text}
 		  	</if>
 		  	<if test="type == 'title'">
 			AND b.title LIKE #{text}
@@ -29,17 +29,17 @@
 	<select id="selectBoardList" resultType="WhiteMap" parameterType="WhiteMap">	
 		SELECT
 			b.board_seq 	AS boardSeq,			
-			wu.user_id 		AS userId,
+			WU.USER_ID 		AS userId,
 			b.title,
 			DATE_FORMAT(b.edit_date,'%Y-%m-%d %H:%i:%s') AS editDate,
 			DATE_FORMAT(b.reg_date,'%Y-%m-%d %H:%i:%s') AS regDate,			
 			(SELECT COUNT(1) FROM ${board}_board_comment WHERE board_seq = b.board_seq) AS commentCnt			
 		FROM ${board}_board b	   
-	    LEFT OUTER JOIN white_user wu
+	    LEFT OUTER JOIN WHITE_USER WU
   			ON wu.USER_SEQ = b.USER_SEQ
   		<where>  			
 		  	<if test="type == 'id'">
-			AND wu.user_id = #{text}
+			AND WU.USER_ID = #{text}
 		  	</if>
 		  	<if test="type == 'title'">
 			AND b.title LIKE #{text}
@@ -59,13 +59,13 @@
 	<select id="selectBoardDtlView" resultType="WhiteMap" parameterType="WhiteMap">	
 		SELECT 
 			b.board_seq 	AS boardSeq			
-			,wu.user_id 	AS userId
+			,WU.USER_ID 	AS userId
 			,b.title
 			,b.content
 			,DATE_FORMAT(b.edit_date,'%Y-%m-%d %H:%i:%s') AS editDate
 			,DATE_FORMAT(b.reg_date,'%Y-%m-%d %H:%i:%s') AS regDate
 		FROM ${board}_board b
-   		LEFT OUTER JOIN white_user wu
+   		LEFT OUTER JOIN WHITE_USER WU
   			ON wu.USER_SEQ = b.USER_SEQ
 		WHERE b.board_seq = #{boardSeq}
 	</select>
@@ -75,12 +75,12 @@
 		SELECT
 			bc.comment_seq		AS commentSeq
 			,bc.board_seq		AS boardSeq
-			,wu.user_id			AS userId
+			,WU.USER_ID			AS userId
 			,bc.comment
 			,DATE_FORMAT(bc.reg_date,'%Y-%m-%d %H:%i:%s') AS regDate		
 		FROM ${board}_board_comment bc
-		LEFT OUTER JOIN white_user wu
-			ON wu.USER_SEQ = bc.USER_SEQ
+		LEFT OUTER JOIN WHITE_USER WU
+			ON WU.USER_SEQ = bc.USER_SEQ
 		WHERE bc.board_seq = #{boardSeq}
 		ORDER BY bc.reg_date ASC, bc.board_seq ASC
 	</select>

@@ -6,14 +6,14 @@
 	
 	<!-- 사용자 수 조회 -->
 	<select id="selectUserCount" resultType="int" parameterType="WhiteMap">
-	 	SELECT COUNT(1) FROM white_user
+	 	SELECT COUNT(1) FROM WHITE_USER
 		<where>
 			<if test="text != ''">
 		 		<if test="type == 'id'">
-				AND user_id = #{text}
+				AND USER_ID = #{text}
 				</if>
 				<if test="type == 'name'">
-				AND user_name = #{text}
+				AND USER_NM = #{text}
 				</if>
 			</if>
 		</where>
@@ -23,16 +23,16 @@
 	<select id="selectUserList" resultType="WhiteMap" parameterType="WhiteMap">
 		SELECT 
 			USER_SEQ AS no,
-			user_id AS userId,
-			user_name AS userName
- 		FROM white_user
+			USER_ID AS userId,
+			USER_NM AS userNm
+ 		FROM WHITE_USER
  		<where>
 	 		<if test="text != ''">
 		 		<if test="type == 'id'">
-				AND user_id = #{text}
+				AND USER_ID = #{text}
 				</if>
 				<if test="type == 'name'">
-				AND user_name = #{text}
+				AND USER_NM = #{text}
 				</if>
 			</if>
 		</where>

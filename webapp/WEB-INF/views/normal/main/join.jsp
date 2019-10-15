@@ -108,7 +108,7 @@ function userIdCheck(){
 			<tr>
 				<td>Name</td>
 				<td>
-					<input id="userName" type="text" name="userName">
+					<input id="userNm" type="text" name="userNm">
 				</td>
 			</tr>
 			<tr>

@@ -8,9 +8,9 @@
 	<select id="selectUserPasswd" parameterType="WhiteMap" resultType="String">
 		/* mainMapper|selectUserPasswd */
 		SELECT					
-			user_passwd userPasswd
-		FROM white_user		
-		WHERE user_id = #{userId}				
+			USER_PASS userPass
+		FROM WHITE_USER		
+		WHERE USER_ID = #{userId}				
 	</select>		
 	
 	<!--  getUserAuthority -->
@@ -30,15 +30,15 @@
 		/* mainMapper|getUserSeq */
 		SELECT 
 	  		USER_SEQ AS userSeq
-		FROM white_user
-		WHERE user_id = #{userId}
+		FROM WHITE_USER
+		WHERE USER_ID = #{userId}
 	</select>
 	
 	<select id="userIdCheck" resultType="int" parameterType="String" >
 		/* mainMapper|userIdCheck */
 		SELECT COUNT(1)
 		FROM white_user
-		WHERE user_id = #{userId}
+		WHERE USER_ID = #{userId}
 	</select>
 		
 	<select id="selectUserAuthority" resultType="WhiteMap" parameterType="int" >
@@ -120,10 +120,10 @@
 	<!-- 사용자 등록 -->
 	<insert id="insertSignUp" parameterType="WhiteMap" useGeneratedKeys="true" keyProperty="USER_SEQ">
 		/* mainMapper|insertSignUp */
-		INSERT INTO white_user
-			(user_id, user_name, user_passwd)
+		INSERT INTO WHITE_USER
+			(USER_ID, USER_NM, USER_PASS)
 		VALUES 
-			(#{userId}, #{userName}, #{passwd})
+			(#{userId}, #{userNm}, #{passwd})
 	</insert>
 	
 	<!-- 사용자 초기 권한 등록 -->
@@ -132,6 +132,6 @@
 		INSERT INTO POS_AUTH
 			(USER_SEQ, AUTH_SEQ)
 		VALUES 
-			(#{USER_SEQ}, (SELECT auth_nm_seq FROM AUTH WHERE auth_nm = 'user'))
+			(#{USER_SEQ}, (SELECT AUTH_SEQ FROM AUTH WHERE AUTH_NM = 'user'))
 	</insert>
 </mapper>

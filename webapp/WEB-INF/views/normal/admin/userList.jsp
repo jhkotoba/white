@@ -133,9 +133,9 @@ function fnJsGrid(pageIdx, pageSize, pageBtnCnt){
         	});
         }, 
         fields: [
-			{ title:"번호",		name:"no",			type:"text", width: "5%",	align:"center"},
-			{ title:"아이디",		name:"userId",		type:"text", width: "40%",	align:"center"},
-			{ title:"이름",		name:"userName",	type:"text", width: "55%",	align:"center"}
+			{ title:"번호",	name:"no",		type:"text", width: "5%",	align:"center"},
+			{ title:"아이디",	name:"userId",	type:"text", width: "40%",	align:"center"},
+			{ title:"이름",	name:"userNm",	type:"text", width: "55%",	align:"center"}
         ]
     });
 }
@@ -220,7 +220,7 @@ $.fn.setParam = function(param){
 		<span class="span-gray-rt">아이디</span>
 		<span id="userId" class="span-gray"></span>
 		<span class="span-gray-rt">이름</span>
-		<span id="userName" class="span-gray"></span>
+		<span id="userNm" class="span-gray"></span>
 		<div class="pull-right">			
 			<button id="save" class="btn-gray trs">저장</button>
 			<button id="close" class="btn-gray trs">닫기</button>	
