@@ -176,11 +176,11 @@ CREATE TABLE SOURCE_BRD
 (
 	SOURCE_SEQ int NOT NULL AUTO_INCREMENT,
 	USER_SEQ int NOT NULL,
-	lang_cd varchar(6) NOT NULL,
-	title varchar(50) NOT NULL,
-	content varchar(4000) NOT NULL,
-	edit_date datetime NOT NULL,
-	reg_date datetime NOT NULL,
+	SOURCE_LANG_CD varchar(6) NOT NULL,
+	TITLE varchar(50) NOT NULL,
+	CONTENT varchar(4000) NOT NULL,
+	EDIT_DATE datetime NOT NULL,
+	REG_DATE datetime NOT NULL,
 	PRIMARY KEY (SOURCE_SEQ),
 	UNIQUE (SOURCE_SEQ)
 );
