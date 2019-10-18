@@ -7,12 +7,12 @@
 	<select id="selectSourceCount" resultType="int" parameterType="WhiteMap">
 		SELECT COUNT(1) FROM SOURCE_BRD SB
 		LEFT OUTER JOIN COMMON_CD CC
-	    	ON SB.lang_cd = CC.CODE
+	    	ON SB.SOURCE_LANG_CD = CC.CODE
 	    LEFT OUTER JOIN WHITE_USER WU
   			ON WU.USER_SEQ = SB.USER_SEQ
 		<where>
-  			<if test="langCd != '' and langCd != null">
-		  	AND SB.lang_cd = #{langCd}
+  			<if test="sourceLangCd != '' and sourceLangCd != null">
+		  	AND SB.SOURCE_LANG_CD = #{sourceLangCd}
 		  	</if>
 		  	<if test="text != '' and text != null">
 		  		<!-- ID -->
@@ -38,19 +38,20 @@
 	<select id="selectSourceList" resultType="WhiteMap" parameterType="WhiteMap">	
 		SELECT
 			SB.SOURCE_SEQ 		AS sourceSeq
-			,CC.CODE_NM 		AS langNm
+			,CC.CODE_NM 		AS sourceLangNm
+			,CC.CODE			AS sourceLangCd
 			,WU.USER_ID 		AS userId
-			,SB.title
+			,SB.TITLE			AS title
 			,DATE_FORMAT(SB.edit_date,'%Y-%m-%d %H:%i:%s') AS editDate
 			,DATE_FORMAT(SB.reg_date,'%Y-%m-%d %H:%i:%s')  AS regDate
 		FROM SOURCE_BRD SB
 	    LEFT OUTER JOIN COMMON_CD CC
-	    	ON SB.lang_cd = CC.code
+	    	ON SB.SOURCE_LANG_CD = CC.CODE
 	    LEFT OUTER JOIN WHITE_USER WU
-  			ON wu.USER_SEQ = SB.USER_SEQ
+  			ON WU.USER_SEQ = SB.USER_SEQ
   		<where>
-  			<if test="langCd != '' and langCd != null">
-		  	AND SB.lang_cd = #{langCd}
+  			<if test="sourceLangCd != '' and sourceLangCd != null">
+		  	AND SB.SOURCE_LANG_CD = #{sourceLangCd}
 		  	</if>
 		  	
 		  	<if test="text != '' and text != null">
@@ -60,11 +61,11 @@
 			  	</if>
 			  	<!-- TITLE -->
 			  	<if test="type == 'SRH002'">
-				AND SB.title LIKE #{text}
+				AND SB.TITLE LIKE #{text}
 			  	</if>
 			  	<!-- CONTENT -->
 			  	<if test="type == 'SRH003'">
-			  	AND SB.content LIKE #{text}
+			  	AND SB.CONTENT LIKE #{text}
 			  	</if>
 			  	<!-- NO -->
 			  	<if test="type == 'SRH004'">
@@ -79,27 +80,27 @@
 	<select id="selectSourceDtlView" resultType="WhiteMap" parameterType="WhiteMap">	
 		SELECT 
 			SB.SOURCE_SEQ 	AS sourceSeq
-			,CC.CODE_NM 	AS langNm
-			,CC.CODE		AS langCd
+			,CC.CODE_NM 	AS sourceLangNm
+			,CC.CODE		AS sourceLangCd
 			,WU.USER_ID 	AS userId
-			,SB.title
-			,SB.content
-			,DATE_FORMAT(SB.edit_date,'%Y-%m-%d %H:%i:%s') AS editDate
-			,DATE_FORMAT(SB.reg_date,'%Y-%m-%d %H:%i:%s') AS regDate
+			,SB.TITLE		AS title
+			,SB.CONTENT		AS content
+			,DATE_FORMAT(SB.EDIT_DATE,'%Y-%m-%d %H:%i:%s') AS editDate
+			,DATE_FORMAT(SB.REG_DATE,'%Y-%m-%d %H:%i:%s') AS regDate
 		FROM SOURCE_BRD SB
    		LEFT OUTER JOIN WHITE_USER WU
   			ON WU.USER_SEQ = SB.USER_SEQ
   		LEFT OUTER JOIN COMMON_CD CC
-	    	ON SB.lang_cd = CC.CODE   
+	    	ON SB.SOURCE_LANG_CD = CC.CODE   
 		WHERE SB.SOURCE_SEQ = #{sourceSeq}
 	</select>
 	
 	<insert id="insertSource" parameterType="WhiteMap">
 		INSERT
-		INTO SOURCE_BRD(USER_SEQ, lang_cd, title, content, edit_date, reg_date)
+		INTO SOURCE_BRD(USER_SEQ, SOURCE_LANG_CD, TITLE, CONTENT, EDIT_DATE, REG_DATE)
 		VALUES(
 			#{userSeq},
-			#{langCd},
+			#{sourceLangCd},
 			#{title},
 			#{content},
 			NOW(),
@@ -109,10 +110,10 @@
 	
 	<update id="updateSource" parameterType="WhiteMap">
 		UPDATE SOURCE_BRD
-		SET	title = #{title},
-			lang_cd = #{langCd},
-			content = #{content},
-			edit_date = NOW()
+		SET	TITLE = #{title},
+			SOURCE_LANG_CD = #{sourceLangCd},
+			CONTENT = #{content},
+			EDIT_DATE = NOW()
 		WHERE USER_SEQ = #{userSeq}
 		AND SOURCE_SEQ = #{sourceSeq}
 	</update>

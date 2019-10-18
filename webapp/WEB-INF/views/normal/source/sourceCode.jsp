@@ -96,14 +96,14 @@ $(document).ready(function(){
     	for(let i=0; i<data.codePrt.length; i++){
     		tag += "<option value="+data.codePrt[i].code+">"+data.codePrt[i].codeNm+"</option>";	    		
     	}
-    	$("#writeForm #langCd").append("<option value=''>타입</option>"+tag);
-    	$("#searchBar #langCd").append("<option value=''>전체</option>"+tag);
-    	$("#editForm #langCd").append(tag);
+    	$("#writeForm #sourcelangCd").append("<option value=''>타입</option>"+tag);
+    	$("#searchBar #sourcelangCd").append("<option value=''>전체</option>"+tag);
+    	$("#editForm #sourcelangCd").append(tag);
 	});
     
   	//조회 버튼
 	$("#btns #searchBtn").on("click", function(){		
-		$("#searchForm #langCd").val($("#searchBar #langCd").val());
+		$("#searchForm #sourcelangCd").val($("#searchBar #sourcelangCd").val());
 		$("#searchForm #type").val($("#searchBar #type").val());
 		
 		let type =  $("#searchForm #type").val();		
@@ -261,7 +261,7 @@ function fnSourceCode(pageIdx, pageSize, pageBtnCnt){
         	
         	cfnCmmAjax("/source/selectSourceDtlView", {sourceSeq : args.item.sourceSeq}).done(function(data){
         		
-        		$("#viewForm #cAdjust").empty().append(cAdjust.adjust(data.langNm, data.content));
+        		$("#viewForm #cAdjust").empty().append(cAdjust.adjust(data.sourceLangNm, data.content));
         		data.content = cAdjust.restore(data.content);
         		$("#viewForm").setParam(data);   	    	
     	    	
@@ -275,7 +275,7 @@ function fnSourceCode(pageIdx, pageSize, pageBtnCnt){
         }, 
         fields: [
 			{ title:"번호",	name:"sourceSeq",	type:"text", width:"4%", align:"center"},
-			{ title:"언어",	name:"langNm",		type:"text", width:"8%", align:"center"},
+			{ title:"언어",	name:"sourceLangNm",type:"text", width:"8%", align:"center"},
 			{ title:"글제목",	name:"title",		type:"text", width:"70%"},
 			{ title:"작성자",	name:"userId",		type:"text", width:"8%", align:"center"},
 			{ title:"날짜",	name:"regDate",		type:"text", width:"10%", align:"center"}
@@ -289,7 +289,7 @@ function fnSourceCode(pageIdx, pageSize, pageBtnCnt){
 	<div class="flex">		
 		<div class="flex-left">
 			<span class="span-gray-rt">타입</span>		
-			<select id="langCd" class="select-gray">	
+			<select id="sourcelangCd" class="select-gray">	
 			</select>
 			<span class="span-gray-rt">제목</span>			
 		</div>		
@@ -313,7 +313,7 @@ function fnSourceCode(pageIdx, pageSize, pageBtnCnt){
 	<div class="flex">
 		<div class="flex-left">
 			<span class="span-gray-rt">타입</span>
-			<select id="langCd" class="select-gray">
+			<select id="sourcelangCd" class="select-gray">
 			</select>
 			<span class="span-gray-rt">사용자</span>
 			<span id="userId" class="span-gray"></span>
@@ -344,7 +344,7 @@ function fnSourceCode(pageIdx, pageSize, pageBtnCnt){
 			<span class="span-gray-rt">번호</span>
 			<span id="sourceSeq" class="span-gray"></span>
 			<span class="span-gray-rt">타입</span>
-			<span id="langNm" class="span-gray"></span>
+			<span id="sourceLangNm" class="span-gray"></span>
 			<span class="span-gray-rt">사용자</span>
 			<span id="userId" class="span-gray"></span>
 			<span class="span-gray-rt">제목</span>
@@ -369,7 +369,7 @@ function fnSourceCode(pageIdx, pageSize, pageBtnCnt){
 
 <!-- 조회값 폼 -->
 <form id="searchForm" name="searchForm" onsubmit="return false;">
-	<input id="langCd" type="hidden" value="">
+	<input id="sourcelangCd" type="hidden" value="">
 	<input id="type" type="hidden" value="">
 	<input id="text" type="hidden" value="">
 </form>
@@ -394,7 +394,7 @@ function fnSourceCode(pageIdx, pageSize, pageBtnCnt){
 			<tr>
 				<th>언어/라이브러리</th>
 				<td>
-					<select id="langCd" class="select-gray wth100p">
+					<select id="sourcelangCd" class="select-gray wth100p">
 					</select>
 				</td>
 				<th>검색구분</th>
