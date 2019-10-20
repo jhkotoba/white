@@ -95,11 +95,11 @@ function fnMonthIEChartProcess(data){
 	chartData.maxAmount = 0;
 	
 	for(let i=0; i<list.length; i++){
-		if(list[i].purTypeCd === "LED001"){
+		if(list[i].purposeTpCd === "LED001"){
 			chartData.income.push(list[i].money);
 			chartData.categories.push(list[i].startDate.split(" ")[0].substr(0,7));
 			chartData.prevAmount += list[i].money;
-		}else if(list[i].purTypeCd === "LED002"){
+		}else if(list[i].purposeTpCd === "LED002"){
 			chartData.expense.push(Math.abs(list[i].money));
 			chartData.prevAmount += list[i].money;
 			chartData.amount.push(chartData.prevAmount);
@@ -327,7 +327,7 @@ function fnMonthPurChart(data){
 	$("#monthPurChart").empty().show();
 	
 	//데이터 가공
-	let list = fnMonthPurChartProcess(data, "purpose");
+	let list = fnMonthPurChartProcess(data, "purposeNm");
 	
 	//그래프 그리기	 
     fnMonthPurChartDraw(list, "monthPurChart");
@@ -337,7 +337,7 @@ function fnMonthPurChart(data){
     	if(neighbor !== null){
     		$("#monthPurDtlChart").offset({top: 127, left: 700});
     	
-    		let param = {type:"monthPurDtl", stdate:mIE.selectedDate+"-01", purSeq:neighbor.data[2]};
+    		let param = {type:"monthPurDtl", stdate:mIE.selectedDate+"-01", purposeSeq:neighbor.data[2]};
     		cfnCmmAjax("/ledger/selectLedgerStats", param).done(function(data){    			
     			fnMonthPurDtlChart(data);
     		});	
@@ -349,17 +349,17 @@ function fnMonthPurChart(data){
 function fnMonthPurDtlChart(data){	
 	$("#monthPurDtlChart").empty().show();		
 	//데이터 가공
-	let list = fnMonthPurChartProcess(data, "purDetail");	
+	let list = fnMonthPurChartProcess(data, "purposeDtlNm");	
 	//그래프 그리기	 
     fnMonthPurChartDraw(list, "monthPurDtlChart");   	 
 }
 
 //목적 그래프 데이터 가공
-function fnMonthPurChartProcess(data, purpose){
+function fnMonthPurChartProcess(data, purposeNm){
 	let list = new Array();
-	if(purpose===undefined) purpose = "purpose"
+	if(purposeNm === undefined) purposeNm = "purposeNm"
 	for(let i=0; i<data.list.length; i++){
-		list.push([data.list[i][purpose], data.list[i].money, data.list[i].purSeq]);
+		list.push([data.list[i][purposeNm], data.list[i].money, data.list[i].purposeSeq]);
 	}	
 	return list;
 }

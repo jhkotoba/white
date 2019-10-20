@@ -6,59 +6,60 @@
 
 	<!-- 해당 유저 목적 리스트 조회 -->
 	<select id="selectPurList" resultType="whiteMap" parameterType="whiteMap">
-		SELECT			
-			pur_seq AS purSeq,
-	  		pur_order AS purOrder,
-	 		purpose AS purpose,
-	 		pur_type AS purType
+		/* ledgerMapper|selectPurList */
+		SELECT	
+			PURPOSE_SEQ AS purposeSeq,
+	  		PURPOSE_ODR AS purposeOdr,
+	 		PURPOSE_NM AS purposeNm,
+	 		PURPOSE_TP_CD AS purposeTpCd
 		FROM PURPOSE
 		WHERE USER_SEQ = #{userSeq}
-		ORDER BY pur_order
+		ORDER BY PURPOSE_ODR
 	</select>
 	
 	<!-- 해당 유저 상세목적 리스트 조회 -->
 	<select id="selectPurDtlList" resultType="whiteMap" parameterType="whiteMap">
 		SELECT			
-			pur_dtl_seq AS purDtlSeq,
-			pur_seq AS purSeq,
-			pur_dtl_order AS purDtlOrder,
-			pur_detail AS purDetail
-		FROM purpose_detail
+			PURPOSE_DTL_SEQ AS purposeDtlSeq,
+			PURPOSE_SEQ AS purposeSeq,
+			PURPOSE_DTL_ODR AS purposeDtlOdr,
+			PURPOSE_DTL_NM AS purposeDtlNm
+		FROM PURPOSE_DTL
 		WHERE USER_SEQ = #{userSeq}
-		ORDER BY pur_dtl_order	
+		ORDER BY PURPOSE_DTL_ODR	
 	</select>
 	
 	<!-- 해당 유저 목적 반영하기전 목적 시퀀스 검증 -->
 	<select id="selectVerifyPurSeqStrList" resultType="int" parameterType="java.util.List">
 		SELECT COUNT(1)	FROM PURPOSE
 		WHERE USER_SEQ <![CDATA[ <> ]]> #{userSeq}
-		AND pur_seq IN (${verifyPurSeqList})
+		AND PURPOSE_SEQ IN (${verifyPurSeqList})
 	</select>
 	
 	<!-- 거래내역에 목적이 사용되는지 확인 -->
 	<select id="selectIsUsedPurposeRec" resultType="int" parameterType="java.util.List">
-		SELECT COUNT(1) FROM money_record
-		WHERE pur_seq IN
+		SELECT COUNT(1) FROM LEDGER_RCD
+		WHERE PURPOSE_SEQ IN
 		<foreach collection="list" item="item" separator="," open="(" close=")">
-			#{item.purSeq}
+			#{item.purposeSeq}
 		</foreach>
 	</select>
 	
 	<!-- 목적 삭제시 상세목적에 부모로써 사용되는지 확인 -->
 	<select id="selectIsUsedPurposePurDtl" resultType="int" parameterType="java.util.List">
 		SELECT COUNT(1) FROM purpose_detail
-		WHERE pur_seq IN
+		WHERE PURPOSE_SEQ IN
 		<foreach collection="list" item="item" separator="," open="(" close=")">
-			#{item.purSeq}
+			#{item.purposeSeq}
 		</foreach>
 	</select>
 	
 	<!-- 목적 list 삭제 -->
 	<delete id="deletePurList" parameterType="java.util.List">
 		DELETE FROM PURPOSE
-		WHERE pur_seq IN 
+		WHERE PURPOSE_SEQ IN 
 		<foreach collection="list" item="item" separator="," open="(" close=")">
-			#{item.purSeq}
+			#{item.purposeSeq}
 		</foreach>
 	</delete>
 	
@@ -66,42 +67,42 @@
 	<insert id="insertPurList" parameterType="java.util.List">
 		INSERT INTO PURPOSE(		
 			USER_SEQ,	
-			pur_order,
-			purpose,
-			pur_type
+			PURPOSE_ODR,
+			PURPOSE_NM,
+			PURPOSE_TP_CD
 		)VALUES
 		<foreach collection="list" item="item" separator="),(" open="(" close=")">
 			#{item.userSeq},
-			#{item.purOrder},
-			#{item.purpose},
-			#{item.purType}
+			#{item.purposeOdr},
+			#{item.purposeNm},
+			#{item.purposeTpCd}
 		</foreach>	
 	</insert>
 	
 	<!-- 목적 list 수정 -->
 	<update id="updatePurList" parameterType="java.util.List">		
 		UPDATE PURPOSE
-		SET pur_order = 
+		SET PURPOSE_ODR = 
 		CASE		
 		<foreach collection="list" item="item">
-			WHEN pur_seq = #{item.purSeq} THEN #{item.purOrder}
+			WHEN PURPOSE_SEQ = #{item.purposeSeq} THEN #{item.purposeOdr}
 		</foreach>		
 		END,	
-		purpose = 
+		PURPOSE_NM = 
 		CASE		
 		<foreach collection="list" item="item">
-			WHEN pur_seq = #{item.purSeq} THEN #{item.purpose}
+			WHEN PURPOSE_SEQ = #{item.purposeSeq} THEN #{item.purposeNm}
 		</foreach>		
 		END,
-		pur_type = 
+		PURPOSE_TP_CD = 
 		CASE		
 		<foreach collection="list" item="item">
-			WHEN pur_seq = #{item.purSeq} THEN #{item.purType}
+			WHEN PURPOSE_SEQ = #{item.purposeSeq} THEN #{item.purposeTpCd}
 		</foreach>		
 		END
-		WHERE pur_seq IN 
+		WHERE PURPOSE_SEQ IN 
 		<foreach collection="list" item="item" separator="," open="(" close=")">
-			#{item.purSeq}
+			#{item.purposeSeq}
 		</foreach>		
 	</update>
 	
@@ -110,68 +111,68 @@
 	<select id="selectVerifyPurDtlSeqStrList" resultType="int" parameterType="java.util.List">
 		SELECT COUNT(1)	FROM purpose_detail
 		WHERE USER_SEQ <![CDATA[ <> ]]> #{userSeq}
-		AND pur_dtl_seq IN (${verifyPurDtlSeqList})
+		AND PURPOSE_DTL_SEQ IN (${verifyPurDtlSeqList})
 	</select>
 	
 	<!-- 해당 유저 상세목적반영하기전 목적 시퀀스 검증 -->
 	<select id="selectVerifyPurSeq" resultType="int" parameterType="whiteMap">
 		SELECT COUNT(1) FROM PURPOSE
 		WHERE USER_SEQ = #{userSeq}
-		AND pur_seq = #{purSeq}
+		AND PURPOSE_SEQ = #{purposeSeq}
 	</select>
 	
 	<!-- 거래내역에 상세목적이 사용되는지 확인 -->
 	<select id="selectIsUsedPurDtlRec" resultType="int" parameterType="java.util.List">
-		SELECT COUNT(1) FROM money_record
-		WHERE pur_dtl_seq IN
+		SELECT COUNT(1) FROM LEDGER_RCD
+		WHERE PURPOSE_DTL_SEQ IN
 		<foreach collection="list" item="item" separator="," open="(" close=")">
-			#{item.purDtlSeq}
+			#{item.purposeDtlSeq}
 		</foreach>
 	</select>
 	
 	<!-- 상세목적 list 삭제 -->
 	<delete id="deletePurDtlList" parameterType="java.util.List">
-		DELETE FROM purpose_detail
-		WHERE pur_dtl_seq IN 
+		DELETE FROM PURPOSE_DTL
+		WHERE PURPOSE_DTL_SEQ IN 
 		<foreach collection="list" item="item" separator="," open="(" close=")">
-			#{item.purDtlSeq}
+			#{item.purposeDtlSeq}
 		</foreach>
 	</delete>
 	
 	<!-- 상세목적 list 수정 -->
 	<update id="updatePurDtlList" parameterType="java.util.List">		
-		UPDATE purpose_detail
-		SET	pur_dtl_order = 
+		UPDATE PURPOSE_DTL
+		SET	PURPOSE_DTL_ODR = 
 		CASE		
 		<foreach collection="list" item="item">
-			WHEN pur_dtl_seq = #{item.purDtlSeq} THEN #{item.purDtlOrder}
+			WHEN PURPOSE_DTL_SEQ = #{item.purposeDtlSeq} THEN #{item.purposeDtlOdr}
 		</foreach>		
 		END,	
-		pur_detail = 
+		PURPOSE_DTL_NM = 
 		CASE		
 		<foreach collection="list" item="item">
-			WHEN pur_dtl_seq = #{item.purDtlSeq} THEN #{item.purDetail}
+			WHEN PURPOSE_DTL_SEQ = #{item.purposeDtlSeq} THEN #{item.purposeDtlNm}
 		</foreach>		
 		END
-		WHERE pur_dtl_seq IN 
+		WHERE PURPOSE_DTL_SEQ IN 
 		<foreach collection="list" item="item" separator="," open="(" close=")">
-			#{item.purDtlSeq}
+			#{item.purposeDtlSeq}
 		</foreach>
 	</update>
 	
 	<!-- 상세목적 리스트 insert -->
 	<insert id="insertPurDtlList" parameterType="java.util.List">
-		INSERT INTO purpose_detail(		
-			pur_seq,	
+		INSERT INTO PURPOSE_DTL(		
+			PURPOSE_SEQ,	
 			USER_SEQ,	
-			pur_dtl_order,
-			pur_detail
+			PURPOSE_DTL_ODR,
+			PURPOSE_DTL_NM
 		)VALUES
 		<foreach collection="list" item="item" separator="),(" open="(" close=")">
-			#{item.purSeq}, 
+			#{item.purposeSeq}, 
 			#{item.userSeq}, 
-			#{item.purDtlOrder},
-			#{item.purDetail}
+			#{item.purposeDtlOdr},
+			#{item.purposeDtlNm}
 		</foreach>	
 	</insert>
 	
@@ -183,11 +184,11 @@
 			MEANS_DTL_NM AS meansDtlNm,
 			MEANS_INFO AS meansInfo,
 			MEANS_USE_YN AS meansUseYn,
-			MEANS_ORDER AS meansOrder,
-			MEANS_REMARK AS meansRemark
+			MEANS_ODR AS meansOdr,
+			MEANS_RMK AS meansRmk
 		FROM MEANS
 		WHERE USER_SEQ = #{userSeq}		
-		ORDER BY MEANS_ORDER ASC
+		ORDER BY MEANS_ODR ASC
 	</select>
 	
 	<!-- 해당 유저 은행 반영하기전 상세목적 시퀀스 검증 -->
@@ -201,7 +202,7 @@
 	<!-- 사용목적 사용되는지 확인 -->
 	<select id="selectIsUsedMeansRec" resultType="int" parameterType="java.util.List">
 		/* ledgerMapper|selectIsUsedMeansRec */
-		SELECT COUNT(1) FROM money_record
+		SELECT COUNT(1) FROM LEDGER_RCD
 		WHERE MEANS_SEQ IN
 		<foreach collection="list" item="item" separator="," open="(" close=")">
 			#{item.meansSeq}
@@ -217,8 +218,8 @@
 			MEANS_DTL_NM,
 			MEANS_INFO,
 			MEANS_USE_YN,
-			MEANS_ORDER,
-			MEANS_REMARK
+			MEANS_ODR,
+			MEANS_RMK
 		)VALUES
 		<foreach collection="list" item="item" index="index" separator="),(" open="(" close=")">
 			#{item.userSeq},
@@ -226,12 +227,12 @@
 			#{item.meansDtlNm},
 			#{item.meansInfo},
 			#{item.meansUseYn},
-			(SELECT MAX(B.MEANS_ORDER)+1 FROM MEANS B WHERE B.USER_SEQ = #{item.userSeq}),			
-			#{item.meansRemark}	
+			(SELECT MAX(B.MEANS_ODR)+1 FROM MEANS B WHERE B.USER_SEQ = #{item.userSeq}),			
+			#{item.meansRmk}	
 		</foreach>	
 	</insert>
 	
-	<!-- 은행 list 수정 -->
+	<!-- 사용수단 list 수정 -->
 	<update id="updateMeansList" parameterType="java.util.List">		
 		UPDATE MEANS
 		SET MEANS_NM = 
@@ -258,16 +259,16 @@
 			WHEN MEANS_SEQ = #{item.meansSeq} THEN #{item.meansUseYn}
 		</foreach>
 		END,
-		MEANS_ORDER = 
+		MEANS_ODR = 
 		CASE		
 		<foreach collection="list" item="item">
-			WHEN MEANS_SEQ = #{item.meansSeq} THEN #{item.meansOrder}
+			WHEN MEANS_SEQ = #{item.meansSeq} THEN #{item.meansOdr}
 		</foreach>
 		END,
-		MEANS_REMARK = 
+		MEANS_RMK = 
 		CASE		
 		<foreach collection="list" item="item">
-			WHEN MEANS_SEQ = #{item.meansSeq} THEN #{item.meansRemark}
+			WHEN MEANS_SEQ = #{item.meansSeq} THEN #{item.meansRmk}
 		</foreach>
 		END
 		WHERE MEANS_SEQ IN 
@@ -276,7 +277,7 @@
 		</foreach>
 	</update>
 	
-	<!-- 은행 list 삭제 -->
+	<!-- 사용수단 list 삭제 -->
 	<delete id="deleteMeansList" parameterType="java.util.List">
 		DELETE FROM MEANS
 		WHERE MEANS_SEQ IN 
@@ -287,27 +288,27 @@
 	
 	<!-- 가게부 기입 list insert -->
 	<insert id="insertRecordList" parameterType="java.util.List">
-		INSERT INTO money_record(		
+		INSERT INTO LEDGER_RCD(		
 			USER_SEQ,	
-			record_date,
-			position,	
-			content,	
-			pur_seq,
-			pur_dtl_seq,
+			RECORD_DATE,
+			POSITION,	
+			CONTENT,	
+			PURPOSE_SEQ,
+			PURPOSE_DTL_SEQ,
 			MEANS_SEQ,
-			move_seq,
-			money,
-			stats_yn,
-			edit_date,
-			reg_date
+			MOVE_SEQ,
+			MONEY,
+			STATS_YN,
+			EDIT_DATE,
+			REG_DATE
 		)VALUES
 		<foreach collection="list" item="item" separator="),(" open="(" close=")">
 			#{item.userSeq}, 
 			#{item.recordDate},
 			#{item.position},
 			#{item.content}, 
-			#{item.purSeq},	
-			#{item.purDtlSeq},
+			#{item.purposeSeq},	
+			#{item.purposeDtlSeq},
 			#{item.meansSeq}, 
 			#{item.moveSeq},						 
 			#{item.money},	
@@ -327,13 +328,13 @@
 				    SUM( 
 				      CASE
 				      WHEN MEANS_SEQ = #{item.meansSeq} THEN money
-				      WHEN move_seq = #{item.meansSeq} THEN ABS(money)
+				      WHEN MOVE_SEQ = #{item.meansSeq} THEN ABS(money)
 				      END
 				    )
 				  ,0)
-			  FROM money_record
+			  FROM LEDGER_RCD
 			  WHERE USER_SEQ = #{item.userSeq} 
-			  AND record_date <![CDATA[ < ]]>  #{item.startDate}
+			  AND RECORD_DATE <![CDATA[ < ]]>  #{item.startDate}
 			)AS ${item.meansNo}	
 		</foreach>		
 	</select>
@@ -341,43 +342,43 @@
 	<!-- 가계부 리스트 조회  -->
 	<select id="selectLedgerList" resultType="whiteMap" parameterType="whiteMap">
 		SELECT			
-			rec.record_seq AS recordSeq
-			,DATE_FORMAT(rec.record_date,'%Y-%m-%d %H:%i') AS recordDate
-			,IFNULL(rec.position, '') AS position
-			,rec.content
-			,rec.pur_seq AS purSeq
-			,pur.pur_type AS purType
-			,rec.pur_dtl_seq AS purDtlSeq
-			,rec.MEANS_SEQ AS meansSeq
-			,rec.move_seq AS moveSeq
-			,rec.money
-			,rec.stats_yn AS statsYn
-			,pur.purpose	AS purpose
-			,purDtl.pur_detail AS purDetail
+			LR.LEDGER_RCD_SEQ AS ledgerRcdSeq
+			,DATE_FORMAT(LR.RECORD_DATE,'%Y-%m-%d %H:%i') AS recordDate
+			,IFNULL(LR.POSITION, '') AS position
+			,LR.CONTENT	AS content
+			,LR.PURPOSE_SEQ AS purposeSeq
+			,P.PURPOSE_TP_CD AS purposeTpCd
+			,LR.PURPOSE_DTL_SEQ AS purposeDtlSeq
+			,LR.MEANS_SEQ AS meansSeq
+			,LR.MOVE_SEQ AS moveSeq
+			,LR.MONEY	AS money
+			,LR.STATS_YN AS statsYn
+			,P.PURPOSE_NM	AS purposeNm
+			,PD.PURPOSE_DTL_NM AS purposeDtlNm
 			,M.MEANS_NM	AS meansNm
 			,M.MEANS_DTL_NM	AS meansDtlNm
 			,M.MEANS_INFO AS meansInfo
 			,IFNULL(M.MEANS_USE_YN,'X') AS meansUseYn
-		FROM money_record rec
-		LEFT OUTER JOIN PURPOSE pur
-		ON rec.pur_seq = pur.pur_seq
-		LEFT OUTER JOIN purpose_detail purDtl
-		ON rec.pur_dtl_seq = purDtl.pur_dtl_seq
+		FROM LEDGER_RCD LR
+		LEFT OUTER JOIN PURPOSE P
+		ON LR.PURPOSE_SEQ = P.PURPOSE_SEQ
+		LEFT OUTER JOIN PURPOSE_DTL PD
+		ON LR.PURPOSE_DTL_SEQ = PD.PURPOSE_DTL_SEQ
 		LEFT OUTER JOIN MEANS M
-    	ON rec.MEANS_SEQ = M.MEANS_SEQ
-		WHERE rec.USER_SEQ = #{userSeq}
-		<if test="purSeq != null and purSeq != ''">
-		AND rec.pur_seq = #{purSeq}
+    	ON LR.MEANS_SEQ = M.MEANS_SEQ
+		WHERE LR.USER_SEQ = #{userSeq}
+		<if test="purposeSeq != null and purposeSeq != ''">
+		AND LR.PURPOSE_SEQ = #{purposeSeq}
 		</if>
-		<if test="purDtlSeq != null and purDtlSeq != ''">
-		AND rec.pur_dtl_seq = #{purDtlSeq}
+		<if test="purposeDtlSeq != null and purposeDtlSeq != ''">
+		AND LR.PURPOSE_DTL_SEQ = #{purposeDtlSeq}
 		</if>
 		<if test="meansSeq != null and meansSeq != ''">
-		AND rec.MEANS_SEQ = #{meansSeq}
+		AND LR.MEANS_SEQ = #{meansSeq}
 		</if>		
-		AND rec.record_date <![CDATA[ >= ]]> CONCAT(#{startDate}, ' 00:00:00')
-		AND rec.record_date <![CDATA[ <= ]]> CONCAT(#{endDate}, ' 23:59:59')
-		ORDER BY rec.record_date ASC,  rec.record_seq ASC
+		AND LR.RECORD_DATE <![CDATA[ >= ]]> CONCAT(#{startDate}, ' 00:00:00')
+		AND LR.RECORD_DATE <![CDATA[ <= ]]> CONCAT(#{endDate}, ' 23:59:59')
+		ORDER BY LR.RECORD_DATE ASC,  LR.LEDGER_RCD_SEQ ASC
 	</select>
 	
 	
@@ -391,13 +392,13 @@
 				    SUM( 
 				      CASE
 				      WHEN MEANS_SEQ = #{item.meansSeq} THEN money
-				      WHEN move_seq = #{item.meansSeq} THEN ABS(money)
+				      WHEN MOVE_SEQ = #{item.meansSeq} THEN ABS(money)
 				      END
 				    )
 				  ,0)
-			  FROM money_record
+			  FROM LEDGER_RCD
 			  WHERE USER_SEQ = #{item.userSeq} 
-			  AND record_date <![CDATA[ < ]]>  #{item.startDate}
+			  AND RECORD_DATE <![CDATA[ < ]]>  #{item.startDate}
 			)AS ${item.meansNm}	
 		</foreach>		
 	</select>	
@@ -405,116 +406,116 @@
 	<!-- 금전기록 리스트 조회  -->
 	<select id="selectRecordList" resultType="whiteMap" parameterType="whiteMap">
 		SELECT			
-			rec.record_seq AS recordSeq
-			,DATE_FORMAT(rec.record_date,'%Y-%m-%d %H:%i') AS recordDate
-			,IFNULL(rec.position, '') AS position
-			,rec.content
-			,rec.pur_seq AS purSeq
-			,pur.pur_type AS purType
-			,IFNULL(rec.pur_dtl_seq, '') AS purDtlSeq
-			,rec.MEANS_SEQ AS meansSeq
-			,IFNULL(rec.move_seq, '') AS moveSeq
-			,rec.money
-			,rec.stats_yn AS statsYn
-			,IFNULL(pur.purpose, 'move')	AS purpose
-			,IFNULL(purDtl.pur_detail,'') AS purDetail
+			LR.LEDGER_RCD_SEQ AS ledgerRcdSeq
+			,DATE_FORMAT(LR.RECORD_DATE,'%Y-%m-%d %H:%i') AS recordDate
+			,IFNULL(LR.POSITION, '') AS position
+			,LR.CONTENT	AS content
+			,LR.PURPOSE_SEQ AS purposeSeq
+			,P.PURPOSE_TP_CD AS purposeTpCd
+			,IFNULL(LR.PURPOSE_DTL_SEQ, '') AS purposeDtlSeq
+			,LR.MEANS_SEQ AS meansSeq
+			,IFNULL(LR.MOVE_SEQ, '') AS moveSeq
+			,LR.MONEY AS money
+			,LR.STATS_YN AS statsYn
+			,IFNULL(P.PURPOSE_NM, 'move')	AS purposeNm
+			,IFNULL(PD.PURPOSE_DTL_NM,'') AS purposeDtlNm
 			,IFNULL(M.MEANS_NM, 'cash')	AS meansNm
 			,IFNULL(M.MEANS_INFO, 'cash')	AS meansInfo
 			,IFNULL(M.MEANS_USE_YN,'X') AS meansUseYn
 			<if test="searchType == 'recent'">
-			,DATE_FORMAT(rec.edit_date,'%Y-%m-%d %H:%i:%d') AS editDate
-			,DATE_FORMAT(rec.reg_date,'%Y-%m-%d %H:%i:%d') AS regDate
+			,DATE_FORMAT(LR.EDIT_DATE,'%Y-%m-%d %H:%i:%d') AS editDate
+			,DATE_FORMAT(LR.REG_DATE,'%Y-%m-%d %H:%i:%d') AS regDate
 			</if>
-		FROM money_record rec
-		LEFT OUTER JOIN PURPOSE pur
-		ON rec.pur_seq = pur.pur_seq
-		LEFT OUTER JOIN purpose_detail purDtl
-		ON rec.pur_dtl_seq = purDtl.pur_dtl_seq
+		FROM LEDGER_RCD LR
+		LEFT OUTER JOIN PURPOSE P
+		ON LR.PURPOSE_SEQ = P.PURPOSE_SEQ
+		LEFT OUTER JOIN PURPOSE_DTL PD
+		ON LR.PURPOSE_DTL_SEQ = PD.PURPOSE_DTL_SEQ
 		LEFT OUTER JOIN MEANS M
-    	ON rec.MEANS_SEQ = M.MEANS_SEQ
-		WHERE rec.USER_SEQ = #{userSeq}
+    	ON LR.MEANS_SEQ = M.MEANS_SEQ
+		WHERE LR.USER_SEQ = #{userSeq}
 		<choose>
 		<when test="searchType == 'recent'">
-		AND rec.reg_date <![CDATA[ >= ]]> DATE_ADD(NOW(), INTERVAL -${schdTime} HOUR)
-		AND rec.reg_date <![CDATA[ <= ]]> NOW()
-		ORDER BY rec.edit_date DESC,  rec.record_seq DESC
+		AND LR.REG_DATE <![CDATA[ >= ]]> DATE_ADD(NOW(), INTERVAL -${schdTime} HOUR)
+		AND LR.REG_DATE <![CDATA[ <= ]]> NOW()
+		ORDER BY LR.EDIT_DATE DESC,  LR.LEDGER_RCD_SEQ DESC
 		</when>
 		<otherwise>
-		AND rec.record_date <![CDATA[ >= ]]> #{startDate}
-		AND rec.record_date <![CDATA[ <= ]]> #{endDate}
-		ORDER BY rec.record_date ASC,  rec.record_seq ASC
+		AND LR.RECORD_DATE <![CDATA[ >= ]]> #{startDate}
+		AND LR.RECORD_DATE <![CDATA[ <= ]]> #{endDate}
+		ORDER BY LR.RECORD_DATE ASC,  LR.LEDGER_RCD_SEQ ASC
 		</otherwise>
 		</choose>
 	</select>
 	
 	<!-- 금전기록 list 수정 -->
 	<update id="updateRecordList" parameterType="java.util.List">		
-		UPDATE money_record
-		SET record_date = 
+		UPDATE LEDGER_RCD
+		SET RECORD_DATE = 
 		CASE		
 		<foreach collection="list" item="item">
-			WHEN record_seq = #{item.recordSeq} THEN #{item.recordDate}
+			WHEN LEDGER_RCD_SEQ = #{item.ledgerRcdSeq} THEN #{item.recordDate}
 		</foreach>		
 		END,	
-		content = 
+		CONTENT = 
 		CASE		
 		<foreach collection="list" item="item">
-			WHEN record_seq = #{item.recordSeq} THEN #{item.content}
+			WHEN LEDGER_RCD_SEQ = #{item.ledgerRcdSeq} THEN #{item.content}
 		</foreach>		
 		END,	
-		position = 
+		POSITION = 
 		CASE		
 		<foreach collection="list" item="item">
-			WHEN record_seq = #{item.recordSeq} THEN #{item.position}
+			WHEN LEDGER_RCD_SEQ = #{item.ledgerRcdSeq} THEN #{item.position}
 		</foreach>		
 		END,		
-		pur_seq = 
+		PURPOSE_SEQ = 
 		CASE		
 		<foreach collection="list" item="item">
-			WHEN record_seq = #{item.recordSeq} THEN #{item.purSeq}
+			WHEN LEDGER_RCD_SEQ = #{item.ledgerRcdSeq} THEN #{item.purposeSeq}
 		</foreach>		
 		END,		
-		pur_dtl_seq = 
+		PURPOSE_DTL_SEQ = 
 		CASE		
 		<foreach collection="list" item="item">
-			WHEN record_seq = #{item.recordSeq} THEN #{item.purDtlSeq}		
+			WHEN LEDGER_RCD_SEQ = #{item.ledgerRcdSeq} THEN #{item.purposeDtlSeq}		
 		</foreach>		
 		END,
 		MEANS_SEQ = 
 		CASE		
 		<foreach collection="list" item="item">
-			WHEN record_seq = #{item.recordSeq} THEN #{item.meansSeq}					
+			WHEN LEDGER_RCD_SEQ = #{item.ledgerRcdSeq} THEN #{item.meansSeq}					
 		</foreach>		
 		END,		
-		move_seq = 
+		MOVE_SEQ = 
 		CASE		
 		<foreach collection="list" item="item">
 			<choose>				
 				<when test="item.moveSeq == ''">
-					WHEN record_seq = #{item.recordSeq} THEN NULL
+					WHEN LEDGER_RCD_SEQ = #{item.ledgerRcdSeq} THEN NULL
 				</when>				
 				<otherwise>
-					WHEN record_seq = #{item.recordSeq} THEN #{item.moveSeq}
+					WHEN LEDGER_RCD_SEQ = #{item.ledgerRcdSeq} THEN #{item.moveSeq}
 				</otherwise>
 			</choose>			
 		</foreach>		
 		END,		
-		money = 
+		MONEY = 
 		CASE		
 		<foreach collection="list" item="item">
-			WHEN record_seq = #{item.recordSeq} THEN #{item.money}
+			WHEN LEDGER_RCD_SEQ = #{item.ledgerRcdSeq} THEN #{item.money}
 		</foreach>		
 		END,
-		stats_yn = 
+		STATS_YN = 
 		CASE		
 		<foreach collection="list" item="item">
-			WHEN record_seq = #{item.recordSeq} THEN #{item.statsYn}
+			WHEN LEDGER_RCD_SEQ = #{item.ledgerRcdSeq} THEN #{item.statsYn}
 		</foreach>		
 		END,
-		edit_date =	now()
-		WHERE record_seq IN 
+		EDIT_DATE =	now()
+		WHERE LEDGER_RCD_SEQ IN 
 		<foreach collection="list" item="item" separator="," open="(" close=")">
-			#{item.recordSeq}
+			#{item.ledgerRcdSeq}
 		</foreach>
 		AND USER_SEQ IN 
 		<foreach collection="list" item="item" separator="," open="(" close=")">
@@ -524,10 +525,10 @@
 	
 	<!-- 금전기록 list 삭제 -->
 	<delete id="deleteRecordList" parameterType="java.util.List">
-		DELETE FROM money_record
-		WHERE record_seq IN 
+		DELETE FROM LEDGER_RCD
+		WHERE LEDGER_RCD_SEQ IN 
 		<foreach collection="list" item="item" separator="," open="(" close=")">
-			#{item.recordSeq}
+			#{item.ledgerRcdSeq}
 		</foreach>
 		AND USER_SEQ IN 
 		<foreach collection="list" item="item" separator="," open="(" close=")">
@@ -538,25 +539,25 @@
 	<!-- 가계부 첫 시작날짜 조회 -->
 	<select id="selectFirstRecordDate" resultType="whiteMap" parameterType="whiteMap">
 		SELECT
-			DATE_FORMAT(mr.record_date,'%Y-%m-%d') AS firstDate
-		FROM money_record mr		
-		WHERE mr.USER_SEQ = #{userSeq}
-	    ORDER BY mr.record_date ASC
+			DATE_FORMAT(LR.RECORD_DATE,'%Y-%m-%d') AS firstDate
+		FROM LEDGER_RCD LR		
+		WHERE LR.USER_SEQ = #{userSeq}
+	    ORDER BY LR.RECORD_DATE ASC
 	    Limit 1
 	</select>	
 	
 	<!-- 가계부 통계 월별 수입지출 이전 합계 -->
 	<select id="selectPrevAmount" resultType="int" parameterType="whiteMap">
 		SELECT
-			IFNULL(SUM(mr.money), 0) AS amount
-		FROM money_record mr
-		INNER JOIN PURPOSE p
-			ON p.pur_seq = mr.pur_seq
-		INNER JOIN purpose_detail pd
-			ON pd.pur_dtl_seq = mr.pur_dtl_seq
-		WHERE mr.USER_SEQ = #{userSeq}		
-		AND p.pur_type != 'LED003'   
-		AND mr.record_date  <![CDATA[ < ]]> #{startDate}
+			IFNULL(SUM(LR.MONEY), 0) AS amount
+		FROM LEDGER_RCD LR
+		INNER JOIN PURPOSE P
+			ON P.PURPOSE_SEQ = LR.PURPOSE_SEQ
+		INNER JOIN PURPOSE_DTL PD
+			ON PD.PURPOSE_DTL_SEQ = LR.PURPOSE_DTL_SEQ
+		WHERE LR.USER_SEQ = #{userSeq}		
+		AND P.PURPOSE_TP_CD != 'LED003'   
+		AND LR.RECORD_DATE  <![CDATA[ < ]]> #{startDate}
 	</select>
 	
 	<!-- 가계부 통계 월별 수입지출 -->
@@ -564,72 +565,72 @@
 		<foreach collection="list" item="item" separator="UNION ALL" >		
 			SELECT
 				#{item.startDate} 		AS startDate
-				,A.purTypeCd			AS purTypeCd
-				,SUM(A.money) 			AS money
+				,A.PURPOSE_TP_CD		AS purposeTpCd
+				,SUM(A.MONEY) 			AS money
 			FROM 
 			(
 				SELECT				
-					p.pur_type  		AS purTypeCd
-					,SUM(mr.money) 		AS money
-				FROM money_record mr
-				INNER JOIN PURPOSE p
-					ON p.pur_seq = mr.pur_seq
-		    	INNER JOIN purpose_detail pd
-		      		ON pd.pur_dtl_seq = mr.pur_dtl_seq			
-		    	WHERE mr.USER_SEQ = #{item.userSeq}	
-		    	AND mr.stats_yn = 'Y'	    	
-		    	AND p.pur_type != 'LED003'   
-				AND mr.record_date   <![CDATA[ >= ]]>  #{item.startDate}
-				AND mr.record_date   <![CDATA[ <= ]]>  #{item.endDate}
-				GROUP BY p.pur_type			
+					p.PURPOSE_TP_CD  	
+					,SUM(LR.MONEY) 		AS money
+				FROM LEDGER_RCD LR
+				INNER JOIN PURPOSE P
+					ON P.PURPOSE_SEQ = LR.PURPOSE_SEQ
+		    	INNER JOIN PURPOSE_DTL PD
+		      		ON PD.PURPOSE_DTL_SEQ = LR.PURPOSE_DTL_SEQ			
+		    	WHERE LR.USER_SEQ = #{item.userSeq}	
+		    	AND LR.STATS_YN = 'Y'	    	
+		    	AND P.PURPOSE_TP_CD != 'LED003'   
+				AND LR.RECORD_DATE   <![CDATA[ >= ]]>  #{item.startDate}
+				AND LR.RECORD_DATE   <![CDATA[ <= ]]>  #{item.endDate}
+				GROUP BY P.PURPOSE_TP_CD			
 				UNION ALL			
 				SELECT 
-					'LED001' 			AS purTypeCd
-					,0 					AS money				
+					'LED001' 			AS PURPOSE_TP_CD
+					,0 					AS MONEY				
 				UNION ALL			
 		      	SELECT 
-		      		'LED002' 			AS purTypeCd
-					,0 					AS money
+		      		'LED002' 			AS PURPOSE_TP_CD
+					,0 					AS MONEY
 			) AS A
-			GROUP BY purTypeCd
+			GROUP BY PURPOSE_TP_CD
 		</foreach>
 	</select>
 	
 	<!-- 가계부 통계 월 목적별 수입지출 -->
 	<select id="selectLedgerMonthPurStats" resultType="whiteMap" parameterType="whiteMap">
 		SELECT
-			p.purpose         	AS purpose
-			,p.pur_seq          AS purSeq
-			,ABS(SUM(mr.money)) AS money		
-		FROM money_record mr
-		INNER JOIN PURPOSE p
-			ON p.pur_seq = mr.pur_seq
-		INNER JOIN purpose_detail pd
-			ON pd.pur_dtl_seq = mr.pur_dtl_seq	
-		WHERE mr.USER_SEQ = #{userSeq}
-		AND mr.record_date   <![CDATA[ >= ]]> #{startDate}
-		AND mr.record_date   <![CDATA[ <= ]]> #{endDate}
-		AND mr.stats_yn = 'Y'
-		AND p.pur_type = #{purType}
-		GROUP BY mr.pur_seq, p.pur_seq
-		ORDER BY money DESC
+			P.PURPOSE_NM       	AS purposeNm
+			,P.PURPOSE_SEQ          AS purposeSeq
+			,ABS(SUM(LR.MONEY)) AS money		
+		FROM LEDGER_RCD LR
+		INNER JOIN PURPOSE P
+			ON P.PURPOSE_SEQ = LR.PURPOSE_SEQ
+		INNER JOIN PURPOSE_DTL PD
+			ON PD.PURPOSE_DTL_SEQ = LR.PURPOSE_DTL_SEQ	
+		WHERE LR.USER_SEQ = #{userSeq}
+		AND LR.RECORD_DATE   <![CDATA[ >= ]]> #{startDate}
+		AND LR.RECORD_DATE   <![CDATA[ <= ]]> #{endDate}
+		AND LR.STATS_YN = 'Y'
+		AND P.PURPOSE_TP_CD = #{purposeTpCd}
+		GROUP BY LR.PURPOSE_SEQ, P.PURPOSE_SEQ
+		ORDER BY LR.MONEY DESC
 	</select>
 	
 	<!-- 가계부 통계 월 목적별 수입지출 -->
 	<select id="selectLedgerMonthPurDtlStats" resultType="whiteMap" parameterType="whiteMap">
 		SELECT
-			pd.pur_detail       AS purDetail			
-			,ABS(SUM(mr.money)) AS money		
-		FROM money_record mr		
-		INNER JOIN purpose_detail pd
-			ON pd.pur_dtl_seq = mr.pur_dtl_seq	
-		WHERE mr.USER_SEQ = #{userSeq}
-		AND mr.pur_seq = #{purSeq}
-		AND mr.record_date   <![CDATA[ >= ]]> #{startDate}
-		AND mr.record_date   <![CDATA[ <= ]]> #{endDate}
-		AND mr.stats_yn = 'Y'
-		GROUP BY pd.pur_detail
-		ORDER BY money DESC
+			PD.PURPOSE_DTL_NM       AS purposeDtlNm			
+			,ABS(SUM(LR.MONEY)) AS money		
+		FROM LEDGER_RCD LR		
+		INNER JOIN PURPOSE_DTL PD
+			ON PD.PURPOSE_DTL_SEQ = LR.PURPOSE_DTL_SEQ	
+		WHERE LR.USER_SEQ = #{userSeq}
+		AND LR.PURPOSE_SEQ = #{purposeSeq}
+		AND LR.RECORD_DATE   <![CDATA[ >= ]]> #{startDate}
+		AND LR.RECORD_DATE   <![CDATA[ <= ]]> #{endDate}
+		AND LR.STATS_YN = 'Y'
+		GROUP BY PD.PURPOSE_DTL_NM
+		ORDER BY LR.MONEY DESC
 	</select>
 	
 	

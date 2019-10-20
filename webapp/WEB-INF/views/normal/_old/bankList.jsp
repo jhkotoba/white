@@ -35,11 +35,11 @@ function fnGrid(data){
 					return $("<button>").attr("id", "bankAdd").addClass("btn-gray trs size-sm").text("+").on("click", function(){
 						bankList.push({
 							meansInfo:"",
-							meansOrder:  $("#bankList").jsGrid("option", "data").length+1,
+							meansOdr:  $("#bankList").jsGrid("option", "data").length+1,
 							meansSeq:new Date().getTime(),
 							meansNm:"",
 							meansDtlNm: "",
-							meansRemark: "",
+							meansRmk: "",
 							meansUseYn:"N",
 							state:"insert"});		
 						bankNoIdx = cfnNoIdx(bankList, "meansSeq");
@@ -48,11 +48,11 @@ function fnGrid(data){
 				},				
                 itemTemplate: function(value, item) {
                     let chk = $("<input>").attr("type", "checkbox").attr("name", "check")
-                    .data("meansSeq", item.meansSeq).data("meansOrder", item.bankOrder).on("change", function() {
+                    .data("meansSeq", item.meansSeq).data("meansOdr", item.bankOrder).on("change", function() {
                     	let idx = bankNoIdx[item.meansSeq];
                     	let cIdx = cloneNoIdx[item.meansSeq];
                 			
-               			if(isEmpty(item.meansOrder)){
+               			if(isEmpty(item.meansOdr)){
                	    		$("#bankList").jsGrid("deleteItem", item);
                	    		delete bankNoIdx[item.meansSeq];               	    		
                	    	}else{
@@ -84,9 +84,9 @@ function fnGrid(data){
                     return chk;
                 }
 			},
-			{ title:"순서",	name:"meansOrder",	type:"text", align:"center", width: "3%",
+			{ title:"순서",	name:"meansOdr",	type:"text", align:"center", width: "3%",
 				itemTemplate: function(value, item){
-					return fnRefreshedSync(item, "meansOrder", "span");
+					return fnRefreshedSync(item, "meansOdr", "span");
 				}
 			},
 			{ title:"사용수단",	name:"meansNm",		type:"text", align:"center", width: "12%", 
@@ -104,9 +104,9 @@ function fnGrid(data){
 					return fnRefreshedSync(item, "meansInfo", "input");
 				}
 			},
-			{ title:"비고",	name:"meansRemark",	type:"text", align:"center", width: "15%",
+			{ title:"비고",	name:"meansRmk",	type:"text", align:"center", width: "15%",
 				itemTemplate: function(value, item){					
-					return fnRefreshedSync(item, "meansRemark", "input");
+					return fnRefreshedSync(item, "meansRmk", "input");
 				}
 			},
 			{ title:"사용여부", name:"meansUseYn", align:"center", width: "5%",
@@ -163,7 +163,7 @@ function fnGrid(data){
 			if(isEmpty($(e).val())){
 				switch($(e).data("name")){
 				case "meansDtlNm" :
-				case "meansRemark" :
+				case "meansRmk" :
 				case "meansInfo" :
 					break;
 				default :

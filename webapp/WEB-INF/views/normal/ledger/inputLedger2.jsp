@@ -29,11 +29,39 @@ function fnInit(){
 		mode : ["insert"],
 		//그리드 생성시 필요한 아이템
 		items : {
-			select : [				
-				{name: "purSeq", opList: vals.purList, value: "purSeq", text: "purpose", dataValue: "purType", childColumnName:"purDtlSeq", childValueName: "purDtlSeq"},				
-				{name: "purDtlSeq", opList: vals.purDtlList, value: "purDtlSeq", text: "purDetail", parentColumnName:"purSeq", parentValueName:"purSeq", filterValueName : "purSeq"},				
-				{name: "meansSeq", opList : vals.meansList, value : "meansSeq", text:["meansNm", "meansDtlNm", "meansInfo"], textJoin:" "},
-				{name: "moveSeq", opList : vals.meansList, value : "meansSeq", text:["meansNm", "meansDtlNm", "meansInfo"], textJoin:" "},
+			select : [
+				{				
+					name: "purposeSeq", 
+					opList: vals.purList,
+					value: "purposeSeq",
+					text: "purposeNm",
+					dataValue: "purposeTpCd",
+					childColumnName:"purposeDtlSeq",
+					childValueName: "purposeDtlSeq"
+				},				
+				{
+					name: "purposeDtlSeq",
+					opList: vals.purDtlList,
+					value: "purposeDtlSeq",
+					text: "purposeDtlNm",
+					parentColumnName:"purposeSeq",
+					parentValueName:"purposeSeq",
+					filterValueName : "purposeSeq"
+				},				
+				{
+					name: "meansSeq",
+					opList : vals.meansList,
+					value : "meansSeq",
+					text:["meansNm", "meansDtlNm", "meansInfo"],
+					textJoin:" "
+				},
+				{
+					name: "moveSeq",
+					opList : vals.meansList,
+					value : "meansSeq",
+					text:["meansNm", "meansDtlNm", "meansInfo"],
+					textJoin:" "
+				},
 			]
 		},
 		//그리드 필드 정보
@@ -42,8 +70,8 @@ function fnInit(){
 			{ title:"날짜", name:"recordDate", tag:"input", width: "7%", align:"center"},
 			{ title:"위치", name:"position", tag:"input", width: "10%", align:"center"},
 			{ title:"내용", name:"content", tag:"input", width: "16%", align:"center"},			
-			{ title:"목적", name:"purSeq", tag:"select", width: "12%", align:"center"},
-			{ title:"상세목적", name:"purDtlSeq", tag:"select", width: "11%", align:"center"},
+			{ title:"목적", name:"purposeSeq", tag:"select", width: "12%", align:"center"},
+			{ title:"상세목적", name:"purposeDtlSeq", tag:"select", width: "11%", align:"center"},
 			{ title:"사용수단", name:"meansSeq", tag:"select", width: "14%", align:"center"},
 			{ title:"이동처", name:"moveSeq", tag:"select", width: "14%", align:"center"},
 			{ title:"수입/지출/이동", name:"money", tag:"input", type:"currency", width: "8%", align:"right"},

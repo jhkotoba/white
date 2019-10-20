@@ -44,17 +44,17 @@
 			AUTH_SEQ AS authSeq,
 			AUTH_NM AS authNm,
 			AUTH_CMT AS authCmt,
-			AUTH_ORDER AS authOrder
+			AUTH_ODR AS authOdr
  		FROM AUTH 		
- 		ORDER BY AUTH_ORDER ASC
+ 		ORDER BY AUTH_ODR ASC
 	</select>
 	
 	<select id="selectUserAuth" resultType="WhiteMap" parameterType="WhiteMap">
 		SELECT
-			PA.POS_AUTH_SEQ AS posAuthSeq,
+			PA.GRANT_AUTH_SEQ AS posAuthSeq,
 			PA.AUTH_SEQ AS authNmSeq,
 			A.AUTH_NM AS authNm
-		FROM POS_AUTH PA
+		FROM GRANT_AUTH PA
 		LEFT OUTER JOIN AUTH A
 		ON A.AUTH_SEQ = PA.AUTH_SEQ
 		WHERE PA.USER_SEQ = #{no}   		
@@ -68,10 +68,10 @@
 	  		UM.UPPER_NM AS upperNm,
 	 		UM.UPPER_URL AS upperUrl,
 	 		UM.SHOW_YN AS showYn,
-	 		UM.UPPER_ORDER AS upperOrder,
+	 		UM.UPPER_ODR AS upperOdr,
 			UM.AUTH_SEQ AS authSeq			
 		FROM UPPER_MENU UM
-		ORDER BY UM.UPPER_ORDER
+		ORDER BY UM.UPPER_ODR
 	</select>
 	
 	<!--  -->
@@ -83,12 +83,12 @@
 			LM.LOWER_URL AS lowerUrl,
 			LM.AUTH_SEQ AS authSeq,
 			LM.SHOW_YN AS showYn,
-			LM.LOWER_ORDER AS lowerOrder
+			LM.LOWER_ODR AS lowerOdr
 		FROM LOWER_MENU AS LM
 		<if test="upperSeq != null and upperSeq != ''">
 		WHERE LM.UPPER_SEQ = #{upperSeq}
 		</if>		
-		ORDER BY LM.LOWER_ORDER		
+		ORDER BY LM.LOWER_ODR		
 	</select>
 	
 	<!--  -->
@@ -100,14 +100,14 @@
 			LM.LOWER_URL AS lowerUrl,
 			LM.AUTH_SEQ AS authSeq,
 			LM.SHOW_YN AS showYn,
-			LM.LOWER_ORDER AS lowerOrder
+			LM.LOWER_ODR AS lowerOdr
 		FROM LOWER_MENU AS LM	
 		WHERE LM.UPPER_SEQ = #{upperSeq}		
-		ORDER BY LM.LOWER_ORDER	
+		ORDER BY LM.LOWER_ODR	
 	</select>	
 	
 	<insert id="insertPosAuthList" parameterType="java.util.List">
-		INSERT INTO POS_AUTH(		
+		INSERT INTO GRANT_AUTH(		
 			USER_SEQ,	
 			AUTH_SEQ
 		)VALUES
@@ -118,7 +118,7 @@
 	</insert>
 	
 	<delete id="deletePosAuthList" parameterType="whiteMap">
-		DELETE FROM POS_AUTH
+		DELETE FROM GRANT_AUTH
 		WHERE USER_SEQ = #{userNo}
 		AND AUTH_SEQ IN (${remove})
 	</delete>
@@ -130,14 +130,14 @@
 			UPPER_URL,
 			AUTH_SEQ,
 			SHOW_YN,
-			UPPER_ORDER
+			UPPER_ODR
 		)VALUES
 		<foreach collection="list" item="item" separator="),(" open="(" close=")">
 			#{item.upperNm}, 
 			#{item.upperUrl},
 			#{item.authSeq},
 			#{item.showYn},
-			#{item.upperOrder}			
+			#{item.upperOdr}			
 		</foreach>	
 	</insert>
 	
@@ -169,10 +169,10 @@
 			WHEN UPPER_SEQ = #{item.upperSeq} THEN #{item.showYn}
 		</foreach>		
 		END,
-		UPPER_ORDER = 
+		UPPER_ODR = 
 		CASE		
 		<foreach collection="list" item="item">
-			WHEN UPPER_SEQ = #{item.upperSeq} THEN #{item.upperOrder}
+			WHEN UPPER_SEQ = #{item.upperSeq} THEN #{item.upperOdr}
 		</foreach>		
 		END
 		WHERE UPPER_SEQ IN 
@@ -209,7 +209,7 @@
 			LOWER_URL,
 			AUTH_SEQ,
 			SHOW_YN,
-			LOWER_ORDER
+			LOWER_ODR
 		)VALUES
 		<foreach collection="list" item="item" separator="),(" open="(" close=")">
 			#{item.upperSeq}, 
@@ -217,7 +217,7 @@
 			#{item.lowerUrl},
 			#{item.authSeq},
 			#{item.showYn},
-			#{item.lowerOrder}			
+			#{item.lowerOdr}			
 		</foreach>	
 	</insert>
 	
@@ -255,10 +255,10 @@
 			WHEN LOWER_SEQ = #{item.lowerSeq} THEN #{item.showYn}
 		</foreach>		
 		END,
-		LOWER_ORDER = 
+		LOWER_ODR = 
 		CASE		
 		<foreach collection="list" item="item">
-			WHEN LOWER_SEQ = #{item.lowerSeq} THEN #{item.lowerOrder}
+			WHEN LOWER_SEQ = #{item.lowerSeq} THEN #{item.lowerOdr}
 		</foreach>		
 		END
 		WHERE LOWER_SEQ IN 
@@ -282,12 +282,12 @@
 		INSERT INTO AUTH(		
 			AUTH_NM,
 			AUTH_CMT,
-			AUTH_ORDER
+			AUTH_ODR
 		)VALUES
 		<foreach collection="list" item="item" separator="),(" open="(" close=")">
 			#{item.authNm}, 
 			#{item.authCmt}, 
-			#{item.authOrder}		
+			#{item.authOdr}		
 		</foreach>	
 	</insert>
 	
@@ -307,10 +307,10 @@
 			WHEN AUTH_SEQ = #{item.authSeq} THEN #{item.authCmt}
 		</foreach>
 		END,
-		AUTH_ORDER = 
+		AUTH_ODR = 
 		CASE		
 		<foreach collection="list" item="item">
-			WHEN AUTH_SEQ = #{item.authSeq} THEN #{item.authOrder}
+			WHEN AUTH_SEQ = #{item.authSeq} THEN #{item.authOdr}
 		</foreach>		
 		END
 		WHERE AUTH_SEQ IN 
@@ -324,7 +324,7 @@
 	<select id="selectIsUsedAuth" resultType="int" parameterType="java.util.List">
 		SELECT
 		(
-			SELECT COUNT(1) FROM POS_AUTH
+			SELECT COUNT(1) FROM GRANT_AUTH
 			WHERE AUTH_SEQ IN
 			<foreach collection="list" item="item" separator="," open="(" close=")">
 				#{item.authSeq}

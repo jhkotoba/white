@@ -61,7 +61,7 @@ public class LedgerService {
 		StringBuffer sb = new StringBuffer();
 		
 		for(int i=0; i<purList.size(); i++) {			
-			sb.append(purList.get(i).get("purSeq")).append(",");
+			sb.append(purList.get(i).get("purposeSeq")).append(",");
 			
 			if("delete".equals(purList.get(i).get("state"))) {
 				deleteList.add(purList.get(i));
@@ -89,8 +89,8 @@ public class LedgerService {
 				
 				WhiteMap map = new WhiteMap();
 				map.put("tableNm", "PURPOSE");
-				map.put("firstSeqNm", "pur_seq");				
-				map.put("columnNm", "pur_order");
+				map.put("firstSeqNm", "PURPOSE_SEQ");				
+				map.put("columnNm", "PURPOSE_ODR");
 				map.put("userSeq", param.getString("userSeq"));
 				whiteService.updateSortTable(map);
 			}
@@ -115,7 +115,7 @@ public class LedgerService {
 		StringBuffer sb = new StringBuffer();
 		
 		for(int i=0; i<purDtlList.size(); i++) {
-			sb.append(purDtlList.get(i).get("purDtlSeq")).append(",");
+			sb.append(purDtlList.get(i).get("purposeDtlSeq")).append(",");
 			
 			if("delete".equals(purDtlList.get(i).get("state"))) {
 				deleteList.add(purDtlList.get(i));
@@ -142,11 +142,11 @@ public class LedgerService {
 				ledgerMapper.deletePurDtlList(deleteList);
 				
 				WhiteMap map = new WhiteMap();
-				map.put("tableNm", "purpose_detail");
-				map.put("firstSeqNm", "pur_dtl_seq");				
-				map.put("secondSeqNm", "pur_seq");				
-				map.put("secondSeq", deleteList.get(0).getString("purSeq"));				
-				map.put("columnNm", "pur_dtl_order");
+				map.put("tableNm", "PURPOSE_DTL");
+				map.put("firstSeqNm", "PURPOSE_DTL_SEQ");				
+				map.put("secondSeqNm", "PURPOSE_SEQ");				
+				map.put("secondSeq", deleteList.get(0).getString("purposeSeq"));				
+				map.put("columnNm", "PURPOSE_DTL_ODR");
 				map.put("userSeq", param.getString("userSeq"));
 				whiteService.updateSortTable(map);
 			}
@@ -212,7 +212,7 @@ public class LedgerService {
 				WhiteMap map = new WhiteMap();
 				map.put("tableNm", "MEANS");
 				map.put("firstSeqNm", "MEANS_SEQ");				
-				map.put("columnNm", "MEANS_ORDER");
+				map.put("columnNm", "MEANS_ODR");
 				map.put("userSeq", param.getString("userSeq"));
 				whiteService.updateSortTable(map);
 			}
@@ -244,9 +244,9 @@ public class LedgerService {
 		
 		List<WhiteMap> purList = this.selectPurList(param);
 		
-		WhiteMap purSeqMap = White.convertListToMap(purList, "purSeq", "purpose");	
-		WhiteMap purTypeMap = White.convertListToMap(purList, "purSeq", "purType");	
-		WhiteMap purDtlSeqMap = White.convertListToMap(this.selectPurDtlList(param), "purDtlSeq", "purSeq");
+		WhiteMap purSeqMap = White.convertListToMap(purList, "purposeSeq", "purpose");	
+		WhiteMap purTbCdMap = White.convertListToMap(purList, "purposeSeq", "purposeTpCd");	
+		WhiteMap purDtlSeqMap = White.convertListToMap(this.selectPurDtlList(param), "purposeDtlSeq", "purposeSeq");
 		WhiteMap meansSeqMap = White.convertListToMap(this.selectMeansList(param), "meansSeq", "meansNm");
 		
 		String str = null;
@@ -271,11 +271,11 @@ public class LedgerService {
 			if(meansSeqMap.get(str) == null) return -5;			
 			
 			//목적 검사
-			str = list.get(i).getString("purSeq");			
+			str = list.get(i).getString("purposeSeq");			
 			if(purSeqMap.get(str) == null) return -6;
 			
 			//목적타입이 이동인 경우 검사
-			if("LED003".equals(purTypeMap.get(str))) {
+			if("LED003".equals(purTbCdMap.get(str))) {
 				String moveSeq = list.get(i).getString("moveSeq");
 				if(meansSeqMap.get(moveSeq) == null) return -7;				
 				if(moveSeq.equals(list.get(i).getString("meansSeq"))) return -8;
@@ -287,16 +287,16 @@ public class LedgerService {
 			}
 			
 			//상세목적 검사
-			str = list.get(i).getString("purDtlSeq");			
+			str = list.get(i).getString("purposeDtlSeq");			
 			if(!"".equals(str)) {
-				if(!list.get(i).getString("purSeq").equals(purDtlSeqMap.get(str))) return -10;
+				if(!list.get(i).getString("purposeSeq").equals(purDtlSeqMap.get(str))) return -10;
 			}		
 			
 			//금액 검사
 			str = list.get(i).getString("money");
 			try {
 				int money = Integer.parseInt(str);
-				switch(purTypeMap.get(list.get(i).getString("purSeq")).toString()) {
+				switch(purTbCdMap.get(list.get(i).getString("purposeSeq")).toString()) {
 				case "LED001":
 					if(money <= 0) return -11; break;
 				case "LED002":
@@ -345,9 +345,9 @@ public class LedgerService {
 			
 			List<WhiteMap> purList = this.selectPurList(param);
 			
-			WhiteMap purSeqMap = White.convertListToMap(purList, "purSeq", "purpose");	
-			WhiteMap purTypeMap = White.convertListToMap(purList, "purSeq", "purType");	
-			WhiteMap purDtlSeqMap = White.convertListToMap(this.selectPurDtlList(param), "purDtlSeq", "purSeq");
+			WhiteMap purSeqMap = White.convertListToMap(purList, "purposeSeq", "purpose");	
+			WhiteMap purTbCdMap = White.convertListToMap(purList, "purposeSeq", "purposeTpCd");	
+			WhiteMap purDtlSeqMap = White.convertListToMap(this.selectPurDtlList(param), "purposeDtlSeq", "purposeSeq");
 			WhiteMap meansSeqMap = White.convertListToMap(this.selectMeansList(param), "meansSeq", "meansNm");
 			
 			String str = null;		
@@ -380,13 +380,13 @@ public class LedgerService {
 				}
 				
 				//목적 검사
-				str = updateList.get(i).getString("purSeq");			
+				str = updateList.get(i).getString("purposeSeq");			
 				if(purSeqMap.get(str) == null) {
 					throw new RuntimeException("목적이 선택되어 있지 않거나 잘못되었습니다.");
 				}
 				
 				//목적타입이 이동인 경우 검사
-				if("LED003".equals(purTypeMap.get(str))) {
+				if("LED003".equals(purTbCdMap.get(str))) {
 					String moveSeq = updateList.get(i).getString("moveSeq");
 					if(meansSeqMap.get(moveSeq) == null) {
 						throw new RuntimeException("목적이 금액이동이고 받는곳이 선택되어있지 않거나 잘못되었습니다.");
@@ -405,9 +405,9 @@ public class LedgerService {
 				}
 				
 				//상세목적 검사
-				str = updateList.get(i).getString("purDtlSeq");			
+				str = updateList.get(i).getString("purposeDtlSeq");			
 				if(!"".equals(str)) {
-					if(!updateList.get(i).getString("purSeq").equals(purDtlSeqMap.get(str))) {
+					if(!updateList.get(i).getString("purposeSeq").equals(purDtlSeqMap.get(str))) {
 						throw new RuntimeException("상세목적이 상위목적의 하위 그룹이 아닙니다.");
 					}
 				}		
@@ -415,7 +415,7 @@ public class LedgerService {
 				//금액 검사
 				str = updateList.get(i).getString("money");				
 				int money = Integer.parseInt(str);
-				switch(purTypeMap.get(updateList.get(i).getString("purSeq")).toString()) {
+				switch(purTbCdMap.get(updateList.get(i).getString("purposeSeq")).toString()) {
 				case "LED001":
 					if(money <= 0) {
 						throw new RuntimeException("금액값이 정상적이지 않습니다");
@@ -505,7 +505,7 @@ public class LedgerService {
 		String meansSeq, moveSeq, meansNo = null;
 		for(int i=0; i<ledgerList.size(); i++) {			
 			//현금이동일때는 금액증감 제외
-			if("LED003".equals(ledgerList.get(i).getString("purType"))) {
+			if("LED003".equals(ledgerList.get(i).getString("purposeTpCd"))) {
 				ledgerList.get(i).put("amount", amount);				
 			}else {
 				amount += ledgerList.get(i).getInt("money");
@@ -517,7 +517,7 @@ public class LedgerService {
 			moneyMap.put(meansSeq, moneyMap.getInt(meansSeq) + ledgerList.get(i).getInt("money"));					
 			
 			//금액이동시 받는쪽 추가
-			if("LED003".equals(ledgerList.get(i).getString("purType"))) {
+			if("LED003".equals(ledgerList.get(i).getString("purposeTpCd"))) {
 				moveSeq = ledgerList.get(i).getString("moveSeq");				
 				moneyMap.put(moveSeq, moneyMap.getInt(moveSeq) + Math.abs(ledgerList.get(i).getInt("money")));
 			}
@@ -529,25 +529,25 @@ public class LedgerService {
 			}
 		}		
 		
-		String purSeq = White.isEmptyRtn(param.getString("purSeq"));
-		String purDtlSeq =  White.isEmptyRtn(param.getString("purDtlSeq"));
+		String purposeSeq = White.isEmptyRtn(param.getString("purposeSeq"));
+		String purposeDtlSeq =  White.isEmptyRtn(param.getString("purposeDtlSeq"));
 		meansSeq = White.isEmptyRtn(param.getString("meansSeq"));
 		
-		if(purSeq != null || purDtlSeq != null || meansSeq != null) {
+		if(purposeSeq != null || purposeDtlSeq != null || meansSeq != null) {
 			Iterator<WhiteMap> iter = ledgerList.iterator();			
-			if(purSeq != null) {
+			if(purposeSeq != null) {
 				while (iter.hasNext()) {
 					map = iter.next();			 
-					if(purSeq != null && !purSeq.equals(map.get("purSeq").toString())) {
+					if(purposeSeq != null && !purposeSeq.equals(map.get("purposeSeq").toString())) {
 						iter.remove();
 					}
 				}
 			}			
-			if(purDtlSeq != null) {
+			if(purposeDtlSeq != null) {
 				iter = ledgerList.iterator();
 				while (iter.hasNext()) {
 					map = iter.next();			 
-					if(purDtlSeq != null && !purDtlSeq.equals(map.get("purDtlSeq").toString())) {
+					if(purposeDtlSeq != null && !purposeDtlSeq.equals(map.get("purposeDtlSeq").toString())) {
 						iter.remove();
 					}
 				}
@@ -621,8 +621,8 @@ public class LedgerService {
 			amount += m;
 		}
 		for(int i=0; i<recList.size(); i++) {			
-			//현금이동일때는 금액증감 제외, purSeq가 0인값은 금액이동
-			if("LED003".equals(recList.get(i).getString("purType"))) {
+			//현금이동일때는 금액증감 제외, purposeSeq가 0인값은 금액이동
+			if("LED003".equals(recList.get(i).getString("purposeTpCd"))) {
 				recList.get(i).put("amount", amount);
 			}else {
 				amount += recList.get(i).getInt("money");
@@ -703,8 +703,8 @@ public class LedgerService {
 			param.put("startDate", White.getFirstDate(param.getString("stdate"))+" 00:00:00");
 			param.put("endDate", White.getLastDate(param.getString("stdate"))+" 23:59:59");
 			
-			if(param.getInt("inEx") == 0) param.put("purType", "LED001");
-			else param.put("purType", "LED002");
+			if(param.getInt("inEx") == 0) param.put("purposeTpCd", "LED001");
+			else param.put("purposeTpCd", "LED002");
 			
 			result.put("list", ledgerMapper.selectLedgerMonthPurStats(param));
 			break;

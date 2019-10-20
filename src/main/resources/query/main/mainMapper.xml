@@ -47,8 +47,8 @@
 		  A.AUTH_NM AS authNm,
 		  IF(
 				(
-					SELECT PA.POS_AUTH_SEQ FROM POS_AUTH PA
-					WHERE PA.AUTH_SEQ = A.AUTH_SEQ
+					SELECT GA.GRANT_AUTH_SEQ FROM GRANT_AUTH GA
+					WHERE GA.AUTH_SEQ = A.AUTH_SEQ
 					AND USER_SEQ = #{userSeq}
 					LIMIT 1
 				) IS NULL, 0, 1
@@ -62,7 +62,7 @@
 			UM.UPPER_SEQ AS upperSeq,
 	  		UM.UPPER_NM AS upperNm,
 	 		UM.UPPER_URL AS upperUrl,
-	 		UM.UPPER_ORDER AS upperOrder,
+	 		UM.UPPER_ORDER AS upperOdr,
 			UM.AUTH_SEQ AS authSeq
 			<choose>
 				<when test="userId == 'leedev'">
@@ -71,9 +71,9 @@
 				<otherwise>
 				,IF(
 					(
-						SELECT PA.POS_AUTH_SEQ FROM POS_AUTH PA
-						WHERE PA.AUTH_SEQ = UM.AUTH_SEQ
-						AND PA.USER_SEQ = #{userSeq}
+						SELECT GA.GRANT_AUTH_SEQ FROM GRANT_AUTH GA
+						WHERE GA.AUTH_SEQ = UM.AUTH_SEQ
+						AND GA.USER_SEQ = #{userSeq}
 						LIMIT 1
 					) IS NULL, 0, 1
 				) AS auth
@@ -93,7 +93,7 @@
 			LM.UPPER_SEQ AS upperSeq,
 	  		LM.LOWER_NM AS lowerNm,
 	 		LM.LOWER_URL AS lowerUrl,
-	 		LM.LOWER_ORDER AS lowerOrder,
+	 		LM.LOWER_ODR AS lowerOdr,
 			LM.AUTH_SEQ AS authSeq
 			<choose>
 				<when test="userId == 'leedev'">
@@ -102,9 +102,9 @@
 					<otherwise>
 					,IF(
 						(
-							SELECT PA.POS_AUTH_SEQ FROM POS_AUTH PA
-							WHERE PA.AUTH_SEQ = LM.AUTH_SEQ
-							AND PA.USER_SEQ = #{userSeq}
+							SELECT GA.GRANT_AUTH_SEQ FROM GRANT_AUTH GA
+							WHERE GA.AUTH_SEQ = LM.AUTH_SEQ
+							AND GA.USER_SEQ = #{userSeq}
 							LIMIT 1
 						) IS NULL, 0, 1
 					) AS auth
@@ -114,7 +114,7 @@
 		<if test="userId != 'leedev'">
 			WHERE LM.SHOW_YN = 'Y'
 		</if>
-		ORDER BY LM.LOWER_ORDER
+		ORDER BY LM.LOWER_ODR
 	</select>
 	
 	<!-- 사용자 등록 -->
@@ -129,7 +129,7 @@
 	<!-- 사용자 초기 권한 등록 -->
 	<insert id="insertUserAuth" parameterType="String">
 		/* mainMapper|insertUserAuth */
-		INSERT INTO POS_AUTH
+		INSERT INTO GRANT_AUTH
 			(USER_SEQ, AUTH_SEQ)
 		VALUES 
 			(#{USER_SEQ}, (SELECT AUTH_SEQ FROM AUTH WHERE AUTH_NM = 'user'))

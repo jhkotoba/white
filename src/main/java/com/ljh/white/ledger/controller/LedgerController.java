@@ -34,7 +34,7 @@ public class LedgerController {
 		
 		result.put("purList", ledgerService.selectPurList(param));
 		result.put("purDtlList", ledgerService.selectPurDtlList(param));
-		result.put("purTypeList", whiteService.selectCodeList(param));
+		result.put("purTpList", whiteService.selectCodeList(param));
 		
 		return result;
 	}

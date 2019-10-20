@@ -21,11 +21,11 @@ function inputLedger(data){
 	
 	let purLp = {};
 	for(let i=0; i<data.purList.length; i++){
-		purLp[data.purList[i].purSeq] = data.purList[i].purType;
+		purLp[data.purList[i].purposeSeq] = data.purList[i].purposeTpCd;
 	}
 	
 	insertList.push({recordDate: isDate.today()+" "+isTime.curTime(), position:"", content:"",
-		purSeq: "", purDtlSeq: "", meansSeq: "", moveSeq: "", money: "", statsYn: "Y"}
+		purposeSeq: "", purposeDtlSeq: "", meansSeq: "", moveSeq: "", money: "", statsYn: "Y"}
 	);
 	
 	let fieldList = [
@@ -36,7 +36,7 @@ function inputLedger(data){
 					.text("+")
 					.off().on("click", function(){
 						insertList.push({recordDate: isDate.today()+" "+isTime.curTime(), position:"",
-							content:"", purSeq: "",purDtlSeq: "", meansSeq: "", moveSeq: "", money: "", statsYn: "Y"}
+							content:"", purposeSeq: "",purposeDtlSeq: "", meansSeq: "", moveSeq: "", money: "", statsYn: "Y"}
 						);
 						$tbody.empty().append(
 							$("<div>").append(fnCreateRow())
@@ -80,12 +80,12 @@ function inputLedger(data){
 				return fnCreateInput("content", item);
 			}
 		},
-		{title : "목적*",		name:"purSeq", 		width : "12%", align:"center", button:true,
+		{title : "목적*",		name:"purposeSeq", 		width : "12%", align:"center", button:true,
 			itemTemplate: function(item){
 				return fnCreatePurpose(item);
 			}
 		},		
-		{title : "상세목적*",	name:"purDtlSeq", 	width : "11%", align:"center",
+		{title : "상세목적*",	name:"purposeDtlSeq", 	width : "11%", align:"center",
 			itemTemplate: function(item){
 				return fnCreatePurposeDetail(item);
 			}
@@ -93,10 +93,10 @@ function inputLedger(data){
 		{title : "사용수단*",	name:"meansSeq", 	width : "19%", align:"center", button:true,
 			itemTemplate: function(item){				
 				let $span = $("<span>");				
-				if(isNotEmpty(item.purSeq)){
+				if(isNotEmpty(item.purposeSeq)){
 					for(let i=0; i<data.purList.length; i++){				
-						if(Number(item.purSeq) === Number(data.purList[i].purSeq)){							
-							fnCreateMeans(item, data.purList[i].purType, $span);							
+						if(Number(item.purposeSeq) === Number(data.purList[i].purposeSeq)){							
+							fnCreateMeans(item, data.purList[i].purposeTpCd, $span);							
 							break;
 						}
 					}
@@ -106,7 +106,7 @@ function inputLedger(data){
 		},	
 		{title : "수입지출*",	name:"money", 		width : "10%", align:"center",
 			itemTemplate: function(item){
-				return fnCreateMoney(item, purLp[item.purSeq], $("<span>"));
+				return fnCreateMoney(item, purLp[item.purposeSeq], $("<span>"));
 			}
 		},
 		{title : "통계여부",	name:"statsYn", 		width : "4%", align:"center",
@@ -171,7 +171,7 @@ function inputLedger(data){
 		if(isVali && confirm("입력한 내용을 저장 하시겠습니까?")){			
 			for(let i=0; i<insertList.length; i++){
 				insertList[i].money =  insertList[i].money.replace(/,/gi, "");
-				switch(purLp[insertList[i].purSeq]){
+				switch(purLp[insertList[i].purposeSeq]){
 				case "LED001":				
 					insertList[i].money = Number(insertList[i].money);
 					break;				
@@ -191,7 +191,7 @@ function inputLedger(data){
 
 					insertList = new Array();
 					insertList.push({recordDate: isDate.today()+" "+isTime.curTime(), position:"", content:"",
-						purSeq: "", purDtlSeq: "", meansSeq: "", moveSeq: "", money: "", statsYn:"Y"}
+						purposeSeq: "", purposeDtlSeq: "", meansSeq: "", moveSeq: "", money: "", statsYn:"Y"}
 					);						
 					$tbody.empty().append($("<div>").append(fnCreateRow()));					
 					cfnCmmAjax("/ledger/selectRecordList", {searchType:"recent", schdTime:$("#schdTime").val()}).done(recordList);
@@ -291,33 +291,33 @@ function inputLedger(data){
 	function fnCreatePurpose(item){		
 		let $option = $("<option>").text("목적선택").val("");		
 		let $select = $("<select>").addClass("select-gray wth80p").attr("name", "sync")
-			.data("name", "purSeq").append($option);
+			.data("name", "purposeSeq").append($option);
 		
 		//목적 셀렉트 박스
 		for(let i=0; i<data.purList.length; i++){
-			$option = $("<option>").val(data.purList[i].purSeq).text(data.purList[i].purpose)
-				.data("purType", data.purList[i].purType);
+			$option = $("<option>").val(data.purList[i].purposeSeq).text(data.purList[i].purposeNm)
+				.data("purposeTpCd", data.purList[i].purposeTpCd);
 			
-			if(Number(item.purSeq) === Number(data.purList[i].purSeq)){
+			if(Number(item.purposeSeq) === Number(data.purList[i].purposeSeq)){
 				$option.prop("selected", true);
 			}			
 			$select.append($option);
 		}
 		
 		$select.off().on("change", function(e){
-			item.purSeq = this.value;
+			item.purposeSeq = this.value;
 			
 			//상세목적 셀렉트박스
 			fnCreatePurposeDetail(item, $(this).closest("td").next().children().first().empty());			
 			
 			$(this).children().each(function(idx, element){
-				if(Number(item.purSeq) === Number(element.value)){					
+				if(Number(item.purposeSeq) === Number(element.value)){					
 					//현금,은행 입력란
 					let $move = $(this).closest("td").next().next().children().first().empty().removeClass();
-					fnCreateMeans(item, $(element).data("purType"), $move);
+					fnCreateMeans(item, $(element).data("purposeTpCd"), $move);
 					//금액 입력란
 					let $money = $(this).closest("td").next().next().next().children().first().empty().removeClass();
-					fnCreateMoney(item, purLp[item.purSeq], $money);
+					fnCreateMoney(item, purLp[item.purposeSeq], $money);
 					return false;
 				}
 			});
@@ -332,25 +332,25 @@ function inputLedger(data){
 		let $option = $("<option>").text("상세목적 선택").val("");
 		$select.addClass("select-gray wth80p").attr("name", "sync").append($option);
 		for(let i=0; i<data.purDtlList.length; i++){
-			if(Number(data.purDtlList[i].purSeq) === Number(item.purSeq)){
-				$option = $("<option>").val(data.purDtlList[i].purDtlSeq)
-					.text(data.purDtlList[i].purDetail)
+			if(Number(data.purDtlList[i].purposeSeq) === Number(item.purSeq)){
+				$option = $("<option>").val(data.purDtlList[i].purposeDtlSeq)
+					.text(data.purDtlList[i].purposeDtlNm)
 				
-				if(Number(item.purDtlSeq) === Number(data.purDtlList[i].purDtlSeq)){
+				if(Number(item.purposeDtlSeq) === Number(data.purDtlList[i].purDtlSeq)){
 					$option.prop("selected", true);
 				}
 			}					
 			$select.append($option)
 		}
 		return $select.off().on("change", function(){
-			item.purDtlSeq = this.value;
+			item.purposeDtlSeq = this.value;
 		});
 	}
 	
 	//은행 select 생성
-	function fnCreateMeans(item, purType, $span){
+	function fnCreateMeans(item, purposeTpCd, $span){
 		let $select = $("<select>");		
-		switch(purType){
+		switch(purposeTpCd){
 		case "LED001":
 		case "LED002":
 			
@@ -469,8 +469,8 @@ function recordList(data){
 			{ title:"날짜",		name:"recordDate",	type:"text", width: "8%",	align:"center"},
 			{ title:"위치",		name:"position",	type:"text", width: "14%",	align:"center"},
 			{ title:"내용",		name:"content",		type:"text", width: "14%",	align:"center"},
-			{ title:"목적",		name:"purpose",		type:"text", width: "8%",	align:"center"},
-			{ title:"상세목적",	name:"purDetail",	type:"text", width: "9%",	align:"center"},
+			{ title:"목적",		name:"purposeNm",	type:"text", width: "8%",	align:"center"},
+			{ title:"상세목적",	name:"purposeDtlNm",type:"text", width: "9%",	align:"center"},
 			{ title:"은행",		name:"meansNm",		type:"text", width: "8%",	align:"center"},
 			{ title:"수단정보",	name:"meansInfo",	type:"text", width: "12%",	align:"center"},
 			{ title:"금액",		name:"money",		type:"text", width: "5%",	align:"center"},

@@ -17,8 +17,8 @@ function fnPurGrid(data){
 	let clone = common.clone(data);
 	data.purDtlList = null;
 	
-	let purNoIdx = cfnNoIdx(data.purList, "purSeq");
-	let purCloneNoIdx = cfnNoIdx(clone.purList, "purSeq");
+	let purNoIdx = cfnNoIdx(data.purList, "purposeSeq");
+	let purCloneNoIdx = cfnNoIdx(clone.purList, "purposeSeq");
 	let purDtlNoIdx = null;
 	let purDtlCloneNoIdx = null;
 	let initPurDtl = true;
@@ -27,7 +27,7 @@ function fnPurGrid(data){
 	if(clone.purList.length === 0){
 		refPurSeq = 0;
 	}else if(isEmpty("${prevParam}")){
-		refPurSeq = clone.purList[0].purSeq;
+		refPurSeq = clone.purList[0].purposeSeq;
 	}else{
 		refPurSeq = Number("${prevParam}");
 	}
@@ -48,28 +48,28 @@ function fnPurGrid(data){
 			{ align:"center", width: "5%",
 				headerTemplate : function(){
 					return $("<button>").attr("id", "purAdd").addClass("btn-gray trs size-sm").text("+").on("click", function(){
-						data.purList.push({purpose: "", 
-							purOrder: $("#purList").jsGrid("option", "data").length+1,
-							purSeq: new Date().getTime(), 
+						data.purList.push({purposeNm: "", 
+							purposeOdr: $("#purList").jsGrid("option", "data").length+1,
+							purposeSeq: new Date().getTime(), 
 							state:"insert"
 							});
-						purNoIdx = cfnNoIdx(data.purList, "purSeq");
+						purNoIdx = cfnNoIdx(data.purList, "purposeSeq");
 						$("#purList").jsGrid("refresh");
 					});
 				},
                 itemTemplate: function(value, item) {
                     let chk = $("<input>").attr("type", "checkbox").attr("name", "check")
-                    .data("purSeq", item.purSeq).data("purOrder", item.purOrder).on("change", function() {
-                    	let idx = purNoIdx[item.purSeq];
-                    	let cIdx = purCloneNoIdx[item.purSeq];
+                    .data("purposeSeq", item.purposeSeq).data("purposeOdr", item.purposeOdr).on("change", function() {
+                    	let idx = purNoIdx[item.purposeSeq];
+                    	let cIdx = purCloneNoIdx[item.purposeSeq];
                 
-               			if(isEmpty(item.purOrder)){
+               			if(isEmpty(item.purposeOdr)){
                	    		$("#purList").jsGrid("deleteItem", item);
-               	    		delete purNoIdx[item.purSeq];
+               	    		delete purNoIdx[item.purposeSeq];
                	    	}else{
                	    		if($(this).is(":checked")) {
                    	   			$("[name='syncPur']").each(function(i, e){
-                   	   				if(item.purSeq  === $(e).data("purSeq")){
+                   	   				if(item.purposeSeq  === $(e).data("purposeSeq")){
                    	   					$(e).addClass("sync-red");
                    	   					
                    	   					if(String(clone.purList[cIdx][$(e).data("name")]) !== String($(e).val())){
@@ -80,7 +80,7 @@ function fnPurGrid(data){
                    	   			});
                    	   		}else{
                    	   			$("[name='syncPur']").each(function(i, e){
-                   	   				if(item.purSeq === $(e).data("purSeq")){
+                   	   				if(item.purposeSeq === $(e).data("purposeSeq")){
                    	   					$(e).removeClass("sync-red");
                    	   					
                    	   					if($(e).hasClass("sync-blue") || data.purList[idx].state === "update" ){
@@ -97,19 +97,19 @@ function fnPurGrid(data){
                     return chk;
                 }
 			},
-			{ title:"순서",	name:"purOrder",	type:"text", align:"center", width: "10%",
+			{ title:"순서",	name:"purposeOdr",	type:"text", align:"center", width: "10%",
 				itemTemplate: function(value, item){
-					return fnRefreshedSync(item, "purOrder", "purList", "span");
+					return fnRefreshedSync(item, "purposeOdr", "purList", "span");
 				}
 			},
-			{ title:"목적",	name:"purpose",		type:"text", align:"center", width: "53%",
+			{ title:"목적",	name:"purposeNm",		type:"text", align:"center", width: "53%",
 				itemTemplate: function(value, item){
-					return fnRefreshedSync(item, "purpose", "purList", "input");
+					return fnRefreshedSync(item, "purposeNm", "purList", "input");
 				}
 			},
-			{ title:"목적 종류",	name:"purType",		type:"text", align:"center", width: "16%",
+			{ title:"목적 종류",	name:"purposeTpCd",		type:"text", align:"center", width: "16%",
 				itemTemplate: function(value, item){
-					return fnRefreshedSync(item, "purType", "purList", "select");
+					return fnRefreshedSync(item, "purposeTpCd", "purList", "select");
 				}
 			},
 			{ title:"보기", align:"center", width: "8%",
@@ -117,7 +117,7 @@ function fnPurGrid(data){
 					if(item.state === "insert"){
 						return "";
 					}else{
-						return $("<button>").addClass("btn-gray size-sm").text(">").data("purSeq", item.purSeq)
+						return $("<button>").addClass("btn-gray size-sm").text(">").data("purposeSeq", item.purposeSeq)
 							.attr("name", "svb").on("click", function(){
 							
 							$("button[name='svb']").each(function(i, e){
@@ -125,10 +125,10 @@ function fnPurGrid(data){
 							});
 							$(this).addClass("btn-selected-gray");
 							
-							refPurSeq = item.purSeq;
+							refPurSeq = item.purposeSeq;
 							data.purDtlList = new Array();
 							for(let i=0; i<clone.purDtlList.length; i++){
-								if(item.purSeq === clone.purDtlList[i].purSeq){
+								if(item.purposeSeq === clone.purDtlList[i].purposeSeq){
 									data.purDtlList.push(common.clone(clone.purDtlList[i]));
 								}
 							}
@@ -146,21 +146,21 @@ function fnPurGrid(data){
 						return $(row).data("JSGridItem");
 					});
 					
-					purNoIdx = cfnNoIdx(data.purList, "purSeq");
+					purNoIdx = cfnNoIdx(data.purList, "purposeSeq");
 					for(let i=0; i<items.length; i++){
-						fnOnSync($("#purList .ui-sortable tr span")[i], "purSeq", i);
+						fnOnSync($("#purList .ui-sortable tr span")[i], "purposeSeq", i);
 					}
 				}
 			});
 			
 			//수정 intpu sync 체크	
 			$("input[name='syncPur']").on("keyup keydown change", function(){
-				fnOnSync(this, "purSeq");
+				fnOnSync(this, "purposeSeq");
 			});
 			
 			//수정 select sync 체크
 			$("select[name='syncPur']").on("change", function(){
-				fnOnSync(this, "purSeq");
+				fnOnSync(this, "purposeSeq");
 			});
 			
 			if(initPurDtl){
@@ -168,12 +168,12 @@ function fnPurGrid(data){
 				if(clone.purDtlList.length > 0){
 					
 					for(let i=0; i<clone.purDtlList.length; i++){
-						if(refPurSeq === clone.purDtlList[i].purSeq){
+						if(refPurSeq === clone.purDtlList[i].purposeSeq){
 							data.purDtlList.push(common.clone(clone.purDtlList[i]));
 						}
 					}
 					$("button[name='svb']").each(function(i, e){
-						if(refPurSeq === Number($(e).data("purSeq"))){
+						if(refPurSeq === Number($(e).data("purposeSeq"))){
 							$(e).addClass("btn-selected-gray");
 							return;
 						}
@@ -183,7 +183,7 @@ function fnPurGrid(data){
 				initPurDtl = false;
 			}else{
 				$("button[name='svb']").each(function(i, e){
-					if(refPurSeq === Number($(e).data("purSeq"))){
+					if(refPurSeq === Number($(e).data("purposeSeq"))){
 						$(e).addClass("btn-selected-gray");
 						return;
 					}
@@ -199,8 +199,8 @@ function fnPurGrid(data){
 			data.purDtlList[i].state = "select";
 		}
 		
-		purDtlNoIdx = cfnNoIdx(data.purDtlList, "purDtlSeq");
-		purDtlCloneNoIdx = cfnNoIdx(clone.purDtlList, "purDtlSeq");
+		purDtlNoIdx = cfnNoIdx(data.purDtlList, "purposeDtlSeq");
+		purDtlCloneNoIdx = cfnNoIdx(clone.purDtlList, "purposeDtlSeq");
 		
 		$("#purDtlList").jsGrid({
 			height: "auto",
@@ -215,28 +215,28 @@ function fnPurGrid(data){
 				{ align:"center", width: "5%",
 					headerTemplate : function(){
 						return $("<button>").attr("id", "purDtlAdd").addClass("btn-gray trs size-sm").text("+").on("click", function(){
-							data.purDtlList.push({purSeq: refPurSeq,
-								purDetail:"",
-								purDtlOrder: $("#purDtlList").jsGrid("option", "data").length+1,
-								purDtlSeq: new Date().getTime(), state:"insert"
+							data.purDtlList.push({purposeSeq: refPurSeq,
+								purposeDtlNm:"",
+								purposeDtlOdr: $("#purDtlList").jsGrid("option", "data").length+1,
+								purposeDtlSeq: new Date().getTime(), state:"insert"
 								});
-							purDtlNoIdx = cfnNoIdx(data.purDtlList, "purDtlSeq");
+							purDtlNoIdx = cfnNoIdx(data.purDtlList, "purposeDtlSeq");
 							$("#purDtlList").jsGrid("refresh");
 						});
 					},
 	                itemTemplate: function(value, item) {
 	                    let chk = $("<input>").attr("type", "checkbox").attr("name", "check")
-	                    .data("purDtlSeq", item.purDtlSeq).data("purDtlOrder", item.purDtlOrder).on("change", function() {
-	                    	let idx = purDtlNoIdx[item.purDtlSeq];
-	                    	let cIdx = purDtlCloneNoIdx[item.purDtlSeq];
+	                    .data("purposeDtlSeq", item.purposeDtlSeq).data("purposeDtlOdr", item.purposeDtlOdr).on("change", function() {
+	                    	let idx = purDtlNoIdx[item.purposeDtlSeq];
+	                    	let cIdx = purDtlCloneNoIdx[item.purposeDtlSeq];
 	                	
-	               			if(isEmpty(item.purDtlOrder)){
+	               			if(isEmpty(item.purposeDtlOdr)){
 	               	    		$("#purDtlList").jsGrid("deleteItem", item);
-	               	    		delete purDtlNoIdx[item.purDtlSeq];
+	               	    		delete purDtlNoIdx[item.purposeDtlSeq];
 	               	    	}else{
 	               	    		if($(this).is(":checked")) {
 	                   	   			$("[name='syncPurDtl']").each(function(i, e){
-	                   	   				if(item.purDtlSeq  === $(e).data("purDtlSeq")){
+	                   	   				if(item.purposeDtlSeq  === $(e).data("purposeDtlSeq")){
 	                   	   					$(e).addClass("sync-red");
 	                   	   					
 	                   	   					if(String(clone.purDtlList[cIdx][$(e).data("name")]) !== String($(e).val())){
@@ -247,7 +247,7 @@ function fnPurGrid(data){
 	                   	   			});
 	                   	   		}else{
 	                   	   			$("[name='syncPurDtl']").each(function(i, e){
-	                   	   				if(item.purDtlSeq === $(e).data("purDtlSeq")){
+	                   	   				if(item.purposeDtlSeq === $(e).data("purposeDtlSeq")){
 	                   	   					$(e).removeClass("sync-red");
 	                   	   					
 	                   	   					if($(e).hasClass("sync-blue") || data.purDtlList[idx].state === "update" ){
@@ -264,14 +264,14 @@ function fnPurGrid(data){
 	                    return chk;
 	                }
 				},
-				{ title:"순서",	name:"purDtlOrder",	type:"text", align:"center", width: "12%",
+				{ title:"순서",	name:"purposeDtlOdr",	type:"text", align:"center", width: "12%",
 					itemTemplate: function(value, item){
-						return fnRefreshedSync(item, "purDtlOrder", "purDtlList", "span");
+						return fnRefreshedSync(item, "purposeDtlOdr", "purDtlList", "span");
 					}
 				},
-				{ title:"상세목적",	name:"purDetail",		type:"text", align:"center", width: "75%",
+				{ title:"상세목적",	name:"purposeDtlNm",		type:"text", align:"center", width: "75%",
 					itemTemplate: function(value, item){
-						return fnRefreshedSync(item, "purDetail", "purDtlList", "input");
+						return fnRefreshedSync(item, "purposeDtlNm", "purDtlList", "input");
 					}
 				}
 			],
@@ -283,23 +283,23 @@ function fnPurGrid(data){
 							return $(row).data("JSGridItem");
 						});
 						
-						purDtlNoIdx = cfnNoIdx(data.purDtlList, "purDtlSeq");
+						purDtlNoIdx = cfnNoIdx(data.purDtlList, "purposeDtlSeq");
 						for(let i=0; i<items.length; i++){
-							fnOnSync($("#purDtlList .ui-sortable tr span")[i], "purDtlSeq", i);
+							fnOnSync($("#purDtlList .ui-sortable tr span")[i], "purposeDtlSeq", i);
 						}
 					}
 				});
 				
 				//수정 intpu sync 체크
 				$("input[name='syncPurDtl']").off().on("keyup keydown change", function(){	
-					fnOnSync(this, "purDtlSeq");
+					fnOnSync(this, "purposeDtlSeq");
 				});
 				
 				//수정 button sync 체크
 				$("button[name='syncPurDtl']").off().on("click", function(){
 					if($(this).val() === "Y")	$(this).val("N").text("N");
 					else						$(this).val("Y").text("Y");
-					fnOnSync(this, "purDtlSeq");
+					fnOnSync(this, "purposeDtlSeq");
 				});
 			}
 		});
@@ -307,16 +307,16 @@ function fnPurGrid(data){
 	
 	//변경여부 확인후 상태 색상적용
 	function fnOnSync(obj, seqNm, sortIdx){
-		let listNm = seqNm === "purSeq" ? "purList" : "purDtlList";
+		let listNm = seqNm === "purposeSeq" ? "purList" : "purDtlList";
 		
 		if($(obj).hasClass("sync-green")){
-			seqNm === "purSeq" ? data.purList[purNoIdx[$(obj).data(seqNm)]][$(obj).data("name")] = $(obj).val()
+			seqNm === "purposeSeq" ? data.purList[purNoIdx[$(obj).data(seqNm)]][$(obj).data("name")] = $(obj).val()
 							   : data.purDtlList[purDtlNoIdx[$(obj).data(seqNm)]][$(obj).data("name")] = $(obj).val();
 		}else{
 			let name = $(obj).data("name");
-			let idx = seqNm === "purSeq" ? purNoIdx[$(obj).data(seqNm)]
+			let idx = seqNm === "purposeSeq" ? purNoIdx[$(obj).data(seqNm)]
 									     : purDtlNoIdx[$(obj).data(seqNm)];
-			let cIdx = seqNm === "purSeq" ? purCloneNoIdx[$(obj).data(seqNm)]
+			let cIdx = seqNm === "purposeSeq" ? purCloneNoIdx[$(obj).data(seqNm)]
 										  : purDtlCloneNoIdx[$(obj).data(seqNm)];
 			
 			if(isEmpty(sortIdx)){
@@ -361,9 +361,9 @@ function fnPurGrid(data){
 			if(item.state === "insert"){
 				$el.append($("<option>").text("").val(""));
 			}
-			for(let i=0; i<data.purTypeList.codePrt.length; i++){
-				$option = $("<option>").text(data.purTypeList.codePrt[i].codeNm).val(data.purTypeList.codePrt[i].code);				
-				if(String(item[name]) === String(data.purTypeList.codePrt[i].code)){
+			for(let i=0; i<data.purTpList.codePrt.length; i++){
+				$option = $("<option>").text(data.purTpList.codePrt[i].codeNm).val(data.purTpList.codePrt[i].code);				
+				if(String(item[name]) === String(data.purTpList.codePrt[i].code)){
 					$el.append($option.attr("selected","selected"));
 				}
 				$el.append($option);
@@ -376,35 +376,35 @@ function fnPurGrid(data){
 		
 		switch(listNm){
 		case "purList":
-			$el.attr("name", "syncPur").data("purSeq", item.purSeq).data("name", name);
+			$el.attr("name", "syncPur").data("purposeSeq", item.purposeSeq).data("name", name);
 
 			if(item.state === "insert") $el.addClass("sync-green");	
 			else if(item.state === "update"){
-				if(String(clone[listNm][purCloneNoIdx[item.purSeq]][name]) === String(item[name])){
+				if(String(clone[listNm][purCloneNoIdx[item.purposeSeq]][name]) === String(item[name])){
 					$el.removeClass("sync-blue");
 				}else{
 					$el.addClass("sync-blue");
 				}			
 			}else if(item.state === "delete"){
 				$el.addClass("sync-red");
-				if(String(clone[listNm][purCloneNoIdx[item.purSeq]][name]) !== String($el.val())){
+				if(String(clone[listNm][purCloneNoIdx[item.purposeSeq]][name]) !== String($el.val())){
 					$el.addClass("sync-blue");
 				}
 			}
 			break;
 		case "purDtlList":
-			$el.attr("name", "syncPurDtl").data("purDtlSeq", item.purDtlSeq).data("name", name);
+			$el.attr("name", "syncPurDtl").data("purposeDtlSeq", item.purposeDtlSeq).data("name", name);
 
 			if(item.state === "insert") $el.addClass("sync-green");	
 			else if(item.state === "update"){
-				if(String(clone[listNm][purDtlCloneNoIdx[item.purDtlSeq]][name]) === String(item[name])){
+				if(String(clone[listNm][purDtlCloneNoIdx[item.purposeDtlSeq]][name]) === String(item[name])){
 					$el.removeClass("sync-blue");
 				}else{
 					$el.addClass("sync-blue");
 				}
 			}else if(item.state === "delete"){
 				$el.addClass("sync-red");
-				if(String(clone[listNm][purDtlCloneNoIdx[item.purDtlSeq]][name]) !== String($el.val())){
+				if(String(clone[listNm][purDtlCloneNoIdx[item.purposeDtlSeq]][name]) !== String($el.val())){
 					$el.addClass("sync-blue");
 				}
 			}
@@ -423,7 +423,7 @@ function fnPurGrid(data){
 				wVali.alert({element : $(e), msg: $(e)[0].nodeName === "SELECT" ? "값을 선택해 주세요." : "값을 입력해 주세요."}); return false;
 			}
 			switch($(e).data("name")){
-			case "purpose":
+			case "purposeNm":
 				if(!isOnlyHanAlphaNum($(e).val())){
 					isVali = false;
 					wVali.alert({element : $(e), msg: "한글, 영문자, 숫자를 입력해 주세요."}); return false;
@@ -468,8 +468,8 @@ function fnPurGrid(data){
 						}
 						
 						$("#purList").jsGrid("refresh");
-						purNoIdx = cfnNoIdx(data.purList, "purSeq");
-						purCloneNoIdx = cfnNoIdx(clone.purList, "purSeq");
+						purNoIdx = cfnNoIdx(data.purList, "purposeSeq");
+						purCloneNoIdx = cfnNoIdx(clone.purList, "purposeSeq");
 					});
 					alert("반영되었습니다.");
 				}
@@ -487,7 +487,7 @@ function fnPurGrid(data){
 				wVali.alert({element : $(e), msg: "값을 입력해 주세요."}); return false;
 			}
 			switch($(e).data("name")){
-			case "purDetail":
+			case "purposeDtlNm":
 				if(!isOnlyHanAlphaNum($(e).val())){
 					isVali = false;
 					wVali.alert({element : $(e), msg: "한글, 영문자, 숫자를 입력해 주세요."}); return false;
@@ -511,7 +511,7 @@ function fnPurGrid(data){
 		}else if(isVali && confirm("저장하시겠습니까?")){
 			
 			let param = {};
-			param.purSeq = refPurSeq;
+			param.purposeSeq = refPurSeq;
 			param.purDtlList = JSON.stringify(applyList);
 			
 			cfnCmmAjax("/ledger/applyPurDtlList", param).done(function(res){
@@ -524,13 +524,13 @@ function fnPurGrid(data){
 						clone.purDtlList = common.clone(result);
 						data.purDtlList.splice(0, data.purDtlList.length);
 						for(let i=0; i<clone.purDtlList.length; i++){
-							if(refPurSeq === clone.purDtlList[i].purSeq){
+							if(refPurSeq === clone.purDtlList[i].purposeSeq){
 								data.purDtlList.push(common.clone(clone.purDtlList[i]));
 							}
 						}
 						$("#purDtlList").jsGrid("refresh");
-						purDtlNoIdx = cfnNoIdx(data.purDtlList, "purDtlSeq");
-						purDtlCloneNoIdx = cfnNoIdx(clone.purDtlList, "purDtlSeq");
+						purDtlNoIdx = cfnNoIdx(data.purDtlList, "purposeDtlSeq");
+						purDtlCloneNoIdx = cfnNoIdx(clone.purDtlList, "purposeDtlSeq");
 					});
 					alert("반영되었습니다.");
 				}

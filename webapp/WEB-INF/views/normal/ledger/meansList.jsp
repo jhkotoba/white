@@ -31,11 +31,11 @@ function fnInit(){
 		},
 		fields : [
 			{ isRemoveButton: true, isHeadAddButton: true, width: "3%", align:"center"},
-			{ title:"정렬", name:"meansOrder", tag:"input", width: "4%", align:"right"},
+			{ title:"정렬", name:"meansOdr", tag:"input", width: "4%", align:"right"},
 			{ title:"사용수단", name:"meansNm", tag:"input", width: "10%", align:"center"},
 			{ title:"사용수단상세", name:"meansDtlNm", tag:"input", width: "34%", align:"center"},			
 			{ title:"수단정보", name:"meansInfo", tag:"input", width: "20%", align:"center"},
-			{ title:"비고", name:"meansRemark", tag:"input", width: "24%", align:"center"},
+			{ title:"비고", name:"meansRmk", tag:"input", width: "24%", align:"center"},
 			{ title:"사용여부", isUseYnButton: true, name:"meansUseYn", width: "5%", align:"center"},			
 		],
 		option : {isAutoSearch: true, isPaging: false, isScrollY: true, isScrollX: false, bodyHeight:"550px"},		
@@ -72,8 +72,8 @@ function fnApplyData(){
 			case "update":				
 				for(let i=0; i<gList.length; i++){
 					if(item._key !== gList[i]._key){
-						if(item.meansOrder == gList[i].meansOrder){
-							meansGrid.inputMessage(item._key, "meansOrder", "중복되는 값이 있습니다.");
+						if(item.meansOdr == gList[i].meansOdr){
+							meansGrid.inputMessage(item._key, "meansOdr", "중복되는 값이 있습니다.");
 							return true;
 						}
 					}	
@@ -91,8 +91,8 @@ function fnApplyData(){
 				}else if(item.meansInfo.length > 50){
 					meansGrid.inputMessage(item._key, "meansInfo", "최대길이 50자 입니다.");
 					return true;
-				}else if(item.meansRemark.length > 100){
-					meansGrid.inputMessage(item._key, "meansRemark", "최대길이 100자 입니다.");
+				}else if(item.meansRmk.length > 100){
+					meansGrid.inputMessage(item._key, "meansRmk", "최대길이 100자 입니다.");
 					return true;
 				}else{
 					return false;

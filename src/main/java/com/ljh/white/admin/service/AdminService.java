@@ -140,7 +140,7 @@ public class AdminService {
 					return -1;
 				}else if(!menuList.get(i).get("showYn").equals(list.get(i).get("showYn"))) {
 					return -1;
-				}else if(!menuList.get(i).get("upperOrder").equals(list.get(i).get("upperOrder"))) {
+				}else if(!menuList.get(i).get("upperOdr").equals(list.get(i).get("upperOdr"))) {
 					return -1;
 				}
 			}			
@@ -172,7 +172,7 @@ public class AdminService {
 				WhiteMap map = new WhiteMap();
 				map.put("tableNm", "UPPER_MENU");
 				map.put("firstSeqNm", "UPPER_SEQ");							
-				map.put("columnNm", "UPPER_ORDER");
+				map.put("columnNm", "UPPER_ODR");
 				whiteService.updateSortTable(map);	
 			}
 			return 1;
@@ -204,7 +204,7 @@ public class AdminService {
 					return -1;
 				}else if(!menuList.get(i).get("showYn").equals(list.get(i).get("showYn"))) {
 					return -1;
-				}else if(!menuList.get(i).get("lowerOrder").equals(list.get(i).get("lowerOrder"))) {
+				}else if(!menuList.get(i).get("lowerOdr").equals(list.get(i).get("lowerOdr"))) {
 					return -1;
 				}
 			}			
@@ -235,7 +235,7 @@ public class AdminService {
 			map.put("firstSeqNm", "LOWER_SEQ");				
 			map.put("secondSeqNm", "UPPER_SEQ");				
 			map.put("secondSeq", deleteList.get(0).getString("upperSeq"));				
-			map.put("columnNm", "LOWER_ORDER");
+			map.put("columnNm", "LOWER_ODR");
 			whiteService.updateSortTable(map);			
 		}
 		return 1;
@@ -259,7 +259,7 @@ public class AdminService {
 			for(int i=0; i<authList.size(); i++) {
 				if(!authList.get(i).get("authCmt").equals(list.get(i).get("authCmt"))) {
 					return -1;
-				}else if(!authList.get(i).get("authOrder").equals(list.get(i).get("authOrder"))) {
+				}else if(!authList.get(i).get("authOdr").equals(list.get(i).get("authOdr"))) {
 					return -1;
 				}else if(!authList.get(i).get("authSeq").equals(list.get(i).get("authSeq"))) {
 					return -1;
@@ -295,7 +295,7 @@ public class AdminService {
 				WhiteMap map = new WhiteMap();
 				map.put("tableNm", "AUTH");
 				map.put("firstSeqNm", "AUTH_SEQ");							
-				map.put("columnNm", "AUTH_ORDER");
+				map.put("columnNm", "AUTH_ODR");
 				whiteService.updateSortTable(map);
 			}
 			return 1;

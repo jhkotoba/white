@@ -29,14 +29,14 @@ function fnInit(){
 	
 	//목적 option 생성
 	$.each(vals.purList, function(idx, item){
-		$option = $("<option>").text(item.purpose).val(item.purSeq).data("purType", item.purType);
+		$option = $("<option>").text(item.purposeNm).val(item.purposeSeq).data("purposeTpCd", item.purposeTpCd);
 		$("#purSelect").append($option);		
 	});
 	
 	//수단 option 생성
 	$.each(vals.meansList, function(idx, item){		
 		$option = $("<option>").text(item.meansNm + " " + wcm.isEmptyRtn(item.meansDtlNm) + " " + wcm.isEmptyRtn(item.meansInfo))
-			.val(item.meansSeq).data("purType", item.purType);
+			.val(item.meansSeq).data("purposeTpCd", item.purposeTpCd);
 		$("#meansSelect").append($option);		
 	});
 	
@@ -67,8 +67,8 @@ function fnInit(){
 					let srhParam = {
 						startDate : $("#startDate").val(),
 						endDate : $("#endDate").val(),
-						purSeq : $("#purSelect").val(),
-						purDtlSeq : $("#purDtlSelect").val(),
+						purposeSeq : $("#purSelect").val(),
+						purposeDtlSeq : $("#purDtlSelect").val(),
 						meansSeq : $("#meansSelect").val(),
 					};
 					$.post("${contextPath}/ledger/selectLedgerCalcList.ajax", srhParam, resolve);
@@ -80,8 +80,8 @@ function fnInit(){
 			{ title:"날짜", name:"recordDate", width: "8%", align:"center"},
 			{ title:"위치", name:"position", width: "15%", align:"center"},
 			{ title:"내용", name:"content", width: "18%", align:"center"},			
-			{ title:"목적", name:"purpose", width: "8%", align:"center"},
-			{ title:"상세목적", name:"purDetail", tag:"text", width: "10%", align:"center"},
+			{ title:"목적", name:"purposeNm", width: "8%", align:"center"},
+			{ title:"상세목적", name:"purposeDtlNm", tag:"text", width: "10%", align:"center"},
 			{ title:"사용수단", name:"meansNm", tag:"text", 	width: "15%", align:"center",
 				itemTemplate : function(value, item, key){
 					return $("<span>").attr("title", value + " " + wcm.isEmptyRtn(item.meansDtlNm) + " "+wcm.isEmptyRtn(item.meansInfo))
@@ -91,7 +91,7 @@ function fnInit(){
 			{ title:"수입/지출/이동", name:"money", width: "9%", align:"center",
 				itemTemplate : function(value, item, key){					
 					let $span = $("<span>");
-					switch(item.purType){
+					switch(item.purposeTpCd){
 					case "LED001": $span.addClass("sync-red").text(wcm.setComma(value)); break;
 					case "LED002": $span.addClass("sync-blue").text(wcm.setComma(value)); break;
 					case "LED003": $span.addClass("sync-green").text("("+wcm.setComma(Math.abs(value))+")"); break;
@@ -102,7 +102,7 @@ function fnInit(){
 			{ title:"소지금액", name:"amount", width: "9%", align:"center",
 				itemTemplate : function(value, item, key){					
 					let $span = $("<span>");
-					switch(item.purType){
+					switch(item.purposeTpCd){
 					case "LED001": $span.addClass("sync-red").text(wcm.setComma(value)); break;
 					case "LED002": $span.addClass("sync-blue").text(wcm.setComma(value)); break;
 					case "LED003": return wcm.setComma(value);				
@@ -114,13 +114,13 @@ function fnInit(){
 				itemTemplate : function(value, item, key){					
 					let $span = $("<span>");
 					if(vals.headList[vals.headCnt++].value === "no"+item.meansSeq){
-						switch(item.purType){
+						switch(item.purposeTpCd){
 						case "LED001":
 						case "LED003": $span.addClass("sync-red").text(wcm.setComma(value)); break;
 						case "LED002": $span.addClass("sync-blue").text(wcm.setComma(value)); break;							
 						}						
 					}else if(vals.haedSelected === "no"+item.moveSeq){
-						if(item.purType === "LED003"){
+						if(item.purposeTpCd === "LED003"){
 							$span.addClass("sync-red").text(wcm.setComma(value));
 						}						
 					}else{
@@ -159,13 +159,13 @@ function fnEventInit(){
 }
 
 //############## 목적변경  ################
-function fnParSeqChange(purSeq){	
+function fnParSeqChange(purposeSeq){	
 	$("#purDtlSelect").empty().append($("<option>").text("선택").val(""));
 	
 	//상세목적 option 생성
 	$.each(vals.purDtlList, function(idx, item){
-		if(purSeq == item.purSeq){
-			$option = $("<option>").text(item.purDetail).val(item.purDtlSeq).data("purSeq", item.purSeq);
+		if(purposeSeq == item.purposeSeq){
+			$option = $("<option>").text(item.purposeDtlNm).val(item.purposeDtlSeq).data("purposeSeq", item.purposeSeq);
 			$("#purDtlSelect").append($option);	
 		}
 	});	

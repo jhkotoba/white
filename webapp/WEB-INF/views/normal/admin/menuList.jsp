@@ -41,7 +41,7 @@ function fnUpperJsGrid(data){
 					return $("<button>").attr("id", "upperAdd").addClass("btn-gray trs size-sm").text("+").on("click", function(){
 						data.upperList.push({authSeq: "", 
 							upperNm: "",
-							upperOrder: $("#upperMenuList").jsGrid("option", "data").length+1,
+							upperOdr: $("#upperMenuList").jsGrid("option", "data").length+1,
 							upperSeq: new Date().getTime(),
 							showYn:"N",
 							upperUrl:"",
@@ -52,11 +52,11 @@ function fnUpperJsGrid(data){
 				},
                 itemTemplate: function(value, item) {
                     let chk = $("<input>").attr("type", "checkbox").attr("name", "check")
-                    .data("upperSeq", item.upperSeq).data("upperOrder", item.upperOrder).on("change", function() {
+                    .data("upperSeq", item.upperSeq).data("upperOdr", item.upperOdr).on("change", function() {
                     	let idx = upperNoIdx[item.upperSeq];
                     	let cIdx = upperCloneNoIdx[item.upperSeq];
                 			
-               			if(isEmpty(item.upperOrder)){
+               			if(isEmpty(item.upperOdr)){
                	    		$("#upperMenuList").jsGrid("deleteItem", item);
                	    		delete upperNoIdx[item.upperSeq];               	    		
                	    	}else{
@@ -90,9 +90,9 @@ function fnUpperJsGrid(data){
                     return chk;
                 }	            
 			},
-			{ title:"순서",	name:"upperOrder",	type:"text", align:"center", width: "8%",
+			{ title:"순서",	name:"upperOdr",	type:"text", align:"center", width: "8%",
 				itemTemplate: function(value, item){
-					return fnRefreshedSync(item, "upperOrder", "upperList", "span");
+					return fnRefreshedSync(item, "upperOdr", "upperList", "span");
 				}
 			},
 			{ title:"상위 이름",	name:"upperNm",		type:"text", align:"center", width: "21%",
@@ -229,7 +229,7 @@ function fnUpperJsGrid(data){
 							data.lowerList.push({upperSeq: refUpperSeq,
 								authSeq:"",
 								lowerNm:"",
-								lowerOrder: $("#lowerMenuList").jsGrid("option", "data").length+1,
+								lowerOdr: $("#lowerMenuList").jsGrid("option", "data").length+1,
 								lowerSeq: new Date().getTime(),
 								showYn:"N",
 								lowerUrl:"",
@@ -240,11 +240,11 @@ function fnUpperJsGrid(data){
 					},
 	                itemTemplate: function(value, item) {
 	                    let chk = $("<input>").attr("type", "checkbox").attr("name", "check")
-	                    .data("lowerSeq", item.lowerSeq).data("lowerOrder", item.lowerOrder).on("change", function() {
+	                    .data("lowerSeq", item.lowerSeq).data("lowerOdr", item.lowerOdr).on("change", function() {
 	                    	let idx = lowerNoIdx[item.lowerSeq];
 	                    	let cIdx = lowerCloneNoIdx[item.lowerSeq];
 	                			
-	               			if(isEmpty(item.lowerOrder)){
+	               			if(isEmpty(item.lowerOdr)){
 	               	    		$("#lowerMenuList").jsGrid("deleteItem", item);
 	               	    		delete lowerNoIdx[item.lowerSeq];               	    		
 	               	    	}else{
@@ -278,9 +278,9 @@ function fnUpperJsGrid(data){
 	                    return chk;
 	                }
 				},
-				{ title:"순서",	name:"lowerOrder",	type:"text", align:"center", width: "9%",
+				{ title:"순서",	name:"lowerOdr",	type:"text", align:"center", width: "9%",
 					itemTemplate: function(value, item){
-						return fnRefreshedSync(item, "lowerOrder", "lowerList", "span");
+						return fnRefreshedSync(item, "lowerOdr", "lowerList", "span");
 					}
 				},
 				{ title:"하위 이름",	name:"lowerNm",		type:"text", align:"center", width: "20%",

@@ -33,14 +33,14 @@ function fnInit(){
 	
 	//목적 option 생성
 	$.each(vals.purList, function(idx, item){
-		$option = $("<option>").text(item.purpose).val(item.purSeq).data("purType", item.purType);
+		$option = $("<option>").text(item.purposeNm).val(item.purposeSeq).data("purposeTpCd", item.purposeTpCd);
 		$("#purSelect").append($option);		
 	});
 	
 	//수단 option 생성
 	$.each(vals.meansList, function(idx, item){		
 		$option = $("<option>").text(item.meansNm + " " + wcm.isEmptyRtn(item.meansDtlNm) + " " + wcm.isEmptyRtn(item.meansInfo))
-			.val(item.meansSeq).data("purType", item.purType);
+			.val(item.meansSeq).data("purposeTpCd", item.purposeTpCd);
 		$("#meansSelect").append($option);		
 	});
 	
@@ -56,8 +56,8 @@ function fnInit(){
 					let srhParam = {
 						startDate : $("#startDate").val(),
 						endDate : $("#endDate").val(),
-						purSeq : $("#purSelect").val(),
-						purDtlSeq : $("#purDtlSelect").val(),
+						purposeSeq : $("#purSelect").val(),
+						purposeDtlSeq : $("#purDtlSelect").val(),
 						meansSeq : $("#meansSelect").val(),
 						sort : "DESC"
 					};
@@ -75,8 +75,8 @@ function fnInit(){
 		//그리드 생성시 필요한 아이템
 		items : {
 			select : [				
-				{name: "purSeq", opList: vals.purList, value: "purSeq", text: "purpose", dataValue: "purType", childColumnName:"purDtlSeq", childValueName: "purDtlSeq"},				
-				{name: "purDtlSeq", opList: vals.purDtlList, value: "purDtlSeq", text: "purDetail", parentColumnName:"purSeq", parentValueName:"purSeq", filterValueName : "purSeq"},				
+				{name: "purposeSeq", opList: vals.purList, value: "purposeSeq", text: "purposeNm", dataValue: "purposeTpCd", childColumnName:"purposeDtlSeq", childValueName: "purposeDtlSeq"},				
+				{name: "purposeDtlSeq", opList: vals.purDtlList, value: "purposeDtlSeq", text: "purposeDtlNm", parentColumnName:"purposeSeq", parentValueName:"purposeSeq", filterValueName : "purposeSeq"},				
 				{name: "meansSeq", opList : vals.meansList, value : "meansSeq", text:["meansNm", "meansDtlNm", "meansInfo"], textJoin:" "},
 				{name: "moveSeq", opList : vals.meansList, value : "meansSeq", text:["meansNm", "meansDtlNm", "meansInfo"], textJoin:" "},
 			]
@@ -87,8 +87,8 @@ function fnInit(){
 			{ title:"날짜", name:"recordDate", tag:"input", width: "7%", align:"center"},
 			{ title:"위치", name:"position", tag:"input", width: "10%", align:"center"},
 			{ title:"내용", name:"content", tag:"input", width: "16%", align:"center"},			
-			{ title:"목적", name:"purSeq", tag:"select", width: "12%", align:"center"},
-			{ title:"상세목적", name:"purDtlSeq", tag:"select", width: "11%", align:"center"},
+			{ title:"목적", name:"purposeSeq", tag:"select", width: "12%", align:"center"},
+			{ title:"상세목적", name:"purposeDtlSeq", tag:"select", width: "11%", align:"center"},
 			{ title:"사용수단", name:"meansSeq", tag:"select", width: "14%", align:"center"},
 			{ title:"이동처", name:"moveSeq", tag:"select", width: "14%", align:"center"},
 			{ title:"수입/지출/이동", name:"money", tag:"input", type:"currency", width: "8%", align:"right"},
@@ -137,7 +137,7 @@ function fnGridDataConverter(data){
 //############## 그리드 생성 전 그리드 초기설정 ################
 function fnCreatedGridBeforeInit(){
 	//이벤트 중복방지를 위한 삭제
-	$("[data-column-name='purSeq'] .wgrid-select").off();
+	$("[data-column-name='purposeSeq'] .wgrid-select").off();
 }
 //############## 그리드 생성 후 그리드 초기설정 ################
 function fnCreatedGridAfterInit(){
@@ -146,13 +146,13 @@ function fnCreatedGridAfterInit(){
 	$("[data-column-name='money'] .wgrid-input").addClass("wth80p");
 	
 	//이동처 컬럼 LED001 or LED002 disabled
-	$("[data-column-name='purSeq'] .wgrid-select").each(function(idx, el){					
-		let purType = el.options[el.selectedIndex].dataset.purType;
+	$("[data-column-name='purposeSeq'] .wgrid-select").each(function(idx, el){					
+		let purposeTpCd = el.options[el.selectedIndex].dataset.purposeTpCd;
 		let moveSelect = $(el).closest("td").next().next().next().find(".wgrid-select")[0];
 		
 		let $strong = $("<strong>").addClass("pm-mark");
 		                                    
-		switch(purType){                    
+		switch(purposeTpCd){                    
 		case "LED001":
 			moveSelect.disabled = true;
 			$strong.text("+");
@@ -178,8 +178,8 @@ function fnCreatedGridAfterInit(){
 function fnCreatedGridAfterEventInit(){
 
 	//그리드 목적 change 이벤트
-	$("[data-column-name='purSeq'] .wgrid-select").on("change", function(ev){		
-		let purType = ev.target.options[ev.target.selectedIndex].dataset.purType;		
+	$("[data-column-name='purposeSeq'] .wgrid-select").on("change", function(ev){		
+		let purposeTpCd = ev.target.options[ev.target.selectedIndex].dataset.purposeTpCd;		
 		
 		//목적타입에 따른 설정
 		let $tr = $(ev.target).closest("tr");
@@ -187,7 +187,7 @@ function fnCreatedGridAfterEventInit(){
 		let meansSeq = $tr.find("[data-column-name='meansSeq'] .wgrid-select").val();
 		let $moveSeq = $tr.find("[data-column-name='moveSeq'] .wgrid-select");	
 		let $moneyMark = $tr.find("[data-column-name='money'] .pm-mark");		
-		switch(purType){
+		switch(purposeTpCd){
 		//수입
 		case "LED001" :
 		//지출
@@ -196,7 +196,7 @@ function fnCreatedGridAfterEventInit(){
 			ledgerGrid.setCellData(key, "moveSeq", Number(meansSeq));
 			ledgerGrid.applySync(key);
 			$moveSeq[0].disabled = true;			
-			$moneyMark.text(purType == "LED001" ? "+" : "-");			
+			$moneyMark.text(purposeTpCd == "LED001" ? "+" : "-");			
 			break;			
 		//이동	
 		case "LED003" :
@@ -206,18 +206,18 @@ function fnCreatedGridAfterEventInit(){
 		}
 		
 		//목적타입 적용
-		ledgerGrid.setCellData(key, "purType", purType);
+		ledgerGrid.setCellData(key, "purposeTpCd", purposeTpCd);
 	});
 }
 
 //############## 목적변경  ################
-function fnParSeqChange(purSeq){	
+function fnParSeqChange(purposeSeq){	
 	$("#purDtlSelect").empty().append($("<option>").text("선택").val(""));
 	
 	//상세목적 option 생성
 	$.each(vals.purDtlList, function(idx, item){
-		if(purSeq == item.purSeq){
-			$option = $("<option>").text(item.purDetail).val(item.purDtlSeq).data("purSeq", item.purSeq);
+		if(purposeSeq == item.purposeSeq){
+			$option = $("<option>").text(item.purposeDtlNm).val(item.purposeDtlSeq).data("purposeSeq", item.purposeSeq);
 			$("#purDtlSelect").append($option);	
 		}
 	});	
@@ -230,7 +230,7 @@ function fnApplyLedger(){
 	let isSave = false;
 	
 	updateList.map(function(item){
-		if(item.purType == "LED002" || item.purType == "LED003"){
+		if(item.purposeTpCd == "LED002" || item.purposeTpCd == "LED003"){
 			item.money = "-" + item.money;
 			return item;
 		}else{
