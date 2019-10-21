@@ -30,7 +30,7 @@
 	<select id="selectCodeList" resultType="WhiteMap" parameterType="WhiteMap">
 		/*whiteMapper|selectCodeList*/
 		SELECT
-			CODE
+			CODE	AS code
 			,CODE_PRT AS codePrt
 			,CODE_NM AS codeNm
 		FROM COMMON_CD		

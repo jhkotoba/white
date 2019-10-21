@@ -47,7 +47,7 @@
 	
 	<!-- 목적 삭제시 상세목적에 부모로써 사용되는지 확인 -->
 	<select id="selectIsUsedPurposePurDtl" resultType="int" parameterType="java.util.List">
-		SELECT COUNT(1) FROM purpose_detail
+		SELECT COUNT(1) FROM PURPOSE_DTL
 		WHERE PURPOSE_SEQ IN
 		<foreach collection="list" item="item" separator="," open="(" close=")">
 			#{item.purposeSeq}
@@ -109,7 +109,7 @@
 	
 	<!-- 해당 유저 상세목적 반영하기전 상세목적 시퀀스 검증 -->
 	<select id="selectVerifyPurDtlSeqStrList" resultType="int" parameterType="java.util.List">
-		SELECT COUNT(1)	FROM purpose_detail
+		SELECT COUNT(1)	FROM PURPOSE_DTL
 		WHERE USER_SEQ <![CDATA[ <> ]]> #{userSeq}
 		AND PURPOSE_DTL_SEQ IN (${verifyPurDtlSeqList})
 	</select>

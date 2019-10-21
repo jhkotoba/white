@@ -30,8 +30,7 @@ function fnPurGrid(data){
 		refPurSeq = clone.purList[0].purposeSeq;
 	}else{
 		refPurSeq = Number("${prevParam}");
-	}
-	
+	}	
 	
 	$("#purList").jsGrid({
 		height: "auto",
