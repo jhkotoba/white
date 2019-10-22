@@ -332,11 +332,11 @@ function inputLedger(data){
 		let $option = $("<option>").text("상세목적 선택").val("");
 		$select.addClass("select-gray wth80p").attr("name", "sync").append($option);
 		for(let i=0; i<data.purDtlList.length; i++){
-			if(Number(data.purDtlList[i].purposeSeq) === Number(item.purSeq)){
+			if(Number(data.purDtlList[i].purposeSeq) === Number(item.purposeSeq)){
 				$option = $("<option>").val(data.purDtlList[i].purposeDtlSeq)
 					.text(data.purDtlList[i].purposeDtlNm)
 				
-				if(Number(item.purposeDtlSeq) === Number(data.purDtlList[i].purDtlSeq)){
+				if(Number(item.purposeDtlSeq) === Number(data.purDtlList[i].purposeDtlSeq)){
 					$option.prop("selected", true);
 				}
 			}					

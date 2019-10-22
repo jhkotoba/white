@@ -96,14 +96,14 @@ $(document).ready(function(){
     	for(let i=0; i<data.codePrt.length; i++){
     		tag += "<option value="+data.codePrt[i].code+">"+data.codePrt[i].codeNm+"</option>";	    		
     	}
-    	$("#writeForm #sourcelangCd").append("<option value=''>타입</option>"+tag);
-    	$("#searchBar #sourcelangCd").append("<option value=''>전체</option>"+tag);
-    	$("#editForm #sourcelangCd").append(tag);
+    	$("#writeForm #sourceLangCd").append("<option value=''>타입</option>"+tag);
+    	$("#searchBar #sourceLangCd").append("<option value=''>전체</option>"+tag);
+    	$("#editForm #sourceLangCd").append(tag);
 	});
     
   	//조회 버튼
 	$("#btns #searchBtn").on("click", function(){		
-		$("#searchForm #sourcelangCd").val($("#searchBar #sourcelangCd").val());
+		$("#searchForm #sourceLangCd").val($("#searchBar #sourceLangCd").val());
 		$("#searchForm #type").val($("#searchBar #type").val());
 		
 		let type =  $("#searchForm #type").val();		
@@ -289,7 +289,7 @@ function fnSourceCode(pageIdx, pageSize, pageBtnCnt){
 	<div class="flex">		
 		<div class="flex-left">
 			<span class="span-gray-rt">타입</span>		
-			<select id="sourcelangCd" class="select-gray">	
+			<select id="sourceLangCd" class="select-gray">	
 			</select>
 			<span class="span-gray-rt">제목</span>			
 		</div>		
@@ -313,7 +313,7 @@ function fnSourceCode(pageIdx, pageSize, pageBtnCnt){
 	<div class="flex">
 		<div class="flex-left">
 			<span class="span-gray-rt">타입</span>
-			<select id="sourcelangCd" class="select-gray">
+			<select id="sourceLangCd" class="select-gray">
 			</select>
 			<span class="span-gray-rt">사용자</span>
 			<span id="userId" class="span-gray"></span>
@@ -369,7 +369,7 @@ function fnSourceCode(pageIdx, pageSize, pageBtnCnt){
 
 <!-- 조회값 폼 -->
 <form id="searchForm" name="searchForm" onsubmit="return false;">
-	<input id="sourcelangCd" type="hidden" value="">
+	<input id="sourceLangCd" type="hidden" value="">
 	<input id="type" type="hidden" value="">
 	<input id="text" type="hidden" value="">
 </form>
@@ -394,7 +394,7 @@ function fnSourceCode(pageIdx, pageSize, pageBtnCnt){
 			<tr>
 				<th>언어/라이브러리</th>
 				<td>
-					<select id="sourcelangCd" class="select-gray wth100p">
+					<select id="sourceLangCd" class="select-gray wth100p">
 					</select>
 				</td>
 				<th>검색구분</th>
