@@ -4,7 +4,7 @@
 <c:set var="path" value="<%=request.getContextPath()%>"></c:set>
 
 <link rel="stylesheet" href="${path}/resources/wGrid/css/wGrid.css" type="text/css"/>
-<script type="text/javascript" src="${path}/resources/wGrid/js/wGrid.js"></script>
+<script type="text/javascript" src="${path}/resources/wGrid/js/wGrid_0.0.2.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
 	//초기설정
