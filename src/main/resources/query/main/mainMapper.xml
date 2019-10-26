@@ -62,7 +62,7 @@
 			UM.UPPER_SEQ AS upperSeq,
 	  		UM.UPPER_NM AS upperNm,
 	 		UM.UPPER_URL AS upperUrl,
-	 		UM.UPPER_ORDER AS upperOdr,
+	 		UM.UPPER_ODR AS upperOdr,
 			UM.AUTH_SEQ AS authSeq
 			<choose>
 				<when test="userId == 'leedev'">
@@ -83,7 +83,7 @@
 		<if test="userId != 'leedev'">
 			WHERE UM.SHOW_YN = 'Y'
 		</if>		
-		ORDER BY UM.UPPER_ORDER
+		ORDER BY UM.UPPER_ODR
 	</select>
 	
 	<select id="selectLowerMenuList" resultType="whiteMap" parameterType="whiteMap">
