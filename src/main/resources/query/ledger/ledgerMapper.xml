@@ -570,7 +570,7 @@
 			FROM 
 			(
 				SELECT				
-					p.PURPOSE_TP_CD  	
+					P.PURPOSE_TP_CD  	
 					,SUM(LR.MONEY) 		AS money
 				FROM LEDGER_RCD LR
 				INNER JOIN PURPOSE P
