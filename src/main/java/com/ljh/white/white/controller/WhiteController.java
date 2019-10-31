@@ -1,4 +1,4 @@
-package com.ljh.white.common.controller;
+package com.ljh.white.white.controller;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ljh.white.common.collection.WhiteMap;
-import com.ljh.white.common.service.WhiteService;
+import com.ljh.white.white.service.WhiteService;
 
 /**
  * 공통 컨트롤러

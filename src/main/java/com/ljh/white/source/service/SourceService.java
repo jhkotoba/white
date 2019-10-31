@@ -9,8 +9,8 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ljh.white.common.collection.WhiteMap;
-import com.ljh.white.common.mapper.WhiteMapper;
 import com.ljh.white.source.mapper.SourceMapper;
+import com.ljh.white.white.mapper.WhiteMapper;
 
 @Service("SourceService")
 public class SourceService {

@@ -1,4 +1,4 @@
-package com.ljh.white.common.service;
+package com.ljh.white.white.service;
 
 import java.util.List;
 
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.ljh.white.common.Auth;
 import com.ljh.white.common.collection.WhiteMap;
-import com.ljh.white.common.mapper.WhiteMapper;
+import com.ljh.white.white.mapper.WhiteMapper;
 
 @Service("WhiteService")
 public class WhiteService{

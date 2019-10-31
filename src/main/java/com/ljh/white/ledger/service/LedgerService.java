@@ -11,11 +11,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ljh.white.common.Constant;
+import com.ljh.white.common.interfere.Constant;
 import com.ljh.white.common.White;
 import com.ljh.white.common.collection.WhiteMap;
-import com.ljh.white.common.service.WhiteService;
 import com.ljh.white.ledger.mapper.LedgerMapper;
+import com.ljh.white.white.service.WhiteService;
 
 
 @Service("LedgerService")

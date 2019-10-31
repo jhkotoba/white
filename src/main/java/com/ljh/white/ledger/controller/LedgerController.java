@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ljh.white.common.collection.WhiteMap;
-import com.ljh.white.common.service.WhiteService;
 import com.ljh.white.ledger.service.LedgerService;
+import com.ljh.white.white.service.WhiteService;
 
 @RestController
 public class LedgerController {

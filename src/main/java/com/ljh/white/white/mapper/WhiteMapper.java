@@ -1,4 +1,4 @@
-package com.ljh.white.common.mapper;
+package com.ljh.white.white.mapper;
 
 import java.util.List;
 

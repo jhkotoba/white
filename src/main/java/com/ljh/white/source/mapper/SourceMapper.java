@@ -2,17 +2,13 @@ package com.ljh.white.source.mapper;
 
 import java.util.List;
 
-import org.apache.ibatis.session.SqlSession;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.ljh.white.common.collection.WhiteMap;
+import com.ljh.white.common.extend.CommonMapper;
 
 @Repository("SourceMapper")
-public class SourceMapper {
-	
-	@Autowired
-	private SqlSession sqlSession;
+public class SourceMapper extends CommonMapper{
 	
 	/**
 	 * 소스게시판 리스트 카운트
@@ -20,7 +16,7 @@ public class SourceMapper {
 	 * @return
 	 */
 	public int selectSourceCount(WhiteMap param) {
-		return sqlSession.selectOne("sourceMapper.selectSourceCount", param);
+		return selectInt("sourceMapper.selectSourceCount", param);
 	}
 	
 	/**
@@ -29,7 +25,7 @@ public class SourceMapper {
 	 * @return
 	 */
 	public List<WhiteMap> selectSourceList(WhiteMap param) {
-		return sqlSession.selectList("sourceMapper.selectSourceList", param);
+		return selectList("sourceMapper.selectSourceList", param);
 	}
 	
 	/**
@@ -38,7 +34,7 @@ public class SourceMapper {
 	 * @return
 	 */
 	public WhiteMap selectSourceDtlView(WhiteMap param) {
-		return sqlSession.selectOne("sourceMapper.selectSourceDtlView", param);
+		return selectOne("sourceMapper.selectSourceDtlView", param);
 	}
 	
 	/**
@@ -47,7 +43,7 @@ public class SourceMapper {
 	 * @return
 	 */
 	public int insertSource(WhiteMap param) {
-		return sqlSession.insert("sourceMapper.insertSource", param);
+		return insert("sourceMapper.insertSource", param);
 	}
 	
 	/**
@@ -56,7 +52,7 @@ public class SourceMapper {
 	 * @return
 	 */
 	public int updateSource(WhiteMap param) {
-		return sqlSession.update("sourceMapper.updateSource", param);
+		return update("sourceMapper.updateSource", param);
 	}
 	
 	/**
@@ -65,7 +61,7 @@ public class SourceMapper {
 	 * @return
 	 */
 	public int deleteSource(WhiteMap param) {
-		return sqlSession.delete("sourceMapper.deleteSource", param);
+		return delete("sourceMapper.deleteSource", param);
 	}
 	
 	/**
@@ -74,7 +70,7 @@ public class SourceMapper {
 	 * @return
 	 */
 	public int selectSourceGuideCount(WhiteMap param) {
-		return sqlSession.selectOne("sourceMapper.selectSourceGuideCount", param);
+		return selectInt("sourceMapper.selectSourceGuideCount", param);
 	}
 	
 	/**
@@ -83,7 +79,7 @@ public class SourceMapper {
 	 * @return
 	 */
 	public List<WhiteMap> selectSourceGuideList(WhiteMap param) {
-		return sqlSession.selectList("sourceMapper.selectSourceGuideList", param);
+		return selectList("sourceMapper.selectSourceGuideList", param);
 	}
 	
 	

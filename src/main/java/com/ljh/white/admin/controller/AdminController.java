@@ -10,8 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ljh.white.admin.service.AdminService;
 import com.ljh.white.common.collection.WhiteMap;
-import com.ljh.white.common.service.WhiteService;
-
+import com.ljh.white.white.service.WhiteService;
 
 @RestController
 public class AdminController {	

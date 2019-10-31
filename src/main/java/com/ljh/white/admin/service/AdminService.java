@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ljh.white.admin.mapper.AdminMapper;
 import com.ljh.white.common.collection.WhiteMap;
-import com.ljh.white.common.service.WhiteService;
+import com.ljh.white.white.service.WhiteService;
 
 @Service("AdminService")
 public class AdminService {
