@@ -37,13 +37,13 @@
 	
 	<select id="selectSourceList" resultType="WhiteMap" parameterType="WhiteMap">	
 		SELECT
-			SB.SOURCE_SEQ 		AS sourceSeq
-			,CC.CODE_NM 		AS sourceLangNm
-			,CC.CODE			AS sourceLangCd
-			,WU.USER_ID 		AS userId
-			,SB.TITLE			AS title
-			,DATE_FORMAT(SB.edit_date,'%Y-%m-%d %H:%i:%s') AS editDate
-			,DATE_FORMAT(SB.reg_date,'%Y-%m-%d %H:%i:%s')  AS regDate
+			SB.SOURCE_SEQ
+			,CC.CODE_NM AS SOURCE_LANG_NM
+			,CC.CODE	AS SOURCE_LANG_CD
+			,WU.USER_ID
+			,SB.TITLE
+			,DATE_FORMAT(SB.EDIT_DATE,'%Y-%m-%d %H:%i:%s') AS EDIT_DATE
+			,DATE_FORMAT(SB.REG_DATE,'%Y-%m-%d %H:%i:%s')  AS REG_DATE
 		FROM SOURCE_BRD SB
 	    LEFT OUTER JOIN COMMON_CD CC
 	    	ON SB.SOURCE_LANG_CD = CC.CODE

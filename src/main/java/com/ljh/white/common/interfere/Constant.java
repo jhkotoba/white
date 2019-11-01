@@ -7,6 +7,4 @@ public interface Constant {
 	
 	final static public int POSITION_LENGTH = 60;
 	final static public int CONTENT_LENGTH = 60;
-	
-	final static public boolean IS_SELECT_CAMELCASE = true;
 }
