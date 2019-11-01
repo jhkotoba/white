@@ -8,10 +8,8 @@ import java.util.Set;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.StringUtils;
 
 import com.ljh.white.common.collection.WhiteMap;
-import com.ljh.white.common.interfere.Constant;
 import com.ljh.white.common.util.CommonStringUtils;
 
 public class CommonMapper {
