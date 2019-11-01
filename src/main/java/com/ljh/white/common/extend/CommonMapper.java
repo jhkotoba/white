@@ -80,9 +80,7 @@ public class CommonMapper {
 			HashMap<String, String> keyMap = new HashMap<String, String>();			
 			set.forEach(key -> {
 				keyMap.put(key, this.converterCamelCaseString(key));
-			});
-			System.out.println(list.get(0));
-			System.out.println(keyMap);
+			});			
 			
 			List<WhiteMap> resultList = new ArrayList<WhiteMap>();		
 			list.forEach(item -> {
