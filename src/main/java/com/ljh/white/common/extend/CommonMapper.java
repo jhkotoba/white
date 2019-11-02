@@ -9,8 +9,8 @@ import java.util.Set;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.ljh.white.common.White;
 import com.ljh.white.common.collection.WhiteMap;
-import com.ljh.white.common.util.CommonStringUtils;
 
 public class CommonMapper {
 	
@@ -120,7 +120,7 @@ public class CommonMapper {
 		StringBuilder sBuilder = new StringBuilder();
 		String[] splitKey = key.split("_");
 		if(splitKey.length < 2){			
-			if(CommonStringUtils.isAllUpper(splitKey[0])) {
+			if(White.isStringAllUpper(splitKey[0])) {
 				return splitKey[0].toLowerCase();
 			}else {
 				return splitKey[0];

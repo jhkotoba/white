@@ -77,21 +77,6 @@ public class SourceController {
 	public int deleteSource(HttpServletRequest request){
 		WhiteMap param = new WhiteMap(request);		
 		return sourceService.deleteSource(param);	
-	}
-	
-	/**
-	 * 소스가이드 조회
-	 * @param request
-	 * @return
-	 */
-	@RequestMapping(value="/source/selectSourceGuideList.ajax" )
-	public WhiteMap selectSourceGuideList(HttpServletRequest request){
-		WhiteMap param = new WhiteMap(request);
-		
-		WhiteMap result = new WhiteMap();
-		result.put("itemsCount", sourceService.selectSourceGuideCount(param));
-		result.put("list", sourceService.selectSourceGuideList(param));		
-		return result;
-	}
+	}	
 	
 }

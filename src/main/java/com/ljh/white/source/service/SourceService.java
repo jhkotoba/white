@@ -78,25 +78,5 @@ public class SourceService {
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor={Exception.class})
 	public int deleteSource(WhiteMap param) {		
 		return sourceMapper.deleteSource(param);
-	}
-	
-	/**
-	 * 소스가이드 조회 카운트
-	 * @param param
-	 * @return
-	 */
-	public int selectSourceGuideCount(WhiteMap param) {
-		return sourceMapper.selectSourceGuideCount(param);	
-	}
-	
-	
-	/**
-	 * 소스가이드 조회
-	 * @param param
-	 * @return
-	 */
-	public List<WhiteMap> selectSourceGuideList(WhiteMap param) {		
-		return sourceMapper.selectSourceGuideList(param);	
-		
-	}
+	}	
 }

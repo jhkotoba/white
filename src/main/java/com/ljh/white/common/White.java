@@ -25,7 +25,7 @@ public class White {
 	 * @param device
 	 * @return
 	 */
-	static public String device(Device device) {
+	public static String device(Device device) {
 		if(device.isNormal()) {
 			return "normal";
 		}else {
@@ -39,7 +39,7 @@ public class White {
 	 * @param date
 	 * @return
 	 */
-	static public boolean dateCheck(String date) {		
+	public static boolean dateCheck(String date) {		
 		return White.dateCheck(date, null);
 	}
 	
@@ -48,7 +48,7 @@ public class White {
 	 * @param date
 	 * @return
 	 */
-	static public boolean dateCheck(String date, String type) {
+	public static boolean dateCheck(String date, String type) {
 		
 		if(date == null) return false;
 		if("".equals(type) || type == null) {
@@ -69,7 +69,7 @@ public class White {
 	 * ListWhiteMap 에서 지정된 Key와 value를 바탕으로 WhiteMap 객체 생성
 	 * @return
 	 */
-	static public WhiteMap convertListToMap(List<WhiteMap> list, String keyNm, String valueNm) {
+	public static WhiteMap convertListToMap(List<WhiteMap> list, String keyNm, String valueNm) {
 		WhiteMap map = new WhiteMap();
 		
 		for(int i=0; i<list.size(); i++) {
@@ -83,7 +83,7 @@ public class White {
 	 * @param str
 	 * @return
 	 */
-	static public String nullDelete(String str) {
+	public static String nullDelete(String str) {
 		if(str == null) {
 			return "";
 		}else {
@@ -96,7 +96,7 @@ public class White {
 	 * @param str
 	 * @return
 	 */
-	static public void nullDelete(WhiteMap map) {
+	public static void nullDelete(WhiteMap map) {
 		
 		Set<String> keys= map.keySet();		
 		Iterator<String> ite = keys.iterator();
@@ -111,7 +111,7 @@ public class White {
 	 * 오늘날짜 yyyy-MM-dd
 	 * @return
 	 */
-	static public String getTodayDate() {
+	public static String getTodayDate() {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		Calendar cal = Calendar.getInstance();
         return sdf.format(cal.getTime());
@@ -121,7 +121,7 @@ public class White {
 	 * 오늘날짜 yyyy-MM-dd HH:mm:ss
 	 * @return
 	 */
-	static public String getTodayDateTime() {
+	public static String getTodayDateTime() {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Calendar cal = Calendar.getInstance();
         return sdf.format(cal.getTime());
@@ -133,7 +133,7 @@ public class White {
 	 * @param addMonth
 	 * @return
 	 */
-	static public String dateMonthCalculate(String fromDate, int addMonth) {
+	public static String dateMonthCalculate(String fromDate, int addMonth) {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		Calendar cal = Calendar.getInstance();
 		String result = null;
@@ -151,7 +151,7 @@ public class White {
 	 * 현재시간 HH:mm:ss
 	 * @return
 	 */
-	static public String getNowTime() {
+	public static String getNowTime() {
 		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
         Calendar c1 = Calendar.getInstance();
         return sdf.format(c1.getTime());
@@ -162,7 +162,7 @@ public class White {
 	 * @param date
 	 * @return
 	 */
-	static public String getFirstDate(String date) {
+	public static String getFirstDate(String date) {
 		String[] split = date.split("-");
 		if(split.length == 3) {
 			return split[0]+"-"+split[1]+"-"+"01";
@@ -176,7 +176,7 @@ public class White {
 	 * @param date
 	 * @return
 	 */
-	static public String getLastDate(String date) {		
+	public static String getLastDate(String date) {		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		Calendar cal = Calendar.getInstance();        
         try {			
@@ -197,7 +197,7 @@ public class White {
 	 * @param str
 	 * @return
 	 */
-	static public boolean isEmpty(Object obj) {
+	public static boolean isEmpty(Object obj) {
 		return White.isEmpty(obj.toString());
 	}
 	static public boolean isEmpty(String str) {
@@ -213,7 +213,7 @@ public class White {
 	 * @param str
 	 * @return
 	 */
-	static public String isEmptyRtn(Object obj) {
+	public static String isEmptyRtn(Object obj) {
 		return White.isEmptyRtn(obj.toString());
 	}
 	static public String isEmptyRtn(String str) {
@@ -222,5 +222,19 @@ public class White {
 		}else {
 			return str.toString();
 		}
+	}
+		
+	/**
+	 * 문자열이 모두 대문자인지 체크
+	 * @param string
+	 * @return
+	 */
+	public static boolean isStringAllUpper(String string) {
+	    for(char character : string.toCharArray()) {
+	       if(Character.isLetter(character) && Character.isLowerCase(character)) {
+	           return false;
+	        }
+	    }
+	    return true;
 	}
 }

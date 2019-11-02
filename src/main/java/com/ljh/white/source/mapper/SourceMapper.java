@@ -62,25 +62,5 @@ public class SourceMapper extends CommonMapper{
 	 */
 	public int deleteSource(WhiteMap param) {
 		return delete("sourceMapper.deleteSource", param);
-	}
-	
-	/**
-	 * 소스가이드 조회 카운트
-	 * @param param
-	 * @return
-	 */
-	public int selectSourceGuideCount(WhiteMap param) {
-		return selectInt("sourceMapper.selectSourceGuideCount", param);
-	}
-	
-	/**
-	 * 소스가이드 조회
-	 * @param param
-	 * @return
-	 */
-	public List<WhiteMap> selectSourceGuideList(WhiteMap param) {
-		return selectList("sourceMapper.selectSourceGuideList", param);
-	}
-	
-	
+	}	
 }
