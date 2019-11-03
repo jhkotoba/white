@@ -2,17 +2,13 @@ package com.ljh.white.board.mapper;
 
 import java.util.List;
 
-import org.apache.ibatis.session.SqlSession;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.ljh.white.common.collection.WhiteMap;
+import com.ljh.white.common.extend.CommonMapper;
 
 @Repository("BoardMapper")
-public class BoardMapper {
-
-	@Autowired
-	private SqlSession sqlSession;
+public class BoardMapper extends CommonMapper {	
 	
 	/**
 	 * 게시판 리스트 카운트
@@ -20,7 +16,7 @@ public class BoardMapper {
 	 * @return
 	 */
 	public int selectBoardCount(WhiteMap param) {
-		return sqlSession.selectOne("boardMapper.selectBoardCount", param);
+		return selectInt("boardMapper.selectBoardCount", param);
 	}
 	
 	/**
@@ -29,7 +25,7 @@ public class BoardMapper {
 	 * @return
 	 */
 	public List<WhiteMap> selectBoardList(WhiteMap param) {
-		return sqlSession.selectList("boardMapper.selectBoardList", param);
+		return selectList("boardMapper.selectBoardList", param);
 	}
 	
 	/**
@@ -38,7 +34,7 @@ public class BoardMapper {
 	 * @return
 	 */
 	public WhiteMap selectBoardDtlView(WhiteMap param) {
-		return sqlSession.selectOne("boardMapper.selectBoardDtlView", param);
+		return selectOne("boardMapper.selectBoardDtlView", param);
 	}
 	
 	/**
@@ -47,7 +43,7 @@ public class BoardMapper {
 	 * @return
 	 */
 	public int selectBoardCommentCount(WhiteMap param) {
-		return sqlSession.selectOne("boardMapper.selectBoardCommentCount", param);
+		return selectInt("boardMapper.selectBoardCommentCount", param);
 	}
 	
 	/**
@@ -56,7 +52,7 @@ public class BoardMapper {
 	 * @return
 	 */
 	public List<WhiteMap> selectBoardCommentList(WhiteMap param) {
-		return sqlSession.selectList("boardMapper.selectBoardCommentList", param);
+		return selectList("boardMapper.selectBoardCommentList", param);
 	}
 	
 	/**
@@ -65,7 +61,7 @@ public class BoardMapper {
 	 * @return
 	 */
 	public int updateDelComment(WhiteMap param) {
-		return sqlSession.update("boardMapper.updateDelComment", param);
+		return update("boardMapper.updateDelComment", param);
 	}
 	
 	/**
@@ -74,7 +70,7 @@ public class BoardMapper {
 	 * @return
 	 */
 	public int deleteComment(WhiteMap param) {
-		return sqlSession.delete("boardMapper.deleteComment", param);
+		return delete("boardMapper.deleteComment", param);
 	}
 	
 	/**
@@ -83,7 +79,7 @@ public class BoardMapper {
 	 * @return
 	 */
 	public int insertBoardComment(WhiteMap param) {
-		return sqlSession.insert("boardMapper.insertBoardComment", param);
+		return insert("boardMapper.insertBoardComment", param);
 	}
 	
 	/**
@@ -92,7 +88,7 @@ public class BoardMapper {
 	 * @return
 	 */
 	public int insertBoard(WhiteMap param) {
-		return sqlSession.insert("boardMapper.insertBoard", param);
+		return insert("boardMapper.insertBoard", param);
 	}
 	
 	/**
@@ -101,7 +97,7 @@ public class BoardMapper {
 	 * @return
 	 */
 	public int updateBoard(WhiteMap param) {
-		return sqlSession.update("boardMapper.updateBoard", param);
+		return update("boardMapper.updateBoard", param);
 	}
 	
 	/**
@@ -110,6 +106,6 @@ public class BoardMapper {
 	 * @return
 	 */
 	public int deleteBoard(WhiteMap param) {
-		return sqlSession.delete("boardMapper.deleteBoard", param);
+		return delete("boardMapper.deleteBoard", param);
 	}
 }

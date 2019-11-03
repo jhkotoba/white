@@ -3,17 +3,13 @@ package com.ljh.white.admin.mapper;
 
 import java.util.List;
 
-import org.apache.ibatis.session.SqlSession;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.ljh.white.common.collection.WhiteMap;
+import com.ljh.white.common.extend.CommonMapper;
 
 @Repository("AdminMapper")
-public class AdminMapper {
-	
-	@Autowired
-	private SqlSession sqlSession;
+public class AdminMapper extends CommonMapper{	
 	
 	/**
 	 * 사용자 수 조회
@@ -21,7 +17,7 @@ public class AdminMapper {
 	 * @return
 	 */
 	public int selectUserCount(WhiteMap param) {
-		return sqlSession.selectOne("adminMapper.selectUserCount", param);
+		return selectInt("adminMapper.selectUserCount", param);
 	}
 	
 	/**
@@ -30,7 +26,7 @@ public class AdminMapper {
 	 * @return
 	 */
 	public List<WhiteMap> selectUserList(WhiteMap param) {
-		return sqlSession.selectList("adminMapper.selectUserList", param);
+		return selectList("adminMapper.selectUserList", param);
 	}
 	
 	/**
@@ -38,7 +34,7 @@ public class AdminMapper {
 	 * @return
 	 */
 	public List<WhiteMap> selectAuthList() {
-		return sqlSession.selectList("adminMapper.selectAuthList");
+		return selectList("adminMapper.selectAuthList");
 	}
 	
 	/**
@@ -47,7 +43,7 @@ public class AdminMapper {
 	 * @return
 	 */
 	public List<WhiteMap> selectUserAuth(WhiteMap param) {
-		return sqlSession.selectList("adminMapper.selectUserAuth", param);
+		return selectList("adminMapper.selectUserAuth", param);
 	}
 	
 	/**
@@ -56,7 +52,7 @@ public class AdminMapper {
 	 * @return
 	 */
 	public int insertAuthList(List<WhiteMap> param) {
-		return sqlSession.insert("adminMapper.insertAuthList", param);
+		return insert("adminMapper.insertAuthList", param);
 	}
 	
 	/**
@@ -65,7 +61,7 @@ public class AdminMapper {
 	 * @return
 	 */
 	public int deleteAuthList(WhiteMap param) {
-		return sqlSession.delete("adminMapper.deleteAuthList", param);
+		return delete("adminMapper.deleteAuthList", param);
 	}
 	
 	/**
@@ -74,7 +70,7 @@ public class AdminMapper {
 	 * @return
 	 */
 	public List<WhiteMap> selectUpperMenuList() {
-		return sqlSession.selectList("adminMapper.selectUpperMenuList");
+		return selectList("adminMapper.selectUpperMenuList");
 	}
 	
 	
@@ -84,7 +80,7 @@ public class AdminMapper {
 	 * @return
 	 */
 	public List<WhiteMap> selectLowerMenuList(WhiteMap param) {
-		return sqlSession.selectList("adminMapper.selectLowerMenuList", param);
+		return selectList("adminMapper.selectLowerMenuList", param);
 	}
 	
 	/**
@@ -93,7 +89,7 @@ public class AdminMapper {
 	 * @return
 	 */
 	public int insertUpperMenuList(List<WhiteMap> list) {
-		return sqlSession.insert("adminMapper.insertUpperMenuList", list);		 
+		return insert("adminMapper.insertUpperMenuList", list);		 
 	}	
 	
 	/**
@@ -102,7 +98,7 @@ public class AdminMapper {
 	 * @return
 	 */
 	public int updateUpperMenuList(List<WhiteMap> list) {
-		return sqlSession.update("adminMapper.updateUpperMenuList", list);		 
+		return update("adminMapper.updateUpperMenuList", list);		 
 	}	
 	
 	/**
@@ -111,7 +107,7 @@ public class AdminMapper {
 	 * @return
 	 */
 	public int selectIsUsedLowerUrl(List<WhiteMap> list) {
-		return sqlSession.selectOne("adminMapper.selectIsUsedLowerUrl", list);		 
+		return selectInt("adminMapper.selectIsUsedLowerUrl", list);		 
 	}
 	
 	/**
@@ -120,7 +116,7 @@ public class AdminMapper {
 	 * @return
 	 */
 	public int deleteUpperMenuList(List<WhiteMap> list) {
-		return sqlSession.delete("adminMapper.deleteUpperMenuList", list);		 
+		return delete("adminMapper.deleteUpperMenuList", list);		 
 	}
 	
 	/**
@@ -129,7 +125,7 @@ public class AdminMapper {
 	 * @return
 	 */
 	public int insertLowerMenuList(List<WhiteMap> list) {
-		return sqlSession.insert("adminMapper.insertLowerMenuList", list);		 
+		return insert("adminMapper.insertLowerMenuList", list);		 
 	}	
 	
 	/**
@@ -138,7 +134,7 @@ public class AdminMapper {
 	 * @return
 	 */
 	public int updateLowerMenuList(List<WhiteMap> list) {
-		return sqlSession.update("adminMapper.updateLowerMenuList", list);		 
+		return update("adminMapper.updateLowerMenuList", list);		 
 	}	
 	
 	/**
@@ -147,7 +143,7 @@ public class AdminMapper {
 	 * @return
 	 */
 	public int deleteLowerMenuList(List<WhiteMap> list) {
-		return sqlSession.delete("adminMapper.deleteLowerMenuList", list);		 
+		return delete("adminMapper.deleteLowerMenuList", list);		 
 	}
 	
 	
@@ -157,7 +153,7 @@ public class AdminMapper {
 	 * @return
 	 */
 	public int insertPosAuthList(List<WhiteMap> list) {
-		return sqlSession.insert("adminMapper.insertPosAuthList", list);		 
+		return insert("adminMapper.insertPosAuthList", list);		 
 	}	
 	
 	/**
@@ -166,7 +162,7 @@ public class AdminMapper {
 	 * @return
 	 */
 	public int updateAuthList(List<WhiteMap> list) {
-		return sqlSession.update("adminMapper.updateAuthList", list);		 
+		return update("adminMapper.updateAuthList", list);		 
 	}	
 	
 	/**
@@ -175,7 +171,7 @@ public class AdminMapper {
 	 * @return
 	 */
 	public int selectIsUsedAuth(List<WhiteMap> list) {
-		return sqlSession.selectOne("adminMapper.selectIsUsedAuth", list);		 
+		return selectInt("adminMapper.selectIsUsedAuth", list);		 
 	}
 	
 	/**
@@ -184,7 +180,7 @@ public class AdminMapper {
 	 * @return
 	 */
 	public int deleteAuthList(List<WhiteMap> list) {
-		return sqlSession.delete("adminMapper.deleteAuthList", list);		 
+		return delete("adminMapper.deleteAuthList", list);		 
 	}
 	
 	/**
@@ -193,7 +189,7 @@ public class AdminMapper {
 	 * @return
 	 */
 	public int selectCodeDefineCount(WhiteMap param) {
-		return sqlSession.selectOne("adminMapper.selectCodeDefineCount", param);
+		return selectInt("adminMapper.selectCodeDefineCount", param);
 	}
 	
 	
@@ -203,7 +199,7 @@ public class AdminMapper {
 	 * @return
 	 */
 	public List<WhiteMap> selectCodeDefineList(WhiteMap param) {
-		return sqlSession.selectList("adminMapper.selectCodeDefineList", param);
+		return selectList("adminMapper.selectCodeDefineList", param);
 	}
 	
 	

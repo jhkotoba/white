@@ -107,9 +107,9 @@ public class CommonMapper {
 			
 			Set<String> set = list.get(0).keySet();
 			HashMap<String, String> keyMap = new HashMap<String, String>();
-			set.forEach(key -> {
+			set.forEach(key -> {				
 				keyMap.put(key, this.converterCamelCaseString(key));
-			});			
+			});
 			
 			List<WhiteMap> resultList = new ArrayList<WhiteMap>();
 			list.forEach(item -> {
@@ -119,6 +119,11 @@ public class CommonMapper {
 				
 				while(ite.hasNext()) {				
 					String key = ite.next();
+					
+					if(keyMap.get(key) == null) {						
+						keyMap.put(key, this.converterCamelCaseString(key));						
+					}
+					
 					param.put(keyMap.get(key), item.get(key));
 				}
 				
