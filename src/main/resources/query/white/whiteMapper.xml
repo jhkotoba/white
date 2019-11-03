@@ -8,8 +8,8 @@
 	<select id="selectUpperAuthList" resultType="WhiteMap">
 		/*whiteMapper|selectUpperAuthList*/
 		SELECT
-			UM.UPPER_URL AS upperUrl
-			,A.AUTH_NM AS authNm
+			UM.UPPER_URL
+			, A.AUTH_NM
 		FROM UPPER_MENU UM
 		LEFT OUTER JOIN AUTH A
 		ON A.AUTH_SEQ = UM.AUTH_SEQ
@@ -19,8 +19,8 @@
 	<select id="selectLowerAuthList" resultType="WhiteMap">
 		/*whiteMapper|selectLowerAuthList*/
 		SELECT
-	 		LM.LOWER_URL AS lowerUrl
-      		,A.AUTH_NM AS authNm
+	 		LM.LOWER_URL
+      		, A.AUTH_NM
 		FROM LOWER_MENU LM
     	LEFT OUTER JOIN AUTH A
     	ON A.AUTH_SEQ = LM.AUTH_SEQ	
@@ -30,9 +30,9 @@
 	<select id="selectCodeList" resultType="WhiteMap" parameterType="WhiteMap">
 		/*whiteMapper|selectCodeList*/
 		SELECT
-			CODE	AS code
-			,CODE_PRT AS codePrt
-			,CODE_NM AS codeNm
+			CODE
+			, CODE_PRT
+			, CODE_NM
 		FROM COMMON_CD		
 		WHERE CODE_PRT = UPPER(#{codePrt})		
 	</select>	
@@ -41,8 +41,8 @@
 	<select id="selectSortTable" resultType="WhiteMap" parameterType="WhiteMap">
 		/*whiteMapper|selectSortTable*/
 		SELECT
-			${firstSeqNm} AS firstSeq			
-			,${columnNm} AS col
+			${firstSeqNm} AS FIRST_SEQ			
+			, ${columnNm} AS COL
 		FROM ${tableNm}
 		<where>
 			<if test="secondSeqNm != null and secondSeqNm != ''">

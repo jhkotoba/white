@@ -2,17 +2,13 @@ package com.ljh.white.ledger.mapper;
 
 import java.util.List;
 
-import org.apache.ibatis.session.SqlSession;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.ljh.white.common.collection.WhiteMap;
+import com.ljh.white.common.extend.CommonMapper;
 
 @Repository("LedgerMapper")
-public class LedgerMapper {
-
-	@Autowired
-	private SqlSession sqlSession;
+public class LedgerMapper extends CommonMapper{
 	
 	/**
 	 * 해당 유저 목적 리스트 조회
@@ -20,7 +16,7 @@ public class LedgerMapper {
 	 * @return
 	 */
 	public List<WhiteMap> selectPurList(WhiteMap param) {
-		return sqlSession.selectList("ledgerMapper.selectPurList", param);
+		return selectList("ledgerMapper.selectPurList", param);
 	}
 	
 	/**
@@ -29,7 +25,7 @@ public class LedgerMapper {
 	 * @return
 	 */
 	public List<WhiteMap> selectPurDtlList(WhiteMap param) {
-		return sqlSession.selectList("ledgerMapper.selectPurDtlList", param);
+		return selectList("ledgerMapper.selectPurDtlList", param);
 	}
 	
 	/**
@@ -38,7 +34,7 @@ public class LedgerMapper {
 	 * @return
 	 */
 	public int selectVerifyPurSeqStrList(WhiteMap param) {
-		return sqlSession.selectOne("ledgerMapper.selectVerifyPurSeqStrList", param);
+		return selectInt("ledgerMapper.selectVerifyPurSeqStrList", param);
 	}
 	
 	/**
@@ -47,7 +43,7 @@ public class LedgerMapper {
 	 * @return
 	 */
 	public int selectIsUsedPurposeRec(List<WhiteMap> list) {
-		return sqlSession.selectOne("ledgerMapper.selectIsUsedPurposeRec", list);		 
+		return selectInt("ledgerMapper.selectIsUsedPurposeRec", list);		 
 	}
 	
 	/**
@@ -56,7 +52,7 @@ public class LedgerMapper {
 	 * @return
 	 */
 	public int selectIsUsedPurposePurDtl(List<WhiteMap> list) {		
-		return sqlSession.selectOne("ledgerMapper.selectIsUsedPurposePurDtl", list);		 
+		return selectInt("ledgerMapper.selectIsUsedPurposePurDtl", list);		 
 	}	
 	
 	/**
@@ -65,7 +61,7 @@ public class LedgerMapper {
 	 * @return
 	 */
 	public int deletePurList(List<WhiteMap> list) {		
-		return sqlSession.delete("ledgerMapper.deletePurList", list);		 
+		return delete("ledgerMapper.deletePurList", list);		 
 	}
 	
 	/**
@@ -74,7 +70,7 @@ public class LedgerMapper {
 	 * @return
 	 */
 	public int insertPurList(List<WhiteMap> list) {		
-		return sqlSession.insert("ledgerMapper.insertPurList", list);		 
+		return insert("ledgerMapper.insertPurList", list);		 
 	}	
 	
 	/**
@@ -83,7 +79,7 @@ public class LedgerMapper {
 	 * @return
 	 */
 	public int updatePurList(List<WhiteMap> list) {		
-		return sqlSession.update("ledgerMapper.updatePurList", list);		 
+		return update("ledgerMapper.updatePurList", list);		 
 	}
 	
 	/**
@@ -92,7 +88,7 @@ public class LedgerMapper {
 	 * @return
 	 */
 	public int selectVerifyPurDtlSeqStrList(WhiteMap param) {
-		return sqlSession.selectOne("ledgerMapper.selectVerifyPurDtlSeqStrList", param);
+		return selectInt("ledgerMapper.selectVerifyPurDtlSeqStrList", param);
 	}
 	
 	/**
@@ -101,7 +97,7 @@ public class LedgerMapper {
 	 * @return 1: OK, 1이외숫자 NO
 	 */
 	public int selectVerifyPurSeq(WhiteMap param) {
-		return sqlSession.selectOne("ledgerMapper.selectVerifyPurSeq", param);
+		return selectInt("ledgerMapper.selectVerifyPurSeq", param);
 	}
 	
 	
@@ -111,7 +107,7 @@ public class LedgerMapper {
 	 * @return
 	 */
 	public int selectIsUsedPurDtlRec(List<WhiteMap> list) {		
-		return sqlSession.selectOne("ledgerMapper.selectIsUsedPurDtlRec", list);		 
+		return selectInt("ledgerMapper.selectIsUsedPurDtlRec", list);		 
 	}
 	
 	/**
@@ -120,7 +116,7 @@ public class LedgerMapper {
 	 * @return
 	 */
 	public int deletePurDtlList(List<WhiteMap> list) {		
-		return sqlSession.delete("ledgerMapper.deletePurDtlList", list);		 
+		return delete("ledgerMapper.deletePurDtlList", list);		 
 	}
 	
 	/**
@@ -129,7 +125,7 @@ public class LedgerMapper {
 	 * @return
 	 */
 	public int updatePurDtlList(List<WhiteMap> list) {		
-		return sqlSession.update("ledgerMapper.updatePurDtlList", list);		 
+		return update("ledgerMapper.updatePurDtlList", list);		 
 	}
 	
 	/**
@@ -138,7 +134,7 @@ public class LedgerMapper {
 	 * @return
 	 */
 	public int insertPurDtlList(List<WhiteMap> list) {		
-		return sqlSession.insert("ledgerMapper.insertPurDtlList", list);		 
+		return insert("ledgerMapper.insertPurDtlList", list);		 
 	}
 	
 	/**
@@ -147,7 +143,7 @@ public class LedgerMapper {
 	 * @return
 	 */
 	public List<WhiteMap> selectMeansList(WhiteMap param) {
-		return sqlSession.selectList("ledgerMapper.selectMeansList", param);
+		return selectList("ledgerMapper.selectMeansList", param);
 	}
 	
 	/**
@@ -156,7 +152,7 @@ public class LedgerMapper {
 	 * @return
 	 */
 	public int selectVerifyMeansSeqStrList(WhiteMap param) {
-		return sqlSession.selectOne("ledgerMapper.selectVerifyMeansSeqStrList", param);
+		return selectInt("ledgerMapper.selectVerifyMeansSeqStrList", param);
 	}
 	
 	/**
@@ -165,7 +161,7 @@ public class LedgerMapper {
 	 * @return
 	 */
 	public int selectIsUsedMeansRec(List<WhiteMap> list) {		
-		return sqlSession.selectOne("ledgerMapper.selectIsUsedMeansRec", list);		 
+		return selectInt("ledgerMapper.selectIsUsedMeansRec", list);		 
 	}
 	
 	/**
@@ -174,7 +170,7 @@ public class LedgerMapper {
 	 * @return
 	 */
 	public int insertMeansList(List<WhiteMap> list) {
-		return sqlSession.insert("ledgerMapper.insertMeansList", list);
+		return insert("ledgerMapper.insertMeansList", list);
 	}
 	
 	/**
@@ -183,7 +179,7 @@ public class LedgerMapper {
 	 * @return
 	 */
 	public int updateMeansList(List<WhiteMap> list) {		
-		return sqlSession.update("ledgerMapper.updateMeansList", list);		
+		return update("ledgerMapper.updateMeansList", list);		
 	}
 	
 	/**
@@ -192,7 +188,7 @@ public class LedgerMapper {
 	 * @return
 	 */
 	public int deleteMeansList(List<WhiteMap> list) {		
-		return sqlSession.delete("ledgerMapper.deleteMeansList", list);		 
+		return delete("ledgerMapper.deleteMeansList", list);		 
 	}
 	
 	/**
@@ -201,7 +197,7 @@ public class LedgerMapper {
 	 * @return
 	 */
 	public int insertRecordList(List<WhiteMap> list) {
-		return sqlSession.insert("ledgerMapper.insertRecordList", list);
+		return insert("ledgerMapper.insertRecordList", list);
 	}
 	
 	/**
@@ -210,7 +206,7 @@ public class LedgerMapper {
 	 * @return
 	 */
 	public WhiteMap selectPastCalLedger(List<WhiteMap> list) {
-		return sqlSession.selectOne("ledgerMapper.selectPastCalLedger", list);
+		return selectOne("ledgerMapper.selectPastCalLedger", list);
 	}	
 	/** @deprecated 새로작성중
 	 * 금전기록 해당날짜 이전 각각(현금, 은행등등) 금액 합산 조회 old
@@ -218,7 +214,7 @@ public class LedgerMapper {
 	 * @return
 	 */
 	public WhiteMap selectPastCalLedgerOLD(List<WhiteMap> list) {
-		return sqlSession.selectOne("ledgerMapper.selectPastCalLedgerOLD", list);
+		return selectOne("ledgerMapper.selectPastCalLedgerOLD", list);
 	}	
 	
 	
@@ -229,7 +225,7 @@ public class LedgerMapper {
 	 * @return
 	 */
 	public List<WhiteMap> selectRecordList(WhiteMap param) {		
-		return sqlSession.selectList("ledgerMapper.selectRecordList", param);		 
+		return selectList("ledgerMapper.selectRecordList", param);		 
 	}
 	/**
 	 * 해당 유저 가계부 조회
@@ -237,7 +233,7 @@ public class LedgerMapper {
 	 * @return
 	 */
 	public List<WhiteMap> selectLedgerList(WhiteMap param) {		
-		return sqlSession.selectList("ledgerMapper.selectLedgerList", param);		 
+		return selectList("ledgerMapper.selectLedgerList", param);		 
 	}
 	
 	/**
@@ -246,7 +242,7 @@ public class LedgerMapper {
 	 * @return
 	 */
 	public int updateRecordList(List<WhiteMap> list) {
-		return sqlSession.update("ledgerMapper.updateRecordList", list);
+		return update("ledgerMapper.updateRecordList", list);
 	}
 	
 	/**
@@ -255,7 +251,7 @@ public class LedgerMapper {
 	 * @return
 	 */
 	public int deleteRecordList(List<WhiteMap> list) {
-		return sqlSession.delete("ledgerMapper.deleteRecordList", list);
+		return delete("ledgerMapper.deleteRecordList", list);
 	}	
 	
 	/**
@@ -264,7 +260,7 @@ public class LedgerMapper {
 	 * @return
 	 */
 	public WhiteMap selectFirstRecordDate(WhiteMap param) {
-		return sqlSession.selectOne("ledgerMapper.selectFirstRecordDate", param);
+		return selectOne("ledgerMapper.selectFirstRecordDate", param);
 	}
 	
 	/**
@@ -273,7 +269,7 @@ public class LedgerMapper {
 	 * @return
 	 */
 	public int selectPrevAmount(WhiteMap param) {
-		return sqlSession.selectOne("ledgerMapper.selectPrevAmount", param);
+		return selectInt("ledgerMapper.selectPrevAmount", param);
 	}
 	
 	/**
@@ -282,7 +278,7 @@ public class LedgerMapper {
 	 * @return
 	 */
 	public List<WhiteMap> selectLedgerMonthIEStats(List<WhiteMap> list) {
-		return sqlSession.selectList("ledgerMapper.selectLedgerMonthIEStats", list);
+		return selectList("ledgerMapper.selectLedgerMonthIEStats", list);
 	}
 	
 	/**
@@ -291,7 +287,7 @@ public class LedgerMapper {
 	 * @return
 	 */
 	public List<WhiteMap> selectLedgerMonthPurStats(WhiteMap param) {
-		return sqlSession.selectList("ledgerMapper.selectLedgerMonthPurStats", param);
+		return selectList("ledgerMapper.selectLedgerMonthPurStats", param);
 	}
 	
 	/**
@@ -300,7 +296,7 @@ public class LedgerMapper {
 	 * @return
 	 */
 	public List<WhiteMap> selectLedgerMonthPurDtlStats(WhiteMap param) {
-		return sqlSession.selectList("ledgerMapper.selectLedgerMonthPurDtlStats", param);
+		return selectList("ledgerMapper.selectLedgerMonthPurDtlStats", param);
 	}
 	
 	

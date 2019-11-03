@@ -2,35 +2,21 @@ package com.ljh.white.white.mapper;
 
 import java.util.List;
 
-import org.apache.ibatis.session.SqlSession;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.ljh.white.common.collection.WhiteMap;
-
-
-
-
+import com.ljh.white.common.extend.CommonMapper;
 
 
 @Repository("WhiteMapper")
-public class WhiteMapper {
-	
-	private static final Logger logger = LoggerFactory.getLogger(WhiteMapper.class);
-	
-	@Autowired
-	private SqlSession sqlSession;	
-	
-	public List<WhiteMap> selectUpperAuthList() {
-		logger.debug("");
-		return sqlSession.selectList("whiteMapper.selectUpperAuthList");
+public class WhiteMapper extends CommonMapper {
+		
+	public List<WhiteMap> selectUpperAuthList() {	
+		return selectList("whiteMapper.selectUpperAuthList");
 	}
 	
-	public List<WhiteMap> selectLowerAuthList() {
-		logger.debug("");
-		return sqlSession.selectList("whiteMapper.selectLowerAuthList");
+	public List<WhiteMap> selectLowerAuthList() {	
+		return selectList("whiteMapper.selectLowerAuthList");
 	}
 	
 	/**
@@ -38,9 +24,8 @@ public class WhiteMapper {
 	 * @param param
 	 * @return
 	 */
-	public List<WhiteMap> selectCodeList(WhiteMap param) {
-		logger.debug(param.toString());
-		return sqlSession.selectList("whiteMapper.selectCodeList", param);
+	public List<WhiteMap> selectCodeList(WhiteMap param) {	
+		return selectList("whiteMapper.selectCodeList", param);
 	}
 	
 	/**
@@ -49,9 +34,8 @@ public class WhiteMapper {
 	 * @param colNm
 	 * @return
 	 */
-	public List<WhiteMap> selectSortTable(WhiteMap param) {
-		logger.debug(param.toString());
-		return sqlSession.selectList("whiteMapper.selectSortTable", param);
+	public List<WhiteMap> selectSortTable(WhiteMap param) {	
+		return selectList("whiteMapper.selectSortTable", param);
 	}
 	
 	/**
@@ -61,6 +45,6 @@ public class WhiteMapper {
 	 * @return
 	 */
 	public void updateSortTable(WhiteMap param) {
-		sqlSession.update("whiteMapper.updateSortTable", param);
+		update("whiteMapper.updateSortTable", param);
 	}
 }

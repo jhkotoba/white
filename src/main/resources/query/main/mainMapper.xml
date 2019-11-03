@@ -8,7 +8,7 @@
 	<select id="selectUserPasswd" parameterType="WhiteMap" resultType="String">
 		/* mainMapper|selectUserPasswd */
 		SELECT					
-			USER_PASS userPass
+			USER_PASS
 		FROM WHITE_USER		
 		WHERE USER_ID = #{userId}				
 	</select>		
@@ -29,7 +29,7 @@
 	<select id="getUserSeq" resultType="int" parameterType="String" >
 		/* mainMapper|getUserSeq */
 		SELECT 
-	  		USER_SEQ AS userSeq
+	  		USER_SEQ
 		FROM WHITE_USER
 		WHERE USER_ID = #{userId}
 	</select>
@@ -37,36 +37,36 @@
 	<select id="userIdCheck" resultType="int" parameterType="String" >
 		/* mainMapper|userIdCheck */
 		SELECT COUNT(1)
-		FROM white_user
+		FROM WHITE_USER
 		WHERE USER_ID = #{userId}
 	</select>
 		
 	<select id="selectUserAuthority" resultType="WhiteMap" parameterType="int" >
 		/* mainMapper|selectUserAuthority */
 		SELECT 
-		  A.AUTH_NM AS authNm,
-		  IF(
+		  A.AUTH_NM
+		  , IF(
 				(
 					SELECT GA.GRANT_AUTH_SEQ FROM GRANT_AUTH GA
 					WHERE GA.AUTH_SEQ = A.AUTH_SEQ
 					AND USER_SEQ = #{userSeq}
 					LIMIT 1
 				) IS NULL, 0, 1
-		  ) AS auth
+		  ) AS AUTH
 		FROM AUTH A
 	</select>
 	
 	<select id="selectUpperMenuList" resultType="whiteMap" parameterType="whiteMap">
 		/* mainMapper|selectUpperMenuList */
 		SELECT					
-			UM.UPPER_SEQ AS upperSeq,
-	  		UM.UPPER_NM AS upperNm,
-	 		UM.UPPER_URL AS upperUrl,
-	 		UM.UPPER_ODR AS upperOdr,
-			UM.AUTH_SEQ AS authSeq
+			UM.UPPER_SEQ
+	  		, UM.UPPER_NM
+	 		, UM.UPPER_URL
+	 		, UM.UPPER_ODR
+			, UM.AUTH_SEQ
 			<choose>
 				<when test="userId == 'leedev'">
-				,1 AS auth
+				,1 AS AUTH
 				</when>
 				<otherwise>
 				,IF(
@@ -76,7 +76,7 @@
 						AND GA.USER_SEQ = #{userSeq}
 						LIMIT 1
 					) IS NULL, 0, 1
-				) AS auth
+				) AS AUTH
 				</otherwise>
 			</choose>			
 		FROM UPPER_MENU UM
@@ -89,15 +89,15 @@
 	<select id="selectLowerMenuList" resultType="whiteMap" parameterType="whiteMap">
 		/* mainMapper|selectLowerMenuList */
 		SELECT					
-			LM.LOWER_SEQ AS lowerSeq,
-			LM.UPPER_SEQ AS upperSeq,
-	  		LM.LOWER_NM AS lowerNm,
-	 		LM.LOWER_URL AS lowerUrl,
-	 		LM.LOWER_ODR AS lowerOdr,
-			LM.AUTH_SEQ AS authSeq
+			LM.LOWER_SEQ
+			, LM.UPPER_SEQ
+	  		, LM.LOWER_NM
+	 		, LM.LOWER_URL
+	 		, LM.LOWER_ODR
+			, LM.AUTH_SEQ
 			<choose>
 				<when test="userId == 'leedev'">
-				,1 AS auth
+				,1 AS AUTH
 				</when>
 					<otherwise>
 					,IF(
@@ -107,7 +107,7 @@
 							AND GA.USER_SEQ = #{userSeq}
 							LIMIT 1
 						) IS NULL, 0, 1
-					) AS auth
+					) AS AUTH
 				</otherwise>
 			</choose>	
 		FROM LOWER_MENU LM

@@ -17,34 +17,65 @@ public class CommonMapper {
 	@Autowired
 	private SqlSession sqlSession;
 	
-	public int selectInt(String statement, Object parameter){
+	public String selectString(String statement){
+		return sqlSession.selectOne(statement);
+	}	
+	public String selectString(String statement, Object parameter){
 		return sqlSession.selectOne(statement, parameter);
 	}
 	
+	public int selectInt(String statement){
+		return sqlSession.selectOne(statement);
+	}	
+	public int selectInt(String statement, Object parameter){
+		return sqlSession.selectOne(statement, parameter);
+	}	
+	
+	public WhiteMap selectOne(String statement){	
+		return this.converterCamelCase((WhiteMap)sqlSession.selectOne(statement));
+	}	
+	public WhiteMap selectOne(String statement, boolean isCamelCase){
+		if(isCamelCase) {
+			return this.selectOne(statement);
+		}else {
+			return sqlSession.selectOne(statement);
+		}
+	}	
+	public WhiteMap selectOne(String statement, Object parameter){	
+		return this.converterCamelCase((WhiteMap)sqlSession.selectOne(statement, parameter));
+	}	
 	public WhiteMap selectOne(String statement, Object parameter, boolean isCamelCase){
 		if(isCamelCase) {
 			return this.selectOne(statement, parameter);
 		}else {
 			return sqlSession.selectOne(statement, parameter);
 		}
-	}	
-	
-	public WhiteMap selectOne(String statement, Object parameter){	
-		return this.converterCamelCase((WhiteMap)sqlSession.selectOne(statement, parameter));
 	}
 	
+	
+	public List<WhiteMap> selectList(String statement){
+		List<WhiteMap> list = sqlSession.selectList(statement);
+		return this.converterCamelCase(list);
+	}
+	public List<WhiteMap> selectList(String statement, boolean isCamelCase){
+		if(isCamelCase) {
+			return this.selectList(statement);
+		}else {
+			return sqlSession.selectList(statement);
+		}
+	}
+	public List<WhiteMap> selectList(String statement, Object parameter){
+		List<WhiteMap> list = sqlSession.selectList(statement, parameter);
+		return this.converterCamelCase(list);
+	}	
 	public List<WhiteMap> selectList(String statement, Object parameter, boolean isCamelCase){
 		if(isCamelCase) {
 			return this.selectList(statement, parameter);
 		}else {
 			return sqlSession.selectList(statement, parameter);
 		}
-	}
+	}	
 	
-	public List<WhiteMap> selectList(String statement, Object parameter){
-		List<WhiteMap> list = sqlSession.selectList(statement, parameter);
-		return this.converterCamelCase(list);
-	}
 	
 	public int insert(String statement) {
 		return sqlSession.insert(statement, null);
@@ -75,12 +106,12 @@ public class CommonMapper {
 		if(list.size() > 0) {
 			
 			Set<String> set = list.get(0).keySet();
-			HashMap<String, String> keyMap = new HashMap<String, String>();			
+			HashMap<String, String> keyMap = new HashMap<String, String>();
 			set.forEach(key -> {
 				keyMap.put(key, this.converterCamelCaseString(key));
 			});			
 			
-			List<WhiteMap> resultList = new ArrayList<WhiteMap>();		
+			List<WhiteMap> resultList = new ArrayList<WhiteMap>();
 			list.forEach(item -> {
 				
 				WhiteMap param = new WhiteMap();

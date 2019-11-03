@@ -108,7 +108,7 @@
 	
 	
 	<!-- 해당 유저 상세목적 반영하기전 상세목적 시퀀스 검증 -->
-	<select id="selectVerifyPurDtlSeqStrList" resultType="int" parameterType="java.util.List">
+	<select id="selectVerifyPurDtlSeqStrList" resultType="int" parameterType="whiteMap">
 		SELECT COUNT(1)	FROM PURPOSE_DTL
 		WHERE USER_SEQ <![CDATA[ <> ]]> #{userSeq}
 		AND PURPOSE_DTL_SEQ IN (${verifyPurDtlSeqList})
@@ -176,8 +176,9 @@
 		</foreach>	
 	</insert>
 	
-	<!-- 은행 조회 -->
+	<!-- 수단 조회 -->
 	<select id="selectMeansList" resultType="whiteMap" parameterType="whiteMap">
+		/* ledgerMapper|selectMeansList */
 		SELECT			
 			MEANS_SEQ AS meansSeq,
 			MEANS_NM AS meansNm,
@@ -192,7 +193,7 @@
 	</select>
 	
 	<!-- 해당 유저 은행 반영하기전 상세목적 시퀀스 검증 -->
-	<select id="selectVerifyMeansSeqStrList" resultType="int" parameterType="java.util.List">
+	<select id="selectVerifyMeansSeqStrList" resultType="int" parameterType="whiteMap">
 		/* ledgerMapper|selectVerifyMeansSeqStrList */
 		SELECT COUNT(1)	FROM MEANS
 		WHERE USER_SEQ <![CDATA[ <> ]]> #{userSeq}

@@ -2,35 +2,31 @@ package com.ljh.white.main.mapper;
 
 import java.util.List;
 
-import org.apache.ibatis.session.SqlSession;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.ljh.white.common.collection.WhiteMap;
+import com.ljh.white.common.extend.CommonMapper;
 
 @Repository("MainMapper")
-public class MainMapper {
-	
-	@Autowired
-	private SqlSession sqlSession;
-	
+public class MainMapper extends CommonMapper{
+		
 	public String selectUserPasswd(WhiteMap param) {
-		return sqlSession.selectOne("mainMapper.selectUserPasswd", param);
+		return selectString("mainMapper.selectUserPasswd", param);
 	}
 	
 	public int getUserSeq(String userId){
-		return sqlSession.selectOne("mainMapper.getUserSeq", userId);			
+		return selectInt("mainMapper.getUserSeq", userId);			
 	}
 	
 	public List<WhiteMap> selectUserAuthority(int userSeq){		
-		return sqlSession.selectList("mainMapper.selectUserAuthority", userSeq);			
+		return selectList("mainMapper.selectUserAuthority", userSeq);			
 	}
 
 	public List<WhiteMap> selectUpperMenuList(WhiteMap param){
-		return sqlSession.selectList("mainMapper.selectUpperMenuList", param);			
+		return selectList("mainMapper.selectUpperMenuList", param);			
 	}
 	
 	public List<WhiteMap> selectLowerMenuList(WhiteMap param){	
-		return sqlSession.selectList("mainMapper.selectLowerMenuList", param);			
+		return selectList("mainMapper.selectLowerMenuList", param);			
 	}
 }
