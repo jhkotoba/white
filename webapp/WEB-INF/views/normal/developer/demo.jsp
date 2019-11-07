@@ -19,7 +19,7 @@ function fnInit(){
 		
 	});
 	
-	
+	demo.setData([{a:1},{a:2}]);
 	
 	
 	
