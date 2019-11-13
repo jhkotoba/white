@@ -14,12 +14,12 @@ $(document).ready(function(){
 
 function fnInit(){	
 	demo = new wGrid("demo", {
-		option : {isPaging : false},
+		option : {isPaging : true},
 		
 		
 	});
 	
-	demo.setData([{a:1},{a:2}]);
+	
 	
 	
 	

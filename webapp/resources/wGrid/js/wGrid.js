@@ -1,9 +1,11 @@
 //유틸함수
 import { _utils } from './plugin/utils.js';
 //생성 및 초기화 클래스
-import { _initialize } from './plugin/initialize.js';
+import { _configure } from './plugin/configure.js';
 //데이터 클래스
 import { _repository } from './plugin/repository.js';
+//컨트롤러 클래스
+import { _controller } from './plugin/controller.js';
 
 
 /**
@@ -24,23 +26,25 @@ class wGrid{
 		this._utils = _utils;		
 		
 		//초기 셋팅클래스
-		this._init = new _initialize(this, args.option);
+		this._config = new _configure(this, args.option);
 				
 		//data 클래스		
 		this._data = null;
 		
 		//컨트롤러
-		this._controller = args.controller;
-	}
-	
-	//그리드 초기화
-	ititGrid(){
+		this._controller = new _controller(args.controller);
 		
-	}
+		return this;
+	}	
 	
 	//그리드 생성
 	createGird(){
 		
+	}
+	
+	//옵션
+	getOption(){
+		return this._config.getOption();		
 	}
 	
 	//데이터 주입
