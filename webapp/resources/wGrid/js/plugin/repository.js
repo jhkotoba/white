@@ -10,12 +10,12 @@ export class _repository{
 		this.root = root;		
 		
 		//데이터 원본 함수(콜백) 호출
-		root._controller.initDataConvert(data);
+		root._callback.initDataConvert(data);
 		
 		//데이터 옵션에 따라 가공
 		
 		//데이터 옵션가공된 상태에서 함수(콜백) 호출
-		root._controller.initedDataConvert(data);
+		root._callback.initedDataConvert(data);
 		
 		//클론생성
 		this.clone = null;

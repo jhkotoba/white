@@ -1,11 +1,16 @@
 //유틸함수
 import { _utils } from './plugin/utils.js';
-//생성 및 초기화 클래스
+//콜백 클래스
+import { _configure } from './plugin/callback.js';
+//옵션 설정 클래스
 import { _configure } from './plugin/configure.js';
 //데이터 클래스
 import { _repository } from './plugin/repository.js';
+//생성 클래스
+import { _creator } from './plugin/creator.js';
 //컨트롤러 클래스
 import { _controller } from './plugin/controller.js';
+
 
 
 /**
@@ -23,23 +28,30 @@ class wGrid{
 		this._targetId = document.getElementById(this.id);
 		
 		//유틸함수 저장(연결)
-		this._utils = _utils;		
+		this._utils = _utils;
 		
-		//초기 셋팅클래스
+		//콜백 클래스
+		this._callback = new _callback(this, args);
+		
+		//옵션 설정 클래스
 		this._config = new _configure(this, args.option);
 				
 		//data 클래스		
 		this._data = null;
 		
+		//생성클래스
+		this._creator = new _creator(this);
+		
 		//컨트롤러
-		this._controller = new _controller(args.controller);
+		this._controller = new _controller(this, args.controller);		
 		
 		return this;
 	}	
 	
 	//그리드 생성
 	createGird(){
-		
+		this._creator.createGrid();
+		return this;
 	}
 	
 	//옵션
@@ -50,6 +62,7 @@ class wGrid{
 	//데이터 주입
 	setData(data){
 		this._data = new _repository(this, data);
+		return this;
 	}
 	
 	
