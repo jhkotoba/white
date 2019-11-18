@@ -4,14 +4,14 @@ import { _utils } from './plugin/utils.js';
 import { _configure } from './plugin/callback.js';
 //옵션 설정 클래스
 import { _configure } from './plugin/configure.js';
+//필드 정보 클래스
+import { _fields } from './plugin/fields.js';
 //데이터 클래스
 import { _repository } from './plugin/repository.js';
 //생성 클래스
 import { _creator } from './plugin/creator.js';
 //컨트롤러 클래스
 import { _controller } from './plugin/controller.js';
-
-
 
 /**
  * wGrid 기본객체
@@ -35,6 +35,9 @@ class wGrid{
 		
 		//옵션 설정 클래스
 		this._config = new _configure(this, args.option);
+		
+		//옵션 설정 클래스
+		this._fields = new _fields(this, args.fields);		
 				
 		//data 클래스		
 		this._data = null;
@@ -57,6 +60,11 @@ class wGrid{
 	//옵션
 	getOption(){
 		return this._config.getOption();		
+	}
+	
+	//데이터 주입(초기화)
+	initData(data){
+		
 	}
 	
 	//데이터 주입

@@ -14,7 +14,11 @@ $(document).ready(function(){
 
 function fnInit(){	
 	demo = new wGrid("demo", {
-		option : {isPaging : true},
+		option : {
+			isPaging : true,
+			pageCount : 5,
+			pageSize : 10
+		}
 		
 		
 	});
