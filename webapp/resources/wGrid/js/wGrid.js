@@ -1,7 +1,7 @@
 //유틸함수
 import { _utils } from './plugin/utils.js';
 //콜백 클래스
-import { _configure } from './plugin/callback.js';
+import { _callback } from './plugin/callback.js';
 //옵션 설정 클래스
 import { _configure } from './plugin/configure.js';
 //필드 정보 클래스
@@ -28,10 +28,10 @@ class wGrid{
 		this._targetId = document.getElementById(this.id);
 		
 		//유틸함수 저장(연결)
-		this._utils = _utils;
+		this.util = _utils;
 		
 		//콜백 클래스
-		this._callback = new _callback(this, args);
+		this._callback = new _callback(this, args.callback);
 		
 		//옵션 설정 클래스
 		this._config = new _configure(this, args.option);
@@ -60,12 +60,7 @@ class wGrid{
 	//옵션
 	getOption(){
 		return this._config.getOption();		
-	}
-	
-	//데이터 주입(초기화)
-	initData(data){
-		
-	}
+	}	
 	
 	//데이터 주입
 	setData(data){
@@ -73,8 +68,10 @@ class wGrid{
 		return this;
 	}
 	
-	
-	
+	//데이터 가져오기
+	getData(){
+		return this._data.getData();
+	}
 };
 window.wGrid = wGrid;
 

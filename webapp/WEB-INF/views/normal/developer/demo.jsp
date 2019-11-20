@@ -6,28 +6,39 @@
 <link rel="stylesheet" href="${contextPath}/resources/wGrid/css/wGrid.css" type="text/css"/>
 <script type="module"  src="${contextPath}/resources/wGrid/js/wGrid.js"></script>
 <script type="text/javascript">
-let demo = null;
-$(document).ready(function(){	
-	//초기설정
-	fnInit();
-});
-
-function fnInit(){	
-	demo = new wGrid("demo", {
+$(document).ready(function(){
+	
+	//그리드 생성
+	let demo = new wGrid("demo", {
 		option : {
 			isPaging : true,
 			pageCount : 5,
 			pageSize : 10
 		}
-		
-		
 	});
 	
+	//테스트 데이터
+	let data = [
+		{seq : 1, name : "이순신"},
+		{seq : 2, name : "강감찬"},
+		{seq : 3, name : "김유신"},
+		{seq : 4, name : "이성계"},
+	];
+	
+	//데이터 주입
+	demo.setData(data);
+	
+	console.log("demo.getData()");
+	console.log(demo.getData());
+	
+});
+
+
 	
 	
 	
 	
-}
+	
 </script>
 
 <div id="demo"></div>
