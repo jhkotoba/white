@@ -14,8 +14,25 @@ $(document).ready(function(){
 			isPaging : true,
 			pageCount : 5,
 			pageSize : 10
+		},
+		callback : {
+			initDataConvert : function(data){
+				console.log("callback - initDataConvert");
+				console.log(data);
+			},
+			initedDataConvert : function(data){
+				console.log("callback - initedDataConvert");
+				console.log(data);
+			}
+		},
+		controller : {
+			load : function(){
+				
+			}			
 		}
 	});
+	
+	console.log(demo);
 	
 	//테스트 데이터
 	let data = [

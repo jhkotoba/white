@@ -12,9 +12,9 @@ export class _callback{
 			this.initedDataConvert = root.util.emptyFn;
 		}else{
 			//데이터 원본 함수(콜백) 호출 //_repository
-			this.initDataConvert = root.isFnRtnFn(callback.initDataConvert);
+			this.initDataConvert = root.util.isFnRtnFn(callback.initDataConvert);
 			//데이터 옵션가공된 상태에서 함수(콜백) 호출 //_repository
-			this.initedDataConvert = root.isFnRtnFn(callback.initedDataConvert);
+			this.initedDataConvert = root.util.isFnRtnFn(callback.initedDataConvert);
 		}
 	}
 }
