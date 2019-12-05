@@ -6,8 +6,7 @@
 <link rel="stylesheet" href="${contextPath}/resources/wGrid/css/wGrid.css" type="text/css"/>
 <script type="module"  src="${contextPath}/resources/wGrid/js/wGrid.js"></script>
 <script type="text/javascript">
-$(document).ready(function(){
-	
+document.addEventListener("DOMContentLoaded", function(){
 	//그리드 생성
 	let demo = new wGrid("demo", {
 		option : {
@@ -47,15 +46,7 @@ $(document).ready(function(){
 	
 	console.log("demo.getData()");
 	console.log(demo.getData());
-	
 });
-
-
-	
-	
-	
-	
-	
 </script>
 
 <div id="demo"></div>
