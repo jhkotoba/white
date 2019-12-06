@@ -350,8 +350,7 @@ $.fn.setParam = function(param){
 <!-- 글쓰기  -->
 <form id="writeForm" class="blank hide" onsubmit="return false;">	
 	<div class="flex">		
-		<div class="flex-left">	
-			</select>
+		<div class="flex-left">
 			<span class="span-gray-rt">제목</span>			
 		</div>		
 		<div class="flex-right">					
@@ -373,7 +372,6 @@ $.fn.setParam = function(param){
 	<input id="boardSeq" type="hidden" value="">
 	<div class="flex">
 		<div class="flex-left">
-			</select>
 			<span class="span-gray-rt">사용자</span>
 			<span id="userId" class="span-gray"></span>
 			<span class="span-gray-rt">제목</span>

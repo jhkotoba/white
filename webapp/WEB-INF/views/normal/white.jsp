@@ -128,7 +128,7 @@ $(document).ready(function(){
 		<input id="passwd" name="passwd" class="input-gray login-text wth100p" type="password">
 		<div>
 			<button id="loginSmt" class="btn-gray trs">Login</button>
-			<button class="btn-gray trs" href="${contextPath}/main/signUp">Sign up</button>
+			<a class="btn-gray trs" href="${contextPath}/main/signUp">Sign up</a>
 		</div>
 	</div>
 </form>
