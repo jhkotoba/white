@@ -1,5 +1,9 @@
 package com.ljh.white.board.controller;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -7,6 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.ljh.white.board.service.BoardService;
 import com.ljh.white.common.collection.WhiteMap;
@@ -109,5 +115,55 @@ public class BoardController {
 	public int deleteBoard(HttpServletRequest request){
 		WhiteMap param = new WhiteMap(request);	
 		return boardService.deleteBoard(param);	
+	}
+	
+	@RequestMapping(value="/board/upFile.ajax" )
+	public void upFile(MultipartHttpServletRequest request, MultipartFile upfile){
+		
+		OutputStream os = null;
+		
+		try {
+			request.setCharacterEncoding("utf-8");
+			String path = request.getSession().getServletContext().getRealPath("/");
+			String fileName = upfile.getOriginalFilename();
+		
+			System.out.println("## path:: " + path);
+			System.out.println("## fileName:: " + fileName);
+			
+			byte[] bytes = upfile.getBytes();		
+			
+			File file = new File(path);
+		
+		
+			if (fileName != null && !fileName.equals("")) {
+			   if (file.exists()) {
+			       fileName = System.currentTimeMillis() + "_" + fileName;                    
+			           file = new File(path + fileName);
+			   }
+			}
+
+			os = new FileOutputStream(file);
+			os.write(bytes);
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}finally {
+            try {
+                if (os != null) {
+                	os.close();
+                }               
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+		
+		
+		
+		
+//		String path = File.separator;
+//		String root = request.getSession().getServletContext().getRealPath(path);
+//		String rootPath = root + path + "upload";
+//		
+//		System.out.println("rootPath::" + rootPath);
 	}
 }
