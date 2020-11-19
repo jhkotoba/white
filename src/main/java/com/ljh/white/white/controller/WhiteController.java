@@ -60,6 +60,4 @@ public class WhiteController {
 		response.setContentType("application/octet-stream");
 		response.setHeader("Content-disposition", "attachment; filename=\""+filename+"\"");
 	}
-	
-
 }
